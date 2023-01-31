@@ -12,4 +12,4 @@ Run `pnpm build` to generate an optimized version of the application for product
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. 
