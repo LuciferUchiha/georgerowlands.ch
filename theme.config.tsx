@@ -1,6 +1,5 @@
 import React from 'react'
 import {DocsThemeConfig} from 'nextra-theme-docs'
-import Image from 'next/image'
 
 const config: DocsThemeConfig = {
     project: {
@@ -22,7 +21,9 @@ const config: DocsThemeConfig = {
         // TODO I can replace the component that is shown for when nothing was found with an image of a dead tree
         placeholder: "Search in the garden..."
     },
-    // TODO replace styling with tailwind
+    toc: {
+        title: "Table of contents"
+    },
     logo: <>
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
              width="36px" height="36px" viewBox="0 0 128 128"
@@ -47,7 +48,7 @@ const config: DocsThemeConfig = {
                 />
             </g>
         </svg>
-        <span style={{margin: "0rem 1rem", fontWeight: "bold"}}>George Rowlands</span></>,
+        <span className="ml-4 font-bold">George Rowlands</span></>,
     footer: {
         text: 'Nextra Garden',
     },
