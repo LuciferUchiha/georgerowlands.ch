@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/LuciferUchiha/nextra-garden#readme",
   "dependencies": {
+    "@akebifiky/remark-simple-plantuml": "^1.0.2",
     "next": "^13.0.6",
     "nextra": "2.0.1",
     "nextra-theme-docs": "2.0.1",

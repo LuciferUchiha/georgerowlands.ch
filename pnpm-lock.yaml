@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@akebifiky/remark-simple-plantuml': ^1.0.2
   '@types/node': 18.11.10
   autoprefixer: ^10.4.13
   next: ^13.0.6
@@ -13,6 +14,7 @@ specifiers:
   typescript: ^4.9.3
 
 dependencies:
+  '@akebifiky/remark-simple-plantuml': 1.0.2
   next: 13.0.6_biqbaboplfbrettd7655fr4n2y
   nextra: 2.0.1_6jx7hpii6hgsrmhxgqrmo3277u
   nextra-theme-docs: 2.0.1_6jx7hpii6hgsrmhxgqrmo3277u
@@ -27,6 +29,13 @@ devDependencies:
   typescript: 4.9.3
 
 packages:
+
+  /@akebifiky/remark-simple-plantuml/1.0.2:
+    resolution: {integrity: sha512-y5rWgQvU+DMpLKx1KlXCsgUeqVooqQm1S3hePLF9iecZy6YhKRybznFdvAvoAoiV2GoGhObQDHnneAl93llIcg==}
+    dependencies:
+      plantuml-encoder: 1.4.0
+      unist-util-visit: 2.0.3
+    dev: false
 
   /@babel/runtime/7.20.6:
     resolution: {integrity: sha512-Q+8MqP7TiHMWzSfwiJwXCjyf4GYA4Dgw3emg/7xmwsdLJOZUp+nMqcOwOzzYheuM1rhDu8FSj2l0aoMygEuXuA==}
@@ -1858,6 +1867,10 @@ packages:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /plantuml-encoder/1.4.0:
+    resolution: {integrity: sha512-sxMwpDw/ySY1WB2CE3+IdMuEcWibJ72DDOsXLkSmEaSzwEUaYBT6DWgOfBiHGCux4q433X6+OEFWjlVqp7gL6g==}
+    dev: false
 
   /postcss-import/14.1.0_postcss@8.4.21:
     resolution: {integrity: sha512-flwI+Vgm4SElObFVPpTIT7SU7R3qk2L7PyduMcokiaVKuWv9d/U+Gm/QAd8NDLuykTWTkcrjOeD2Pp1rMeBTGw==}
