@@ -2,7 +2,7 @@
 
 ```js filename="demo.js"
 let a = 1;
-
+if(a == b && c != d)
 console.log(a);
 ```
 
@@ -30,3 +30,31 @@ import Counters from '../components/Counter/counters'
 
 
 <Counters/>
+
+## PlantUML
+
+```plantuml
+@startuml
+!theme purplerain from https://raw.githubusercontent.com/LuciferUchiha/nextra-garden/main
+interface Command {
+    execute()
+    undo()
+}
+class Invoker{
+    setCommand()
+}
+class Client
+class Receiver{
+    action()
+}
+class ConcreteCommand{
+    execute()
+    undo()
+}
+Command <|-down- ConcreteCommand
+Client -right-> Receiver
+Client --> ConcreteCommand
+Invoker o-right-> Command
+Receiver <-left- ConcreteCommand
+@enduml
+```
