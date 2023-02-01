@@ -12,7 +12,7 @@ function MyButton() {
     return (
         <div>
             <button onClick={handleClick}
-                    className="bg-primary-700 hover:bg-primary-800 font-bold py-2 px-4 mt-8 border border-primary-700 rounded">
+                    className="bg-primary-700 hover:bg-primary-800 font-bold text-white py-2 px-4 mt-8 border border-primary-700 rounded">
                 Clicked {count} times
             </button>
         </div>
