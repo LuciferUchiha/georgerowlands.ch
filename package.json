@@ -19,6 +19,7 @@
   "homepage": "https://github.com/LuciferUchiha/nextra-garden#readme",
   "dependencies": {
     "@akebifiky/remark-simple-plantuml": "^1.0.2",
+    "@giscus/react": "^2.2.6",
     "clsx": "^1.2.1",
     "gitalk": "^1.8.0",
     "next": "^13.0.6",
