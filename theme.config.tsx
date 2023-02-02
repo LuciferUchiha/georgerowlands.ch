@@ -1,5 +1,6 @@
 import React from 'react'
 import {DocsThemeConfig} from 'nextra-theme-docs'
+import GitalkComponent from "gitalk/dist/gitalk-component";
 
 const config: DocsThemeConfig = {
     project: {
@@ -16,13 +17,6 @@ const config: DocsThemeConfig = {
     feedback: {
         content: 'Question? Give me feedback →',
         labels: 'feedback'
-    },
-    search: {
-        // TODO I can replace the component that is shown for when nothing was found with an image of a dead tree
-        placeholder: "Search in the garden..."
-    },
-    toc: {
-        title: "Table of contents"
     },
     logo: <>
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
@@ -49,6 +43,20 @@ const config: DocsThemeConfig = {
             </g>
         </svg>
         <span className="ml-4 font-bold">George Rowlands</span></>,
+    search: {
+        // TODO I can replace the component that is shown for when nothing was found with an image of a dead tree
+        placeholder: "Search in the garden..."
+    },
+    toc: {
+        title: "Table of contents"
+    },
+    main({children}) {
+        return (
+            <>
+                {children}
+            </>
+        );
+    },
     footer: {
         text: 'Nextra Garden',
     },
