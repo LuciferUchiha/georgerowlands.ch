@@ -1,9 +1,10 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, ReactElement} from "react";
 import Giscus from '@giscus/react';
 
 export default function GiscusComments() {
     // This is done so that is loaded client side and skips hydration, no idea what this means but stackoverflow does
     const [showChild, setShowChild] = useState(false);
+    const pathNameBlacklist = ["/"];
     useEffect(() => {
         setShowChild(true);
     }, []);
@@ -15,21 +16,21 @@ export default function GiscusComments() {
     if (typeof window === 'undefined') {
         return <></>;
     } else {
-        return (
-            <Giscus
-                id="giscus-comments"
-                repo="LuciferUchiha/nextra-garden"
-                repoId="R_kgDOIt7MZQ"
-                category="Announcements"
-                categoryId="DIC_kwDOIt7MZc4CT8rz"
-                mapping="pathname"
-                reactionsEnabled="1"
-                emitMetadata="0"
-                inputPosition="top"
-                theme="transparent_dark"
-                lang="en"
-                loading="lazy"
-            />
-        );
+
+        const comments = pathNameBlacklist.indexOf(window.location.pathname) > -1 ? <></> : <Giscus
+            id="giscus-comments"
+            repo="LuciferUchiha/nextra-garden"
+            repoId="R_kgDOIt7MZQ"
+            category="Announcements"
+            categoryId="DIC_kwDOIt7MZc4CT8rz"
+            mapping="pathname"
+            reactionsEnabled="1"
+            emitMetadata="0"
+            inputPosition="top"
+            theme="transparent_dark"
+            lang="en"
+            loading="lazy"
+        />;
+        return comments;
     }
 }
