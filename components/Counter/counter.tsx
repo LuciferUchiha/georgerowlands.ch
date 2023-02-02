@@ -1,8 +1,6 @@
-// Example from https://beta.reactjs.org/learn
-
 import {useState} from 'react'
 
-function MyButton() {
+export default function Counter() {
     const [count, setCount] = useState(0)
 
     function handleClick() {
@@ -17,8 +15,4 @@ function MyButton() {
             </button>
         </div>
     )
-}
-
-export default function MyApp() {
-    return <MyButton/>
 }

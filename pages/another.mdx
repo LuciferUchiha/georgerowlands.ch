@@ -10,7 +10,7 @@ console.log(a);
 
 import {useState} from 'react'
 
-export const Counter = () => {
+export const InlineCounter = () => {
     const [count, setCount] = useState(0);
     return (
         <div>
@@ -22,20 +22,22 @@ export const Counter = () => {
     );
 };
 
-<Counter/>
+<InlineCounter/>
 
 ## External Component
 
-import Counters from '../components/Counter/counters'
+import Counter from '../components/Counter/counter'
 
 
-<Counters/>
+<Counter/>
 
 ## PlantUML
 
+{/* TODO This needs to be changed to use the theme in this project when the repo is made public */}
+
 ```plantuml
 @startuml
-!theme purplerain from https://raw.githubusercontent.com/LuciferUchiha/nextra-garden/main
+!theme purplerain from https://raw.githubusercontent.com/LuciferUchiha/georgerowlands.ch/main
 interface Command {
     execute()
     undo()
@@ -58,3 +60,41 @@ Invoker o-right-> Command
 Receiver <-left- ConcreteCommand
 @enduml
 ```
+
+## Callout
+
+import Callout from "../components/Callout/callout"
+
+<Callout>
+    Today is Friday.
+</Callout>
+
+<Callout type="info">
+    Today is Friday.
+</Callout>
+
+<Callout type="warning">
+    **Do not do this** Today is Friday.
+</Callout>
+
+<Callout type="error">
+    Today is Friday.
+</Callout>
+
+<Callout type="example">
+    This is an example of how to write java code:
+
+    ```java
+    System.out.println("Hello World!");
+    ```
+</Callout>
+
+<Callout type="todo">
+    **This is still under construction!**
+
+    Today is Friday.
+</Callout>
+
+<Callout emoji="🐕">
+    Today is Friday.
+</Callout>
