@@ -1,6 +1,6 @@
 import React from 'react';
 import {DocsThemeConfig} from 'nextra-theme-docs';
-import Gitalk from "./components/Gitalk/gitalk";
+import Giscus from "./components/Giscus/giscus";
 
 const config: DocsThemeConfig = {
     project: {
@@ -56,7 +56,7 @@ const config: DocsThemeConfig = {
         return (
             <>
                 {children}
-                <Gitalk/>
+                <Giscus/>
             </>
         );
     },
