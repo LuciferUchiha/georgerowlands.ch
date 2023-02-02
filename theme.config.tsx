@@ -2,6 +2,7 @@ import React from "react";
 import {DocsThemeConfig} from "nextra-theme-docs";
 import GiscusComments from "./components/Giscus/giscus";
 
+
 const config: DocsThemeConfig = {
     project: {
         link: "https://github.com/LuciferUchiha/nextra-garden"
@@ -17,6 +18,7 @@ const config: DocsThemeConfig = {
     feedback: {
         content: null // disable because now using Giscus
     },
+    head: <link rel="icon" type="image/x-icon" href="logo.svg"/>,
     logo: <>
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
              width="36px" height="36px" viewBox="0 0 128 128"
@@ -50,8 +52,6 @@ const config: DocsThemeConfig = {
         title: "Table of contents"
     },
     main: ({children}) => {
-        console.dir(children);
-        console.log(this);
         return (
             <>
                 {children}
@@ -60,7 +60,16 @@ const config: DocsThemeConfig = {
         );
     },
     footer: {
-        text: "Nextra Garden"
+        text: () => <a
+            className="mx-auto"
+            href="https://www.buymeacoffee.com/georgerowlands" target="_blank"
+        >
+            <img
+                src="buyMeACoffeePurple.png"
+                alt="Buy Me A Coffee"
+                style={{height: "41px", width: "174px"}}
+            />
+        </a>
     }
 };
 
