@@ -1,6 +1,6 @@
-import React from 'react'
-import {DocsThemeConfig} from 'nextra-theme-docs'
-import GitalkComponent from "gitalk/dist/gitalk-component";
+import React from 'react';
+import {DocsThemeConfig} from 'nextra-theme-docs';
+import Gitalk from "./components/Gitalk/gitalk";
 
 const config: DocsThemeConfig = {
     project: {
@@ -50,10 +50,13 @@ const config: DocsThemeConfig = {
     toc: {
         title: "Table of contents"
     },
-    main({children}) {
+    main: ({children}) => {
+        console.dir(children);
+        console.log(this);
         return (
             <>
                 {children}
+                <Gitalk/>
             </>
         );
     },
