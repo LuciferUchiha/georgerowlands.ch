@@ -1,22 +1,21 @@
-import React from 'react';
-import {DocsThemeConfig} from 'nextra-theme-docs';
+import React from "react";
+import {DocsThemeConfig} from "nextra-theme-docs";
 import GiscusComments from "./components/Giscus/giscus";
 
 const config: DocsThemeConfig = {
     project: {
-        link: 'https://github.com/LuciferUchiha/nextra-garden',
+        link: "https://github.com/LuciferUchiha/nextra-garden"
     },
-    docsRepositoryBase: 'https://github.com/LuciferUchiha/nextra-garden/tree/main/',
+    docsRepositoryBase: "https://github.com/LuciferUchiha/nextra-garden/tree/main/",
     primaryHue: 270,
     nextThemes: {
-        defaultTheme: 'dark'
+        defaultTheme: "dark"
     },
     editLink: {
-        text: 'Edit this page on GitHub →'
+        text: "Edit this page on GitHub →"
     },
     feedback: {
-        content: 'Question? Give me feedback →',
-        labels: 'feedback'
+        content: null // disable because now using Giscus
     },
     logo: <>
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
@@ -61,8 +60,8 @@ const config: DocsThemeConfig = {
         );
     },
     footer: {
-        text: 'Nextra Garden',
-    },
-}
+        text: "Nextra Garden"
+    }
+};
 
-export default config
+export default config;

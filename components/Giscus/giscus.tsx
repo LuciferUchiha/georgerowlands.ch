@@ -1,5 +1,5 @@
 import {useState, useEffect, ReactElement} from "react";
-import Giscus from '@giscus/react';
+import Giscus from "@giscus/react";
 
 export default function GiscusComments() {
     // This is done so that is loaded client side and skips hydration, no idea what this means but stackoverflow does
@@ -13,7 +13,7 @@ export default function GiscusComments() {
         return null;
     }
 
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
         return <></>;
     } else {
 
