@@ -1,6 +1,7 @@
 import React from "react";
 import {DocsThemeConfig} from "nextra-theme-docs";
 import GiscusComments from "./components/Giscus/giscus";
+import BackToTop from "./components/BackToTop/backToTop";
 
 
 const config: DocsThemeConfig = {
@@ -55,6 +56,7 @@ const config: DocsThemeConfig = {
         return (
             <>
                 {children}
+                <BackToTop/>
                 <GiscusComments/>
             </>
         );
