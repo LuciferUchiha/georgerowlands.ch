@@ -3,6 +3,8 @@ import os
 import watchdog.events
 import watchdog.observers
 
+from nextra_exporter import NextraExporter
+
 
 class Handler(watchdog.events.PatternMatchingEventHandler):
     def __init__(self):
@@ -13,11 +15,14 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
     def on_any_event(self, event):
         if not event.src_path.endswith(".ipynb.tmp"):
             print(f"Watchdog received {event.event_type} event - {event.src_path}")
-            os.system(f"jupyter nbconvert --to markdown {event.src_path}")
+            os.system(f"jupyter nbconvert --to nextra_exporter.NextraExporter {event.src_path}")
 
 
 if __name__ == "__main__":
     print("Watchdog is watching")
+
+    print(NextraExporter)
+
     pages_path = "../pages/"
     event_handler = Handler()
     observer = watchdog.observers.Observer()
