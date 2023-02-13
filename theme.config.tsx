@@ -1,7 +1,7 @@
 import React from "react";
 import {DocsThemeConfig} from "nextra-theme-docs";
-import GiscusComments from "./components/Giscus/giscus";
-import BackToTop from "./components/BackToTop/backToTop";
+import GiscusComments from "./components/giscus/giscus";
+import BackToTop from "./components/backToTop/backToTop";
 
 
 const config: DocsThemeConfig = {
@@ -49,6 +49,7 @@ const config: DocsThemeConfig = {
             // TODO I can replace the component that is shown for when nothing was found with an image of a dead tree
             placeholder: "Search in the garden..."
         },
+        sidebar: {defaultMenuCollapseLevel: 1},
         toc: {
             title: "Table of contents"
         },

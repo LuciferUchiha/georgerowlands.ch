@@ -12,6 +12,9 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
         watchdog.events.PatternMatchingEventHandler.__init__(self, patterns=['*.ipynb'],
                                                              ignore_directories=True, case_sensitive=False)
 
+    def _file_extension_default(self):
+        return '.mdx'
+
     def on_any_event(self, event):
         if not event.src_path.endswith(".ipynb.tmp"):
             print(f"Watchdog received {event.event_type} event - {event.src_path}")
