@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,8 @@
   "devDependencies": {
     "@types/node": "18.11.10",
     "autoprefixer": "^10.4.13",
+    "eslint": "8.34.0",
+    "eslint-config-next": "13.1.6",
     "postcss": "^8.4.21",
     "tailwindcss": "^3.2.4",
     "typescript": "^4.9.5"
