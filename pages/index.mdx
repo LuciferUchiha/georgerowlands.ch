@@ -1,11 +1,16 @@
-# Introduction
+import ProgressBar from "../components/ProgressBar/progressBar";
 
-Welcome to Nextra! This is a basic docs template. You can use it as a starting point for your own project :)
+<div className="absolute top-0 left-0 -z-10 h-full w-full invert bg-primary-800 dark:filter-none"
+     style={{background: "transparent url('https://gifimage.net/wp-content/uploads/2017/07/animated-rain-gif-10.gif')"}}
+></div>
 
-## What is Nextra?
+<div className="flex flex-col flex-wrap h-[calc(100%-98px)] max-w-[34rem] justify-center">
+    <h3 className="text-base"> Hi, my name is </h3>
+    <h1 className="leading-[4.5rem] font-bold text-primary-500 text-6xl break-words">George Rowlands</h1>
+    <h2 className="break-words text-3xl font-bold">Computer Science Student</h2>
+    <div>
+        <h2 className="mb-4 text-3xl font-bold text-primary-500">Knowledge</h2>
+        <ProgressBar/>
+    </div>
+</div>
 
-A **simple**, **powerful** and **flexible** site generation framework with everything you love from Next.js.
-
-## Documentation
-
-The documentation is available at [https://nextra.site](https://nextra.site).

@@ -9,7 +9,7 @@ export default function Counter() {
 
     return (
             <button onClick={handleClick}
-                    className="bg-primary-700 hover:bg-primary-800 font-bold text-white py-2 px-4 mt-8 border border-primary-700 rounded">
+                    className="mt-8 rounded border px-4 py-2 font-bold text-white bg-primary-700 border-primary-700 hover:bg-primary-800">
                 Clicked {count} times
             </button>
     );
