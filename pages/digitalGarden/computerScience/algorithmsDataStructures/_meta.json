@@ -7,5 +7,6 @@
   "queues": "Queues",
   "stacks": "Stacks",
   "hashTables": "Hash Tables",
+  "graphs": "Graphs",
   "trees": "Trees"
 }
