@@ -49,7 +49,7 @@ const config: DocsThemeConfig = {
             // TODO I can replace the component that is shown for when nothing was found with an image of a dead tree
             placeholder: "Search in the garden..."
         },
-        sidebar: {defaultMenuCollapseLevel: 1},
+        sidebar: {defaultMenuCollapseLevel: 2},
         toc: {
             title: "Table of contents"
         },
