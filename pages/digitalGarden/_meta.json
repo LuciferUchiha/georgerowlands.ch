@@ -1,14 +1,6 @@
 {
-  "index": {
-    "title": "My Digital Garden"
-  },
-  "computerScience": {
-    "title": "Computer Science"
-  },
-  "mathematics": {
-    "title": "Mathematics"
-  },
-  "resources": {
-    "title": "Resources"
-  }
+  "index": "My Digital Garden",
+  "compSci": "Computer Science",
+  "maths": "Mathematics",
+  "resources": "Resources"
 }
