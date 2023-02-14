@@ -6,5 +6,6 @@
   "iterators": "Iterators",
   "queues": "Queues",
   "stacks": "Stacks",
-  "hashTables": "Hash Tables"
+  "hashTables": "Hash Tables",
+  "trees": "Trees"
 }
