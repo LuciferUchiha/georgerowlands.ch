@@ -1,0 +1,13 @@
+{
+  "oopDesignPrinciples": "OOP Design Principles",
+  "command": "Command",
+  "composite": "Composite",
+  "decorator": "Decorator",
+  "factory": "Factory",
+  "observer": "Observer",
+  "prototype": "Prototype",
+  "singleton": "Singleton",
+  "state": "State",
+  "strategy": "Strategy",
+  "templateMethod": "Template Method"
+}

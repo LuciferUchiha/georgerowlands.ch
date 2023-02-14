@@ -4,5 +4,6 @@
   "concurrentProgramming": "Concurrent Programming",
   "git": "Git",
   "make": "Make",
-  "c": "C"
+  "c": "C",
+  "designPatterns": "Design Patterns"
 }
