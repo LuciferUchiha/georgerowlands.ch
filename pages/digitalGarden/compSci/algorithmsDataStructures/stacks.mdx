@@ -1,0 +1,28 @@
+---
+title: Stacks
+tags: [java, collections, data structures, stacks]
+---
+
+import Callout from "../../../../components/callout/callout";
+
+# Stacks
+
+A stack is as the name says like a stack of paper. Meaning it follows the LIFO policy (last in first out). The most common operations on queues are:
+
+- `push(E e)`: Puts the element onto the top of the stack.
+- `E pop()`: Takes the element from the top of the stack.
+- `E peek()`: Returns the element at the top of the stack, which corresponds to the element to next be popped.
+
+![stack](/compSci/stack.png)
+
+## Implementing a Stack
+
+<Callout type="todo">
+```java filename="MyStack.java"
+// TODO
+```
+</Callout>
+
+### Stack Using two Queues
+
+Although the most common way of implementing a stack is with a [linked list](./linkedLists) it is also possible to implement a stack by using two queues. Just like when [implementing a queue with two stacks](./queues#queue-using-two-stacks) you need to decide if adding or removing an element will be expensive.

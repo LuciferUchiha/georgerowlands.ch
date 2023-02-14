@@ -370,7 +370,7 @@ printf("An int takes up %ld bytes on my computer and a double %ld", sizeof(x), s
 
 When compiling you can pass arguments to the main function. The first parameter `argc` is the argument count, the second parameter `argv` is the argument vector which is an array of strings. So in other words it is an array of character arrays or an array of character pointers.
 
-```c title="main.c"
+```c filename="main.c"
 #include <stdio.h>
 
 int main(int argc, char *argv[])
@@ -404,7 +404,7 @@ argv[2]=arg2
 
 The `stdio.h` file contains the `scanf()` function which reads input from the standard input stream "stdin", which by default is the console. The function can read and parse the input using the provided format specifier. Important to know is that it uses whitespaces to tokenize the input.
 
-```c title="main.c"
+```c filename="main.c"
 #include "stdio.h"
 
 int main(void)
