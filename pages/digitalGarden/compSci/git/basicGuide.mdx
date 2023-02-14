@@ -14,20 +14,20 @@ The first thing you should do after installing git is set your username and emai
 These are stored in a `gitconfig` file. There are multiple levels of configs, `--global` being for the entire system
 and `--local` only for that repository.
 
-```shell
+```bash
 git config --global user.name "John Doe"
 git config --global user.email "john@example.com"
 ```
 
 To check your settings you can use
 
-```shell
+```bash
 git config --list
 ```
 
 To get help for any command you can use
 
-```shell
+```bash
 git <command> --help or git help <command>
 ```
 
@@ -39,7 +39,7 @@ limited to the commit history.
 
 *Do not delete the `.git` folder unless you know what you are doing!*
 
-```shell
+```bash
 git init
 ```
 
@@ -61,7 +61,7 @@ You can also use the following to make life easier:
 To save even more time you can use the `git commit -a` command which is the same as executing `git add -A` followed by
 a `git commit`. This can then be combined to the following
 
-```shell
+```bash
 git commit -am "<message>"
 ```
 
@@ -80,7 +80,7 @@ use `git clone https://github.com/LuciferUchiha/Digital-Garden.git`
 
 If you already have a local repository and want to add a remote repository you can do so the following way:
 
-```shell
+```bash
 git remote add origin https://github.com/LuciferUchiha/remote-repo.git
 git branch -M main
 git push -u origin main
@@ -93,14 +93,14 @@ The last command pushes to the remote repo and marks at as the upstream branch f
 You can check the remote repositories you are connected to with `git remote -v`.
 Now you can edit and add files and commit your changes. Once you are done, you can *push* your changes with
 
-```shell
+```bash
 git push
 ```
 
 Before you continue working you should pull any changed you might have committed from another computer or that might
 have been committed by a collaborator
 
-```shell
+```bash
 git pull
 ```
 
@@ -112,7 +112,7 @@ Every time you commit, the `master` branch pointer (`HEAD`)moves forward automat
 
 To create a new branch use the command:
 
-```shell
+```bash
 git branch testing
 ```
 
@@ -130,7 +130,7 @@ After changing a file and commiting, our structure could look something like thi
 
 To create and checkout a new branch at the same time:
 
-```shell
+```bash
 git checkout -b testing
 ```
 
@@ -142,23 +142,23 @@ branch. If you add `--all` you can also see the remote branches of a repository.
 Assume our structure looks like the following
 ![branch structure4](https://git-scm.com/book/en/v2/images/basic-branching-4.png)
 
-### Fast forward
+### Fast-Forward
 
 If we now execute the commands bellow, a so-called fast-forward merge is done which basically moves the pointer of the
 master branch.
 
-```shell
+```bash
 git checkout master
 git merge hotfix
 ```
 
 ![branch structure5](https://git-scm.com/book/en/v2/images/basic-branching-5.png)
 
-### Three way
+### Three-Way
 
 We can now delete the hotfix branch, checkout the issue branch and do some more work.
 
-```shell
+```bash
 git branch -d hotfix
 git checkout iss53
 echo "lots of work" > index.html
@@ -168,7 +168,7 @@ git commit -a -m "Did lots of work"
 We now however want our new changes to also be in the master branch, so we want to merge `iss53` into `master`.
 ![branch structure6](https://git-scm.com/book/en/v2/images/basic-merging-1.png)
 
-```shell
+```bash
 git checkout master
 git merge iss53
 ```

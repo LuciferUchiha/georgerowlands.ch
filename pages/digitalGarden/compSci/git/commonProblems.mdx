@@ -10,13 +10,13 @@ tags: [git, tooling]
 
 To overwrite local changes:
 
-```shell
+```bash
 git checkout -- <file>
 ```
 
 To discard local changes to all files, permanently:
 
-```shell
+```bash
 git reset --hard
 ```
 
@@ -24,19 +24,19 @@ git reset --hard
 
 To unstage the file but keep your changes:
 
-```shell
+```bash
 git restore --staged <file>
 ```
 
 To unstage everything but keep your changes:
 
-```shell
+```bash
 git reset
 ```
 
 To discard local changes to all files, permanently:
 
-```shell
+```bash
 git reset --hard
 ```
 
@@ -45,13 +45,13 @@ git reset --hard
 This is a always a bit harder...
 To undo last two commits, but keep your changes:
 
-```shell
+```bash
 git reset HEAD~2
 ```
 
 To undo last two commits, discard changes:
 
-```shell
+```bash
 git reset --hard HEAD~2
 ```
 
@@ -59,13 +59,13 @@ git reset --hard HEAD~2
 
 To change the message of the last commit:
 
-```shell
+```bash
 git commit --amend -m "New message"
 ```
 
 Did you forget to add a file? Just add it and amend the previous commit :)
 
-```shell
+```bash
 git add forgotten_file
 git commit --amend
 ```

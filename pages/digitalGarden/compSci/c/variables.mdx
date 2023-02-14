@@ -1,0 +1,422 @@
+---
+title: Variables and Data Types
+tags: [c, variables, data types, command-line arguments, visibility, const, static, define, sizeof, preprocessor]
+---
+
+# Variables and Data Types
+
+To create a variable you first need a name. A variable name must start with a letter or underscore and then be followed by any combination of letters, underscores or digits as long as the name in the end isn't a reserved word like "int". Secondly you need a type which defines how the data is stored in memory for example `int` is an integer. When writing `int x;` you are declaring a variable which reserves the space in memory to hold the later on assigned value as it knows the amount of bytes the data type of the variable needs. Initializing a variable is giving it an initial value. This can be done as part of the declaration like for example `int a = 12;`.
+
+## Basic Data Types
+
+[A basic list of c data types](https://en.wikipedia.org/wiki/C_data_types#Main_types), how much memory they take up but this is very computer and compiler dependant. Closly tied to the amount of memory is of course the value range of a variable. These ranges can be checked by including [limits.h](https://pubs.opengroup.org/onlinepubs/007904975/basedefs/limits.h.html) for integer values and [float.h](https://pubs.opengroup.org/onlinepubs/007904975/basedefs/float.h.html) for float values (part of the standard library).
+
+Some interesting things to note are:
+
+- You can assign values using hex so `int x = 0xFFFFFF` is possible.
+- You can use scientific notation to assign values so `float x = 1.7e4` is possible.
+- You can add short, long, signed and unsigned to numerical values. `short` **might** make the types memory usage smaller, `long` **might** make it larger. `signed` is by default so has no real effect, `unsigned` means its range is only positive values and includes 0. Unless it is `int` itself the word int can be omitted so `long int` and `long` are the same. For some reason you can also do `long long` and `short short` who knows why?
+- If you want specific sized data types you can include from the standard library [stdint.h](https://pubs.opengroup.org/onlinepubs/009696899/basedefs/stdint.h.html) as to why to this doesn't exist for floats you can [read here](https://www.reddit.com/r/cpp/comments/34d7b6/why_do_we_have_intn_t_but_no_equivalent_for/).
+
+## Enums
+
+An enum is a data type that only allows specific values. These values are under the hood mapped to integer constants with the first being mapped to 0 then the next is 0++ etc. if nothing else is specified.
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    enum planets {mercury, venus, earth, mars, jupiter, saturn, uranus};
+    enum planets home = earth;
+    printf("Our home is the %d. planet from the sun.\n", home+1);
+
+    enum days {monday=1, tuesday, wednesday, thursday, friday, saturday=10, sunday};
+    printf("Level of motivation on a monday is %d and on a tuesday %d.\n", monday, tuesday);
+    printf("On saturday it is %d and sunday %d\n.", saturday, sunday);
+}
+```
+
+## Boolean Types
+
+To have variables with boolean values in C we can use the `_Bool` data type which can have the values 0 (false) or 1 (true).
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    _Bool x = 1;
+    _Bool y = 0;
+    if(x) {
+        printf("This will print!");
+    } if (!y)
+    {
+        printf("This will also print!");
+    }
+}
+```
+
+Another way would be to use an Enum with a typedef, this takes advantage of Enums being constant integer values under the hood.
+
+```c
+#include <stdio.h>
+typedef enum { FALSE, TRUE } Boolean;
+
+int main(void)
+{
+    Boolean x = TRUE;
+    Boolean y = 0;
+    if (x) {
+        printf("This will print!");
+    }
+    if (!y) {
+        printf("This will also print!");
+    }
+}
+```
+
+From C99 onwards you can also `#include <stdbool.h>`.
+
+```c
+#include <stdio.h>
+#include <stdbool.h>
+
+int main(void)
+{
+    bool x = true;
+    bool y = 0;
+    if (x) {
+        printf("This will print!");
+    }
+    if (!y) {
+        printf("This will also print!");
+    }
+}
+```
+
+## Format Specifiers
+
+There are lots format specifiers for outputting different data types. You can also use format specifiers to do cool things like adding leading or trailing zeros or only showing a certain amount of decimal points.
+
+![cFormatSpecifiers](/compSci/cFormatSpecifiers.png)
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    printf("Characters: %c %c \n", 'a', 65);
+    printf("Preceding with blanks: %10d \n", 1977);
+    printf("Preceding with zeros: %010d \n", 1977);
+    printf("Some different radices: %d %x %o %#x %#o \n", 100, 100, 100, 100, 100);
+    printf("floats: %.2f %+.0e %E \n", 3.1416, 3.1416, 3.1416);
+    printf("Width trick: %*d \n", 20, 10);
+    printf("%s", 0 ? "true" : "false");
+    return 0;
+}
+```
+
+You can find more details in the [documentation of printf](https://www.cplusplus.com/reference/cstdio/printf/).
+
+## Visibility
+
+All identifiers (variables, functions, classes etc.) must be defined before they can be used . Depending on where the identifier is defined they identifier has has a different visibility. Identifiers in the same block must be ambiguous and are visible in the inner blocks. An identifier from an outer block can be redefined in an inner block and can therefore be shadowed.
+
+```c
+#include <stdio.h>
+int main(void)
+{
+    int x = 6
+    {
+        int x = 9;
+        {
+            int x = 10;
+            printf("%d", x) // 10
+        }
+         printf("%d", x) // 9
+    }
+}
+```
+
+### Global
+
+If you define a variable outside all blocks then it is part of the global scope and exists as long as the program runs and can be accessed between multiple files by including the header file where it is defined and adding the `extern` keyword before it.
+
+```c filename="main.c"
+#include <stdio.h>
+
+int x = 5; // global
+
+int main(void)
+{
+    printf("%d", x) // 5
+}
+```
+
+### Static
+
+By adding the `static` keyword to the global variable we can limit it's visibility to just this file.
+
+## Dynamically Allocated Memory
+
+We have seen above that a lot of objects are only available inside their blocks once the block is finished they are removed. These objects are stored on the stack. If we create an object in a function we can return it and still work with it, however in C the object is copied on return which can very bad for performance if the object is very large.
+
+Objects can also be stored statically meaning they are available as long as the program runs.
+
+```c
+#include<stdio.h>
+int inc()
+{
+  static int count = 0;
+  count++;
+  return count;
+}
+
+int main()
+{
+  printf("%d ", inc()); // 1
+  printf("%d ", inc()); // 2
+  return 0;
+}
+```
+
+The last possibility is using dynamically allocated memory. In C you can not define an array with a certain size at runtime, if we would want to do something like that we would need dynamic memory allocation. To be able to use this in C you must include `stdlib.h`. To go back on our problem of returning a created object from a function we can create the object on the stack and then just return the address of the object.
+
+### Malloc
+
+The `malloc()` function, short for "memory allocation", is used to dynamically allocate a single large block of memory with the specified size and returns a pointer to the block.
+
+:::warning
+When the memory is no longer needed you should release it using the `free()` function as you are otherwise using unnecessary memory. If you call free multiple times you can cause unexpected behavior which is why you should also set the pointer to NULL.
+:::
+
+:::warning
+Malloc does not initialize the memory!
+:::
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int* ptr;
+    int n, i;
+
+    printf("Enter number of elements:");
+    scanf("%d",&n);
+    printf("Entered number of elements: %d\n", n);
+
+    // Dynamically allocate memory using malloc()
+    ptr = (int*)malloc(n * sizeof(int)); // returns void*
+
+    if (ptr) {
+        printf("Memory successfully allocated using malloc.\n");
+
+        for (i = 0; i < n; ++i) {
+            ptr[i] = i + 1;
+        }
+
+        printf("The elements of the array are: ");
+        for (i = 0; i < n; ++i) {
+            printf("%d, ", ptr[i]);
+        }
+    }
+
+    free(ptr); // free the memory!!
+    ptr = NULL;
+
+    return 0;
+}
+```
+
+### Calloc
+
+The `calloc()` function, short for "contiguous allocation", is very similiar to the malloc function however it dynamically allocates the specified number of blocks of memory of the specified type. The most important difference however is that it initializes each block with a default value of '0'.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    int* ptr;
+    int n, i;
+
+    printf("Enter number of elements:");
+    scanf("%d",&n);
+    printf("Entered number of elements: %d\n", n);
+
+    // Dynamically allocate memory using calloc()
+    ptr = (int*)calloc(n, sizeof(int));
+
+     if (ptr) {
+        printf("Memory successfully allocated using calloc.\n");
+
+        for (i = 0; i < n; ++i) {
+            ptr[i] = i + 1;
+        }
+
+        printf("The elements of the array are: ");
+        for (i = 0; i < n; ++i) {
+            printf("%d, ", ptr[i]);
+        }
+    }
+
+    free(ptr); // free the memory!!
+    ptr = NULL;
+
+    return 0;
+}
+```
+
+## Constant Values
+
+### Define
+
+With `#define` you can define key value pairs that will be substituted in the preprocessing phase. Important is that you don't write a type, an equal or a semicolon!
+
+```c
+#include <stdio.h>
+#define PI 3.14
+
+int main(void)
+{
+   printf("%f",PI);
+   return 0;
+}
+```
+
+You can also conditionally define variables depending on certain compiler arguments or environment variables.
+
+```c
+#include <stdio.h>
+
+#define X 2
+
+#if X == 1
+    #define Y 1
+#elif X==2
+    #define Y 2
+#else
+    #define Y 3
+#endif
+
+int main(void)
+{
+   printf("%d",Y);
+   return 0;
+}
+```
+
+You can also execute certain code by checking if something is defined or not.
+
+```c
+#include <stdio.h>
+#define UNIX 1
+
+int main()
+{
+   #ifdef UNIX
+   printf("UNIX specific function calls go here.\n");
+   #endif
+   printf("C has some weird things.\n");
+
+   return 0;
+}
+```
+
+### Const
+
+In C90 the `const` keyword was added which does not allow the value of a variable to change, making it read-only. Using const is much more flexible then define as allows you to use a data type and it is also better for performance.
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    const int PI = 3.14;
+    printf("%f",PI);
+    return 0;
+}
+```
+
+## Operators
+
+Has the same operators as in many other languages and also work the same so not gonna go into detail. The only interesting ones to go into are below.
+
+![cOperatorPrecedence](/compSci/cOperatorPrecedence.png)
+
+### Casting
+
+conversion between different types can happen automatically (implicit) or has to be done explicit.
+
+for example double to flaot is implicit as no data is lost however double to int data is lost so it ahs to be done explicit and the decimal points are truncated
+
+(int) 25.1 + (int) 27.435
+
+### Sizeof
+
+The sizeof operator is very simple and just outputs how many bytes a data type or variable takes up.
+
+```c
+int x = 3;
+
+printf("An int takes up %ld bytes on my computer and a double %ld", sizeof(x), sizeof(double)); // 4 and 8
+```
+
+## Command-line Arguments
+
+When compiling you can pass arguments to the main function. The first parameter `argc` is the argument count, the second parameter `argv` is the argument vector which is an array of strings. So in other words it is an array of character arrays or an array of character pointers.
+
+```c title="main.c"
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+    printf("argc=%d\n", argc);
+
+    // the first argument is the name of the executable
+    printf("exe name=%s\n", argv[0]);
+
+    for (int i = 1; i < argc; i++)
+    {
+        printf("argv[%d]=%s\n", i, argv[i]);
+    }
+
+    return 0;
+}
+```
+
+To then pass arguments you can do the following
+
+```bash
+foo@bar:~$ gcc -std=c11 -pedantic -pedantic-errors -Wall -Wextra -g -o argvExample main.c
+foo@bar:~$ argvExample.exe arg1 arg2
+argc=3
+exe name=./argvExample
+argv[1]=arg1
+argv[2]=arg2
+```
+
+## Inputting Data
+
+The `stdio.h` file contains the `scanf()` function which reads input from the standard input stream "stdin", which by default is the console. The function can read and parse the input using the provided format specifier. Important to know is that it uses whitespaces to tokenize the input.
+
+```c title="main.c"
+#include "stdio.h"
+
+int main(void)
+{
+    char str[100];
+    int i;
+    printf("Enter a word followed by a space and a number: ");
+    // provide pointers to where to store the values (remember str is actually a pointer to the first element)
+    int tokensRead = scanf("%s %d", str, &i);
+
+    printf("%d tokens were read str: %s  and i: %d", tokensRead,str, i);
+
+    return 0;
+}
+```

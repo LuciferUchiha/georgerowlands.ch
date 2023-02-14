@@ -1,0 +1,108 @@
+---
+title: Processes and Signals
+tags: [c, unix, system programming, processes, signals, system calls, environment variables]
+---
+
+# Processes and Signals
+
+## Processes
+
+A program is a file containing instructions on how to create a process. Processes are instances of a running program. A program can have multiple processes and a process can be executing the same program.
+
+The kernel sees a process as a piece of user-space memory with program code, constants and initial values for variables. The kernel also keeps track of processes by storing its Process ID (PID), its virtual memory space, open file descriptors and signal handlers amongst other things.
+
+The PID is a positive integer and is used to identify a process in the system. The "init" process which is responsible for starting the unix operating system has the PID=1. Every process has a parent process apart from init so processes form a tree structure with init as its root. You can check this out with the `pstree` command. If a process dies it get's adopted by init so has the PID=1.
+
+`pid_t getpid(void)` of current process.
+`pid_t getppid(void)` of parent process.
+
+![pstree](/compSci/processTree.png)
+
+### Memory layout
+
+The memory of each process is split into segments: program code, initialized data, none initialized data(bss), stack and the heap.
+
+![memoryLayout](/compSci/memoryLayout.png)
+
+Unix and many other operating systems use virtual memory for performance reasons. When using virtual memory only a so called Page is loaded into the RAM the rest is offloaded. Along with the above mentioned data structure the kernel also keep a so called page table for each process which maps the virtual memory address space to the Page frame in the physical memory, RAM. Address spaces not in use are not mapped so if a process tries to access them you receive a so called segmentation fault (SIGSEGV).
+
+![pageTable](/compSci/pageTable.png)
+
+### Stack and stack frames
+
+Stack frames are parts of the stack which are allocated when a function is called for its arguments, local variables and CPU register copies of the external variables. If have worked with recursion you have maybe come across a "Stackoverflow" which can happen when the stack is full and no longer has any space.
+
+## Environment variables
+
+You can create and access environment variables which are stored in the global variable `extern char **environ`. `char *getenv(const char *name)`, `int putenv(char *string)`
+
+## Signals
+
+Signals are forms of messages that go between processes. Most signals come from the kernel for example when there is input, an event or an exception occurred (division by 0 for example). A source process generates a signal until the destination process gets time from the scheduler the signal is pending. As soon as it is the process's turn the signal is delivered and it can just what to do. Either the process terminates, ignores the signal or handles it using a signal handler. Every signal has a symbol (in `signal.h`) and a number associated with the symbol for example an interrupt with CTRL+C causes the kernel to send a `SIGINT` signal. When referring to a signal you should always use its symbol as depending on the system it might have a different number. In most cases the IDs 1-31 are reserved for standard signals from the kernel and the next 32-64 are real-time signals.
+
+TODOOOO
+strsignal, psignal
+
+### Register signal handlers
+
+You can register signal handlers using the `sighandler_t signal(int signum, sighandler_t handler)` function meaning your handler will look something like this `void handle(int signal)`. The return value of signal is the previously registered handler if somethign went wrong it will return `SIG_ERR`. There are some default handlers which can be used like the following, there is also `SIG_IGN` to ignore the signal. Often times however handlers just set a global flag `volatile int flag;`.
+
+![signalHandler](/compSci/signalHandler.png)
+
+### Send signals
+
+You can send signals to other processes with `int kill(pid_t pid, int sig)`. If you use the pid=0 the signal is sent to all processes in the same group. If you use pid=-1 the signal is send to all processes it can apart from init. If you use sig=0 you can check if a signal can be sent.
+
+With `int raise(int sig)` you can send a signal to your own process which would be the same as `kill(getpid(), sig)`
+
+### Wait for signals
+
+Often times you want a process to wait until it receives a signal which can be done with the `int pause(void)` function. A common thing to do after a pause would then be to check the global flags which might have been set by the signal handler.
+
+### Signal masks
+
+You can use masks to block certain signals from interupting a process. Signals stay pending until they are unblocked. A signal mask consists of sets of signals. You can crate a set with `int sigemptyset(sigset_t *set)` or `int sigfillset(sigset_t *set)`. You can then use `int sigaddset(const sigset_t *set, int sig)` or `int sigdelset(const sigset_t *set, int sig)` to either add or delete a signal. Once you have your signal set you can use it in the mask with `int sigprocmask(int how, const sigset_t *restrict set, sigset_t *restrict oldset)`. For the how you can use `SIG_BLOCK` which adds the signals from new to the mask, `SIG_UNBLOCK` to remove the signals from new or set it with `SIG_SETMASK`.
+
+## Process lifecycle
+
+With the `pid_t fork(void)` function a process can create a child process. When this is done instead of copying the entire stack, heap etc. (which would be very bad for performance especially since most child process just start another program as you will see below) the parent and child have a read only page in memory. And then id something needs to be changed the kernel makes a copy-on-write. The `void exit(int status)` function terminates a process and sends the status to any process that is suspended as it is waiting for it with `pid_t wait(int *wstatus)`. If you want a parent to wait for all its children you can use `while(wait(NULL) != -1) {}`.
+
+![pageTableCopyOnWrite](/compSci/pageTableCopyOnWrite.png)
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+int main()
+{
+    int id = fork(); // returns child PID for parent and for child is unassigned so 0.
+    if (id == 0)
+    {
+        printf("hello from child\n");
+        sleep(3);
+        exit(EXIT_SUCCESS);
+    }
+    else
+    {
+        printf("hello from parent\n");
+        int status;
+        wait(&status);
+        printf("child has terminated with %d\n", status);
+    }
+
+    printf("Bye\n"); // without exit child would still execute this
+    return 0;
+}
+```
+
+### Execve and system
+
+With `int execve(const char *pathname, char *const argv[], char *const envp[])` you throw away all the previous program code, stack, heap etc and can load a new program in it's place. This function does not return.
+
+![execve](/compSci/execve.png)
+
+With `int system(const char *command)` you can similiarly create a child process and execute and shell command. The system function takes care of all the hidden details of forking and exiting etc.
+
+### Zombie processes

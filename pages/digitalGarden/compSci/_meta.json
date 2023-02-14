@@ -1,6 +1,8 @@
 {
+  "algorithmsDataStructures": "Algorithms & Data Structures",
   "java": "Java",
   "concurrentProgramming": "Concurrent Programming",
   "git": "Git",
-  "make": "Make"
+  "make": "Make",
+  "c": "C"
 }

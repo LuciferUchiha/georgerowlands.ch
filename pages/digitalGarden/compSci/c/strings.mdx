@@ -1,0 +1,164 @@
+---
+title: Strings
+tags: [C, strings, character arrays]
+---
+
+# Strings
+
+String are stored and can be handled as arrays of chars which is why you often hear character array instead of string. In C the compiler adds at the end of each string literal the null character, '\0' (not to be confused with NULL) so it knows where the string ends. This also means that the length of a string is always one longer then you might think it is. To get the length of a string you can implement your own function or use the built in function `strlen` provided in `string.h`.
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+size_t getStringLength(char *str)
+{
+    size_t count;
+    for (count = 0; str[count] != '\0'; ++count)
+        ;
+    return count;
+}
+
+int main()
+{
+    char a[6] = {'h', 'e', 'l', 'l', 'o', '\0'};
+    char b[] = {'h', 'e', 'l', 'l', 'o', '\0'};
+    char c[] = "hello"; // string literal
+    char d[] = {"hello"};
+    char e[50] = "hello"; // to long
+    char f[5] = "hello";  // to short, '\0' is not added so carefull...
+
+    printf("%s length=%ld strlen=%ld\n", a, getStringLength(a), strlen(a));
+    printf("%s length=%ld strlen=%ld\n", b, getStringLength(b), strlen(b));
+    printf("%s length=%ld strlen=%ld\n", c, getStringLength(c), strlen(c));
+    printf("%s length=%ld strlen=%ld\n", d, getStringLength(d), strlen(d));
+    printf("%s length=%ld strlen=%ld\n", e, getStringLength(e), strlen(e));
+    printf("%s length=%ld strlen=%ld\n", f, getStringLength(f), strlen(f));
+    return 0;
+}
+```
+
+```bash filename="output"
+hello length=5 strlen=5
+hello length=5 strlen=5
+hello length=5 strlen=5
+hello length=5 strlen=5
+hello length=5 strlen=5
+hellohello length=10 strlen=10
+```
+
+## Wide characters
+
+A wide character `wchar_t` is similar to char data type, except that it takes up twice the space and can take on much larger values as a result. A char can take 256 values which corresponds to entries in the ascii table. On the other hand, wide char can take on 65536 values which corresponds to unicode values. So whenever you see a function that has to do with strings or characters and there is a w then it most lightly has to do with wide characters. You can create wide string litrals just like normal string literal and then by adding the L prefix.
+
+```c
+#include <stdio.h>
+
+int main()
+{
+    wchar_t w = L'A';
+    wchar_t *p = L"Hello!";
+    size_t length = wcslen(p); // can't use strlen
+    printf("Wide character: %c\n", w);
+    printf("Wide string with length %ld: %S\n", length, p);
+    return 0;
+}
+```
+
+## String functions
+
+### Converting
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    char number[] = "123.321 hello";
+    char *restL;
+    char *restF;
+
+    int i = atoi(number); // returns 0 if fails
+    long l = atol(number);
+    double f = atof(number);
+
+    strtol(number, &restL, 10); // third parameter is base
+    strtod(number, &restF);
+
+    printf("%s = %d\n", number, i);
+    printf("%s = %ld\n", number, l);
+    printf("%s = %f\n", number, f);
+    printf("%s\n", restL);
+    printf("%s\n", restF);
+    return 0;
+}
+```
+
+```bash filename="output"
+123.321 hello = 123
+123.321 hello = 123
+123.321 hello = 123.321000
+.321 hello
+ hello
+```
+
+### Comparing
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    char str1[] = "Hello Earth";
+    char str2[] = "Hello World";
+
+    printf("Compare %s with %s = %d\n", str1, str2, strcmp(str1, str2));
+    printf("Compare first 5 letters of %s with %s = %d\n", str1, str2, strncmp(str1, str2, 5));
+
+    return 0;
+}
+```
+
+```bash filename="output"
+Compare Hello Earth with Hello World = -18
+Compare first 5 letters of Hello Earth with Hello World = 0
+```
+
+### Analyzing
+
+```c
+#include <stdio.h>
+#include <ctype.h>
+
+int main()
+{
+    char c = 'c';
+
+    printf("isLower: %d\n", islower(c));
+    printf("isUpper: %d\n", isupper(c));
+    printf("isAlpha: %d\n", isalpha(c));        // a-Z or A-Z adds 2 if lower, 1 if upper
+    printf("isDigit: %d\n", isdigit(c));        // 0-9
+    printf("isAlphanumeric: %d\n", isalnum(c)); // a-Z or A-Z or 0-9 adds 2 if lower, 1 if upper
+    printf("isWhitespace: %d\n", isspace(c));
+    return 0;
+}
+```
+
+```bash filename="output"
+isLower: 1
+isUpper: 0
+isAlpha: 2
+isDigit: 0
+isAlphanumeric: 2
+isWhitespace: 0
+```
+
+### Searching
+
+### Copying
+
+### Concatenating
+
+### Tokenizing
