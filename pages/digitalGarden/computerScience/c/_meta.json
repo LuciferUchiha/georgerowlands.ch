@@ -1,6 +1,6 @@
 {
   "introduction": "Introduction to C",
-  "variables": "Variables",
+  "variablesDataTypes": "Variables and Data Types",
   "pointers": "Pointers",
   "controlFlow": "Control Flow",
   "functions": "Functions",

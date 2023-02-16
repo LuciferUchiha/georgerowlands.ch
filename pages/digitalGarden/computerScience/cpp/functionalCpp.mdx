@@ -1,0 +1,125 @@
+# Functional Programming with C++
+
+## Functors
+
+Functors are objects that can be treated like functions or function pointers. For this to work you need to override the `()` operator.
+
+```cpp
+enum Mode { Rad, Deg, Gon };
+class Sinus {
+    Mode m_mode;
+public:
+    Sinus(Mode mode = Rad) : m_mode(mode) {}
+    double operator()(double arg) {
+        switch(m_mode) {
+            case Rad: return sin(arg);
+            case Deg: return sin(arg / 180.0 * M_PI);
+            case Gon: return sin(arg / 200.0 * M_PI);
+        }
+    }
+};
+```
+
+You can then use the functor like this:
+
+```cpp
+int main() {
+    Sinus sinrad;
+    Sinus sindeg(Deg); // constructor
+    cout << sinrad(M_PI/4); // functor
+    cout << sindeg(45.0); // functor
+}
+```
+
+## Lambdas
+
+Lambdas are in C++ anonymous functors and can be defined like this:
+
+```cpp
+[bias] (int x, int y) -> int { return bias + x + y; }
+```
+
+Nothing too special apart from the square brackets at the beginning containing bias. In the square brackets, you can define what the lambda has access to, in this case, the variable bias. This way you can access variables in the same blocks as where the lambda is defined or higher. The lambda always has access to static and global variables.
+
+- `[bias]` by-value access to the variable bias.
+- `[&bias]` by-reference access to the variable bias.
+- `[=]` by-value access to all variables in the environment.
+- `[&]` by-reference access to all variables in the environment.
+- `[this]` by-pointer access to all the members of the passed instance.
+- `[=, &bias]` only bias is by-reference everything else by-value.
+- `[factor, &bias]` factor by-value and bias by-reference access.
+
+Behind the scenes lambdas are as mentioned anonymous functors meaning they do something like this:
+
+```cpp
+void fLambda() {
+    int notUsed= 3, byval= 4, byref= 5;
+    auto op = [byval, &byref](int i) { ++byref; return i + byval + byref; };
+    cout<< op(10) << endl;
+}
+// becomes something like this
+void fLambda() {
+    int notUsed= 3, byval= 4, byref= 5;
+    struct Op{
+        const int m_val;
+        int& m_ref;
+        Op(int val, int& ref) : m_val{val}, m_ref{ref} {}
+        int operator()(int i) const {++m_ref; return i + m_val + m_ref; }
+    } op(byval, byref);
+    cout << op(10) << endl;
+}
+```
+
+### Closure
+
+Because lambdas are anonymous functors they like in many other languages have the issue of closure. However in C++ this is solved with the `mutable keyword`
+
+```cpp
+int main() {
+    int f = 2;
+    // auto l0 = [f](int x) { return x * f++; }; // not possible
+    auto l1 = [&f](int x) { return x * f++; }; // f by-reference
+    auto l2 = [f](int x) mutable { return x * f++; }; // f is mutable gets stored here, not lazy
+    cout << "value= " << l1(3); cout << ", f = " << f << endl; // value = 6, f = 3
+    cout << "value= " << l1(3); cout << ", f = " << f << endl; // value = 9, f = 4
+    cout << "value= " << l2(3); cout << ", f = " << f << endl; // value = 6, f = 4 changed internal copy
+    cout << "value= " << l2(3); cout << ", f = " << f << endl; // value = 9, f = 4 changed internal copy
+}
+```
+
+## Functional objects
+
+Functors and lambdas are both instances of functional from the `<functional>` header. You can make use of this by doing things like this:
+
+```cpp
+#include<iostream>
+#include<functional>
+using namespace std;
+
+struct Funktor {
+    float m_div;
+    Funktor(float f) : m_div(f) {}
+    float operator()(float a, int x) const {
+        return a + x / m_div;
+    }
+};
+
+struct Binding {
+    float m_div;
+    Binding(float f) : m_div(f) {}
+    float meth(float a, int x) const {
+        return a + x / m_div;
+    }
+};
+
+float foo(float a, int x) { return a + x / 2.0f; }
+
+int main() {
+    function<float(float a, int x)> func;
+    func = Funktor(2.0f);
+    Binding binding(2.0f);
+    func = bind(&Binding::meth, &binding, 1.0, 2); // last arguments are parameters
+    func = &foo;
+    func = [](float a, int x) {return a + x / 2.0f; };
+}
+```
