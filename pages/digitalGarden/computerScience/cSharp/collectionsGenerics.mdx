@@ -1,0 +1,166 @@
+---
+title: Collections and Generics
+tags: [c sharp, collections, generics]
+---
+
+# Collections and Generics
+
+All collections are in the namespace `System.Collections` and are structered like the following
+![csharpCollections](/compSci/csharpCollections.png)
+
+## Arrays
+
+Whether an array element type is a value type or a reference type has important performance implications. Value type they all get given the default value, where as reference they all have null references.
+
+```csharp
+char[] vowels = new char[5]; // Declare an array of 5 characters
+char[] vowels = new char[] {'a','e','i','o','u'};
+```
+
+### Rectangular arrays
+
+```csharp
+int[,] a = new int[4,6];
+int[,] b = new int[,]
+{
+ {0,1,2},
+ {3,4,5},
+ {6,7,8}
+};
+int[, ,] c = new int[2, 4, 2];
+```
+
+### Jagged arrays
+
+Jagged arrays are declared using successive square brackets to represent each
+dimension. Each inner array is implicitly initialized to null. You must manually create each inner array.
+
+```csharp
+int[][] a = new int[2][];
+a[0] = new int []{ 1, 2, 3, 4}
+a[1] = new int []{ 4, 5, 6};
+```
+
+### Simplified Array Initialization
+
+Can be done even simpler with var, but has shit readability IMO.
+
+```csharp
+char[] vowels = {'a','e','i','o','u'};
+int[,] rectangularMatrix =
+{
+ {0,1,2},
+ {3,4,5},
+ {6,7,8}
+};
+int[][] jaggedMatrix =
+{
+ new int[] {0,1,2},
+ new int[] {3,4,5},
+ new int[] {6,7,8,9}
+};
+```
+
+## Indices
+
+Indices let you refer to elements relative to the end of an array, with the `^` operator.
+
+```csharp
+char[] vowels = new char[] {'a','e','i','o','u'};
+char lastElement = vowels [^1]; // 'u'
+char secondToLast = vowels [^2]; // 'o'
+Index first = 0;
+Index last = ^1;
+char firstElement = vowels[first]; // 'a'
+char lastElement = vowels[last]; // 'u'
+```
+
+## Ranges
+
+Ranges let you “slice” an array by using the `..` operator. The second number in the range is exclusive.
+
+```csharp
+char[] vowels = new char[] {'a','e','i','o','u'};
+char[] firstTwo = vowels [..2]; // 'a', 'e'
+char[] lastThree = vowels [2..]; // 'i', 'o', 'u'
+char[] middleOne = vowels [2..3]; // 'i'
+char[] lastTwo = vowels [^2..]; // 'o', 'u' can also be combined with indices
+
+Range firstTwoRange = 0..2;
+char[] firstTwo = vowels [firstTwoRange]; // 'a', 'e'
+```
+
+## Indexers
+
+```csharp
+class Sentence
+{
+ string[] words = "The quick brown fox".Split();
+ public string this [int wordNum]
+ {
+  get { return words [wordNum];}
+  set { words [wordNum] = value;}
+ }
+}
+
+
+Sentence s = new Sentence();
+Console.WriteLine(s[3]); // fox
+s[3] = "kangaroo";
+Console.WriteLine(s[3]); // kangaroo
+Console.WriteLine(s); // The quick brown kangaroo
+```
+
+### Using indices and ranges with indexers
+
+```csharp
+public string this [Index index] => words [index];
+public string[] this [Range range] => words [range];
+
+// Enables us to do this
+Sentence s = new Sentence();
+Console.WriteLine (s [^1]); // fox
+string[] firstTwoWords = s [..2]; // (The, quick)
+```
+
+## Generics
+
+Generics express reusability through placeholder types and are similar to generics in java.
+
+```csharp
+class Buffer<TElement, TPriority>
+{
+ private TElement[] data;
+ private TPriority[] prio;
+ public void Put(TElementx, TPriorityprio) {...}
+ public void Get(out TElementx, out TPriorityprio) {...}
+}
+
+var a = new Buffer<int,int>();
+a.Put(100, 0);
+int elem, prio;
+a.Get(out elem, out prio);
+```
+
+### Bounding
+
+This method sorts any array , as long as the element `T` implements `IComparable`
+
+```csharp
+static void Sort<T>(T[] a) where T : IComparable
+{
+ for(int i = 0; i < a.Length 1; i++)
+  for(int j = i + 1; j < a.Length ; j++)
+   if (a[j].CompareTo(a[i]) < 0)
+   {
+    T x = a[i];
+    a[i] = a[j];
+    a[j] = x;
+   }
+  }
+ }
+}
+
+int[] a = {3, 7, 2, 5};
+Sort<int>(a);
+```
