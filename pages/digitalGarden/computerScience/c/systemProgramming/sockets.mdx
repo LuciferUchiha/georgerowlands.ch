@@ -31,7 +31,7 @@ To then read and write you can then use the same system calls as with pipes.
 
 ![cSocketDiagram](/compSci/cSocketDiagram.png)
 
-When working with Datagram sockets you dont use the listen, accept and connect system calls because the sockets are connectionless. You also don't use the read and write system calls. Instead, you use the following:
+When working with Datagram sockets you don't use the listen, accept and connect system calls because the sockets are connectionless. You also don't use the read and write system calls. Instead, you use the following:
 
 - `ssize_t recvfrom(int socket, void *restrict buffer, size_t length, int flags, struct sockaddr *restrict address, socklen_t *restrict address_len);`
 - `ssize_t sendto(int socket, const void *message, size_t length, int flags, const struct sockaddr *dest_addr, socklen_t dest_len);`
@@ -55,10 +55,12 @@ Unix domain sockets enable efficient communication between processes on the same
 
 The address for Unix domain sockets is a file and can be specified with the structure below. When you bind a Unix domain socket a file is created at the specified path for the socket including permissions for the owner and group (to be able to connect and write you need write and execute access). When the socket is no longer required, you must manually delete the socket file.
 
+```c
 struct sockaddr_un {
        unsigned short int sun_family; /*AF_UNIX*/
        char sun_path[UNIX_PATH_MAX]; /*pathname*/
 };
+```
 
 When repeatedly binding to the same path the errno `ADDRINUSE` is set.
 
