@@ -4,6 +4,7 @@
   "composite": "Composite",
   "decorator": "Decorator",
   "factory": "Factory",
+  "iterator": "Iterator",
   "observer": "Observer",
   "prototype": "Prototype",
   "singleton": "Singleton",
