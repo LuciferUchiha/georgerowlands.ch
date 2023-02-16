@@ -1,0 +1,10 @@
+{
+  "generalKnowledge": "General Knowledge",
+  "networking": "Networking",
+  "internet": "The Internet",
+  "restfulApis": "RESTful APIs",
+  "websockets": "Websockets",
+  "messaging": "Messaging",
+  "actorModel": "Actor Model",
+  "distributedAlgorithms": "Distributed Algorithms"
+}
