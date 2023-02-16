@@ -1,8 +1,3 @@
----
-title: Pointers
-tags: [c, pointers, void pointers, const pointers]
----
-
 # Pointers
 
 Every variable is a memory location and every memory location has an address which can be accessed using the address-of operator, `&`. A pointer is a variable whose value is the address of another variable. This address is internally represented as an unsigned int on most systems however you shouldn't think of it as such (you can output it in hex using the %p format specifier). Every pointer has the type of the variable it is pointing to so the compiler knows how much memory is occupied by that variable. The `*` denotes a pointer. You can define and initialize a pointer by pointing to no location in memory with `NULL`, a so-called null pointer, which is also equivalent to 0.

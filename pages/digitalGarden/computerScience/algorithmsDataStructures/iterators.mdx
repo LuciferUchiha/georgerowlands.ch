@@ -1,8 +1,3 @@
----
-title: Iterators
-tags: [java, collections, data structures, iterators, modcount]
----
-
 # Iterators
 
 The `Iterator<E>` interface allows you to implement a class that can be used to traverse a collection that contains elements of type `E`. An iterator always holds the value of the next element, apart from at the beginning of an iteration, where it holds a reference to the first element. In Java, the for-each loop uses an iterator internally. This means if you want to use a for-each loop on a collection, the collection class needs to implement the iterator interface. When implementing an iterator you often do this with an internal private final class in the collection class as you then have access to the internal structure of the collection.
