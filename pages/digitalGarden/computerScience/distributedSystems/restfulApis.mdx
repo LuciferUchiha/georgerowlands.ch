@@ -1,0 +1,306 @@
+# RESTful APIs
+
+REST stands for "Representational State Transfer" and is a architecture for distributed systems. The term REST originated in Roy Fielding's PhD in 2000 who was one of the main authors of the HTTP protocol specification. REST does not enforce any rules regarding how it should be implemented however it does define some design guidelines/constraints that should be followed if the system is to be truly RESTful.
+
+## Constraints
+
+### Uniform Interface
+
+Resources (data) are the key abstraction in REST. The interface of the API should be uniform meaning there shouldn't be lots of different ways of doing the same thing which also means that a resource in the system should only have one logical URI. The resource should however not be too large but still contain everything in its representation. Whenever relevant, a resource should also contain links pointing to relative URIs to fetch related information (HATEOAS = Hypermedia as the Engine of Application State).
+
+### Client-Server
+
+Client applications and server applications must be able to evolve separately without any dependency on each other. For this reason you often see versioning of APIs so that clients are reverse compatible.
+
+### Stateless
+
+All client-server interactions should be stateless. This means the server does not store anything about the latest HTTP request that the client made and will treat every request as new.
+
+### Cacheable
+
+Caching has large performance benefits for the client but also reduces the load of the server. So in REST, resources should be cached then declare themselves cacheable.
+
+### Layered System
+
+REST allows you to use a layered system architecture where you deploy the APIs (Controllers) on server A, and store data on server B and authenticate requests in Server C (Services), for example. A client should not be able to tell whether it is connected directly to the end server or an intermediary along the way.
+
+## Common Patterns
+
+### Collection and Element structure
+
+Resources are often structure using urls for collections or singular elements. This especially helps to fullfil the constraint of having a uniform interface. In the below example a single product is an element and all products make up a collection.
+
+| Request               | Description                                                                                                       |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| GET `/products`       | List all elements in the collection (products)                                                                    |
+| POST `/products`      | Add a product to the collection                                                                                   |
+| DELETE `/products`    | Remove the collection including all of its elements                                                               |
+| GET `/products/id`    | Read the element (product) with its unique identifier=`id`                                                        |
+| PUT `/products/id`    | Update the element (with the updated item in the body, often without the unique identifier as already in the URI) |
+| DELETE `/products/id` | Remove the element corresponding to the id                                                                        |
+
+### Put vs Patch
+
+Their is often the discussion of what the differences are between the PATCH and the PUT methods. The biggest difference is that PUT is idempotent and PATCH isn't meaning it can cause side effects. The other key difference is that PUT sends the modified version of the resource whereas PATCH just sends instructions describing how a resource should be modified (most often just the to be modified fields).
+
+## Jakarta
+
+What is jakarta?
+
+### Client
+
+Jakarta offers some packages that make submitting requests to an API very easy. The general process is as followed:
+
+1. Obtain an instance of a client.
+2. Create and configure a WebTarget which represents the API.
+3. Create and configure a request from the WebTarget.
+4. Submit the request.
+
+```java
+public class RestClient {
+ 
+    private static final String REST_URI = "http://localhost:3001/api/v1/";
+
+    public static void main(String[] args){
+        Client client = ClientBuilder.newClient();
+        WebTarget rootTarget = client.target(REST_URI); // immutable with respect to URI
+        WebTarget productsTarget = rootTarget.path("products"); // mutable with respect to configuration
+
+        Invocation.Builder invocationBuilder = productsTarget.request(MediaType.APPLICATION_JSON);
+        Response getResponse = invocationBuilder.get(Product.class);
+        Product product = new Product("Logitech mouse", 3); // title, amount
+        Response postResponse = invocationBuilder.post(Entity.entity(product, MediaType.APPLICATION_JSON);
+    }
+}
+```
+
+### RESTful API with JAX-RS
+
+JAX-RS is a specification of annotations for server services. With them we can create a RESTful API. For this we create singletons that bind to a certain http method (method binding).
+
+#### Injection
+
+With injections we can extract values from the request. These values can then also be automatically converted to the correct type. This automatic type conversion is possible from string to primitive types, to class `T` that either has a constructor with a single string parameter or a static method `T valueOf(String arg)`.
+
+You can also get various context objects:
+
+- `@Context UriInfo`
+
+```java
+@Singleton
+@Path("/products")
+public class ProductResource{
+
+    @Context
+    private UriInfo info; // also HttpHeaders, Request, SecurityContext, Providers etc.
+    @GET
+    @Path("{id}")
+    public Response getProduct(@PathParam("id") String id) {
+        // For complexer responses
+        String product = ...; // get from DB or whatever
+        ResponseBuilder builder = Response.ok(book); // body
+        builder.language("en").header("Some-Header", "some value");
+
+        return builder.build();
+     }
+
+    @POST
+    @Path("{title}-{amount}")
+    public String createProduct(
+        @PathParam("title") String title,
+        @PathParam("amount") int amount,
+        @DefaultValue(10) @QueryParam("price") int price,
+        @HeaderParam("Referer") String referer,
+        @CookieParam("customerId") Cookie customerId )
+    ) { ... }
+
+    @PUT
+    @Path("{id}")
+    public String updateProduct(@PathParam("id") String productID, String body) { ... }
+
+    @DELETE
+    @Path("{id}")
+    public void deleteProduct(@PathParam("id") String productID) { ... }
+}
+```
+
+#### Content Negotiation
+
+You can also use the `@Produces` annotation to declare the type of result.
+
+```java
+@Produces({"text/plain", "text/html"})
+@Produces({"application/xml", "application/json"})
+```
+
+The `@Consumes` annotation does something very similiar and declare the type which is accepted.
+
+```java
+@Consumes("application/x-www-form-urlencoded")
+@Consumes({"application/xml", "application/json"});
+```
+
+#### Content Handlers
+
+Data binding or also often called marshalling is the process of converting data from or to the body. Above we have used string but you can also use a byte[], InputStream etc.. If a request sends data using `"application/x-www-form-urlencoded"` you can read it in with a `MultivalueMap<String,String`. These are all so called providers which you can also implement yourself by adding `@Provider` to a class and implementing `MessageBodyReader<T>` and/or `MessageBodyWriter<T>`. To be able to use the provider then in a client you need to register it.
+
+```java
+Client c = ClientBuilder.newClient();
+c.register(XStreamProvider.class);
+```
+
+```java
+@Provider
+@Consumes("application/xstream")
+@Produces("application/xstream")
+public class XStreamProvider implements MessageBodyReader<Object>, MessageBodyWriter<Object> {
+
+    private XStream xstream = new XStream (new DomDriver());
+
+    public boolean isReadable(Class<?> type, Type genericType, 
+            Annotation[] annotations, MediaType mimeType) {
+        return true;
+    }
+
+    public Object readFrom(Class<Object> type, Type genericType, 
+            Annotation[] annotations, MediaType mimeType,
+            MultivaluedMap<String, String> httpHeaders, InputStream entityStream) {
+        return xstream.fromXML(entityStream);
+    }
+
+    public boolean isWriteable(Class<?> type, Type genericType, 
+            Annotation[] annotations, MediaType mimeType) {
+        return true;
+    }
+
+    public long getSize (Object object , Class<?> type,
+            Type genericType, Annotation[] annotations, MediaType mimeType) {
+        return -1; // size not yet known
+    }  
+
+    public void writeTo(Object object, Class<Object> type, Type genericType, 
+            Annotation[] annotations, MediaType mimeType,
+            MultivaluedMap<String, String> httpHeaders, InputStream entityStream) {
+        return xstream.toXML(object, entityStream);
+    }
+}
+```
+
+#### Conditional Get
+
+For performance reasons we don't want to transfer resources if they have not changed which is why we can do conditional GETs two different ways with the help of headers.
+
+When sending a response we can add the "Last-Modified" header and then when sending a request for the same resource we can use the value in the "If-Modified-Since" Header. This can then either return with a modified value or with a 304, not modified status.
+
+We can also use the "ETag" and "If-None-Match" headers which work pretty much the same. The ETag (entity tag) value is an identifier which represents a specific version of the resource.  Common methods of ETag generation are using a hash of the resource's content or just hash of the last modification timestamp.
+
+```java
+Date lastModifiedDate = ...
+// EntityTag eTag = ...
+Response.ResponseBuilder responseBuilder = request.evaluatePreconditions(lastModifiedDate);
+if (responseBuilder == null) {//last modified date didn't match, send new content
+    return Response.ok("dummy user list")
+                    .lastModified(lastModifiedDate)
+                    //.tag(tag)
+                    .build();
+} else {
+
+    return responseBuilder.build();  //sending 304 not modified
+}
+```
+
+### Deployment with Jersey
+
+You need to register Jersey as the servlet dispatcher for REST requests in the `web.xml` file.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>com.vogella.jersey.first</display-name>
+ <servlet>
+    <servlet-name>Jersey Web Application</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+     <!-- Register resources and providers under com.vogella.jersey.first package. -->
+    <init-param>
+        <param-name>javax.ws.rs.Application</param-name>
+        <param-value>ch.georgerowlands.MyApplication</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Jersey Web Application</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+</web-app>
+```
+
+And then add your services to the Application
+
+```java
+public class MyApplication extends Application {
+    private Set<Object> singletons = new HashSet<Object>();
+    private Set<Class<?>> classes = new HashSet<Class<?>>();
+
+    public MyApplication () {
+        classes.add(ProductResource.class);
+        singeltons.add(new ProductResource());
+    }
+
+    @Override 
+    public Set<Class<?>> getClasses () { return classes; }
+
+    @Override
+    public Set<Object> getSingletons () { return singletons; }
+}
+
+public class Server {
+    public static void main(String[] args ) throws Exception {
+        final URI BASE_URI = new URI("http://localhost:9998");
+        ResourceConfig rc = ResourceConfig.forApplication(new MyApplication());
+        // Resource config that scans for JAX RS resources so need for application
+        // ResourceConfig rc = new ResourceConfig().packages("ch.georgerowlands.resources");
+        JdkHttpServerFactory.createHttpServer(BASE_URI, rc);
+    }
+}
+```
+
+### Documenting with OpenAPI
+
+The OpenAPI Specification (OAS) defines a standard interface description for REST APIs. Swagger is a set of open-source tools that are built around OpenAPI.
+
+- Swagger Annotations: Annotations that can be added to Java implementations to generate OpenAPI specifications.
+- Swagger Editor: Editor for writing OpenAPI specifications.
+- Swagger UI: Renders OpenAPI specifications into an interactive API documentation with which REST services can be tested.
+- Swagger Codegen: Generates server and clients from an OpenAPI specification.
+
+```java
+@Singleton
+@Path("/products")
+@OpenAPIDefinition(
+    info = @Info(
+        title ="Products",
+        description ="Service to manage products",
+        version = "2022.05"
+    ),
+    servers = @Server(url = "http://localhost:3001")
+)
+public class ProductResource{
+
+    @GET
+    @Path("{id}")
+    @Operation(
+        summary = "Get product by id",
+        description = "Returns a single product",
+        responses = {
+            @ApiResponse(responseCode = "200",
+                description = "Successful operation",
+                content = @Content(
+                    schema = @Schema(implementation = Product.class)
+            )),
+            @ApiResponse(responseCode = "404",
+                description = "Product not found"
+            ),
+        }
+    )
+    public Response getProduct(@PathParam("id") String id) { ... }
+}
+```
