@@ -1,0 +1,338 @@
+# Working with Numbers
+
+Working with numbers on computer systems is slightly more complex then one would think due to the fact that computers work only with the binary numbers 1 and 0.
+
+## Integers
+
+### Unsigned Integers
+
+with n bits we can represent $2^n$ things. Encoding unsigned integers, i.e integers with no sign so positive numbers is pretty simple. The first bit called the LSB corresponds to $2^0$, the second one $2^1$. If that bit is set to 1 we add the value corresponding to that bit and receive the result. So if we have 32 bits we can represent $2^32$ things, so if we start at 0 we can represent the range from 0 to $2^32-1$.
+
+This can also be described mathematically as followed if we denote our binary representation as $B=b_{n-1},b_{n-2},..,b_0$ and the function $D(B)$ which maps the Binary representation to its corresponding value.
+
+$$
+D(B)= \sum_{i=0}^{n-1}{b_i \cdot 2^i}
+$$
+
+## Signed Integers
+
+When we involve signed integers it gets a bit more complex since now we also want to deal with negative numbers. In history there have been a few representations for encoding signed integers which often get forgotten.
+
+### Sign Magnitude
+
+The idea for the sign and magnitude representation is a very simple one. You have a bit (the MSB) that represents the sign, 1 for negative, 0 for positive. All the other bits are the magnitude i.e. the value.
+
+$$
+D(B)= (-1)^{b_{n-1}} \cdot \sum_{i=0}^{n-2}{b_i \cdot 2^i}
+$$
+
+<img src="/compSci/signMagnitude.png" alt="signMagnitude" width="300"/>
+
+:::example
+
+$$
+\begin{align*}
+0000\,1010_2 &= 10 \\
+1000\,1010_2 &= -10
+\end{align*}
+$$
+
+:::
+
+Seems pretty simple. However, there are two different representations for 0 which isn't good since computers often make comparisons with 0. This could potentially double the number of comparisons needed to be made which is one reason why this sign magnitude representation is not optimal.
+
+### One's Complement
+
+The idea of the one's complement is also very simple, it is that we want to quickly find the negative number of the same positive value by just flipping all the bits. In other words:
+
+$$
+-B=\,\sim B
+$$
+
+And mathematically defined:
+
+$$
+D(B)= -b_{n-1}(2^{n-1}-1) + \sum_{i=0}^{n-2}{b_i \cdot 2^i}
+$$
+
+<img src="/compSci/onesCompliment.png" alt="onesCompliment" width="300"/>
+
+:::example
+
+$$
+\begin{align*}
+0000\,1010_2 &= 10 \\
+1111\,0101_2 &= -10
+\end{align*}
+$$
+
+:::
+
+however just like the sign magnitude representation the one's complement has the issue of having 2 representations for 0.
+
+### Two's Complement
+
+Finally, we have the representation that is used nowadays, the two's complement. This representation solves the issue of the double representation of 0 whilst still being able to quickly tell if a number is positive or negative. It does however lead to there not being a positive value corresponding to the lowest negative value.
+
+$$
+D(B)= -b_{n-1}(2^{n-1}) + \sum_{i=0}^{n-2}{b_i \cdot 2^i}
+$$
+
+<img src="/compSci/twosCompliment.png" alt="twosCompliment" width="300"/>
+
+:::example
+
+$$
+\begin{align*}
+0000\,1010_2 &= 10 \\
+1111\,0110_2 &= -10
+\end{align*}
+$$
+
+:::
+
+Any easy way to calculate the negative value of a given value with the two's complement representation is the following:
+
+$$
+\sim B + 1 \Leftrightarrow -B
+$$
+
+#### Sign Extension
+
+When using the two's complement we do need be aware of something when converting a binary number with $n$ bits to a binary number with $n+k$ bits and it is called sign extension. Put simply for the value of binary number to stay the same we need to extend the sign bit.
+
+<img src="/compSci/signExtension.png" alt="signExtension" width="450"/>
+
+:::example
+
+$$
+\begin{align*}
+10:&\, 0000\,1010_2 \Rightarrow 0000\,0000\,0000\,1010_2 \\
+-10:&\, 1111\,0110_2 \Rightarrow 1111\,1111\,1111\,0110_2
+\end{align*}
+$$
+
+:::
+
+## Real Numbers
+
+Representing real numbers can be pretty hard as you can imagine since real numbers can be infinite numbers such as $\pi = 3.14159265358979323846264338327950288...$ but we only have finite resources and bits to represent them for example 4 or 8 bytes. Another problem is that often times when working with real numbers we find ourselves using very small or very large numbers such as $1$ Lightyear $=9'460'730'472'580.8\,km$ or the radius of a hydrogen atom $0.000000000025\,m$.
+
+### Binary Fractions
+
+One way, but not a very good way to represent real numbers is to use binary fractions. Binary fractions are a way to extend the unsigned integer representation by adding a so-called binary/zero/decimal point. To the left of the binary point, we have just like with the unsigned representation the powers of 2. To the right, we now also use the powers of 2 with negative numbers to get the following structure:
+
+$$
+B = b_{i},b_{i-1},..,b_0\,.\,b_{-1},...,b_{-j+1},b_{-j}
+$$
+
+And Formula:
+
+$$
+D(B) = \sum_{k=-j}^{i}{b_k \cdot 2^k}
+$$
+
+<img src="/compSci/binaryFractions.png" alt="binaryFractions" width="450"/>
+
+:::example
+
+$$
+\begin{align*}
+5 \frac{3}{4} &= 0101.1100_2 \\
+2 \frac{7}{8} &= 0010.1110_2 \\
+\frac{63}{64} &= 0.1111110_2
+\end{align*}
+$$
+
+:::
+
+From the above examples we can make 3 key observations the first 2 might already know if you have been programming for a long time.
+
+- Dividing by powers of 2 can be done with shifting right $x / 2^y \Leftrightarrow x >> y$
+- Multiply with powers of 2 can be done with shifting left $x \cdot 2^y \Leftrightarrow x << y$
+
+This representations does have its limits since we can only represent numbers of the form $\frac{x}{s^k}$ other numbers such as $\frac{1}{3}$ have repeating bit representations.
+
+### Fixed Points
+
+The fixed-point representation or also called $p.q$ fixed-point representation extends the idea of binary fractions by adding a sign bit making the left part of the binary point the same as the two's complement. The right part is the same fractional part. The number of bits for the integer part (including the sign) bit corresponds to $p$ the number of bits for the fractional part corresponds to $q$, 17.14 being the most popular format.
+
+$$
+D(P)=-b_p \cdot 2^p + \sum_{k=-q}^{p-1}{b_k \cdot 2^k}
+$$
+
+<img src="/compSci/fixedPoint.png" alt="fixedPoint" width="450"/>
+
+This representation has many pros, it is simple we can use simple arithmetic operations and don't need special floating-point hardware which is why it is commonly used in many low-cost embedded processors. The only con is that we can not represent a wide range of numbers which we will fix with the next and last representation.
+
+### Floating Points
+
+In 1985 the [IEEE standard 754](https://standards.ieee.org/ieee/754/993/) was released and quickly adapted as the standard for so-called floating-point arithmetic. In 1989, William Kahan, one of the primary architects even received the Turing Award, which is like the noble prize for computer science. The floating-point representation builds on the ideas of the fixed-point representation and [scientific notation](../../Mathematik/scientificNotation).
+
+Floating-point representation consists of 3 parts, the sign bit, and like the scientific notation an exponent and mantissa.
+
+<img src="/compSci/floatingPointForm.png" alt="floatingPointForm" width="450"/>
+
+We most commonly use the following sizes for the exponent and mantissa:
+
+- Single precision: 8 bits for the exponent, 23 bits for the mantissa making a total of 32 bits with the sign bit.
+- Double precision: 11 bits for the exponent, 52 bits for the mantissa making a total of 64 bits. It doesn't offer much of a wider range then the single precision however, it does offer more precision, hence the name.
+
+In 2008 the IEEE standard 754 was revised with the addition of the following sizes:
+
+- Half precision: 5 bits for the exponent, 10 bits for the mantissa making a total of 16 bits.
+- Quad precision: 15 bits for the exponent, 112 bits for the mantissa making a total of 32 bits.
+
+With the rise of artificial intelligence and neural networks, smaller representations have gained popularity for quantization. This popularity introduced the following so-called minifloats consisting of 8 bits in total:
+
+- E4M3: as the name suggests 4 bits for the exponent and 3 bits for the mantissa.
+- E5M2: 5 bits for the exponent and 2 bits for the mantissa.
+
+The brain floating point which was developed by Google Brain is also very popular for AI as it has the same range as single precision due to using the same amount of bits for the exponent but with less precision.
+
+The floating-point representation used however normalized values just like the scientific notation. Meaning the mantissa is normalized to the form of
+
+$$
+1.000010010...110_2
+$$
+
+So, in reality, we are not actually storing the mantissa but only the fraction part which is why it is also commonly referred to as the fraction. This leads to two things, we get an extra bit for free since we imply that the first bit is 1, but we can no longer represent the value 0. We will however see later how we can solve the problem of representing 0.
+
+We also do not store the exponent using the two's complement. Instead, we use the so-called biased notation for the simple reason of wanting to compare values quickly with each other. To do this we want a form where the exponent with all zeros $0000\,0000$ is smaller than the exponent with all ones $1111\,1111$ which wouldn't be the case when using the two's complement. Instead, we use a bias. To calculate the bias we use the number of bits used to represent the exponent $k$. For single precision $k=8$, the bias for single precision is $127$ calculated using the formula:
+
+$$
+bias = 2^{k-1}-1
+$$
+
+:::example
+
+Now that we understand the form of the floating-point representation let us look at an example. We want to store the value $2022$ using single precision floating-point. First, we set the sign bit in this case $0$. Then we convert the value to a binary fraction. Then we normalize it whilst keeping track of the exponent. Then lastly we store the fraction part and the exponent + the bias.
+
+$$
+\begin{align}
+2022 &= 11111100110._2 \cdot 2^0 & \text{Convert to binary fraction} \\
+&= 1.1111100110_2 \cdot 2^{10} & \text{Shift binary point to normalize} \\
+M &= 1.1111100110_2 & \text{Mantissa} \\
+Fraction &= 1111100110_2 & \text{Fraction} \\
+E &= 10 & \text{Exponent} \\
+Exp &= E + bias = 10 + 127 = 1000\,1001_2 & \text{Biased Exponent}
+\end{align}
+$$
+
+| Sign | Exponent  | Fraction                     |
+| ---- | --------- | ---------------------------- |
+| 0    | 1000 1001 | 1111 1001 1000 0000 0000 000 |
+
+:::
+
+#### Denormalized values
+
+As mentioned above we can't represent the value $0$ using the normalized values. For this, we need to use denormalized values or also often called subnormal. For this, in the case of single precision, we reserve the exponent that consists of only zeros so has the biased value $0$ and therefore the exponent $1-bias$, for single precision this would be $-126$. If the fraction also consists of all zeros then we have a representation for the value $0$. If it is not zero then we just have evenly distributed values close to 0.
+
+:::example
+
+| Value                                             | Sign | Exponent  | Fraction                     |
+| ------------------------------------------------- | ---- | --------- | ---------------------------- |
+| 0                                                 | 0    | 0000 0000 | 0000 0000 0000 0000 0000 000 |
+| -0                                                | 1    | 0000 0000 | 0000 0000 0000 0000 0000 000 |
+| $0.5 \cdot 2^{-126} \approx 5.877 \cdot 10^{-39}$ | 0    | 0000 0000 | 1000 0000 0000 0000 0000 000 |
+| $0.99999 \cdot 2^{-126}$                          | 0    | 0000 0000 | 1111 1111 1111 1111 1111 111 |
+
+:::
+
+#### Special Numbers
+
+For some cases we want to be able to store some special values such as $\infty$ if we do $1.0 / 0.0$ or $NaN$ when doing $\sqrt{-1}$ or $\infty - \infty$. Just like with solving the issue of representing $0$, to represent special values we can reserve an exponent, in the case of single precision this is the exponent consisting of only ones. If the fraction only consists of zeros then it represents the value $\infty$ otherwise if the fraction is not all zeros it represents $NaN$.
+
+| Value     | Sign | Exponent  | Fraction                     |
+| --------- | ---- | --------- | ---------------------------- |
+| $\infty$  | 0    | 1111 1111 | 0000 0000 0000 0000 0000 000 |
+| $-\infty$ | 1    | 1111 1111 | 0000 0000 0000 0000 0000 000 |
+| $NaN$     | 0    | 1111 1111 | 1000 0000 0000 0000 0000 000 |
+| $NaN$     | 1    | 1111 1111 | 1111 1111 1111 1111 1111 111 |
+
+For other representations such as the E4M3, E5M2 or bfloat16 the handling of special numbers can be different. This comes down to there being less bits and therefore each bit having more meaning so reserving an entire exponent range just to represent $NaN$ would be a big waste:
+
+|| E4M3             | E5M2                     |
+| ------------------ | ---------------- | ------------------------ |
+| $-\infty / \infty$ | N/A              | $S\,11111\,00_2$         |
+| $NaN$              | $S\,1111\,111_2$ | $S\,11111\,{01,10,11}_2$ |
+| $-0/0$             | $S\,0000\,000_2$ | $S\,00000\,00_2$         |
+
+#### Precision
+
+As mentioned at the beginning of the floating-point section Real numbers are in theory infinite however we can not represent an infinite amount of numbers with a finite number of bits. Below you can see an estimated visualization of what values can actually be represented.
+<img src="/compSci/floatingPointPrecision.png" alt="floatingPointPrecision" width="450"/>
+
+At a closer look, we can also see how the representations are distributed with the values close to zero being very precise.
+
+<img src="/compSci/floatingPointRange.png" alt="floatingPointRange" width="450"/>
+
+This issue can however cause problems of imprecision if a certain number can not be represented and is rounded to the closest number that can be represented. For example in C we can do the following:
+
+```c
+#include <stdio.h>
+int main ()
+{
+    double d;
+    d = 1.0 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1 + 0.1;
+    printf (“d = %.20f\n”, d); // Not 2.0, outputs 2.00000000000000088818
+}
+```
+
+#### Rounding
+
+The IEEE standard 754 defines four rounding modes:
+
+- Round-up
+- Round-down
+- Round-toward-zero, i.e truncate, which is commonly done when converting from integer to floating point.
+- Round-to-even, the most common but also the most complicated of the four modes.
+
+I will not go into detail of the first three modes as they are self-explanatory. Let us first look at why we need to round-to-even. The reason is actually pretty simple, normal rounding is not very fair.
+
+:::example
+
+$$
+\begin{align*}
+& &0.5+1.5+2.5+3.5 &= 8 \\
+\text{Rounded: }& &1+2+3+4 &= 10 \\
+\text{Round-to-even: }& &0 + 2 + 2 + 4 &= 8
+\end{align*}
+$$
+
+:::
+
+:::todo
+
+This part is not correct.
+
+:::
+
+When working with round-to-even we need to keep track of 3 things:
+
+- Guard bit: The LSB that is still part of the fraction.
+- Round bit: The first bit that exceeds the fraction.
+- Sticky bit: A bitwise OR of all the remaining bits that exceed the fraction.
+
+So if we only have a mantissa of 4 bits, i.e a fraction with 3 bits then it could look like this:
+
+<img src="/compSci/grsBits.png" alt="grsBits" width="450"/>
+
+Now we have 3 cases:
+
+- If $GRS=0xx$ we round down, i.e do nothing since the LSB is already $0$.
+- If $GRS=100$ this is a so-called tie, if the bit before the guard bit is $1$ we round the mantissa up otherwise we round down i.e set the guard bit to $0$
+- For all other cases $GRS=110$, $GRS=101$ and $GRS=111$ we round up.
+
+:::caution
+
+After rounding, you might have to normalize and round again for example if we have $1.1111\,1111|11$ with $GRS=111$ and Biased exponent $128$, i.e $2^1$. We have to round up and get $11.0000\,0000$ therefore we need to increase the exponent by $1$ to normalize again. This also means that after rounding we can produce a over or underflow to infinity.
+
+:::
+
+#### Addition/Subtraction
+
+#### Multiplication
+
+## Byte Ordering
