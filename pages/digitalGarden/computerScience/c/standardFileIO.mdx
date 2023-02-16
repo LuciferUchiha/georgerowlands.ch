@@ -1,8 +1,3 @@
----
-title: Standard File I/O
-tags: [c, file io, file descriptors, streams]
----
-
 # Standard File I/O
 
 To interact with files in C you need to have a FILE pointer a so called stream, which will let the program keep track of the memory address of the file being accessed. In C text files are sequence of characters as lines each ending with a newline (\n). Interestingly you have already been working with file I/O since the begging as C automatically opens 3 files, the standard input (keyboard), standard output and error (both being the display). You have read from and written to these files using `scanf()` and `printf()`.

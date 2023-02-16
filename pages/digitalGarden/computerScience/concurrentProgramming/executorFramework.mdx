@@ -1,8 +1,3 @@
----
-title: The Executor Framework
-tags: [concurrency, executor, workers, callable, runnable, future]
----
-
 # The Executor Framework
 
 The Java executor framework is used to run and manage Runnable objects, so-called Tasks. It does this using so-called workers or worker threads which are most often managed as part of a ThreadPool. Depending on the configuration of the pool instead of creating new threads every time the so-called channel will try and reuse already created threads. Any excess tasks flowing into the channel that the threads in the pool can't handle at the minute are held in some form of data structure like a BlockingQueue. Once one of the threads has finished its task and gets free, it picks up the next task from the channel.
