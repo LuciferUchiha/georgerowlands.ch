@@ -1,5 +1,6 @@
 import React from "react";
 import {DocsThemeConfig} from "nextra-theme-docs";
+import {useRouter} from "next/router";
 import GiscusComments from "./components/giscus/giscus";
 import BackToTop from "./components/backToTop/backToTop";
 
@@ -18,6 +19,10 @@ const config: DocsThemeConfig = {
         },
         feedback: {
             content: null // disable because now using Giscus
+        },
+        useNextSeoProps() {
+            const {asPath} = useRouter();
+            return {titleTemplate: (asPath !== "/") ? "%s – GR" : "georgerowlands.ch"};
         },
         head: <link rel="icon" type="image/x-icon" href="logo.svg"/>,
         logo: <>
