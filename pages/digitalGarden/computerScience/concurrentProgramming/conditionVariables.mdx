@@ -1,8 +1,3 @@
----
-title: Condition Variables
-tags: [concurrency, synchronization, condition variables, blocking queues]
----
-
 # Condition Variables
 
 Condition variables are another mechanism for synchronizing a program. Condition variables allow threads to enter the waiting state (stop running) until they are signaled/notified by another thread that some condition maybe have been fulfilled, and they can take over. The most common example used to illustrate this is a carpark. When the carpark is full you have to wait until a car drives out, and it is no longer full. Once this happens you want to be notified that the carpark is no longer full, so you can enter the carpark.
