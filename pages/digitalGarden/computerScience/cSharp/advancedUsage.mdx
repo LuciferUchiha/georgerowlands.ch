@@ -1,0 +1,164 @@
+---
+title: Advanced Usage
+tags: [c sharp, inheritance, extension methods, operator overloading]
+---
+
+# Advanced Usage
+
+## Operator Overloading
+
+List of overrideable operators
+
+If == and !=get are overloaded then so should Equals(object obj) and int GetHashCode.
+
+```csharp
+public struct Rational
+{
+ public Rational( int n, int d) { … }
+ public int Numerator { get {…} }
+ public int Denominator { get {…} }
+ public override string ToString () { … }
+
+ // *= is provided for free, if you implement operator *
+ public static Rational operator* (Rational lhs, Rational rhs)
+ {
+  return new Rational(lhs.Numerator*rhs.Numerator,
+   lhs.Denominator*rhs.Denominator);
+ }
+
+ // lossless conversions so Rational r = 2;
+ public static implicit operator Rational (int i)
+ {
+  return new Rational (i,1);
+ }
+
+ // lossy conversions/exceptions double d = (double) r;
+ public static explicit operator double (Rational r)
+ {
+  return r.Numerator / (double) r.Denominator
+ }
+}
+```
+
+```csharp
+    public struct Complex : IEquatable<Complex>
+    {
+        public Complex(double re, double im)
+        {
+            this.Re = re;
+            this.Im = im;
+        }
+
+        public double Re { get; }
+        public double Im { get; }
+
+        public override string ToString() {
+            return String.Format("({0,5:0.0},{1,5:0.0}i)", Re, Im);
+        }
+
+        public static Complex operator +(Complex lh, Complex rh)
+        {
+            return new Complex(lh.Re + rh.Re, lh.Im + rh.Im);
+        }
+
+        public static Complex operator -(Complex lh, Complex rh)
+        {
+            return new Complex(lh.Re - rh.Re, lh.Im - rh.Im);
+        }
+
+        public static bool operator ==(Complex lh, Complex rh)
+        {
+            return lh.Re.CompareTo(rh.Re) == 0 && lh.Im.CompareTo(rh.Im) == 0;
+        }
+
+        public static bool operator !=(Complex lh, Complex rh)
+        {
+            return lh.Re.CompareTo(rh.Re) != 0 || lh.Im.CompareTo(rh.Im) != 0;
+        }
+
+        public static Complex operator ++(Complex complex)
+        {
+            return new Complex(complex.Re + 1, complex.Im + 1);
+        }
+
+        public bool Equals(Complex other)
+        {
+            return Re.Equals(other.Re) && Im.Equals(other.Im);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Complex other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Re, Im);
+        }
+    }
+```
+
+## Extension Methods
+
+Adding methods to existing types is hard and Subclassing is not always sensible which is why in C# you can use extension methods.
+The old way:
+
+```csharp
+public static class StringExtensions
+{
+ public static string Without(string text, char ch)
+ {
+  return string.Join("", text.Split(ch));
+ }
+}
+
+var text = "Hxellxo";
+Console.WriteLine(StringExtensions.Without(text, 'x'));
+```
+
+Now with extension methods:
+
+```csharp
+public static class StringExtensions
+{
+ // First param specifies which type you are extending
+ public static String Without(this string text, char ch)
+ {
+  return string.Join(("", text.Split(ch));
+ }
+}
+var s = "Hexllxox";
+var result = s.Without('x');
+result = "Hexllxox".Without('x'
+);
+```
+
+## Yield
+
+Just like generators in python.
+
+```csharp
+public static IEnumerable<int> GenerateNumbers(int num)
+{
+ for(var i = 0; i < num; i++)
+  yield return i;
+}
+
+static void Main()
+{
+ foreach (var a in GenerateNumbers(10))
+  Console.WriteLine(a);
+}
+```
+
+Instead of
+
+```csharp
+public static IEnumerable<int> GenerateNumbers(int num)
+{
+ List<int> list = newList<int>();
+ for(var i = 0; i < num; i++)
+  list.Add(i);
+ return list;
+}
+```

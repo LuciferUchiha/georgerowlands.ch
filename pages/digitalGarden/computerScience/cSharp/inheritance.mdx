@@ -1,0 +1,67 @@
+---
+title: Inheritance
+tags: [c sharp, inheritance, overriding methods, hiding methods]
+---
+
+# Inheritance
+
+Inheritance works pretty much the same as in java. Constructors are not inherited. Inherited methods can be overwritten. Classes can only inherit from a single base class, if there is no explicit super class then it inherits from `object`.
+
+```csharp
+class B : A // subclass (inherits from A, extends
+{
+ int b;
+public B() {...}
+public void G() {...}
+}
+```
+
+## Overriding methods
+
+Only virtual methods can be overridden in subclasses. Properties and indexers can also be overridden (virtual, override). Static methods can not be overridden.
+
+```csharp
+class A
+{
+public void F() {...} // cannot be overridden
+public virtual void G() {...} // can be overridden in a subclass
+}
+
+class B : A
+{
+public void F() {...} // warning: hides inherited F(), should add new before
+public void G() {...} // warning: hides inherited G(), should add new before
+public override void G() {...} // ok: overrides inherited G()
+}
+```
+
+## Hiding methods
+
+In Method Hiding you can hide the implementation of the methods of a base class from the derived class using the new keyword. Or in other words, in method hiding, you can redefine the method of the base class in the derived class by using the new keyword.
+
+```csharp
+public class MyParent {
+    public void Show()
+    {
+        Console.WriteLine("This is my parent class.");
+    }
+}
+
+public class MyChild : MyParent {
+    // Hide the method of base class using new keyword
+    public new void Show() {
+        Console.WriteLine("This is my child class.");
+    }
+}
+
+public class GFG {
+    static public void Main()
+    {
+        MyChild obj = new MyChild();
+        obj.Show(); // This is my child class.
+  ((MyParent)obj).Show(); // This is my parent class.
+  MyParent par = obj;
+  par.Show(); // This is my parent class.
+    }
+}
+```

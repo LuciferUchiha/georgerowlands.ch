@@ -29,7 +29,7 @@ classDiagram
 
 ### Example
 
-![factoryMethod](/img/programming/factoryMethod.png)
+![factoryMethod](/compSci/factoryMethod.png)
 
 ## Abstract factory
 
@@ -37,7 +37,7 @@ The factory method pattern delegates the instantiation of object familys to a an
 
 ### Structure
 
-![abstractFactoryStructure](/img/programming/abstractFactoryStructure.png)
+![abstractFactoryStructure](/compSci/abstractFactoryStructure.png)
 
 A big question here is where is the concrete Factory so they can all have acces to it. Often this is done in it's own class
 
@@ -55,4 +55,4 @@ public class CurrentFactory {
 
 ### Example
 
-![abstractFactory](/img/programming/abstractFactory.png)
+![abstractFactory](/compSci/abstractFactory.png)

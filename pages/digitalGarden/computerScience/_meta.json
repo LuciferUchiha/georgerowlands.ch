@@ -1,9 +1,10 @@
 {
   "algorithmsDataStructures": "Algorithms and Data Structures",
-  "java": "Java",
   "concurrentProgramming": "Concurrent Programming",
+  "designPatterns": "Design Patterns",
   "git": "Git",
   "make": "Make",
+  "java": "Java",
   "c": "C",
-  "designPatterns": "Design Patterns"
+  "cSharp": "C#"
 }
