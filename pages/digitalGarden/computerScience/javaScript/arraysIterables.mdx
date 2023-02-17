@@ -1,5 +1,44 @@
 # Arrays and Iterables
 
+## Arrays
+Arrays exist in JavaScript just as they do in most other programming languages, however I would describe them to be more like ArrayLists in Java as they don't have a fixed length. The precise details of how arrays are implemented are a bit more complex and depend on the EcmaScript implementation, for further details on how arrays work under the hood in JavaScript I can recommend reading [this article](https://ryanpeden.com/how-do-javascript-arrays-work-under-the-hood/).
+
+```javascript
+const cars = ["Saab", "Volvo", "BMW"];
+cars = []; // this would not work because const
+cars[0] = "Mini"; // this however would work
+
+cars.push("Saab") // push to the end, array is now longer
+console.log(cars.length)
+cars.pop() // removes the last element
+
+const person = ["John", "Doe", 46]; // can have values of different types
+
+const numbers = new Array(1,2,3,4,5) // you can create an array like this as well, using literal is however preferred
+numbers[20] = 21 // has made the array sparase, indexes 4-19 now have the value undefined
+```
+
+### Checking for an Array
+
+Checking if a variable holds an array is not as easy as one would expect because the `typeof` operator returns "object". Instead we have a few solutions:
+
+1. Use the static method `Array.isArray()`.
+2. Use the `instanceof` operator.
+
+```javascript
+const cars = ["Saab", "Volvo", "BMW"];
+console.log(typeof cars); // object
+console.log(Array.isArray(cars)); // true
+console.log(cars instanceof Array); // true
+```
+
+### Sorting
+
+### Searching and Filtering
+
+### Other Methods
+
+
 ## Spread Operator
 
 The spread operator `...` allows you to pull elements out of an array (=> split the array into a list of its elements) or pull the properties out of an object. The spread operator copies data safely (i.e. preventing future mutation of the copied original).
@@ -34,3 +73,7 @@ console.log(name); // prints "Max"
 console.log(age); // prints undefined
 console.log(myObj); // prints {name: "Max", age: 28}
 ```
+
+## Sets and Maps
+
+### Weak Iterables
