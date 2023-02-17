@@ -2,18 +2,18 @@ import Callout from "../../../../components/callout/callout";
 
 # Iterator
 
-Often times you find yourself traversing/iterating over a [collection](../algorithmsDataStructures/collections). The iterator pattern encapsulates this functionality without exposing its underlying representation of the collection. In java this pattern is used to implement the for-each loop, under the hood all the for each loop does is get an iterator instance and iterate over it step by step, this is also why you can only use the for-each loop on collections that actually implement the [`Iterable<T>`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html) interface.
+Often times you find yourself traversing/iterating over a [collection](../algorithmsDataStructures/collections). The iterator pattern encapsulates this functionality without exposing its underlying representation of the collection. In java this pattern is used to implement the enhanced for or also called for-each loop. Under the hood all the for each loop does is get an iterator instance and iterate over it step by step, this is also why you can only use the for-each loop on collections that actually implement the [`Iterable<T>`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html) interface.
 
 Why is this pattern useful?
 
- - Because depending on the collection there might be different ways to traverse it, for example [binary trees can be traversed in many orders](../algorithmsDataStructures/trees/binaryTrees#traversal-orders) but the methods you call to traverse the collection should be the same.
+ - Because depending on the collection there might be different ways to traverse it, for example [binary trees can be traversed in many orders](../algorithmsDataStructures/trees/binaryTrees#traversal-orders) but the methods you call to traverse the collection should be the same. We want a common interface for traversing different collections in different ways.
  - Also, because the iterator object holds all the details regarding the traversal of the collection, several iterators can go through the same collection at the same time, independently of each other as long as they don't change the underlying collection, if they do it gets a bit complicated with [mutexes](../concurrentProgramming/locking#locks).
 
 ![iteratorTreeExample](/compSci/iteratorTreeExample.png)
 
 ## Structure
 
-The `Iterable<T>` interface defines the function `Iterator iterator()` which is responsible for returning the iterator interface that can then be used to traverse the collection containing elements of type `T`.
+The `Iterable<T>` interface defines the method `Iterator<T> iterator()`, or `Iterator<T> createIterator()`which is responsible for creating and returning the [iterator interface](https://docs.oracle.com/javase/8/docs/api/java/util/Iterator.html) that can then be used to traverse the collection containing elements of type `T`.
 
 An iterator always holds the value of the next element, apart from at the beginning of an iteration, where it holds a reference to the first element. In java the iterator instance returned must implement the `Iterator<T>` interface which declares the operations required for traversing the collection.
 
@@ -53,70 +53,80 @@ Iterable --> Iterator
 @enduml
 ```
 
- - The `T next()` method returns the value the iterator is currently pointing to and advances the iterator to the next value.
+ - The `T next()` method returns the element the iterator is currently pointing to and advances the iterator to the next element.
  - The `boolean hasNext()` method returns false once the iterator has reached the end of the collection, otherwise true.
-
-## Removing Elements
-
-The iterator interface also provides a `void remove()` method. This method removes the most recently returned element from the iterator.
-
-![iteratorRemove](/compSci/iteratorRemove.png)
-
-When removing elements with the iterator we can however encounter problems when there are multiple iterators in a concurrent environment. This issue can be solved with a modification counter (modCount) which we increase by 1 whenever the underlying collection is changed, for example when adding or removing an element. When an iterator is instantiated the modCount is copied and continuously checked if it is the same as the underlying modCount of the collection if not then a `ConcurrentModificationException` is thrown. How this works for different collections in java is [explained here](https://stackoverflow.com/a/5847949/10994912).
-
-```java
-// TODO what is the underlying collection linked list????
-@Override
-public Iterator < E > iterator() {
-    return new MyIterator();
-}
-
-private final class MyIterator implements Iterator < E > {
-    private Node < E > next = first,
-    p = null,
-    pp = null;
-    private int myModCount = modCount;
-    private boolean mayRemove = false;
-
-    @Override
-    public boolean hasNext() {
-        return next != null;
-    }
-
-    @Override
-    public E next() {
-        if (modCount != myModCount)
-            throw new ConcurrentModificationException();
-        if (next == null)
-            throw new NoSuchElementException();
-        E e = next.elem;
-        if (p != null) pp = p;
-        p = next;
-        next = next.next;
-        mayRemove = true;
-        return e;
-    }
-
-    @Override
-    public void remove() {
-        if (modCount != myModCount)
-            throw new ConcurrentModificationException();
-        if (!mayRemove)
-            throw new IllegalStateException();
-        if (pp != null) pp.next = next;
-        else first = next;
-        if (next == null) last = pp;
-        p = pp;
-        mayRemove = false;
-        size--;
-        modCount++;
-        myModCount = modCount;
-    }
-}
-```
 
 ## ListIterator
 
-In Java, there is also the `ListIterator<E>` interface which extends the `Iterator<E>` interface. This interface adds functionality that allows for iteration in both directions with `E next()` and `E previous()`.
+In Java, there is also the [`ListIterator<T>`](https://docs.oracle.com/javase/8/docs/api/java/util/ListIterator.html) interface which extends the `Iterator<T>` interface. This interface adds functionality that allows for iteration in both directions with `T next()` and `T previous()`. Matchingly it also offers a `boolean hasPrevious()` to the `boolean hasNext()` method. One can imagine that ListIterator has no current element, its position is always between the element that would be returned by a call to `previous()` and the element that would be returned by a call to `next()`.
+
+Because the iterator traverses a collection like a list it also works and assigns an index to each element which can be fetched.
+
+## Removing Elements
+
+The iterator interface also defines an optional `void remove()` method, that removes the most recently returned element from the iterator.
+
+![iteratorRemove](/compSci/iteratorRemove.png)
+
+However, when removing elements whilst other iterators are also traversing the collection, for example in a concurrent program some problems can occur, mainly in consistent state and iterator pointers getting cut of from iterating further. One way of solving these problems is by using a modification counter (modCount) which is incremented whenever the underlying collection is changed, for example when adding or removing an element. When an iterator is instantiated the modCount is copied and continuously checked if it is the same as the underlying modCount of the collection if not then a `ConcurrentModificationException` is thrown. How this works for different collections in java is [explained here](https://stackoverflow.com/a/5847949/10994912).
+
+## Implementation
+
+A possible implementation for an iterator over a [linked list](../algorithmsDataStructures/linkedLists) could look like this:
+
+```java
+
+class SomeCollection<T> implements Iterable<T> {
+
+    //implementation of other functions and internal state
+
+    @Override
+    public Iterator <T> iterator() {
+        return new MyIterator();
+    }
+
+    private final class MyIterator implements Iterator<T> {
+        // p and pp keeps track of the previous elements to be able to remove
+        private Node<T> next = first, p = null, pp = null;
+        private int myModCount = modCount; // copy the modCount of the collection
+        private boolean mayRemove = false;
+
+        @Override
+        public boolean hasNext() {
+            return next != null;
+        }
+
+        @Override
+        public T next() {
+            if (modCount != myModCount)
+                throw new ConcurrentModificationException();
+            if (next == null)
+                throw new NoSuchElementException();
+            T elem = next.elem;
+            if (p != null) pp = p;
+            p = next;
+            next = next.next;
+            mayRemove = true;
+            return elem;
+        }
+
+        @Override
+        public void remove() {
+            if (modCount != myModCount)
+                throw new ConcurrentModificationException();
+            if (!mayRemove)
+                throw new IllegalStateException();
+            if (pp != null) pp.next = next;
+            else first = next;
+            if (next == null) last = pp;
+            p = pp;
+            mayRemove = false;
+            size--;
+            modCount++;
+            myModCount = modCount;
+        }
+    }
+}
+```
 
 ## Spliterator
