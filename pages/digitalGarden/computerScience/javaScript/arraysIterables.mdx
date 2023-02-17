@@ -1,0 +1,36 @@
+# Arrays and Iterables
+
+## Spread Operator
+
+The spread operator `...` allows you to pull elements out of an array (=> split the array into a list of its elements) or pull the properties out of an object. The spread operator copies data safely (i.e. preventing future mutation of the copied original).
+
+```jsx
+const oldArray = [1, 2, 3];
+const newArray = [...oldArray, 4, 5]; // This now is [1, 2, 3, 4, 5];
+const oldObject = {
+  name: "Max"
+};
+const newObject = {
+  ...oldObject,
+  age: 28
+};
+```
+
+## Destructuring
+
+Destructuring allows you to easily access and copy (not reference) the values of arrays or objects and assign them to variables.
+
+```jsx
+const array = [1, 2, 3];
+const [a, b] = array;
+console.log(a); // prints 1
+console.log(b); // prints 2
+const myObj = {
+  name: "Max",
+  age: 28
+}
+const {name} = myObj;
+console.log(name); // prints "Max"
+console.log(age); // prints undefined
+console.log(myObj); // prints {name: "Max", age: 28}
+```
