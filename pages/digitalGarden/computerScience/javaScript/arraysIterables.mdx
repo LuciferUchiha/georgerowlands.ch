@@ -1,6 +1,4 @@
-# Arrays and Iterables
-
-## Arrays
+import Callout from "../../../../components/callout/callout";## Arrays
 Arrays exist in JavaScript just as they do in most other programming languages, however I would describe them to be more like ArrayLists in Java as they don't have a fixed length. The precise details of how arrays are implemented are a bit more complex and depend on the EcmaScript implementation, for further details on how arrays work under the hood in JavaScript I can recommend reading [this article](https://ryanpeden.com/how-do-javascript-arrays-work-under-the-hood/).
 
 ```javascript
@@ -33,6 +31,30 @@ console.log(cars instanceof Array); // true
 ```
 
 ### Sorting
+
+JavaScript arrays can be quietly easily sorted using the `.sort()` method. However, this only really works well for strings as the sort method sorts the array alphabetically using the string representation. But it doesn't work well with other types such as numbers or objects. JavaScript also offers the reverse method which sorts the other way around.
+
+<Callout type="info">
+Important to know is that the sort/reverse method changes the underlying array, it doesn't return a new sorted array.
+</Callout>
+
+```javascript
+const cars = ["Saab", "Volvo", "BMW"];
+console.log(cars.sort()); // [BMW', 'Saab', 'Volvo']
+console.log(cars); // ['BMW', 'Saab', 'Volvo']
+
+const numbers = [3, 20, 100];
+console.log(numbers.sort()); // [100, 20, 3]
+console.log(numbers.reverse()); // [3, 20, 100]
+```
+
+For objects or numbers or in general if we want more control over how the elements are sorted we can pass an optional function, the so-called compare function. This function takes 2 arguments, `a` and `b`, and compares them ( only if a or b aren't `undefined` as undefined elements are automatically put at the end of the array). If the compare function returns 0 then the 2 elements stay in the same order, if a positive value is returned then `a` is put after `b`, if a negative value is returned then `b` is put after `a`.
+
+```javascript
+const numbers = [3, 20, 100];
+console.log(numbers.sort()); // [100, 20, 3]
+console.log(numbers.sort((a,b) => a - b)); // [3, 20, 100]
+```
 
 ### Searching and Filtering
 
