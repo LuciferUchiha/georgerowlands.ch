@@ -1,4 +1,8 @@
-import Callout from "../../../../components/callout/callout";## Arrays
+import Callout from "../../../../components/callout/callout";
+
+# Arrays and Iterables
+
+## Arrays
 Arrays exist in JavaScript just as they do in most other programming languages, however I would describe them to be more like ArrayLists in Java as they don't have a fixed length. The precise details of how arrays are implemented are a bit more complex and depend on the EcmaScript implementation, for further details on how arrays work under the hood in JavaScript I can recommend reading [this article](https://ryanpeden.com/how-do-javascript-arrays-work-under-the-hood/).
 
 ```javascript
@@ -18,7 +22,7 @@ numbers[20] = 21 // has made the array sparase, indexes 4-19 now have the value 
 
 ### Checking for an Array
 
-Checking if a variable holds an array is not as easy as one would expect because the `typeof` operator returns "object". Instead we have a few solutions:
+Checking if a variable holds an array is not as easy as one would expect because the `typeof` operator returns "object". Instead, we have a few solutions:
 
 1. Use the static method `Array.isArray()`.
 2. Use the `instanceof` operator.
@@ -68,7 +72,7 @@ console.log(beasts.indexOf("bison", 2)); // Start from index 2, returns 4
 console.log(beasts.lastIndexOf("bison")); // 4
 ```
 
-Instead of looking for an index of a certain element we can also use the `findIndex()` or `findLastIndex()` methods which work very similiar but instead of looking for an element are given a predicate function and return the index of the element that matches that criteria first or last.
+Instead of looking for an index of a certain element we can also use the `findIndex()` or `findLastIndex()` methods which work very similar but instead of looking for an element are given a predicate function and return the index of the element that matches that criteria first or last.
 
 ```javascript
 const beasts = ["ant", "bison", "camel", "duck", "bison"];
