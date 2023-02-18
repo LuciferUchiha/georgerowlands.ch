@@ -6,8 +6,8 @@ const cars = ["Saab", "Volvo", "BMW"];
 cars = []; // this would not work because const
 cars[0] = "Mini"; // this however would work
 
-cars.push("Saab") // push to the end, array is now longer
-console.log(cars.length)
+cars.push("Saab", "Mercedes") // push to the end, array is now longer
+console.log(cars.length) // 5
 cars.pop() // removes the last element
 
 const person = ["John", "Doe", 46]; // can have values of different types
@@ -32,7 +32,7 @@ console.log(cars instanceof Array); // true
 
 ### Sorting
 
-JavaScript arrays can be quietly easily sorted using the `.sort()` method. However, this only really works well for strings as the sort method sorts the array alphabetically using the string representation. But it doesn't work well with other types such as numbers or objects. JavaScript also offers the reverse method which sorts the other way around.
+JavaScript arrays can be quietly easily sorted using the `.sort()` method. However, this only really works well for strings as the sort method sorts the array alphabetically using the string representation. But it doesn't work well with other types such as numbers or objects. JavaScript also offers the reverse method which reverses the current order of the array, so if you wanted an array sorted in descending order you could first sort then reverse.
 
 <Callout type="info">
 Important to know is that the sort/reverse method changes the underlying array, it doesn't return a new sorted array.
@@ -58,8 +58,50 @@ console.log(numbers.sort((a,b) => a - b)); // [3, 20, 100]
 
 ### Searching and Filtering
 
+If you already know the element you are looking for but wish to know the index, or if the array even contains a certain element the `indexOf()` or `lastIndexOf()` methods can be used which return either the first or the last index of the passed element or if the element was not found the index -1 is returned. An index can also be specified to start the search from.
+
+```javascript
+const beasts = ["ant", "bison", "camel", "duck", "bison"];
+
+console.log(beasts.indexOf("bison")); //1
+console.log(beasts.indexOf("bison", 2)); // Start from index 2, returns 4
+console.log(beasts.lastIndexOf("bison")); // 4
+```
+
+Instead of looking for an index of a certain element we can also use the `findIndex()` or `findLastIndex()` methods which work very similiar but instead of looking for an element are given a predicate function and return the index of the element that matches that criteria first or last.
+
+```javascript
+const beasts = ["ant", "bison", "camel", "duck", "bison"];
+const firstBIndex = beasts.findIndex(beast => beast.toLowerCase().startsWith("b"));
+console.log(firstBIndex); // 1
+```
+
+finding methods
+
+Filtering allows to only work with a subset of an array. The `filter()` method iterates over each element of the array and calls the provided predicate function once for each element. If the provided predicate function returns true for the value it is shallow copied into a new array which is then returned at the end, if it is false then it is not added to the filtered array.
+
+```javascript
+const words = ["spray", "limit", "elite", "exuberant", "destruction", "present"];
+
+const longWords = words.filter(word => word.length > 6);
+console.log(longWords); // [ 'exuberant', 'destruction', 'present' ]
+const evenWords = words.filter((word, index) => index % 2 == 0);
+console.log(evenWords); // [ 'spray', 'elite', 'destruction' ]
+```
+
+### Shifting
+
+The `shift()` and `unshift()` array methods almost do the same as the `pop` and `push()` methods but in the opposite way. The shift method removes the first element, whereas the pop method removes the last and the unshift method allows you to add elements to the front of an array whereas the push method lets you add to the back of the array.
+
+```javascript
+const cars = ["Saab", "Volvo", "BMW"];
+console.log(cars.shift()); // ["Volvo", "BMW"]
+console.log(cars.unshift("Saab", "Mini")); // ["Saab", "Mini", "Volvo", "BMW"]
+```
+
 ### Other Methods
 
+reduce, map, slice and splice, join and concat
 
 ## Spread Operator
 
