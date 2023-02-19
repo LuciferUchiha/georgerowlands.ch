@@ -19,7 +19,7 @@ export default function GiscusComments() {
 
         const comments = pathNameBlacklist.indexOf(window.location.pathname) > -1 ? <></> : <Giscus
             id="giscus-comments"
-            repo="LuciferUchiha/nextra-garden"
+            repo="LuciferUchiha/georgerowlands.ch"
             repoId="R_kgDOIt7MZQ"
             category="Announcements"
             categoryId="DIC_kwDOIt7MZc4CT8rz"
