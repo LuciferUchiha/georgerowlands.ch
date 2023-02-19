@@ -39,7 +39,8 @@ console.log(cars instanceof Array); // true
 JavaScript arrays can be quietly easily sorted using the `.sort()` method. However, this only really works well for strings as the sort method sorts the array alphabetically using the string representation. But it doesn't work well with other types such as numbers or objects. JavaScript also offers the reverse method which reverses the current order of the array, so if you wanted an array sorted in descending order you could first sort then reverse.
 
 <Callout type="info">
-Important to know is that the sort/reverse method changes the underlying array, it doesn't return a new sorted array.
+    Important to know is that the sort/reverse method changes the underlying array, it doesn't return a new sorted
+    array.
 </Callout>
 
 ```javascript
@@ -72,6 +73,18 @@ console.log(beasts.indexOf("bison", 2)); // Start from index 2, returns 4
 console.log(beasts.lastIndexOf("bison")); // 4
 ```
 
+<Callout type="info">
+    If you only want to know if an array has an element and don't need to know the index you can use the `includes()`
+    method.
+
+    ```javascript
+    const beasts = ["ant", "bison", "camel", "duck", "bison"];
+    console.log(beasts.includes("ant")); // true
+    console.log(beasts.indexOf("ant") !== -1); // true
+    ```
+</Callout>
+
+
 Instead of looking for an index of a certain element we can also use the `findIndex()` or `findLastIndex()` methods which work very similar but instead of looking for an element are given a predicate function and return the index of the element that matches that criteria first or last.
 
 ```javascript
@@ -80,7 +93,14 @@ const firstBIndex = beasts.findIndex(beast => beast.toLowerCase().startsWith("b"
 console.log(firstBIndex); // 1
 ```
 
-finding methods
+When looking for an element that matches a certain condition you can use the `find()` method which returns the first element that matches it or undefined. If you only want to know if there is an element that matches the condition and don't need the element you can use the `some()` method.
+
+```javascript
+const array = [5, 12, 8, 130, 44];
+const firstEven = array.find(e => e % 2 == 0);
+console.log(firstEven); // 12
+console.log(array.some(e => e % 2 == 0)); // true
+```
 
 Filtering allows to only work with a subset of an array. The `filter()` method iterates over each element of the array and calls the provided predicate function once for each element. If the provided predicate function returns true for the value it is shallow copied into a new array which is then returned at the end, if it is false then it is not added to the filtered array.
 
