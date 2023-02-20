@@ -1,6 +1,6 @@
 {
   "scientificNotation": "Scientific Notation",
-  "lateGuidelines": "Latex Guidelines",
-  "noHorizontalScroll": "No Horizontal Scroll",
+  "latexGuidelines": "LaTeX Guidelines",
+  "linearAlgebra": "Linear Algebra",
   "complexNumbers": "Complex Numbers"
 }
