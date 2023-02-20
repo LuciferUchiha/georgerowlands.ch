@@ -20,7 +20,6 @@ class NextraExporter(MarkdownExporter):
         Note: nbconvert 6.0 changed ``template_path`` to ``template_paths``
         """
         template_paths = super()._template_paths() + [os.path.join(os.path.dirname(__file__), "templates")]
-        #print(template_paths)
         return template_paths
 
     def _template_file_default(self):
@@ -28,3 +27,6 @@ class NextraExporter(MarkdownExporter):
         We want to use the new template we ship with our library.
         """
         return 'nextra_template.tpl'  # full
+
+    def _file_extension_default(self):
+        return '.mdx'
