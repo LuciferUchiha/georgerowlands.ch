@@ -123,9 +123,146 @@ console.log(cars.shift()); // ["Volvo", "BMW"]
 console.log(cars.unshift("Saab", "Mini")); // ["Saab", "Mini", "Volvo", "BMW"]
 ```
 
-### Other Methods
+### Combining
 
-reduce, map, slice and splice, join and concat
+Elements of an array can be combined to make a new string with the `join()` method. It concatenates all of the elements string representations and
+separates them with commas or a specified separator. If their is one element, then the seperator is not added.
+
+```javascript
+const elements = ['Fire', 'Air', 'Water'];
+
+console.log(elements.join()); // "Fire,Air,Water"
+console.log(elements.join('-')); // "Fire-Air-Water"
+```
+
+You can combine/merge two arrays into one new array with the `concat()` method.
+
+```javascript
+const array1 = ['a', 'b', 'c'];
+const array2 = ['d', 'e', 'f'];
+
+console.log(array1.concat(array2)); //  ['a', 'b', 'c', 'd', 'e', 'f']
+console.log(array1) // unaffected, ['a', 'b', 'c']
+```
+
+### Slicing and Splicing
+
+Using the `slice(start, end)` method you can create a new array containing a shallow copy of the specified portion of the array.
+If start is omitted then 0 is used, and if it is negative then `start = start + array.length` which has the effect of coming from the back,
+so `start=-1` is the index of the last element. If the end is omitted or larger than `array.length` then it is just set to `array.length`.
+For negative end indexes the same happens as with negative start indexes.
+
+<Callout type="info">
+    The end index is exclusive!
+</Callout>
+
+```javascript
+const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+
+console.log(animals.slice(2)); // ["camel", "duck", "elephant"]
+console.log(animals.slice(2, 4)); // ["camel", "duck"]
+console.log(animals.slice(-2)); // ["duck", "elephant"]
+console.log(animals.slice(2, -1)); // ["camel", "duck"]
+console.log(animals.slice()); // full shallow copy, ["ant", "bison", "camel", "duck", "elephant"]
+```
+
+The `splice()` method is slightly more complex than the `slice()` method but can be very useful.
+The first parameter is the start index which works just like the start index in the slice method. The second parameter is
+the deletion count, so the number of elements you want to delete. The last parameter can be one or multiple elements which
+will then be added to the array beginning at the start index. So by smartly combining these arguments we can have one method
+to insert, update/replace or remove multiple elements at the same time.
+
+<Callout type="warning">
+    Splice modifies the underlying array, so it modifies the array in place!
+</Callout>
+
+```javascript
+const months = ['Jan', 'March', 'April', 'June'];
+
+months.splice(1, 0, 'Feb'); // Inserts at index 1
+console.log(months);// ["Jan", "Feb", "March", "April", "June"]
+
+months.splice(4, 1, 'May'); // Updates/replaces 1 element at index 4
+console.log(months); // ["Jan", "Feb", "March", "April", "May"]
+
+months.splice(2,1);
+console.log(months); // ["Jan", "Feb", "April", "May"]
+```
+
+### Map, Reduce and ForEach
+
+The `map()` method creates a new array containing all the elements after being passed through the provided function.
+
+```javascript
+const arr = [1, 4, 9, 16];
+
+const doubled = arr.map(x => x * 2);
+console.log(doubled); // [ 2, 8, 18, 32 ]
+
+const square = (x) => x*x;
+const squared = arr.map(square);
+console.log(squared); // [ 1, 16, 81, 256 ]
+```
+
+The `reduce()` method is often confusing for people but all it does is reduce an array to a single value by iterating
+over the array from left to right, hence the name. It takes a callback function and can optionally also receive an initial value,
+if no initial value is passed then it is just set to the first element and the first iteration is skipped.
+The core argument of the callback function is the accumulator which holds the intermediate results of the reduction process.
+It also has an argument for the current value and optionally the elements index.
+
+If you don't want the reduction process to go from left to right you can combine it with `reverse()` or just use `reduceRight()`.
+
+```javascript
+const arr = [1, 2, 3, 4];
+
+// 0 + 1 + 2 + 3 + 4
+let iterations = 0;
+const sumWithInitial = arr.reduce(
+  (accumulator, currentValue) => {
+      iterations++
+      return accumulator + currentValue
+  },
+  0
+);
+console.log(sumWithInitial); // 10
+console.log(iterations); // 4
+
+// 1 + 2 + 3 + 4
+iterations = 0;
+const sumWithoutInitial = arr.reduce(
+     (accumulator, currentValue) => {
+      iterations++
+      return accumulator + currentValue
+  },
+)
+console.log(sumWithoutInitial); // 10
+console.log(iterations); // 3
+
+// 1 + 3
+const sumEvenIndexes= arr.reduce(
+     (accumulator, currentValue, currentIndex) => currentIndex % 2 === 0? accumulator +  currentValue : accumulator,
+    0
+)
+console.log(sumEvenIndexes); // 4
+```
+
+Lastly there is the `forEach()` method which executes a function once for each element.
+
+<Callout type="warning">
+    The forEach method does not modify the underlying array, but the callback function can!
+</Callout>
+
+```javascript
+const arr = [1, 2, 3, 4];
+
+arr.forEach((element, index)=>console.log(`${index}: ${element}`)) // return value is discarded and always undefined
+arr.forEach((element)=> element += 1)
+console.log(arr); // [1, 2, 3, 4]
+
+const animals = [{name: 'ant'}, {name: 'bison'}, {name: 'camel'}, {name: 'duck'}, {name: 'elephant'}];
+animals.forEach((animal) => animal.name = animal.name.toUpperCase()) // modifying!
+console.log(animals) // all names are now in CAPS
+```
 
 ## Spread Operator
 
