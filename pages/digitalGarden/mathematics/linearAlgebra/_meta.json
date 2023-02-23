@@ -1,4 +1,8 @@
 {
   "broadcasting": "Broadcasting",
-  "eigenvaluesEigenvectors": "Eigenvalues and Eigenvectors"
+  "eigenvaluesEigenvectors": "Eigenvalues and Eigenvectors",
+  "hadamardProduct": "Hadamard Product",
+  "svd": "SVD - Singular Value Decomposition",
+  "pca": "PCA - Principal Component Analysis",
+  "moorePenrose":"Moore-Penrose Pseudoinverse"
 }

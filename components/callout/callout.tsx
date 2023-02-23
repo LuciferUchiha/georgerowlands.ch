@@ -1,6 +1,7 @@
 import type {ReactElement, ReactNode} from "react";
 import cn from "clsx";
 import {VscRocket, VscInfo, VscWarning, VscError, VscBeaker, VscSymbolEvent} from "react-icons/vsc";
+import {capitalizeFirstLetter} from "../../utils/utils";
 
 
 const TypeToEmoji = {
@@ -38,14 +39,17 @@ const classes: Record<CalloutType, string> = {
 type CalloutProps = {
     type?: CalloutType
     emoji?: string | ReactElement
+    title?: string
     children: ReactNode
 }
 
 export default function Callout({
     children,
     type = "default",
-    emoji = TypeToEmoji[type]
+    emoji = TypeToEmoji[type],
+    title = ""
 }: CalloutProps): ReactElement {
+    title = title === "" && type != "default" ? capitalizeFirstLetter(type) : title;
     return (
         <div
             className={cn(
@@ -62,7 +66,7 @@ export default function Callout({
             >
                 {emoji}
             </div>
-            <div className="nx-w-full nx-min-w-0 nx-leading-7">{children}</div>
+            <div className="nx-w-full nx-min-w-0 nx-leading-7">{`${title}\n`}{children}</div>
         </div>
     );
 }
