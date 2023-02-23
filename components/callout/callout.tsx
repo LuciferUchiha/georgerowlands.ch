@@ -44,11 +44,11 @@ type CalloutProps = {
 }
 
 export default function Callout({
-    children,
-    type = "default",
-    emoji = TypeToEmoji[type],
-    title = ""
-}: CalloutProps): ReactElement {
+                                    children,
+                                    type = "default",
+                                    emoji = TypeToEmoji[type],
+                                    title = ""
+                                }: CalloutProps): ReactElement {
     title = title === "" && type != "default" ? capitalizeFirstLetter(type) : title;
     return (
         <div
@@ -66,7 +66,10 @@ export default function Callout({
             >
                 {emoji}
             </div>
-            <div className="nx-w-full nx-min-w-0 nx-leading-7">{`${title}\n`}{children}</div>
+            <div className="nx-w-full nx-min-w-0 nx-leading-7">
+                    {`${title}`}
+                {children}
+            </div>
         </div>
     );
 }
