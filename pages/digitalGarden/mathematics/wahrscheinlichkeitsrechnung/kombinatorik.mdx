@@ -2,25 +2,44 @@ import Callout from "../../../../components/callout/callout"
 
 # Kombinatorik
 
+Die Kombinatorik ist ein Bereich der Mathematik, der sich mit der Anzahl der Möglichkeiten befasst, wie man Objekte auf
+verschiedene Arten auswählen, ordnen oder gruppieren kann.
+
+Zum Beispiel, wenn man aus einer Gruppe von 5 Personen 2 auswählt, gibt es insgesamt 10 Möglichkeiten, dies zu tun.
+
+Die Kombinatorik hilft uns, die Anzahl der möglichen Ergebnisse zu berechnen, während die Wahrscheinlichkeitsrechnung
+uns sagt, wie wahrscheinlich es ist, dass bestimmte Ergebnisse eintreten. Wenn man die Anzahl der möglichen Ergebnisse
+kennt, kann man die Wahrscheinlichkeit eines bestimmten Ergebnisses berechnen.
+
 ## Fakultät
 
-Die **Fakultät** einer nicht negativen ganzen Zahl $n$, definiert als $n!$, ist das Produkt aller positiven ganzen Zahl kleiner gleich $n$.
+Die **Fakultät** ist eine Funktion welche nur für nicht negativen ganzen Zahl $n$ definiert ist. Die fakultät einer Zahl
+wird geschrieben als $n!$, und ist das Produkt aller positiven ganzen Zahl kleiner gleich $n$.
 
 $$
 n! = n \cdot (n-1) \cdot (n-2)\cdot ... \cdot 2 \cdot 1
 $$
 
-<Callout type="example">
-Zum Beispiel ist $5!=5\cdot 4 \cdot 3 \cdot 2 \cdot 1 = 120$
+oder mehr formel
+
+$$
+n! = \prod_{x=1}^{n}{x}
+$$
+
+<Callout type="example" title="Beispiel">
+$5!=5\cdot 4 \cdot 3 \cdot 2 \cdot 1 = 120$
 </Callout>
 
 <Callout type="warning">
-Die einzige Ausnahme ist $0! = 1$.
+Eine wichtige und einzige Ausnahme für diese funktion ist, dass $0! = 1$ ist.
 </Callout>
 
 ## Binomialkoeffizient
 
-Die Formel für einen Binomialkoeffizienten oder auch kurz Binom lautet wie gefolgt
+Der Binomialkoeffizient ist eine mathematische Funktion welches oftmals in verschiedenen Themengebieten der Mathematik
+auftaucht.
+
+Die Formel für ein Binomialkoeffizient oder auch kurz Binom ist definiert als
 
 $$
 \binom{n}{k}=\frac{n!}{k!(n-k)!}
@@ -28,16 +47,22 @@ $$
 
 ### Für Wahrscheinlichkeiten
 
-Der Binomialkoeffizient ist eine mathematische Funktion, welche angibt, auf wie viele verschiedene Arten man $k$ Objekte
+In der Wahrscheinlichkeitsrechnung gibt ein Binom an, auf wie viele verschiedene Arten man $k$ Objekte
 aus einer Menge von $n$ verschiedenen Objekten auswählen kann (ohne Zurücklegen und ohne die Reihenfolge zu beachten).
-Der Binomialkoeffizient ist also die Anzahl der $k$-element Teilmengen einer $n$-element Menge.
+Formel gesagt ist also der Binomialkoeffizient die Anzahl der $k$-element Teilmengen einer $n$-element Menge.
 
-Die englische Abkürzung **nCr**, welche für **n choose r** steht, findet man oft auf Taschenrechnern.
+Auf Taschenrechnern findet man oftmals die englische Abkürzung **nCr**, welche für **n choose r** steht und dem Binom entspricht.
 
 ### Für Binomische Terme
 
-Bei einem binomischen Term der Form $(x + y)^n , n \in \mathbb{N}$ geben die Binomialkoeffizienten die Koeffizienten der
-Ausmultiplikation an. Dazu verwendet man die folgende Formel
+Ein binomischer term hat die folgende Form
+
+$$
+(x + y)^n , n \in \mathbb{N}
+$$
+
+die Binomialkoeffizienten geben für einen binomischen term die Koeffizienten der Ausmultiplikation an. Dazu verwendet
+man die folgende Formel
 
 $$
 (x + y)^n = \sum_{k=0}^{n}{\binom{n}{k}x^{n-k}y^k}
@@ -45,25 +70,33 @@ $$
 
 <Callout type="example">
 $$
-(x+y)^3=\binom{3}{0} x^{3} + \binom{3}{1} x^{2}y + \binom{3}{2} xy^{2} + \binom{3}{3} y^{3}=x^3+3x^2y+3xy^2+y^3
+\begin{align*}
+(x+y)^3 &= \binom{3}{0} x^{3} + \binom{3}{1} x^{2}y + \binom{3}{2} xy^{2} + \binom{3}{3} y^{3} \\
+&=x^3+3x^2y+3xy^2+y^3
+\end{align*}
 $$
 </Callout>
 
 ### Pascalsches Dreieck
 
-Das **Pascalsche Dreieck** ist eine grafische Darstellung der Binomialkoeffizienten, welches auch eine einfache Berechnung erlaubt.
-Dabei zeichnet man ein Dreieck wo die variable $n$ dem Zeilenindex und $k$ dem Spaltenindex entspricht.
+Das **Pascalsche Dreieck** ist eine grafische Darstellung der Binomialkoeffizienten, welches auch die Berechnung vereinfacht.
+Dabei zeichnet man ein Dreieck wo die obere variable $n$ des Binomialkoeffizienten dem Zeilenindex und die untere variable
+$k$ dem Spaltenindex entspricht.
 
 ![PascalsTriangle](/maths/pascalsTriangle.png)
 
-Die Herleitung kommt von der Gleichung
+Die Berechung der Werte ist dann ganz einfach. Zuerst setzt man für alle Elemente am Rand des Dreiecks eine 1 ein, weil
+ein Binom mit $0$ oder $n$ als untere variable sich zu 1 auflösen lässt. Danach ist jeder restliche Wert die Summe der
+Werte genau über sich. Diese Herleitung kommt von der Gleichung
 
 $$
 \binom{n+1}{k+1}=\binom{n}{k} + \binom{n}{k+1}
 $$
 
+![PascalsTriangleAnimated](/maths/pascalsTriangleAnimated.gif)
+
 <Callout type="example" title="Beispiel für Pascalsches Dreieck Herleitung">
-Wir nehmen den Wert in der dritten Reihe in der Mitte $\binom{2}{1}$
+Wir nehmen den Wert in der dritten Reihe in der Mitte.
 
 $$
 \begin{align*}
@@ -76,11 +109,6 @@ $$
 \end{align*}
 $$
 </Callout>
-
-Diese Herleitung führt dazu, dass jede Zahl die Summe der Zahlen genau über sich sind. Dabei setzt man zuerst für alle
-Elemente am Rand des Dreiecks eine 1 ein, weil ein Binom mit $0$ oder $n$ im unteren Teil lässt sich auflösen zu 1.
-
-![PascalsTriangleAnimated](/maths/pascalsTriangleAnimated.gif)
 
 ## Urnenmodel
 
