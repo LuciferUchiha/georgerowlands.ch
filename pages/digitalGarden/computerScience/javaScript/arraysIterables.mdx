@@ -266,39 +266,118 @@ console.log(animals) // all names are now in CAPS
 
 ## Spread Operator
 
-The spread operator `...` allows you to pull elements out of an array (=> split the array into a list of its elements) or pull the properties out of an object. The spread operator copies data safely (i.e. preventing future mutation of the copied original).
-
-```jsx
-const oldArray = [1, 2, 3];
-const newArray = [...oldArray, 4, 5]; // This now is [1, 2, 3, 4, 5];
-const oldObject = {
-  name: "Max"
-};
-const newObject = {
-  ...oldObject,
-  age: 28
-};
-```
+### Rest Parameter
 
 ## Destructuring
 
-Destructuring allows you to easily access and copy (not reference) the values of arrays or objects and assign them to variables.
-
-```jsx
-const array = [1, 2, 3];
-const [a, b] = array;
-console.log(a); // prints 1
-console.log(b); // prints 2
-const myObj = {
-  name: "Max",
-  age: 28
-}
-const {name} = myObj;
-console.log(name); // prints "Max"
-console.log(age); // prints undefined
-console.log(myObj); // prints {name: "Max", age: 28}
-```
-
 ## Sets and Maps
 
+JavaScript offers a built-in object for [set semantic](../algorithmsDataStructures/sets), i.e a data structure that only holds unique elements. The set in JavaScript
+keeps track of the insertion order so when iterating over it the order is deterministic. The set determines equality using
+the "SameValueZero" Algorithm which basically says elements are equal if `===` says so apart from `NaN`s are equal which they normally are not
+(`NaN === NaN = false`) and negative zero and zero are not the same so.
+
+The EcmaScript specification requires a set to be implemented in a way that, on average, provide access times better than $O(n).
+Therefore, depending on the engine implementation it could be internally as a [hash table](../algorithmsDataStructures/hashTables)
+(with O(1) lookup), a [search tree](../algorithmsDataStructures/trees/binarySearchTrees) (with O(log(N)) lookup), or any other data structure, as long as the complexity is better than O(N).
+
+The methods available on the set are pretty self-explanatory, however it is disappointing that you need to implement your own set operators such
+as intersection, union etc. Also, the methods `values()`, `keys()` and `entries()` are all basically the same except for entries which returns an [iterator](../designPatterns/iterator),
+where each element is an array containing the element twice. These methods seem to just be there for consistency...
+
+```javascript
+const mySet = new Set();
+
+mySet.add(1); // { 1 }
+mySet.add(5); // { 1, 5 }
+mySet.add(5); // already contains 5, { 1, 5 }
+mySet.add("some text"); // can hold multiple types, { 1, 5, 'some text' }
+const obj = { a: 1, b: 2 };
+mySet.add(obj);
+mySet.add(obj) // already contains
+mySet.add({ a: 1, b: 2 }); // same values, but referencing different object so okay
+
+mySet.has(1); // true
+mySet.has(3); // false
+mySet.has(obj); // true
+mySet.has({a:1,b:2}) // false, different reference
+
+mySet.size; // 5
+mySet.delete(5);
+mySet.has(5); // false, 5 has been removed
+mySet.size; // 4
+
+mySet.forEach(e => console.log(e))
+```
+
+There is also the built-in map object that allows for key-value pairs to be stored and quickly looked up. Just like with the set the specification does not say
+how the map is implemented, but it should have a lookup that is faster than $O(n)$ so it could be a [hash table](../algorithmsDataStructures/hashTables)
+(with O(1) lookup), a [search tree](../algorithmsDataStructures/trees/binarySearchTrees) (with O(log(N)) lookup) or any other data structure fast enough.
+
+For the map object the `values()`, `keys()` and `entries()` methods make a lot more sense than for the set object, and behave in a similar self-explanatory way.
+
+Sets and maps can also be created from iterables i.e. an array or some other iterable object.
+
+```javascript
+const myMap = new Map([
+  ["a", 1],
+  ["b", 2],
+  ["c", 3],
+]);
+
+console.log(myMap.get('a')); // 1
+myMap.set('a', 97);
+console.log(myMap.get('a')); // 97
+
+console.log(myMap.size); // 3
+myMap.delete('b');
+console.log(myMap.size); // 2
+
+for ([key,value] of myMap.entries()){
+    console.log(`${key}: ${value}`);
+}
+```
+
+<Callout type="warning">
+
+    Due to the nature of JavaScript you can assign properties to the map object, and they will actually be added and visable.
+    However, they will not be added to the underlying data structure and are therefore useless and you should avoid accidently doing this!
+
+    ```javascript
+    const myMap = new Map();
+    myMap['bla'] = 'blaa';
+    myMap['bla2'] = 'blaaa2';
+
+    console.log(myMap); // {bla: 'blaa', bla2: 'blaaa2'}
+    console.log(myMap.has('bla')); // false
+    console.log(myMap.delete('bla')); // false
+    ```
+
+</Callout>
+
 ### Weak Iterables
+
+WeakSets work just like sets however they can only contain objects, not primitive values. Additionally, the WeakSet only hold weak references, meaning if
+the only reference of the object is being held by the WeakSet it can be garbage collected. The same exists for maps, the WeakMap, here however the key
+must be an object, the value can be a primitive value, but when the key is garbage collected so is the value.
+
+A possible use-case is to use a WeakSet in a recursive function to guard against circular data structures by tracking which objects have already been processed.
+This way the object being processed can still be collected if it is no longer referenced anywhere apart from in the WeakSet.
+
+```javascript
+function execRecursively(fn, subject, _refs = new WeakSet()) {
+  // Avoid infinite recursion
+  if (_refs.has(subject)) {
+    return;
+  }
+
+  fn(subject);
+  if (typeof subject === "object") {
+    _refs.add(subject);
+    for (const key in subject) {
+      execRecursively(fn, subject[key], _refs);
+    }
+    _refs.delete(subject);
+  }
+}
+```
