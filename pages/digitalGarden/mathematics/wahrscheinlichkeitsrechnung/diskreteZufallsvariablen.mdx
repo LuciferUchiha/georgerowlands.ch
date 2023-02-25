@@ -1,21 +1,21 @@
-import Callout from "../../../../components/callout/callout"
+import Callout from '../../../../components/callout/callout';
 
 # Diskrete Zufallsvariablen
 
-## Zufallsvariable
+## Zufallsvariablen
 
 Eine Zufallsvariable $X$ ist eine Funktion welche jedem Elementarereignis $\omega \in \Omega$ genau eine reele Zahl
 zuordnet. Wir unterscheiden noch dabei, ob eine Zufallsvariable **diskret** oder **stetig** ist. Hier werden wir diskrete
 Zufallsvariablen anschauen später werden wir noch stetige dazu nehmen.
 
-### Diskrete Zufallsvariable
+### Diskrete Zufallsvariablen
 
 Eine diskrete Zufallsvariable kann endlich viele oder abzählbar unendliche viele Werte annehmen.
 Gute Beispiel dafür sind Ergebnisse beim Würfeln, Anzahl Münzwurfe bis zum ersten Mal Kopf etc.
 
 Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/diskrete-zufallsvariablen-1114).
 
-## Dichte-/Wahrscheinlichkeit-funktion
+## Dichte/Wahrscheinlichkeits-Funktion
 
 Bei einer diskreten Zufallsvariable gehört zu jedem Wert $x_i$ eine bestimmte Wahrscheinlichkeit $P(X=x_i)$. Diese
 Beziehung lässt sich gut mit einer sogenannten Verteilungstabelle oder einem Stabsdiagramm (Wahrscheinlichkeitsdiagramm)
@@ -101,7 +101,7 @@ $$
 
 Nun schauen wir uns ein paar Verteilungen, an die häufig vorkommen, wenn man mit diskreten Zufallsvariablen arbeitet.
 
-### Binomialverteilung
+### Binomial-Verteilung
 
 Die Binomialverteilung der Zufallsvariable $X$ ist die Anzahl Treffer bei der $n$-maligen unabhängigen Durchführung eines
 Experiments mit 2 Elementarereignisse, Treffer und kein Treffer wobei $p$ die Wahrscheinlichkeit für einen Treffer ist.
@@ -144,7 +144,7 @@ Die Bernoulli-Verteilung ist eine spezielle Form der Binomialverteilung wobei $n
 
 mehr dazu findest du [hier](https://studyflix.de/statistik/bernoulliverteilung-1117).
 
-### Geometrische Verteilung
+### Geometrische-Verteilung
 
 Die Geometrische Verteilung der Zufallsvariable $X$ ist die Anzahl der Versuche bis zum ersten Treffer bei der
 wiederholten unabhängigen Durchführung eines Experiments mit 2 Elementarereignisse, Treffer und kein Treffer wobei $p$
@@ -152,7 +152,7 @@ die Wahrscheinlichkeit für einen Treffer ist.
 
 - Wir schreiben dann $X \sim Geo(p)$
 - Die Dichtefunktion von $X$ ist $f(k)=\binom{n}{k}p\cdot (1-p)^{k-1}$ wobei $k$ bedeutet, dass die ersten $k-1$
-Versuche kein Treffer waren aber der $k$-te Versuch ein Treffer ist.
+  Versuche kein Treffer waren aber der $k$-te Versuch ein Treffer ist.
 - $E(X) = \frac{1}{p}$
 - $V(X) = \frac{1-p}{p^2}$
 
@@ -172,7 +172,7 @@ Mit $P(X = 10) = (\frac{5}{6})^9 \cdot \frac{1}{6} = geopdf(9,1/6) \approx 3.2$%
 
 </Callout>
 
-### Hypergeometrische Verteilung
+### Hypergeometrische-Verteilung
 
 Die Hypergeometrische Verteilung der Zufallsvariable $X$ ist die Verteilung, die beim $n$-maligen Ziehen ohne
 Zurücklegen und ohne Reihenfolge aus einer Urne mit $N$ Kugeln, von denen $M$ eine spezielle Eigenschaft haben und wo
@@ -180,8 +180,8 @@ die Anzahl der gezogenen Kugeln mit dieser speziellen Eigenschaft gezählt werde
 
 - Wir schreiben dann $X \sim Hyp(N,M,n)$
 - Die Dichtefunktion von $X$ ist $f(k)=\binom{M}{k} \cdot \frac{\binom{N-M}{n-k}}{ \binom{N}{n}}$ wobei $N$ die
-Gesamtanzahl der Kugeln ist, $M$ die Anzahl mit der speziellen Eigenschaft. $n$ ist dann der Umfang der Stichprobe also
-die Anzahl der entnommenen Kugeln und $k$ die Anzahl angestrebte Kugeln mit der speziellen Eigenschaft.
+  Gesamtanzahl der Kugeln ist, $M$ die Anzahl mit der speziellen Eigenschaft. $n$ ist dann der Umfang der Stichprobe also
+  die Anzahl der entnommenen Kugeln und $k$ die Anzahl angestrebte Kugeln mit der speziellen Eigenschaft.
 - $E(X) = n \cdot \frac{M}{N}$
 - $V(X) = n \cdot \frac{M}{N} \cdot (1 - \frac{M}{N}) \cdot \frac{N-n}{N-1}$
 
