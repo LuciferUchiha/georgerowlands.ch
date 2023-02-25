@@ -7,8 +7,8 @@ meist durch einen Messvorgang. Unabhängig von der Messgenauigkeit kann eine ste
 Intervalls unendlich viele Werte annehmen aber einen genauen Wert zu messen ist nicht wirklich möglich.
 
 Die Wahrscheinlichkeit, dass eine stetige Zufallsvariable $X$ einen exakten Wert $x_i$ annimmt ist gleich 0. Die Begründung
-dafür ist, dass die Wahrscheinlichkeit das eine Person genau 180cm gross ist, 0 ist. Grund dafür ist, dass die Person
-180.000000000000001cm gross sein könnte, was nicht das gleiche ist wie 180cm. Deshalb macht es mehr Sin, dass $X$ einen
+dafür ist, dass die Wahrscheinlichkeit das eine Person genau 180 cm gross ist, 0 ist. Grund dafür ist, dass die Person
+180.000000000000001cm gross sein könnte, was nicht das Gleiche ist wie 180 cm. Deshalb macht es mehr Sin, dass $X$ einen
 Wert in einem Interval $[a,b]$ annimmt z.B. $[179.5,180.5]$.
 
 Mehr zu stetigen zufallsvariablen findest du [hier](https://www.youtube.com/watch?v=g9acHn8zSr8).
@@ -30,8 +30,8 @@ $$
 P(-\infty < X < \infty)=\int_{-\infty}^{\infty}{f(x) dx}=1
 $$
 
-Weil die Wahrscheinlichkeit von einem genauen Wert 0 ist haben abgeschlossene und offene Intervalle dieselben Wahrscheinlichkeiten,
-dies kann man dann später gut ausnutzen um Fragestellungen um zu formulieren.
+Weil die Wahrscheinlichkeit von einem genauen Wert 0 ist haben abgeschlossene und offene Intervalle dieselben
+Wahrscheinlichkeiten, dies kann man dann später gut ausnutzen Fragestellungen um zu formulieren.
 
 $$
 P(a \leq X \leq b)=P(a < X \leq b)=P(a \leq X < b)=P(a < X < b)
@@ -39,7 +39,7 @@ $$
 
 ## Erwartungswert
 
-Genau wie bei diskreten Zufallsvariablen kann man den Erwatungswer mit einer Formel berechnen.
+Genau wie bei diskreten Zufallsvariablen kann man den Erwartungswert mit einer Formel berechnen.
 
 $$
 E(X)=\int_{-\infty}^{\infty}{x \cdot f(x) dx}
@@ -53,7 +53,7 @@ $$
 E(X)=\int_{-\infty}^{\infty}{(x-E(X))^2 \cdot f(x) dx}
 $$
 
-Oder Kurz geschrieben genau gleich wie bei diskreten Zufallsvariablen
+Oder kurz geschrieben genau gleich wie bei diskreten Zufallsvariablen
 
 $$E(X^2)-E(X)^2$$
 
@@ -82,15 +82,15 @@ Und hat die follgende Eigneschaften:
 
 ## Stetige Verteilungen
 
-Nun schauen wir uns ein paar Verteilungen an die häufig vorkommen wenn man mit stetigen Zufallsvariablen arbeitet.
+Nun schauen wir uns ein paar Verteilungen an, die häufig vorkommen, wenn man mit stetigen Zufallsvariablen arbeitet.
 
 ### Stetige Gleichverteilung
 
-Die **Stetige Gleichverteilung** wird auch oft **Uniformverteilung** genannt. Sie hat auf dem Intervall $[a,b]$ eine konstante
+Die **stetige Gleichverteilung** wird auch oft **Uniformverteilung** genannt. Sie hat auf dem Intervall $[a,b]$ eine konstante
 Wahrscheinlichkeitsdichte, dass heisst das alle Teilintervalle gleicher Länge dieselbe Wahrscheinlichkeit besitzen.
 
 - Wir schreiben dann $X \sim U[a,b]$
-- Die Dichte von $X$ ist $f(x)=\frac{1}{b-a}$ wobei $a\leq x\leq b$ Dies kommt davon weil die Dichte normalisiert
+- Die Dichte von $X$ ist $f(x)=\frac{1}{b-a}$ wobei $a\leq x\leq b$ dies kommt davon, weil die Dichte normalisiert
   ist und die Fläche 1 ergeben muss.
 - $E(X) = \frac{a+b}{2}$
 - $V(X) = \frac{1}{12}(b-a)^2$
@@ -148,17 +148,16 @@ Es sei X der IQ der Person dann ist $X \sim N(100,15)$.
 
 $P(90 \leq X \leq 110)=P(X \leq 110) - P(X \leq 90) = normcdf(110,100,15)-normcdf(90,100,15) \approx 50$%
 
-$P(X \geq 150)= 1 - P(X <Callout 150) = 1 - normcdf(150,100,15) \approx 0.04$%
-
+$P(X \geq 150)= 1 - P(X \< 150) = 1 - normcdf(150,100,15) \approx 0.04$%
 </Callout>
 
 #### Standardisierung der Normalverteilung
 
-Mit Standardisierung bezeichnen wir die transformation einer Normalverteilten Zufallsvariable $X$, zu einer
+Mit Standardisierung bezeichnen wir die transformation einer normalverteilte Zufallsvariable $X$, zu einer
 Zufallsvariable $Z$ welches den Erwartungswert $E(Z)=0$ und die Varianz $V(Z)=1$ besitzt. Dies machen wir damit
 wir verschiedene Zufallsvariablen besser vergleichen können und damit wir auch schneller rechnen können.
 
-Zuerst zentrieren wir die Zufallsvariable, dies machen wir indem wir von allen ihre Elementarereignisse den
+Zuerst zentrieren wir die Zufallsvariable, dies machen wir, indem wir von allen ihre Elementarereignisse den
 Erwartungswert $\mu$ abziehen. Mit Zentrieren ist hier gemeint das wir den Gipfel der funktion $f(x)$ bei der
 Nullstelle der x-Achse wollen.
 
@@ -178,8 +177,8 @@ Oftmals haben wir einen Wert $\alpha \in [0,1]$ gegeben. Und wir suchen nun den 
 
 - Wenn $\alpha = 0.5$ dann reden wir vom Median, auch Zentralwert, **Erwartungswert** und der Modus. Eine
   Kennzahl dafür, wo sich die "Mitte" einer Wahrscheinlichkeitsverteilung befindet.
-- Wenn $\alpha = 0.25 \text{oder} 0.75$ reden wir von einer Quartile
-- Mit dem Perzentil schneiden wir $[0,1]$ in 100 Teile was equivalent ist zu den Prozentanzahlen.
+- Wenn $\alpha = 0.25 \text{oder} 0.75$ reden wir von einem Quartil
+- Mit dem Perzentil schneiden wir $[0,1]$ in 100 Teile, was equivalent ist zu den Prozentzahlen.
 
 In Matlab haben wir die Funktionen:
 
@@ -260,7 +259,7 @@ Die Exponential-Verteilung hat die spezielle Eigenschaft, dass sie kein Gedächt
 
 Was so viel heisst, wie wenn ein Gerät mit einer exponential verteilten Lebensdauer $X$ während
 $t$ Stunden gelaufen ist, so ist die Wahrscheinlichkeit, dass es weitere $h$ Stunden läuft gleich gross, wie
-wenn ein neues Gerät $h$ Stunden läuft. Dies können wir mit ein wenig Mathe und bedingte Wahrscheinlichkeiten auch beweisen
+wenn ein neues Gerät $h$ Stunden läuft. Dies können wir mit ein wenig Mathematik und bedingte Wahrscheinlichkeiten auch beweisen
 
 $$
 P(X \geq t + h | X \geq t) = \frac{P(X \geq t + h \cup X \geq t)}{X \geq t} = \frac{P(X \geq t + h)}{X \geq t}
