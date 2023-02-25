@@ -4,5 +4,6 @@
   "wahrscheinlichkeit": "Wahrscheinlichkeit",
   "diskreteZufallsvariablen": "Diskrete Zufallsvariablen",
   "stetigeZufallsvariablen": "Stetige Zufallsvariablen",
-  "erwartungswertVarianzEigenschaften": "Eigenschaften von Erwartungswerte und Varianz"
+  "erwartungswertVarianzEigenschaften": "Eigenschaften von Erwartungswerte und Varianz",
+  "kovarianz": "Kovarianz"
 }
