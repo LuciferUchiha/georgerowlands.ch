@@ -1,0 +1,190 @@
+# Complex Numbers Cheatsheet
+
+## General
+
+### Imaginary Unit
+
+$$
+i=\sqrt{-1}, i^2=-1, i^3=-i, i^4=1, i^5=i, i^{k+4n}=i^k
+$$
+
+### Cartesian/Arithmetic/Algebraic Form
+
+$z=a+bi$ with $a,b \in \mathbb{R}$. Consists of the real part, $a=Re(z)=\Re(z)$ and the imaginary part, $b=Im(z)=\Im(z)$.
+
+### Set of Complex Numbers
+
+$$
+\mathbb{C}=\{z|z=a+bi\text{ mit }a,b \in \mathbb{R}\}
+$$
+
+### Equality of Complex Numbers
+
+Complex numbers are equal if and only if their real and imaginary parts are equal
+
+$$
+a+bi=c+di \iff a=c \land b=d
+$$
+
+### Complex/Gaussian Plane
+
+A unique mapping and identification of complex numbers as points.
+
+$$
+f: \mathbb{C} \to \mathbb{R}^2, a+bi \mapsto (a,b)
+$$
+
+#### Magnitude/Modulus of a Complex Number
+
+The modules/magnitude of a complex number is the distance of the point from the origin, i.e. the length of the vector.
+
+$$
+r=|z|=|a+bi|=\sqrt{z\overline{z}}=\sqrt{a^2+b^2}
+$$
+
+Argument of a Complex Number
+The angle of the vector with respect to the x-axis.
+
+$$
+\varphi = \arg(z) = \arg(a+bi) = \begin{cases}
+\arctan(\frac{b}{a}) &a > 0 \\
+\pi + \arctan(\frac{b}{a}) &a < 0 \\
+\frac{\pi}{2} &a=0,b > 0 \\
+-\frac{\pi}{2} &a=0,b < 0 \\
+\text{undefined} &a=0,b=0
+\end{cases}
+$$
+
+Alternatively, but less common:
+
+$$
+\varphi=arg(z)=\arg(a+bi) = \begin{cases}
+\arccos(\frac{a}{r}) &\text{für } b \geq 0 \\
+-\arccos(\frac{a}{r}) &\text{für } b < 0
+\end{cases}
+$$
+
+### Polar Form
+
+Using the absolute value and argument, a complex number can also be represented in the polar coordinate system.
+
+### Trigonometric/Goniometric Form
+
+From the conversion from Cartesian to polar coordinates, we notice that we can also uniquely write and identify complex
+numbers in another way:
+
+$$
+z=r(\cos(\varphi) + i \sin(\varphi))=r \text{ cis}(\varphi)
+$$
+
+where  $r=|z| \in \mathbb{R}_0^+$ and $\varphi=\arg(z) \in [0,2\pi)$.
+
+### Exponential/Euler Form
+
+From the power series of $e^x,\sin(x)$ and $\cos(x)$, we can form the Euler form:
+
+$$
+e^{ix}=\cos(x)+i\sin(x)=\text{cis}(x)
+$$
+
+## Operations
+
+### Negation
+
+Negation corresponds to reflection across the origin in the complex plane. If $z= a+bi$ then
+
+$$
+-z=-a-bi
+$$
+
+### Complex Conjugation
+
+Complex conjugation is negation of only the imaginary part and corresponds to reflection across the x-axis. If $z=a+bi$
+then the  komplexe Konjugation is
+
+$$
+\overline{z}=a-bi
+$$
+
+### Addition/Subtraction
+
+Addition/subtraction is best done in Cartesian form, where the two vectors are added/subtracted.
+
+$$
+s=z_1 + z_2=(a+bi)\pm (c+di)=(a \pm c) + i(c\pm d)
+$$
+
+### Multiplication
+
+Multiplication can be done in all forms, but it is easiest and fastest in the trigonometric or Euler form. In Cartesian
+form, multiplication becomes complicated with more than two factors.
+
+- Cartesian form: $z_1 \cdot z_2=(a+bi)(c+di)=(ac-bd) + i(ad+bc)$
+- Trigonometric form: $z_1 \cdot z_2 = (r_1 \text{cis}(\varphi_1))(r_2 \text{cis}(\varphi_2))=r_1r_2\text{cis}(\varphi_1 + \varphi_2)$
+- Euler form: $z_1 \cdot z_2 = r_1 e^{i\varphi_1} \cdot r_2 e^{i\varphi_2}=r_1 r_2 e^{i(\varphi_1 + \varphi_2)}$
+
+### Exponentiation
+
+Using the [binomial formula](../functions/binomialCoefficient#for-binomial-terms), we can raise complex numbers to a
+power using Cartesian form, but because multiplication is so much easier in the other forms, exponentiation is also much
+easier in those forms.
+
+- Cartesian form: $z^n=(a +bi)^n = \sum_{k=0}^{n}{\binom{n}{k} a^{n-k}(bi)^k}$
+- Trigonometric form: Using De Moivre's theorem $z^n= (r \text{ cis}(\varphi))^n=r^n \text{ cis}(n\varphi)$
+- Euler form: $z^n=(re^{i\varphi})^n=r^n e^{in\varphi}$
+
+### Division
+
+Division can also be done in all forms, but like multiplication, it is best not to use Cartesian form.
+
+- Cartesian form: $\frac{z_1}{z_2}=\frac{a+bi}{c+di}=\frac{ac+bd}{c^2+d^2} +i \frac{bc-ad}{c^2+d^2}$
+- Trigonometric form: $\frac{z_1}{z_2}=\frac{r_1 \text{cis}(\varphi_1)}{r_2 \text{cis}(\varphi_2)}=\frac{r_1}{r_2} \text{cis}(\varphi_1 - \varphi_2)$
+- Euler form: $\frac{z_1}{z_2}=\frac{r_1 e^{i\varphi_1}}{r_2 e^{i\varphi_2}}=\frac{r_1}{r_2} e^{i(\varphi_1 - \varphi_2)}$
+
+
+### Roots of Complex Numbers
+
+The process of taking roots is more complicated with complex numbers than with real numbers. Fortunately, taking roots
+is the inverse function of raising to a power, and we can convert roots to powers as follows: $\sqrt[4]{x}=(x)^{\frac{1}{4}}$.
+Thus, we can proceed as we did with real numbers. However, when raising to a power, we did not have to take into account
+the periodicity of the cosine and sine functions, but when taking roots, we must do so because
+$\cos(\frac{\varphi+2\pi k}{n})$ for $k=0,1,...,n-1$ gives exactly $n$ different values. Of course, we can also convert
+the formulas below into trigonometric form.
+
+$$
+\sqrt[n]{re^{i\varphi}}=\sqrt[n]{r}(\cos(\frac{\varphi}{n})+i \sin(\frac{\varphi}{n}))=\sqrt[n]{r}e^{i\frac{\varphi}{n}}
+$$
+
+To calculate all solutions, we use the following formula
+
+$$
+z_k=\sqrt[n]{r} e^{i(\frac{\varphi}{n}+\frac{2\pi k}{n})}
+$$
+
+where $k=0,1,...n-1$ and we call the solution $z_0$ the principal value of the root.
+
+### Logarithm
+
+Thanks to the exponential/euler form, we can also take logarithms.
+
+$$
+\ln(z)=\ln(re^{i\varphi})=\ln(r)+i\varphi
+$$
+
+If the natural logarithm is not used, we can make a base change at the end.
+
+$$
+\log_2(2e^{i\frac{7\pi}{4}})=\frac{\ln(2e^{i\frac{7\pi}{4}})}{\ln(2)}=1+i\frac{\frac{7\pi}{4}}{ln(2)}
+$$
+
+### Complex Numbers in the Exponent
+
+We can also solve problems where the complex number is used as an exponent.
+
+$$
+e^{1+\pi i}=e^1e^{\pi i}=e e^{(\pi i)}
+$$
+
+$$
+2^i=e^{\ln(2^i)}=e^{i \ln(2)}
+$$

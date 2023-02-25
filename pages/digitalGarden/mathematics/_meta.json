@@ -2,7 +2,8 @@
   "scientificNotation": "Scientific Notation",
   "latexGuidelines": "LaTeX Guidelines",
   "functions": "Common Functions",
-  "linearAlgebra": "Linear Algebra",
   "complexNumbers": "Complex Numbers",
-  "wahrscheinlichkeitsrechnung": "Wahrscheinlichkeitsrechnung"
+  "linearAlgebra": "Linear Algebra",
+  "discrete": "Discrete Mathematics",
+  "inGerman": "In German"
 }
