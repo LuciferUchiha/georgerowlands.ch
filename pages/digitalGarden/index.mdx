@@ -1,3 +1,5 @@
+import Callout from "../../components/callout/callout";
+
 # My Digital Garden
 
 ## What is a Digital Garden?
@@ -5,123 +7,123 @@
 A digital garden is a mix between a notebook and a blog, it is a place to share thoughts and cultivate them into a garden.
 It also allows me to have a place where I can store my notes/summaries/tutorials for my studies.
 
-The main difference to a blog is that a blog has articles and publication dates and never changes after it has been published,
-whereas a digital garden is a place where the written content can be continuously edited and refined. The notes are also very free flowing they
-can span from just a short cheatsheet to a full set of notes on an entire subject where you go into every nitty-gritty detail.
+The main difference to a blog is that a blog has articles and publication dates and never changes after it has been
+published, whereas a digital garden is a place where the written content can be continuously edited and refined. The
+notes are also very free flowing they can span from just a short cheatsheet to a full set of notes on an entire subject
+where you go into every nitty-gritty detail.
 
-Another key difference is the navigation. A blog is usually read in chronological order but a digital garden can be read in any order you want and uses
-lots of internal links to connect all the notes into a Network (although this can be quite hard to diligently do).
+Another key difference is the navigation. A blog is usually read in chronological order but a digital garden can be read
+in any order you want and uses lots of internal links to connect all the notes into a Network (although this can be
+quite hard to diligently do).
 
 If you are interested in learning more about digital gardens I can recommend the following
 [article by Maggie Appleton](https://maggieappleton.com/garden-history).
 
-## How was my Garden Built?
+## How is my Garden Built?
 
-My notes are written using the Markdown format which is the most common way for a computer scientist to write texts apart from LaTeX for academic purposes.
-[Docusaurus](https://docusaurus.io/) built by Facebook, now Meta, then takes these markdown files and builds them into a [React](https://reactjs.org/) app for me.
-If you don't know what a React app is, in short, it is the most popular way to build a professional website at the current time of writing.
-I used to write my markdown notes in [Obsidian](https://obsidian.md/) and then built them into a web app using [Mkdocs](https://www.mkdocs.org/) with the
-[Material Theme](https://squidfunk.github.io/mkdocs-material/) but decided to move over to using Docusaurus for the added flexibility
-of it being a react app. Now I write my notes using [Visual Studio Code](https://code.visualstudio.com/) (also for the additional flexibility) with the following plugins:
+### Docusaurus
 
-- [Markdown All in One](https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one)
-- [Markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint), which is also set as the formatter for `.md`
+<Callout type="info">
+This is no longer how my digital garden is built and is therefore no longer supported or updated. It is however
+still
+available under [old.georgerowlands.ch](https://old.georgerowlands.ch/).
+</Callout>
 
-Most recently I also added the capability of converting Jupyter Notebooks with a python kernel to markdown files so that they can then also be built
-to react pages. This was done using [nbdoc](https://outerbounds.github.io/nbdoc/) which is an adapted version of [nbdev](https://github.com/fastai/nbdev).
+My notes are written using the Markdown format which is the most common way for a computer scientist to write texts apart
+from LaTeX for academic purposes. [Docusaurus](https://docusaurus.io/) is built by Facebook, now Meta, that takes these
+markdown files and builds them into a [React](https://reactjs.org/) app for me. If you don't know what a React app is,
+in short, it is the most popular way to build a professional website at the current time of writing. I used to write my
+markdown notes in [Obsidian](https://obsidian.md/) and then built them into a web app using
+[Mkdocs](https://www.mkdocs.org/) with the [Material Theme](https://squidfunk.github.io/mkdocs-material/) but decided to
+move over to using Docusaurus for the added flexibility of it being a React app.
 
-Some potential future features that I am thinking of looking into is being able to convert Jupyter Notebooks with a Java kernel to markdown. I am also interested
-in being able to convert Matlab Scripts and LaTeX files to markdown to then be nicely rendered.
+Most recently I also added the capability of converting Jupyter Notebooks with a python kernel to markdown files so that
+they can then also be built to react pages. This was done using [nbdoc](https://outerbounds.github.io/nbdoc/) which is
+an adapted version of [nbdev](https://github.com/fastai/nbdev).
+
+Some potential future features that I am thinking of looking into is being able to convert Jupyter Notebooks with a
+Java kernel to markdown. I am also interested in being able to convert Matlab Scripts and LaTeX files to Markdown to
+then be nicely rendered.
+
+### Nextra
+
+This is how the current iteration of my digital garden is built. [Nextra](https://nextra.site/) is a very similar
+framework to Docusaurus that builds markdown files to a React app. The main differences being that it is built by Vercel
+and that it is in my opinion built a lot simpler and modern than Docusaurus.
+
+Current improvements from the the previous docusaurus iteration is mainly that the Jupyter Notebook convert is a custom
+NBConvert converter built by me so i have control over the templates and could generate `.mdx` rather than just `.md` files.
 
 ## The Features
 
-This section is to show off some of the features of what can be rendered with Docusaurus.
+This section is to show off some features of what can be rendered in my digital garden.
 
 ### Markdown
 
-Docusaurus supports markdown out of the box and its many features. For a brief overview of what it supports check out the
-[docusaurus documentation](https://docusaurus.io/docs/markdown-features).
+Markdown is supported out of the box with its many features.
 
-#### Admonitions
+### MDX
 
-Admonitions aren't included in standard markdown but have become very popular and are very useful and are supported by Docusaurus. Admonitions allow you to highlight certain text
-and add a category to the text for example:
+In addition to normal markdown Nextra also supports the MDX format which allows you to write JSX, i.e. react code in a
+markdown file. To find out more about MDX check out the official [MDX documentation](https://mdxjs.com/).
+
+#### Admonitions / Callouts
+
+Admonitions aren't included in standard markdown but have become very popular and are very useful and are supported
+by Nextra. Admonitions allow you to highlight certain text and add a category to the text for example:
 
 ```
-:::caution
-
+<Callout type="warning">
 This Is a big scary warning.
-
-:::
+</Callout>
 ```
 
 Renders to:
 
-:::caution
-
+<Callout type="warning">
 This Is a big scary warning.
-
-:::
+</Callout>
 
 You can also change the title of the banner:
 
 ```
-:::info The following types are supported
-
-note, tip, danger, info, caution
-
-:::
+<Callout type="info" title="The following types are supported">
+info, warning, error, example, todo
+</Callout>
 ```
 
-:::info The following types are supported
-
-note, tip, danger, info, caution
-
-:::
-
-I have also added some custom admonition types but I haven't quite figured out how to get custom colors for them:
-
-:::example
-
-:::
-
-:::todo
-
-:::
-
-To find out more check out the [Docusaurus documentation on Admonitions](https://docusaurus.io/docs/markdown-features/admonitions).
-
-### MDX
-
-In addition to normal markdown Docusaurus also supports the MDX format which allows you to write JSX, i.e react code in a markdown file.
-To find out more about MDX check out the [Docusaurus documentation on MDX](https://docusaurus.io/docs/markdown-features/react) and the official [MDX documentation](https://mdxjs.com/).
+<Callout type="info" title="The following types are supported">
+info, warning, error, example, todo
+</Callout>
 
 ### LaTeX
 
-It has recently become very popular to write LaTeX equations in markdown. Docusaurus also supports this by using KaTeX to render LaTeX content either inline
-between `$\LaTeX$` $\LaTeX$ or as a block between `$$I = \int_0^{2\pi} \sin(x)\,dx$$`:
+It has recently become very popular to write LaTeX equations in markdown. Nextra also supports this by using KaTeX to
+render LaTeX content either inline between `$\LaTeX$` $\LaTeX$ or as a block between `$$I = \int_0^{2\pi} \sin(x)\,dx$$`:
 
 $$
 I = \int_0^{2\pi} \sin(x)\,dx
 $$
 
-Annoyingly Jupyter Notebooks use MathJax to render LaTeX content in the same way instead of KaTeX. This means that KaTeX supports some things and MathJax
-supports other things. Importantly however is that the Jupyter Notebooks get converted to Markdown and therefore in the end it will only be rendered in KaTeX.
-Therefore if something is written that is supported in MathJax but not in KaTeX it might look okay but in the end, it will not be rendered by Docusaurus.
-This leads to the task below since I want the latex to be rendered correctly when working inside the Jupyter Notebook but in the end only the LaTeX that
-can be rendered by KaTeX and will be readable.
+Annoyingly Jupyter Notebooks use MathJax to render LaTeX content in the same way instead of KaTeX. This means that KaTeX
+supports some things and MathJax supports other things. Importantly however is that the Jupyter Notebooks get converted
+to Markdown and therefore in the end it will only be rendered in KaTeX.
 
-You can see what is supported by KaTeX [here](https://katex.org/docs/supported.html) and you can see what is supported by MathJax [here](https://docs.mathjax.org/en/latest/input/tex/macros/index.html).
+Therefore, if something is written that is supported in MathJax but not in KaTeX it might look okay but in the end,
+it will not be rendered by KaTeX. This leads to [my LaTeX Notation Guideline](./mathematics/latexGuidelines) to avoid
+conflicts whilst still keeping nice Formulas.
 
-You can find my [notation guideline and LaTeX cheat sheet](./Mathematik/latex) that is compatible with KaTeX and MathJax
+You can see what is supported by KaTeX [here,](https://katex.org/docs/supported.html) and you can see what is supported
+by MathJax [here](https://docs.mathjax.org/en/latest/input/tex/macros/index.html).
 
 ### PlantUML
 
-If you ever need to create diagrams and especially UML diagrams, PlantUML is the way to go. I started with using Mermaid to create UML diagrams
-but swapped to PlantUML for the additional features and the ability to create my custom theme (so everything can be minimalist and purple :D).
+If you ever need to create diagrams and especially UML diagrams, PlantUML is the way to go. I started with using Mermaid
+to create UML diagrams but swapped to PlantUML for the additional features and the ability to create custom themes
+(so everything can be minimalist and purple :D).
 
-The current implementation to render the diagrams is built upon [Remark Simple PlantUML](https://github.com/akebifiky/remark-simple-plantuml). It allows you to create
-PlantUML diagrams in markdown code blocks with the plantuml language.
+To render PlantUML diagrams the [Remark plugin Simple PlantUML](https://github.com/akebifiky/remark-simple-plantuml) is
+used which uses the official PlantUML server to generate an image and then adds it.
 
 Some Examples can be seen below, on the [official website](https://plantuml.com/) or on [REAL WORLD PlantUML](https://real-world-plantuml.com/?type=class).
 
@@ -154,7 +156,7 @@ Receiver <-left- ConcreteCommand
 @enduml
 ```
 
-<br />
+<br/>
 
 ```plantuml
 @startuml
@@ -187,87 +189,20 @@ Bob ->> Alice : $info("finished")
 
 ### Jupyter Notebooks
 
-:::todo
-
-Explain how Jupyter Notebooks get converted to markdown. But I currently don't really like how all this is done which is making me think of creating
-my own static site generator where I can then freely add pre processors such as jupyter notebooks to markdown of any kernel or R notebooks etc.
-
-:::
+<Callout type="todo">
+TODO add how the hound works and how to use it.
+</Callout>
 
 ## How can I Contribute?
 
 Do you enjoy the content and want to contribute to the garden by adding some new plants or watering the existing ones?
+Then feel free to make a pull request. There are however some rules to keep in mind before adding or changing content.
 
-Then this is the place to find out how to do so. There are however some prerequisites and rules.
-
-- You will need a GitHub account and basic knowledge of git and creating pull requests.
-- You will need basic knowledge of how to write Markdown and LaTeX if working with math equations.
-- To add or change interactive things knowledge of [React](https://reactjs.org/docs/getting-started.html) is required.
-- To add or change the content of Jupyter Notebooks you will of course need basic knowledge of Python, Jupyter Notebooks and preferably docker.
-
-### Style Guide
-
-There are however some rules to keep in mind before adding or changing content.
-
-- Markdown filenames are written in camelCase.
-- If there needs to be a certain order of the pages because it would make more sense then you can prefix the file name with `n-filename` or add in
-  the frontmatter `sidebar_position: 1`.
-- The title (used in the sidebar etc.) should be set using frontmatter for every page at the beginning.
-- Titles should follow the [IEEE Editorial Style Manual](https://www.ieee.org/content/dam/ieee-org/ieee/web/org/conferences/style_references_manual.pdf).
-  A possible feature in the future could be a GitHub action that automatically checks this and creates a pull request fixing all the errors.
-- Use the [Markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) extension to make sure the formatting
-  and markdown rules are followed. A possible future feature would be a linter as a GitHub action.
-- LaTeX should confirm with my notation and cheat sheet, if something is not there defined there you can add on to it.
-
-### Changing or Adding Content
-
-#### Markdown
-
-If you have found a mistake, be it a spelling mistake or something related to the content. Or maybe you just want to add more content to an existing
-page or even add a new page and you don't need more than Markdown. Then you can follow these simple steps.
-
-1. Go to the page to change.
-2. Scroll to the bottom and press "Edit this page". If you have a GitHub account this will then create a fork of this repo and you can change or add
-   the markdown files.
-3. Once you have written all the changes, push them to the remote fork and create a pull request into the main repository.
-
-:::info
-
-If you either changed or added LaTex equations then please do the following to make sure it renders correctly. For this you will need to start
-the development server which can be done in two ways:
-
-1. Make sure you have node installed. Install the node dependencies with `npm install`. Start the development server using `npm run start` and navigate
-   to `https://localhost:3000`.
-
-2. Or if you have experience with Docker and Docker compose you can start the development server using the `docker compose up` command and navigate to
-   `https://localhost:3000`.
-
-:::
-
-:::info
-
-If you wish to add or change a PlantUML diagram then I recommend you use the [PlantUML Documentation](https://plantuml.com/), previously created diagrams
-or [diagrams in the feature section](#plantuml) above as reference.
-
-Make sure you are using my custom theme by adding the following at the beginning of a diagram:
-
-```
-@startuml
-!theme purplerain from https://raw.githubusercontent.com/LuciferUchiha/georgerowlands.ch/main
-
-...
-
-@enduml
-```
-
-:::
-
-#### MDX
-
-If the file you want to edit ends in `.mdx` then there can and probably will be some JSX in the file so you will need to know how React and JSX works. If you do not know
-then either ignore the blocks of JSX or do note edit any files ending in `.mdx` :)
-
-#### Jupyter Notebooks
-
-If you want to add a jupyter notebook or edit a page that was generated from then I would hope you know how to do so. However only edit the jupyter notebook not the
-generated markdown file. Also make sure that you are using the correct development environment so that the jupyter notebooks are automatically converted to markdown.
+- Markdown filenames and folders are written in camelCase.
+- Titles should follow the
+[IEEE Editorial Style Manual](https://www.ieee.org/content/dam/ieee-org/ieee/web/org/conferences/style_references_manual.pdf).
+They should also be added to the markdown file and specified in the `_meta.json` which maps files to titles and is also
+responsible for the ordering.
+A possible feature in the future could be a GitHub action that automatically checks this and creates a pull request fixing all the errors.
+and markdown rules are followed. A possible future feature would be a linter as a GitHub action.
+- LaTeX should conform with my notation and guideline, if something is not defined there you can of course add it.
