@@ -1,0 +1,78 @@
+import Callout from "../../../../components/callout/callout"
+
+# Binomial Coefficient
+
+The binomial coefficient is a mathematical function that often appears in various areas of mathematics.
+
+The formula for a binomial coefficient, or simply a binom, is defined as:
+
+$$
+\binom{n}{k}=\frac{n!}{k!(n-k)!}
+$$
+
+## For Probability
+
+In probability theory, a binomial indicates how many ways you can choose $k$ objects from a set of $n$ different objects
+(without replacement and without regard to order). Formally, the binomial coefficient is the number of $k$-element
+subsets of an $n$-element set.
+
+On calculators, you often find the English abbreviation "nCr", which stands for "n choose r" and corresponds to the binomial.
+
+## For Binomial Terms
+
+A binomial term has the following form:
+
+$$
+(x + y)^n , n \in \mathbb{N}
+$$
+
+The binomial coefficients give the coefficients of the expansion of a binomial term. This is done using the following formula:
+
+$$
+(x + y)^n = \sum_{k=0}^{n}{\binom{n}{k}x^{n-k}y^k}
+$$
+
+<Callout type="example">
+$$
+\begin{align*}
+(x+y)^3 &= \binom{3}{0} x^{3} + \binom{3}{1} x^{2}y + \binom{3}{2} xy^{2} + \binom{3}{3} y^{3} \\
+&=x^3+3x^2y+3xy^2+y^3
+\end{align*}
+$$
+</Callout>
+
+## Pascal's Triangle
+
+The Pascal's triangle is a graphical representation of binomial coefficients, which also simplifies calculation.
+Here, a triangle is drawn where the upper variable $n$ of the binomial coefficient corresponds to the row index and the
+lower variable $k$ corresponds to the column index.
+
+
+![PascalsTriangle](/maths/pascalsTriangle.png)
+
+The calculation of the values is then very simple. First, for all elements at the edge of the triangle, you set a 1,
+because a binom with 0 or n as the lower variable resolves to 1. Then, every other value is the sum of the values
+directly above it.
+
+![PascalsTriangleAnimated](/maths/pascalsTriangleAnimated.gif)
+
+This derivation comes from the equation:
+
+$$
+\binom{n+1}{k+1}=\binom{n}{k} + \binom{n}{k+1}
+$$
+
+<Callout type="example" title="Example of Pascal's Triangle derivation">
+We will take the value in the middle of the third row of the image above.
+
+$$
+\begin{align*}
+\binom{2}{1} &= \binom{1}{0} + \binom{1}{1} \\
+\frac{2!}{1!(2-1)!} &= \frac{1!}{0!(1-0)!} +
+\frac{1!}{1!(1-1)!} \\
+\frac{2}{1!1!} &= \frac{1}{1!} + \frac{1}{1!0!} \\
+\frac{2}{1} &= \frac{1}{1} + \frac{1}{1} \\
+2 &= 1 + 1
+\end{align*}
+$$
+</Callout>

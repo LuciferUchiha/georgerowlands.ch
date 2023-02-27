@@ -1,6 +1,9 @@
 {
   "scientificNotation": "Scientific Notation",
   "latexGuidelines": "LaTeX Guidelines",
+  "functions": "Common Functions",
+  "complexNumbers": "Complex Numbers",
   "linearAlgebra": "Linear Algebra",
-  "complexNumbers": "Complex Numbers"
+  "discrete": "Discrete Mathematics",
+  "inGerman": "In German"
 }

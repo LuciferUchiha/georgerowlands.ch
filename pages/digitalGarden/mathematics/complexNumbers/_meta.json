@@ -1,4 +1,5 @@
 {
-  "komplexeZahlenDetailliert": "Komplexe Zahlen",
-  "komplexeZahlenCheatsheet": "Cheatsheet"
+  "definitions": "Complex Numbers defined",
+  "cheatsheet": "Cheatsheet",
+  "cheatsheetTable": "Cheatsheet as Table"
 }

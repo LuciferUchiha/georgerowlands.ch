@@ -8,3 +8,8 @@
     }
 }
 
+@layer base {
+    .code-output-wrapper {
+        padding-left: 4rem;
+    }
+}
