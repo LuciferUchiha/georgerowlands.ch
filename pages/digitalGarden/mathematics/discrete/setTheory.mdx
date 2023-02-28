@@ -1,3 +1,5 @@
+import Callout from "../../../../components/callout/callout"
+
 # Set Theory
 
 A **set** is a collection of distinct objects.
@@ -56,19 +58,108 @@ Multiple variations and combinations are also possible:
 - $\Bbb{Z}^- =\{...,-3,-2,-1\}$
 - $\Bbb{Z}_0^+ =\{0,1,2,3,...\}=\Bbb{N}$ combinations are also possible.
 
-### Rational Numbers
+### Rational and Irrational Numbers
 
-:::todo
+Rational numbers are numbers that can be expressed with a fraction of two integers, where the denominator is not equal
+to zero. Another way to remember them is that they can be written as terminating or repeating decimals.
 
-including proof of why sqrt(2) is not a rational number but irrational
+$$
+\Bbb{Q}=\Big\{\frac{p}{q} \mid p \in \Bbb{Z} \land q \in \Bbb{Z} \setminus \{0\} \Big\}
+$$
 
-:::
+<Callout type="example">
+The number $0.75$ is a rational number because it can be written as a fraction of two integers:
+
+$$
+\frac{3}{4}
+$$
+
+This fraction is also unique to each number, as for example the fraction $\frac{6}{8}$ can be shortened to the above
+solution by dividing the denominator an nominator by the common factor 2.
+
+Another example is $0.3333... = 0.\overline{3}$, which can also be written as a fraction of two integers:
+
+$$
+\frac{1}{3}
+$$
+</Callout>
+
+On the other hand, irrational numbers $\Bbb{I}$ are numbers that cannot be expressed as a fraction of two integers. They cannot
+be written as terminating or repeating decimals, as their decimal expansions go on infinitely without repeating.
+
+<Callout type="example">
+For example, $\pi$, is an irrational number for obvious reasons:
+
+$$
+\pi = 3.14159265...
+$$
+
+Another example is $\sqrt{2}$, which can also be proven:
+
+$$
+\sqrt{2} = 1.41421356...
+$$
+
+This however does not mean that all square roots are irrational numbers!
+
+$$
+\sqrt{9} = 3 \in \Bbb{N}
+$$
+
+</Callout>
+
+#### Proof $\sqrt{2}$ is Irrational
+
+To prove that the square root of 2 is irrational, we need to assume that it is rational and then derive a contradiction.
+That is, we assume that $\sqrt{2}$ can be expressed as a ratio of two integers, and then show that this assumption leads
+to a contradiction. Suppose that $\sqrt{2}$ is rational, and can be expressed as:
+
+$$
+\sqrt{2} = \frac{p}{q}
+$$
+
+where $p$ and $q$ are integers with no common factors. We can assume that $p$ and $q$ are in lowest terms, meaning that
+they have been divided by their greatest common factor. After squaring both sides of this equation, we get:
+
+$$
+2 = \frac{p^2}{q^2}
+$$
+
+Then multiplying both sides by $q^2$, we get:
+
+$$
+2q^2 = p^2
+$$
+
+This means that $p^2$ is even, which implies that $p$ is also even (because the square of an odd number is odd). So we
+can write $p$ as $p = 2k$ for some integer $k$. Substituting $p = 2k$ into the equation $2q^2 = p^2$, we get:
+
+$$
+2q^2 = (2k)^2 = 4k^2
+$$
+
+Dividing both sides by 2, we get:
+
+$$
+q^2 = 2k^2
+$$
+
+This means that $q^2$ is even, which implies that $q$ is also even (because the square of an odd number is odd). But
+this contradicts our assumption that $p$ and $q$ have no common factors, since they both have a factor of 2. Therefore,
+our initial assumption that $\sqrt{2}$ is rational must be false, and we conclude that $\sqrt{2}$ is irrational.
 
 ### Real Numbers
 
-:::todo
+Real numbers are the combination of rational and irrational numbers.
 
-:::
+$$
+\Bbb{R} = \Bbb{Q} \cap \Bbb{I}
+$$
+
+<Callout type="warning">
+Infinity is not a number in the traditional sense, but rather a concept that refers to something, limitless i.e. without
+end. Therefore it is not an element of any set of numbers, including the real numbers.
+</Callout>
 
 ### Complex Numbers
 
@@ -107,15 +198,15 @@ Two sets can be joined together, this results in the so called **union** of $A$ 
 
 ![union](/maths/union.png)
 
-:::example
-
-$$\begin{align*}
-    \{1,2\} \cup \{1,2\} &= \{1,2\} \\
-    \{1,2\} \cup \{2,3\} &= \{1,2,3\} \\
-    \{1,2,3\} \cup \{3,4,5\} &= \{1,2,3,4,5\}
-\end{align*}$$
-
-:::
+<Callout type="example">
+$$
+\begin{align*}
+\{1,2\} \cup \{1,2\} &= \{1,2\} \\
+\{1,2\} \cup \{2,3\} &= \{1,2,3\} \\
+\{1,2,3\} \cup \{3,4,5\} &= \{1,2,3,4,5\}
+\end{align*}
+$$
+</Callout>
 
 ### Intersection
 
@@ -123,15 +214,15 @@ A new set can also be constructed by determining which elements two sets have "i
 
 ![intersection](/maths/intersection.png)
 
-:::example
-
-$$\begin{align*}
-    \{1,2\} \cap \{1,2\} &= \{1,2\} \\
-    \{1,2\} \cap \{2,3\} &= \{2\} \\
-    \{1,2\} \cap \{3,4\} &= \emptyset
-\end{align*}$$
-
-:::
+<Callout type="example">
+$$
+\begin{align*}
+\{1,2\} \cap \{1,2\} &= \{1,2\} \\
+\{1,2\} \cap \{2,3\} &= \{2\} \\
+\{1,2\} \cap \{3,4\} &= \emptyset
+\end{align*}
+$$
+</Callout>
 
 ### Complements
 
@@ -140,15 +231,15 @@ This can be written as $A^c = U \setminus A$.
 
 ![absoluteComplement](/maths/absoluteComplement.png)
 
-:::example
-
-$$\begin{align*}
-    \{1,2\} \cap \{1,2\} &= \{1,2\} \\
-    \{1,2\} \cap \{2,3\} &= \{2\} \\
-    \{1,2\} \cap \{3,4\} &= \emptyset
-\end{align*}$$
-
-:::
+<Callout type="example">
+$$
+\begin{align*}
+\{1,2\} \cap \{1,2\} &= \{1,2\} \\
+\{1,2\} \cap \{2,3\} &= \{2\} \\
+\{1,2\} \cap \{3,4\} &= \emptyset
+\end{align*}
+$$
+</Callout>
 
 ### Difference
 
@@ -157,15 +248,15 @@ This can be written as $B \setminus A$.
 
 ![difference](/maths/difference.png)
 
-:::example
-
-$$\begin{align*}
-    \{1,2,3\} \setminus \{2,3,4\} &= \{1\} \\
-    \{2,3,4\} \setminus \{1,2,3\} &= \{4\} \\
-    \{1,2,3\} \setminus \{1,2,3,4\} &= \emptyset
-\end{align*}$$
-
-:::
+<Callout type="example">
+$$
+\begin{align*}
+\{1,2,3\} \setminus \{2,3,4\} &= \{1\} \\
+\{2,3,4\} \setminus \{1,2,3\} &= \{4\} \\
+\{1,2,3\} \setminus \{1,2,3,4\} &= \emptyset
+\end{align*}
+$$
+</Callout>
 
 #### Symmetric Difference
 
@@ -175,21 +266,21 @@ The symmetric difference can be defined as $A \ominus B=(A \cup B)\setminus (A \
 
 ![symmetricDifference](/maths/symmetricDifference.png)
 
-:::example
-
-$$\{7,8,9,10\} \ominus \{9,10,11,12\} = \{7,8, 11,12\}$$
-
-:::
+<Callout type="example">
+$$
+\{7,8,9,10\} \ominus \{9,10,11,12\} = \{7,8, 11,12\}
+$$
+</Callout>
 
 ### Cartesian Product
 
 The **Cartesian product** of two sets $A$ and $B$, denoted by $A \times B$, is the set of all ordered pairs $(a,b)$ where $a$ is an element of $A$ and $b$ is an element of $B$. So in short a set of all of the possible combinations.
 
-:::example
-
-$$\{1,2\} \times \{3,4\} = \{(1, 3), (1, 4), (2, 3), (2, 4)\}$$
-
-:::
+<Callout type="example">
+$$
+\{1,2\} \times \{3,4\} = \{(1, 3), (1, 4), (2, 3), (2, 4)\}
+$$
+</Callout>
 
 ## Cardinality
 
@@ -205,13 +296,13 @@ The power set or also called super set of a set $A$ is the set containing all su
 
 The power set of the set $A$ is commonly written as $P(A)$ or $2^{A}$
 
-:::example
-
+<Callout type="example">
 Given $A={x,y,z}$:
 
-$$S^A=P(A)=\{\emptyset,\{x\},\{y\},\{z\},\{x,y\},\{x,z\},\{y,z\},\{x,y,z\}\}$$
-
-:::
+$$
+S^A=P(A)=\{\emptyset,\{x\},\{y\},\{z\},\{x,y\},\{x,z\},\{y,z\},\{x,y,z\}\}
+$$
+</Callout>
 
 ### Cardinality of a Power Set
 
@@ -227,8 +318,7 @@ The set $P$ is only a partition of $A$ if and only if all of the following condi
 - The union of all the sets in $P$ is equal to $A$.
 - The intersection of any two distinct sets in $P$ is the empty set, $\emptyset$
 
-:::example
-
+<Callout type="example">
 The set $\{1,2,3\}$ has 5 possible partitions:
 
 - $\{\{1\},\{2\},\{3\}\}$
@@ -242,11 +332,10 @@ The following are not partitions of \{1,2,3\}:
 - $\{\emptyset,\{1,3\},\{2\}\}$ is not a partition because one of its elements is the empty set.
 - $\{\{1,2\},\{2,3\}\}$ is not a partition because the element 2 is contained in more than one block.
 - $\{\{1\},\{2\}\}$ is not a partition of $\{1,2,3\}$ because none of its blocks contains the element 3.
-
-:::
+</Callout>
 
 ## De Morgan's Laws
 
-:::todo
-
-:::
+<Callout type="todo">
+TODO
+</Callout>
