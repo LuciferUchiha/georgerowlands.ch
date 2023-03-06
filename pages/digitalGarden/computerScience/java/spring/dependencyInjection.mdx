@@ -1,0 +1,67 @@
+# Dependency Injection
+
+Dependency Injection is a design pattern used in software development and is especially used in the Spring framework.
+Dependency Injection allows objects to be created with their dependencies explicitly provided, instead of the objects
+themselves having to be responsible for the creation of their dependencies. It is a way to achieve loose coupling
+between objects and their dependencies. This is also referred to as Inversion of Control, IoC which is another principle
+where instead of as in traditional programming, a component would create and control the objects it depends on in IoC the
+responsibility is shifted to a container or framework, in Springs case the Spring Container.
+
+![springIOC](/compSci/springIOC.png)
+
+When working with Spring Dependency Injection is controlled by the Spring Container which is responsible for creating
+and managing the lifecycle of objects, and injecting their dependencies. The objects are referred to as beans. These
+beans are then kept track of in the Spring/Application Context which can be fetched as follows:
+
+```java
+@SpringBootApplication
+public class MyApplication {
+   public static void main(String[] args) {
+      ApplicationContext context = SpringApplication.run(MyApplication.class, args);
+      for (String beanName : context.getBeanDefinitionNames()) {
+         System.out.println(beanName);
+      }
+   }
+}
+```
+
+For the Spring Container to know what is a bean you use to define them using XML but nowadays, you just annotate Java
+Classes. The parent annotation is `@Bean`, however most of the time you will be using different ones such as `@Entity`,
+`@Component`, `@Controller`, `@Service` which all inherit from it. Once the bean is defined, the container reads manages
+it and can inject it into its dependencies. Dependency injection is also commonly referred to as auto-wiring
+relationships between beans, which is why in Spring you use the annotation `@Autowired` for a dependency to be injected.
+
+```java
+@Component("fooFormatter")
+public class FooFormatter {
+    public String format() {
+        return "foo";
+    }
+}
+```
+
+We can then inject the dependency in many ways such as Constructor injection, Setter injection or Field injection:
+
+```java
+@Component
+public class FooServiceField {
+    @Autowired
+    private FooFormatter fooFormatter;
+}
+@Component
+public class FooServiceSetter {
+    private FooFormatter fooFormatter;
+    @Autowired
+    public void setFormatter(FooFormatter fooFormatter) {
+        this.fooFormatter = fooFormatter;
+    }
+}
+@Component
+public class FooServiceConstructor {
+    private FooFormatter fooFormatter;
+    @Autowired
+    public FooServiceConstructor(FooFormatter fooFormatter) {
+        this.fooFormatter = fooFormatter;
+    }
+}
+```

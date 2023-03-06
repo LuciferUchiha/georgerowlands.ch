@@ -7,7 +7,7 @@
   "dom": "The DOM",
   "asyncPromises": "Async and Promises",
   "metaProgramming": "Meta Programming",
-    "---": {
+  "---": {
     "type": "separator"
   },
   "tools": "Tools for JavaScript",
