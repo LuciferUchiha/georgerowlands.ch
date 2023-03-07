@@ -1,5 +1,8 @@
 {
   "index": "My Digital Garden",
+  "---": {
+    "type": "separator"
+  },
   "computerScience": "Computer Science",
   "mathematics": "Mathematics",
   "resources": "Resources"
