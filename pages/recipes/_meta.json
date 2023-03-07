@@ -1,15 +1,20 @@
 {
   "index": {
-    "type": "page",
     "title": "My Recipes",
-    "display": "hidden",
     "theme": {
-      "typesetting": "article",
-      "layout": "full"
+      "pagination": false
     }
+  },
+  "---": {
+    "type": "separator"
   },
   "template": {
     "display": "hidden"
   },
+  "curryYogurtChicken": "Curry Yogurt Chicken",
+  "fakeLemonCheesecake": "Fake Lemon Cheesecake",
+  "mediterraneanChicken": "Mediterranean Chicken",
+  "pastaAlfredo": "Pasta Alfredo",
+  "pizzaRoll": "Pizza Roll",
   "whiteWineRisotto": "White Wine Risotto"
 }
