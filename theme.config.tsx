@@ -1,8 +1,8 @@
 import React from "react";
 import {DocsThemeConfig} from "nextra-theme-docs";
 import {useRouter} from "next/router";
-import GiscusComments from "./components/giscus/giscus";
-import BackToTop from "./components/backToTop/backToTop";
+import GiscusComments from "./components/Giscus/Giscus";
+import BackToTop from "./components/BackToTop/BackToTop";
 
 
 const config: DocsThemeConfig = {
