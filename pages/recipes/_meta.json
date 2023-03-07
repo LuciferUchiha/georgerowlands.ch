@@ -1,0 +1,15 @@
+{
+  "index": {
+    "type": "page",
+    "title": "My Recipes",
+    "display": "hidden",
+    "theme": {
+      "typesetting": "article",
+      "layout": "full"
+    }
+  },
+  "template": {
+    "display": "hidden"
+  },
+  "whiteWineRisotto": "White Wine Risotto"
+}

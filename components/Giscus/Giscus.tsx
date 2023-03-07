@@ -4,7 +4,7 @@ import Giscus from "@giscus/react";
 export default function GiscusComments() {
     // This is done so that is loaded client side and skips hydration, no idea what this means but stackoverflow does
     const [showChild, setShowChild] = useState(false);
-    const pathNameBlacklist = ["/", "/about"];
+    const pathNameBlacklist = ["/", "/about", "/recipes"];
     useEffect(() => {
         setShowChild(true);
     }, []);

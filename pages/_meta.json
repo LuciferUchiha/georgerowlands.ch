@@ -12,6 +12,10 @@
     "title": "Digital Garden",
     "type": "page"
   },
+  "recipes": {
+    "type": "page",
+    "display": "hidden"
+  },
   "contact": {
     "title": "Contact↗",
     "type": "page",
