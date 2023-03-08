@@ -3,15 +3,36 @@ import {SideBySideBlock, Block} from "../../../../components/SideBySideBlock/Sid
 
 # Java to Kotlin Intro
 
-## `println`
+## Kotlin and the JVM
+
+## Semicolons
+
+Unlike in Java where semicolons are mandatory to end a statement, in Kotlin semicolons are optional. However, there are
+some situations where you may need to use semicolons in Kotlin to separate multiple statements on a single line.
+
+<SideBySideBlock>
+    <Block>
+        ```kotlin filename="Kotlin"
+        val a = 0
+        val x = 5; val y = 10; println(x + y)
+        ```
+    </Block>
+    <Block>
+        ```java filename="Java"
+        final var a = 0;
+        final var x = 5; final var y = 10; System.out.println(x + y);
+        ```
+    </Block>
+</SideBySideBlock>
+
+## Standard Output
 
 In Java the `java.lang` package is implicitly imported which contains amongst other things the classes for String, Integer
 and important in this section the System class which is used to output things to the standard output via
 `System.out.println()`. In Kotlin `java.lang` is implicitly imported but so is the `kotlin` package and more importantly
 for this section the `kotlin.io` package (plus a few other packages). The `kotlin.io` package contains, as with a lot of
 things in Kotlin the wrapper function `println()` which internally just calls `System.out.println()`. This then allows you
-to not always have to write such verbose code.
-
+to not always have to write such verbose code (you can still however of course use `System.out.println()` in kotlin, but don't).
 
 <SideBySideBlock>
     <Block>
@@ -30,7 +51,7 @@ to not always have to write such verbose code.
 
 Type inference was introduced in Java 10 with the introduction of the `var` keyword. In Kotlin, you use `var` to define a
 mutable variable. By default, the type can be inferred, but it can also be explicitly defined after `:`. In Kotlin, you can
-also use the `val` keyword which the same as writing `final var` in Java, i.e. the variable is then immutable.
+also use the `val` keyword which the same as writing `final var` in Java, i.e. the variable is then immutable (read-only).
 
 <Callout type="warning">
     The final keyword exists in Kotlin, however can not be used in conjunction with variables, only to stop inheritance
