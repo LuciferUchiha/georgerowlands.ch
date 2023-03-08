@@ -40,7 +40,8 @@ public class FooFormatter {
 }
 ```
 
-We can then inject the dependency in many ways such as Constructor injection, Setter injection or Field injection:
+We can then inject the dependency in many ways such as Constructor injection, Setter injection or Field injection.
+Constructor being the best practice and the other being heavily debated :
 
 ```java
 @Component
@@ -59,7 +60,7 @@ public class FooServiceSetter {
 @Component
 public class FooServiceConstructor {
     private FooFormatter fooFormatter;
-    @Autowired
+    @Autowired // optional
     public FooServiceConstructor(FooFormatter fooFormatter) {
         this.fooFormatter = fooFormatter;
     }

@@ -6,13 +6,13 @@
   "dataMining": "Data Mining",
   "designPatterns": "Design Patterns",
   "distributedSystems": "Distributed Systems",
-  "java": "Java",
-  "javaScript": "JavaScript",
-  "react": "React",
-  "python": "Python",
   "c": "C",
   "cpp": "C++",
   "cSharp": "C#",
+  "java": "Java",
+  "javaScript": "JavaScript",
+  "kotlin": "Kotlin",
+  "python": "Python",
   "git": "Git",
   "make": "Make"
 }
