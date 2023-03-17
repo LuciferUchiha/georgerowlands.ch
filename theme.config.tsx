@@ -24,7 +24,10 @@ const config: DocsThemeConfig = {
             const {asPath} = useRouter();
             return {titleTemplate: (asPath !== "/") ? "%s – GR" : "georgerowlands.ch"};
         },
-        head: <link rel="icon" type="image/x-icon" href="logo.svg"/>,
+        head: <>
+                <meta property="og:description" content="The next site builder" /> <meta property="og:description" content="The next site builder" />
+                <link rel="icon" type="image/x-icon" href="logo.svg"/>
+              </>,
         logo: <>
             <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                  width="36px" height="36px" viewBox="0 0 128 128"
@@ -49,7 +52,8 @@ const config: DocsThemeConfig = {
                     />
                 </g>
             </svg>
-            <span className="ml-4 font-bold">George Rowlands</span></>,
+            <span className="ml-4 font-bold">George Rowlands</span>
+          </>,
         search: {
             // TODO I can replace the component that is shown for when nothing was found with an image of a dead tree
             placeholder: "Search in the garden..."
