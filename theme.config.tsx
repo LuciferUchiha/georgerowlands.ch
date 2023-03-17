@@ -25,7 +25,7 @@ const config: DocsThemeConfig = {
             return {titleTemplate: (asPath !== "/") ? "%s – GR" : "georgerowlands.ch"};
         },
         head: <>
-                <meta property="og:description" content="The next site builder" /> <meta property="og:description" content="The next site builder" />
+                <meta property="og:description" content="George's Website and Digital Garden" />
                 <link rel="icon" type="image/x-icon" href="logo.svg"/>
               </>,
         logo: <>
