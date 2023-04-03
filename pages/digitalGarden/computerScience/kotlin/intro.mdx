@@ -13,6 +13,42 @@ Kotlin was designed to be fully interoperable with Java. This means that you can
 in Kotlin and vice versa. This is possible because Kotlin code can be compiler into Java bytecode. The Kotlin compiler
 generates `.class` files just like the Java compiler that can then be executed on the Java Virtual Machine (JVM).
 
+## Entry Point
+
+Just like Java, Kotlin uses a main function as an entry point. However in Java it always needs to be able to handle the program arguments by using either of these possibilities:
+
+```java
+public static void main(String args[]) {
+    System.out.println("Hello World!");
+} 
+```
+
+or 
+
+```java
+public static void main(String... args) {
+    System.out.println("Hello World!");
+} 
+```
+
+In Kotlin it is like in C you can either define the program arguements or not, if you don't define them they will just be ignored.
+
+```kotlin
+fun main() {
+    println("Hello world!")
+}
+```
+
+or
+
+```kotlin
+fun main(args: Array<String>) {
+    println("Hello world!")
+}
+```
+
+Where Array is a wrapper with a lot of additional functioanlity for a normal Java array.
+
 ## Semicolons
 
 Unlike in Java where semicolons are mandatory to end a statement, in Kotlin semicolons are optional. However, there are
