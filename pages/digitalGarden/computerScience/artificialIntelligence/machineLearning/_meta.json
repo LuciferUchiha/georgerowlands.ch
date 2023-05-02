@@ -1,0 +1,10 @@
+{
+  "mainIdeas": "Main Ideas of Machine Learning",
+  "knn": "K-Nearest Neighbors",
+  "crossValidation": "Cross-Validation",
+  "linear": "Linear Classification & Regression",
+  "logistic": "Logistic Regression",
+  "naiveBayes": "Naive Bayes",
+  "svm": "Support Vector Machines",
+  "kMeans": "K-Means Clustering",
+}
