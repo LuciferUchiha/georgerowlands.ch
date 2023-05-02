@@ -6,5 +6,5 @@
   "logistic": "Logistic Regression",
   "naiveBayes": "Naive Bayes",
   "svm": "Support Vector Machines",
-  "kMeans": "K-Means Clustering",
+  "kMeans": "K-Means Clustering"
 }
