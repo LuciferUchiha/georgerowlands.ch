@@ -70,6 +70,19 @@ overall patterns and trends.
 
 ## Types of Graphs
 
+### Complete Graphs
+
+A complete graph is a graph where each vertex is connected to every other vertex, very simple. In other words, a
+complete graph contains all possible edges. A complete graph with $n$ vertices is denoted as $K_n$.
+
+For example, the below graph is a complete graph with 5 vertices, $K_5$.
+
+<Callout type="todo">
+    Example of a balanced signed graph
+
+    How do cliques relate to complete graphs?
+</Callout>
+
 ### Directed Graphs
 
 A Directed Graph is a graph where each edge is directed from one vertex to another. In other words, the edges have a
@@ -146,10 +159,19 @@ export const cityGraph = {
     }
 />
 
-
-### Cyclic Graphs
-
 ### Networks vs Graphs
+
+The only real difference between a network and a graph is the terminology. A network is a graph with a real-world context.
+For example, a social network is a graph with a real-world context. A graph is a mathematical structure that represents
+relationships between objects. When talking about a network we also tend to talk about nodes and links instead of
+vertices and edges.
+
+| Graphs | Networks |
+|--------|----------|
+| Vertices | Nodes |
+| Edges | Links |
+
+[Ressource](https://bence.ferdinandy.com/2018/05/27/whats-the-difference-between-a-graph-and-a-network/)
 
 ### Trees
 
@@ -157,17 +179,82 @@ A tree is a special type of graph where there is only one path between any two v
 cycles in a tree. Trees are used in many different algorithms and data structures such as binary search trees. You can
 read more about trees in the [Trees](../trees/generalDefinition) section.
 
-### Bipartite Graphs
+
+### Cycle/Circular Graphs
+
+A cycle or circular graph is a graph with exactly one cycle. Where a cycle is non-empty path in which only the first and
+last vertices are equal, i.e a path that starts and ends at the same vertex. You can think of it as a closed chain.
+
+A path/trail/walk in a graph is defined as being a sequence of vertices, where consecutive vertices in the sequence are
+connected by an edge.
+
+Commonly a cycle with length $n$ is called an $n$-cycle and is denoted as $C_n$.
+
+For example, the below graph is a circular graph as it has only one cycle with the following path:
+
+$$
+P = (a,b,c,a)
+$$
+
+export const cycleGraph = {
+    nodes: [
+        {id: 1, label: "a"},
+        {id: 2, label: "b"},
+        {id: 3, label: "c"}
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 2, to: 3},
+        {from: 3, to: 1},
+    ]
+}
+
+<Graph
+    graph={cycleGraph}
+/>
+
+To read more about cycle graphs, check out [this article](https://mathworld.wolfram.com/CycleGraph.html)
 
 ### Signed Graphs
 
-A signed graph is a graph in which each edge has a positive or negative sign.
+A signed graph is a graph in which each edge has a positive or negative sign. They can be used to represent a
+relationship between two vertices. For example, a positive sign could mean that two people are allies and a negative
+sign could mean that they are enemies.
 
-#### Triage?
+<Callout type="todo">
+    Example of a signed graph
+</Callout>
 
-Only care about the triages here?
+#### Triads and Balance Theory
+
+Triads are a set of three vertices in a signed graph where each pair of vertices is connected by an edge, i.e forming a
+triangle. Triads are important in social network analysis as they can be used to determine the stability of a social
+network.
+
+The balance theory states that a social network is balanced if all triads within that network are balanced. For a triad
+to be balanced, the number of negative edges must be even (0 being even). This leads to the following four possible
+triads:
+
+![balancedTriads](/compSci/balancedTriads.png)
+
+The first and last one are the simplest as they are either all positive or all negative. The idea of the second one
+is that it is balanced because "the enemy of my enemy is my friend". The third one is a common scenario that leads to
+issues in social networks. For example, if Alice and Eve are allies and Bob and Eve are alies but Alice and
+Bob are enemies, then this leads to issues in the social network if Eve wants to introduce Alice and Bob to each other.
 
 #### Balanced Signed Graphs
 
+From the above, we can see that a signed graph is balanced if all triads are balanced. Where a triade could also be
+defined as a cycle of length 3, $C_3$.
+
+<Callout type="todo">
+    Example of a balanced signed graph
+</Callout>
+
+### Bipartite Graphs
+
+<Callout type="todo">
+    Add bipartite graphs, didn't they come up often in maths for communication?
+</Callout>
 
 
