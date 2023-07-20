@@ -1,4 +1,4 @@
-import {useState, useEffect, ReactElement} from "react";
+import {useState, useEffect} from "react";
 import Giscus from "@giscus/react";
 
 export default function GiscusComments() {

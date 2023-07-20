@@ -1,0 +1,49 @@
+import Callout from "../../../../../components/Callout/Callout";
+import Graph from "../../../../../components/Graph/Graph";
+
+
+# General Definition
+
+A Graph is one of the most fundamental but also diverse data structures in computer science. A Graph consists of a set
+of vertices and a set of edges which connects pairs of vertices. They are used to represent relationships between
+various entities or elements (the vertices) by connecting with edges.
+
+For example, a graph can be used to represent a social network where the vertices are people and the edges are whether
+they are friends with each other.
+
+export const simpleGraph = {
+    nodes: [
+        {id: 1, label: "Node 1", title: "node 1 tootip text"},
+        {id: 2, label: "Node 2", title: "node 2 tootip text"},
+        {id: 3, label: "Node 3", title: "node 3 tootip text"},
+        {id: 4, label: "Node 4", title: "node 4 tootip text"},
+        {id: 5, label: "Node 5", title: "node 5 tootip text"}
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 2, to: 4},
+        {from: 2, to: 5}
+    ]
+};
+
+<Graph
+    graph={simpleGraph}
+/>
+
+## Graphs of Functions
+
+## Types of Graphs
+
+### Networks vs Graphs
+
+### Trees
+
+### Directed
+
+### Weighted
+
+### Cyclic
+
+### Bipartite
+
