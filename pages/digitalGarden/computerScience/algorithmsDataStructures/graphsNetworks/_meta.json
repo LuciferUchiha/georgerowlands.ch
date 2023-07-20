@@ -3,5 +3,6 @@
   "storingGraphs": "Storing Graphs",
   "topologicalSortOrdering": "Topological Sort/Ordering",
   "graphTraversal": "Graph Traversal",
-  "shortestPath": "Shortest Path"
+  "shortestPath": "Shortest Path",
+  "eulerianPath": "Eulerian path"
 }
