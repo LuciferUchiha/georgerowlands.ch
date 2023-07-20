@@ -20,6 +20,11 @@ export default function Graph({graph, options, events, directed = false}) {
         const defaultOptions = {
             edges: {
                 color: "#7300E6",
+                font: {
+                    color: "#FFFFFF",
+                    size: "12",
+                    strokeWidth: 0,
+                }
             },
             nodes: {
                 color: "#7300E6",
@@ -35,7 +40,7 @@ export default function Graph({graph, options, events, directed = false}) {
             options = {...options, ...{edges: {...options.edges, ...{arrows: {to: false, from: false}}}}}
         }
         return (
-            <div className="border-2 border-primary-600 rounded-md dark:border-primary-700">
+            <div className="mt-5 border-2 border-primary-600 rounded-md dark:border-primary-700">
                 <VisGraph
                     graph={graph}
                     options={options}

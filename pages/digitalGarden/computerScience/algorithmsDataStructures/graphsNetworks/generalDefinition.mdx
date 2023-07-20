@@ -5,8 +5,8 @@ import Graph from "../../../../../components/Graph/Graph";
 # General Definition
 
 A Graph is one of the most fundamental but also diverse data structures in computer science. A Graph consists of a set
-of vertices $V$ and a set of edges $E$. Hence, $G=(V,E)$. They are used to represent relationships between various entities or elements
-(the vertices) by connecting with edges.
+of vertices $V$ and a set of edges $E$ where each edge is an unordered pair. Hence, $G=(V,E)$. They are used to
+represent relationships between various entities or elements (the vertices) by connecting with edges.
 
 For example, a graph can be used to represent a social network where the vertices are people and the edges are whether
 they are friends with each other. In the below graph $G=(V,E)$ where:
@@ -14,7 +14,7 @@ they are friends with each other. In the below graph $G=(V,E)$ where:
 - $V=\{\text{Bob, Alice, Michael, Urs, Karen}\}$ and
 - $E=\{(1,2),(1,3),(2,4),(2,5)\}$
 
-export const simpleGraph = {
+export const friendsGraph = {
     nodes: [
         {id: 1, label: "Bob"},
         {id: 2, label: "Alice"},
@@ -31,7 +31,7 @@ export const simpleGraph = {
 };
 
 <Graph
-    graph={simpleGraph}
+    graph={friendsGraph}
 />
 
 ## Graphs of Functions
@@ -59,25 +59,115 @@ $$
 
 Its domain could be the set of all real numbers $\Bbb{R}$, and its range could also be $\Bbb{R}$. To represent this
 function graphically, we plot points on the Cartesian plane where the $x$-coordinate corresponds to the input value,
-and the $y$-coordinate is the output value obtained by evaluating $f(x)$. By connecting these points, we get a straight
-line, which is the Graph of the Function $f(x) = 2x + 1$.
+and the $y$-coordinate is the output value obtained by evaluating $f(x)$.
 
-<iframe src="https://www.desmos.com/calculator/jmj44mpzfe?embed" width="500" height="500"/>
+<div className="flex justify-center mt-5">
+    <iframe src="https://www.desmos.com/calculator/jmj44mpzfe?embed" width="500" height="500"/>
+</div>
 
 Graphs of Functions play a crucial role in analyzing and understanding the behavior of functions and studying their
 overall patterns and trends.
 
 ## Types of Graphs
 
-### Directed
+### Directed Graphs
 
-### Weighted
+A Directed Graph is a graph where each edge is directed from one vertex to another. In other words, the edges have a
+direction. The previous graph was an example of an undirected graph as we would hope that if person A thinks of person B
+as a friend then Person B feels the same way. However, in a directed graph, this is not necessarily the case.
 
-### Cyclic
+So we can define a directed graph as $G=(V,A)$ where:
+
+- V is again the set of vertices
+- A is a set of ordered pairs of vertices, called arcs, arrows or directed edges (sometimes simply edges with the
+corresponding set named E instead of A). Ordered pairs are used here because (unlike for undirected graphs) the
+direction of an edge $(u,v)$ is important: $(u,v)$ is not the same edge as $(v,u)$. The first vertex is called the
+tail or initial vertex and the second vertex is called the head or terminal vertex.
+
+For example, let us imagine a directed graph where the vertices are the same as the previous example but the edges
+signify if a person has liked another person's post on social media. We then get the below graph $G=(V,A)$ where:
+
+- $V=\{\text{Bob, Alice, Michael, Urs, Karen}\}$ and
+- $A=\{(1,2),(1,3),(2,4),(2,5),(5,2)\}$
+
+
+export const postLikedGraph = {
+    nodes: [
+        {id: 1, label: "Bob"},
+        {id: 2, label: "Alice"},
+        {id: 3, label: "Michael"},
+        {id: 4, label: "Urs"},
+        {id: 5, label: "Karen"}
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 2, to: 4},
+        {from: 2, to: 5},
+        {from: 5, to: 2}
+    ]
+};
+
+<Graph
+    graph={postLikedGraph}
+    directed={true}
+/>
+
+### Weighted Graphs
+
+A weighted graph is a graph where each edge has a weight (a number associated with it). It can be as a triple
+$G = (E, V, w)$ where $w$ is a function that maps edges or directed edges to their weights. So, $w: E \rightarrow \Bbb{R}$
+could be a function for a graph with real numbers as weights.
+
+For example, in a graph where each city is a vertex and each edge is a road between two cities, the weight could
+be the distance in km between them.
+
+export const cityGraph = {
+    nodes: [
+        {id: 1, label: "London"},
+        {id: 2, label: "Paris"},
+        {id: 3, label: "Berlin"}
+    ],
+    edges: [
+        {from: 1, to: 2, value: 343, label: "343", length: 200},
+        {from: 1, to: 3, value: 933, label: "933", length: 400},
+        {from: 2, to: 3, value: 878, label: "878", length: 300},
+    ]
+}
+
+<Graph
+    graph={cityGraph}
+    options={
+        {
+            layout: {
+                randomSeed: 1
+            },
+        }
+    }
+/>
+
+
+### Cyclic Graphs
 
 ### Networks vs Graphs
 
 ### Trees
 
-### Bipartite
+A tree is a special type of graph where there is only one path between any two vertices. This means that there are no
+cycles in a tree. Trees are used in many different algorithms and data structures such as binary search trees. You can
+read more about trees in the [Trees](../trees/generalDefinition) section.
+
+### Bipartite Graphs
+
+### Signed Graphs
+
+A signed graph is a graph in which each edge has a positive or negative sign.
+
+#### Triage?
+
+Only care about the triages here?
+
+#### Balanced Signed Graphs
+
+
 
