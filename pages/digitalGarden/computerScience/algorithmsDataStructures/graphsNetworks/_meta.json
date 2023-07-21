@@ -1,6 +1,7 @@
 {
   "generalDefinition": "General Definition",
   "storingGraphs": "Storing Graphs",
+  "communities": "Communities",
   "topologicalSortOrdering": "Topological Sort/Ordering",
   "graphTraversal": "Graph Traversal",
   "shortestPath": "Shortest Path",

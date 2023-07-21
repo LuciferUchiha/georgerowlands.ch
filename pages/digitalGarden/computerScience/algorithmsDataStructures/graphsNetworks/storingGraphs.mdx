@@ -1,16 +1,43 @@
 # Storing Graphs
 
-There are multiple ways of storing graphs. Depending on the type of graph and the requirements a certain storage method might be preferred.
+Because I am computer scientist I don't just care about using graphs but also about how to store them. There are
+multiple ways of storing graphs. Depending on the type of graph and the requirements a certain storage method might
+be preferred as it might be more efficient in terms of memory or time complexity.
 
 ## Adjacency Matrix
 
-An adjacency matrix is a matrix that is $n \times n$, with $n$ being the number of vertices in the graph. As the name suggests this matrix stores the adjacency of vertices i.e the relationship between vertices (edges).
+An adjacency matrix is the most common and most simple way of storing graphs. If we have a graph with $n$ vertices, we
+create an adjacency matrix with dimensions of $n \times n$. As the name suggests this matrix stores the adjacency of
+vertices i.e. the relationship between the vertices, the edges.
 
-For a weighted graph we have the matrix `int[][] G = new int[n][n]` where the value stored at `G[x][y]` corresponds to the weight of the edge from vertex $x$ (row) to vertex $y$ (col). If there is no edge between 2 vertices then there are multiple ways of conveying this. Either the value is set to 0 or `Integer.MAX_VALUE` or we use an object array (Double or Integer) and set the value to `null`.
+### Weighted and Unweighted Graphs
 
-If the graph is unweighted we can either use the same 2D int array and just store all edge weights as 1 or use a 2D boolean array which interestingly does use less space in java. In Java a normal boolean variable uses 32 bits like an int however in an array each boolean value only takes up 8 bits. 8 bits because that is what the CPU likes to work with, it doesn't like reading/writing a single bit.
+If we have a weighted graph where the weights are integer values we can create the following matrix:
 
-If the graph is undirected then mathematically $G = G^T$ which means if there is an edge between the vertices $x$ and $y$ the value needs to be set at `[x][y]` and `[y][x]`.
+```java
+int[][] G = new int[n][n]
+```
+
+The weight of the edge from vertex $x$ to vertex $y$ would then be stored at `G[x][y]`.
+
+If there is no edge between 2 vertices then there are multiple ways to indicate this. The simplest way would be to set
+the value to 0 (which it already is at initialization) another common approach is to set the weight to `Integer.MAX_VALUE`.
+
+The last possibility but worst in space complexity is to use a `null` value. This is only possible if we use an object array instead of a
+primitive array. This would mean that instead of using `int[][]` we use `Integer[][]`. This would however mean that
+we would end up using a lot more memory as you can read more about [here](https://stackoverflow.com/a/65568047/10994912)
+
+If the graph is unweighted we can use the same int array and just store all edge weights as 1 or 0. We could however
+also use a 2D boolean array which interestingly does use less space in java then a int array. In Java a normal boolean
+variable uses 32 bits like an int. However, in an array each boolean value only takes up 8 bits because that is what the
+CPU likes to work with internally. This means that a boolean array uses 4 times less space than an int array.
+
+### Directed and Undirected Graphs
+
+If the graph is undirected then we commonly set the value at `G[x][y]` and `G[y][x]` to the same value. This means that
+mathematically $G = G^T$ i.e. the matrix is symmetric along the diagonal, and that we could get away with only storing
+the upper or lower triangle of the matrix, which would half the memory usage. However, this would make the code more
+complicated.
 
 The biggest problem with storing graphs with an adjacency matrix is that $O(n^2)$ memory is used and a lot of the space is wasted as in most cases there are only a few edges between vertices and we don't need to be able to store every possible combination.
 
