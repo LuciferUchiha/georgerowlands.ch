@@ -3,6 +3,7 @@ import {DocsThemeConfig} from "nextra-theme-docs";
 import {useRouter} from "next/router";
 import GiscusComments from "./components/Giscus/Giscus";
 import BackToTop from "./components/BackToTop/BackToTop";
+import Image from "next/image";
 
 
 const config: DocsThemeConfig = {
@@ -85,10 +86,11 @@ const config: DocsThemeConfig = {
 
                         href="https://www.buymeacoffee.com/georgerowlands" target="_blank"
                     >
-                        <img
-                            src="buyMeACoffeePurple.png"
+                        <Image
+                            src="/buyMeACoffeePurple.png"
                             alt="Buy Me A Coffee"
-                            style={{height: "41px", width: "174px"}}
+                            width={200}
+                            height={75}
                         />
                     </a>
                 </div>
