@@ -232,6 +232,15 @@ export const cycleGraph = {
 
 To read more about cycle graphs, check out [this article](https://mathworld.wolfram.com/CycleGraph.html)
 
+### Acyclic Graphs
+
+An acyclic graph is a graph that is almost the opposite of a cycle graph. It is a graph that has no cycles. This means
+that there is no path that starts and ends at the same vertex. A popular example of an acyclic graph is a tree.
+
+<Callout type="todo">
+    Example of a acyclic graph i.e. a tree
+</Callout>
+
 ### Signed Graphs
 
 A signed graph is a graph in which each edge has a positive or negative sign. They can be used to represent a
@@ -271,10 +280,25 @@ defined as a cycle of length 3, $C_3$.
     Example of a balanced signed graph
 </Callout>
 
-### Bipartite Graphs
+### N-Mode Networks
+
+An n-mode network is a graph where there are multiple types of vertices and the edges can only connect vertices of
+different types. So in other words the graphs vertices can be split into $n$ disjoint sets and the edges can only
+connect vertices from different sets. A normal graph is a 1-mode network as there is only one type of vertex.
+A 2-mode network is a graph where there are two types of vertices and the edges can only connect vertices of
+different types.
+
+For example, if we have a graph containing people and movies and the edges represent whether a person has watched a
+movie or not.
 
 <Callout type="todo">
-    Add bipartite graphs, didn't they come up often in maths for communication?
+    Example of a 2-mode network
 </Callout>
 
+#### Bipartite Graphs
 
+A 2-mode network is also called a bipartite graph which are very commonly used.
+
+<Callout type="todo">
+    Is this really it is? Seems like there is more to it
+</Callout>
