@@ -35,6 +35,21 @@ export const friendsGraph = {
     graph={friendsGraph}
 />
 
+## Degrees
+
+If we do some quick analysis of this graph using the degree function which returns the number of edges connected to a
+vertex, we can see that $\text{deg(Alice)}=3$ and therefore Alice has the most friends in this social network.
+
+## Order
+
+The order of a graph is the number of vertices in the graph. So in the above example, the order of the graph is 5. So it
+could also be called an order-5 graph.
+
+## Diameter
+
+The diameter of a graph is the longest shortest path between two vertices in the graph. So in the above example, the
+diameter of the graph is 3 as the longest shortest path is between Michael and Karen.
+
 ## Graphs of Functions
 
 You might be more familiar with Graphs when talking about mathematical functions. In mathematics, a Graph of a Function
@@ -126,6 +141,11 @@ export const postLikedGraph = {
     graph={postLikedGraph}
     directed={true}
 />
+
+When talking about degrees in a directed graph, we more often distinguish between the in-degree and out-degree of a vertex.
+The in-degree of a vertex is the number of edges that are pointing to that vertex and the out-degree is the number of
+edges that are pointing away from that vertex. So in the above example, the in-degree of Alice is 2 and the out-degree
+is also 2.
 
 ### Weighted Graphs
 
@@ -354,7 +374,7 @@ To take this into account we can use the following formula to calculate the weig
 and $b$:
 
 $$
-w_{ab} = \sum_{k \in V_2()} \frac{d_k^a d_k^b}{operatorname{deg}(k) - 1}
+w_{ab} = \sum_{k \in V_2} \frac{d_k^a d_k^b}{\text{deg}(k) - 1}
 $$
 
 - Where $V_2$ is the set that contains the vertices of the second type, i.e. the one that will be projected away (in the
