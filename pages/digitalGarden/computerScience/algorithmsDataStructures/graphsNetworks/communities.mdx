@@ -1,0 +1,138 @@
+import Callout from "../../../../../components/Callout/Callout";
+
+Communities are subgraphs (subsets or groups of vertices of the original graph), that are better connected to each
+other than to the rest of the graph. Communities are very important when analyzing social networks and networks in
+general as they often form around a context or a topic such as family, friends, work, hobbies, etc.
+
+These communities can then be further analyzed such as to find out who are the most important people in a community,
+what is there impact on the community, and how do they relate to other communities.
+
+![graphCommunities](/compSci/graphCommunities.png)
+
+## Connected Components
+
+Of all the communities, the most basic one with the simplest definition is the connected component. If a connected
+component includes a large portion of the graph, then it is commonly referred to as the giant component.
+
+<Callout type="todo">
+    Code or algorithm to find connected components
+</Callout>
+
+### Undirected Graphs
+
+In an undirected graph, a connected component is a subset of vertices such that there is a path between every pair of
+vertices in the subset. In other words, a connected component is a subgraph of the original graph where all vertices
+are connected to each other.
+
+This could be useful for example to find out if a graph is fully connected or not. If the graph has only one connected
+component, then it is fully connected. If it has more than one connected component, then it is not fully connected.
+
+If we think of a communication network, then a connected component would be a group of people that can communicate with
+each other. If there are multiple connected components, then there are groups of people that cannot communicate with
+each other.
+
+![connectedComponents](/compSci/connectedComponents.png)
+
+### Directed Graphs
+
+In a directed graph the directions of the edges matter. This gives us two types of connected components, weakly
+connected components and strongly connected components.
+
+#### Weakly Connected Components
+
+Weakly connected components are the same as connected components in an undirected graphs. So you just ignore the
+directions of the edges.
+
+![weaklyConnectedComponents](/compSci/weaklyConnectedComponents.png)
+
+#### Strongly Connected Components
+
+Strongly connected components are a bit more complex. In a directed graph, a strongly connected component is a subset of
+vertices such that there is a path between every pair of vertices in the subset, but the path must follow the direction
+of the edges.
+
+![stronglyConnectedComponents](/compSci/stronglyConnectedComponents.png)
+
+## Cliques
+
+Cliques focus on undirected graphs. A clique is a complete subgraph of the original graph, i.e a subgraph where all
+vertices are connected to each other. Cliques are very important in social networks as they represent groups of people
+that all know each other, however in a communication network they would represent a group with redundant connections.
+
+Because cliques are complete subgraphs, they are very easy to find but also happen to be very rare. In the graph below
+the two cliques have been highlighted in red and blue.
+
+![cliques](/compSci/cliques.png)
+
+<Callout type="todo">
+    Code or algorithm to find cliques
+</Callout>
+
+### k-Core
+
+For a k-Core the rules of a clique are slightly relaxed. A k-Core is a subgraph where all vertices are at least connected
+to $k$ other vertices in the subgraph.
+
+<Callout type="todo">
+    Visualization of k-Core
+</Callout>
+
+Although this is a relaxation of the rules, it is still a very strict rule and
+can lead to vertices that don't fulfill the $k$ connections but are only connected to other vertices in a core to not
+be included in the core.
+
+<Callout type="todo">
+    Show the issue + maybe algorithm to find k-Core
+</Callout>
+
+<Callout type="todo">
+    Degeneracy of a graph and k-degenerate graphs is exactly this
+</Callout>
+
+### p-Clique
+
+The idea of a p-clique is also to relax the rules of a clique whilst also solving the above-mentioned issue of the
+k-core. In a p-clique, the p stands for a percentage in decimal i.e. a ratio. So in a p-clique at least the given
+percentage of vertices must be connected to other vertices in the subgraph.
+
+So if we have a 0.5-clique, then at least 50% of the vertices must be connected to other vertices in the subgraph. This
+then allows for the vertices that don't fulfill the rule to be included in the subgraph for a k-core but are only
+connected to other vertices in the subgraph to be included in the subgraph.
+
+<Callout type="todo">
+    Visualization of p-Clique
+</Callout>
+
+### n-Clique
+
+<Callout type="warning">
+    Sometimes cliques are named after the number of vertices they contain. For example a clique with 3 vertices is
+    called a 3-clique, a clique with 4 vertices is called a 4-clique, etc. this can be generalized to a k-clique. Not an
+    n-clique though, that is something else, but when it just says 4-clique it can be ambiguous.
+</Callout>
+
+The idea of an n-clique is that we want a maximal subgraph, i.e. with the most vertices, where each pair of vertices can
+be connected by a path of length at most n. So a 1-clique is just a normal clique, a 2-clique is a clique where each
+pair of vertices can be connected by a path of length at most 2, etc.
+
+<Callout type="warning">
+    The path doesn't have to be the shortest path, just a path of length at most n. And the path can go over any vertex,
+    not just vertices that are part of the clique.
+</Callout>
+
+This can lead to two interesting scenarios:
+
+1. The diameter of the subgraph can actually be longer then n. This is due to the path being able to go over any vertex,
+not just vertices that are part of the clique. So in the example below, the diameter of the subgraph is 3 even though it
+is a 2-clique.
+
+![nCliqueDiameter](/compSci/nCliqueDiameter.png)
+
+2. The subgraph can be disconnected. In the example below you can see two possible 2-cliques of many for the given graph.
+Interestingly, they are both disconnected, because if one of the vertices inbetween is included, then a different vertex
+can no longer be included.
+
+![nCliqueDisconnected](/compSci/nCliqueDisconnected.png)
+
+
+## Clusters
