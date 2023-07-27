@@ -303,19 +303,70 @@ A 2-mode network is also called a bipartite graph which are very commonly used.
     Is this really it is? Seems like there is more to it
 </Callout>
 
-#### Bipartite Network Projection
+#### Bipartite Network Projections
 
 The idea of a bipartite network projection is to project a bipartite graph to a "normal" graph i.e. 1-mode network. This
 can be done in a few ways.
 
-<Callout type="todo">
-    Need to do this
-</Callout>
-
 ##### Simple Projection
+
+In the simple bipartite network projection, we project the bipartite graph to a 1-mode network by connecting two vertices
+if they have a common neighbor in the bipartite graph. In other words we connect two vertices if they are both
+connected to the same vertex in the bipartite graph.
+
+For example, if we have a bipartite graph with people and events and the edges represent whether a person has attended
+an event or not. We can then project this bipartite graph to a 1-mode network where the vertices are people, and they
+are connected if they have attended the same event.
+
+By doing this we can quickly find people that have been to the same events and might have similar interests.
+
+<Callout type="todo">
+    Example of a simple bipartite network projection
+</Callout>
 
 ##### Weighted Projection
 
+The problem with the simple projection is that it does not take into account how many edges two vertices have in common.
+For example, if two people have been to the same event 10 times, they will be connected the same way as two people that
+have only been to the same event once. To solve this, we can use a weighted projection.
+
+In a weighted projection, we connect two vertices if they have a common neighbor, just like in the simple projection,
+but the weight of the edge is the number of common neighbors.
+
+The weighted projection could then also be normalized by dividing each weight by the maximum weight of the graph. This
+would then give us a value between 0 and 1.
+
+<Callout type="todo">
+    Example of a simple bipartite network projection
+</Callout>
+
 ##### Newmann-weighted Projection
 
-also known as Hyperbolic weighting
+The idea of this projection is to take into account the number of common neighbors that the two vertices have but also
+the degree of the common neighbor, i.e. the number of edges connected to the common neighbor. Why this can be valuable can be
+demonstrated with the following simple example. If we have an event like a concert where 5000 people attended, a birthday
+party where 15 people attended and an Open day at a university where 100 people attended. We can assume that if two people
+the party and the open day, they are more likely to have similar interests than if they both attended the concert, or we
+could simply state that it is more likely that they came in contact with each other at the party or open day than at the
+concert.
+
+To take this into account we can use the following formula to calculate the weight of the edge between two vertices $a$
+and $b$:
+
+$$
+w_{ab} = \sum_{k \in V_2()} \frac{d_k^a d_k^b}{operatorname{deg}(k) - 1}
+$$
+
+- Where $V_2$ is the set that contains the vertices of the second type, i.e. the one that will be projected away (in the
+example above, the events).
+- And where $d_k^a$ is 1 if $a$ and $k$ are connected and 0 otherwise and $d_k^b$ is 1 if $b$ and $k$ are connected.
+
+So if we have the graph below and calculate the weight of the edge between $a$ and $b$ we get:
+
+<Callout type="todo">
+    Add the complete graph from the script.
+</Callout>
+
+$$
+\frac{1}{3} + 1 + \frac{1}{2} = \frac{11}{6}
+$$

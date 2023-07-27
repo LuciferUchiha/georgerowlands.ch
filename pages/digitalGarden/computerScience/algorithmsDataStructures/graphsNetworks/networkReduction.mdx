@@ -37,6 +37,18 @@ departments.
 Ego/node/focus view is a view of the network that is centered around a specific node. In this view, the selected node
 is the "ego," and its immediate connections, i.e. its neighbours are analyzed.
 
+### Filtering Edges
+
+Another common method is remove edges from the network based on some criteria. For example if we have a network of
+people in a company, we can remove all edges that are not between people in the same department to analyze how each
+department communicates within.
+
+Or if we had a network with weights on the edges, we could remove all edges that have a weight below a certain threshold.
+
 ## Sampling
 
 Sampling is the process of taking a subset of the data and working with that instead of the entire network.
+
+<Callout type="todo">
+    This is probably more general and doesn't need to be in this section
+</Callout>
