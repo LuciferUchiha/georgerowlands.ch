@@ -136,3 +136,75 @@ can no longer be included.
 
 
 ## Clusters
+
+In general clustering is the process of grouping similar objects together. In graph theory, the clustering process can
+be seen as a way to group vertices together i.e. to find communities that aren't based on specific rules like cliques
+or connected components.
+
+There are two main approaches to clustering graphs:
+
+- bottom-up: start with each vertex in its own cluster and then merge clusters together
+- top-down: start with all vertices in one cluster and then split the cluster into smaller clusters
+
+### Girvan-Newman Clustering
+
+The Girvan-Newman clustering algorithm is a bottom-up approach to clustering which is based on edge betweenness, hence
+it is also called edge betweenness clustering. The idea is to iteratively calculate the edge-betweenness of each edge in
+the graph and then remove the edge with the highest edge-betweenness.
+
+<Callout type="todo">
+    Visualization of Girvan-Newman Clustering & link to edge-betweenness, this chapter then probably needs to be moved
+    after the edge-betweenness chapter. Betweenness centrality is the wikipedia article that explains it best.
+</Callout>
+
+The thought process behind this is that the edges with the highest edge-betweenness are the edges that have the highest
+information flow. So by removing these edges, we are removing the edges that connect two groups/clusters/communities
+together. Eventually this will lead to two components, which are then the clusters.
+
+<Callout type="todo">
+    Code?
+</Callout>
+
+The issue with this approach is that it is very computationally expensive. The edge-betweenness of each edge has to be
+calculated, which is $O(|V||E|)$ and then that has to be done iteratively multiple times so the overall complexity can
+be summarized to $O(n^3)$ which is not ideal for large graphs.
+
+### LPA - Label Propagation Algorithm
+
+The LPA is a more general algorithm which doesn't have to just be used for clustering graphs it can also be used to
+cluster data in general. However, I will explain it in the context of graph clustering.
+
+<Callout type="todo">
+    Maybe one day this can be done in the context of semi-supervised labeling
+</Callout>
+
+LPA consists of 2 parts, the preparation and the actual algorithm. In the preparation we do the following:
+
+1. We assign each vertex a unique label from $0$ to $|V| - 1$. The labels in the end will be the clusters, which makes
+this a bottom-up approach.
+
+2. We perform graph coloring. I will not go into detail about graph coloring here, but the idea is to color the graph
+such that no two connected/neighboring vertices have the same color whilst using the least amount of colors possible.
+
+<Callout type="todo">
+    Maybe add a link to the graph coloring chapter if it ever gets written.
+</Callout>
+
+Once the preparation is done, we can start the actual algorithm. The algorithm is very simple:
+
+For each color (always in the same order) we go through each vertex (also always in the same order) and check the
+labels of its neighbors and count how many times each one occurs. If there is a label that occurs more often than the
+others, then we assign that label to the vertex. If there are multiple labels that occur the same amount of times, then
+there are two options:
+
+- If the vertexes label is one of the labels that occur the most, then we keep the label.
+- If the vertexes label is not one of the labels that occur the most, then we assign it the label with the highest value.
+Lowest would also work, as long as it is consistent.
+
+This is repeated until the labels don't change anymore. The labels in the end then represent the clusters.
+
+<Callout type="todo">
+    Code and visualization
+</Callout>
+
+### Louvain Clustering
