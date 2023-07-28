@@ -53,7 +53,41 @@ To normalize the closeness centrality, it can be divided by $|V| - 1$.
 
 ### Betweenness Centrality
 
+If we use the degree centrality on the below graph, we can see that the green ones are the most important. However,
+we can clearly visually see that the vertex inbetween them is the most important one as it connects the two communities.
+Because of this we could say that that vertex is in Brokerage position or is a Broker/Gatekeeper of information.
+
+![degreeCentralityIssue](/compSci/degreeCentralityIssue.png)
+
+The betweenness centrality is a global measure that takes into account the whole graph and tries to solve the above
+issue. The idea of the betweenness centrality is that a vertex is important if a lot of shortest paths go through it.
+
+To calculate the betweenness centrality we need to calculate the number of shortest paths that go through a vertex $v$.
+So for every pair of vertices $u$ and $w$ we need to calculate the shortest paths and then count how many of them go
+through $v$. The formula for the betweenness centrality is as follows:
+
+$$
+\text{betweennessCentrality}(v) = \sum_{u \neq v \neq w}{\frac{\sigma_{uw}(v)}{\sigma_{uw}}}
+$$
+
+Where $\sigma_{uw}$ is the number of shortest paths from $u$ to $w$ and $\sigma_{uw}(v)$ is the number of shortest paths
+from $u$ to $w$ that go through $v$.
+
+<Callout type="info">
+The fraction in the formula leads to the weight being split if there are multiple shortest paths between $u$ and $w$.
+</Callout>
+
+![betweennessCentrality](/compSci/betweennessCentrality.png)
+
+<Callout type="todo">
+    visualize betweenness centrality and the calculations, normalizing isn't so trivial
+</Callout>
+
 ### Eigenvector Centrality
+
+### Katz Centrality
+
+### PageRank
 
 ### Prestige
 
@@ -96,11 +130,22 @@ $v$.
     visualize proximity prestige with calculation
 </Callout>
 
-## Graph Centrality
+## Group Centrality
+
+The goal of group centrality measures is to determine the importance of a group of vertices in a graph. These measures
+are based on the vertex centrality measures, but they are more complex and expensive to calculate.
 
 ### Degree Group Centrality
 
+The degree group centrality is the simplest group centrality measure. It is simply the fraction of the number of
+vertices outside the group that are directly connected to the group. So in the following graph with the group $G$ being
+defined as $G={v_6,v_7,v_8}$ the degree group centrality would be $\frac{3}{10}$ so $0.3$.
+
+![degreeGroupCentrality](/compSci/degreeGroupCentrality.png)
+
 ### Closeness Group Centrality
+
+
 
 ### Betweenness Group Centrality
 
