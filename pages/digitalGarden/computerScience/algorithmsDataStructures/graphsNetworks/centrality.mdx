@@ -1,0 +1,114 @@
+import Callout from "../../../../../components/Callout/Callout";
+
+## Vertex Centrality
+
+Vertex centrality measures can be used to determine the importance of a vertex in a graph. There are many different
+vertex centrality measures, each with their own advantages and disadvantages. In a communication network a vertex with
+high centrality is an actor that is important for the communication in the network, hence they are also often called
+actor centrality measures. An actor with high centrality can control the flow of information in the network for good or
+bad. They can also be used to determine key actors in a network, for example in a power grid it is important to know
+which vertices are key actors, because if they fail, the whole network fails.
+
+### Degree Centrality
+
+The degree centrality is the simplest centrality measure. It is simply the number of edges connected to a vertex. The
+degree centrality is a local measure, because it only takes into account the direct neighbors of a vertex. It can be
+calculated using the $\text{deg()}$ function. Or alternatively using the $\text{indeg()}$ and $\text{outdeg()}$
+depending on whether the graph is directed or not and the use-case.
+
+<Callout type="todo">
+    visualize degree centrality
+</Callout>
+
+The degree centrality can be normalized by dividing it by the maximum possible degree in the graph. This is rarely done
+in practice, because a lot of values will be small, and we are most often interested in the actual degree of a vertex.
+
+The interpretation of the degree centrality is pretty self-explanatory. And is closely related to the
+[prestige](#prestige) of a vertex.
+
+### Closeness Centrality
+
+Unlucky the degree centrality, the closeness centrality is a global measure, because it takes into account the whole
+graph, however the consequence of this is that it is more expensive to calculate. The idea of the closeness centrality
+is that a vertex is important if it is close to the center of the graph. So a vertex can be important as long as it is
+close to the center of the graph, even if it only has one edge. As seen by the green vertex in the following graph.
+
+![Closeness Centrality](/compSci/closenessCentrality.png)
+
+The closeness centrality for a vertex $v$ is calculated by taking the inverse distance of all shortest paths from the
+vertex $v$ to all other vertices in the graph. This can be interpreted as how efficiently can all the other vertices
+be reached from $v$. The formula for the closeness centrality is as follows:
+
+$$
+\text{closenessCentrality}(v) = \sum_{u \in V \setminus \{v\}}{d(v,u)^{-1}} = \sum_{u \in V \setminus \{v\}}{\frac{1}{d(v,u)}}
+$$
+
+Where $d(v,u)$ is the length of the shortest path from $v$ to $u$.
+
+<Callout type="todo">
+    visualize closeness centrality and the calculations
+</Callout>
+
+To normalize the closeness centrality, it can be divided by $|V| - 1$.
+
+### Betweenness Centrality
+
+### Eigenvector Centrality
+
+### Prestige
+
+In a directed Graph it is possible to analyze the prestige of a vertex, i.e the stature or reputation associated with
+a vertex. The vertices relationships however need to resemble this. For example, if a person has a lot of followers
+but doesn't follow a lot of people, then that person has a high prestige and stature, for example a celebrity.
+
+#### Popularity
+
+The simplest way to measure prestige is to count the number of incoming edges, i.e using the $\text{indeg()}$ function.
+This is called popularity.
+
+<Callout type="todo">
+    visualize popularity
+</Callout>
+
+#### Proximity Prestige
+
+The proximity prestige measure does not just account for the number of directly incoming edges, but also the number of
+indirectly incoming edges, i.e the number of paths that lead to the vertex. However, the longer the path, the lower
+prestige from that path is weighted.
+
+So simply put the proximity prestige is the sum of all paths that lead to the vertex weighted by the length of the path.
+
+The formula for the proximity prestige can be summarized pretty simply:
+
+> The proximity prestige of a vertex is the number of vertices that have a path to the vertex divided by the average
+path length leading to the vertex.
+
+More formally:
+
+$$
+\text{proximityPrestige}(v) = \frac{\frac{|I|}{n-1}}{\frac{\sum_{i \in I}{d(i,v)}}{|I|}}
+$$
+
+Where $I$ is the set of all vertices that have a path to $v$ and $d(u,v)$ is the length of the shortest path from $u$ to
+$v$.
+
+<Callout type="todo">
+    visualize proximity prestige with calculation
+</Callout>
+
+## Graph Centrality
+
+### Degree Group Centrality
+
+### Closeness Group Centrality
+
+### Betweenness Group Centrality
+
+## Network Centrality
+
+### Degree Network Centrality
+
+### Closeness Network Centrality
+
+### Betweenness Network Centrality
+

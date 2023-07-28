@@ -1,10 +1,11 @@
 {
   "generalDefinition": "General Definition",
+  "multirelational": "Multirelational Graphs",
   "storingGraphs": "Storing Graphs",
   "networkReduction": "Network Reduction",
   "communities": "Communities",
-  "metrics": "Metrics",
   "centrality": "Centrality",
+  "metrics": "Metrics",
   "statistics": "Statistics with Graphs",
   "linkPrediction": "Link Prediction",
   "topologicalSortOrdering": "Topological Sort/Ordering",
