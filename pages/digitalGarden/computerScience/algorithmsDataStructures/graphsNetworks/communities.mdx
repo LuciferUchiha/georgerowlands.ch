@@ -201,10 +201,51 @@ there are two options:
 - If the vertexes label is not one of the labels that occur the most, then we assign it the label with the highest value.
 Lowest would also work, as long as it is consistent.
 
-This is repeated until the labels don't change anymore. The labels in the end then represent the clusters.
+This is repeated until the labels don't change anymore. The labels in the end then represent the clusters. The algorithm
+is very simple and fast making it a good choice for large graphs. However, it is not
+deterministic, i.e. it can lead to different results depending on the order of the colors and vertices. This can be
+mitigated by running the algorithm multiple times and then taking the most common result.
 
 <Callout type="todo">
-    Code and visualization
+    Code and visualization, how does it work with directed graphs?
 </Callout>
 
 ### Louvain Clustering
+
+The Louvain clustering algorithm is a bottom-up greedy approach to clustering which is based on modularity. So we first
+need to understand what modularity is.
+
+#### Modularity
+
+Modularity is a metric that measures the quality of a clustering. The idea is to compare the number of edges within a
+cluster with the number of edges between clusters. A good clustering would then have a lot of edges within a cluster
+and not many edges between clusters.
+
+<Callout type="todo">
+    Finish this seems annoying
+</Callout>
+
+#### The Louvain Algorithm
+
+The Louvain algorithm then tries to maximize the modularity of a graph in an iterative process until the modularity
+cannot be increased anymore, hence it is a greedy approach.
+
+Initially each vertex is in its own cluster. We then iteratively perform the following steps:
+
+- **Modularity Optimization:** For each vertex we check how the modularity would change if we would
+move it to a neighboring cluster. If the modularity would increase, then we move the vertex to the neighboring cluster
+which would increase the modularity the most. If the modularity would not increase, then we leave the vertex in its
+current cluster. Once we have gone through all vertices, we move on to the next step.
+- **Cluster Aggregation:** We then aggregate all vertices in the same cluster into a single vertex. This vertex has a
+self-looping edge with a weight equal to the sum of all the edges of the vertices in the cluster. The vertices resembling
+the clusters are then connected to each other with edges of weight equal to the sum of all the edges between the
+clusters before the aggregation. We then go back to the first step and repeat the process until the modularity cannot be
+increased anymore.
+
+## Graph Connectivity
+
+<Callout type="todo">
+    Do this
+</Callout>
+
+
