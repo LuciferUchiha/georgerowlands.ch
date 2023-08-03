@@ -2,6 +2,15 @@ import Callout from "../../../../../components/Callout/Callout";
 
 ## Neighborhoods
 
+The neighborhood of a vertex $v$ is the set of all vertices that are connected to $v$ by an edge, and is denoted by
+$N(v)$ or $N_G(v)$ if the graph is not ambiguous. The neighborhood of a vertex is also sometimes referred to as the open
+neighborhood when it does not include the vertex itself $v$, and the closed neighborhood when it does include the vertex
+itself. The default is the open neighborhood, whereas the closed neighborhood is denoted by $N[v]$ or $N_G[v]$.
+
+<Callout type="todo">
+    Add visualization of neighborhoods
+</Callout>
+
 ## Communities
 
 Communities are subgraphs (subsets or groups of vertices of the original graph), that are better connected to each
@@ -70,6 +79,35 @@ the two cliques have been highlighted in red and blue.
 
 <Callout type="todo">
     Code or algorithm to find cliques
+</Callout>
+
+
+#### Clustering Coefficient
+
+The clustering coefficient is a metric that measures how close a graph is to being a clique (don't ask me why it isn't
+called Clique Coefficient). There are two different versions of the clustering coefficient, the global clustering
+coefficient and the local clustering coefficient, where the global clustering coefficient is just the average of the
+local clustering coefficients.
+
+The idea behind the local clustering coefficient is to check how many of the neighbors of a vertex are connected to each
+other. If all neighbors are connected to each other, then the local clustering coefficient for that vertex is $1$. More
+formally, the local clustering coefficient for a vertex $v$ is defined as:
+
+$$
+\text{localClusterCoeff}(v) = \frac{2 \cdot \text{numEdgesBetweenNeighbors}(v)}{|N(v)| \cdot (|N(v)| - 1)}
+$$
+
+where $N(v)$ denotes the set of neighbors of $v$.
+
+The global clustering coefficient is then just the average of the local clustering coefficients of all vertices in the
+graph.
+
+$$
+\text{globalClusterCoeff}(G) = \frac{1}{|V|} \sum_{v \in V} \text{localClusterCoeff}(v)
+$$
+
+<Callout type="todo">
+    Example of clustering coefficient calculation for clique and non-clique.
 </Callout>
 
 #### k-Core
@@ -245,13 +283,3 @@ self-looping edge with a weight equal to the sum of all the edges of the vertice
 the clusters are then connected to each other with edges of weight equal to the sum of all the edges between the
 clusters before the aggregation. We then go back to the first step and repeat the process until the modularity cannot be
 increased anymore.
-
-#### Clustering Coefficient
-
-## Graph Connectivity
-
-### Bridges
-
-### Cut Vertices
-
-

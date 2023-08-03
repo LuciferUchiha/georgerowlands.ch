@@ -1,0 +1,46 @@
+
+Graph connectivity is also known as graph resilience and is a measure of how well a graph can maintain its connectivity
+when vertices or edges are removed, i.e how many vertices or edges can be removed before the graph becomes disconnected
+(from one connected component to multiple connected components) or has a higher number of connected components.
+
+With this analysis technique we can find out how robust a graph is, i.e. how well it can handle failures which can be
+very useful in real world applications such as communication, transportation, etc.
+
+## Bridges
+
+A Bridge is an edge that if removed would increase the number of connected components in the graph. In the graph below
+you can quiet clearly see that the edge between vertices x and y is a bridge.
+
+<Callout type="todo">
+    Add bridge
+</Callout>
+
+## Cut Vertices
+
+The same idea as a bridge also applies to vertices. A vertex is a cut vertex if removing it would increase the number
+of connected components in the graph. In the graph below you can quiet clearly see that the vertex x is a cut vertex.
+These cut vertices are very important vertices as they are brokers between different parts of the graph.
+
+## k-Connected Graphs
+
+### k-Vertex-Connected Graphs
+
+A graph is $k$-vertex-connected if it has at least $k+1$ vertices and at least $k$ vertices have to be removed to disconnect
+the graph.
+
+The vertex connectivity of a graph $G$ is the largest $k$ such that $G$ is $k$-vertex-connected. So for example the graph
+below has a vertex connectivity of 2, because it is 2-vertex-connected, but not 3-vertex-connected.
+
+<Callout type="todo">
+    Add graph
+</Callout>
+
+### k-Edge-Connected Graphs
+
+The same idea as for vertex connectivity also applies to edge connectivity. A graph is $k$-edge-connected if it has at
+least $k+1$ vertices and at least $k$ edges have to be removed to disconnect the graph.
+
+<Callout type="todo">
+    Add graph
+</Callout>
+
