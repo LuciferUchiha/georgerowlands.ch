@@ -145,9 +145,24 @@ defined as $G={v_6,v_7,v_8}$ the degree group centrality would be $\frac{3}{10}$
 
 ### Closeness Group Centrality
 
+The closeness group centrality measures how close the group is to the other vertices in the graph. It is calculted by
+adding up all inverse distances from the vertices outside the group to the closest vertex in the group. So in the
+same graph and group $G={v_6,v_7,v_8}$ as above the closeness group centrality would be:
 
+$$
+1+1+1+\frac{1}{2}+\frac{1}{2}+\frac{1}{2}+\frac{1}{2}+\frac{1}{2}+\frac{1}{2}+\frac{1}{3} = 6.333
+$$
+
+It can be simply normalized by dividing it by the number of vertices outside the group, which would lead to $0.6333$.
 
 ### Betweenness Group Centrality
+
+The betweenness group centrality measures how many shortest paths go through the group. It is calculated by counting
+how many shortest paths between all the vertices outside the group go through the group.
+
+<Callout type="todo">
+    visualize betweenness group centrality and calculations
+</Callout>
 
 ## Network Centrality
 

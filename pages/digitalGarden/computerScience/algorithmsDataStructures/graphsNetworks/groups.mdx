@@ -1,5 +1,9 @@
 import Callout from "../../../../../components/Callout/Callout";
 
+## Neighborhoods
+
+## Communities
+
 Communities are subgraphs (subsets or groups of vertices of the original graph), that are better connected to each
 other than to the rest of the graph. Communities are very important when analyzing social networks and networks in
 general as they often form around a context or a topic such as family, friends, work, hobbies, etc.
@@ -9,7 +13,7 @@ what is there impact on the community, and how do they relate to other communiti
 
 ![graphCommunities](/compSci/graphCommunities.png)
 
-## Connected Components
+### Connected Components
 
 Of all the communities, the most basic one with the simplest definition is the connected component. If a connected
 component includes a large portion of the graph, then it is commonly referred to as the giant component.
@@ -18,7 +22,7 @@ component includes a large portion of the graph, then it is commonly referred to
     Code or algorithm to find connected components
 </Callout>
 
-### Undirected Graphs
+#### Undirected Graphs
 
 In an undirected graph, a connected component is a subset of vertices such that there is a path between every pair of
 vertices in the subset. In other words, a connected component is a subgraph of the original graph where all vertices
@@ -33,19 +37,19 @@ each other.
 
 ![connectedComponents](/compSci/connectedComponents.png)
 
-### Directed Graphs
+#### Directed Graphs
 
 In a directed graph the directions of the edges matter. This gives us two types of connected components, weakly
 connected components and strongly connected components.
 
-#### Weakly Connected Components
+##### Weakly Connected Components
 
 Weakly connected components are the same as connected components in an undirected graphs. So you just ignore the
 directions of the edges.
 
 ![weaklyConnectedComponents](/compSci/weaklyConnectedComponents.png)
 
-#### Strongly Connected Components
+##### Strongly Connected Components
 
 Strongly connected components are a bit more complex. In a directed graph, a strongly connected component is a subset of
 vertices such that there is a path between every pair of vertices in the subset, but the path must follow the direction
@@ -53,7 +57,7 @@ of the edges.
 
 ![stronglyConnectedComponents](/compSci/stronglyConnectedComponents.png)
 
-## Cliques
+### Cliques
 
 Cliques focus on undirected graphs. A clique is a complete subgraph of the original graph, i.e a subgraph where all
 vertices are connected to each other. Cliques are very important in social networks as they represent groups of people
@@ -68,7 +72,7 @@ the two cliques have been highlighted in red and blue.
     Code or algorithm to find cliques
 </Callout>
 
-### k-Core
+#### k-Core
 
 For a k-Core the rules of a clique are slightly relaxed. A k-Core is a subgraph where all vertices are at least connected
 to $k$ other vertices in the subgraph.
@@ -89,7 +93,7 @@ be included in the core.
     Degeneracy of a graph and k-degenerate graphs is exactly this
 </Callout>
 
-### p-Clique
+#### p-Clique
 
 The idea of a p-clique is also to relax the rules of a clique whilst also solving the above-mentioned issue of the
 k-core. In a p-clique, the p stands for a percentage in decimal i.e. a ratio. So in a p-clique at least the given
@@ -103,7 +107,7 @@ connected to other vertices in the subgraph to be included in the subgraph.
     Visualization of p-Clique
 </Callout>
 
-### n-Clique
+#### n-Clique
 
 <Callout type="warning">
     Sometimes cliques are named after the number of vertices they contain. For example a clique with 3 vertices is
@@ -135,7 +139,7 @@ can no longer be included.
 ![nCliqueDisconnected](/compSci/nCliqueDisconnected.png)
 
 
-## Clusters
+### Clusters
 
 In general clustering is the process of grouping similar objects together. In graph theory, the clustering process can
 be seen as a way to group vertices together i.e. to find communities that aren't based on specific rules like cliques
@@ -146,7 +150,7 @@ There are two main approaches to clustering graphs:
 - bottom-up: start with each vertex in its own cluster and then merge clusters together
 - top-down: start with all vertices in one cluster and then split the cluster into smaller clusters
 
-### Girvan-Newman Clustering
+#### Girvan-Newman Clustering
 
 The Girvan-Newman clustering algorithm is a bottom-up approach to clustering which is based on edge betweenness, hence
 it is also called edge betweenness clustering. The idea is to iteratively calculate the edge-betweenness of each edge in
@@ -169,7 +173,7 @@ The issue with this approach is that it is very computationally expensive. The e
 calculated, which is $O(|V||E|)$ and then that has to be done iteratively multiple times so the overall complexity can
 be summarized to $O(n^3)$ which is not ideal for large graphs.
 
-### LPA - Label Propagation Algorithm
+#### LPA - Label Propagation Algorithm
 
 The LPA is a more general algorithm which doesn't have to just be used for clustering graphs it can also be used to
 cluster data in general. However, I will explain it in the context of graph clustering.
@@ -210,12 +214,12 @@ mitigated by running the algorithm multiple times and then taking the most commo
     Code and visualization, how does it work with directed graphs?
 </Callout>
 
-### Louvain Clustering
+#### Louvain Clustering
 
 The Louvain clustering algorithm is a bottom-up greedy approach to clustering which is based on modularity. So we first
 need to understand what modularity is.
 
-#### Modularity
+##### Modularity
 
 Modularity is a metric that measures the quality of a clustering. The idea is to compare the number of edges within a
 cluster with the number of edges between clusters. A good clustering would then have a lot of edges within a cluster
@@ -225,7 +229,7 @@ and not many edges between clusters.
     Finish this seems annoying
 </Callout>
 
-#### The Louvain Algorithm
+##### The Louvain Algorithm
 
 The Louvain algorithm then tries to maximize the modularity of a graph in an iterative process until the modularity
 cannot be increased anymore, hence it is a greedy approach.
@@ -242,10 +246,12 @@ the clusters are then connected to each other with edges of weight equal to the 
 clusters before the aggregation. We then go back to the first step and repeat the process until the modularity cannot be
 increased anymore.
 
+#### Clustering Coefficient
+
 ## Graph Connectivity
 
-<Callout type="todo">
-    Do this
-</Callout>
+### Bridges
+
+### Cut Vertices
 
 
