@@ -111,11 +111,31 @@ complete graph contains all possible edges. A complete graph with $n$ vertices i
 
 For example, the below graph is a complete graph with 5 vertices, $K_5$.
 
-<Callout type="todo">
-    Example of a balanced signed graph
+export const completeGraph = {
+    nodes: [
+        {id: 1, label: "1"},
+        {id: 2, label: "2"},
+        {id: 3, label: "3"},
+        {id: 4, label: "4"},
+        {id: 5, label: "5"}
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 1, to: 4},
+        {from: 1, to: 5},
+        {from: 2, to: 3},
+        {from: 2, to: 4},
+        {from: 2, to: 5},
+        {from: 3, to: 4},
+        {from: 3, to: 5},
+        {from: 4, to: 5}
+    ]
+};
 
-    How do cliques relate to complete graphs?
-</Callout>
+<Graph
+    graph={completeGraph}
+/>
 
 ### Directed Graphs
 
@@ -258,6 +278,40 @@ To read more about cycle graphs, check out [this article](https://mathworld.wolf
 An acyclic graph is a graph that is almost the opposite of a cycle graph. It is a graph that has no cycles. This means
 that there is no path that starts and ends at the same vertex. A popular example of an acyclic graph is a tree.
 
-<Callout type="todo">
-    Example of a acyclic graph i.e. a tree
-</Callout>
+export const acyclicGraph = {
+    nodes: [
+        {id: 5, label: "5", level: 0},
+        {id: 2, label: "2", level: 1},
+        {id: 6, label: "6", level: 1},
+        {id: 1, label: "1", level: 2},
+        {id: 4, label: "4", level: 2},
+        {id: 8, label: "8", level: 2},
+        {id: 3, label: "3", level: 3},
+        {id: 7, label: "7", level: 3},
+        {id: 9, label: "9", level: 3},
+    ],
+    edges: [
+        {from: 5, to: 2},
+        {from: 5, to: 6},
+        {from: 2, to: 1},
+        {from: 2, to: 4},
+        {from: 6, to: 8},
+        {from: 4, to: 3},
+        {from: 8, to: 7},
+        {from: 8, to: 9},
+    ]
+}
+
+export const acyclicOptions = {
+    layout: {
+        hierarchical: {
+            enabled: true,
+            direction: "UD"
+        },
+    },
+}
+
+<Graph
+    graph={acyclicGraph}
+    options={acyclicOptions}
+/>
