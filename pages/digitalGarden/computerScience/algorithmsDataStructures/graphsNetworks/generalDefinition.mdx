@@ -32,20 +32,41 @@ export const friendsGraph = {
     graph={friendsGraph}
 />
 
-## Degrees
+## Metrics
+
+### Degrees
 
 If we do some quick analysis of this graph using the degree function which returns the number of edges connected to a
 vertex, we can see that $\text{deg(Alice)}=3$ and therefore Alice has the most friends in this social network.
 
-## Order
+### Order
 
 The order of a graph is the number of vertices in the graph. So in the above example, the order of the graph is 5. So it
 could also be called an order-5 graph.
 
-## Diameter
+### Diameter
 
 The diameter of a graph is the longest shortest path between two vertices in the graph. So in the above example, the
 diameter of the graph is 3 as the longest shortest path is between Michael and Karen.
+
+### Density
+
+The density of a graph is the ratio of the number of edges to the number of possible edges. So in other words how
+densely connected the graph is. In a directed graph there are $|V|(|V|-1)$ possible edges. Which means the density of
+a directed graph is:
+
+$$
+D = \frac{|E|}{|V|(|V|-1)}
+$$
+
+In an undirected graph, there are $\frac{|V|(|V|-1)}{2}$ possible edges. Which means the density of an undirected graph
+is:
+
+$$
+D = \frac{|E|}{\frac{|V|(|V|-1)}{2}} = \frac{2|E|}{|V|(|V|-1)}
+$$
+
+So in the above example, the density of the graph is $\frac{8}{20} = 0.4$.
 
 ## Graphs of Functions
 
