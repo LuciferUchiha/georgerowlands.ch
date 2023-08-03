@@ -33,7 +33,7 @@ export default function Graph({graph, options, events, directed = false, nodeSiz
                 color: "#7300E6",
                 font: {
                     color: "#FFFFFF",
-                    size: "12",
+                    size: 12,
                     strokeWidth: 0,
                 }
             },
