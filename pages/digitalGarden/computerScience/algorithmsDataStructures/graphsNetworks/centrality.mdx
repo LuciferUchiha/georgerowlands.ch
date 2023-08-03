@@ -166,9 +166,60 @@ how many shortest paths between all the vertices outside the group go through th
 
 ## Network Centrality
 
+The idea of network centrality is to measure the centrality of the entire network, i.e. to compare the difference in
+centrality between the vertices in the network. The goal is then to show how different the key vertices are from the
+rest of the network.
+
+### General Network Centrality
+
+To calculate the network centrality the vertex centrality measures are used. For this Linton Freeman defined a general
+formula that returns a value between $0$ and $1$ with the following meanings:
+
+- $0$ means that all vertices have the same centrality, i.e. the network is a ring network.
+- $1$ means that one vertex has all the centrality, i.e. the network is a star network.
+
+<Callout type="todo">
+    ring and star network visualizations
+</Callout>
+
+The formula is as follows:
+
+$$
+\text{networkCentrality}(G) = \frac{\sum_{v \in V}{C_{max} - C(v)}}{Star_n}
+$$
+
+Where:
+- $C(v)$ is the centrality function for a vertex $v$.
+- $C_{max}$ is the maximum centrality of all vertices in the graph, i.e $ C_{max}= \argmax_{v \in V}{C(v)}$.
+- The denominator $Star_n$ is the maximal sum of differences between
+the centrality of a vertex and the maximum centrality of all vertices in the graph, i.e. if the graph was a star graph
+with the same amount of vertices as the graph $G$, so $n=|V|$ (Is this always the case, no matter the centrality measure?).
+
+With the definition above it is now logical why the value is $1$ when the graph is a star graph because the numerator and
+denominator are the same. Whereas if the graph is a ring graph, i.e. all vertices have the same centrality, then the
+sum of differences in the numerator is $0$ and the denominator is the maximum sum of differences, which leads to the
+value being $0$.
+
+<Callout type="warning">
+    Depending on the definition of the general formula the Sum in the nominator skips the vertex with the maximum
+    centrality since the difference would be $0$. I find the definition above more intuitive, but it is important to
+    know that there are different definitions.
+</Callout>
+
 ### Degree Network Centrality
+
+For the degree network centrality the denominator is pretty simple, because for a star graph the key vertex will have a
+degree of $n-1$ and the other vertices will have a degree of $1$. So the denominator is simply $(n-1)(n-2)$ for an
+undirected Graph, if it is a directed Graph then the nominator can just be doubled.
+
+If you are working with the normalized degree centrality, then the denominator can be even further simplified to just
+$n-2$.
 
 ### Closeness Network Centrality
 
+When using the normalized closeness centrality, the denominator is simply $\frac{n-2}{2}$. I will save you the details
+just trust me bro.
+
 ### Betweenness Network Centrality
 
+When using the normalized betweenness centrality, the denominator is simply $n-1$, just like with the degree centrality.

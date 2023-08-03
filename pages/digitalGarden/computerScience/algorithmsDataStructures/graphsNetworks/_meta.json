@@ -4,6 +4,7 @@
   "storingGraphs": "Storing Graphs",
   "networkReduction": "Network Reduction",
   "groups": "Groups in Graphs",
+  "connectivity": "Connectivity",
   "centrality": "Centrality",
   "statistics": "Statistics with Graphs",
   "linkPrediction": "Link Prediction",
