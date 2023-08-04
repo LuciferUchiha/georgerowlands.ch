@@ -67,7 +67,9 @@ export default function Callout({
                 {emoji}
             </div>
             <div className="nx-w-full nx-min-w-0 nx-leading-7">
+                <span className="font-bold ">
                     {`${title}`}
+                </span>
                 {children}
             </div>
         </div>
