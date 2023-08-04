@@ -1,4 +1,5 @@
 import Callout from "../../../../../components/Callout/Callout";
+import Graph from "../../../../../components/Graph/Graph";
 
 # Centrality
 
@@ -18,9 +19,38 @@ degree centrality is a local measure, because it only takes into account the dir
 calculated using the $\text{deg()}$ function. Or alternatively using the $\text{indeg()}$ and $\text{outdeg()}$
 depending on whether the graph is directed or not and the use-case.
 
-<Callout type="todo">
-    visualize degree centrality
-</Callout>
+export const vertexDegreeGraph = {
+    nodes: [
+        {id: 1, label: "2", x: 0, y: 0},
+        {id: 2, label: "2", x: 0, y: 200},
+        {id: 3, label: "3", x: 200, y: 100, color: "red"},
+        {id: 4, label: "2", x: 400, y: 100},
+        {id: 5, label: "3", x: 600, y: 100, color: "red"},
+        {id: 6, label: "2", x: 800, y: 0},
+        {id: 7, label: "2", x: 800, y: 200}
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 2, to: 3},
+        {from: 3, to: 4},
+        {from: 4, to: 5},
+        {from: 5, to: 6},
+        {from: 5, to: 7},
+        {from: 6, to: 7}
+    ]
+};
+
+<Graph
+    graph={vertexDegreeGraph}
+    options={
+        {
+            physics: {
+                enabled: false
+            }
+        }
+    }
+/>
 
 The degree centrality can be normalized by dividing it by the maximum possible degree in the graph. This is rarely done
 in practice, because a lot of values will be small, and we are most often interested in the actual degree of a vertex.
@@ -30,12 +60,49 @@ The interpretation of the degree centrality is pretty self-explanatory. And is c
 
 ### Closeness Centrality
 
-Unlucky the degree centrality, the closeness centrality is a global measure, because it takes into account the whole
+Unlike the degree centrality, the closeness centrality is a global measure, because it takes into account the whole
 graph, however the consequence of this is that it is more expensive to calculate. The idea of the closeness centrality
 is that a vertex is important if it is close to the center of the graph. So a vertex can be important as long as it is
 close to the center of the graph, even if it only has one edge. As seen by the green vertex in the following graph.
 
-![Closeness Centrality](/compSci/closenessCentrality.png)
+export const vertexDegreeProblemGraph = {
+    nodes: [
+        {id: 1, label: "2", x: 0, y: 0},
+        {id: 2, label: "2", x: 0, y: 200},
+        {id: 3, label: "3", x: 200, y: 100, color: "red"},
+        {id: 4, label: "2", x: 400, y: 100},
+        {id: 5, label: "3", x: 600, y: 100, color: "red"},
+        {id: 6, label: "2", x: 800, y: 0},
+        {id: 7, label: "2", x: 800, y: 200},
+        {id: 8, label: "1", x: 400, y: 0, color: "green"}
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 2, to: 3},
+        {from: 3, to: 4},
+        {from: 4, to: 5},
+        {from: 5, to: 6},
+        {from: 5, to: 7},
+        {from: 6, to: 7},
+        {from: 4, to: 8},
+    ]
+};
+
+<Graph
+    graph={vertexDegreeProblemGraph}
+    options={
+        {
+            physics: {
+                enabled: false
+            }
+        }
+    }
+/>
+
+<Callout type="info">
+    This gives different values to the formula from wikipedia and networkx.
+</Callout>
 
 The closeness centrality for a vertex $v$ is calculated by taking the inverse distance of all shortest paths from the
 vertex $v$ to all other vertices in the graph. This can be interpreted as how efficiently can all the other vertices
@@ -45,17 +112,56 @@ $$
 \text{closenessCentrality}(v) = \sum_{u \in V \setminus \{v\}}{d(v,u)^{-1}} = \sum_{u \in V \setminus \{v\}}{\frac{1}{d(v,u)}}
 $$
 
-Where $d(v,u)$ is the length of the shortest path from $v$ to $u$.
+Where $d(v,u)$ is the length of the shortest path from $v$ to $u$. Let us calculate the closeness centrality for the
+green vertex in the graph above.
 
-<Callout type="todo">
-    visualize closeness centrality and the calculations
-</Callout>
+$$
+\begin{align*}
+1 + \frac{1}{2} + \frac{1}{2} + \frac{1}{2} + \frac{1}{3} + \frac{1}{3} + \frac{1}{3} + \frac{1}{3} &= \frac{10}{3} \\
+\frac{10}{3} \cdot \frac{1}{8-1} &= \frac{10}{21} \approx 0.476
+\end{align*}
+$$
 
 To normalize the closeness centrality, it can be divided by $|V| - 1$.
 
+export const vertexClosenessGraph = {
+    nodes: [
+        {id: 1, label: "0.524", x: 0, y: 0},
+        {id: 2, label: "0.524", x: 0, y: 200},
+        {id: 3, label: "0.596", x: 200, y: 100},
+        {id: 4, label: "0.714", x: 400, y: 100, color: "red"},
+        {id: 5, label: "0.596", x: 600, y: 100},
+        {id: 6, label: "0.524", x: 800, y: 0},
+        {id: 7, label: "0.524", x: 800, y: 200},
+        {id: 8, label: "0.476", x: 400, y: 0, color: "green"}
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 2, to: 3},
+        {from: 3, to: 4},
+        {from: 4, to: 5},
+        {from: 5, to: 6},
+        {from: 5, to: 7},
+        {from: 6, to: 7},
+        {from: 4, to: 8},
+    ]
+};
+
+<Graph
+    graph={vertexClosenessGraph}
+    options={
+        {
+            physics: {
+                enabled: false
+            }
+        }
+    }
+/>
+
 ### Betweenness Centrality
 
-If we use the degree centrality on the below graph, we can see that the green ones are the most important. However,
+In the above example using the degree centrality we saw that the green ones are the most important. However,
 we can clearly visually see that the vertex inbetween them is the most important one as it connects the two communities.
 Because of this we could say that that vertex is in Brokerage position or is a Broker/Gatekeeper of information.
 
@@ -79,17 +185,68 @@ from $u$ to $w$ that go through $v$.
 The fraction in the formula leads to the weight being split if there are multiple shortest paths between $u$ and $w$.
 </Callout>
 
-![betweennessCentrality](/compSci/betweennessCentrality.png)
+Because the calculations for the betweenness centrality are quite complex and take a while to calculate, we will use a
+smaller graph to calculate the betweenness centrality.
 
 <Callout type="todo">
-    visualize betweenness centrality and the calculations, normalizing isn't so trivial
+    actual algo and steps for the result below
 </Callout>
+
+export const vertexBetweennessGraph = {
+    nodes: [
+        {id: 1, label: "0", x: 0, y: 200},
+        {id: 2, label: "3", x: 200, y: 200},
+        {id: 3, label: "1", x: 400, y: 0},
+        {id: 4, label: "1", x: 400, y: 400},
+        {id: 5, label: "0", x: 600, y: 200},
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 2, to: 3},
+        {from: 2, to: 4},
+        {from: 3, to: 4},
+        {from: 3, to: 5},
+        {from: 4, to: 5},
+    ]
+};
+
+<Graph
+    graph={vertexBetweennessGraph}
+    options={
+        {
+            physics: {
+                enabled: false
+            }
+        }
+    }
+/>
+
+To normalize the betweenness centrality, you devide by the centrality by following:
+
+- For an undirected graph: $\frac{(n-1)(n-2)}{2}$
+- For a directed graph: $(n-1)(n-2)$
+
+The Image below summarizes all the centrality measures we have seen so far and compares the most central vertices.
+
+![betweennessCentrality](/compSci/betweennessCentrality.png)
 
 ### Eigenvector Centrality
 
+<Callout type="todo">
+    Do this
+</Callout>
+
 ### Katz Centrality
 
+<Callout type="todo">
+    Do this
+</Callout>
+
 ### PageRank
+
+<Callout type="todo">
+    Do this
+</Callout>
 
 ### Prestige
 
@@ -102,14 +259,46 @@ but doesn't follow a lot of people, then that person has a high prestige and sta
 The simplest way to measure prestige is to count the number of incoming edges, i.e using the $\text{indeg()}$ function.
 This is called popularity.
 
-<Callout type="todo">
-    visualize popularity
-</Callout>
+
+export const localGraph = {
+    nodes: [
+        {id: 1, label: "Bob, 1"},
+        {id: 2, label: "Alice, 2"},
+        {id: 3, label: "Michael, 4", color: "red"},
+        {id: 4, label: "Urs, 2"},
+        {id: 5, label: "Karen, 3"},
+        {id: 6, label: "John, 2"},
+        {id: 7, label: "Peter, 2"},
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 1, to: 4},
+        {from: 1, to: 5},
+        {from: 2, to: 5},
+        {from: 2, to: 6},
+        {from: 2, to: 3},
+        {from: 3, to: 4},
+        {from: 3, to: 5},
+        {from: 3, to: 6},
+        {from: 3, to: 7},
+        {from: 5, to: 1},
+        {from: 5, to: 2},
+        {from: 6, to: 3},
+        {from: 6, to: 7},
+        {from: 7, to: 3},
+    ],
+};
+
+<Graph
+    graph={localGraph}
+    directed={true}
+/>
 
 #### Proximity Prestige
 
 The proximity prestige measure does not just account for the number of directly incoming edges, but also the number of
-indirectly incoming edges, i.e the number of paths that lead to the vertex. However, the longer the path, the lower
+indirectly incoming edges, i.e. the number of paths that lead to the vertex. However, the longer the path, the lower
 prestige from that path is weighted.
 
 So simply put the proximity prestige is the sum of all paths that lead to the vertex weighted by the length of the path.
