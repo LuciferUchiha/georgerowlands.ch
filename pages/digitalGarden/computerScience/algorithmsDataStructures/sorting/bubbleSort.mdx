@@ -1,3 +1,5 @@
+import Image from "../../../../../components/Image/Image";
+
 # Bubble Sort
 
 When starting to study algorithms and data structures, the first algorithm that is usually taught is the Bubble Sort.
@@ -6,11 +8,13 @@ used in practice.
 
 The algorithm works by repeatedly swapping neighboring elements if they are in the wrong order, i.e. if we are sorting
 an array of numbers in ascending order we check if the current number is greater than the next number, if so we swap
-them, if not we go to the next. The algorithm is called Bubble Sort because with each iteration the largest element in
-the array "bubbles up" to the end of the array due to this swapping.
+them, if not we go to the next.
 
-<Image src="/compSci/bubbleSort.gif"
-       caption="Visualization of the Bubble Sort algorithm"
+The algorithm is called Bubble Sort because with each iteration the largest element in the array "bubbles up" to the end
+of the array due to this swapping.
+
+<Image src="/compSci/bubbleSort.gif" width={400}
+       caption="Visualization of the bubble sort algorithm."
 />
 
 ```python
