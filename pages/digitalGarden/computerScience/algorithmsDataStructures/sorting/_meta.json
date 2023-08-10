@@ -1,7 +1,8 @@
 {
+  "stableSorting": "Stable Sorting Algorithms",
   "bubbleSort": "Bubble Sort",
-  "insertionSort": "Insertion Sort",
   "selectionSort": "Selection Sort",
+  "insertionSort": "Insertion Sort",
   "mergeSort": "Merge Sort",
   "quickSort": "Quick Sort",
   "heapSort": "Heap Sort",
