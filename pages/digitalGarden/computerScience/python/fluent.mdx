@@ -1,0 +1,68 @@
+# Fluent in Python
+
+Some key notes and takeaways from the book Fluent Python by Luciano Ramalho.
+
+## Chapter 1: The Python Data Model
+
+- Make use of it, it's there for a reason. It make implementing collections and classes easier.
+- Implement the special/magic/dunder methods to make your classes behave like built-in types.
+- Don't call special methods directly, use built-in functions instead like `len()`, `iter()`, `str()`, etc. rather than
+`obj.__len__()`, `obj.__iter__()`, `obj.__str__()`, etc.
+- collections.namedtuple is a great way to create a class that is just a collection of attributes.
+- ABC = Abstract Base Class
+- `__repr__` is for developers, `__str__` is for end users. If you only implement one, implement `__repr__`.
+- By default custom classes are truthy, unless you implement `__bool__` or `__len__` and return `False` or `0` respectively.
+- For numpy and some built-in types like list or str that are implemented in C, `__len__` is a C function that returns
+the value of the `ob_size` field in the `PyObject` struct that represents any variable in the CPython implementation.
+This is done for performance reasons. Is it important to know this? Probably not, but it's interesting.
+
+```python
+import collections
+
+Card = collections.namedtuple('Card', ['rank', 'suit'])
+
+class FrenchDeck:
+    RANKS = [str(n) for n in range(2, 11)] + list('JQKA')
+    SUIT_VALUES = {'Spades': 3, 'Hearts': 2, 'Diamonds': 1, 'Clubs': 0}
+
+    def __init__(self):
+        # cartesian product of ranks and suits using listcomps
+        self._cards = [Card(rank, suit) for suit in self.SUIT_VALUES
+                                        for rank in self.RANKS]
+
+    def __len__(self):
+        return len(self._cards)
+
+    def __getitem__(self, position):
+        return self._cards[position]
+
+    def card_value(self, card):
+        rank_value = self.RANKS.index(card.rank)
+        return rank_value * len(self.SUIT_VALUES) + self.SUIT_VALUES[card.suit]
+
+deck = FrenchDeck()
+sorted_deck = sorted(deck, key=deck.card_value)
+```
+
+## Chapter 2: An Array of Sequences
+
+- Listcomps are faster than map and filter, and more readable than the equivalent for loop.
+- Generator expressions are memory efficient and can be used as function arguments. `tuple(ord(symbol) for
+symbol in symbols)`
+- Tuples are immutable, but the objects they contain may be mutable!
+- Tuples don't need to be seen as immutable lists, they can be used as records with no field names.
+- Unpacking can be used to swap variables `a, b = b, a` or to discard values `_, b = (1, 2)` or to split a list into
+head and tail `head, *tail = [1, 2, 3, 4]` or return multiple values from a function `return a, b`.
+- The `*` operator can be used to grab excess items, kind of a wild card.
+- Pattern matching is cool and generally simple. But some patterns can be complex and hard to read.
+- `collections.deque` is a great data structure for implementing a queue. It's a doubly linked list with O(1) time
+complexity for adding or removing items from either end. Where as a list needs to shift all the items.
+- `collections.deque` can be used to implement a bounded queue i.e. fixed size queue by passing a `maxlen` argument to
+the constructor.
+- slices are objects and can be used as arguments to functions and stored in variables.
+- lists can be manipulated in place using slice assignment `l[2:5] = [20, 30]` or `del l[5:7]`.
+- Memory views seem complicated and I don't really understand them yet.
+- `array.array` is a great way to store a large number of numerical values. It's more efficient than a list of ints
+but can only store one type of value.
+
+## Chapter 3: Dictionaries and Sets
