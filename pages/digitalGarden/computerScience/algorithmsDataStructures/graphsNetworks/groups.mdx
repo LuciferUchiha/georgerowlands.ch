@@ -1,4 +1,7 @@
 import Callout from "../../../../../components/Callout/Callout";
+import Caption from "../../../../../components/Caption/Caption";
+import Graph from "../../../../../components/Graph/Graph";
+import MdxCaption from "../../../../../components/Caption/MdxCaption";
 
 # Groups in Graphs
 
@@ -9,9 +12,41 @@ $N(v)$ or $N_G(v)$ if the graph is not ambiguous. The neighborhood of a vertex i
 neighborhood when it does not include the vertex itself $v$, and the closed neighborhood when it does include the vertex
 itself. The default is the open neighborhood, whereas the closed neighborhood is denoted by $N[v]$ or $N_G[v]$.
 
-<Callout type="todo">
-    Add visualization of neighborhoods
-</Callout>
+export const neighborhoodGraph = {
+    nodes: [
+        {id: 1, label: "a", x: 0, y: 0, color: "green"},
+        {id: 2, label: "b", x: 0, y: 200, color: "green"},
+        {id: 3, label: "c", x: 200, y: 100, color: "red"},
+        {id: 4, label: "d", x: 400, y: 100, color: "green"},
+        {id: 5, label: "e", x: 600, y: 100},
+        {id: 6, label: "f", x: 800, y: 0},
+        {id: 7, label: "g", x: 800, y: 200}
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 2, to: 3},
+        {from: 3, to: 4},
+        {from: 4, to: 5},
+        {from: 5, to: 6},
+        {from: 5, to: 7},
+        {from: 6, to: 7}
+    ]
+};
+
+<MdxCaption>
+    <Graph
+        graph={neighborhoodGraph}
+        options={
+            {
+                physics: {
+                    enabled: false
+                }
+            }
+        }
+    />
+    For the given Graph $G$ and the vertex $c$, the neighborhood $N[c]$ is the set of vertices $\{a, b, d\}$.
+</MdxCaption>
 
 ## Communities
 
@@ -27,7 +62,7 @@ what is there impact on the community, and how do they relate to other communiti
 ### Connected Components
 
 Of all the communities, the most basic one with the simplest definition is the connected component. If a connected
-component includes a large portion of the graph, then it is commonly referred to as the giant component.
+component includes a large portion of the graph, then it is commonly referred to as a **"giant component"**.
 
 <Callout type="todo">
     Code or algorithm to find connected components
