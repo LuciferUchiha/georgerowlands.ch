@@ -1,5 +1,7 @@
 import Callout from "../../../../../components/Callout/Callout";
 import Graph from "../../../../../components/Graph/Graph";
+import Caption from "../../../../../components/Caption/Caption";
+import {Block, SideBySideBlock} from "../../../../../components/SideBySideBlock/SideBySideBlock";
 
 # Centrality
 
@@ -369,9 +371,59 @@ formula that returns a value between $0$ and $1$ with the following meanings:
 - $0$ means that all vertices have the same centrality, i.e. the network is a ring network.
 - $1$ means that one vertex has all the centrality, i.e. the network is a star network.
 
-<Callout type="todo">
-    ring and star network visualizations
-</Callout>
+export const starGraph = {
+    nodes: [
+        {id: 1, label: "1"},
+        {id: 2, label: "2"},
+        {id: 3, label: "3"},
+        {id: 4, label: "4"},
+        {id: 5, label: "5"},
+        {id: 6, label: "6"},
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 1, to: 4},
+        {from: 1, to: 5},
+        {from: 1, to: 6},
+    ],
+};
+
+export const ringGraph = {
+    nodes: [
+        {id: 1, label: "1"},
+        {id: 2, label: "2"},
+        {id: 3, label: "3"},
+        {id: 4, label: "4"},
+        {id: 5, label: "5"},
+        {id: 6, label: "6"},
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 2, to: 3},
+        {from: 3, to: 4},
+        {from: 4, to: 5},
+        {from: 5, to: 6},
+        {from: 6, to: 1},
+    ],
+};
+
+<SideBySideBlock>
+    <Block>
+        <Caption caption="Star Network">
+            <Graph
+                graph={starGraph}
+            />
+        </Caption>
+    </Block>
+    <Block>
+        <Caption caption="Ring Network">
+            <Graph
+                graph={ringGraph}
+            />
+        </Caption>
+    </Block>
+</SideBySideBlock>
 
 The formula is as follows:
 
