@@ -235,6 +235,21 @@ export const filteredGraph = {
     graph={filteredGraph}
 />
 
+#### Inter and Intra-Edges
+
+A form of filtering edges is to reduce a network down to its inter or intra-edges.
+
+Inter-edges can be defined as the edges that connect vertices between two different groups or communities and intra-edges
+connect vertices within a group.
+
+So if for example we have a graph containing people in a company, we can group them by their gender. Then we can for
+example only look at the edges between same gendered people (intra-edges) or between different gendered people
+(inter-edges).
+
+<Callout type="todo">
+    Add example
+</Callout>
+
 ## Sampling
 
 Sampling is the process of taking a subset of the data and working with that instead of the entire network.
