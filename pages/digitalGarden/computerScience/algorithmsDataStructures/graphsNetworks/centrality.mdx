@@ -102,22 +102,6 @@ export const vertexDegreeProblemGraph = {
     }
 />
 
-<Callout type="info">
-    This gives different values to the formula from wikipedia and networkx. They use the following formula:
-
-    $$
-    \text{closenessCentrality}(v) = \frac{1}{\sum_{u \in V \setminus \{v\}}{d(v,u)}}
-    $$
-
-    and for the normalized closeness centrality:
-
-    $$
-    \text{closenessCentrality}(v) = \frac{|V| - 1}{\sum_{u \in V \setminus \{v\}}{d(v,u)}}
-    $$
-
-    where $d(v,u)$ is the length of the shortest path from $v$ to $u$.
-</Callout>
-
 The closeness centrality for a vertex $v$ is calculated by taking the inverse distance of all shortest paths from the
 vertex $v$ to all other vertices in the graph. This can be interpreted as how efficiently can all the other vertices
 be reached from $v$. The formula for the closeness centrality is as follows:
@@ -172,6 +156,26 @@ export const vertexClosenessGraph = {
         }
     }
 />
+
+<Callout type="info">
+    This gives different values to the formula from wikipedia and networkx. They use the following formula:
+
+    $$
+    \text{closenessCentrality}(v) = \frac{1}{\sum_{u \in V \setminus \{v\}}{d(v,u)}}
+    $$
+
+    and for the normalized closeness centrality:
+
+    $$
+    \text{closenessCentrality}(v) = \frac{|V| - 1}{\sum_{u \in V \setminus \{v\}}{d(v,u)}}
+    $$
+
+    where $d(v,u)$ is the length of the shortest path from $v$ to $u$.
+
+    The issue with the above formula is that if no path exists between $v$ and $u$ then the distance is $\infty$ which
+    would lead to the closeness centrality being $0$. This could be solved by just using 0 instead of $\infty$ which would
+    lead to the same result as the formula above because 1 divided by $\infty$ is $0$, i.e. 0 is added to the sum.
+</Callout>
 
 ### Betweenness Centrality
 
