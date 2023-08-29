@@ -2,6 +2,7 @@
   "generalDefinition": "General Definition",
   "multirelational": "Multirelational Graphs",
   "storingGraphs": "Storing Graphs",
+  "graphTraversal": "Graph Traversal",
   "networkReduction": "Network Reduction",
   "centrality": "Centrality",
   "communities": "Communities",
@@ -9,7 +10,6 @@
   "statistics": "Statistics with Graphs",
   "linkPrediction": "Link Prediction",
   "topologicalSortOrdering": "Topological Sort/Ordering",
-  "graphTraversal": "Graph Traversal",
   "shortestPath": "Shortest Path",
   "eulerianPath": "Eulerian path"
 }

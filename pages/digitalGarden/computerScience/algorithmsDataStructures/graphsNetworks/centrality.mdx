@@ -103,7 +103,19 @@ export const vertexDegreeProblemGraph = {
 />
 
 <Callout type="info">
-    This gives different values to the formula from wikipedia and networkx.
+    This gives different values to the formula from wikipedia and networkx. They use the following formula:
+
+    $$
+    \text{closenessCentrality}(v) = \frac{1}{\sum_{u \in V \setminus \{v\}}{d(v,u)}}
+    $$
+
+    and for the normalized closeness centrality:
+
+    $$
+    \text{closenessCentrality}(v) = \frac{|V| - 1}{\sum_{u \in V \setminus \{v\}}{d(v,u)}}
+    $$
+
+    where $d(v,u)$ is the length of the shortest path from $v$ to $u$.
 </Callout>
 
 The closeness centrality for a vertex $v$ is calculated by taking the inverse distance of all shortest paths from the
