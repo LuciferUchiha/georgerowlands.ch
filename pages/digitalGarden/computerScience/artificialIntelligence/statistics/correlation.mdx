@@ -1,0 +1,52 @@
+import Callout from "../../../../../components/Callout/Callout";
+import Image from "../../../../../components/Image/Image";
+
+# Correlation
+
+Correlation is a statistical measure that describes how related two random variables are, for computer scientists, this
+is usually how related two vectors or time series are.
+
+## Correlation Coefficients
+
+Most often the correlation coefficient is defined as $\rho$ (rho) or $r$ and is a value between -1 and 1, i.e.
+$-1 \leq \rho \leq 1$. The simplest form of correlation is a linear correlation, which is a linear relationship between
+the two variables. The correlation coefficient can then be interpreted in the following way:
+
+- $\rho = 1$ means that the two variables are perfectly correlated, i.e. if one variable increases, the other variable
+    increases as well.
+- $\rho = -1$ means that the two variables are perfectly negatively correlated, i.e. if one variable increases, the
+    other variable decreases.
+- $\rho = 0$ means that the two variables are not correlated at all, i.e. if one variable increases or decreases, the
+    other variable does not change.
+
+Therefore, the absolute value of the correlation coefficient can be interpreted as the strength of the correlation.
+
+<Image src="/compSci/linearCorrelation.png" caption="Visualizations of linear correlations." />
+
+<Callout type="example">
+    A simple example of a linear correlation is the air temperature and the number of ice creams sold. If it is hot
+    then more ice creams are sold, if it is cold then less ice creams are sold. This is a linear correlation, and the
+    correlation coefficient is close to 1 as the two variables increase and decrease together.
+</Callout>
+
+<Callout type="warning">
+    The correlation coefficient only measures if there is a correlation between the two variables, it does not say
+    anything about cause and effect. For example if we have a positive correlation between the number of ice creams
+    sold and the number of people who drown, it does not mean that eating ice cream causes people to drown. It is
+    simply that both variables increase during the summer months.
+</Callout>
+
+### Outliers
+
+The correlation coefficient is just like regression sensitive to outliers. If there are outliers in the data, then
+the correlation coefficient will be affected by them. So it is important to check for outliers before calculating the
+correlation coefficient.
+
+<Image src="/compSci/correlationOutlier.png" caption="An example of an outlier affecting the correlation coefficient." />
+
+### Pearson's Correlation Coefficient
+
+### Spearman's Correlation Coefficient
+
+## Cross Correlation
+
