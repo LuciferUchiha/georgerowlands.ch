@@ -1,0 +1,360 @@
+import Callout from "../../../../../components/Callout/Callout";
+import Image from "../../../../../components/Image/Image";
+
+# Subset Sum Problem
+
+For the subset sum problem, we are given an array of integers and a target sum, to keep it simple we will assume that
+the array only contains positive integers and that the target sum is also positive. We will also allow an element in the
+array to be used multiple times.
+
+From this input we can then ask the following questions:
+
+- Is there a subset of the array that sums to the target sum? I will call this the `canSum` problem.
+- How many subsets of the array sum to the target sum? I will call this the `countSum` problem.
+- If there is a subset that sums to the target sum, what is the subset? I will call this the `howSum` problem.
+- If there is a subset that sums to the target sum, what is the minimum number of elements in the subset? I will call
+this the `bestSum` problem.
+
+<Callout type="example">
+
+If we are given the array `[2, 3, 5]` and the target sum `8`, then the answers to the above questions are:
+
+- `canSum(8, [2, 3, 5]) = true`
+- `countSum(8, [2, 3, 5]) = 2` (the subsets are `[2, 2, 2, 2]` and `[3, 5]`)
+- `howSum(8, [2, 3, 5]) = [2, 2, 2, 2]`
+- `bestSum(8, [2, 3, 5]) = [3, 5]`
+
+And for the array `[2, 4]` and the target sum `7` we get:
+
+- `canSum(7, [2, 4]) = false`
+- `countSum(7, [2, 4]) = 0`
+- `howSum(7, [2, 4]) = null`
+- `bestSum(7, [2, 4]) = null`
+
+And for an example that is not so trivial, we can use the array `[1, 2, 5, 25]` and the target sum `100`:
+
+- `canSum(100, [1, 2, 5, 25]) = true`
+- `countSum(100, [1, 2, 5, 25]) = 154050750` seems about right
+- `howSum(100, [1, 2, 5, 25]) = [1,1,1,1,1...1]` (100 times) because of the order of the for loop
+- `bestSum(100, [1, 2, 5, 25]) = [25, 25, 25, 25]`
+
+</Callout>
+
+The subset sum problem is a very popular problem but also a very hard problem computationally. As will become clearer
+below the time complexity of the subset sum problem is `O(n^m)` where `n` is the length of the array and `m` is the
+target sum. This is because we have to try all possible combinations of the elements in the array to find a subset that
+sums to the target sum. This is also why dynamic programming is so useful for this problem because it can drastically
+improve the time complexity.
+
+<Callout type="todo">
+    What does it mean for a problem to be NP-complete? Is the subset sum problem NP-complete etc.?
+</Callout>
+
+## Can Sum
+
+Our first approach to this problem is most lightly a brute force approach. We can use recursion to solve this problem
+by trying to subtract each element in the array from the target sum and then recursively calling the function again with
+the new target sum. If the target sum is 0 then we have found a subset that sums to the target, and we can return
+true. If the target sum is negative then we have not found a subset that sums to the target sum and we can return false.
+These results are then propagated back up the call stack until we reach the original call (the parent node in the tree
+becomes true if any of its children are true and otherwise false).
+
+We can construct the following tree to visualize the recursive calls:
+
+<Image
+    src="/compSci/canSumTree.png"
+    caption="The recursive calls of the canSum function as a tree."
+/>
+
+```java
+public boolean canSum(int targetSum, int[] numbers) {
+    if (targetSum == 0)
+        return true;
+    if (targetSum < 0)
+        return false;
+
+    for (int num : numbers) {
+        int remainder = targetSum - num;
+        if (canSum(remainder, numbers))
+            return true;
+    }
+    return false;
+}
+```
+
+From the tree above we can see that the time complexity of the `canSum` function is `O(n^m)` where `n` is the length of
+the array (the number of children per node) and `m` is the target sum (the depth of the tree, which would be maximal if
+the array contained a 1). We can improve the time complexity of the `canSum` function to `O(n*m)` by using memoization.
+
+```java
+public boolean canSum(int targetSum, int[] numbers) {
+    if (targetSum < 0)
+        throw new IllegalArgumentException("targetSum must be greater than or equal to 0");
+
+    boolean[] memo = new boolean[targetSum + 1];
+    Arrays.fill(memo, false); // not needed but makes it more clear
+    memo[0] = true;
+
+    return canSumMemo(targetSum, numbers, memo);
+}
+
+public boolean canSumMemo(int targetSum, int[] numbers, boolean[] memo) {
+    if (memo[targetSum])
+        return true;
+    if (targetSum < 0)
+        return false;
+
+    for (int num : numbers) {
+        int remainder = targetSum - num;
+        if (canSumMemo(remainder, numbers, memo)) {
+            memo[targetSum] = true;
+            return true;
+        }
+    }
+    memo[targetSum] = false;
+    return false;
+}
+```
+
+To use tabulation instead of memoization we would need to construct a table (array) of size `targetSum + 1` and then
+fill it with the base cases and find some sort of pattern. So we would initially fill the list with `false` and then
+set the index 0 to `true` because the target sum 0 can always be constructed using an empty array. Then we need to
+do something thinking to find the pattern.
+
+If we think of our current position in the array as the target sum, i.e. in the first iteration we are at index 0, then
+we know that we can construct the target sums where we add each number in the array to the current position. For example
+if we are at index 0 and the array is `[5,4,3]` and we have the target 7 then we know that we can construct the target
+sums 5,4 and 3 by adding the number at index 0 to the current position. So we can set the values at index 5, 4 and 3 to
+`true`. We can then move on and set our current index to 1 and we know that we can't construct the target sum 1 using
+the array so we can skip it, same goes for index 2. But we can construct the target sum 3, so it gets interesting again.
+We can then again add each number in the array to the current position and set the values at index 8, 7 and 6 to `true`.
+This process continues until we reach the end of the array. If we then return the value at the last index we will have
+our result.
+
+This [blog post](https://teepika-r-m.medium.com/dynamic-programming-basics-part-2-758b00e0a4b0) visualizes the process very well.
+
+```java
+public boolean canSum(int targetSum, int[] numbers) {
+    if (targetSum < 0)
+        throw new IllegalArgumentException("targetSum must be greater than or equal to 0");
+
+    boolean[] table = new boolean[targetSum + 1];
+    Arrays.fill(table, false); // not needed but makes it more clear
+    table[0] = true;
+
+    for (int i = 0; i <= targetSum; i++) {
+        if (table[i]) {
+            for (int num : numbers) {
+                if (i + num < table.length)
+                    table[i + num] = true;
+            }
+        }
+    }
+    return memo[targetSum];
+}
+```
+
+## Count Sum
+
+The `countSum` problem is very similar to the `canSum` problem. The only difference is that when the target sum is 0 we
+return 1 instead of true and when the target sum is negative we return 0 instead of false and then in the parent node
+we sum up the results of the children.
+
+<Image
+    src="/compSci/countSumTree.png"
+    caption="The recursive calls of the countSum function as a tree."
+/>
+
+The brute force approach would look like this with a time complexity of `O(n^m)`:
+
+```java
+public int countSum(int targetSum, int[] numbers) {
+    if (targetSum == 0)
+        return 1;
+    if (targetSum < 0)
+        return 0;
+
+    int count = 0;
+    for (int num : numbers) {
+        int remainder = targetSum - num;
+        count += countSum(remainder, numbers);
+    }
+    return count;
+}
+```
+
+And the memoized version would look like this with a time complexity of `O(n*m)`:
+
+```java
+public int countSum(int targetSum, int[] numbers) {
+    if (targetSum < 0)
+        throw new IllegalArgumentException("targetSum must be greater than or equal to 0");
+
+    int[] memo = new int[targetSum + 1];
+    Arrays.fill(memo, -1);
+    memo[0] = 1;
+
+    return countSumMemo(targetSum, numbers, memo);
+}
+
+public int countSumMemo(int targetSum, int[] numbers, int[] memo) {
+    if (targetSum < 0)
+        return 0;
+    if (memo[targetSum] != -1)
+        return memo[targetSum];
+
+    int count = 0;
+    for (int num : numbers) {
+        int remainder = targetSum - num;
+        count += countSumMemo(remainder, numbers, memo);
+    }
+    memo[targetSum] = count;
+    return count;
+}
+```
+
+One issue is that it will count the same subset multiple times but with different ordering of the elements, as we can
+see in the tree above.
+
+## How Sum
+
+The `howSum` problem is again a variation of the `canSum` problem. The only difference is that when the target sum is 0
+we return an empty array instead of true and when the target sum is negative we return null instead of false and then
+in the parent node we return the array with the element that was used to get to the target sum. To solve this problem
+it doesn't matter if the array is the shortest or longest possible array that sums to the target sum it will just be
+one of the possible solutions (The furthest left solution in the tree above because of the order of the for loop and
+the recursive call).
+
+```java
+public int[] howSum(int targetSum, int[] numbers) {
+    if (targetSum == 0)
+        return new int[0];
+    if (targetSum < 0)
+        return null;
+
+    for (int num : numbers) {
+        int remainder = targetSum - num;
+        int[] result = howSum(remainder, numbers);
+        if (result != null) {
+            int[] newArray = new int[result.length + 1];
+            System.arraycopy(result, 0, newArray, 0, result.length); // O(n)
+            newArray[result.length] = num;
+            return newArray;
+        }
+    }
+    return null;
+}
+```
+
+With memoization:
+
+```java
+public int[] howSum(int targetSum, int[] numbers) {
+    if (targetSum < 0)
+        throw new IllegalArgumentException("targetSum must be greater than or equal to 0");
+
+    int[][] memo = new int[targetSum + 1][]; // will be jagged array
+    Arrays.fill(memo, null); // not needed but makes it more clear
+    memo[0] = new int[0];
+
+    return howSumMemo(targetSum, numbers, memo);
+}
+
+public int[] howSumMemo(int targetSum, int[] numbers, int[][] memo) {
+    if (targetSum < 0)
+        return null;
+    if (memo[targetSum] != null)
+        return memo[targetSum];
+
+    for (int num : numbers) {
+        int remainder = targetSum - num;
+        int[] result = howSumMemo(remainder, numbers, memo);
+        if (result != null) {
+            int[] newArray = new int[result.length + 1];
+            System.arraycopy(result, 0, newArray, 0, result.length); // O(n)
+            newArray[result.length] = num;
+            memo[targetSum] = newArray;
+            return newArray;
+        }
+    }
+    memo[targetSum] = null;
+    return null;
+}
+```
+
+## Best Sum
+
+The `bestSum` problem is again a variation of the `howSum` problem. It is very similar to the `howSum` problem but
+instead of returning the first array that sums to the target sum, we return the shortest array that sums to the target
+sum.
+
+```java
+public int[] bestSum(int targetSum, int[] numbers) {
+    if (targetSum == 0)
+        return new int[0];
+    if (targetSum < 0)
+        return null;
+
+    int[] shortestArray = null;
+    for (int num : numbers) {
+        int remainder = targetSum - num;
+        int[] result = bestSum(remainder, numbers);
+        if (result != null) {
+            int[] newArray = new int[result.length + 1];
+            System.arraycopy(result, 0, newArray, 0, result.length); // O(n)
+            newArray[result.length] = num;
+            if (shortestArray == null || newArray.length < shortestArray.length)
+                shortestArray = newArray;
+        }
+    }
+    return shortestArray;
+}
+```
+
+With memoization:
+
+```java
+public int[] bestSum(int targetSum, int[] numbers) {
+    if (targetSum < 0)
+        throw new IllegalArgumentException("targetSum must be greater than or equal to 0");
+
+    int[][] memo = new int[targetSum + 1][]; // will be jagged array
+    Arrays.fill(memo, null); // not needed but makes it more clear
+    memo[0] = new int[0];
+
+    return bestSumMemo(targetSum, numbers, memo);
+}
+
+public int[] bestSumMemo(int targetSum, int[] numbers, int[][] memo) {
+    if (targetSum < 0)
+        return null;
+    if (memo[targetSum] != null)
+        return memo[targetSum];
+
+    int[] shortestArray = null;
+    for (int num : numbers) {
+        int remainder = targetSum - num;
+        int[] result = bestSumMemo(remainder, numbers, memo);
+        if (result != null) {
+            int[] newArray = new int[result.length + 1];
+            System.arraycopy(result, 0, newArray, 0, result.length); // O(n)
+            newArray[result.length] = num;
+            if (shortestArray == null || newArray.length < shortestArray.length)
+                shortestArray = newArray;
+        }
+    }
+    memo[targetSum] = shortestArray;
+    return shortestArray;
+}
+```
+
+## All Sum
+
+The `allSum` problem is again a variation of the `canSum` problem, and is almost a combination of the `countSum` and
+`howSum` problems. However, it is a bit more complicated because we need to return a list of arrays instead of just one
+result.
+
+<Callout type="todo">
+Can't be bothered to implement this right now. Maybe later. Same goes for the tabulation versions of the above
+problems.
+</Callout>

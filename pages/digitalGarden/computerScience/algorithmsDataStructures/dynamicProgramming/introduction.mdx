@@ -1,8 +1,8 @@
-import Image from "../../../../components/Image/Image";
+import Image from "../../../../../components/Image/Image";
 
-# Dynamic Programming
+# An Introduction to DP
 
-Dynamic programming is a problem-solving technique or more formally an algorithmic design paradigm just like "divide
+Dynamic programming, short DP, is a problem-solving technique or more formally an algorithmic design paradigm just like "divide
 and conquer" or a "greedy algorithm". It is used to solve problems that can be broken down into sub-problems (just like
 divide and conquer) which are then solved recursively. For a problem to be solved using dynamic programming, it must
 have two properties:
@@ -81,6 +81,7 @@ function is now `O(n)` as each sub-problem is only solved once.
 <Image
     src="/compSci/fibTreeMemo.png"
     caption="The recursive calls of the fibonnaci function as a tree using memoization."
+    width={400}
 />
 
 ## Bottom-Up Approach (Tabulation)
@@ -121,12 +122,3 @@ public int fib(int n) {
 ```
 
 The above code then again results in a time complexity of `O(n)`, much better than the original `O(2^n)`.
-
-## Problems
-
-Above I explained dynamic programming using the Fibonacci sequence. Below I will solve some other popular problems using
-dynamic programming to illustrate the technique more in-depth.
-
-### Subset Sum
-
-### Knapsack
