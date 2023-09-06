@@ -1,0 +1,132 @@
+import Image from "../../../../components/Image/Image";
+
+# Dynamic Programming
+
+Dynamic programming is a problem-solving technique or more formally an algorithmic design paradigm just like "divide
+and conquer" or a "greedy algorithm". It is used to solve problems that can be broken down into sub-problems (just like
+divide and conquer) which are then solved recursively. For a problem to be solved using dynamic programming, it must
+have two properties:
+
+- **Overlapping Sub-problems**: When the problem is broken down into sub-problems, the same sub-problems are solved
+multiple times, i.e. there is an overlap.
+- **Optimal Substructure**: When the most optimal solution for the original problem can be constructed using the
+optimal solutions of the sub-problems.
+
+We can illustrate these two properties using the Fibonacci sequence. The Fibonacci sequence is defined as follows:
+
+```java
+public int fib(int n) {
+    if (n <= 1)
+        return n;
+    return fib(n - 1) + fib(n - 2);
+}
+```
+
+When we illustrate the recursive calls of the `fib` function as a tree (always a good idea when working with dynamic
+programming problems), we can see that the same sub-problems are solved multiple times. For example for `fib(6)` we can
+see that `fib(3)` is solved three times, so there is an overlap.
+The other property, optimal substructure, is also satisfied. The optimal solution for `fib(6)` is constructed using the
+optimal solutions of `fib(5)` and `fib(4)`.
+
+<Image
+    src="/compSci/fibTree.png"
+    caption="The recursive calls of the fibonnaci function as a tree."
+/>
+
+From the tree above we can also see that the time complexity of the `fib` function is exponential, i.e. `O(2^n)`. This
+is because the same sub-problems are solved multiple times. As we will see later, dynamic programming can be used to
+improve the time complexity of the `fib` function to `O(n)`. This is a huge improvement and is most often the reason why
+dynamic programming is used because it can drastically improve the time complexity of a function.
+
+## Top-Down Approach (Memoization)
+
+The top-down approach is the most common way to solve dynamic programming problems. It is also called **memoization**.
+The idea is to store the results of the sub-problems so that we do not have to re-compute them when they are needed
+again later due to the overlapping sub-problems property. This technique is called memoization because we store the
+results of the sub-problems in a lookup table (memo).
+
+It is called top-down because we still start with the original problem and break it down into sub-problems and solve
+them recursively.
+
+When implementing memoization it is important to think about the data structure that will be used to store the results
+as we want quick lookups. This leads to most implementations using either just a simple array where the index is the
+input to the function or a hash map where the key is the input to the function.
+
+```java
+public int fib(int n) {
+    if (n < 0)
+            throw new IllegalArgumentException("n must be greater than or equal to 0");
+    if (n <= 1)
+        return n;
+
+    Integer[] memo = new Integer[n + 1]; // This uses more memory than a simple array but is more convenient
+
+    // base cases
+    memo[0] = 0;
+    memo[1] = 1;
+    return fibMemo(n, memo);
+}
+
+public int fibMemo(int n, int[] memo) {
+    if (memo[n] != null)
+        return memo[n];
+    memo[n] = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);
+    return memo[n];
+}
+```
+
+After implementing the memoization technique, we can see in the tree below that the time complexity of the `fib`
+function is now `O(n)` as each sub-problem is only solved once.
+
+<Image
+    src="/compSci/fibTreeMemo.png"
+    caption="The recursive calls of the fibonnaci function as a tree using memoization."
+/>
+
+## Bottom-Up Approach (Tabulation)
+
+The bottom-up approach is the other way to solve dynamic programming problems. It is also called **tabulation**. The
+idea is to solve the sub-problems first, i.e. some of the base cases, and then use the results of those sub-problems to
+solve the original problem, hence the name bottom-up. This technique is called tabulation because we store the results
+of the sub-problems in a table (depending on the problem, this can be a 1D or 2D array).
+
+When implementing memoization it helped to visualize the recursive calls as a tree. When implementing tabulation it
+is also additionally helpful to visualize the results as a table or list (depending on the problem) to find a pattern.
+
+For a visualisation of the tabulation technique I can recommend watching [this video](https://youtu.be/oBt53YbR9Kk?t=11513)
+at the 3:11:50 mark. The whole video is great and I can recommend watching it all and also the 4 part [video series by
+MIT on dynamic programming from 2020](https://www.youtube.com/watch?v=r4-cftqTcdI&t=7s).
+
+For the Fibonacci sequence, we can see that the base cases are `fib(0)` and `fib(1)`. We can then use those results to
+then iteratively solve the rest of the sub-problems until we reach the original problem.
+
+```java
+public int fib(int n) {
+    if (n < 0)
+        throw new IllegalArgumentException("n must be greater than or equal to 0");
+    if (n <= 1)
+        return n;
+
+    int[] memo = new int[n + 1];
+
+    // base cases
+    memo[0] = 0;
+    memo[1] = 1;
+
+    for (int i = 2; i <= n; i++) {
+        memo[i] = memo[i - 1] + memo[i - 2];
+    }
+    return memo[n];
+}
+```
+
+The above code then again results in a time complexity of `O(n)`, much better than the original `O(2^n)`.
+
+## Problems
+
+Above I explained dynamic programming using the Fibonacci sequence. Below I will solve some other popular problems using
+dynamic programming to illustrate the technique more in-depth.
+
+### Subset Sum
+
+### Knapsack
