@@ -3,8 +3,42 @@
 
 ## Hypothesis Testing
 
+null hypothesis H0 (no statstical relationship between variables) vs alternative hypothesis H1 (there is a statistical relationship between variables)
+
+alpha level (significance level) - probability of rejecting the null hypothesis when it is true, usually 0.05 5%
+which means that in 5% of there is a relationship even though we say there is not.
+
+when working with networks we use permutation tests to test our hypothesis because other tests assume that the data is independent
+and in networks the data is not independent for obvious reasons.
+
+## Permutation Tests
+
+In a permutation test you start with the initial state of the network and then randomly permute the
+network and then calculate the statistic of interest and then repeat this process many times and then
+compare the statistic of interest to the distribution of the permuted statistics.
+
+
+The p-value is then the probability of observing a statistic as extreme as the one observed given the null hypothesis is true.
+
+Example
+
 ### Monadic Tests
+
+on vertex attributes, for example as hypothesis rich people are well connected (high degree centrality).
+
+example
+
+counting part
 
 ### Dyadic Tests
 
+different relationship for same vertices so correlation between different networks but of the same vertices.
+
 ### Mixed Tests
+
+test for relationship between vertex attributes and network structure. for example if people of the same gender
+communicate mor often with each other then people of different genders. Or if the age has an impact on how people
+communicate.
+
+Reduced down to dyadic tests. connect all people of same gender. or connect all nodes and have edge value of absolute
+age difference.
