@@ -1,7 +1,113 @@
+import Callout from "../../../../../components/Callout/Callout";
+import Image from "../../../../../components/Image/Image";
+import {Steps} from "nextra/components";
 
 # Diffusion
 
+In networks, we can model the spread of information, disease, or other phenomena as a diffusion process. The diffusion
+process usually starts with an initial node or a set of initial nodes. The goal is then to model how the information
+spreads through the network. You can imagine why this would be important for modeling the spread of a disease or an
+advertising campaign on social media where the goal is to reach as many people as possible.
+
+## Innovation Diffusion
+
+Already in 1962, Everett Rogers published a book called "Diffusion of Innovations" where he describes the spread of a
+new idea or technology through a population. He split the adoption of a new idea into five stages:
+
+- **Knowledge/Awareness**: The individual is exposed to the innovation and gains knowledge of the innovation.
+- **Persuasion**: The individual is interested in the innovation and actively seeks information about the
+  innovation.
+- **Decision**: The individual makes a decision to adopt or reject the innovation.
+- **Implementation**: The individual implements the innovation and uses it as a trial.
+- **Confirmation**: The individual finalizes his/her decision to continue using the innovation.
+
+When analyzing the spread of a new innovation, Rogers found that the adoption of a new innovation follows a normal
+distribution.
+
+- **Innovators 2.5%**: Innovators are the first individuals to adopt an innovation. Innovators are most often young
+and willing to take risks and have a high social status.
+- **Early Adopters 13.5%**: This is the second-fastest category of individuals who adopt an innovation. These individuals
+have the highest degree of opinion leadership among the other adopter categories. Early adopters take more time to
+adopt an innovation than innovators due to more careful deliberation.
+- **Early Majority 34%**: Individuals in this category adopt an innovation after a varying degree of time. Most often,
+the early majority waits to adopt an innovation until they see that the innovation has proven useful for others and are
+in contact with the early adopters.
+- **Late Majority 34%**: Individuals in this category will adopt an innovation after the average member of the society.
+These individuals approach an innovation with a high degree of skepticism.
+- **Laggards 16%**: Individuals in this category are the last to adopt an innovation. Most often bound by traditions.
+
+<Image
+    src="/compSci/innovationDiffusion.png"
+    caption="The normal distribution of the adoption of a new innovation."
+/>
+
+<Callout type="example">
+    We can easily give some examples for the above distribution for when the first iPhone was released:
+
+    - **Innovators (2.5%)**: These were the tech enthusiasts who camped outside Apple stores. They were excited and were
+    willing to embrace the new technology despite its high price and limited features compared to today's standards.
+    - **Early Adopters (13.5%)**: The early adopters included individuals who closely followed tech trends and were
+    quick to purchase the iPhone once they saw the positive reviews and early adopter experiences. They recognized the
+    iPhone's potential to change the way people communicate and access information.
+    - **Early Majority (34%)**: As the iPhone gained popularity and started to prove its utility, the early majority
+    joined in. These individuals might have been initially hesitant but were swayed by the success stories of the early
+    adopters.
+    - **Late Majority (34%)**: The late majority were more cautious and waited until the iPhone became a mainstream
+    product. They wanted to ensure that any initial bugs or issues were resolved and that the price had become more
+    affordable. Their decision to adopt the iPhone was influenced by its widespread acceptance and integration into daily
+    life.
+    - **Laggards (16%)**: Laggards were the last to adopt the iPhone, often sticking with their traditional cell phones
+    or resisting smartphones altogether. They were skeptical of the technology's benefits and preferred to maintain
+    their existing routines and devices.
+</Callout>
+
 ## ICM - Independent Cascade Model
+
+The Independent Cascade Model (ICM) is a probabilistic diffusion model that is based on the idea that the spread of information
+travels through neighbors in a network and therefore has a cascading effect. The model is based on the following assumptions:
+
+- A node can only effect its neighbors.
+- A node can only be in one of two states: active or inactive. For example, a node can be infected or not infected.
+- A node only has one chance to activate its neighbors.
+- A node can only go from inactive to active.
+
+The initial setup of the model is as follows:
+
+- Each edge has an attribute $p \in [0,1]$, which is the probability that the node will take over the state of its neighbor.
+How this probability is calculated depends on the application. For example, in the case of a disease, the probability
+could be based on a persons age and immune system. In the case of an advertising campaign, the probability could be
+based on the number of friends that have already seen the ad. You could also just use random probabilities.
+- A set of nodes $S$ is selected as the initial set of active nodes. All other nodes are inactive.
+
+The model then proceeds in discrete time steps. In each time step, the following happens:
+
+1. For each node $v \in S$, the node tries to activate each of its neighbors $u$. The activation is successful with
+probability $p_{vu}$ so if we generate a random value $r \in [0,1]$ and it is smaller or equal to $p$. If the activation
+is successful, $u$ is added to the set $S_{new}$.
+2. If $S_{new}$ is empty then the process terminates. Otherwise, $S$ is updated to $S_{new}$ and the process repeats
+from step 1.
+
+<Image
+    src="/compSci/icmDiffusion.png"
+    caption="An example of the ICM process."
+/>
+
+### Spread Maximization
+
+When working with the ICM model, we are often interested in finding the set of nodes $S$ that maximizes the spread, for
+example in an advertising campaign. This is a [NP-Hard](../np) problem to solve, but we can use a greedy algorithm to find a good
+but not necessarily optimal solution.
+
+However, we first need to change a few things about the ICM model to make it easier to work with because the model is
+non-deterministic. Instead of using a random probability $p$ for each edge and then using a random number generator to
+determine if the edge is activated. We can instead use a fixed $p$ and fixed $r$ for each edge. Another possible approach
+could be to define an "activation function" that takes the two nodes as input and defines if the edge is activated or not.
+
+For example, we could define the activation function as follows:
+
+$$
+a(u,v) = |u - v| \leq 2
+$$
 
 ## Voting Model
 
