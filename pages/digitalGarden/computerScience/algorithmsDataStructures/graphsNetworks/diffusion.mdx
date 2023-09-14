@@ -1,6 +1,6 @@
 import Callout from "../../../../../components/Callout/Callout";
 import Image from "../../../../../components/Image/Image";
-import {Steps} from "nextra/components";
+import {Steps, Step, StepCircle} from "../../../../../components/Steps/Steps";
 
 # Diffusion
 
@@ -118,12 +118,23 @@ means that we can only select a limited number of nodes $k$ as the initial set o
 
 The greedy algorithm then works as follows:
 
-1. Initialize $S = \emptyset$.
-2. For each vertex $v \in V \land v \notin S$ compute $f(S \cup \{v\})$. And then select the vertex $v$ where
-$f(S \cup \{v\})$ is the highest and add it to $S$. If there are multiple vertices with the same value, select one of
-them randomly. If $|S| = k$ then terminate, otherwise repeat from step 2.
+<Steps>
+    <Step id="1">
+         Initialize $S = \emptyset$.
+    </Step>
+    <Step id="2">
+        For each vertex $v \in V \land v \notin S$ compute $f(S \cup \{v\})$.
+    </Step>
+    <Step id="3">
+        Select the vertex $v$ where $f(S \cup \{v\})$ is the highest and add it to $S$. If there are multiple vertices
+        with the same value, select one of them randomly.
+    </Step>
+    <Step id="4" >
+        If $|S| = k$ then terminate, otherwise repeat from step <StepCircle id="2" scale={0.8}/>.
+    </Step>
+</Steps>
 
-## Threshold Model
+## Linear Threshold Model
 
 The threshold model is a diffusion model that is based on the idea that a node can only be activated if a certain
 proportion of its neighbors are already activated. The model is based on the same assumptions as the ICM model:
@@ -139,10 +150,23 @@ least half of the neighbors of $v$ need to be active for $v$ to be activated.
 
 For the algorithm we then define an initial set of active nodes $S$ and then in each time step we do the following:
 
-1. For each node $v \in V \land v \notin S$ we compute the proportion of active neighbors $p_v$.
-2. If $p_v \geq t_v$ then we add $v$ to the set $S_{new}$.
-3. If $S_{new}$ is empty then the process terminates. Otherwise, $S$ is updated to $S_{new}$ and the process repeats
-from step 1.
+<Steps>
+    <Step id="1">
+        For each node $v \in V \land v \notin S$ we compute the proportion of active neighbors $p_v$.
+    </Step>
+    <Step id="2">
+        If $p_v \geq t_v$ then we add $v$ to the set $S_{new}$.
+    </Step>
+    <Step id="3" >
+        If $S_{new}$ is empty then the process terminates. Otherwise, $S$ is merged with $S_{new}$, i.e. $S = S \cup S_{new}$,
+        and the process repeats back to the initial step <StepCircle id="1" scale={0.8}/>.
+    </Step>
+</Steps>
+
+<Image
+    src="/compSci/linearThresholdModel.png"
+    caption="An example of the linear threshold model, where the threshold is $0.5$ for all nodes."
+/>
 
 ## Voter Model
 
