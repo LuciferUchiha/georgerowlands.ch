@@ -194,11 +194,16 @@ export const movieReviewGraph = {
 
 ### Bipartite Graphs
 
-A 2-mode graph/network is also called a bipartite graph which are very commonly used.
+A graph $G$ is bipartite if its vertices can be split into two disjoint sets $V_1$ and $V_2$ such that every edge in
+$G$ connects a vertex in $V_1$ to a vertex in $V_2$. So there are no edges between vertices in the same set!
 
-<Callout type="todo">
-    This is wrong!
-</Callout>
+This makes a 2-mode network a bipartite graph.
+
+<Image
+    src="/compSci/bipartiteGraph.png"
+    caption="Some examples of bipartite graphs."
+    width={400}
+/>
 
 #### Bipartite Network Projections
 
