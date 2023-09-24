@@ -465,3 +465,12 @@ $$
 \text{etc...}
 \end{align*}
 $$
+
+##### Overlap Weighted Projection
+
+The overlap weighted projection is similar to the weighted projection, but instead of using the number of common 
+neighbors, it uses jaccard similarity. So the weight of the edge between two vertices $a$ and $b$ is:
+
+$$
+w_{ab} = \frac{N(a) \cap N(b)}{N(a) \cup N(b)}
+$$
