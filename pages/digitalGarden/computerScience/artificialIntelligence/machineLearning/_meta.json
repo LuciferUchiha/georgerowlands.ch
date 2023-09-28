@@ -3,8 +3,12 @@
   "knn": "K-Nearest Neighbors",
   "crossValidation": "Cross-Validation",
   "linear": "Linear Classification & Regression",
+  "ridge": "Ridge Regression",
+  "lasso": "Lasso Regression",
   "logistic": "Logistic Regression",
   "naiveBayes": "Naive Bayes",
   "svm": "Support Vector Machines",
-  "kMeans": "K-Means Clustering"
+  "kMeans": "K-Means Clustering",
+  "decisionTrees": "Decision Trees",
+  "randomForests": "Random Forests"
 }
