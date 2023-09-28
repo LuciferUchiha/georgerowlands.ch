@@ -3,6 +3,7 @@ import Image from "../../../../../components/Image/Image";
 import Graph from "../../../../../components/Graph/Graph";
 import MdxCaption from "../../../../../components/Caption/MdxCaption";
 import {Block, SideBySideBlock} from "../../../../../components/SideBySideBlock/SideBySideBlock";
+import {Steps, Step, StepCircle} from "../../../../../components/Steps/Steps";
 
 # Communities
 
@@ -356,8 +357,59 @@ is very simple and fast making it a good choice for large graphs. However, it is
 deterministic, i.e. it can lead to different results depending on the order of the colors and vertices. This can be
 mitigated by running the algorithm multiple times and then taking the most common result.
 
+<Callout type="example">
+    After the initial setup, we get the graph below:
+
+    <Image
+        src="/compSci/lpa1.png"
+        caption="Initial state of the graph."
+        width={300}
+    />
+
+    We will work through the graph in the following order:
+
+    - Blue: $B, F$
+    - Green: $D, A, H, C$
+    - Brown: $E, G$
+
+    <Steps>
+        <Step id={1}>
+        We start with vertex $B$ which has the neighbors $A,C,D,E$ with the labels $0,2,3,4$. The vertex $B$ has the
+        label $1$. Because all the neighboring labels occur once and the vertexes label is not one of the labels we 
+        pick the one with the height value, which is $4$. So we assign the label $4$ to $B$.
+        </Step>
+        <Step id={2}>
+        We have a similar situation for the next vertex $F$ which gets assigned the label $7$.
+            <Image
+                src="/compSci/lpa2.png"
+                caption="The state of the graph after the initial iteration of the blue vertices."
+                width={300}
+            />
+        </Step>
+        <Step id={3}>
+        Now we do the same with the green vertices.
+            <Image
+                src="/compSci/lpa3.png"
+                caption="The state of the graph after assigning the new labels for the green vertices."
+                width={300}
+            />
+        </Step>
+        <Step id={4}>
+        Lastly, we process the brown vertices in the given order.
+            <Image
+                src="/compSci/lpa4.png"
+                caption="The final state of the graph after assigning the new labels for the brown vertices."
+                width={300}
+            />
+        Luckily with this graph, we already have our clusters after the first iteration. We have two clusters, the 
+        vertices with the label 4 and the vertices with the label 7.
+        </Step>
+    </Steps>
+
+</Callout>
+
 <Callout type="todo">
-    Visualization, how does it work with directed graphs?
+    Make my own images where the graph is processed alphabetically. And what if we want more then 2 clusters?
 </Callout>
 
 ### Louvain Clustering
