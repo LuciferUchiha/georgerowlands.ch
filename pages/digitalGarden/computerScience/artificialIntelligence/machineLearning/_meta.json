@@ -10,5 +10,8 @@
   "svm": "Support Vector Machines",
   "kMeans": "K-Means Clustering",
   "decisionTrees": "Decision Trees",
-  "randomForests": "Random Forests"
+  "randomForests": "Random Forests",
+  "correlation": "Correlation",
+  "crossCorrelation": "Cross-Correlation",
+  "autocorrelation": "Autocorrelation"
 }
