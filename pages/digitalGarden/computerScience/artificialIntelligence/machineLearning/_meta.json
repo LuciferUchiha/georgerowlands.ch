@@ -13,5 +13,6 @@
   "randomForests": "Random Forests",
   "correlation": "Correlation",
   "crossCorrelation": "Cross-Correlation",
-  "autocorrelation": "Autocorrelation"
+  "autocorrelation": "Autocorrelation",
+  "convolution": "Convolution"
 }
