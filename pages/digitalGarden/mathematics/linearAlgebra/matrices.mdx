@@ -47,6 +47,22 @@ column vector.
     $$
 </Callout>
 
+In some cases it is useful to think of a matrix as a collection of column vectors. So a matrix with $n$ columns can be thought of as $n$ column vectors concatenated together. 
+This is also called the column space of a matrix.
+
+<Image src="/maths/matrixColumnSpace.png"
+       caption="A matrix as a collection of column vectors, i.e. a column space."
+       width={300}
+/>
+
+Another way is to think of a matrix as a collection of row vectors. So a matrix with $m$ rows can be thought of as $m$ row vectors stacked on top of each other. This is also 
+called the row space of a matrix.
+
+<Image src="/maths/matrixRowSpace.png"
+       caption="A matrix as a collection of row vectors, i.e. a row space."
+       width={300}
+/>
+
 ## Transpose
 
 The transpose of a matrix is a matrix where the rows and columns are swapped. The transpose of the matrix $\boldsymbol{A}$ is written as $\boldsymbol{A}^T$. 
@@ -141,7 +157,15 @@ For a non-square matrix you need to use a slightly different algorithm.
 
 ## Inverse
 
-### Calculating the Inverse
+<Callout type="todo">
+    This section is still a work in progress!
+</Callout>
+
+## Determinant
+
+<Callout type="todo">
+    This section is still a work in progress!
+</Callout>
 
 ## Types of Matrices
 
@@ -149,11 +173,11 @@ There are a number of different types of matrices that are used in linear algebr
 
 ### Square Matrix
 
-As you can imagine a square matrix is a matrix where the number of rows and columns are equal. So a square matrix is an $n \times n$ matrix. Square matrices have 
-a number of useful properties and are therefore often used in many different applications.
+As you can imagine a square matrix is a matrix where the number of rows and columns are equal. So a square matrix is an $n \times n$ matrix, i.e. 
+$\boldsymbol{A} \in \mathbb{R}^{n \times n}$. Square matrices have a number of useful properties and are therefore often used in many different applications.
 
 $$
-\boldsymbol{A} \in \mathbb{R}^{n \times n} = \begin{bmatrix}
+\begin{bmatrix}
 a_{11} & a_{12} & \cdots & a_{1n} \\
 a_{21} & a_{22} & \cdots & a_{2n} \\
 \vdots & \vdots & \ddots & \vdots \\
@@ -161,18 +185,28 @@ a_{n1} & a_{n2} & \cdots & a_{nn}
 \end{bmatrix}
 $$
 
+<Callout type="example">
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+$$
+</Callout>
+
 ### Triangular Matrix
 
 The diagonal elements of a matrix are the elements where the row and column index are equal. So $a_{ii}$ is a diagonal element. A triangular matrix is a matrix where all the 
 elements above or below the diagonal are $0$. If all the elements above the diagonal are $0$ it is called a **lower triangular matrix** becuase it only has elements below the 
 diagonal that are non-zero. If all the elements below the diagonal are $0$ it is called a **upper triangular matrix** because it only has elements above the diagonal that are
-non-zero.
+non-zero. Only square matrices can be triangular matrices!
 
 <Callout type="example">
 A lower triangular matrix:
 
 $$
-\boldsymbol{A} = \begin{bmatrix}
+\begin{bmatrix}
 1 & 0 & 0 \\
 2 & 3 & 0 \\
 4 & 5 & 6
@@ -182,7 +216,7 @@ $$
 An upper triangular matrix:
 
 $$
-\boldsymbol{A} = \begin{bmatrix}
+\begin{bmatrix}
 1 & 2 & 3 \\
 0 & 4 & 5 \\
 0 & 0 & 6
@@ -192,7 +226,34 @@ $$
 
 #### Diagonal Matrix
 
+A diagonal matrix is a matrix where all the elements that are not on the diagonal are zero. So $a_{ij} = 0$ for all $i \neq j$. This means that a 
+diagonal matrix is both a lower and upper triangular matrix and therefore also a square matrix.
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 3
+\end{bmatrix}
+$$
+</Callout>
+
 ### Identity Matrix
+
+An identity matrix is a diagonal matrix where all the diagonal elements are equal to $1$. The identity matrix is often denoted as $\boldsymbol{I}$ or $\boldsymbol{I}_n$ 
+where $n$ is the number of rows and columns in the matrix. The identity matrix is a special matrix as it is neutral element for matrix multiplication or also called the 
+identity element. This means that if you multiply any matrix with the identity matrix you get the same matrix back. So $\boldsymbol{A} \boldsymbol{I} = \boldsymbol{A}$.
+
+<Callout type="example">
+$$
+\boldsymbol{I_3} = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+$$
+</Callout>
 
 ### Symmetric Matrix
 
@@ -250,5 +311,109 @@ $$
 $$
 </Callout>
 
-### Orthogonal Matrix
+### Orthogonal / Orthonormal Matrix
 
+Very unclear what the difference is between these two. I think an orthogonal matrix is a matrix where the columns are orthogonal to each other but don't have to be normalised.
+And an orthonormal matrix is a matrix where the columns are orthogonal to each other and are normalised, i.e. have a length of $1$.
+
+<Callout type="todo">
+    This section is still a work in progress!
+</Callout>
+
+## Matrix Operations
+
+### Matrix Addition
+
+Two matrices can be added together if they have the same dimensions, i.e. $\boldsymbol{A} \in \mathbb{R}^{m \times n}$ and $\boldsymbol{B} \in \mathbb{R}^{m \times n}$. 
+The addition of two matrices is defined as the element-wise addition of the matrices:
+
+$$
+\boldsymbol{A} + \boldsymbol{B} = \begin{bmatrix}
+a_{11} + b_{11} & a_{12} + b_{12} & \cdots & a_{1n} + b_{1n} \\
+a_{21} + b_{21} & a_{22} + b_{22} & \cdots & a_{2n} + b_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} + b_{m1} & a_{m2} + b_{m2} & \cdots & a_{mn} + b_{mn}
+\end{bmatrix}
+$$
+
+Or more formally $\boldsymbol{A} + \boldsymbol{B} = [a_{ij} + b_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$. 
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} + \begin{bmatrix}
+7 & 8 & 9 \\
+10 & 11 & 12
+\end{bmatrix} = \begin{bmatrix}
+8 & 10 & 12 \\
+14 & 16 & 18
+\end{bmatrix}
+$$
+</Callout>
+
+### Scalar Multiplication
+
+A matrix can be multiplied by a scalar, i.e. a constant. This is defined as the element-wise multiplication of the matrix with the scalar:
+
+$$
+s \cdot \boldsymbol{A} = \begin{bmatrix}
+s \cdot a_{11} & s \cdot a_{12} & \cdots & s \cdot a_{1n} \\
+s \cdot a_{21} & s \cdot a_{22} & \cdots & s \cdot a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+s \cdot a_{m1} & s \cdot a_{m2} & \cdots & s \cdot a_{mn}
+\end{bmatrix}
+$$
+
+Or more formally $s \cdot \boldsymbol{A} = [s \cdot a_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$.
+
+<Callout type="example">
+$$
+5 \cdot \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} = \begin{bmatrix}
+5 \cdot 1 & 5 \cdot 2 & 5 \cdot 3 \\
+5 \cdot 4 & 5 \cdot 5 & 5 \cdot 6
+\end{bmatrix} = \begin{bmatrix}
+5 & 10 & 15 \\
+20 & 25 & 30
+\end{bmatrix}
+$$
+</Callout>
+
+### Matrix Multiplication
+
+#### Strassen's Algorithm
+
+#### Winograd's Algorithm
+
+#### AlphaTensor
+
+### Frobenius Norm
+
+### Trace
+
+The trace of a matrix is the sum of all the diagonal elements in the matrix and is denoted as $\text{tr}(\boldsymbol{A})$. Because it is the sum of the diagonal elements 
+it is only defined for square matrices, i.e. $\boldsymbol{A} \in \mathbb{R}^{n \times n}$:
+
+$$
+\text{tr}(\boldsymbol{A}) = \sum_{i=1}^n a_{ii} = a_{11} + a_{22} + \cdots + a_{nn}
+$$
+
+<Callout type="example">
+$$
+\text{tr}(\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}) = 1 + 5 + 9 = 15
+$$
+</Callout>
+
+<Callout type="todo">
+    Add properties of the trace. and proof that it is the sum of the eigenvalues.
+</Callout>
+
+### Rank
