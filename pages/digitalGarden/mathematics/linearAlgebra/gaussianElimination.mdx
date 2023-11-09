@@ -1,1 +1,356 @@
+import Callout from '../../../../components/Callout/Callout';
+import Image from "../../../../components/Image/Image";
+
 # Gaussian Elimination
+
+The gaussian elimination algorithm, sometimes called the row reduction algorithm, is an algorithm that was first developed to solve systems of linear equations by using some 
+simple operations on the rows of the matrix. The allowed operations are:
+
+- Swapping two rows
+- Multiplying a row by a nonzero number
+- Adding a multiple of one row to another row, the multiple can also be negative resulting in subtracting a multiple of one row from another row.
+
+## Row Echelon Form
+
+Before looking at the algorithm, we need to define what it means for a matrix to be in row echelon form. A matrix is in row echelon form if it satisfies the following conditions:
+
+- All rows that only contain zeros are at the bottom of the matrix.
+- The first nonzero element in each row, called the leading entry or pivot, is to the right of all the pivots of the rows above it.
+
+<Callout type="example">
+In row echelon form:
+
+$$
+\begin{bmatrix}
+1 & 2 & 3 & 4 \\
+0 & 1 & 2 & 3 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+$$
+
+Notice that in the third row, the pivot is not directly to the right of the pivot in the second row, but it is to the right it doesn't matter if there are zeros in between.
+
+Not in row echelon form:
+
+$$
+\begin{bmatrix}
+1 & 2 & 3 & 4 \\
+0 & 1 & 2 & 3 \\
+0 & 1 & 2 & 1 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+$$
+
+Because in the third row, the pivot is not to the right of the pivot in the second row.
+</Callout>
+
+### Reduced Row Echelon Form
+
+Reduced row echelon form is a stricter form of row echelon form. A matrix is in reduced row echelon form if it satisfies the following conditions:
+
+- It is in row echelon form.
+- The pivot element in each row is equal to 1.
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+1 & 0 & 3 & 2 \\
+0 & 1 & 0 & 5 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+$$
+</Callout>
+
+## Solving Linear Systems
+
+Orignally the gaussian elimination algorithm was developed to solve systems of linear equations. Before the algorithm can be used to solve a system of linear equations, 
+the system must be transformed into a matrix, to be more specific, an augmented matrix. An augmented matrix is a matrix that contains the coefficients of the variables 
+on the left side of the vertical line and the constants on the right side of the vertical line.
+
+<Callout type="example">
+The system of linear equations:
+
+$$
+\begin{vmatrix}
+2x + 3y = 6 \\
+x - y = \frac{1}{2}
+\end{vmatrix}
+$$
+
+Has the coefficient matrix:
+
+$$
+\begin{bmatrix}
+2 & 3 \\
+1 & -1
+\end{bmatrix}
+$$
+
+And the augmented matrix:
+
+$$
+\left[\begin{array}{cc|c}  
+2 & 3 & 6 \\
+1 & -1 & \frac{1}{2}
+\end{array}\right]
+$$
+
+</Callout>
+
+Once we have the augmented matrix, we can use the gaussian elimination algorithm to solve the system of linear equations. We solve the system of linear equations by 
+using the allowed operations to transform the augmented matrix into the row echelon form. Once the augmented matrix is in row echelon form, we can easily solve the 
+system of linear equations by back substitution.
+
+<Callout type="info" title="Why does it work?">
+The gaussian elimination algorithm works because the allowed operations do not change the solution set of the system of linear equations. Simply changing the order 
+of the equations in the system is obvious why it doesn't change the solution set. Adding an equation to another equation is allowed because imagine 
+you have the following system of linear equations:
+
+$$
+\begin{vmatrix}
+5x + 3y = 200 \\
+2x + y = 100
+\end{vmatrix}
+$$
+
+You can't simple add 100 becuase you have to add the same amount to both sides of the equation and then the equation would no longer be in its standard form and by 
+transforming it into its standard form you would have to subtract 100 from both sides of the equation which would result in a hole lot of nothing.
+
+$$
+\begin{vmatrix}
+5x + 3y + 100 = 300 \\
+2x + y = 100
+\end{vmatrix}
+$$
+
+However, what you can do is add on the right side 100 to the first equation $2x + y$ to left side because it is equal to 100. You can think of it as adding 100 to both sides 
+but whilst keeping the equation in its standard form. 
+
+$$
+\begin{vmatrix}
+5x + 3y + 2x + y = 200 + 100 \\
+2x + y = 100
+\end{vmatrix} \rightarrow
+\begin{vmatrix}
+7x + 4y = 300 \\
+2x + y = 100
+\end{vmatrix}
+$$
+
+Multiplying an equation by a nonzero number is allowed because it is the same as multiplying both sides of the equation by the same number, it doesn't change the 
+linear equation at all. 
+
+Combining these two operations, we can see that we can add a multiple of one equation to another equation and it will not change the solution set!
+</Callout>
+
+So now that we know why the gaussian elimination algorithm works, let's actually solve our system of linear equations from above using it.
+
+<Callout type="example">
+$$
+\begin{align*}
+    \left[\begin{array}{cc|c}
+    2 & 3 & 6 \\
+    1 & -1 & \frac{1}{2}
+    \end{array}\right]& \rightarrow R_1 \leftrightarrow R_2 \\
+    \rightarrow \left[\begin{array}{cc|c}
+    1 & -1 & \frac{1}{2} \\
+    2 & 3 & 6
+    \end{array}\right]& \rightarrow R_2 = R_2 - 2R_1  \\
+    \rightarrow \left[\begin{array}{cc|c}
+    1 & -1 & \frac{1}{2} \\
+    0 & 5 & 5
+    \end{array}\right]&
+\end{align*}
+$$
+
+And we have our augmented matrix in row echelon form! 
+
+Why did we first swap the rows? Well, we did that because we wanted to make the first pivot 1. We could have 
+also multiplied the first row by $\frac{1}{2}$ but that would have resulted in a fraction and we don't want that. 
+
+Why did we subtract 2 times the first row from the 
+second row? Well, we did that because we wanted to make the second pivot 0. 
+</Callout>
+
+### Back Substitution
+
+Now that we have our augmented matrix in row echelon form, we can solve the system of linear equations by back substitution. Back substitution is the process of
+solving for the variables starting from the bottom of the matrix and working our way up. We can do this in two ways, either by using algebra or by using the 
+gaussian elimination even further.
+
+<Callout type="example" title="Using Algebra">
+We can take the bottom row of the augmented matrix and quickly solve it for $y$ thanks to the row echelon form by dividing both sides by 5.
+
+$$
+5y = 5 \rightarrow y = 1
+$$
+
+Now that we know $y = 1$, we can substitute it into the first row of the augmented matrix and solve for $x$.
+
+$$
+x - 1 = \frac{1}{2} \rightarrow x = \frac{3}{2}
+$$
+</Callout>
+
+<Callout type="example" title="Using Gaussian Elimination">
+To completely solve the system of linear equations, we can use the gaussian elimination algorithm to further transform the augmented matrix from row echelon form 
+to reduced row echelon form. This will make it easier to solve for the variables.
+
+$$
+\begin{align*}
+    \left[\begin{array}{cc|c}
+    1 & -1 & \frac{1}{2} \\
+    0 & 5 & 5
+    \end{array}\right]& \rightarrow R_2 = \frac{1}{5}R_2 \\
+    \rightarrow \left[\begin{array}{cc|c}
+    1 & -1 & \frac{1}{2} \\
+    0 & 1 & 1
+    \end{array}\right]& \rightarrow R_1 = R_1 + R_2 \\
+    \rightarrow \left[\begin{array}{cc|c}
+    1 & 0 & \frac{3}{2} \\
+    0 & 1 & 1
+    \end{array}\right]&
+\end{align*}
+$$
+
+And now we have our augmented matrix in reduced row echelon form! We can now easily see that $x = \frac{3}{2}$ and $y = 1$ and that is it!
+</Callout>
+
+## Calculating the Inverse
+
+The gaussian elimination method can be extended to calculate the inverse of a matrix. Because the inverse of a matrix is only defined for square matrices, 
+this algorithm only works for square matrices such as $2 \times 2$ matrices, $3 \times 3$ matrices, $\boldsymbol{A} \in \mathbb{R}^{n \times n}$.
+
+Just like when solving a system of linear equations, we first transform the matrix into an augmented matrix. However, instead of having the constants on the right side 
+of the vertical line we add the identity matrix $\boldsymbol{I}$ of the same size as the matrix on the right side of the vertical line.
+
+<Callout type="example">
+Given the matrix:
+
+$$
+\boldsymbol{A} = \begin{bmatrix}
+2 & 4 & -2 \\
+4 & 9 & -3 \\
+-2 & -3 & 7
+\end{bmatrix}
+$$
+
+We can calculate the inverse of $\boldsymbol{A}$ by transforming it into the following augmented matrix:
+
+$$
+[\boldsymbol{A}|\boldsymbol{I}] =\left[\begin{array}{ccc|ccc}
+2 & 4 & -2 & 1 & 0 & 0 \\
+4 & 9 & -3 & 0 & 1 & 0 \\
+-2 & -3 & 7 & 0 & 0 & 1
+\end{array}\right]
+$$
+
+</Callout>
+
+The goal of the algorithm is now to transform the left side of the augmented matrix into the identity matrix $\boldsymbol{I}$. We are still only allowed to perform 
+the same operations as before:
+
+- Swapping two rows
+- Multiplying a row by a nonzero number
+- Adding a multiple of one row to another row, the multiple can also be negative resulting in subtracting a multiple of one row from another row.
+
+Important it is important that when we perform an operation on the left side of the augmented matrix, we also perform the same operation on the right side!
+
+By then transforming the left hand side firts into row echelon form and then into reduced row echelon form and then lastly performing back substitution 
+we should get on the left hand side the identity matrix $\boldsymbol{I}$ and on the right hand side the inverse of the matrix $\boldsymbol{A}$ so that we have:
+
+$$
+[\boldsymbol{I}|\boldsymbol{A}^{-1}]
+$$
+
+Which fullfills the definition of the inverse of a matrix:
+
+$$
+\boldsymbol{A} \boldsymbol{A}^{-1} = \boldsymbol{I}
+$$
+
+<Callout type="example">
+$$
+\begin{align}
+[\boldsymbol{A}|\boldsymbol{I}]= \left[\begin{array}{ccc|ccc}
+2 & 4 & -2 & 1 & 0 & 0 \\
+4 & 9 & -3 & 0 & 1 & 0 \\
+-2 & -3 & 7 & 0 & 0 & 1
+\end{array}\right] & \rightarrow R_1 = \frac{1}{2}R_1 \\
+
+\rightarrow \left[\begin{array}{ccc|ccc}
+1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
+4 & 9 & -3 & 0 & 1 & 0 \\
+-2 & -3 & 7 & 0 & 0 & 1
+\end{array}\right] & \rightarrow R_2 = R_2 - 4R_1 \\
+
+\rightarrow \left[\begin{array}{ccc|ccc}
+1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
+0 & 1 & 1 & -2 & 1 & 0 \\
+-2 & -3 & 7 & 0 & 0 & 1
+\end{array}\right] & \rightarrow R_3 = R_3 + 2R_1 \\
+
+\rightarrow \left[\begin{array}{ccc|ccc}
+1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
+0 & 1 & 1 & -2 & 1 & 0 \\
+0 & 1 & 5 & 1 & 0 & 1
+\end{array}\right] & \rightarrow R_3 = R_3 - R_2 \\
+
+\rightarrow \left[\begin{array}{ccc|ccc}
+1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
+0 & 1 & 1 & -2 & 1 & 0 \\
+0 & 0 & 4 & 3 & -1 & 1
+\end{array}\right] & \rightarrow R_3 = \frac{1}{4}R_3 \\
+
+\rightarrow \left[\begin{array}{ccc|ccc}
+1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
+0 & 1 & 1 & -2 & 1 & 0 \\
+0 & 0 & 1 & \frac{3}{4} & -\frac{1}{4} & \frac{1}{4}
+\end{array}\right] & \rightarrow R_2 = R_2 - R_3 \\
+
+\rightarrow \left[\begin{array}{ccc|ccc}
+1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
+0 & 1 & 0 & -\frac{11}{4} & \frac{5}{4} & -\frac{1}{4} \\
+0 & 0 & 1 & \frac{3}{4} & -\frac{1}{4} & \frac{1}{4}
+\end{array}\right] & \rightarrow R_1 = R_1 + R_3 \\
+
+\rightarrow \left[\begin{array}{ccc|ccc}
+1 & 2 & 0 & \frac{5}{4} & -\frac{1}{4} & \frac{1}{4} \\
+0 & 1 & 0 & -\frac{11}{4} & \frac{5}{4} & -\frac{1}{4} \\
+0 & 0 & 1 & \frac{3}{4} & -\frac{1}{4} & \frac{1}{4}
+\end{array}\right] & \rightarrow R_1 = R_1 - 2R_2 \\
+
+\rightarrow \left[\begin{array}{ccc|ccc}
+1 & 0 & 0 & \frac{27}{4} & -\frac{11}{4} & \frac{3}{4} \\
+0 & 1 & 0 & -\frac{11}{4} & \frac{5}{4} & -\frac{1}{4} \\
+0 & 0 & 1 & \frac{3}{4} & -\frac{1}{4} & \frac{1}{4}
+\end{array}\right] 
+\end{align}
+$$
+
+This gives us the inverse of the matrix $\boldsymbol{A}$:
+
+$$
+\boldsymbol{A}^{-1} = \begin{bmatrix}
+\frac{27}{4} & -\frac{11}{4} & \frac{3}{4} \\
+-\frac{11}{4} & \frac{5}{4} & -\frac{1}{4} \\
+\frac{3}{4} & -\frac{1}{4} & \frac{1}{4}
+\end{bmatrix} = \frac{1}{4} \begin{bmatrix}
+27 & -11 & 3 \\
+-11 & 5 & -1 \\
+3 & -1 & 1
+\end{bmatrix} = \begin{bmatrix}
+6.75 & -2.75 & 0.75 \\
+-2.75 & 1.25 & -0.25 \\
+0.75 & -0.25 & 0.25
+\end{bmatrix}
+$$
+</Callout>
+
+## Calculating the Rank
+
+<Callout type="todo">
+TODO
+</Callout>
