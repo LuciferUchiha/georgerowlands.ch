@@ -385,13 +385,172 @@ $$
 
 ### Matrix Multiplication
 
+Matrix multiplication is a bit more complex than addition and scalar multiplication. One would think that multiplying two matrices together would be as simple as multiplying 
+each element of the first matrix with the corresponding element in the second matrix and would therefore just like addition be an element-wise operation and only defined for 
+matrices with the same dimensions. However, this is not the case, this would be the Hadamard product of two matrices.
+
+Matrix multiplication is only defined for matrices where the number of columns in the first matrix is equal to the number of rows in the second matrix. We will see why this is 
+the case later. The result of multiplying two matrices together is a new matrix where the number of rows is equal to the number of rows in the first matrix and the number of 
+columns is equal to the number of columns in the second matrix. So the dimensions in a matrix multiplication are defined as follows: 
+
+$$
+\boldsymbol{A} \in \mathbb{R}^{l \times m} \cdot \boldsymbol{B} \in \mathbb{R}^{m \times n} = \boldsymbol{C} \in \mathbb{R}^{l \times n}
+$$
+
+<Image src="/maths/matrixMultiplicationDimensions.png"
+       caption="Dimensions of a matrix multiplication visualized."
+       width={300}
+/>
+
+The actual calculation of the elements in the resulting matrix is a bit more complex. The element in the $i$-th row and $j$-th column in the resulting matrix is defined as 
+the dot product of the $i$-th row in the first matrix and the $j$-th column in the second matrix. So $c_{ij} = \boldsymbol{a}_i \cdot \boldsymbol{b}_j$. More formally:
+
+$$
+c_{ij} = a_{i1} \cdot b_{1j} + a_{i2} \cdot b_{2j} + \cdots + a_{im} \cdot b_{mj} = \sum_{k=1}^m a_{ik} \cdot b_{kj}
+$$
+
+<Image src="/maths/matrixMultiplication.png"
+       caption="Matrix multiplication visualized."
+       width={400}
+/>
+
+In the example above the element are calculated as followed:
+
+$$
+\begin{align*}
+c_{12} = a_{11} \cdot b_{12} + a_{12} \cdot b_{22} \\
+c_{33} = a_{31} \cdot b_{13} + a_{32} \cdot b_{23}
+\end{align*}
+$$
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+7 & 8 \\
+9 & 10 \\
+11 & 12
+\end{bmatrix} = \begin{bmatrix}
+58 & 64 \\
+139 & 154
+\end{bmatrix}
+$$
+</Callout>
+
+#### Properties
+
+##### Commutative Property
+
+Matrix multiplication is not commutative, i.e. $\boldsymbol{A} \cdot \boldsymbol{B} \neq \boldsymbol{B} \cdot \boldsymbol{A}$. This means that the order in which you multiply 
+is important! This already becomes apparent when you look at the dimensions of the matrices. If you multiply a $2 \times 3$ matrix with a $3 \times 2$ matrix you get a 
+$2 \times 2$ matrix. However, if you multiply a $3 \times 2$ matrix with a $2 \times 3$ matrix you get a $3 \times 3$ matrix.
+
+
+<Callout type="example">
+$$
+\begin{align*}
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+7 & 8 \\
+9 & 10 \\
+11 & 12
+\end{bmatrix} &= \begin{bmatrix}
+58 & 64 \\
+139 & 154
+\end{bmatrix} \\
+\begin{bmatrix}
+7 & 8 \\
+9 & 10 \\
+11 & 12
+\end{bmatrix} \cdot \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} &= \begin{bmatrix}
+39 & 54 & 69 \\
+49 & 68 & 87 \\
+59 & 82 & 105
+\end{bmatrix}
+\end{align*}
+$$
+</Callout>
+
+Even if the dimensions of the matrices are the same the result of the matrix multiplication can be different depending on the order of the matrices. 
+
+<Callout type="example">
+$$
+\begin{align*}
+\begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix} \cdot \begin{bmatrix}
+5 & 6 \\
+7 & 8
+\end{bmatrix} &= \begin{bmatrix}
+19 & 22 \\
+43 & 50
+\end{bmatrix} \\
+\begin{bmatrix}
+5 & 6 \\
+7 & 8
+\end{bmatrix} \cdot \begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix} &= \begin{bmatrix}
+23 & 34 \\
+31 & 46
+\end{bmatrix}
+\end{align*}
+$$
+
+For the element $c_{11}$ (top left) we get the following:
+
+$$
+\begin{align*}
+c_{11} &= 1 \cdot 5 + 2 \cdot 7 = 19 \\
+c_{11} &= 5 \cdot 1 + 6 \cdot 3 = 23
+\\
+19 &\neq 23
+\end{align*}
+$$
+
+</Callout>
+
 #### Strassen's Algorithm
 
 #### Winograd's Algorithm
 
-#### AlphaTensor
-
 ### Frobenius Norm
+
+The Frobenius norm is a way to measure the size of a matrix. It is defined as the square root of the sum of the squares of all the elements in the matrix. So for a matrix 
+$\boldsymbol{A} \in \mathbb{R}^{m \times n}$ the Frobenius norm is defined as follows:
+
+$$
+\|\boldsymbol{A}\|_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n a_{ij}^2}
+$$
+
+You can also think of it as just taking the matrix and flattening it into a vector and then calculating the length of that vector, i.e. the Euclidean/L2 norm of the vector.
+
+
+<Callout type="example">
+If we define the matrix $\boldsymbol{A}$:
+
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix}
+$$
+
+Then the Frobenius norm of $\boldsymbol{A}$ is:
+
+$$
+\|\boldsymbol{A}\|_F = \sqrt{1^2 + 2^2 + 3^2 + 4^2 + 5^2 + 6^2} = \sqrt{91} \approx 9.539
+$$
+</Callout>
 
 ### Trace
 
@@ -417,3 +576,7 @@ $$
 </Callout>
 
 ### Rank
+
+<Callout type="todo">
+    Ranks seem a bit annoying but not hugely complex.
+</Callout>
