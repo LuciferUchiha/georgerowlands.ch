@@ -1,8 +1,7 @@
 {
   "linearEquations": "Linear Equations",
-  "vectors": "Vectors",
   "matrices": "Matrices",
-  "operations": "Operations",
+  "vectors": "Vectors",
   "gaussianElimination": "Gaussian Elimination",
   "hadamardProduct": "Hadamard Product",
   "broadcasting": "Broadcasting",

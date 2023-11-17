@@ -65,9 +65,12 @@ The interpretation of the degree centrality is pretty self-explanatory. And is c
 ### Closeness Centrality
 
 Unlike the degree centrality, the closeness centrality is a global measure, because it takes into account the whole
-graph, however the consequence of this is that it is more expensive to calculate. The idea of the closeness centrality
-is that a vertex is important if it is close to the center of the graph. So a vertex can be important as long as it is
-close to the center of the graph, even if it only has one edge. As seen by the green vertex in the following graph.
+graph, however the consequence of this is that it is more expensive to calculate. 
+
+> The idea of the closeness centrality is that a vertex is important if it is close to the center of the graph. So a vertex 
+is important if it is **close** to all other vertices in the graph, i.e. it is close to the center of the graph.
+
+This also means that a vertex can be important even if it only has one edge. As seen by the green vertex in the following graph.
 
 export const vertexDegreeProblemGraph = {
     nodes: [
@@ -188,7 +191,10 @@ Because of this we could say that that vertex is in Brokerage position or is a B
 ![degreeCentralityIssue](/compSci/degreeCentralityIssue.png)
 
 The betweenness centrality is a global measure that takes into account the whole graph and tries to solve the above
-issue. The idea of the betweenness centrality is that a vertex is important if a lot of shortest paths go through it.
+issue. 
+
+> The idea of the betweenness centrality is that a vertex is important if a lot of shortest paths go through it, i.e. it is
+> **between** a lot of vertices.
 
 To calculate the betweenness centrality we need to calculate the number of shortest paths that go through a vertex $v$.
 So for every pair of vertices $u$ and $w$ we need to calculate the shortest paths and then count how many of them go
@@ -287,8 +293,11 @@ The eigenvector centrality is the eigenvector corresponding to the largest eigen
 graph. The eigenvector corresponding to the largest eigenvalue is also commonly called the dominant eigenvalue/vector.
 This can just be calculated but is most often calculated using the power iteration method.
 
-The eigenvector centrality is an interesting centrality measure, because its idea is that a node is important if its 
-neighbors are important. What makes a vertex important could be any attribute of the vertex, for example if we have 
+The eigenvector centrality is an interesting centrality measure.
+
+> The idea is that a node is important if its neighbors are important. 
+
+What makes a vertex important could be any attribute of the vertex, for example if we have 
 a network of people, their salary. However, the simplest and most commonly used approach is to use the degree 
 centrality as the importance measure. In an undirected graph most commonly the in-degree centrality. 
 
@@ -333,9 +342,7 @@ this as the eigenvector centrality being the "true underlying importance" of the
 
 ### Katz Centrality
 
-<Callout type="todo">
-    Do this
-</Callout>
+
 
 ### PageRank
 
