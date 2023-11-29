@@ -14,5 +14,7 @@
   "correlation": "Correlation",
   "crossCorrelation": "Cross-Correlation",
   "autocorrelation": "Autocorrelation",
-  "convolution": "Convolution"
+  "convolution": "Convolution",
+  "wordEmbeddings": "Word Embeddings",
+  "pageRank": "PageRank"
 }
