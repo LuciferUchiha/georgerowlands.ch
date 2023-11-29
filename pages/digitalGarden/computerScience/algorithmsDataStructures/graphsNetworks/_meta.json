@@ -11,5 +11,6 @@
   "linkPrediction": "Link Prediction",
   "topologicalSortOrdering": "Topological Sort/Ordering",
   "shortestPath": "Shortest Path",
-  "eulerianPath": "Eulerian path"
+  "eulerianPath": "Eulerian path",
+  "nodeEmbeddings": "Node Embeddings"
 }

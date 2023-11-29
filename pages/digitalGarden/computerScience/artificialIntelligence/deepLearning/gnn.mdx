@@ -1,0 +1,87 @@
+# GNN - Graph Neural Networks
+
+## Message Passing
+
+Intermediate topic before moving to GNNs. Is this GraphSAGE?
+
+Given a network where some nodes have labels, how do we propagate the labels to the other nodes?
+
+Network with scammers and trusted nodes. How do we find other scammers or trusted nodes? (red and green nodes)
+
+could just use node embeddings and then use a classifier on top of that.
+
+But we think of it here as a semi-supervised learning problem. We have some labels and we want to propagate them to non-labeled nodes, partially labeled.
+
+key concept is "collective classification", i.e nodes that are connected to each other are more likely to have the same label.
+node edges/network structure correlates with node labels.
+
+ "homophily" - nodes that are connected to each other are more likely to have the same label, footbal fans are more likely to be friends with other football fans. 
+ "birds of a feather flock together"
+ "influence" - connections between nodes can influence the labels of the nodes, e.g. a football fan can influence his friends to become football fans.
+
+"guilt by association" - if a node is connected to a scammer, it is more likely to be a scammer.
+
+label of v depends on the labels of its neighbors, its features and the features of its neighbors.
+
+The three approaches below are classic approaches to this problem.
+
+Use a probabilistic model to model the probability of a node having a label given the labels of its neighbors. And we make a first order markov assumption, 
+i.e. the label of a node depends only on the labels of its neighbors. $P(y_v | y_u, N(v))$
+
+Iterative process till it converges. That has three parts:
+
+- local classifier: Will assign initial labels to the nodes based on their features. $P(y_v | x_v)$. Only applied once at the beginning.
+- relational classifier: Will assign labels to the nodes based on the labels and/or features of their neighbors. $P(y_v | y_u, N(v))$.
+- collective inference: Applying the relational classifier iteratively till it converges.
+
+### Relational classification
+
+Basic idea is to use a probabilistic model to model the probability of a node having a label given the labels of its neighbors. 
+
+So the weighted average of class probabilities of the neighbors. Can for example intiialize the lables with ground-truth and if unlabled set the label to 0.5 for two classes.
+
+$$P(y_v=c) = \frac{1}{\sum_{u \in N(v)} w_{vu}} \sum_{u \in N(v)} w_{vu} P(y_v = c)$$
+
+where $w_{vu}$ is the weight of the edge between $v$ and $u$ and $P(y_v = c)$ is the probability of node $v$ having label $c$.
+
+Problem is not necessarily converging and don't use the features of the nodes.
+
+The order of updating the labels is important and can be done in different ways. For example in order of id. Or randomly. Or in order of degree. Not better to do
+them all at the same time???
+
+If a label doesnt change, then it is not updated anymore, i.e converged. So we can stop the process when no label changes anymore.
+
+This process is just based on the network strucutre and their labels.
+
+### Iterative classification
+
+Will also use the features of the nodes and not just the labels.
+
+EAch node has a feature vector $x_v$ and a label $y_v$. We train two classifiers, one that predicts the label of a node based on its features 
+and one that predicts the label of a node based its features and the labels of its neighbors, $z_v$. This is a summary vector of the labels of the neighbors.
+Could be for example a histogram of the labels of the neighbors, lots of possiblities.
+
+The classifiers are trained using a training set in phase 1. In phase 2, we use the first classifier to predict the labels of the nodes and then use the second classifier
+to predict the labels of the nodes based on the features and the labels of the neighbors. We then update the labels of the nodes with the predictions of the second classifier.
+We then repeat this process until convergence.
+
+### Belief propagation
+
+This is a message passing algorithm. We send messages from the nodes to their neighbors and then update the labels of the nodes based on the messages.
+
+"loopy belief propagation" because graph can have cycles. Passing messages, updating beliefs, passing messages, updating beliefs, etc.
+
+First example is a path graph and we want to count the number of nodes in a graph. Pass messages i.e count of neighbor + 1 etc. at the sink node we have the count.
+
+Can also do this for a tree, when we start in the leaves and then move up to the root.
+
+> a Node listens to its incoming messages from its neighbors, updates its belief and then sends messages to its neighbors.
+
+We have a label-lable potential matrix where the value $\phi_{uv}(y_u, y_v)$ the probability of a the node u having label $y_u$ and node v having label $y_v$.
+
+The function "prior belief" is the probability of a node being in class y_i, $/\psi(Y_i)$.
+
+The above is very weird. I don't understand it. But its the formal idea of the above.
+
+If the graph has cycles we have problems with convergence but it can still be run. messages just keep being passed around in the cycles.
+
