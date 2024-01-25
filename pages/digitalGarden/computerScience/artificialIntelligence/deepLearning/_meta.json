@@ -1,4 +1,5 @@
 {
+  "backprop": "Backpropagation",
   "computerVision": "Computer Vision",
   "gnn": "GNN - Graph Neural Networks"
 }
