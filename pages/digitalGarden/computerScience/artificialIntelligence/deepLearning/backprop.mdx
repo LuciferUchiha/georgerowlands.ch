@@ -3,7 +3,7 @@ import Image from "@/components/Image/Image";
 
 # Backpropagation
 
-## Forward pass
+## Forward Pass
 
 The forward pass, sometimes also called forward propogration, is the process of calculating the output of a neural network given an input. This is done by running the input through the network layer by layer, 
 and applying the activation function to the output of each layer. The output of the last layer is the output of the network. 
@@ -42,7 +42,9 @@ Let's say we have the following input, weights and biases:
 | $b2$     | 0     |
 | $b3$     | 0     |
 
-Then we can calculate the output of the network as follows. First we calculate the output of the hidden layer. 
+Then we can calculate the output of the network as follows. First we calculate the output of the hidden layer.  
+
+Evaluation Trace or Wengert list??? https://pub.towardsai.net/a-gentle-introduction-to-automatic-differentiation-74e7eb9a75af
 
 $$
 \begin{align*}
@@ -85,8 +87,13 @@ Do matrix form
 
 ## Backpropagation
 
+The backpropagation algorithm is the key to training neural networks. It is the process of calculating the gradients of the loss function with respect to the 
+weights and biases of the network. These gradients are then used to update the weights and biases using gradient descent to minimise the loss function.
+
+The backpropagation algorithm is based on the chain rule from calculus. So lets start with a brief reminder of the chain rule.
+
 <Callout type="info" title="Chain Rule">
-    Here is a brief reminder of the chain rule. If we have a the differentiable functions $f(x)$ and $g(x)$ and the composite function $h(x) = f(g(x))$, i.e where 
+    If we have a the differentiable functions $f(x)$ and $g(x)$ and the composite function $h(x) = f(g(x))$, i.e where 
     the function $f$ is applied to the output of $g$, then the derivative of $h$ with respect to $x$ is given by:
 
     $$
@@ -113,16 +120,44 @@ Do matrix form
     inner function, then the next inner function and so on. This is the key idea behind backpropagation as a neural network is just one big composite function with 
     lots of variables and lots of inner functions.
 
-
     TODO: Multiple variables
 </Callout>
 
 show the idea. The chain rule. then the full derivation.
 
-Why do gradients vanish? Why do they explode?
-
 Show nice reformulation of the loss function to make the calculation easier.
 
-## Automatic differentiation
+### Vanishing and Exploding Gradients
+
+The vanishing and exploding gradient problem is a problem that occurs when training very deep neural networks. It is caused by the chain rule and the fact that the 
+gradient of the loss function is calculated by multiplying the gradients of each layer together. If the gradients are small, then multiplying them together will
+make them even smaller. This is the vanishing gradient problem. If the gradients are large, then multiplying them together will make them even larger. This is the
+exploding gradient problem.
+
+There are many possible solutions to this problem. Some of the most common are:
+
+- Different activation function such as ReLU or Leaky ReLU.
+- Batch Normalisation.
+- Residual connections, also known as skip connections.
+
+We can see the vanishing gradient problem pretty easily by looking at the derivative of the sigmoid function.
+
+<div className="flex justify-center mt-5">
+    <iframe src="https://www.desmos.com/calculator/xs6tgfd48r?embed" width="500" height="500"/>
+</div>
+
+The derivative of the sigmoid function is always less then 0.25, multiplying this together for each layer will make the gradient very small.
+
+## Automatic Differentiation
 
 computational graph, show how it works. Why does plus copy the gradient?
+
+So far we have been calculating the gradients of the loss function with respect to the weights and biases by hand. This is fine for toy examples, but it is not
+practical for larger networks. Luckily, there is a technique called automatic differentiation that allows us to calculate the gradients automatically.
+
+Automatic differentiation is also based on the chain rule and the fact that every operation in a neural network uses elementary operations such as addition, 
+multiplication and elementary functions such as sine, cosine and the exponential function.
+
+Using these elementary operations, we can build a computational graph of the neural network. A computational graph is a directed acyclic graph where the nodes 
+represent the operations and the edges represent the flow of data. The computational graph is then used to calculate the gradients of the loss function with 
+respect to the weights and biases.
