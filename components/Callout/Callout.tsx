@@ -7,6 +7,7 @@ import {
   VscError,
   VscBeaker,
   VscSymbolEvent,
+  VscLaw,
 } from "react-icons/vsc";
 import { capitalizeFirstLetter } from "../../utils/utils";
 
@@ -17,6 +18,7 @@ const TypeToEmoji = {
   error: <VscError className="w-[28px] h-[28px]" />,
   example: <VscBeaker className="w-[28px] h-[28px]" />,
   todo: <VscSymbolEvent className="w-[28px] h-[28px]" />,
+  proof: <VscLaw className="w-[28px] h-[28px]" />,
 };
 
 type CalloutType = keyof typeof TypeToEmoji;
@@ -39,6 +41,9 @@ const classes: Record<CalloutType, string> = {
   ),
   todo: cn(
     "border-yellow-100 bg-yellow-50 text-yellow-900 dark:border-yellow-200/30 dark:bg-yellow-700/30 dark:text-yellow-200"
+  ),
+  proof: cn(
+    "border-green-200 bg-green-50 text-green-900 dark:border-green-200/30 dark:bg-green-700/30 dark:text-green-200"
   ),
 };
 
@@ -75,7 +80,7 @@ export default function Callout({
         {emoji}
       </div>
       <div className="nx-w-full nx-min-w-0 nx-leading-7">
-        <span className="font-bold ">{`${title}`}</span>
+        <span className="font-bold">{`${title} `}</span>
         {children}
       </div>
     </div>

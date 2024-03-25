@@ -1,0 +1,449 @@
+import Callout from "~/components/Callout/Callout";
+
+# Set Theory
+
+A **set** is a collection of distinct objects. To create a set you simply list the objects between curly brackets. The objects in a set are called **elements** or **members** of the set. 
+The **order of the elements in the set is not important**, and **an element can only appear once in a set**. If an element appears more than once, it is considered only once in the set. Therefore 
+we can define the following:
+
+<Callout type="example">
+- The set of the first three positive numbers is $\{1,2,3\}$.
+- The order doesn't matter, therefore, $\{1,2,3\}$ is the same as $\{3,1,2\}$.
+- Each element can only appear once, so $\{1,2,2,3\}$ is the same as $\{1,2,3\}$.
+</Callout>
+
+
+However, a set doesn't have to contain numbers, you could, for example, have a set of the base colors $\{red, green, blue\}$ as long as all the elements are **distinct**.
+
+A set can also have no elements at all, the so-called **empty set**, and is represented by the symbol $\emptyset$. You may also see the notation of $\{\}$ or $\phi$ (phi) for the empty set. However I will be using $\emptyset$.
+
+## Membership
+
+To indicate that an element is a member of a set the symbol $\in$ is used. To indicate that an element is not a member of a set the symbol $\notin$ is used.
+
+<Callout type="example">
+If $A=\{a,b,c\}$ then:
+
+- Is a member of the set: $a \in A$ or $a \in \{a,b,c\}$
+- Is not a member of the set: $d \notin A$ or $d \notin \{a,b,c\}$
+</Callout>
+
+## Equality
+
+Because sets are characterized by their elements, two sets are only equal if they have the exact same elements. More formally, two sets $A$ and $B$ are equal if and only if every element of $A$ is an element of $B$ and every element of $B$ is an element of $A$:
+
+$$
+A=B \iff \forall x(x \in A \iff x \in B)
+$$
+
+Where $\iff$ means "if and only if".
+
+<Callout type="example">
+- $\{1,2,3\} = \{3,2,1\}$ because the order of the elements doesn't matter.
+- $\{1,2,3\} \neq \{1,2,3,4\}$ because the second set has an element that is not in the first set.
+- $\{1,2,3\} = \{1,2,2,3\}$ because only the distinct elements are considered.
+</Callout>
+
+
+## Cardinality
+
+The cardinality of a set is the number of elements/members in that set. The cardinality of the set $A = \{1,2,3\}$ is denoted by:
+
+$$
+|A| = 3
+$$
+
+Importantly repeated elementes are not counted, so $B=\{blue, white, red, blue, white\}$ then the cardinality of $B$ is still 3.
+
+## Sub and Superset
+
+$A$ is a **subset** of a set $B$ if all elements of $A$ are also elements of $B$. $B$ is then a so called **superset** of $A$. This is written as:
+
+$$
+A \subseteq B \iff \forall x(x \in A \implies x \in B)
+$$
+
+The superset relation is the opposite of the subset relation, so $B \supseteq A$. This is written as:
+
+$$
+B \supseteq A \iff A \subseteq B
+$$
+
+<Callout type="example">
+- $\{1,2\} \subseteq \{1,2,3\}$ because all elements of the first set are also in the second set.
+- $\{1,2,3\} \subseteq \{1,2,3\}$ because all elements of the first set are also in the second set.
+- $\{1,2,3\} \nsubseteq \{1,2\}$ because not all elements of the first set are in the second set.
+- $\{1,2,3\} \supseteq \{1,2\}$ because all elements of the second set are also in the first set.
+</Callout>
+
+If the symbol $\subseteq$ is underlined, then the sets can also be equal. The symbol can also be crossed out to indicate that the relation is not true.
+
+If $A$ is a subset of $B$ but not equal to $B$, then $A$ is called a **proper subset** of $B$. 
+The same goes for the superset relation, if $B$ is a superset of $A$ but not equal to $A$, then $B$ is called a **proper superset** of $A$.
+
+$$
+A \subset B \iff A \subseteq B \land A \neq B
+$$
+
+and 
+
+$$
+B \supset A \iff B \supseteq A \land A \neq B
+$$
+
+<Callout type="example">
+- $\{1,2\} \subset \{1,2,3\}$ because all elements of the first set are also in the second set but the sets are not equal.
+- $\{1,2,3\} \not \subset \{1,2,3\}$ because all elements of the first set are also in the second set and the sets are equal. Therefore it is not a proper subset but just a subset.
+- $\{1,2,3\} \not \subset \{1,2\}$ because not all elements of the first set are in the second set.
+- $\{1,2,3\} \supset \{1,2\}$ because all elements of the second set are also in the first set but the sets are not equal.
+</Callout>
+
+<Callout type="info">
+Because the empty set has no elements, it is a subset of every set, including itself. Therefore $\emptyset \subseteq A$ for every set $A$.
+
+- $\emptyset \subset \{1,2,3\}$
+- $\emptyset \subset \emptyset$
+- $\emptyset \subseteq \Bbb{N}$
+</Callout>
+
+It can be very helpful to visualize sets with venn diagrams. By doing so you can easily interpert the relations between sets.
+
+![subsetAndProperSubset](/maths/subsets.png)
+
+## Sets of Numbers
+
+The most common use of sets is to define the different types of numbers. The following are the most common sets of numbers visualized:
+
+![setOfNumbers](/maths/setOfNumbers.png)
+
+We can also clearly see from the above venn diagram that the natural numbers are a subset of the integers, the integers are a subset of the rational numbers, the rational numbers are a subset of the real numbers, and the real numbers are a subset of the complex numbers.
+
+### Natural Numbers
+
+The natural numbers are the set of positive integers. Depending on the definition of the natural numbers, the set can include 0 or not. The set of natural numbers is denoted by:
+
+$$
+\Bbb{N} =\{0,1,2,3,...\}
+$$
+
+Depending on the author, 0 is included or not in the set of natural numbers. I prefer to include 0 in the set of natural numbers, as it makes more sense to me. This can cause confusion, so it is important to know some of the different notations used:
+
+- If $\Bbb{N} =\{1,2,3,...\}$ then 0 is not included in the set of natural numbers. The authors that include 0 in the set of natural numbers use the following notation to exclude it $\Bbb{N}^+ =\{1,2,3,...\}$.
+- If $\Bbb{N} =\{0,1,2,3,...\}$ then 0 is included in the set of natural numbers. The authors that do not include 0 in the set of natural numbers use the following notation to include it $\Bbb{N}_0 =\{0,1,2,3,...\}$.
+
+### Integers
+
+The integers are the set of positive and negative whole numbers, including zero. The set of integers is denoted by:
+
+$$
+\Bbb{Z} =\{...,-2,-1,0,1,2,...\}
+$$
+
+Because the integers include the natural numbers, the set of natural numbers is a proper subset of the set of integers.
+
+$$
+\Bbb{N} \subset \Bbb{Z}
+$$
+
+Multiple restrictions can be applied to the set of integers, for example:
+
+- $\Bbb{Z}^+ =\{1,2,3,...\}=\Bbb{N}\setminus \{0\}$
+- $\Bbb{Z}^- =\{...,-3,-2,-1\}$
+- $\Bbb{Z}_0^+ =\{0,1,2,3,...\}=\Bbb{N}$ 
+
+### Rational and Irrational Numbers
+
+Rational numbers are numbers that can be expressed with a fraction of two integers. Importantly the denominator can not be zero as this is an undefined operation. Another way to remember them is that they can be written as terminating or repeating decimals. The set of rational numbers is denoted by:
+
+$$
+\Bbb{Q}=\Big\{\frac{p}{q} \mid p \in \Bbb{Z} \land q \in \Bbb{Z} \setminus \{0\} \Big\}
+$$
+
+<Callout type="example">
+The number $0.75$ is a rational number because it can be written as a fraction of two integers but also because it is a terminating decimal:
+
+$$
+0.75 = \frac{3}{4} \in \Bbb{Q}
+$$
+
+This fraction is also unique to each number, as for example the fraction $\frac{6}{8}$ can be shortened to the above
+solution by dividing the denominator an nominator by the common factor 2.
+
+$$
+\frac{6}{8} = \frac{3}{4} \in \Bbb{Q}
+$$
+
+Another example is $0.3333... = 0.\overline{3}$, which is a repeating decimal and can be written as the following fraction:
+
+$$
+0.3333... = 0.\overline{3} = \frac{1}{3} \in \Bbb{Q}
+$$
+</Callout>
+
+On the other hand, irrational numbers are numbers that cannot be expressed as a fraction of two integers. They cannot
+be written as terminating or repeating decimals, as their decimal expansions go on infinitely without repeating.
+
+<Callout type="example">
+For example, $\pi$, not a rational number but an irrational number:
+
+$$
+\pi = 3.14159265... \in \Bbb{I}
+$$
+
+Another example of an irrational number is $\sqrt{2}$:
+
+$$
+\sqrt{2} = 1.41421356... \in \Bbb{I}
+$$
+
+This however does not mean that all square roots are irrational numbers!
+
+$$
+\sqrt{9} = 3 \in \Bbb{N}
+$$
+</Callout>
+
+<Callout type="proof" title="Proof that sqrt(2) is irrational">
+To prove that the square root of 2 is irrational, we need to assume that it is rational and then derive a contradiction.
+That is, we assume that $\sqrt{2}$ can be expressed as a ratio of two integers, and then show that this assumption is wrong and leads
+to a contradiction. Suppose that $\sqrt{2}$ is rational, and can be expressed as:
+
+$$
+\sqrt{2} = \frac{p}{q}
+$$
+
+where $p$ and $q$ are integers with no common factors. We can assume that $p$ and $q$ are in lowest terms, meaning that
+they have been divided by their greatest common factor. After squaring both sides of this equation, we get:
+
+$$
+2 = \frac{p^2}{q^2}
+$$
+
+Then multiplying both sides by $q^2$, we get:
+
+$$
+2q^2 = p^2
+$$
+
+This means that $p^2$ is even, which implies that $p$ is also even (because the square of an odd number is odd). So we
+can write $p$ as $p = 2k$ for some integer $k$. Substituting $p = 2k$ into the equation $2q^2 = p^2$, we get:
+
+$$
+2q^2 = (2k)^2 = 4k^2
+$$
+
+Dividing both sides by 2, we get:
+
+$$
+q^2 = 2k^2
+$$
+
+This means that $q^2$ is even, which implies that $q$ is also even (because the square of an odd number is odd). But
+this contradicts our assumption that $p$ and $q$ have no common factors, since they both have a factor of 2. Therefore,
+our initial assumption that $\sqrt{2}$ is rational must be false, and we conclude that $\sqrt{2}$ is irrational.
+</Callout>
+
+### Real Numbers
+
+Real numbers are the combination of rational and irrational numbers, i.e. all numbers from both sets. The set of real numbers is denoted by $\Bbb{R}$.
+
+<Callout type="warning">
+Infinity is not a number in the traditional sense, but rather a concept that refers to something, limitless i.e. without
+end. Therefore it is not an element of any set of numbers, including the real numbers.
+</Callout>
+
+### Complex Numbers
+
+The set of complex numbers is denoted by $\Bbb{C}$. 
+
+You can see what complex numbers are and how they are used on [this page] or also just look at my [cheat sheet] to refresh your knowledge.
+
+<Callout type="todo">
+Add the link to the complex numbers page.
+</Callout>
+
+## Notations
+
+There are multiple ways to define a set.
+
+### Roster Notation
+
+The roster or also called enumeration notation defines a set by listing its elements between curly brackets separated by commas. This is the most common way to define a set and is what I have been using in the examples above.
+
+<Callout type="example">
+- The set of the first three positive numbers is $\{1,2,3\}$.
+- The set of the first three positive even numbers is $\{2,4,6\}$.
+</Callout>
+
+### Semantic Definition
+
+Sets can be described using words and rules.
+
+<Callout type="example">
+Let $A$ be the first 3 positive integers that are odd. Therefore the set is then $A=\{1,3,5\}$
+Let $B$ be the set of colors of the French flag. Therefore the set is then $B=\{blue,white,red\}$
+</Callout>
+
+### Set-Builder Notation
+
+This is probably the hardest notation to understand. The set-builder notation specifies a set as a selection from a larger set, determined by a condition on those elements.
+
+<Callout type="example">
+$F = \{ a \mid a \in \Bbb{I} \text{ and } 0 \leq a \leq 5\}=\{0,1,2,3,4,5\}$
+
+The vertical bar, "|" means "such that". So the description can be read as "F is the set of all numbers a such that a is an integer in the range from 0 to 5 inclusive.
+</Callout>
+
+## Ordered Pair
+
+An **ordered pair** is a pair of objects and can be denoted by:
+
+$$
+(a,b)
+$$
+
+Unlike in a set, the order in which the objects appear in the pair matters. Therefore, the ordered pair $(a,b)$ is different from the ordered pair $(b,a)$ unless $a$ and $b$ are equal. For this reason, a set is also called an **unordered pair**.
+
+## Basic Set Operations
+
+There are several fundamental operations for constructing new sets from given sets.
+
+### Union
+
+Two sets can be joined together, this results in the so called **union** of $A$ and $B$. This is written as $A \cup B$. The union is the set containing all elements that are in $A$ or $B$ or both.
+
+![union](/maths/union.png)
+
+<Callout type="example">
+$$
+\begin{align*}
+\{1,2\} \cup \{1,2\} &= \{1,2\} \\
+\{1,2\} \cup \{2,3\} &= \{1,2,3\} \\
+\{1,2,3\} \cup \{3,4,5\} &= \{1,2,3,4,5\}
+\end{align*}
+$$
+</Callout>
+
+### Intersection
+
+A new set can also be constructed by determining which elements two sets have "in common", this results in the so called **intersection** of $A$ and $B$. This is written as $A \cap B$. The intersection is the set of all things that are elements of both $A$ and $B$. If $A \cap B = \emptyset$, then $A$ and $B$ are called **disjoint**.
+
+![intersection](/maths/intersection.png)
+
+<Callout type="example">
+$$
+\begin{align*}
+\{1,2\} \cap \{1,2\} &= \{1,2\} \\
+\{1,2\} \cap \{2,3\} &= \{2\} \\
+\{1,2\} \cap \{3,4\} &= \emptyset
+\end{align*}
+$$
+</Callout>
+
+### Complements
+
+The so called **absolute complement** of $A$ (or simply the **complement of** $A$) is the set of elements not in $A$. In other words, let $U$ be a set that contains all the elements under study. If there is no need to mention $U$, either because it has been previously specified, or it is obvious (for example all positive numbers). Then the absolute complement of $A$ is the difference (Or relative complement) of $A$ in $U$.
+This can be written as $A^c = U \setminus A$.
+
+![absoluteComplement](/maths/absoluteComplement.png)
+
+<Callout type="example">
+$$
+\begin{align*}
+\{1,2\} \cap \{1,2\} &= \{1,2\} \\
+\{1,2\} \cap \{2,3\} &= \{2\} \\
+\{1,2\} \cap \{3,4\} &= \emptyset
+\end{align*}
+$$
+</Callout>
+
+### Difference
+
+If $B$ and $A$ are sets, then the **relative complement** (or short **difference**) of $B$ and $A$, is the set of elements in $B$ without the elements of $A$.
+This can be written as $B \setminus A$.
+
+![difference](/maths/difference.png)
+
+<Callout type="example">
+$$
+\begin{align*}
+\{1,2,3\} \setminus \{2,3,4\} &= \{1\} \\
+\{2,3,4\} \setminus \{1,2,3\} &= \{4\} \\
+\{1,2,3\} \setminus \{1,2,3,4\} &= \emptyset
+\end{align*}
+$$
+</Callout>
+
+#### Symmetric Difference
+
+The **symmetric difference** of two sets (also known as the **disjunctive union**), is the set of elements which are in either of the sets, but not in both sets (their intersection).
+This can be written as $A \ominus B$ or $A \triangle B$ which can however cause confussion with other subjects.
+The symmetric difference can be defined as $A \ominus B=(A \cup B)\setminus (A \cap B)$ or as $(A \setminus B)\cup(B \setminus A)$.
+
+![symmetricDifference](/maths/symmetricDifference.png)
+
+<Callout type="example">
+$$
+\{7,8,9,10\} \ominus \{9,10,11,12\} = \{7,8, 11,12\}
+$$
+</Callout>
+
+### Cartesian Product
+
+The **Cartesian product** of two sets $A$ and $B$, denoted by $A \times B$, is the set of all ordered pairs $(a,b)$ where $a$ is an element of $A$ and $b$ is an element of $B$. So in short a set of all of the possible combinations.
+
+<Callout type="example">
+$$
+\{1,2\} \times \{3,4\} = \{(1, 3), (1, 4), (2, 3), (2, 4)\}
+$$
+</Callout>
+
+## Power Set
+
+The power set or also called super set of a set $A$ is the set containing all subsets of $A$. The empty set and $A$ itself are also elements of the power set of $A$, because these are also both subsets of $A$.
+
+The power set of the set $A$ is commonly written as $P(A)$ or $2^{A}$
+
+<Callout type="example">
+Given $A={x,y,z}$:
+
+$$
+S^A=P(A)=\{\emptyset,\{x\},\{y\},\{z\},\{x,y\},\{x,z\},\{y,z\},\{x,y,z\}\}
+$$
+</Callout>
+
+### Cardinality of a Power Set
+
+The amount of elements in a power set is pretty easy to calculate. If $|A|=3$ as in the example above then $|P(A)|=2^3=8$ which can simplified to $|P(A)|=2^{|A|}$, this is why I prefer to use the $P(A)$ notation as the other notation can quickly cause confusion.
+
+## Partitions
+
+A partition of a set $A$ is a set of non-empty subsets of $A$ such that every element $a \in A$ is in exactly one of these subsets.
+
+The set $P$ is only a partition of $A$ if and only if all of the following conditions hold:
+
+- P does not contain the empty set, so $\emptyset \notin P$.
+- The union of all the sets in $P$ is equal to $A$.
+- The intersection of any two distinct sets in $P$ is the empty set, $\emptyset$
+
+<Callout type="example">
+The set $\{1,2,3\}$ has 5 possible partitions:
+
+- $\{\{1\},\{2\},\{3\}\}$
+- $\{\{1,2\},\{3\}\}$
+- $\{\{1,3\},\{2\}\}$
+- $\{\{1\},\{2,3\}\}$
+- $\{\{1,2,3\}\}$
+
+The following are not partitions of \{1,2,3\}:
+
+- $\{\emptyset,\{1,3\},\{2\}\}$ is not a partition because one of its elements is the empty set.
+- $\{\{1,2\},\{2,3\}\}$ is not a partition because the element 2 is contained in more than one block.
+- $\{\{1\},\{2\}\}$ is not a partition of $\{1,2,3\}$ because none of its blocks contains the element 3.
+</Callout>
+
+## De Morgan's Laws
+
+<Callout type="todo">
+TODO
+</Callout>
