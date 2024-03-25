@@ -14,7 +14,7 @@ const NameText = () => {
                 strings={["my name is"]}
                 className="text-3xl ml-2"
                 typeSpeed={40}
-                startDelay={2000}
+                startDelay={1400}
                 showCursor={false}
             />
 
@@ -24,7 +24,7 @@ const NameText = () => {
                 strings={["George Rowlands"]}
                 className="font-bold text-primary-500 dark:text-primary-700 text-6xl"
                 typeSpeed={40}
-                startDelay={3000}
+                startDelay={2800}
                 showCursor={false}
             />
         </div>
