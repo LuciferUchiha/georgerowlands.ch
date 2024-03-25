@@ -1,0 +1,8 @@
+.next
+node_modules
+# mac specific
+.DS_Store
+.idea
+venv
+
+*/**/__pycache__
