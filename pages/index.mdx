@@ -1,7 +1,24 @@
-import NameText from "~/components/Home/NameText";
+import { ReactTyped } from "react-typed";
 
 <div className="h-screen flex flex-row justify-between">
-<div className="mt-64">
-  <NameText/>
+  <div className="mt-64">
+    <div>
+      <ReactTyped 
+          strings={["Hello there, my name is"]}
+          className="text-3xl"
+          typeSpeed={40}
+          showCursor={false}
+      />
+
+      <br />
+
+      <ReactTyped
+          strings={["George Rowlands"]}
+          className="font-bold text-primary-500 dark:text-primary-600 text-6xl"
+          typeSpeed={40}
+          startDelay={2200}
+          showCursor={false}
+      />
+    </div>
   </div>
 </div>
