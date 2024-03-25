@@ -1,8 +1,0 @@
-{
-  "riscV": " What is RISC-V?",
-  "arithmeticLogical": "Arithmetic and Logical Operations",
-  "controlTransfer": "Control Transfer Operations",
-  "dataTransfer": "Data Transfer Operations",
-  "procedureCalls": "Procedure Calls",
-  "pseudoInstructions": "Pseudo Instructions"
-}
