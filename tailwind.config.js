@@ -52,6 +52,7 @@ module.exports = {
             orange: colors.orange,
             blue: colors.blue,
             yellow: colors.yellow,
+            green: colors.green,
             primary: {
                 50: makePrimaryColor(97),
                 100: makePrimaryColor(94),

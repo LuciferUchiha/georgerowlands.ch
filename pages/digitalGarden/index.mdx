@@ -21,56 +21,42 @@ If you are interested in learning more about digital gardens I can recommend the
 
 ## How is my Garden Built?
 
-### Docusaurus
-
-<Callout type="info">
-This is no longer how my digital garden is built and is therefore no longer supported or updated. It is however
-still
-available under [old.georgerowlands.ch](https://old.georgerowlands.ch/).
-</Callout>
-
-My notes are written using the Markdown format which is the most common way for a computer scientist to write texts apart
-from LaTeX for academic purposes. [Docusaurus](https://docusaurus.io/) is built by Facebook, now Meta, that takes these
-markdown files and builds them into a [React](https://reactjs.org/) app for me. If you don't know what a React app is,
-in short, it is the most popular way to build a professional website at the current time of writing. I used to write my
-markdown notes in [Obsidian](https://obsidian.md/) and then built them into a web app using
-[Mkdocs](https://www.mkdocs.org/) with the [Material Theme](https://squidfunk.github.io/mkdocs-material/) but decided to
-move over to using Docusaurus for the added flexibility of it being a React app.
-
-Most recently I also added the capability of converting Jupyter Notebooks with a python kernel to markdown files so that
-they can then also be built to react pages. This was done using [nbdoc](https://outerbounds.github.io/nbdoc/) which is
-an adapted version of [nbdev](https://github.com/fastai/nbdev).
-
-Some potential future features that I am thinking of looking into is being able to convert Jupyter Notebooks with a
-Java kernel to markdown. I am also interested in being able to convert Matlab Scripts and LaTeX files to Markdown to
-then be nicely rendered.
-
-### Nextra
-
-This is how the current iteration of my digital garden is built. [Nextra](https://nextra.site/) is a very similar
-framework to Docusaurus that builds markdown files to a React app. The main differences being that it is built by Vercel
-and that it is in my opinion built a lot simpler and modern than Docusaurus.
-
-Current improvements from the the previous docusaurus iteration is mainly that the Jupyter Notebook convert is a custom
-NBConvert converter built by me so i have control over the templates and could generate `.mdx` rather than just `.md` files.
+The current iteration of my digital garden is built using [Nextra](https://nextra.site/). Nextra is a static site 
+generator that is built on top of Next.js and MDX. This allows me to write my notes in markdown and also use the MDX 
+format to write JSX in my markdown files. These markdown files are then converted into static HTML files using Next.js 
+and can be hosted on any static site hosting service such as [Vercel](https://vercel.com/).
 
 ## The Features
 
-This section is to show off some features of what can be rendered in my digital garden.
+In this section I briefly go over some of the features that are supported by my digital garden and how to use them.
 
 ### Markdown
 
-Markdown is supported out of the box with its many features.
+Markdown is supported out of the box. Anything that is supported by markdown can be used in the notes. This includes but
+is not limited to:
+
+- Headers
+- Lists
+- Links
+- Images
+- Code Blocks
+- Tables
+- Blockquotes
+
+For a full list of markdown features check out the [Markdown Guide](https://www.markdownguide.org/).
 
 ### MDX
 
-In addition to normal markdown Nextra also supports the MDX format which allows you to write JSX, i.e. react code in a
-markdown file. To find out more about MDX check out the official [MDX documentation](https://mdxjs.com/).
+In addition to the normal markdown format, Nextra also supports the MDX format which allows you to write JSX, i.e. react code in a
+markdown file. To find out more about MDX check out the [official MDX documentation](https://mdxjs.com/).
 
 #### Admonitions / Callouts
 
-Admonitions aren't included in standard markdown but have become very popular and are very useful and are supported
-by Nextra. Admonitions allow you to highlight certain text and add a category to the text for example:
+Admonitions aren't included in standard markdown but have become very popular. Recently GitHub has also added support for 
+admonitions in markdown FileSystem, however they call them alerts. 
+
+Admonitions are very useful to highlight certain text and add a category to the text. I have added a custom component that 
+builds on nextra's callouts to be able to add custom callout types. To use callouts in a MDX file you can use the following syntax:
 
 ```
 <Callout type="warning">
@@ -96,10 +82,22 @@ info, warning, error, example, todo
 info, warning, error, example, todo
 </Callout>
 
+The default callout type uses the websites primary color, a rocket icon and has no title:
+
+<Callout>
+This is a default callout.
+</Callout>
+
+### Jupyter Notebooks
+
+<Callout type="todo">
+TODO add how the hound works and how to use it.
+</Callout>
+
 ### LaTeX
 
-It has recently become very popular to write LaTeX equations in markdown. Nextra also supports this by using KaTeX to
-render LaTeX content either inline between `$\LaTeX$` $\LaTeX$ or as a block between `$$I = \int_0^{2\pi} \sin(x)\,dx$$`:
+It has recently become very popular to write LaTeX equations in markdown. Nextra supports this by using [KaTeX](https://katex.org/).
+You can render LaTeX content either inline between `$\LaTeX$` $\LaTeX$ or as a block between `$$I = \int_0^{2\pi} \sin(x)\,dx$$`:
 
 $$
 I = \int_0^{2\pi} \sin(x)\,dx
@@ -118,18 +116,17 @@ by MathJax [here](https://docs.mathjax.org/en/latest/input/tex/macros/index.html
 
 ### PlantUML
 
-If you ever need to create diagrams and especially UML diagrams, PlantUML is the way to go. I started with using Mermaid
+If you ever need to create diagrams and especially UML diagrams, PlantUML is the way to go. I started with Mermaid
 to create UML diagrams but swapped to PlantUML for the additional features and the ability to create custom themes
 (so everything can be minimalist and purple :D).
 
 To render PlantUML diagrams the [Remark plugin Simple PlantUML](https://github.com/akebifiky/remark-simple-plantuml) is
 used which uses the official PlantUML server to generate an image and then adds it.
 
-Some Examples can be seen below, on the [official website](https://plantuml.com/) or on [REAL WORLD PlantUML](https://real-world-plantuml.com/?type=class).
+An Example can be seen below, on the [official website](https://plantuml.com/) and also on [REAL WORLD PlantUML](https://real-world-plantuml.com/?type=class).
 
 ```plantuml
 @startuml
-!theme purplerain from http://raw.githubusercontent.com/LuciferUchiha/georgerowlands.ch/main
 
 interface Command {
     execute()
@@ -154,24 +151,20 @@ Invoker o-right-> Command
 Receiver <-left- ConcreteCommand
 
 @enduml
-
 ```
 
-```plantuml
-@startuml
-!theme purplerain from https://raw.githubusercontent.com/LuciferUchiha/georgerowlands.ch/main
+To use my custom theme you can use the following line at the beginning of the PlantUML file:
 
-state Elevator {
-Stopped -right-> Moving : Next Stop
-Moving --> Stopped : No More Stops
-Moving --> Moving : Has More Stops
-}
+```
+@startuml
+!theme purplerain from http://raw.githubusercontent.com/LuciferUchiha/georgerowlands.ch/main
+
+...
 
 @enduml
-
 ```
 
-My custom theme also has some processes built in for simple text coloring for example in cases of success, failure etc.
+However, it seems like when using a custom theme There can not be more then one per page? My custom theme also has some processes built in for simple text coloring for example in cases of success, failure etc.
 
 ```plantuml
 @startuml
@@ -184,14 +177,7 @@ Bob ->> Alice : $warning("warning")
 Bob ->> Alice : $info("finished")
 
 @enduml
-
 ```
-
-### Jupyter Notebooks
-
-<Callout type="todo">
-TODO add how the hound works and how to use it.
-</Callout>
 
 ## How can I Contribute?
 
@@ -203,6 +189,4 @@ Then feel free to make a pull request. There are however some rules to keep in m
 [IEEE Editorial Style Manual](https://www.ieee.org/content/dam/ieee-org/ieee/web/org/conferences/style_references_manual.pdf).
 They should also be added to the markdown file and specified in the `_meta.json` which maps files to titles and is also
 responsible for the ordering.
-A possible feature in the future could be a GitHub action that automatically checks this and creates a pull request fixing all the errors.
-and markdown rules are followed. A possible future feature would be a linter as a GitHub action.
 - LaTeX should conform with my notation and guideline, if something is not defined there you can of course add it.
