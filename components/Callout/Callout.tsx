@@ -9,7 +9,7 @@ import {
   VscSymbolEvent,
   VscLaw,
 } from "react-icons/vsc";
-import { capitalizeFirstLetter } from "../../utils/utils";
+import { capitalizeFirstLetter } from "~/utils/utils";
 
 const TypeToEmoji = {
   default: <VscRocket className="w-[28px] h-[28px]" />,
@@ -43,7 +43,7 @@ const classes: Record<CalloutType, string> = {
     "border-yellow-100 bg-yellow-50 text-yellow-900 dark:border-yellow-200/30 dark:bg-yellow-700/30 dark:text-yellow-200"
   ),
   proof: cn(
-    "border-green-200 bg-green-50 text-green-900 dark:border-green-200/30 dark:bg-green-700/30 dark:text-green-200"
+    "border-yellow-200 bg-yellow-50 text-yellow-900 dark:border-yellow-200/30 dark:bg-yellow-700/30 dark:text-yellow-200"
   ),
 };
 

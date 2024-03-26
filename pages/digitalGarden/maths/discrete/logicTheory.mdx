@@ -1,0 +1,87 @@
+import Callout from "~/components/Callout/Callout";
+
+# Logic Theory
+
+Logic theory is a branch of mathematics that deals with formal systems of logic. Logic theory is also commonly reffered to as boolean algebra 
+as it primarly deals with the boolean values of true and false.
+
+## Propositions
+
+A proposition is a statement that is either true or false. For example, the statement "Zürich is in Switzerland" is a proposition because it is either true or false, but not both. 
+A true/truthy value is represented by the symbol $T$ or $1$ and a false/falsy value is represented by the symbol $F$ or $0$.
+
+<Callout type="example">
+- "There are more wheels then doors in the world" is a proposition because it is either true or false. However, I don't know the answer to this question.
+- "My name is George" is a proposition (True).
+- "The sky is green" is a proposition (False).
+- "What time is it?" is not a proposition because it is a question.
+- "This proposition is false" is not a proposition because it is a paradox. If it is a proposition then it must be false which would make it true, but if it is true then it must be false.
+</Callout>
+
+### Compound Propositions
+
+Propositions can be combined to form compound propositions. 
+
+<Callout type="example">
+If we have the proposition $p$ = "Zürich is in Switzerland" (True) and the proposition $q$ = "Zürich is the capital of Switzerland" (False, it is Bern), we can combine them to form the compound proposition:
+
+"Zürich is in Switzerland and Zürich is the capital of Switzerland" which is false.
+</Callout>
+
+### Logical Operators
+
+Rather then using words to express propositions and combinations we can use symbols and operators. Each logical operator has a truth table that defines the output of the operator based on the input propositions.
+
+These operators are not just used in logic theory but also in programming languages and circuits in the form of logical gates.
+
+#### Conjunction (AND)
+
+The conjunction operator is represented by the symbol $\land$ and is true only if both the input propositions $p$ **and** $q$ are true. Hence the name "AND". To remember the symbol $\land$ think of it as a capital letter "A" for "AND".
+
+The truth table for the conjunction operator is as follows for the input propositions $p$ and $q$:
+
+| $p$ | $q$ | $p \land q$ |
+| :-: | :-: | :-: |
+| $0$ | $0$ | $0$ |
+| $0$ | $1$ | $0$ |
+| $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ |
+
+#### Disjunction (OR)
+
+The disjunction operator is represented by the symbol $\lor$ and is true if at least one of the input propositions $p$ **or** $q$ is true. Hence the name "OR". 
+
+The truth table for the disjunction operator is as follows for the input propositions $p$ and $q$:
+
+| $p$ | $q$ | $p \lor q$ |
+| :-: | :-: | :-: |
+| $0$ | $0$ | $0$ |
+| $0$ | $1$ | $1$ |
+| $1$ | $0$ | $1$ |
+| $1$ | $1$ | $1$ |
+
+#### Negation (NOT)
+
+The negation operator is a unary operator, meaning it only takes one input proposition $p$ rather then two, like the previous operators. The negation operator is represented by the symbol $\lnot$ and is true if the input proposition $p$ is false and false if the input proposition $p$ is true. 
+Hence the name "NOT", as it negates, inverts or flips the input proposition. Sometimes the negation operator is represented by an exclamation mark $!$, as this is often the symbol used in programming languages.
+
+The truth table for the negation operator is as follows for the input proposition $p$:
+
+| $p$ | $\lnot p$ |
+| :-: | :-: |
+| $0$ | $1$ |
+| $1$ | $0$ |
+
+#### Implication (IF-THEN)
+
+#### Equivalance (IF-AND-ONLY-IF)
+
+Biconditional
+
+## Tautologies
+
+## Quantifiers
+
+### Universal Quantifier
+
+### Existential Quantifier
