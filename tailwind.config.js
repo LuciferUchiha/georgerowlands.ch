@@ -93,8 +93,7 @@ module.exports = {
                     "90%": {transform: "translate(10%,5%)"},
                     "100%": {transform: "translate(5%,0)"}
                 }
-            }
-
+            },
         }
     },
     darkMode: "class"
