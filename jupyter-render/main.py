@@ -21,8 +21,6 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
 if __name__ == "__main__":
     print("Starting jupyter-render")
 
-    print(NextraExporter)
-
     pages_path = "../pages/"
     event_handler = Handler()
     observer = watchdog.observers.Observer()

@@ -1,8 +1,7 @@
 import { useTheme } from "nextra-theme-docs";
-import Data from "./network.json";
 import dynamic from "next/dynamic";
-import { useEffect } from "react";
-import { useWindowDimensions } from "~utils/windowDimensions";
+import { useWindowDimensions } from "~/utils/windowDimensions";
+import Data from "~/data/graph.json";
 
 const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
   ssr: false,
