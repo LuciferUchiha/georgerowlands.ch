@@ -16,7 +16,8 @@
     "react-dom": "^18.2.0",
     "react-force-graph-3d": "^1.24.2",
     "react-icons": "^5.0.1",
-    "react-typed": "^2.0.12"
+    "react-typed": "^2.0.12",
+    "three-spritetext": "^1.8.2"
   },
   "devDependencies": {
     "@types/node": "20.11.30",
