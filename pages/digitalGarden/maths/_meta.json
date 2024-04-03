@@ -1,7 +1,9 @@
 {
-    "discrete": "Discrete Mathematics",
+    "discrete": "Discrete Maths",
     "linearAlgebra": "Linear Algebra",
-    "functions": "Common Functions",
+    "probabilityStatistics": "Probability and Statistics",
+    "commonFunctions": "Common Functions",
+    "complexNumbers": "Complex Numbers",
     "latexGuidelines": "LaTeX Guidelines",
     "scientificNotation": "Scientific Notation"
 }
