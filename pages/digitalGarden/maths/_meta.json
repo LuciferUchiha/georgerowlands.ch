@@ -1,4 +1,6 @@
 {
+    "discrete": "Discrete Mathematics",
+    "functions": "Common Functions",
     "latexGuidelines": "LaTeX Guidelines",
-    "discrete": "Discrete Mathematics"
+    "scientificNotation": "Scientific Notation"
 }
