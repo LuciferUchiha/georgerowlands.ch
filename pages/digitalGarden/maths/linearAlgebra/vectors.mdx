@@ -1,0 +1,501 @@
+import Callout from '~/components/Callout/Callout';
+import Image from "~/components/Image/Image";
+
+# Vectors
+
+## What is a Vector?
+
+Depending on the field you are working in, a vector can mean different things. In computer science, a vector is just a list of numbers, i.e. a 1D array. 
+
+In maths, a vector can be thought of as an arrow in space that have starting and ending point, also reffered to as the tail and the head of the vector. Most commonly 
+vectors are denoted by a lowercase letter either in bold or with an arrow above it, e.g. $\vec{v}$ or $\boldsymbol{v}$. If the vector is defined by two points, $A$ and $B$, 
+then the vector is denoted as $\vec{AB}$.
+
+<Callout type="todo">
+Not sure yet how I want to nicely formulate and show all this. I want to show that moving the vector around doesn't change it i.e it is only defined by it's direction and length.
+But I also want to show ortsvektor (position vector)? How does 3blue1brown do it? Also define components
+</Callout>
+
+A vector therefore has a direction and a length/magnitude. 
+This arrow can be moved around, but it's direction and length will remain the same. Vectors are easily visualized in 2D and 3D space, but can be extended to any number of dimensions.
+
+## Norms
+
+A norm is a function that assigns a non-negative length or size to each vector. There are many different types of norms, but the most common ones are the $L_1$ and $L_2$ norms, 
+also known as the Manhattan and Euclidean norms respectively. The $L_p$ norm is a generalization of the $L_1$ and $L_2$ norms. We denote a vector's norm by writting it in between 
+two vertical bars, e.g. $\|\boldsymbol{x}\|$, and the subscript denotes the type of norm, e.g. $\|\boldsymbol{x}\|_1$ or $\|\boldsymbol{x}\|_2$ etc.
+
+### Absolute Value
+
+The absolute value of a number is the distance of that number from zero on the number line. It is always positive, or zero if the number is zero.
+
+$$
+|x| = \begin{cases}
+    x, & \text{if } x \geq 0 \\
+    -x, & \text{if } x < 0
+\end{cases}
+$$
+
+<Callout type="example">
+If $x = 5$, then $|x| = 5$. If $x = -5$, then $|x| = -(-5) = 5$.
+</Callout>
+
+### Manhattan Norm
+
+The Manhattan norm or $L_1$ norm is defined as the sum of the absolute values of the vector's components. It is called the Manhattan norm because it is the distance 
+between two points along the axis of a rectangular grid, like the streets of Manhattan or any other city with a grid-like structure.
+
+$$
+\|\boldsymbol{x}\|_1 = |x_1| + |x_2| + \dots + |x_n| = \sum_{i=1}^n |x_i|
+$$
+
+<Image
+    src="/maths/vectorManhattenNorm.png"
+    caption="As we can see no matter how we move along the roads of Manhattan, the distance between two points is always the same, the red and green path are the same length."
+    width={400}
+    />
+
+<Callout type="example">
+If $\boldsymbol{x}$ is defined as:
+
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix}
+$$
+
+then the $L_1$ norm of $\boldsymbol{x}$ is:
+
+$$
+\|\boldsymbol{x}\|_1 = |1| + |2| + |3| = 6
+$$
+</Callout>
+
+### Euclidean Norm
+
+As the name suggests, the Euclidean norm or $L_2$ norm is the distance between two points in Euclidean space, i.e. the straight line distance between two points. 
+For the 2D case, the Euclidean norm is the length of the hypotenuse of a right-angled triangle with the vector's components as the other two sides, i.e. 
+the Pythagorean theorem. 
+
+$$
+\|\boldsymbol{x}\|_2 = \sqrt{x_1^2 + x_2^2 + \dots + x_n^2} = \sqrt{\sum_{i=1}^n x_i^2}
+$$
+
+<Image
+    src="/maths/vectorEuclideanNorm.png"
+    caption="We can see the 2D case of the Euclidean norm and the 3D case of the Euclidean norm."
+    width={400}
+    />
+
+### P-Norm
+
+The idea of the $L_p$ norm is to generalize the $L_1$ and $L_2$ norms. The $L_p$ norm is defined as:
+
+$$
+\|\boldsymbol{x}\|_p = \left(|x_1|^p + |x_2|^p + \dots + |x_n|^p\right)^{\frac{1}{p}} = \left(\sum_{i=1}^n |x_i|^p\right)^{\frac{1}{p}}
+$$
+
+An arbitrary norm is rarely used in practice, most commonly the $L_1$ and $L_2$ norms are used. For some use-cases the $L_\infty$ norm is used, which is defined as:
+
+$$
+\|\boldsymbol{x}\|_\infty = \max_i |x_i|
+$$
+
+In other words, the $L_\infty$ norm is vector component with the largest absolute value.
+
+<Callout type="example">
+If $\boldsymbol{x}$ is defined as:
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix}
+$$
+
+then the $L_4$ norm of $\boldsymbol{x}$ is:
+
+$$
+\|\boldsymbol{x}\|_4 = \left(|1|^4 + |2|^4 + |3|^4\right)^{\frac{1}{4}} = \left(1 + 16 + 81\right)^{\frac{1}{4}} = 4
+$$
+
+and the $L_\infty$ norm of $\boldsymbol{x}$ is:
+
+$$
+\|\boldsymbol{x}\|_\infty = \max_i |x_i| = \max\{1, 2, 3\} = 3
+$$
+</Callout>
+
+## Linear Independence
+
+Two vectors are linearly independent if neither of them can be written as a linear combination of the other. In other words, two vectors are linearly independent if 
+they are not scalar multiples of each other. It is however easier to find to define and check for linear dependence. The vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ 
+are linearly dependent if:
+
+$$
+\boldsymbol{a} = c\boldsymbol{b} \quad \text{for some } c \in \mathbb{R}
+$$
+
+this can also be written as:
+
+$$
+\boldsymbol{a} - c\boldsymbol{b} = \boldsymbol{0}
+$$
+
+where $\boldsymbol{0}$ is the zero vector. This means that the vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent 
+if they are collinear, i.e. they lie on the same line. The two equations above can also be used to define linear independence, we just replace the equal sign with a 
+not equal sign.
+
+<Image
+    src="/maths/vectorLinearDependence2D.png"
+    caption="The left two vectors are linearly independent, while the right two vectors are linearly dependent."
+    width={400}
+    />
+
+<Callout type="example">
+If $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
+
+$$
+\boldsymbol{a} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
+    2 \\
+    4 \\
+    6
+\end{bmatrix}
+$$
+
+then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent because:
+
+$$
+\boldsymbol{a} = 2\boldsymbol{b}
+$$
+
+However, if $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
+
+$$
+\boldsymbol{a} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
+    2 \\
+    3 \\
+    4
+\end{bmatrix}
+$$
+
+then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly independent because no scalar multiple of $\boldsymbol{b}$ can be equal to $\boldsymbol{a}$.
+</Callout>
+
+### Linear Independence of More Than Two Vectors
+
+Never used this.
+
+## Geometric Stuff
+
+with planes, orthogonal projections, etc. normal vectors
+
+## Operations
+
+### Addition
+
+To add two vectors together, we simply add the corresponding components of the vectors together i.e. we just add element-wise. This also means that the two vectors 
+must have the same number of components/dimensions. So we can add two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$ together as follows:
+
+$$
+\begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix} + \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_n
+\end{bmatrix} = \begin{bmatrix}
+    x_1 + y_1 \\
+    x_2 + y_2 \\
+    \vdots \\
+    x_n + y_n
+\end{bmatrix}
+$$
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} + \begin{bmatrix}
+    4 \\
+    5 \\
+    6
+\end{bmatrix} = \begin{bmatrix}
+    1 + 4 \\
+    2 + 5 \\
+    3 + 6
+\end{bmatrix} = \begin{bmatrix}
+    5 \\
+    7 \\
+    9
+\end{bmatrix}
+$$
+</Callout>
+
+We can also visualize vector addition nicely in 2D and 3D space. We can think of vector addition as moving the tail of one vector to the head of the other vector. The 
+resulting vector is the vector that starts at the tail of the first vector and ends at the head of the second vector.
+
+<Image
+    src="/maths/vectorAddition.png"
+    caption="Vector addition in 2D."
+    width={400}
+    />
+
+From the image above we can also see that the order in which we add the vectors does not matter, i.e. the vector addition is commutative. 
+
+### Scalar Multiplication
+
+We can multiply a vector by a scalar, i.e. a number, by multiplying each component of the vector by the scalar. So if we have a vector $\boldsymbol{x}$ and a scalar $c$, 
+then we can multiply them together as follows:
+
+$$
+c\boldsymbol{x} = c \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix} = \begin{bmatrix}
+    cx_1 \\
+    cx_2 \\
+    \vdots \\
+    cx_n
+\end{bmatrix}
+$$
+
+<Callout type="example">
+$$
+2\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} = \begin{bmatrix}
+    2 \cdot 1 \\
+    2 \cdot 2 \\
+    2 \cdot 3
+\end{bmatrix} = \begin{bmatrix}
+    2 \\
+    4 \\
+    6
+\end{bmatrix}
+$$
+</Callout>
+
+We can also visualize scalar multiplication nicely in 2D and 3D space. We can think of scalar multiplication as stretching or shrinking the vector by the scalar. This is 
+why scalar multiplication is also called vector scaling and the number is called the scalar. If the scalar is negative, then the vector will be flipped around, i.e. it will
+point in the opposite direction.
+
+<Image
+    src="/maths/vectorScalarMultiplication.png"
+    caption="Scalar multiplication of a vector in 2D."
+    width={400}
+    />
+
+### Subtraction
+
+Subtracting two vectors is the same as adding the first vector to the negative of the second vector, i.e. multiplying the second vector by $-1$. So if we have two vectors
+we can subtract them as follows:
+
+$$
+\boldsymbol{x} - \boldsymbol{y} = \boldsymbol{x} + (-\boldsymbol{y})
+$$
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} - \begin{bmatrix}
+    4 \\
+    5 \\
+    6
+\end{bmatrix} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} + \begin{bmatrix}
+    -4 \\
+    -5 \\
+    -6
+\end{bmatrix} = \begin{bmatrix}
+    1 + (-4) \\
+    2 + (-5) \\
+    3 + (-6)
+\end{bmatrix} = \begin{bmatrix}
+    -3 \\
+    -3 \\
+    -3
+\end{bmatrix}
+$$
+</Callout>
+
+When visualizing the subtraction of two vectors, we can think of it in two ways. The first way is to think of it as adding the negative of the second vector to the first
+vector, i.e. moving the tail of the second vector to the head of the first vector. We can also visualize it by moving the tail of the second vector to the tail of the first 
+vector, and then drawing a vector from the head of the second vector to the head of the first vector.
+
+<Image
+    src="/maths/vectorSubtraction.png"
+    caption="Vector subtraction in 2D."
+    width={400}
+    />
+
+I prefer the first way of visualizing vector subtraction, because it is easier to see that the order in which we subtract the vectors matters. When using the second way you 
+can easily draw the vectors in the wrong order, which will give you the wrong result (negative of the correct result).
+
+### Dot Product
+
+The dot product is a way of multiplying two vectors together to get a scalar. The dot product is also called the inner product or the scalar product because it results in a 
+scalar, not to be confused with the scalar multiplication of a vector! The dot product of two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$ is denoted as 
+$\boldsymbol{x} \cdot \boldsymbol{y}$ and is defined as:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{y} = x_1y_1 + x_2y_2 + \dots + x_ny_n = \sum_{i=1}^n x_iy_i
+$$
+
+As we can see it is the sum of the products of the corresponding components of the two vectors meaning that the two vectors must have the same number of components/dimensions. 
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \cdot \begin{bmatrix}
+    4 \\
+    5 \\
+    6
+\end{bmatrix} = 1 \cdot 4 + 2 \cdot 5 + 3 \cdot 6 = 4 + 10 + 18 = 32
+$$
+</Callout>
+
+The dot product is also commutative, meaning that the order in which we multiply the vectors together does not matter $\boldsymbol{x} \cdot \boldsymbol{y} = 
+\boldsymbol{y} \cdot \boldsymbol{x}$.
+
+Just as we can think of the matrix multiplication as the dot product of the rows of the first matrix and the columns of the second matrix, we can also think of the dot as 
+the matrix multiplication of a $1 \times n$ matrix and a $n \times 1$ matrix. So if we have two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, then we can think of the two 
+vectors as matrices, transpose one of them and then multiply them together as follows:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{y} = \boldsymbol{x}^T\boldsymbol{y} = \begin{bmatrix}
+    x_1 & x_2 & \dots & x_n
+\end{bmatrix} \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_n
+\end{bmatrix}
+$$
+
+We can also visualize the dot product nicely in 2D and 3D space. The dot product of two vectors is the cosine of the angle between the two vectors multiplied by the length of 
+the two vectors if we place the tails at the same point. So if we have two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, then we can calculate the dot product as follows:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{y} = \|\boldsymbol{x}\| \|\boldsymbol{y}\| \cos(\theta)
+$$
+
+where $\theta$ is the angle between the two vectors. We can also calculate the angle between the two vectors by rewriting the equation above as follows:
+
+$$
+\theta = \cos^{-1}\left(\frac{\boldsymbol{x} \cdot \boldsymbol{y}}{\|\boldsymbol{x}\| \|\boldsymbol{y}\|}\right)
+$$
+
+Where $\cos^{-1}$ is the inverse cosine function, also called the arccosine function.
+
+<Image
+    src="/maths/vectorDotProductAngle.png"
+    caption="Calculating the angle between two vectors using the dot product."
+    width={400}
+    />
+
+<Callout type="example">
+If $\boldsymbol{x}$ and $\boldsymbol{y}$ are defined as:
+
+$$
+\boldsymbol{x} = \begin{bmatrix}
+    3 \\
+    -2
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{y} = \begin{bmatrix}
+    1 \\
+    7
+\end{bmatrix}
+$$
+
+then the angle between $\boldsymbol{x}$ and $\boldsymbol{y}$ is:
+
+$$
+\begin{align*}
+\theta &= \cos^{-1}\left(\frac{\boldsymbol{x} \cdot \boldsymbol{y}}{\|\boldsymbol{x}\| \|\boldsymbol{y}\|}\right) \\
+&= \cos^{-1}\left(\frac{3 \cdot 1 + (-2) \cdot 7}{\sqrt{3^2 + (-2)^2} \sqrt{1^2 + 7^2}}\right) \\
+&= \cos^{-1}\left(\frac{3 - 14}{\sqrt{9 + 4} \sqrt{1 + 49}}\right) \\
+&= \cos^{-1}\left(\frac{-11}{\sqrt{13} \sqrt{50}}\right) \\
+&= 115.6^\circ
+\end{align*}
+$$
+</Callout>
+
+#### Orthogonal Vectors
+
+We call two vectors orthogonal if the angle between them is 90 degrees, i.e. they are perpendicular to each other. If two vectors are orthogonal, then their dot product is 
+zero, because $\cos(90) = 0$. So if we have two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, then we can check if they are orthogonal as follows:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{y} = 0
+$$
+
+### Vector Projection
+
+### Cross Product
+
+### Normalization
+
+Normalizing means to bring something into some sort of normal or standard state. In the case of vectors, normalizing means to scale the vector in a way that it's length is 
+equal to one. Often we denote a normalized vector by adding a hat to the vector, e.g. $\hat{\boldsymbol{x}}$ is the normalized vector of $\boldsymbol{x}$. So we can 
+say if $\|\boldsymbol{x}\| = 1$, then $\boldsymbol{x}$ is normalized. From this definition we can see that to normalize a vector, we simply divide the vector by it's length, 
+i.e. we divide the vector by a scalar. So if we have a vector $\boldsymbol{x}$, then we can normalize it as follows:
+
+$$
+\hat{\boldsymbol{x}} = \frac{\boldsymbol{x}}{\|\boldsymbol{x}\|_2}
+$$
+
+This normalized vector will have the same direction as the original vector, but it's length will be equal to one. By eliminating the length of the vector, we can uniquely 
+identify a vector by it's direction. This is useful because we can now compare vectors based on their direction, without having to worry about their length. All these 
+normalized vectors are also called unit vectors and if they are placed at the origin in 2D they span the unit circle.
+
+<Image
+    src="/maths/vectorNormalization.png"
+    caption="We can see that the normalized vectors all have the same length, but different directions."
+    width={400}
+    />
+
+#### Orthonormal Vector
+
+We can now combine the idea of orthogonal vectors and normalized vectors to get orthonormal vectors. Orthonormal vectors are vectors that are orthogonal to each other and 
+have a length of one. 
+
+<Image
+    src="/maths/vectorOrthonormal.png"
+    caption="The difference between orthogonal and orthonormal vectors."
+    width={500}
+    />
+
+## Span
+
+## Basis
+
+Something with orthonormal basis and quantum computing

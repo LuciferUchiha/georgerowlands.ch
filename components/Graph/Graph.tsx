@@ -3,7 +3,6 @@ import dynamic from "next/dynamic";
 import { useWindowDimensions } from "~/utils/windowDimensions";
 import Data from "~/data/graph.json";
 import SpriteText from "three-spritetext";
-import { useRef } from "react";
 
 const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
   ssr: false,
@@ -28,15 +27,15 @@ const Graph = () => {
       width={800}
       height={800}
       backgroundColor={background}
-      nodeThreeObject={node => {
+      nodeThreeObject={(node) => {
         const sprite = new SpriteText(node.id);
         sprite.color = textColor;
         sprite.textHeight = 8;
         return sprite;
       }}
-      nodeLabel={() => ''}
+      nodeLabel={() => ""}
       linkOpacity={linkOpacity}
-      onNodeHover={node => {
+      onNodeHover={(node) => {
         // TODO go to page on click
         document.body.style.cursor = node ? "pointer" : null;
       }}

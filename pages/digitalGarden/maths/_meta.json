@@ -1,5 +1,6 @@
 {
     "discrete": "Discrete Mathematics",
+    "linearAlgebra": "Linear Algebra",
     "functions": "Common Functions",
     "latexGuidelines": "LaTeX Guidelines",
     "scientificNotation": "Scientific Notation"

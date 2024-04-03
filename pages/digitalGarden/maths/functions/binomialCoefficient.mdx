@@ -1,4 +1,5 @@
 import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
 
 # Binomial Coefficient
 
@@ -79,14 +80,21 @@ The Pascal's triangle is a graphical representation of binomial coefficients, wh
 Here, a triangle is drawn where the upper variable $n$ of the binomial coefficient corresponds to the row index and the
 lower variable $k$ corresponds to the column index.
 
-
-![PascalsTriangle](/maths/pascalsTriangle.png)
+<Image 
+    src="/maths/pascalsTriangle.png" 
+    caption="Pascal's Triangle, left the binoms, right the values." 
+    width="700"
+/>
 
 The calculation of the values is then very simple. First, for all elements at the edge of the triangle, you set a 1,
 because a binom with 0 or n as the lower variable resolves to 1. Then, every other value is the sum of the values
 directly above it.
 
-![PascalsTriangleAnimated](/maths/pascalsTriangleAnimated.gif)
+<Image 
+    src="/maths/pascalsTriangleAnimated.gif" 
+    caption="Animation of how Pascal's Triangle is built up." 
+    width="300"    
+/>
 
 This derivation comes from the equation:
 
