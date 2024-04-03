@@ -1,0 +1,582 @@
+import Callout from '~/components/Callout/Callout';
+import Image from "~/components/Image/Image";
+
+# Matrices
+
+You can think of a matrix as rectangle of objects arranged in rows and columns, like a chessboard. For computer scientist you can also imagine a matrix as a
+2D array. A matrix with $m$ rows and $n$ columns is called an $m \times n$ matrix. The number of rows and columns therefore define the size or dimensions of a matrix.
+The objects in a matrix or commonly reffered to as elements or entries. A matrix containing only real numbered elements is called a real matrix and can be defined as follows:
+
+$$
+\boldsymbol{A} \in \mathbb{R}^{m \times n} = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{bmatrix}
+$$
+
+The elements of a matrix are indexed by their row and then there column. So $a_{ij}$ is the element in the $i$th row and $j$th column. This means that a matrix can also be 
+defined as $\boldsymbol{A} = [a_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$.
+
+<Callout type="example">
+    $$ 
+    \boldsymbol{A} = \begin{bmatrix}1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}
+    $$
+</Callout>
+
+<Callout type="warning">
+    The number of rows and columns of a matrix are always written in the order of rows first and columns second! So a matrix with 2 rows and 3 columns is written 
+    as a $2 \times 3$ matrix, not a $3 \times 2$ matrix, so $\boldsymbol{A} \in \mathbb{R}^{2 \times 3}$.
+</Callout>
+
+A matrix with only one row is called a row vector and a matrix with only one column is called a column vector. For some applications it is useful to of a normal vector as a 
+column vector. 
+
+<Callout type="example">
+    A column vector, i.e. a normal vector, can be written as follows:
+
+    $$
+    \boldsymbol{v} \in \mathbb{R}^{n \times 1} = \begin{bmatrix}v_1 \\ v_2 \\ \vdots \\ v_n \end{bmatrix}
+    $$
+
+    A row vector can be written as follows:
+
+    $$
+    \boldsymbol{v} \in \mathbb{R}^{1 \times n} = \begin{bmatrix}v_1 & v_2 & \cdots & v_n \end{bmatrix}
+    $$
+</Callout>
+
+In some cases it is useful to think of a matrix as a collection of column vectors. So a matrix with $n$ columns can be thought of as $n$ column vectors concatenated together. 
+This is also called the column space of a matrix.
+
+<Image src="/maths/matrixColumnSpace.png"
+       caption="A matrix as a collection of column vectors, i.e. a column space."
+       width={300}
+/>
+
+Another way is to think of a matrix as a collection of row vectors. So a matrix with $m$ rows can be thought of as $m$ row vectors stacked on top of each other. This is also 
+called the row space of a matrix.
+
+<Image src="/maths/matrixRowSpace.png"
+       caption="A matrix as a collection of row vectors, i.e. a row space."
+       width={300}
+/>
+
+## Transpose
+
+The transpose of a matrix is a matrix where the rows and columns are swapped. The transpose of the matrix $\boldsymbol{A}$ is written as $\boldsymbol{A}^T$. 
+Formally the element in the $i$-th row and $j$-th column in the matrix $\boldsymbol{A}$ becomes the element in the $j$-th row and $i$-th column in the 
+matrix $\boldsymbol{A}^T$. So $a_{ij}^T = a_{ji}$.
+
+<Callout type="example">
+    Transposing a column vector:
+    $$
+    \boldsymbol{v} = \begin{bmatrix}
+    v_1 \\ v_2 \\ \vdots \\ v_n 
+    \end{bmatrix} \Rightarrow \boldsymbol{v}^T = \begin{bmatrix}
+    v_1 & v_2 & \cdots & v_n 
+    \end{bmatrix}
+    $$
+
+    Transposing a row vector:
+    $$
+    \boldsymbol{v} = \begin{bmatrix}
+    v_1 & v_2 & \cdots & v_n 
+    \end{bmatrix} \Rightarrow \boldsymbol{v}^T = \begin{bmatrix}
+    v_1 \\ v_2 \\ \vdots \\ v_n 
+    \end{bmatrix}
+    $$
+
+    Transposing a matrix:
+    $$
+    \boldsymbol{A} = \begin{bmatrix}
+    1 & 2 & 3 \\ 
+    4 & 5 & 6 
+    \end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
+    1 & 4 \\
+    2 & 5 \\
+    3 & 6
+    \end{bmatrix}
+    $$
+</Callout>
+
+As we can see in the example above the transpose of a row vector is a column vector and the transpose of a column vector is a row vector. This also shows that 
+transposing a matrix results in a matrix with its dimensions swapped. So the transpose of a $m \times n$ matrix is a $n \times m$ matrix.
+
+### Properties
+
+#### Transposing a Transposed Matrix
+
+If a matrix is transposed twice it is the same as the original matrix:
+
+$$
+(\boldsymbol{A}^T)^T = \boldsymbol{A}
+$$
+
+<Callout type="example">
+$$
+\boldsymbol{A} = \begin{bmatrix} 
+1 & 2 & 3 \\ 
+4 & 5 & 6 
+\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix} 
+1 & 4 \\
+2 & 5 \\
+3 & 6 
+\end{bmatrix} \Rightarrow (\boldsymbol{A}^T)^T = \begin{bmatrix} 
+1 & 2 & 3 \\ 
+4 & 5 & 6 
+\end{bmatrix} = \boldsymbol{A}
+$$
+</Callout>
+
+### Transposing on a Computer
+
+When you want the transpose of a matrix you don't actually need to perform any operations. You can just change the way you access the elements of the matrix. Rather than
+accessing the elements row by row you can access them column by column. 
+
+<Image src="/maths/matrixTransposeOnComputers.png"
+       caption="Reading a matrix and its transpose."
+       width={200}
+/>
+
+Depending on the size of the matrix and how many times you need to access the elements of the matrix this can be a lot faster than actually transposing the matrix. However, 
+if you need to access the elements of the matrix multiple times it is probably faster to transpose the matrix first and then access the elements due to memory locality.
+
+To transpose a square matrix in-place you can use the following algorithm which you can think of as swapping the elements of the matrix along the diagonal:
+
+```java
+for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+        swap(A[i][j], A[j][i]);
+    }
+}
+```
+
+For a non-square matrix you need to use a slightly different algorithm.
+
+## Inverse
+
+<Callout type="todo">
+    This section is still a work in progress!
+</Callout>
+
+## Determinant
+
+<Callout type="todo">
+    This section is still a work in progress!
+</Callout>
+
+## Types of Matrices
+
+There are a number of different types of matrices that are used in linear algebra. We will discuss some of the most common ones here.
+
+### Square Matrix
+
+As you can imagine a square matrix is a matrix where the number of rows and columns are equal. So a square matrix is an $n \times n$ matrix, i.e. 
+$\boldsymbol{A} \in \mathbb{R}^{n \times n}$. Square matrices have a number of useful properties and are therefore often used in many different applications.
+
+$$
+\begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{n1} & a_{n2} & \cdots & a_{nn}
+\end{bmatrix}
+$$
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+$$
+</Callout>
+
+### Triangular Matrix
+
+The diagonal elements of a matrix are the elements where the row and column index are equal. So $a_{ii}$ is a diagonal element. A triangular matrix is a matrix where all the 
+elements above or below the diagonal are $0$. If all the elements above the diagonal are $0$ it is called a **lower triangular matrix** becuase it only has elements below the 
+diagonal that are non-zero. If all the elements below the diagonal are $0$ it is called a **upper triangular matrix** because it only has elements above the diagonal that are
+non-zero. Only square matrices can be triangular matrices!
+
+<Callout type="example">
+A lower triangular matrix:
+
+$$
+\begin{bmatrix}
+1 & 0 & 0 \\
+2 & 3 & 0 \\
+4 & 5 & 6
+\end{bmatrix}
+$$
+
+An upper triangular matrix:
+
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+0 & 4 & 5 \\
+0 & 0 & 6
+\end{bmatrix}
+$$
+</Callout>
+
+#### Diagonal Matrix
+
+A diagonal matrix is a matrix where all the elements that are not on the diagonal are zero. So $a_{ij} = 0$ for all $i \neq j$. This means that a 
+diagonal matrix is both a lower and upper triangular matrix and therefore also a square matrix.
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 3
+\end{bmatrix}
+$$
+</Callout>
+
+### Identity Matrix
+
+An identity matrix is a diagonal matrix where all the diagonal elements are equal to $1$. The identity matrix is often denoted as $\boldsymbol{I}$ or $\boldsymbol{I}_n$ 
+where $n$ is the number of rows and columns in the matrix. The identity matrix is a special matrix as it is neutral element for matrix multiplication or also called the 
+identity element. This means that if you multiply any matrix with the identity matrix you get the same matrix back. So $\boldsymbol{A} \boldsymbol{I} = \boldsymbol{A}$.
+
+<Callout type="example">
+$$
+\boldsymbol{I_3} = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+$$
+</Callout>
+
+### Symmetric Matrix
+
+If a matrix is equal to its transpose it is called a symmetric matrix. So $\boldsymbol{A} = \boldsymbol{A}^T$ and for each element in the matrix $a_{ij} = a_{ji}$.
+As you can quite easily imagine a prerequisite for a matrix to be symmetric is that it is a square matrix as otherwise the transpose of the matrix would have different dimensions.
+
+Another thing that makes sense is that a diagonal matrix is always symmetric as all the elements that are not on the diagonal are zero.
+
+<Callout type="example">
+A symmetric matrix:
+
+$$
+\boldsymbol{A} = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 5 \\
+3 & 5 & 6
+\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 5 \\
+3 & 5 & 6
+\end{bmatrix} = \boldsymbol{A}
+$$
+
+A diagonal matrix is also symmetric:
+
+$$
+\boldsymbol{A} = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 3
+\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 3
+\end{bmatrix} = \boldsymbol{A}
+$$
+</Callout>
+
+#### Skew-Symmetric Matrix
+
+A skew-symmetric matrix is a matrix where the elements of the matrix are equal to the negative of the elements in the transpose of the matrix. 
+So $\boldsymbol{A} = -\boldsymbol{A}^T$ and for each element in the matrix $a_{ij} = -a_{ji}$.
+
+<Callout type="example">
+$$
+\boldsymbol{A} = \begin{bmatrix}
+0 & 2 & -3 \\
+-2 & 0 & 5 \\
+3 & -5 & 0
+\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
+0 & -2 & 3 \\
+2 & 0 & -5 \\
+-3 & 5 & 0
+\end{bmatrix} = -\boldsymbol{A}
+$$
+</Callout>
+
+### Orthogonal / Orthonormal Matrix
+
+Very unclear what the difference is between these two. I think an orthogonal matrix is a matrix where the columns are orthogonal to each other but don't have to be normalised.
+And an orthonormal matrix is a matrix where the columns are orthogonal to each other and are normalised, i.e. have a length of $1$.
+
+<Callout type="todo">
+    This section is still a work in progress!
+</Callout>
+
+## Matrix Operations
+
+### Matrix Addition
+
+Two matrices can be added together if they have the same dimensions, i.e. $\boldsymbol{A} \in \mathbb{R}^{m \times n}$ and $\boldsymbol{B} \in \mathbb{R}^{m \times n}$. 
+The addition of two matrices is defined as the element-wise addition of the matrices:
+
+$$
+\boldsymbol{A} + \boldsymbol{B} = \begin{bmatrix}
+a_{11} + b_{11} & a_{12} + b_{12} & \cdots & a_{1n} + b_{1n} \\
+a_{21} + b_{21} & a_{22} + b_{22} & \cdots & a_{2n} + b_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} + b_{m1} & a_{m2} + b_{m2} & \cdots & a_{mn} + b_{mn}
+\end{bmatrix}
+$$
+
+Or more formally $\boldsymbol{A} + \boldsymbol{B} = [a_{ij} + b_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$. 
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} + \begin{bmatrix}
+7 & 8 & 9 \\
+10 & 11 & 12
+\end{bmatrix} = \begin{bmatrix}
+8 & 10 & 12 \\
+14 & 16 & 18
+\end{bmatrix}
+$$
+</Callout>
+
+### Scalar Multiplication
+
+A matrix can be multiplied by a scalar, i.e. a constant. This is defined as the element-wise multiplication of the matrix with the scalar:
+
+$$
+s \cdot \boldsymbol{A} = \begin{bmatrix}
+s \cdot a_{11} & s \cdot a_{12} & \cdots & s \cdot a_{1n} \\
+s \cdot a_{21} & s \cdot a_{22} & \cdots & s \cdot a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+s \cdot a_{m1} & s \cdot a_{m2} & \cdots & s \cdot a_{mn}
+\end{bmatrix}
+$$
+
+Or more formally $s \cdot \boldsymbol{A} = [s \cdot a_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$.
+
+<Callout type="example">
+$$
+5 \cdot \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} = \begin{bmatrix}
+5 \cdot 1 & 5 \cdot 2 & 5 \cdot 3 \\
+5 \cdot 4 & 5 \cdot 5 & 5 \cdot 6
+\end{bmatrix} = \begin{bmatrix}
+5 & 10 & 15 \\
+20 & 25 & 30
+\end{bmatrix}
+$$
+</Callout>
+
+### Matrix Multiplication
+
+Matrix multiplication is a bit more complex than addition and scalar multiplication. One would think that multiplying two matrices together would be as simple as multiplying 
+each element of the first matrix with the corresponding element in the second matrix and would therefore just like addition be an element-wise operation and only defined for 
+matrices with the same dimensions. However, this is not the case, this would be the Hadamard product of two matrices.
+
+Matrix multiplication is only defined for matrices where the number of columns in the first matrix is equal to the number of rows in the second matrix. We will see why this is 
+the case later. The result of multiplying two matrices together is a new matrix where the number of rows is equal to the number of rows in the first matrix and the number of 
+columns is equal to the number of columns in the second matrix. So the dimensions in a matrix multiplication are defined as follows: 
+
+$$
+\boldsymbol{A} \in \mathbb{R}^{l \times m} \cdot \boldsymbol{B} \in \mathbb{R}^{m \times n} = \boldsymbol{C} \in \mathbb{R}^{l \times n}
+$$
+
+<Image src="/maths/matrixMultiplicationDimensions.png"
+       caption="Dimensions of a matrix multiplication visualized."
+       width={300}
+/>
+
+The actual calculation of the elements in the resulting matrix is a bit more complex. The element in the $i$-th row and $j$-th column in the resulting matrix is defined as 
+the dot product of the $i$-th row in the first matrix and the $j$-th column in the second matrix. So $c_{ij} = \boldsymbol{a}_i \cdot \boldsymbol{b}_j$. More formally:
+
+$$
+c_{ij} = a_{i1} \cdot b_{1j} + a_{i2} \cdot b_{2j} + \cdots + a_{im} \cdot b_{mj} = \sum_{k=1}^m a_{ik} \cdot b_{kj}
+$$
+
+<Image src="/maths/matrixMultiplication.png"
+       caption="Matrix multiplication visualized."
+       width={400}
+/>
+
+In the example above the element are calculated as followed:
+
+$$
+\begin{align*}
+c_{12} = a_{11} \cdot b_{12} + a_{12} \cdot b_{22} \\
+c_{33} = a_{31} \cdot b_{13} + a_{32} \cdot b_{23}
+\end{align*}
+$$
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+7 & 8 \\
+9 & 10 \\
+11 & 12
+\end{bmatrix} = \begin{bmatrix}
+58 & 64 \\
+139 & 154
+\end{bmatrix}
+$$
+</Callout>
+
+#### Properties
+
+##### Commutative Property
+
+Matrix multiplication is not commutative, i.e. $\boldsymbol{A} \cdot \boldsymbol{B} \neq \boldsymbol{B} \cdot \boldsymbol{A}$. This means that the order in which you multiply 
+is important! This already becomes apparent when you look at the dimensions of the matrices. If you multiply a $2 \times 3$ matrix with a $3 \times 2$ matrix you get a 
+$2 \times 2$ matrix. However, if you multiply a $3 \times 2$ matrix with a $2 \times 3$ matrix you get a $3 \times 3$ matrix.
+
+
+<Callout type="example">
+$$
+\begin{align*}
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+7 & 8 \\
+9 & 10 \\
+11 & 12
+\end{bmatrix} &= \begin{bmatrix}
+58 & 64 \\
+139 & 154
+\end{bmatrix} \\
+\begin{bmatrix}
+7 & 8 \\
+9 & 10 \\
+11 & 12
+\end{bmatrix} \cdot \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} &= \begin{bmatrix}
+39 & 54 & 69 \\
+49 & 68 & 87 \\
+59 & 82 & 105
+\end{bmatrix}
+\end{align*}
+$$
+</Callout>
+
+Even if the dimensions of the matrices are the same the result of the matrix multiplication can be different depending on the order of the matrices. 
+
+<Callout type="example">
+$$
+\begin{align*}
+\begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix} \cdot \begin{bmatrix}
+5 & 6 \\
+7 & 8
+\end{bmatrix} &= \begin{bmatrix}
+19 & 22 \\
+43 & 50
+\end{bmatrix} \\
+\begin{bmatrix}
+5 & 6 \\
+7 & 8
+\end{bmatrix} \cdot \begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix} &= \begin{bmatrix}
+23 & 34 \\
+31 & 46
+\end{bmatrix}
+\end{align*}
+$$
+
+For the element $c_{11}$ (top left) we get the following:
+
+$$
+\begin{align*}
+c_{11} &= 1 \cdot 5 + 2 \cdot 7 = 19 \\
+c_{11} &= 5 \cdot 1 + 6 \cdot 3 = 23
+\\
+19 &\neq 23
+\end{align*}
+$$
+
+</Callout>
+
+#### Strassen's Algorithm
+
+#### Winograd's Algorithm
+
+### Frobenius Norm
+
+The Frobenius norm is a way to measure the size of a matrix. It is defined as the square root of the sum of the squares of all the elements in the matrix. So for a matrix 
+$\boldsymbol{A} \in \mathbb{R}^{m \times n}$ the Frobenius norm is defined as follows:
+
+$$
+\|\boldsymbol{A}\|_F = \sqrt{\sum_{i=1}^m \sum_{j=1}^n a_{ij}^2}
+$$
+
+You can also think of it as just taking the matrix and flattening it into a vector and then calculating the length of that vector, i.e. the Euclidean/L2 norm of the vector.
+
+
+<Callout type="example">
+If we define the matrix $\boldsymbol{A}$:
+
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix}
+$$
+
+Then the Frobenius norm of $\boldsymbol{A}$ is:
+
+$$
+\|\boldsymbol{A}\|_F = \sqrt{1^2 + 2^2 + 3^2 + 4^2 + 5^2 + 6^2} = \sqrt{91} \approx 9.539
+$$
+</Callout>
+
+### Trace
+
+The trace of a matrix is the sum of all the diagonal elements in the matrix and is denoted as $\text{tr}(\boldsymbol{A})$. Because it is the sum of the diagonal elements 
+it is only defined for square matrices, i.e. $\boldsymbol{A} \in \mathbb{R}^{n \times n}$:
+
+$$
+\text{tr}(\boldsymbol{A}) = \sum_{i=1}^n a_{ii} = a_{11} + a_{22} + \cdots + a_{nn}
+$$
+
+<Callout type="example">
+$$
+\text{tr}(\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}) = 1 + 5 + 9 = 15
+$$
+</Callout>
+
+<Callout type="todo">
+    Add properties of the trace. and proof that it is the sum of the eigenvalues.
+</Callout>
+
+### Rank
+
+<Callout type="todo">
+    Ranks seem a bit annoying but not hugely complex.
+</Callout>
