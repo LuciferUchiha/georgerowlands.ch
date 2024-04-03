@@ -3,11 +3,6 @@ import os.path
 
 from nbconvert.exporters.markdown import MarkdownExporter
 
-
-# -----------------------------------------------------------------------------
-# Classes
-# -----------------------------------------------------------------------------
-
 class NextraExporter(MarkdownExporter):
     export_from_notebook = "Nextra Markdown"
 

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { DocsThemeConfig, useConfig } from "nextra-theme-docs";
 import Image from "next/image";
-import GiscusComments from "~components/GiscusComments/GiscusComments";
+import GiscusComments from "~/components/GiscusComments/GiscusComments";
 
 const config: DocsThemeConfig = {
   project: {
