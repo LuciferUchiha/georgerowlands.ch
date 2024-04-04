@@ -4,8 +4,7 @@ import Image from "~/components/Image/Image";
 # Set Theory
 
 A **set** is a collection of distinct objects. To create a set you simply list the objects between curly brackets. The objects in a set are called **elements** or **members** of the set. 
-The **order of the elements in the set is not important**, and **an element can only appear once in a set**. If an element appears more than once, it is considered only once in the set. Therefore 
-we can define the following:
+The **order of the elements in the set is not important**, and **an element can only appear once in a set**. If an element appears more than once, it is considered only once in the set. 
 
 <Callout type="example">
 - The set of the first three positive numbers is $\{1,2,3\}$.
@@ -13,10 +12,28 @@ we can define the following:
 - Each element can only appear once, so $\{1,2,2,3\}$ is the same as $\{1,2,3\}$.
 </Callout>
 
-
-However, a set doesn't have to contain numbers, you could, for example, have a set of the base colors $\{red, green, blue\}$ as long as all the elements are **distinct**.
-
+However, a set doesn't have to contain numbers. A set also doesn't have to have a certain amount of elements it could also be infinite. This allows us to differentiate between **finite** and **infinite** sets.
 A set can also have no elements at all, the so-called **empty set**, and is represented by the symbol $\emptyset$. You may also see the notation of $\{\}$ or $\phi$ (phi) for the empty set. However I will be using $\emptyset$.
+
+<Callout type="example">
+- The infinite set of all positive integers is $\{1,2,3,...\}$.
+- The finite set of all colors in the rainbow is $\{red, orange, yellow, green, blue, indigo, violet\}$.
+- The set of the three primary colors is $\{red, green, blue\}$.
+</Callout>
+
+## Cardinality
+
+The cardinality of a set is the number of elements/members in that set. The cardinality of the set $A = \{1,2,3\}$ is denoted by:
+
+$$
+|A| = 3
+$$
+
+Importantly repeated elementes are not counted, so $B=\{blue, white, red, blue, white\}$ then the cardinality of $B$ is still 3.
+
+### Cardinality of the Empty Set
+
+### Cardinality of Disjoint Sets
 
 ## Membership
 
@@ -37,8 +54,6 @@ $$
 A=B \iff \forall x(x \in A \iff x \in B)
 $$
 
-Where $\iff$ means "if and only if".
-
 <Callout type="example">
 - $\{1,2,3\} = \{3,2,1\}$ because the order of the elements doesn't matter.
 - $\{1,2,3\} \neq \{1,2,3,4\}$ because the second set has an element that is not in the first set.
@@ -47,7 +62,7 @@ Where $\iff$ means "if and only if".
 
 ## Sub and Superset
 
-$A$ is a **subset** of a set $B$ if all elements of $A$ are also elements of $B$. $B$ is then a so called **superset** of $A$. This is written as:
+$A$ is a **subset** of a set $B$ if all elements of $A$ are also elements of $B$. $B$ is then also the so-called **superset** of $A$. This is written as:
 
 $$
 A \subseteq B \iff \forall x(x \in A \implies x \in B)
@@ -59,6 +74,8 @@ $$
 B \supseteq A \iff A \subseteq B
 $$
 
+If $C$ is not a subset of $D$, then we write $C \nsubseteq D$, and if $D$ is not a superset of $C$, then we write $D \nsupseteq C$.
+
 <Callout type="example">
 - $\{1,2\} \subseteq \{1,2,3\}$ because all elements of the first set are also in the second set.
 - $\{1,2,3\} \subseteq \{1,2,3\}$ because all elements of the first set are also in the second set.
@@ -66,19 +83,14 @@ $$
 - $\{1,2,3\} \supseteq \{1,2\}$ because all elements of the second set are also in the first set.
 </Callout>
 
-If the symbol $\subseteq$ is underlined, then the sets can also be equal. The symbol can also be crossed out to indicate that the relation is not true.
+If the symbol $\subseteq$ is underlined, then the sets can also be equal.
 
 If $A$ is a subset of $B$ but not equal to $B$, then $A$ is called a **proper subset** of $B$. 
 The same goes for the superset relation, if $B$ is a superset of $A$ but not equal to $A$, then $B$ is called a **proper superset** of $A$.
+However, a set is never a proper subset or superset of itself because it is equal to itself and can therefore not be a proper subset or superset.
 
 $$
 A \subset B \iff A \subseteq B \land A \neq B
-$$
-
-and 
-
-$$
-B \supset A \iff B \supseteq A \land A \neq B
 $$
 
 <Callout type="example">
@@ -89,28 +101,104 @@ $$
 </Callout>
 
 <Callout type="info">
-Because the empty set has no elements, it is a subset of every set, including itself. Therefore $\emptyset \subseteq A$ for every set $A$.
+Because the empty set has no elements, it is a subset of every set, including itself. Therefore $\emptyset \subseteq A$ or $\emptyset \subset A$ for every set $A$.
 
 - $\emptyset \subset \{1,2,3\}$
+- $\emptyset \subseteq \{1,2,3\}$
 - $\emptyset \subset \emptyset$
-- $\emptyset \subseteq \Bbb{N}$
+- $\emptyset \nsubseteq \emptyset$
 </Callout>
 
-It can be very helpful to visualize sets with venn diagrams. By doing so you can easily interpert the relations between sets.
+## Venn Diagrams
 
-![setsSubsets](/maths/setsSubsets.png)
+When working with sets, it can be very helpful to visualize them with venn diagrams. The sets are usually represented by circles. By creating a venn diagram, you can easily see the relations between sets.
+
+For example below we can visualize the difference between a subset and a proper subset.
+
+<Image 
+    src="/maths/setsSubsets.png"
+    caption="Venn diagram showing the difference between a subset and a proper subset."
+    width={700}
+/>
+
+## Defining a Set
+
+There are multiple ways to define a set.
+
+### Roster Notation
+
+The roster or also called enumeration notation defines a set by listing its elements between curly brackets separated by commas. This is the most common way to define a set and is what I have been using in the examples above.
+
+<Callout type="example">
+- The set of the first three positive numbers is $\{1,2,3\}$.
+- The set of the first three positive even numbers is $\{2,4,6\}$.
+</Callout>
+
+### Semantic Definition
+
+Sets can be described semantically using words and rules. This notation is less preffered as it can be more confusing, unclear and ambiguous.
+
+<Callout type="example">
+Let $A$ be the first 3 positive integers that are odd. Therefore the set is then $A=\{1,3,5\}$
+Let $B$ be the set of colors of the French flag. Therefore the set is then $B=\{blue,white,red\}$
+</Callout>
+
+### Set-Builder Notation
+
+This is probably the hardest notation to understand. The set-builder notation specifies a set as a selection from a larger set, determined by a condition on those elements. It commonly uses the following form:
+
+$$
+\{x \mid P(x)\}
+$$
+
+Where $x$ is the variable, and $P(x)$ is the statement or condition that $x$ must satisfy to be an element of the set. The vertical bar "|" is read as "such that". So the description can be read as "the set of all elements $x$ such that $x$ satisfies $P(x)$".
+
+<Callout type="example">
+If we define the set $\Bbb{Z}$ as the set of all integers, then the set of all positive integers that are less than 5 can be defined as:
+
+$$
+F = \{ a \mid a \in \Bbb{Z} \text{ and } 0 \leq a \leq 5\}=\{0,1,2,3,4,5\}
+$$
+
+Another example is the set of all even numbers:
+
+$$
+E = \{ x \mid x \in \Bbb{Z} \text{ and } x \text{ is even}\}=\{0,2,-2,4,-4,6,-6,...\}
+$$
+
+We could mathmatically define when a number is even:
+
+$$
+E = \{ x \mid x \in \Bbb{Z} \text{ and } \exists k \in \Bbb{Z} \text{ such that } x=2k\}
+$$
+
+</Callout>
 
 ## Sets of Numbers
 
-The most common use of sets is to define the different types of numbers. The following are the most common sets of numbers visualized:
+The most common use of sets is to define the different types of numbers. The following are the most common sets of numbers and their notation:
 
-![setsOfNumbers](/maths/setsOfNumbers.png)
+- **Natural Numbers** $\Bbb{N}$: The set of positive integers. Depending on the author, this set can include 0 or not.
+- **Integers** $\Bbb{Z}$: The set of positive and negative whole numbers, including zero.
+- **Rational Numbers** $\Bbb{Q}$: The set of numbers that can be expressed as a fraction of two integers.
+- **Real Numbers** $\Bbb{R}$: The set of all rational and irrational numbers.
+- **Complex Numbers** $\Bbb{C}$: The set of numbers that can be expressed in the form $a+bi$ where $a$ and $b$ are real numbers and $i$ is the imaginary unit.
 
-We can also clearly see from the above venn diagram that the natural numbers are a subset of the integers, the integers are a subset of the rational numbers, the rational numbers are a subset of the real numbers, and the real numbers are a subset of the complex numbers.
+If we visualize these sets with a venn diagram, we can see how they are related to each other and are all subsets of each other.
+
+$$
+\Bbb{N} \subset \Bbb{Z} \subset \Bbb{Q} \subset \Bbb{R} \subset \Bbb{C}
+$$
+
+<Image 
+    src="/maths/setsOfNumbers.png"
+    caption="Venn diagram showing the all the sets of numbers."
+    width={500}
+/>
 
 ### Natural Numbers
 
-The natural numbers are the set of positive integers. Depending on the definition of the natural numbers, the set can include 0 or not. The set of natural numbers is denoted by:
+The natural numbers are the set of positive integers. The set of natural numbers is denoted by:
 
 $$
 \Bbb{N} =\{0,1,2,3,...\}
@@ -118,8 +206,22 @@ $$
 
 Depending on the author, 0 is included or not in the set of natural numbers. I prefer to include 0 in the set of natural numbers, as it makes more sense to me. This can cause confusion, so it is important to know some of the different notations used:
 
-- If $\Bbb{N} =\{1,2,3,...\}$ then 0 is not included in the set of natural numbers. The authors that include 0 in the set of natural numbers use the following notation to exclude it $\Bbb{N}^+ =\{1,2,3,...\}$.
-- If $\Bbb{N} =\{0,1,2,3,...\}$ then 0 is included in the set of natural numbers. The authors that do not include 0 in the set of natural numbers use the following notation to include it $\Bbb{N}_0 =\{0,1,2,3,...\}$.
+- If $\Bbb{N} =\{1,2,3,...\}$ then 0 is not included in the set of natural numbers. The authors that do not include 0 in the set of natural numbers use the following notation to then include it $\Bbb{N}_0 =\{0,1,2,3,...\}$.
+- If $\Bbb{N} =\{0,1,2,3,...\}$ then 0 is included in the set of natural numbers. The authors that include 0 in the set of natural numbers then commonly use the following notation to exclude it $\Bbb{N}^+ =\{1,2,3,...\}$.
+
+<Callout type="example">
+$$
+\begin{align*}
+1 &\in \Bbb{N} \\
+0 &\in \Bbb{N} \\
+-1 &\notin \Bbb{N} \\
+\frac{1}{2} &\notin \Bbb{N} \\
+\sqrt{2} &\notin \Bbb{N} \\
+\pi &\notin \Bbb{N} \\
+3i &\notin \Bbb{N}
+\end{align*}
+$$
+</Callout>
 
 ### Integers
 
@@ -129,24 +231,33 @@ $$
 \Bbb{Z} =\{...,-2,-1,0,1,2,...\}
 $$
 
-Because the integers include the natural numbers, the set of natural numbers is a proper subset of the set of integers.
-
-$$
-\Bbb{N} \subset \Bbb{Z}
-$$
-
 Multiple restrictions can be applied to the set of integers, for example:
 
-- $\Bbb{Z}^+ =\{1,2,3,...\}=\Bbb{N}\setminus \{0\}$
+- $\Bbb{Z}^+ =\{1,2,3,...\}$
 - $\Bbb{Z}^- =\{...,-3,-2,-1\}$
-- $\Bbb{Z}_0^+ =\{0,1,2,3,...\}=\Bbb{N}$ 
+- $\Bbb{Z}_0^+ =\{0,1,2,3,...\}$ 
+
+<Callout type="example">
+$$
+\begin{align*}
+1 &\in \Bbb{N} \\
+0 &\in \Bbb{N} \\
+-1 &\in \Bbb{N} \\
+\frac{1}{2} &\notin \Bbb{N} \\
+\sqrt{2} &\notin \Bbb{N} \\
+\pi &\notin \Bbb{N} \\
+3i &\notin \Bbb{N}
+\end{align*}
+$$
+</Callout>
+
 
 ### Rational and Irrational Numbers
 
 Rational numbers are numbers that can be expressed with a fraction of two integers. Importantly the denominator can not be zero as this is an undefined operation. Another way to remember them is that they can be written as terminating or repeating decimals. The set of rational numbers is denoted by:
 
 $$
-\Bbb{Q}=\Big\{\frac{p}{q} \mid p \in \Bbb{Z} \land q \in \Bbb{Z} \setminus \{0\} \Big\}
+\Bbb{Q}=\Big\{\frac{p}{q} \mid p \in \Bbb{Z} \land p,q \in \Bbb{Z} \land q \neq 0\Big\}
 $$
 
 <Callout type="example">
@@ -170,8 +281,9 @@ $$
 $$
 </Callout>
 
-On the other hand, irrational numbers are numbers that cannot be expressed as a fraction of two integers. They cannot
-be written as terminating or repeating decimals, as their decimal expansions go on infinitely without repeating.
+On the other hand, irrational numbers are numbers that cannot be expressed as a fraction of two integers. They can also not
+be written as terminating or repeating decimals, as their decimal expansions go on infinitely without repeating. Irrational 
+numbers are usually denoted by the symbol $\Bbb{I}$.
 
 <Callout type="example">
 For example, $\pi$, not a rational number but an irrational number:
@@ -194,8 +306,10 @@ $$
 </Callout>
 
 <Callout type="proof" title="Proof that sqrt(2) is Irrational by Contradiction">
+How do we know that $\sqrt{2}$ is irrational and therefore doesn't repeat or terminate and can't be expressed as a fraction of two integers?
+
 To prove that the square root of 2 is irrational, we need to assume that it is rational and then derive a contradiction.
-That is, we assume that $\sqrt{2}$ can be expressed as a ratio of two integers, and then show that this assumption is wrong and leads
+That is, we assume that $\sqrt{2}$ can be expressed as a fraction of two integers, and then show that this assumption is wrong and leads
 to a contradiction. Suppose that $\sqrt{2}$ is rational, and can be expressed as:
 
 $$
@@ -237,81 +351,88 @@ our initial assumption that $\sqrt{2}$ is rational must be false, and we conclud
 
 Real numbers are the combination of rational and irrational numbers, i.e. all numbers from both sets. The set of real numbers is denoted by $\Bbb{R}$.
 
+This can also be thought of as the set of all points on the number line.
+
+<Image 
+    src="/maths/setsRealNumberLine.png"
+    caption="Number line showing the real numbers."
+    width={500}
+/>
+
+<Callout type="example">
+$$
+\begin{align*}
+1 &\in \Bbb{N} \\
+0 &\in \Bbb{N} \\
+-1 &\in \Bbb{N} \\
+\frac{1}{2} &\in \Bbb{N} \\
+\sqrt{2} &\in \Bbb{N} \\
+\pi &\in \Bbb{N} \\
+3i &\notin \Bbb{N}
+\end{align*}
+$$
+</Callout>
+
 <Callout type="info">
 Infinity is not a number in the traditional sense, but rather a concept that refers to something, limitless i.e. without
 end. Therefore it is not an element of any set of numbers, including the real numbers.
 </Callout>
 
-All numbers on the number line.
-
 #### Heron's Method
 
-Iterationsverfahren um reelle Zahl durch eine rationale Zahl mit beliebiger Genauigkeit annähern.  Die Idee ist, dass ein Quadrat mit Flächeninhalt $B$ eine Seitenlänge von $\sqrt B$ hat.
+Using Heron's method we can approximate a real number by a rational number with any desired accuracy. The idea is that a square with an area of $A$ has a side length of $\sqrt A$.
 
-Um $\sqrt b$ anzunähern, wählt man Näherungswert $a_1$ z.B für $\sqrt 5$ kennen wir $\sqrt 4$ also $a_1=2$.
-$$a_n={1\over2}(a_{n-1}+{b\over a_{n-1}})$$
+To approximate $\sqrt a$ we start by creating a rectangle which we know the area of and then slowly adjust the sides to get closer to a square with the area of $A$ and therefore the side length of $\sqrt A$.
+
+We start with a guess $a_1$ and then calculate the next guess $a_2$ by taking the average of the previous guess and the area divided by the previous guess.
+
+$$
+a_2 = \frac{a_1 + \frac{A}{a_1}}{2}
+$$
+
+This can be repeated until the desired accuracy is reached:
+
+$$
+a_{n+1} = \frac{a_n + \frac{A}{a_n}}{2}
+$$
+
+<Callout type="example">
+To approximate $\sqrt{5}$ we start with a guess of $a_1=5$. We then calculate the next approximation:
+
+$$
+a_2 = \frac{5 + \frac{5}{5}}{2} = \frac{5 + 1}{2} = 3
+$$
+
+If we then repeat this process we get for $a_4 = 2.234$ which is a good approximation of $\sqrt{5}=2.236$.
+
+<Image 
+    src="/maths/setsHeronsMethod.gif"
+    caption="Animation showing Heron's method to approximate the square root of 5."
+    width={500}
+/>
+</Callout>
 
 ### Complex Numbers
 
-The set of complex numbers is denoted by $\Bbb{C}$. 
-
-You can see what complex numbers are and how they are used on [this page] or also just look at my [cheat sheet] to refresh your knowledge.
-
-<Callout type="todo">
-Add the link to the complex numbers page.
-</Callout>
-
-## Notations
-
-There are multiple ways to define a set.
-
-### Roster Notation
-
-The roster or also called enumeration notation defines a set by listing its elements between curly brackets separated by commas. This is the most common way to define a set and is what I have been using in the examples above.
-
-<Callout type="example">
-- The set of the first three positive numbers is $\{1,2,3\}$.
-- The set of the first three positive even numbers is $\{2,4,6\}$.
-</Callout>
-
-### Semantic Definition
-
-Sets can be described using words and rules.
-
-<Callout type="example">
-Let $A$ be the first 3 positive integers that are odd. Therefore the set is then $A=\{1,3,5\}$
-Let $B$ be the set of colors of the French flag. Therefore the set is then $B=\{blue,white,red\}$
-</Callout>
-
-### Set-Builder Notation
-
-This is probably the hardest notation to understand. The set-builder notation specifies a set as a selection from a larger set, determined by a condition on those elements.
-
-<Callout type="example">
-$F = \{ a \mid a \in \Bbb{I} \text{ and } 0 \leq a \leq 5\}=\{0,1,2,3,4,5\}$
-
-The vertical bar, "|" means "such that". So the description can be read as "F is the set of all numbers a such that a is an integer in the range from 0 to 5 inclusive.
-</Callout>
-
-## Ordered Pair
-
-An **ordered pair** is a pair of objects and can be denoted by:
-
-$$
-(a,b)
-$$
-
-Unlike in a set, the order in which the objects appear in the pair matters. Therefore, the ordered pair $(a,b)$ is different from the ordered pair $(b,a)$ unless $a$ and $b$ are equal. For this reason, a set is also called an **unordered pair**.
+The set of complex numbers is denoted by $\Bbb{C}$. You can see what complex numbers are and how they are used [here](/digitalGarden/maths/complexNumbers/explanation).
 
 ## Set Operations
 
-There are several fundamental operations for constructing new sets from given sets.
+There are several operations that can be performed on sets. These operations are similar to the operations that can be performed on numbers such as addition and subtraction.
 
 ### Union
 
-Two sets can be joined together, this results in the so called **union** of $A$ and $B$. This is written as $A \cup B$. The union is the set containing all elements that are in $A$ or $B$ or both.
+Two sets can be joined together, this results in a so-called **union** of $A$ and $B$. This is written as $A \cup B$. The union is the set containing all elements that are in $A$ or $B$ or both.
 
-![setsUnion](/maths/setsUnion.png)
+$$
+A \cup B = \{x \mid x \in A \lor x \in B\}
+$$
+
+<Image 
+    src="/maths/setsUnion.png"
+    caption="Venn diagram showing the union of two sets."
+    width={300}
+/>
 
 <Callout type="example">
 $$
@@ -325,9 +446,19 @@ $$
 
 ### Intersection
 
-A new set can also be constructed by determining which elements two sets have "in common", this results in the so called **intersection** of $A$ and $B$. This is written as $A \cap B$. The intersection is the set of all things that are elements of both $A$ and $B$. If $A \cap B = \emptyset$, then $A$ and $B$ are called **disjoint**.
+A new set can also be constructed by determining which elements two sets have "in common", this results in the so called **intersection** of $A$ and $B$. This is written as $A \cap B$. The intersection is the set of all things that are elements of both $A$ and $B$.
 
-![setsIntersection](/maths/setsIntersection.png)
+$$
+A \cap B = \{x \mid x \in A \land x \in B\}
+$$
+
+<Image 
+    src="/maths/setsIntersection.png"
+    caption="Venn diagram showing the intersection of two sets."
+    width={300}
+/>
+
+To remember the difference between the union and intersection symbols, you can think of the union symbol as a "U" for "union".
 
 <Callout type="example">
 $$
@@ -341,29 +472,27 @@ $$
 
 #### Disjoint Sets
 
-### Complements
-
-The so called **absolute complement** of $A$ (or simply the **complement of** $A$) is the set of elements not in $A$. In other words, let $U$ be a set that contains all the elements under study. If there is no need to mention $U$, either because it has been previously specified, or it is obvious (for example all positive numbers). Then the absolute complement of $A$ is the difference (Or relative complement) of $A$ in $U$.
-This can be written as $A^c = U \setminus A$.
-
-![setsAbsoluteComplement](/maths/setsAbsoluteComplement.png)
+If $A \cap B = \emptyset$, then we call $A$ and $B$ **disjoint** sets. This means that the sets have no elements in common.
 
 <Callout type="example">
-$$
-\begin{align*}
-\{1,2\} \cap \{1,2\} &= \{1,2\} \\
-\{1,2\} \cap \{2,3\} &= \{2\} \\
-\{1,2\} \cap \{3,4\} &= \emptyset
-\end{align*}
-$$
+- $\{1,2\} \cap \{3,4\} = \emptyset$ so $\{1,2\}$ and $\{3,4\}$ are disjoint sets.
+- $\{1,2\} \cap \{2,3\} = \{2\}$ so $\{1,2\}$ and $\{2,3\}$ are not disjoint sets.
+- $\{1,2\} \cap \emptyset = \emptyset$ so $\{1,2\}$ and $\emptyset$ are disjoint sets.
 </Callout>
 
 ### Difference
 
-If $B$ and $A$ are sets, then the **relative complement** (or short **difference**) of $B$ and $A$, is the set of elements in $B$ without the elements of $A$.
-This can be written as $B \setminus A$.
+If $A$ and $B$ are sets, then the **relative complement** (or short **difference**) of $A$ and $B$, is the set of elements in $A$ without the elements of $B$. This is written as $A \setminus B$.
 
-![setsDifference](/maths/setsDifference.png)
+$$
+A \setminus B = \{x \mid x \in A \land x \notin B\}
+$$
+
+<Image 
+    src="/maths/setsDifference.png"
+    caption="Venn diagram showing the difference of two sets, in this case the left set minus the right set."
+    width={300}
+/>
 
 <Callout type="example">
 $$
@@ -378,14 +507,52 @@ $$
 #### Symmetric Difference
 
 The **symmetric difference** of two sets (also known as the **disjunctive union**), is the set of elements which are in either of the sets, but not in both sets (their intersection).
-This can be written as $A \ominus B$ or $A \triangle B$ which can however cause confussion with other subjects.
-The symmetric difference can be defined as $A \ominus B=(A \cup B)\setminus (A \cap B)$ or as $(A \setminus B)\cup(B \setminus A)$.
+This can be written as $A \ominus B$.
 
-![setsSymmetricDifference](/maths/setsSymmetricDifference.png)
+$$
+A \ominus B = (A \cup B) \setminus (A \cap B) = (A \setminus B) \cup (B \setminus A)
+$$
+
+<Image 
+    src="/maths/setsSymmetricDifference.png"
+    caption="Venn diagram showing the symmetric difference of two sets."
+    width={300}
+/>
 
 <Callout type="example">
 $$
-\{7,8,9,10\} \ominus \{9,10,11,12\} = \{7,8, 11,12\}
+\begin{align*}
+\{1,2,3,4\} \ominus \{3,4,5,6\} = \{1,2,5,6\} \\
+\{7,8,9,10\} \ominus \{9,10,11,12\} = \{7,8, 11,12\} \\
+\{1,2,3,4\} \ominus \{1,2,3,4\} = \emptyset
+\end{align*}
+$$
+</Callout>
+
+### Complements
+
+The so called **absolute complement** of $A$ (or simply the **complement of** $A$) is the set of elements not in $A$. In other words, let $U$ be a set that contains all the elements under study, also called the **universal set**. 
+The universal set is not always explicitly mentioned, but is rather implied or obvious such as one of the defined sets of numbers. The complement of $A$ is the difference between the universal set and $A$ and is denoted by $A^c$.
+
+$$
+A^c = U \setminus A
+$$
+
+<Image 
+    src="/maths/setsAbsoluteComplement.png"
+    caption="Venn diagram showing the absolute complement of the left set."
+    width={300}
+/>
+
+<Callout type="example">
+Given the universal set $U=\{1,2,3,4,5,6\}$:
+
+$$
+\begin{align*}
+\{1,2,3\}^c &= \{4,5,6\} \\
+\{4,5,6\}^c &= \{1,2,3\} \\
+\{1,2,3,4,5,6\}^c &= \emptyset
+\end{align*}
 $$
 </Callout>
 
@@ -398,20 +565,6 @@ $$
 \{1,2\} \times \{3,4\} = \{(1, 3), (1, 4), (2, 3), (2, 4)\}
 $$
 </Callout>
-
-## Cardinality
-
-The cardinality of a set is the number of elements/members in that set. The cardinality of the set $A = \{1,2,3\}$ is denoted by:
-
-$$
-|A| = 3
-$$
-
-Importantly repeated elementes are not counted, so $B=\{blue, white, red, blue, white\}$ then the cardinality of $B$ is still 3.
-
-### Cardinality of the Empty Set
-
-### Cardinality of Disjoint Sets
 
 ## Power Set
 

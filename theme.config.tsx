@@ -14,7 +14,9 @@ const config: DocsThemeConfig = {
   },
   editLink: {
     component: ({ filePath }) => {
-      return <p>Chatbot</p>;
+      return (
+        <p className="text-primary-800 text-xs font-bold">Use Chatbot → 🤖</p>
+      );
     },
   },
   feedback: {
