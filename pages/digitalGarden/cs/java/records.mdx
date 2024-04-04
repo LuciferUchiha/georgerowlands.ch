@@ -1,0 +1,103 @@
+# Records
+
+With JDK 14 [record classes](https://docs.oracle.com/en/java/javase/18/language/records.html) were introduced, which are
+a new kind of type declaration. They are especially useful for passing around immutable data containers. For example
+consider the immutable class below.
+
+```java filename="Rectangle.java"
+public final class Rectangle {
+    private final double length;
+    private final double width;
+
+    public Rectangle(double length, double width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    // getters
+    double length() {
+        return this.length;
+    }
+
+    double width() {
+        return this.width;
+    }
+
+    // Implementation of equals() and hashCode(), which specify
+    // that two record objects are equal if they
+    // are of the same type and contain equal field values.
+    public boolean equals(Object other) {...}
+
+    public int hashCode() {...}
+
+    // An implementation of toString() that returns a string
+    // representation of all the record class's fields,
+    // including their names.
+    public String toString() {...}
+}
+```
+
+The following record is equivalent to the above.
+
+```java filename="Rectangle.java"
+record Rectangle(double length, double width) {}
+```
+
+A record consists of a name and a list of components (length and width). A record automatically provides the following
+functionalities:
+
+- A private final field for each of its components.
+- A public read accessor (Getter) method for each component with the same name and type of the component (without get,
+  so length() not getLength()).
+- A public canonical constructor which initializes all components.
+- Implementations of the equals() and hashCode() methods, which specify that two records are equal if they are of the
+  same type and their components are equal.
+- An implementation of the toString() method that includes the string representation of all the record's components,
+  with their names. For example "rectangle[length=12, width=10]".
+
+There are however some restrictions when working with records:
+
+- Records cannot extend any class (because they already extend the Record class just like enums extend the Enum class).
+- Records cannot declare instance fields (apart from the private final fields in the component list).
+- Records cannot extend other records and therefore also can't be abstract because they are implicitly final.
+- The components of a record are implicitly final, they can not be made mutable.
+
+There are however some things you can still do:
+
+- You can declare a record inside a class however a nested record will be implicitly static.
+- You can create generic records
+- Records can implement interfaces
+- You can declare in a record's body static methods, static fields, static initializers, constructors, instance methods,
+  and nested types
+- You can annotate records and a record's individual components
+
+## Canonical and compact constructors
+
+Records automatically generate a canonical constructor which initializes all components. You can however also define the
+canonical constructor yourself for example if you want to add validation.
+
+```java filename="Rectangle.java"
+record Rectangle(double length, double width) {
+    public Rectangle(double length, double width) {
+        if (length <= 0 || width <= 0) {
+            throw new java.lang.IllegalArgumentException(String.format("Invalid dimensions: %f, %f", length, width));
+        }
+        this.length = length;
+        this.width = width;
+    }
+}
+```
+
+Having to rewrite the component list as parameters for the constructors can be tiresome and also very error-prone which
+is why compact constructors which were introduced whose signature is derived from the component list. At the end the
+compact constructor also assigns parameters to the corresponding private fields.
+
+```java filename="Rectangle.java"
+record Rectangle(double length, double width) {
+    public Rectangle {
+        if (length <= 0 || width <= 0) {
+            throw new java.lang.IllegalArgumentException(String.format("Invalid dimensions: %f, %f", length, width));
+        }
+    }
+}
+```

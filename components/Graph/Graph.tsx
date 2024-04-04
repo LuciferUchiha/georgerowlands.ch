@@ -24,8 +24,8 @@ const Graph = () => {
   return (
     <ForceGraph3D
       graphData={Data}
-      width={800}
-      height={800}
+      width={750}
+      height={750}
       backgroundColor={background}
       nodeThreeObject={(node) => {
         const sprite = new SpriteText(node.id);

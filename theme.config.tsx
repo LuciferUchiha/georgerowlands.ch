@@ -10,7 +10,7 @@ const config: DocsThemeConfig = {
   docsRepositoryBase: "https://github.com/LuciferUchiha/georgerowlands.ch",
   primaryHue: 270,
   nextThemes: {
-    defaultTheme: "dark",
+    defaultTheme: "light",
   },
   editLink: {
     text: "Edit this page on GitHub →",
