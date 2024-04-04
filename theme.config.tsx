@@ -10,13 +10,21 @@ const config: DocsThemeConfig = {
   docsRepositoryBase: "https://github.com/LuciferUchiha/georgerowlands.ch",
   primaryHue: 270,
   nextThemes: {
-    defaultTheme: "light",
+    defaultTheme: "dark",
   },
   editLink: {
-    text: "Edit this page on GitHub →",
+    component: ({ filePath }) => {
+      return <p>Chatbot</p>;
+    },
   },
   feedback: {
-    content: null, // disable because now using Giscus
+    // this has been hijacked to be the editLink because editLink can have a custom component
+    content: "Edit this page on GitHub →",
+    useLink: () => {
+      const { asPath } = useRouter();
+      const { docsRepositoryBase } = useConfig();
+      return `${docsRepositoryBase}/edit/main/pages${asPath}.mdx`;
+    },
   },
   useNextSeoProps() {
     const { asPath } = useRouter();
