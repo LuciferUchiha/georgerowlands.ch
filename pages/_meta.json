@@ -9,11 +9,11 @@
       }
     },
     "digitalGarden": {
-      "title": "Digital Garden",
+      "title": "Digital Garden 🌳",
       "type": "page"
     },
     "contact": {
-      "title": "Contact↗",
+      "title": "Contact ✉️",
       "type": "page",
       "href": "https://www.linkedin.com/in/georgerowlands/",
       "newWindow": true
