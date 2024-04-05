@@ -42,7 +42,7 @@ git init
 ## Making Changes to a Repository
 
 <Image 
-    src="/compSci/gitFileLifecycle.png"
+    src="/cs/gitFileLifecycle.png"
     caption="The lifecycle and stages of a file in a git repository."
     width="800"
 />
@@ -119,7 +119,7 @@ git branch testing
 The `git branch` command only created a new branch it didn’t switch to that branch.
 
 <Image 
-    src="/compSci/gitHeadToMaster.png"
+    src="/cs/gitHeadToMaster.png"
     caption="The HEAD pointer is still pointing to the master branch which points to the latest commit."
     width="800"
 />
@@ -127,7 +127,7 @@ The `git branch` command only created a new branch it didn’t switch to that br
 To switch to an existing branch, you run the `git checkout testing` command.
 
 <Image 
-    src="/compSci/gitHeadToTesting.png"
+    src="/cs/gitHeadToTesting.png"
     caption="The HEAD is now pointing to the testing branch."
     width="800"
 />
@@ -135,7 +135,7 @@ To switch to an existing branch, you run the `git checkout testing` command.
 After changing a file and commiting, our structure could look something like this
 
 <Image 
-    src="/compSci/gitHeadAhead.png"
+    src="/cs/gitHeadAhead.png"
     caption="The HEAD and the testing branch are now ahead of the master branch."
     width="800"
 />
@@ -154,7 +154,7 @@ branch. If you add `--all` you can also see the remote branches of a repository.
 Assume our structure looks like the following
 
 <Image 
-    src="/compSci/gitBranching.png"
+    src="/cs/gitBranching.png"
     caption="Two branches are based on the master branch and have been worked on."
     width="800"
 />
@@ -170,7 +170,7 @@ git merge hotfix
 ```
 
 <Image 
-    src="/compSci/gitFastForward.png"
+    src="/cs/gitFastForward.png"
     caption='The master hotfix branch can be merged by "fast-forwarding" the master branch pointer to the hotfix branch.'
     width="800"
 />
@@ -189,7 +189,7 @@ git commit -a -m "Did lots of work"
 We now however want our new changes to also be in the master branch, so we want to merge `iss53` into `master`.
 
 <Image 
-    src="/compSci/gitThreeWayStart.png"
+    src="/cs/gitThreeWayStart.png"
     caption='The current structure of the branches before merging the iss53 branch into the master branch.'
     width="800"
 />
@@ -203,7 +203,7 @@ A fast-forward is not possible here so git does a so called three-way merge. It 
 two branch heads and their common ancestor.
 
 <Image 
-    src="/compSci/gitThreeWayEnd.png"
+    src="/cs/gitThreeWayEnd.png"
     caption='The three-way merge creates a new commit that has two parents, the last commit of the master branch and the last commit of the iss53 branch.'
     width="800"
 />

@@ -1,29 +1,37 @@
+import Callout from "~/components/Callout/Callout";
 import Image from "~/components/Image/Image";
 
 # Intervals
 
-Seien $a,b \in R$ mit $a<b$.
-**Abgeschlossenes Intervall**: $[a,b] = \{x \in R \space|\space a\leq x \leq b\}$ also Inclusive.
-**Offenes Intervall**: $(a,b) = \{x \in R \space|\space a < x < b\}$ also Exclusive.
-**Halboffene Intervalle**: nur ein Randpunkt gehört zur Menge. z.B
+If we have a set of real numbers, we can define a subset of this set by specifying a range of values. This subset is called an interval.
+To define an interval, we need two real numbers, $a$ and $b$, with $a < b$.
 
-- Rechtsoffenes Intervall: $[a,b)=\{x\in R \space|\space a\leq x<b\}$
+We can then define the following types of intervals:
 
-Das Intervall enthält $a$, aber nicht $b$.
+- **Open interval**: We include all the numbers between $a$ and $b$, but not $a$ and $b$ themselves. This is denoted as $(a, b) = \{x \in \mathbb{R} \mid a < x < b\}$.
+- **Closed interval**: We include all the numbers between $a$ and $b$, as well as $a$ and $b$ themselves. This is denoted as $[a, b] = \{x \in \mathbb{R} \mid a \leq x \leq b\}$.
+- **Half-open interval**: We include one of the bounds but not the other. This is denoted as $[a, b) = \{x \in \mathbb{R} \mid a \leq x < b\}$ or $(a, b] = \{x \in \mathbb{R} \mid a < x \leq b\}$.
+- **Unbounded/Infinite interval**: On one or both sides, the interval extends indefinitely. This is denoted as $(-\infty, b] = \{x \in \mathbb{R} \mid x \leq b\}$ if we want all numbers less or equal than $b$, or $(a, \infty) = \{x \in \mathbb{R} \mid x > a\}$ if we want all numbers greater than $a$.
+We can also have intervals that are unbounded on both sides, such as $(-\infty, \infty) = \mathbb{R}$.
 
-- Linkstsoffenes Intervall: $(a,b]=\{x\in R \space|\space a < x \leq b\}$
+<Callout type="info">
+    Note that the bound of the interval that is included is always the one with the square bracket if it is excluded it is the one with the round bracket.
 
-Das Intervall enthält $b$, aber nicht $a$.
+    For example, $[a, b)$ includes $a$ but not $b$, while $(a, b]$ includes $b$ but not $a$.
 
-**Nach oben oder unten abgeschlossene Intervalle**:
-$[a,+\infty )= \{x \in R \space|\space a \leq x\}$
-$(a,+\infty )= \{x \in R \space|\space a < x\}$
-$(-\infty,b]= \{x \in R \space|\space x \leq b\}$
-$(-\infty,b)= \{x \in R \space|\space x < b\}$
-$(-\infty,+\infty )= R$
+    Also, note that the unbounded side with $\infty$ is always excluded i.e. uses the round bracket.
+</Callout>
 
 <Image 
     src="/maths/intervalsLines.png"
     caption="All types of intervals visualized on the number line."
-    width={700}
+    width={600}
 />
+
+<Callout type="example">
+    Examples of intervals:
+    - $(2, 5)$ is the set of all real numbers between 2 and 5, but not including 2 and 5.
+    - $[3, 7]$ is the set of all real numbers between 3 and 7, including 3 and 7.
+    - $(-\infty, 4]$ is the set of all real numbers less than or equal to 4.
+    - $(6, \infty)$ is the set of all real numbers greater than 6.
+</Callout>
