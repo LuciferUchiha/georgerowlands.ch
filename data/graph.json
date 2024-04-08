@@ -1,1 +1,290 @@
-{"nodes": [{"id": "My Digital Garden", "name": "My Digital Garden"}, {"id": "Languages", "name": "Languages"}, {"id": "LaTeX Guidelines", "name": "LaTeX Guidelines"}, {"id": "Scientific Notation", "name": "Scientific Notation"}, {"id": "Trigonometry", "name": "Trigonometry"}, {"id": "Logic Theory", "name": "Logic Theory"}, {"id": "Combinatorics ", "name": "Combinatorics "}, {"id": "Sequences ", "name": "Sequences "}, {"id": "Proofs", "name": "Proofs"}, {"id": "Set Theory", "name": "Set Theory"}, {"id": "Intervals", "name": "Intervals"}, {"id": "Algebraic Structures", "name": "Algebraic Structures"}, {"id": "Recurrence Relations", "name": "Recurrence Relations"}, {"id": "Relations", "name": "Relations"}, {"id": "Functions", "name": "Functions"}, {"id": "Equivalence Relations", "name": "Equivalence Relations"}, {"id": "Factorial", "name": "Factorial"}, {"id": "Binomial Coefficient", "name": "Binomial Coefficient"}, {"id": "Absolute Value", "name": "Absolute Value"}, {"id": "Complex Numbers Explained", "name": "Complex Numbers Explained"}, {"id": "Cheatsheet", "name": "Cheatsheet"}, {"id": "QR Decomposition", "name": "QR Decomposition"}, {"id": "Matrices", "name": "Matrices"}, {"id": "Linear Equations", "name": "Linear Equations"}, {"id": "Gaussian Elimination", "name": "Gaussian Elimination"}, {"id": "Hadamard Product", "name": "Hadamard Product"}, {"id": "LU Decomposotion", "name": "LU Decomposotion"}, {"id": "SVD - Singular Value Decomposition", "name": "SVD - Singular Value Decomposition"}, {"id": "Vectors", "name": "Vectors"}, {"id": "Eigenvalues and Eigenvectors", "name": "Eigenvalues and Eigenvectors"}, {"id": "Vector Spaces", "name": "Vector Spaces"}, {"id": "CP and VM Decomposition", "name": "CP and VM Decomposition"}, {"id": "Broadcasting", "name": "Broadcasting"}, {"id": "Moore-Penrose Pseudoinverse", "name": "Moore-Penrose Pseudoinverse"}, {"id": "PCA - Principal Component Analysis", "name": "PCA - Principal Component Analysis"}, {"id": "Independent Random Variables", "name": "Independent Random Variables"}, {"id": "Queueing theory", "name": "Queueing theory"}, {"id": "Combinatorics", "name": "Combinatorics"}, {"id": "Probability", "name": "Probability"}, {"id": "Discrete Random Variables", "name": "Discrete Random Variables"}, {"id": "Covariance", "name": "Covariance"}, {"id": "Markov Chains", "name": "Markov Chains"}, {"id": "Continuous Random Variables", "name": "Continuous Random Variables"}, {"id": "Grenzwerts\u00e4tze", "name": "Grenzwerts\u00e4tze"}, {"id": "Functions", "name": "Functions"}, {"id": "Differentiation", "name": "Differentiation"}, {"id": "Analysis", "name": "Analysis"}, {"id": "Newton's Methods", "name": "Newton's Methods"}, {"id": "Taylor Series", "name": "Taylor Series"}, {"id": "Power Series", "name": "Power Series"}, {"id": "Fourier Series", "name": "Fourier Series"}, {"id": "Series & Convergence", "name": "Series & Convergence"}, {"id": "Integration by Partial Fraction Decomposition", "name": "Integration by Partial Fraction Decomposition"}, {"id": "Integration by Substitution", "name": "Integration by Substitution"}, {"id": "Definite Integrals", "name": "Definite Integrals"}, {"id": "Integration Rules", "name": "Integration Rules"}, {"id": "Improper Integrals", "name": "Improper Integrals"}, {"id": "Antiderivatives", "name": "Antiderivatives"}, {"id": "Double Integrals", "name": "Double Integrals"}, {"id": "Numerical Integration", "name": "Numerical Integration"}, {"id": "Integrals Explained", "name": "Integrals Explained"}, {"id": "Integration by Parts", "name": "Integration by Parts"}, {"id": "List of Integrals", "name": "List of Integrals"}], "links": []}
+{
+    "links": [
+        {
+            "source": "/digitalGarden/cs/git/commonProblems",
+            "target": "/digitalGarden/cs/git/basics"
+        },
+        {
+            "source": "/digitalGarden/maths/commonFunctions/binomialCoefficient",
+            "target": "/digitalGarden/maths/commonFunctions/factorial"
+        },
+        {
+            "source": "/digitalGarden/maths/discrete/sequences",
+            "target": "/digitalGarden/maths/discrete/setTheory"
+        },
+        {
+            "source": "/digitalGarden/maths/discrete/setTheory",
+            "target": "/digitalGarden/maths/complexNumbers/explanation"
+        }
+    ],
+    "nodes": [
+        {
+            "id": "/digitalGarden/index",
+            "name": "My Digital Garden"
+        },
+        {
+            "id": "/digitalGarden/cs/git/basics",
+            "name": "Git Basics"
+        },
+        {
+            "id": "/digitalGarden/cs/git/commonProblems",
+            "name": "Common Problems"
+        },
+        {
+            "id": "/digitalGarden/cs/java/records",
+            "name": "Records"
+        },
+        {
+            "id": "/digitalGarden/cs/java/spring/dependencyInjectionBeans",
+            "name": "Dependency Injection and Beans"
+        },
+        {
+            "id": "/digitalGarden/cs/theoretical/languages",
+            "name": "Languages"
+        },
+        {
+            "id": "/digitalGarden/maths/latexGuidelines",
+            "name": "LaTeX Guidelines"
+        },
+        {
+            "id": "/digitalGarden/maths/scientificNotation",
+            "name": "Scientific Notation"
+        },
+        {
+            "id": "/digitalGarden/maths/trigonometry",
+            "name": "Trigonometry"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/analysis",
+            "name": "Analysis"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/differentiation",
+            "name": "Differentiation"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/functions",
+            "name": "Functions"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/newtonsMethod",
+            "name": "Newton's Methods"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/antiderivatives",
+            "name": "Antiderivatives"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/definiteIntegrals",
+            "name": "Definite Integrals"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/doubleIntegrals",
+            "name": "Double Integrals"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/explained",
+            "name": "Integrals Explained"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/improperIntegrals",
+            "name": "Improper Integrals"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/integrationByPartialFractions",
+            "name": "Integration by Partial Fraction Decomposition"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/integrationByParts",
+            "name": "Integration by Parts"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/integrationBySubstitution",
+            "name": "Integration by Substitution"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/integrationRules",
+            "name": "Integration Rules"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/listOfIntegrals",
+            "name": "List of Integrals"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/integrals/numericalIntegration",
+            "name": "Numerical Integration"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/series/fourier",
+            "name": "Fourier Series"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/series/power",
+            "name": "Power Series"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/series/seriesConvergence",
+            "name": "Series & Convergence"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/series/taylor",
+            "name": "Taylor Series"
+        },
+        {
+            "id": "/digitalGarden/maths/commonFunctions/absolute",
+            "name": "Absolute Value"
+        },
+        {
+            "id": "/digitalGarden/maths/commonFunctions/binomialCoefficient",
+            "name": "Binomial Coefficient"
+        },
+        {
+            "id": "/digitalGarden/maths/commonFunctions/factorial",
+            "name": "Factorial"
+        },
+        {
+            "id": "/digitalGarden/maths/complexNumbers/cheatsheet",
+            "name": "Cheatsheet"
+        },
+        {
+            "id": "/digitalGarden/maths/complexNumbers/explanation",
+            "name": "Complex Numbers"
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/algebraicStructures",
+            "name": "Algebraic Structures"
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/combinatorics",
+            "name": "Combinatorics "
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/intervals",
+            "name": "Intervals"
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/logicTheory",
+            "name": "Logic Theory"
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/proofs",
+            "name": "Proofs"
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/sequences",
+            "name": "Sequences "
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/setTheory",
+            "name": "Set Theory"
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/relationsFunctions/equivalenceRelations",
+            "name": "Equivalence Relations"
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/relationsFunctions/functions",
+            "name": "Functions"
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/relationsFunctions/recurrenceRelations",
+            "name": "Recurrence Relations"
+        },
+        {
+            "id": "/digitalGarden/maths/discrete/relationsFunctions/relations",
+            "name": "Relations"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/broadcasting",
+            "name": "Broadcasting"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/cpVmDecomposition",
+            "name": "CP and VM Decomposition"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/eigenvaluesEigenvectors",
+            "name": "Eigenvalues and Eigenvectors"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/gaussianElimination",
+            "name": "Gaussian Elimination"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/hadamardProduct",
+            "name": "Hadamard Product"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/linearEquations",
+            "name": "Linear Equations"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/luDecomposition",
+            "name": "LU Decomposotion"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/matrices",
+            "name": "Matrices"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/moorePenrose",
+            "name": "Moore-Penrose Pseudoinverse"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/pca",
+            "name": "PCA - Principal Component Analysis"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/qrDecomposition",
+            "name": "QR Decomposition"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/svd",
+            "name": "SVD - Singular Value Decomposition"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/vectors",
+            "name": "Vectors"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/vectorSpaces",
+            "name": "Vector Spaces"
+        },
+        {
+            "id": "/digitalGarden/maths/probabilityStatistics/combinatorics",
+            "name": "Combinatorics"
+        },
+        {
+            "id": "/digitalGarden/maths/probabilityStatistics/continuousRandomVariables",
+            "name": "Continuous Random Variables"
+        },
+        {
+            "id": "/digitalGarden/maths/probabilityStatistics/covariance",
+            "name": "Covariance"
+        },
+        {
+            "id": "/digitalGarden/maths/probabilityStatistics/discreteRandomVariables",
+            "name": "Discrete Random Variables"
+        },
+        {
+            "id": "/digitalGarden/maths/probabilityStatistics/independentRandomVariables",
+            "name": "Independent Random Variables"
+        },
+        {
+            "id": "/digitalGarden/maths/probabilityStatistics/markovChains",
+            "name": "Markov Chains"
+        },
+        {
+            "id": "/digitalGarden/maths/probabilityStatistics/probability",
+            "name": "Probability"
+        },
+        {
+            "id": "/digitalGarden/maths/probabilityStatistics/queueingTheory",
+            "name": "Queueing theory"
+        },
+        {
+            "id": "/digitalGarden/maths/probabilityStatistics/randomStuff",
+            "name": "Grenzwerts\u00e4tze"
+        }
+    ]
+}
