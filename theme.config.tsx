@@ -89,6 +89,7 @@ const config: DocsThemeConfig = {
   ),
   search: {
     // TODO I can replace the component that is shown for when nothing was found with an image of a dead tree with "emptyResult",
+    placeholder: "Search the Garden...",
   },
   sidebar: { defaultMenuCollapseLevel: 1 },
   toc: {
