@@ -12,13 +12,6 @@ const config: DocsThemeConfig = {
   nextThemes: {
     defaultTheme: "dark",
   },
-  editLink: {
-    component: ({ filePath }) => {
-      return (
-        <p className="text-primary-800 text-xs font-bold">Use Chatbot 🤖</p>
-      );
-    },
-  },
   feedback: {
     // this has been hijacked to be the editLink because editLink can have a custom component
     content: "Edit this page on GitHub ✍🏻",
