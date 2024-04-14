@@ -12,14 +12,11 @@ const config: DocsThemeConfig = {
   nextThemes: {
     defaultTheme: "dark",
   },
+  editLink: {
+    text:"Edit this page on GitHub ✍🏻",
+  },
   feedback: {
-    // this has been hijacked to be the editLink because editLink can have a custom component
-    content: "Edit this page on GitHub ✍🏻",
-    useLink: () => {
-      const { asPath } = useRouter();
-      const { docsRepositoryBase } = useConfig();
-      return `${docsRepositoryBase}/edit/main/pages${asPath}.mdx`;
-    },
+    content: null,
   },
   useNextSeoProps() {
     const { asPath } = useRouter();

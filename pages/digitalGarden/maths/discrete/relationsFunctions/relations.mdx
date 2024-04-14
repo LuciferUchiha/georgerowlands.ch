@@ -194,6 +194,51 @@ When defining a relation between two differenet sets the order matters. This is 
 
 ## Identity Relations
 
+The identity relation is a special type of relation that is only defined for homogenous relations. The identity relation is a relation where every element in the set relates to itself and no other elements.
+It is a reflexive, symmetric and transitive relation and is denoted by $I_A$ where $A$ is the set that the relation is defined on. 
+
+$$
+I_A = \{(a, a) \in A \times A\}
+$$
+
 ## Inverse Relations
 
+The inverse of a relation $R$ is a relation that is the opposite of $R$ i.e. it "undo's" the relationship between the elements of the set. The inverse of a relation $R$ is denoted by $R^{-1}$. 
+
+$$
+R^{-1} = \{(b, a) \in A \times A | (a, b) \in R\}
+$$
+
+This means that if $(a, b)$ is in the relation $R$ then $(b, a)$ is in the inverse relation $R^{-1}$. In other words the domain and codomain of the realtion $R$ is swapped in the inverse relation $R^{-1}$ and become the codomain and domain respectively.
+
+When visualising the inverse relation in a directed graph the arrows are simply reversed.
+
+<Image 
+    src="/maths/relationsInverse.png"
+    caption="On the left is the original relation and on the right is the inverse relation."
+    width={700}
+/>
+
 ## Composition of Relations
+
+Relations can also be combined or chained together to form a new relation. This is called the composition of relations. The composition of two relations $R$ and $S$ is denoted by $R \circ S$ and is defined as:
+
+$$
+R \circ S = \{(a, c) \in A \times C | \exists b \in B, (a, b) \in R \land (b, c) \in S\}
+$$
+
+This means that if there is an element $(a, b)$ in the relation $R$ and an element $(b, c)$ in the relation $S$ then there is an element $(a, c)$ in the composition of the two relations $R \circ S$.
+
+When visualising the composition of relations in a directed graph the arrows are simply chained together.
+
+<Image 
+    src="/maths/relationsComposition.png"
+    caption="An example of the composition of two relations."
+    width={600}
+/>
+
+<Callout type="info">
+    Importantly note that the composition of relations is not commutative i.e. $R \circ S \neq S \circ R$.
+
+    Also note that the relations are denoted from left to right i.e. $R \circ S$ means that $R$ is applied first and then $S$ is applied. Unlike functions where $f \circ g$ means that $g$ is applied first and then $f$ is applied.
+</Callout>

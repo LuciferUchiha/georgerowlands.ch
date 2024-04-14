@@ -1,3 +1,7 @@
 {
-    "languages": "Languages"
+    "formalLanguages": "Formal Languages",
+    "problems": "Computational Problems",
+    "kolomogorovComplexity": "Kolomogorov Complexity",
+    "automaton": "Deterministic Finite Automaton",
+    "turingMachine": "Turing Machine"
 }
