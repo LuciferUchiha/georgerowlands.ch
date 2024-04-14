@@ -11,6 +11,8 @@ $$
 R \subseteq \{(a, b) \in A \times A\}
 $$
 
+Because the relations is defined on the same set twice it is called a homogeneous relation, from the Greek word "homo" meaning "same" or "identical".
+
 Lets now put this all together and define a relation on the set $A = \{1, 2, 3, 4\}$:
 
 $$
@@ -166,11 +168,29 @@ The same can be seen in the diagram that if there is an arrow from $a$ to $b$ an
     Importantly note if for example $(a,b) \in R$ and $(b,a) \in R$ then $(a,a)$ and $(b,b)$ must also be in the relation for it to be transitive.
 </Callout>
 
-## Partial Ordering Relations
-
-Hasse Diagram something with anti-symmetric and transitive
-
 ## Relations between Sets
+
+Relations can also be defined between two different sets, this is called a heterogeneous relation, from the Greek word "hetero" meaning "different". This means that the relation $R$ is a subset of the Cartesian product of the two sets $A$ and $B$, rather than between the cartesian product of the same set $A$.
+
+$$
+R \subseteq A \times B
+$$
+
+The first set $A$ is called the domain and the second set $B$ is called the codomain. This means that the relation assigns elements of the domain to elements of the codomain.
+This can be shown in a directed graph where the elements of the domain are on the left and the elements of the codomain are on the right.
+
+<Image 
+    src="/maths/relationsHeteregenous.png"
+    caption="An example of a relation between two different sets."
+    width={500}
+/>
+
+Depending on the relationship between the elements of the two sets not all elements of the codomain are assigned to an element of the domain. The elements of the codomain that are assigned to an element of the domain are called the range of the relation.
+So in the above diagram the domain is $\{1,2,5,7\}$ and the codomain is $\{a,c,m,n\}$ and the range of the relation is $\{a,c,n\}$.
+
+<Callout type="info">
+When defining a relation between two differenet sets the order matters. This is obvious as if we have a relation between two sets $A$ and $B$ then the order pair $(a, b)$ is not the same as $(b, a)$. 
+</Callout>
 
 ## Identity Relations
 
