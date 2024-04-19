@@ -2,6 +2,8 @@
     "formalLanguages": "Formal Languages",
     "problems": "Computational Problems",
     "kolomogorovComplexity": "Kolomogorov Complexity",
-    "automaton": "Deterministic Finite Automaton",
+    "dfa": "Deterministic Finite Automaton",
+    "nfa": "Nondeterministic Finite Automaton",
+    "regularExpressionsLanguages": "Regular Expressions & Languages",
     "turingMachine": "Turing Machine"
 }
