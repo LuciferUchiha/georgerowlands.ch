@@ -1,5 +1,9 @@
 {
     "theoretical": "Theoretical CS",
+    "git": "Git",
     "java": "Java",
-    "git": "Git"
+    "javaScript": "JavaScript",
+    "kotlin": "Kotlin",
+    "make": "Make",
+    "python": "Python"
 }
