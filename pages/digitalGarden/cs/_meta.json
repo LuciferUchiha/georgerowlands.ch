@@ -1,5 +1,8 @@
 {
     "theoretical": "Theoretical CS",
+    "c": "C & System Programming",
+    "cpp": "C++",
+    "csharp": "C#",
     "git": "Git",
     "java": "Java",
     "javaScript": "JavaScript",

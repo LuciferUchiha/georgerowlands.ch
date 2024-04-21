@@ -1,0 +1,328 @@
+# Lambdas and LINQ
+
+## Lambdas
+
+Lambda expressions are just another way to write methods.
+
+```csharp
+static bool SomePredicate(Point p)
+{
+ return p.X * p.Y> 100000;
+}
+Predicate<Point> d = SomePredicate;
+
+Predicate<Point> d = delegate(Point p)
+{
+ return p.X*p.Y> 100000;
+};
+
+Predicate<Point> d = p => p.X* p.Y> 100000;
+```
+
+### Closures
+
+A lambda expression may use variables defined outside its context («outer variables»). here factor
+
+```csharp
+void doSomething()
+{
+ var factor = 2;
+ Func<int, int> multiplier= n => n * factor;
+ Console.WriteLine(multiplier(3)); //6
+}
+```
+
+Be careful!! Writes the current value of i and not the value of i back when the delegate was created.
+
+```csharp
+var actions = newList<Action>();
+for(var i = 0; i < 10; i++)
+ actions.Add(() => Console.WriteLine(i));
+foreach(var action in actions)
+ action(); // 101010101010101...
+```
+
+The solution to this is to declare a new “inner variable" for each iteration to be captured, instead of a single “outer variable" which is captured only once.
+
+```csharp
+for(var i = 0; i < 10; i++)
+{
+ varj = i; //each iteration gets its own,new variable j
+ actions.Add(() => Console.WriteLine(j));
+}
+```
+
+## LINQ
+
+LINQ = Language INtegrted Query are just like streams in Java.
+LINQ features can be used in a C# program by importing the `System.Linq` namespace.
+
+LINQ is executed when **results are accessed**, not when the query is created.
+Execution happens when:
+
+- iterating over results
+- calling immediate execution methods like toList, Count etc.
+
+**_NEVER modify_**state using LINQ!!!
+
+ForEach is _NOT LINQ_
+
+```csharp
+persons.ForEach(p => Console.WriteLine(p.FirstName));
+```
+
+### Method & Query Syntax
+
+Method syntax resembles most other C# method calls, while query syntax resembles SQL.
+Query must begin with `from` clause, and end with `select` or `group` clause
+Between first `from` clause and last `select/group` clause, it can contain one or more of the following clauses:Where, Orderby, Join, Let, From, Into
+
+```csharp
+// Method syntax
+var custQuery2 = customers.Where(c => c.City == "London");
+var orderedByLength = names.OrderBy(n => n.Length);
+
+// Query syntax
+var custQuery =
+ FROM c IN customers
+ WHERE c.City == "London"
+ SELECT c;
+// Mix
+var results = (FROM c IN Comedians SELECT c).Count();
+```
+
+### Simple queries
+
+```csharp
+// **** AGGREGATE ****
+var min = array.Min(); // All below can also be called straight on array
+var count = array.Count()
+var condCount = data.Count(x => x.Condition == true)
+var sumAges = persons.Sum(p => p.Age);
+var minAge = persons.Min(p => p.Age);
+var minAge = persons.Max(p => p.Age);
+var avgAge = persons.Average(p => p.Age);
+var simplePersons = persons.Select(p => new { Surname = p.Surname, Firstname = p.Firstname}) // creates an enumarable of anonymous class
+
+// **** CONVERSIONS ****
+data.ToArray(); // Convert to Array
+data.ToList(); // Convert to List
+data.ToDictionary( x=> x.Name ); // Convert to Dictionary keyed on Name
+// **** ELEMENT ****
+
+data.First() // Returns the first element
+data.First( x=> x.Type == Types.A ) // Returns the first element passing the condition
+data.FirstOrDefault() // Returns the first element or default
+data.FirstOrDefault( x => x.Type == Types.B ) // Returns the first element passing the condition or default
+
+data.Last() // Returns the last element
+data.Last( x=> x.Type == Types.A ) // Returns the last element passing the condition
+data.LastOrDefault( ) // Returns the last element or default*
+data.LastOrDefault( x => x.Type == Types.B ) // Returns the last element passing the condition or default*
+
+data.ElementAt(0) // Returns the element at position 0
+
+// **** FILTERS ****
+
+var even array.Where(x => x%2==0) // Returns all elements passing the condition
+
+data.Where(( x, index) => index <= 4 && x.Type == Types.A) // The elements index can be passed into the delegate
+
+// **** GENERATION ****
+Enumerable.Range(1, 10); // Creates collection of 10 items between 1 and 10
+Enumerable.Repeat(1, 10); // Creates a collection of 10 1s.
+
+// **** ORDERING ****
+
+data.OrderBy(x => x.Name); // Order by Name ASC
+data.OrderBy(x => x.Name).ThenBy(x => x.Age); // Order by Name ASC the Age ASC
+data.OrderBy(x => x.Name).ThenByDescending(x => x.Age); // Order by Name ASC then Age DESC
+data.OrderByDescending (x => x.Name); // Order by Name DESC
+data.OrderBy(x => x.Name).Reverse(); // Reverse elements
+
+// **** PARTITIONING ****
+
+data.Take (3); // Take 3 items
+data.Skip (3); // Skip 3 items
+
+data.TakeWhile (x=>x.Type ==Types.A); // Take all the items while the condition is met
+data.SkipWhile (x=>x.Type ==Types.A); // Skip all the items while the condition is met
+
+// **** PROJECTION ****
+
+data.Select(x => x.Name); // Select collection of a column
+
+data.Select(x => new { Name = x.Name, Age = x.Age }); // Select a collection of columns through an anonymus type
+
+// **** QUANTIFIERS ****
+if(array.Any(i=> i% 2 == 0))
+if(array.All(i=> i% 2 == 0))
+
+// **** SET ****
+
+
+data.Intersect(dataTwo); // Returns the union / intersection of data; elements in both collections
+
+data.Except(dataTwo); // Returns elements in data which are not in dataTwo
+
+data.Concat(dataTwo); // Concatonates both collections; appends dataTwo to data
+```
+
+### Grouping
+
+```csharp
+var users = new List<User>()
+    {
+        new User { Name = "John Doe", Age = 42, HomeCountry = "USA" },
+        new User { Name = "Jane Doe", Age = 38, HomeCountry = "USA" },
+        new User { Name = "Joe Doe", Age = 19, HomeCountry = "Germany" },
+        new User { Name = "Jenna Doe", Age = 19, HomeCountry = "Germany" },
+        new User { Name = "James Doe", Age = 8, HomeCountry = "USA" },
+    };
+var usersGroupedByCountry = users.GroupBy(user => user.HomeCountry);
+foreach(var group in usersGroupedByCountry)
+{
+ Console.WriteLine("Users from " + group.Key + ":");
+ foreach(var user in group)
+  Console.WriteLine("* " + user.Name);
+}
+```
+
+### Distinct
+
+```csharp
+students.Distinct(); // Returns a collection of distinct elements
+students.Distinct (new StudentComparer()). // Distinct with providing an equality provider
+
+public class StudentComparer : IEqualityComparer<Student>
+    {
+        public bool Equals(Student x, Student y)
+        {
+            //First check if both object reference are equal then return true
+            if(object.ReferenceEquals(x, y))
+            {
+                return true;
+            }
+            //If either one of the object refernce is null, return false
+            if (object.ReferenceEquals(x,null) || object.ReferenceEquals(y, null))
+            {
+                return false;
+            }
+            //Comparing all the properties one by one
+            return x.ID == y.ID && x.Name == y.Name;
+        }
+        public int GetHashCode(Student obj)
+        {
+            //If obj is null then return 0
+            if (obj == null)
+            {
+                return 0;
+            }
+            //Get the ID hash code value
+            int IDHashCode = obj.ID.GetHashCode();
+            //Get the string HashCode Value
+            //Check for null refernece exception
+            int NameHashCode = obj.Name == null ? 0 : obj.Name.GetHashCode();
+            return IDHashCode ^ NameHashCode;
+        }
+    }
+```
+
+### Join
+
+```csharp
+IList<Student> studentList = new List<Student>() {
+    new Student() { StudentID = 1, StudentName = "John", StandardID =1 },
+    new Student() { StudentID = 2, StudentName = "Moin", StandardID =1 },
+    new Student() { StudentID = 3, StudentName = "Bill", StandardID =2 },
+    new Student() { StudentID = 4, StudentName = "Ram" , StandardID =2 },
+    new Student() { StudentID = 5, StudentName = "Ron"  }
+};
+
+IList<Standard> standardList = new List<Standard>() {
+    new Standard(){ StandardID = 1, StandardName="Standard 1"},
+    new Standard(){ StandardID = 2, StandardName="Standard 2"},
+    new Standard(){ StandardID = 3, StandardName="Standard 3"}
+};
+
+var innerJoin = studentList.Join(// outer sequence
+                      standardList,  // inner sequence
+                      student => student.StandardID,    // outerKeySelector
+                      standard => standard.StandardID,  // innerKeySelector
+                      (student, standard) => new  // result selector
+                                    {
+                                        StudentName = student.StudentName,
+                                        StandardName = standard.StandardName
+                                    });
+/*
+John - Standard 1
+Moin - Standard 1
+Bill - Standard 2
+Ram - Standard 2
+*/
+```
+
+### SelectMany
+
+SelectMany() flattens the resulting sequences into one sequence, and invokes a result selector function on each element therein.
+
+```csharp
+PetOwner[] petOwners =
+         { new PetOwner { Name="Higa, Sidney",
+              Pets = new List<string>{ "Scruffy", "Sam" } },
+           new PetOwner { Name="Ashkenazi, Ronen",
+              Pets = new List<string>{ "Walker", "Sugar" } },
+           new PetOwner { Name="Price, Vernette",
+              Pets = new List<string>{ "Scratches", "Diesel" } } };
+
+// Query using SelectMany().
+IEnumerable<string> query1 = petOwners.SelectMany(petOwner => petOwner.Pets);
+
+Console.WriteLine("Using SelectMany():");
+
+// Only one foreach loop is required to iterate
+// through the results since it is a
+// one-dimensional collection.
+foreach (string pet in query1)
+{
+    Console.WriteLine(pet);
+}
+
+// This code shows how to use Select()
+// instead of SelectMany().
+IEnumerable<List<String>> query2 =
+    petOwners.Select(petOwner => petOwner.Pets);
+
+Console.WriteLine("\nUsing Select():");
+
+// Notice that two foreach loops are required to
+// iterate through the results
+// because the query returns a collection of arrays.
+foreach (List<String> petList in query2)
+{
+    foreach (string pet in petList)
+    {
+        Console.WriteLine(pet);
+    }
+    Console.WriteLine();
+}
+/*
+Using SelectMany():
+Scruffy
+Sam
+Walker
+Sugar
+Scratches
+Diesel
+
+Using Select():
+Scruffy
+Sam
+
+Walker
+Sugar
+
+Scratches
+Diesel
+*/
+```

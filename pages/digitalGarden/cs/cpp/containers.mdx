@@ -1,0 +1,103 @@
+# Containers
+
+## C arrays
+
+You can work with arrays in C++ just like in C. However often you will create the array on the heap as it is better for large arrays to not fill the stack and you can do dynamically allocate the length of the array instead of having to define it at runtime.
+
+```cpp
+void create(int height) {
+    int** triangle = new int*[height]; // array of int pointers on heap
+    for(int i = 0; i < height; i++) {
+        triangle[i] = new int[i+1];  // in ith location array of int pointers on heap
+        // fill pascals triangle
+        triangle[i][0] = 1;
+        for(int j = 1; j < i; j++) {
+            triangle[i][j] = triangle[i-1][j-1] + triangle[i-1][j];
+        }
+        triangle[i][i] = 1;
+    }
+    // who releases array???
+}
+```
+
+We can see here that it would work however we would never release the memory which is why we should use smart pointers here.
+
+```cpp
+void create(int height) {
+   auto triangle = make_unique<unique_ptr<int[]>[]>(height);; // array of int pointers on heap
+    for(int i = 0; i < height; i++) {
+        triangle[i] = make_unique<int[]>(i + 1);  // in ith location array of int pointers on heap
+        // fill pascals triangle
+        triangle[i][0] = 1;
+        for(int j = 1; j < i; j++) {
+            triangle[i][j] = triangle[i-1][j-1] + triangle[i-1][j];
+        }
+        triangle[i][i] = 1;
+    }
+    // now it will be automatically released when out of scope
+}
+```
+
+## Pointer arithmetic
+
+Just like in C you can also do pointer arithmetic in C++.
+
+```cpp
+int iArray[20];// not initialized
+const int size= sizeof(iArray)/sizeof(*iArray);
+int* pArr= iArray;
+for(int i = 0; i < size; i++) {
+    *pArr= i + 1; // iArray[i] = i + 1;
+    cout << *pArr++ << ' ';
+}
+cout << endl;
+```
+
+## Cpp arrays
+
+### Array class
+
+In C++ there is a class array which is just a wrapper around a C array of fixed length and offers some useful functions on the array.
+
+```cpp
+#include <iostream>
+#include <array>
+#include <string>
+using namespace std;
+int main() {
+    constexpr size_t size = 4;
+    array<string, size> names = { "adam", "berta", "carlo", "doris" };
+    int i = 0;
+    for (const auto& s : names) { // has an iterator
+        cout << i++ << ": " << s << endl;
+    }
+}
+```
+
+### Vector class
+
+The vector class in C++ is just like the ArrayList in Java and offers a half dynamic array that is stored on the heap.
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+int main() {
+    vector<string> vnames = { "adam", "berta", "carlo", "doris" };
+    vector<shared_ptr<string>> vsp;
+    vsp.reserve(vnames.size());// allocates enough memory on heap
+    for (const auto& s : vnames) {
+        vsp.push_back(make_shared<string>(s + ':' + to_string(s.length())));
+    }
+    for (size_t i = 0; i < vnames.size(); i++) {
+        cout << vnames[i] << endl;
+        cout << *vsp[i] << endl;
+    }
+    return 0;
+}
+```
+
+## Binding of values
+
+??? not sure it is called this jsut splitting no?
