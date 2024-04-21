@@ -1,0 +1,47 @@
+# Filo I/O
+
+## Working with file streams
+
+Using is the same as in Java try-with resources it automatically closes and disposes of the resource.
+
+```csharp
+using(varstream = new FileStream("test.txt", FileMode.Create))
+{
+ Console.WriteLine(stream.CanRead); // true
+ Console.WriteLine(stream.CanWrite); // true
+ Console.WriteLine(stream.CanSeek); // true
+ stream.WriteByte(201);
+ stream.WriteByte(210);
+ stream.Position= 0;
+ Console.WriteLine(stream.ReadByte());
+}
+```
+
+## Reading and writing to .txt
+
+```csharp
+using(var writer = new StreamWriter("text.txt"))
+{
+ writer.WriteLine("First line.");
+ writer.WriteLine("Last line.");
+}
+
+using(var reader = new StreamReader("text.txt"))
+{
+ Console.WriteLine(reader.ReadLine());
+ String line;
+    while ((line = streamReader.ReadLine()) != null)
+  Console.WriteLine(line)
+}
+```
+
+## Read all lines, line by line
+
+```csharp
+var lines = File.ReadLines(filename, Encoding.UTF8).ToList();
+foreach (var line in lines)
+{
+    var tokens = line.Split(separator: "\t");
+    personList.Add(new Person(tokens[0], tokens[1]));
+}
+```

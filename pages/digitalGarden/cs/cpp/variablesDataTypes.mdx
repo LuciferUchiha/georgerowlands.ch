@@ -1,0 +1,184 @@
+# Variables and Data Types
+
+In C++ you pretty much have the same data types as in C and they work the same as C++ in an extension of C. If you want specific sized data types you can just as in C include from the standard library `cstdint.h`.
+
+## Custom types
+
+In C++ you can create your own types using typedef just as in C but you can also use the `using` keyword. Later you can also use structures and classes.
+
+```cpp
+typedef int int32_t;// in <cstdint>
+typedef unsigned long long uint64_t;// in <cstdint>
+using INT32 = int;
+using UINT64 = unsigned long long;
+```
+
+## Placeholder type specifiers
+
+The `auto` keyword specifies that the type of the variable that is being declared will be automatically deducted from its initializer. In the case of functions, if their return type is auto then that will be evaluated by return type expression at runtime.
+
+The decltype function/operator lets you extract the type of the passed expression.
+
+```cpp
+#include <iostream>
+#include <string>
+using namespace std;
+auto foo() { return "foo"; }
+int main()
+{
+    auto x = 7;
+    auto f = foo();
+    decltype(69) y = x;
+    // decltype(69) z = f; doesn't work
+    cout << x << endl;
+    cout << y << endl;
+    cout << f << endl;
+
+    return 0;
+}
+```
+
+## Constant values
+
+The `const` keyword can be used just like in C and makes a variable read only same goes for the `define` preprocessor directive. New in C++ however is the `constexpr` keyword. The constant expression allows us to create expressions and functions that are evaluated at compile time to speed things up.
+
+```cpp
+#include <iostream>
+using namespace std;
+constexpr int product(int x, int y){return (x * y);}
+constexpr size_t length = 100;
+
+int main()
+{
+    constexpr int x = product(10, 20);
+    cout << x << endl << length << endl;
+    return 0;
+}
+```
+
+## Type conversions
+
+In C++ just like in many other language you can convert data of one type to that of another. It has implicit and explicit conversion. Just as with many other languages when casting data can be lost.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int num_int1 = 9;
+    double num_double1;
+    // implicit conversion int to double
+    num_double1 = num_int1;
+    cout << "num_int1 = " << num_int1 << endl;
+    cout << "num_double1 = " << num_double1 << endl;
+
+    int num_int2;
+    double num_double2 = 3.14;
+    // implicit conversion double to int
+    num_int2 = num_double2;
+    cout << "num_int2 = " << num_int2 << endl;
+    cout << "num_double2 = " << num_double2 << endl;
+
+    return 0;
+}
+```
+
+```bash title="Output"
+num_int1 = 9
+num_double1 = 9
+num_int2 = 3
+num_double2 = 3.14
+```
+
+### C-style type casting
+
+As the name suggests, this type of casting is the same as in the C programming language and is also commonly referred to as the cast notation.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int num_int = 9;
+    double num_double;
+    // converting from int to double
+    num_double = (double) num_int;
+    cout << "num_int = " << num_int << endl;
+    cout << "num_double = " << num_double << endl;
+
+    return 0;
+}
+```
+
+### Function-style casting
+
+This is the old way of doing it in C++ before type conversion operators were introduced.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int num_int = 9;
+    double num_double;
+    // converting from int to double
+    num_double = double(num_int);
+    cout << "num_int = " << num_int << endl;
+    cout << "num_double = " << num_double << endl;
+
+    return 0;
+}
+```
+
+### Type conversion operators
+
+This is the way how it is done in modern C++.
+
+#### Static cast
+
+In general, you use a static cast just like any other cast so far when you are certain of the data types involved in the conversion. This takes the pointer and tries to safely cast it. This cast is done at compile time. It will only perform the cast if the types are related. If the types are not related, you will get a compiler error.
+
+```cpp
+class B {};
+class D : public B {};
+class X {};
+
+int main()
+{
+    D* d = new D;
+    B* b = static_cast<B*>(d); // this works
+    // X* x = static_cast<X*>(d); ERROR - Won't compile
+    return 0;
+}
+```
+
+#### Dynamic cast
+
+A dynamic cast is executed at runtime, not compile time. Because this is a run-time cast, it is useful, especially when combined with polymorphic classes. In fact, in certain cases, the classes must be polymorphic for the cast to be legal.
+
+#### Constant cast
+
+It is used to change the constant value of any object or we can say it is used to remove the constant nature of any object.
+
+ ```cpp
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    int x = 50;
+    const int* y = &x;
+    cout << "old value is " << *y << "\n";
+    int* z = const_cast<int*>(y);
+    *z = 100;
+    cout << "new value is " << *y;
+}
+ ```
+
+#### Reinterpret cast
+
+???? very confussing
+
+## Namespaces
+
+### Scope operator and using

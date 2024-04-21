@@ -1,0 +1,52 @@
+# Enums and Enum Classes
+
+Just like in C you can use normal enums and they work the same way.
+
+## Enum classes
+
+Enum classes or so called scoped enumerations make enumerations both strongly typed and strongly scoped. Class enums don't allow implicit conversions to int, and also don't allow comparisons between different enumerations.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    enum class Color {
+        Red,
+        Green,
+        Blue
+    };
+    enum class State {
+        Good,
+        Bad
+    };
+
+    // An enum value can be used as variable identifier
+    int Green = 10;
+
+    // Instantiating the Enum Class
+    Color x = Color::Green;
+
+    // Comparison now is completely type-safe
+    if (x == Color::Red)
+        cout << "It's Red\n";
+    else
+        cout << "It's not Red\n";
+
+    State p = State::Good;
+
+    if (p == State::Bad)
+        cout << "Something went wrong\n";
+    else
+        cout << "All is good\n";
+
+    // won't work because no implicit conversion to int
+    // if(x == p)
+    // cout<<"red is equal to good";
+    // cout<< x;
+    cout << int(x);
+
+    return 0;
+}
+```

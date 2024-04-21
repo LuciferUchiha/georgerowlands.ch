@@ -1,0 +1,200 @@
+# Delegates and Events
+
+A delegate is an object that knows how to call a method.
+A delegate type defines the kind of method that delegate instances can call. Specifically, it defines the method’s return type and its parameter types.
+
+```csharp
+
+delegate int Transformer (int x);
+
+class Test
+{
+ static void Main()
+    {
+  Transformer t = Square; // Create delegate instance
+  int result = t(3); // Invoke delegate, t.invoke() also works.
+  Console.WriteLine (result); // 9
+ }
+
+ static int Square (int x) => x * x;
+}
+```
+
+## Using Delegate as utility functions
+
+In this example, we have a utility method named Transform that applies a transform to each element in an integer array. Our Transform method is a higher-order function because it’s a function that takes a function as an argument.
+
+```csharp
+public delegate int Transformer (int x);
+
+class Util
+{
+ public static void Transform (int[] values, Transformer t)
+ {
+  for (int i = 0; i < values.Length; i++)
+   values[i] = t (values[i]);
+ }
+
+}
+
+class Test
+{
+
+ static void Main()
+ {
+  int[] values = { 1, 2, 3 };
+  Util.Transform (values, Square); // Hook in the Square method
+  foreach (int i in values)
+   Console.Write (i + " "); // 1 4 9
+ }
+ static int Square (int x) => x * x;
+}
+```
+
+## Multicast Delegate
+
+All delegate instances have multicast capability. This means that a delegate instance
+can reference not just a single target method, but also a list of target methods. The +
+and += operators combine delegate instances. They are invoked in the order in which they are added.
+
+```csharp
+SomeDelegate d = SomeMethod1;
+d += SomeMethod2;
+d() // both get invoked
+
+d -= SomeMethod1;
+d() // now only SomeMethod2
+```
+
+## Generic Delegate
+
+A delegate type can contain generic type parameters.
+
+```csharp
+public delegate T Transformer<T> (T arg);
+```
+
+With generic delegates, it becomes possible to write a small set of delegate types that
+are so general they can work for methods of any return type and any (reasonable)
+number of arguments.
+
+### Action
+
+Generic delegate type for methods with any parameters and no return value.
+
+```csharp
+delegate voidAction();
+delegate voidAction<inT1> (T1arg);
+delegate voidAction<inT1, inT2> (T1arg1, T2arg2);
+
+private static void ActionDelegateExample()
+{
+ Action<string> act = ShowMessage;
+ act("C# Langauge")
+}
+
+private static void ShowMessage(string message)
+{
+ Console.WriteLine(message);
+}
+```
+
+### Func
+
+Generic delegate type for methods with any parameters and a return value.
+
+```csharp
+delegate TResult Func<out TResult> ();
+delegate TResult Func<in T1, out TResult> (T1 arg);
+delegate TResult Func<in T1, in T2, out TResult> (T1 arg1, T2 arg2);
+
+public void FuncDelegateExample()
+{
+ Func<string, string> convertMethod = UppercaseString;
+ Console.WriteLine(convertMethod("Dakota"));
+}
+
+private string UppercaseString(string inputString)
+{
+ return inputString.ToUpper();
+}
+```
+
+### Predicate
+
+Generic delegate type for methods with a single parameter and a return type bool.
+
+```csharp
+class List <T>
+{
+ List <T> FindAll (Predicate <T> match);
+ T Find(Predicate <T> match);
+}
+bool GreaterThan10(int x) => return x > 10;
+void Main() {
+ var listOfNumbers = new int [] {1, 2, 25, 3, 11}.ToList();
+ var firstMatch = listOfNumbers.Find(GreaterThan10);
+}
+```
+
+## Events
+
+When using delegates, two emergent roles commonly appear: broadcaster and
+subscriber. Broadcaster is a type that contains a delegate field and decides when to invoke the delegate. A subscriber decides when to start and stop listening by calling += and -= on the broadcaster’s delegate.
+
+```csharp
+using System;
+public class PriceChangedEventArgs : EventArgs
+{
+ public readonly decimal LastPrice;
+ public readonly decimal NewPrice;
+
+ public PriceChangedEventArgs (decimal lastPrice, decimal newPrice)
+ {
+  LastPrice = lastPrice; NewPrice = newPrice;
+ }
+}
+public delegate void PriceChangedEvent(object source, PriceChangedEventArgs args);
+public class Stock
+{
+ string symbol;
+ decimal price;
+ public Stock(string symbol) => this.symbol = symbol;
+
+ public event PriceChangedEvent PriceChanged;
+
+ protected virtual void OnPriceChanged(PriceChangedEventArgs e)
+ {
+  PriceChanged?.Invoke (this, e);
+ }
+
+ public decimal Price
+ {
+  get => price;
+  set
+  {
+   if (price == value) return;
+   decimal oldPrice = price;
+   price = value;
+   OnPriceChanged(new PriceChangedEventArgs (oldPrice, price));
+  }
+ }
+}
+
+class Test
+{
+ static void Main()
+ {
+  Stock stock = new Stock ("THPW");
+  stock.Price = 27.10M;
+  // Register with the PriceChanged event
+  stock.PriceChanged += stock_PriceChanged;
+  stock.Price = 31.59M;
+ }
+ static void stock_PriceChanged (object sender, PriceChangedEventArgs e)
+ {
+  if ((e.NewPrice - e.LastPrice) / e.LastPrice > 0.1M)
+   Console.WriteLine ("Alert, 10% stock price increase!");
+ }
+}
+```
