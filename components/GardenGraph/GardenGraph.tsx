@@ -2,14 +2,13 @@ import { useTheme } from "nextra-theme-docs";
 import dynamic from "next/dynamic";
 import { useWindowDimensions } from "~/utils/windowDimensions";
 import Data from "~/data/graph.json";
-import SpriteText from "three-spritetext";
 import { useRouter } from "next/navigation";
 
 const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
   ssr: false,
 });
 
-const Graph = () => {
+const GardenGraph = () => {
   const router = useRouter();
   const { theme, systemTheme } = useTheme();
   const currentTheme = theme !== "system" ? theme : systemTheme;
@@ -46,4 +45,4 @@ const Graph = () => {
   );
 };
 
-export default Graph;
+export default GardenGraph;
