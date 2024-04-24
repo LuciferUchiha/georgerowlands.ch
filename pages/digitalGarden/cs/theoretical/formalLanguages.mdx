@@ -49,6 +49,12 @@ This is often denoted by $|w|_a$ where $a$ is the symbol and $w$ is the word.
 - $w = 101010$, $|w|_0 = 3$.
 </Callout>
 
+Using this we can also define the length of a word as the sum of the number of occurrences of each symbol in the word:
+
+$$
+|w| = \sum_{a \in \Sigma} |w|_a
+$$
+
 ### Concatenating Words
 
 Concatenating two words is the operation of joining the two words together to form a new word. This is often denoted by the symbol $\cdot$.
@@ -74,6 +80,11 @@ $$
 u \cdot v \neq v \cdot u
 $$
 
+However, the concatenation operation is associative:
+
+$$
+(u \cdot v) \cdot w = u \cdot (v \cdot w)
+$$
 </Callout>
 
 <Callout type="example">
@@ -84,7 +95,7 @@ $$
 
 ### Powers of Words
 
-The power of a word is the concatenation of the word with itself a certain number of times. This is denoted by a superscript. 
+The power of a word is the concatenation of the word with itself a certain number of times. This is denoted by a superscript and also often called iteration or repetition of a word.
 The power $n$ of a word has to be a non-negative integer, $n \in \Bbb{N}_0$. Just like with powers of numbers where $1$ is the identity element for the power of $0$, the empty word is the identity element for the power of $0$ for words.
 
 $$
@@ -119,6 +130,8 @@ w = bbababababbaaaabab = b^2(ab)^4ba^4bab = b(ba)^4b^2a^3(ab)^2
 $$
 </Callout>
 
+### Reverse of a Word
+
 ## Sets of Words
 
 If we have an alphabet $\Sigma$, we can define some special sets of words over that alphabet. Specifically we can define the set of all words of a certain length by using the power of the alphabet.
@@ -141,6 +154,12 @@ The Kleene star is a special set of words that includes all words of any length 
 
 $$
 \Sigma^* = \bigcup_{i \geq 0} \Sigma^i = \Sigma^0 \cup \Sigma^1 \cup \Sigma^2 \cup \ldots
+$$
+
+or more formally:
+
+$$
+\Sigma^* = \{\varepsilon\} \cup \{x_1x_2 \ldots x_n \mid i,n \in \Bbb{N}^+, x_i \in \Sigma\}
 $$
 
 <Callout type="example">
@@ -295,22 +314,24 @@ $$
 L \subseteq \Sigma_1^* \subseteq \Sigma_2^*
 $$
 
-<Callout type="info">
-The empty set is a language over every alphabet because it is a subset of every set of words.
+The empty set is a language over every alphabet because it is a subset of every set of words. It is often denoted by the symbol $L_\emptyset$ or just $\emptyset$.
 
 $$
-\emptyset \subseteq \Sigma^* \text{ for all } \Sigma
+L_\emptyset \subseteq \Sigma^* \text{ for all } \Sigma
 $$
 
-The language that contains only the empty word is also a language over every alphabet.
+The language that contains only the empty word is also a language over every alphabet. It is often denoted by the symbol $L_\varepsilon$ or just $\{\varepsilon\}$.
 
 $$
-\{\varepsilon\} \subseteq \Sigma^* \text{ for all } \Sigma
+L_{\varepsilon} \subseteq \Sigma^* \text{ for all } \Sigma
 $$
 
 However this does not mean that the empty set and the set containing only the empty word are the same.
 
 $$
-\emptyset \neq \{\varepsilon\}
+L_\emptyset \neq L_{\varepsilon}
 $$
-</Callout>
+
+### Operations on Languages
+
+Concatenation, kleene star, all set operations, union, intersection, difference, and complement can be applied to languages.
