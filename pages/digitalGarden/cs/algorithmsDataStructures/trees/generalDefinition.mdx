@@ -1,5 +1,7 @@
-import Callout
-    from "../../../../../components/Callout/Callout";
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+
+# General Definition 
 
 Trees have **nodes** that hold the data and **edges** which connect the nodes. An **empty tree** obviously has no nodes and therefore no data.
 
@@ -7,11 +9,18 @@ Trees have **nodes** that hold the data and **edges** which connect the nodes. A
     Link this up with graphs, rooted trees and forests somehow. Monte Carlo would also be cool.
 </Callout>
 
-## Characteristics
+## Node Relationships
 
-A Tree like in our real world has a root. The **root** is the highest node in the tree. Each node is also a root of its own **subtree**. A **child** node is a node that is connected to a node above it, the so called **parent**. A **Sibling** is a node that shares the same parent. A **leaf** node has no children as it is hanging alone at the bottom of a subtree. An **inner node** however has at least 1 child.
+In trees there are a few relationships between nodes that are important to know:
 
-![subtree](/compSci/subtree.png)
+- A Tree like in our real world has a root. The **root** is the highest node in the tree. Each node is also a root of its own **subtree**. 
+- A **child** node is a node that is connected to a node above it, the so called **parent**. A **Sibling** is a node that shares the same parent. 
+- A **leaf** node has no children as it is hanging alone at the bottom of a subtree. An **inner node** however has at least 1 child.
+
+<Image
+    src="/cs/treesSubtree.png"
+    caption="The knapsack problem."
+/>
 
 ## Order
 
@@ -37,10 +46,13 @@ The **depth of a node** is the amount of nodes on the path to the root. Often th
 
 A **Level** is a grouping of all nodes with the same depth.
 
-## Properties
+## Full and Complete Trees
 
 A **Full tree** is a tree where all inner nodes have the maximum amount of Nodes according to the order. In the image below both trees are full with an order of 2.
 
 A **Complete tree** is a tree where each level has the maximum amount of nodes according to the order. In the image below only the left tree is complete with an order of 2.
 
-![fullCompleteTree](/compSci/fullCompleteTree.png)
+<Image
+    src="/cs/treesFullComplete.png"
+    caption="On the left a full and complete tree with an order of 2. On the right a full tree with an order of 2."
+/>

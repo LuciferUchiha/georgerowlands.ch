@@ -1,3 +1,5 @@
+import Image from "~/components/Image/Image";
+
 # Heaps
 
 ## Priority queue
@@ -28,14 +30,24 @@ We might not have predefined priorities but priorities we assign when adding.
 ## Min-Heap
 
 A Min-Heap is a complete binary tree with the exception of the last level. On the last level it is filled from left to right. Importantly each nodes key is smaller or equal to that of its children.
-![minHeap](/compSci/minHeap.png)
+
+<Image
+    src="/cs/treesMinHeap.png"
+    caption="A binary tree."
+/>
+
 
 Just with this definition we can already easily implement 2 of the methods in the interface we defined both with O(1). The min() method is just the root and the size() method is done just like in all other collections with a counter.
 
 ### Add
 
 We start by adding the new element to the furthest left free space on the lowest level or if it is already full left on a new level. To then correct the order the element slowly wanders up the tree by swapping with its parents until it is larger then its parent or is in the root. This process of wandering up the tree we call **sift up**. O(log n) = O(1)+O(log n)
-![minHeapAdd](/compSci/minHeapAdd.png)
+
+<Image
+    src="/cs/treesMinHeapAdd.png"
+    caption="A binary tree."
+/>
+
 
 ### RemoveMin
 
@@ -45,7 +57,12 @@ O(log n) = O(1)+O(log n)
 ### Array Representation
 
 We can also represent a Min-Heap as an array.
-![minHeapArray](/compSci/minHeapArray.png)
+
+<Image
+    src="/cs/treesMinHeapArray.png"
+    caption="A binary tree."
+/>
+
 
 We can then see the following relationships for a node with the index $i$. These are all int operations so we ignore decimal points when deviding.
 
@@ -77,4 +94,9 @@ Heap(HeapNode<K>[] elems) {
 ### Sorting using a heap (Heapsort)
 
 This is the so called heapsort. We take an array and by using floyds heap construction, construct a heap. We can then just for the size of the array removeMin which leads to a time complexity of O(n log n) since the removeMin is O(log n). However we do need to have O(n) additional space. However this can be improved to O(1) if we construct the heap directly in the input array and add the removeMin and add it to the back of the input array so we at the end of the array we have sorted array.
-![minHeapsort](/compSci/minHeapsort.png)
+
+<Image
+    src="/cs/treesMinHeapSort.png"
+    caption="A binary tree."
+/>
+
