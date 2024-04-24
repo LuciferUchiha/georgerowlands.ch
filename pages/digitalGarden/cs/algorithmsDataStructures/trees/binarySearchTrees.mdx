@@ -1,10 +1,15 @@
+import Image from "~/components/Image/Image";
+
 # Binary Search Trees
 
 A binary search tree is a [binary tree](./binaryTrees) where each node has a key. *key(v)=Key of the node v*. The important thing here is that in the left subtree of a node there are only nodes with keys that are smaller than the key of the node. In the right subtree accordingly only nodes with a key that are the same or larger.
 
 Interestingly when traversing the tree in-order we can see that the keys ascend.
 
-![inOrderBinarySearchTree](/compSci/inOrderBinarySearchTree.png)
+<Image
+    src="/cs/treesBinarySearchInOrder.png"
+    caption="A binary tree."
+/>
 
 ### Operations
 
@@ -24,19 +29,28 @@ When removing a node we distinguish between 3 different cases.
 
 We search for the node and then simply remove it, nothing complicated.
 
-![binarySearchTreeRemoveLeaf](/compSci/binarySearchTreeRemoveLeaf.png)
+<Image
+    src="/cs/treesBinarySearchRemoveLeaf.png"
+    caption="A binary tree."
+/>
 
 ##### Node with 1 child
 
 We search for the node to be removed and remove it. The child of the removed node then takes its place. Also nothing complicated.
 
-![binarySearchTreeRemove1Child](/compSci/binarySearchTreeRemove1Child.png)
+<Image
+    src="/cs/treesBinarySearchRemove1Child.png"
+    caption="A binary tree."
+/>
 
 ##### Node with 2 children
 
 We search for the node to be removed. We then look for the symmetrical (inorder) successor, which is the node in the right subtree that is the furthest left. We then replace the to be removed node with the symmetrical successor. Lastly we delete the symmetrical successor at its original position which is either case 1 or 2.
 
-![binarySearchTreeRemove2Children](/compSci/binarySearchTreeRemove2Children.png)
+<Image
+    src="/cs/treesBinarySearchRemove2Children.png"
+    caption="A binary tree."
+/>
 
 ```java
 private Node<K, E> remove(Node<K,E> node, K key){

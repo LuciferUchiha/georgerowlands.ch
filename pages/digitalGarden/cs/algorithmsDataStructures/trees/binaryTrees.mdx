@@ -1,12 +1,20 @@
+import Image from "~/components/Image/Image";
+
 # Binary Trees
 
 A binary tree is a tree with the order of 2. Meaning that a node is either a leaf or has left and/or right child.
 
-![binaryTree](/compSci/binaryTree.png)
+<Image
+    src="/cs/treesBinary.png"
+    caption="A binary tree."
+/>
 
 By adding empty leaves we can make sure the binary tree is always filled which can make certain operations and algorithms easier. We add the empty leaves by first adding 2 empty leaves to all leaves which make the leaves to inner nodes. Then all inner nodes that only have one child receive an empty leaf.
 
-![alternativeBinaryTree](/compSci/alternativeBinaryTree.png)
+<Image
+    src="/cs/treesBinaryAlternative.png"
+    caption="A binary tree."
+/>
 
 ## Traversal orders
 
@@ -20,7 +28,10 @@ In this order a node visited before its left and right subtree is traversed.
 2. Recursively traverse the current node's left subtree.
 3. Recursively traverse the current node's right subtree.
 
-![preOrderTree](/compSci/preOrderTree.png)
+<Image
+    src="/cs/treesPreOrder.png"
+    caption="A binary tree."
+/>
 
 ### Post-order, LRN
 
@@ -30,7 +41,10 @@ In this order a node is visited after its left and right subtree has been traver
 2. Recursively traverse the current node's right subtree.
 3. Visit the current node.
 
-![postOrderTree](/compSci/postOrderTree.png)
+<Image
+    src="/cs/treesPostOrder.png"
+    caption="A binary tree."
+/>
 
 ### In-order, LNR
 
@@ -40,4 +54,7 @@ In this order a node is visited in between the traversal of its left and right s
 2. Visit the current node.
 3. Recursively traverse the current node's right subtree.
 
-![inOrderTree](/compSci/inOrderTree.png)
+<Image
+    src="/cs/treesInOrder.png"
+    caption="A binary tree."
+/>

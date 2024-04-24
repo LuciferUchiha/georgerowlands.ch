@@ -1,3 +1,5 @@
+import Image from "~/components/Image/Image";
+
 ## AVL Trees
 
 The AVL Tree, named after inventors **A**delson-**V**elsky and **L**andis is a self-balancing [binary search tree](./binarySearchTrees). For a tree to be **balanced** the heights of a nodes subtree can not differ more then 1.
@@ -14,21 +16,37 @@ There are 3 situations when a tree is unbalanced which then lead to different re
 2. bal(v) = 0
 3. bal(p) and bal(v) have deafferent signs.
 
-![unbalancedTrees](/compSci/unbalancedTrees.png)
+<Image
+    src="/cs/treesUnbalanced.png"
+    caption="A binary tree."
+/>
 
 #### Simple Rotations
 
 Situation 1 and 2 can be resolved with a simple rotation. Depending on which subtree has the higher absolute balance factor. If the left subtree is higher then the right subtree we perform a  **right rotation**. The other way around we perform a **left rotation**.
 
-![avlRightRotation](/compSci/avlRightRotation.png)
+<Image
+    src="/cs/treesAvlRotationRight.png"
+    caption="A binary tree."
+/>
 ![avlLeftRotation](/compSci/avlLeftRotation.png)
+<Image
+    src="/cs/treesAvlRotationLeft.png"
+    caption="A binary tree."
+/>
 
 #### Double Rotations
 
 We can't resolve situation 3 with a simple rotation we need to do a so called double rotation. Here again we have 2 options depending which subtree is higher. either a **right-left double rotation** or a **left-right double rotation**.
 
-![avlRightLeftRotation](/compSci/avlRightLeftRotation.png)
-![avlLeftRightRotation](/compSci/avlLeftRightRotation.png)
+<Image
+    src="/cs/treesAvlRotationRightLeft.png"
+    caption="A binary tree."
+/>
+<Image
+    src="/cs/treesAvlRotationLeftRight.png"
+    caption="A binary tree."
+/>
 
 ## Implementation
 
@@ -38,7 +56,10 @@ We can notice that we often need to know the balance factors of a node. This can
 
 If we insert a new node *v* and its parent is *p* then we have the following situations
 
-![avlUpinSituations](/compSci/avlUpinSituations.png)
+<Image
+    src="/cs/treesAvlUpinSituations.png"
+    caption="A binary tree."
+/>
 
 If the height of *p* doesn't change we just need to update the balance factor of *p* and are done. However if the height of *p* changes. So if the balance factor of *p* changes from 0 to +/-1 then we have to recursively update the balance factor of its parent *pp*. For this we use the so called upin(p) method.
 
@@ -46,7 +67,10 @@ If the height of *p* doesn't change we just need to update the balance factor of
 
 If the height of *pp* doesn't change so the balance factor of *pp* changes from 0 to +/-1 we are done.
 
-![avlUpinFall1](/compSci/avlUpinFall1.png)
+<Image
+    src="/cs/treesAvlUpinCase1.png"
+    caption="A binary tree."
+/>
 
 #### Upin Case 2
 
