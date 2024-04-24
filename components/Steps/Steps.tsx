@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-const StepCircle = ({ id, scale = 1 } : { id: string, scale?: number }) => {
+export const StepCircle = ({ id, scale = 1 } : { id: string, scale?: number }) => {
   const circleStyle = {
     transform: `scale(${scale})`,
   };

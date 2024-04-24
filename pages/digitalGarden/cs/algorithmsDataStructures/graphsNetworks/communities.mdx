@@ -1,9 +1,9 @@
-import Callout from "../../../../../components/Callout/Callout";
-import Image from "../../../../../components/Image/Image";
-import Graph from "../../../../../components/Graph/Graph";
-import MdxCaption from "../../../../../components/Caption/MdxCaption";
-import {Block, SideBySideBlock} from "../../../../../components/SideBySideBlock/SideBySideBlock";
-import {Steps, Step, StepCircle} from "../../../../../components/Steps/Steps";
+import Callout from "~/components/Callout/Callout";
+import MdxCaption from "~/components/Caption/MdxCaption";
+import Graph from "~/components/Graph/Graph";
+import Image from "~/components/Image/Image";
+import {Block, SideBySideBlock} from "~/components/SideBySideBlock/SideBySideBlock";
+import {Steps, Step, StepCircle} from "~/components/Steps/Steps";
 
 # Communities
 
@@ -14,7 +14,9 @@ general as they often form around a context or a topic such as family, friends, 
 These communities can then be further analyzed such as to find out who are the most important people in a community,
 what is there impact on the community, and how do they relate to other communities.
 
-![graphCommunities](/compSci/graphCommunities.png)
+<Image 
+    src="/cs/graphsCommunities.png"
+/>
 
 ## Neighborhoods
 
@@ -78,14 +80,17 @@ If we think of a communication network, then a connected component would be a gr
 each other. If there are multiple connected components, then there are groups of people that cannot communicate with
 each other.
 
-![connectedComponents](/compSci/connectedComponents.png)
+<Image 
+    src="/cs/graphsConnectedComponents.png"
+    width={600}
+/>
 
 To find the connected components of a graph, we can simply use either a breadth-first search or a depth-first search
 over all vertices. The algorithm would then look something like this:
 
 <Image
-    src="/compSci/connectedCompDFS.png"
-    width={500}
+    src="/cs/graphsConnectedComponentsDFS.png"
+    width={600}
     caption="Finding the number of connected components using a depth-first search."
 />
 
@@ -99,7 +104,9 @@ connected components and strongly connected components.
 Weakly connected components are the same as connected components in an undirected graphs. So you just ignore the
 directions of the edges.
 
-![weaklyConnectedComponents](/compSci/weaklyConnectedComponents.png)
+<Image 
+    src="/cs/graphsWeaklyConnectedComponents.png"
+/>
 
 #### Strongly Connected Components
 
@@ -107,7 +114,9 @@ Strongly connected components are a bit more complex. In a directed graph, a str
 vertices such that there is a path between every pair of vertices in the subset, but the path must follow the direction
 of the edges.
 
-![stronglyConnectedComponents](/compSci/stronglyConnectedComponents.png)
+<Image 
+    src="/cs/graphsStronglyConnectedComponents.png"
+/>
 
 ### Giant Components
 
@@ -124,7 +133,9 @@ that all know each other, however in a communication network they would represen
 Because cliques are complete subgraphs, they are very easy to see but also happen to be very rare and hard to find
 algorithmically. In the graph below the two cliques have been highlighted in red and blue.
 
-![cliques](/compSci/cliques.png)
+<Image 
+    src="/cs/graphsCliques.png"
+/>
 
 <Callout type="todo">
    Alogrithms seem to be seperated in finding a maximal clique or finding cliques of a certain size.
@@ -226,7 +237,7 @@ For a k-Core the rules of a clique are slightly relaxed. A k-Core is a subgraph 
 to $k$ other vertices in the subgraph.
 
 <Image
-    src="/compSci/kCore.png"
+    src="/cs/graphsKCore.png"
     caption="Example of differen k-Cores for the same graph."
 />
 
@@ -271,13 +282,19 @@ This can lead to two interesting scenarios:
 not just vertices that are part of the clique. So in the example below, the diameter of the subgraph is 3 even though it
 is a 2-clique.
 
-![nCliqueDiameter](/compSci/nCliqueDiameter.png)
+<Image 
+    src="/cs/graphsNCliqueDiameter.png"
+    width={300}
+/>
 
 2. The subgraph can be disconnected. In the example below you can see two possible 2-cliques of many for the given graph.
 Interestingly, they are both disconnected, because if one of the vertices inbetween is included, then a different vertex
 can no longer be included.
 
-![nCliqueDisconnected](/compSci/nCliqueDisconnected.png)
+<Image 
+    src="/cs/graphsNCliqueDisconnected.png"
+    width={300}
+/>
 
 
 ## Clustering
@@ -304,13 +321,13 @@ together. Eventually this will lead to two components, which are then the cluste
 <SideBySideBlock>
     <Block>
         <Image
-            src="/compSci/girvanNewman1.png"
+            src="/cs/graphsGirvanNewman1.png"
             caption="Initial state of the graph with its edge-betweenness."
         />
     </Block>
     <Block>
         <Image
-            src="/compSci/girvanNewman2.png"
+            src="/cs/graphsGirvanNewman2.png"
             caption="Graph after removing the edge with the highest edge-betweenness."
         />
     </Block>
@@ -361,7 +378,7 @@ mitigated by running the algorithm multiple times and then taking the most commo
     After the initial setup, we get the graph below:
 
     <Image
-        src="/compSci/lpa1.png"
+        src="/cs/graphsLPA1.png"
         caption="Initial state of the graph."
         width={300}
     />
@@ -381,7 +398,7 @@ mitigated by running the algorithm multiple times and then taking the most commo
         <Step id={2}>
         We have a similar situation for the next vertex $F$ which gets assigned the label $7$.
             <Image
-                src="/compSci/lpa2.png"
+                src="/cs/graphsLPA2.png"
                 caption="The state of the graph after the initial iteration of the blue vertices."
                 width={300}
             />
@@ -389,7 +406,7 @@ mitigated by running the algorithm multiple times and then taking the most commo
         <Step id={3}>
         Now we do the same with the green vertices.
             <Image
-                src="/compSci/lpa3.png"
+                src="/cs/graphsLPA3.png"
                 caption="The state of the graph after assigning the new labels for the green vertices."
                 width={300}
             />
@@ -397,7 +414,7 @@ mitigated by running the algorithm multiple times and then taking the most commo
         <Step id={4}>
         Lastly, we process the brown vertices in the given order.
             <Image
-                src="/compSci/lpa4.png"
+                src="/cs/graphsLPA4.png"
                 caption="The final state of the graph after assigning the new labels for the brown vertices."
                 width={300}
             />
@@ -458,6 +475,6 @@ clusters before the aggregation. We then go back to the first step and repeat th
 increased anymore.
 
 <Image
-    src="/compSci/louvainClustering.png"
+    src="/cs/graphsLouvainClustering.png"
     caption="Example of the Louvain algorithm."
 />

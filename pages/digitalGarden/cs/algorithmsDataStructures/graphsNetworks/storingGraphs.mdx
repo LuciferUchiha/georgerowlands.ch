@@ -1,4 +1,5 @@
-import Callout from "../../../../../components/Callout/Callout";
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
 
 # Storing Graphs
 
@@ -14,7 +15,9 @@ vertices i.e. the relationship between the vertices i.e. the edges.
 
 Below you can see an example of a very simple adjacency matrix of an undirected unweighted graph.
 
-![adjacencyMatrixSimple](/compSci/adjacencyMatrixSimple.png)
+<Image 
+    src="/cs/graphsAdjacencyMatrix.png"
+/>
 
 ### Weighted and Unweighted Graphs
 
@@ -54,7 +57,9 @@ The biggest problem with storing graphs with an adjacency matrix is that its spa
 this worse is that a lot of the space is wasted as in most cases there are only a few edges between vertices making it
 a sparse matrix. Very rarely do we need to store a [complete graph](generalDefinition#complete-graphs).
 
-![adjacencyMatrix](/compSci/adjacencyMatrix.png)
+<Image 
+    src="/cs/graphsAdjacencyMatrixWeighted.png"
+/>
 
 ### Implementation
 
