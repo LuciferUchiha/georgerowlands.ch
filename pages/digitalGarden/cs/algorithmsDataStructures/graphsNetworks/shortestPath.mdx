@@ -1,0 +1,54 @@
+# Shortest Path
+
+Before we see how to find the shortest path from vertex $a$ to vertex $b$ we need to define a few things.
+
+$D(a,b)=$the length of the shortest path from vertex $a$ to vertex $b$. If no such path exists, the length is $\infty$.
+
+If the graph is unweighted the length of a path is the number of edges it takes to get from $a$ to $b$. If however the graph is weighted the length is the sum of the edge weights.
+
+Single source shortest path (SSSP) are all the shortest paths from vertex $s$ to all other vertices.
+
+## For Unweighted Graphs
+
+In an unweighted graph we can just use a BFS as this starts with all vertices with distance 1 then 2 etc.
+
+```java
+void BFS(Vertex s) {
+ Queue<Vertex<K>> R = new LinkedList<Vertex<K>>();
+ s.dist = 0;
+ R.add(s);
+ while(!R.isempty()) {
+  Vertex v = R.remove();
+  for(Vertex w : v.adjList) {
+   if (w.dist == Integer.MAX_VALUE) {
+    w.dist = v.dist + 1;
+    R.add(w);
+   }
+  }
+ }
+}
+```
+
+## For weighted graphs
+
+For a weighted graph this is slightly trickier as the shortest path isn't necessarily the path with the least edges.
+
+### Dijkstra's algorithm
+
+1. Assign all the vertices the attributes "finished", "Distance and „Via/Predecessor“. Initialize the distance of the root vertex as 0 and all others as $\infty$.
+2. While there are unvisited nodes. So finished=false and distance $\leq \infty$.
+   1. Choose the vertex $v$ with the smallest distance.
+   2. Set $v.finished = true$
+   3. For all vertices $w$ that have and edge between $v$ and $w$
+      1. Set int d = v.dist + edge weight between $v$ and $w$.
+      2. if(d < w.dist) w.dist = d; w.via = v;
+
+The time complexity of this algorithm is as followed. For 1 While loop step 1 takes $O(n)$, step 2 takes $O(1)$, step 3 takes $O(outdeg(v))$
+
+For n While loops this the becomes $O(n^2 + m)$
+
+### Improvements
+
+We could save the vertices that are not finished in a Set so we don't have to look through the entire table. This however doesn't have an effect on the time complexity.
+
+We could save the vertices that are not finished in a Min-Heap. Init=$=(n)$ step 1 then becomes deleteMin() which is $O(log n)$ and step 3 becomes decreaseKey outdeg times O(log n). With these improvements our time complexity is O((n+m)log n).

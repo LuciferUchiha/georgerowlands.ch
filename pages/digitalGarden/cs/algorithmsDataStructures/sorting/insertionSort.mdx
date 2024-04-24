@@ -1,0 +1,29 @@
+import Image from "~/components/Image/Image";
+
+# Insertion Sort
+
+The insertion sort algorithm is a bit more complex than the bubble sort or selection sort but still relatively simple.
+You can think of it in the following way:
+
+Imagine you have a deck of cards, and you want to sort them in ascending order.
+You assume that the first card is already sorted. Then, you take the second card and compare it to the first card, if
+it is smaller, you place it in front of it. Now the first two cards are sorted. Then, you take the third card and
+compare it to the ones before it, one after another until you find the right place to insert it, hence the name
+insertion sort as you repeatedly insert cards into the sorted part of the deck. This way the sorted part of the array slowly grows from left to right.
+
+<Image 
+    src="/cs/algdInsertionSort.gif"
+    caption="The input array."
+/>
+
+```python
+def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        key = arr[i]
+        j = i - 1
+        # Compare key with each element to the left of it until a smaller one is found
+        while j >= 0 and key < arr[j]:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = key
+```
