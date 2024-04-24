@@ -1,0 +1,34 @@
+# Networking
+
+## TCP/IP and OSI Model
+
+We define protocols as a means to standardize how computers interact with each other no matter the manufacturer or the parts inside. The most commonly used protocols are TCP, UDP and IP. The TCP/IP and OSI models splits protocols into four layers depending on their tasks.
+
+![protocolModels](/compSci/protocolModels.png)
+
+## IP Addressing
+
+IP addresses are used to uniquely identify devices inside a network and are most commonly used in the IP protocol. There are IPv4 addresses which take up 32 bits and IPv6 addresses which take up 128 bits.
+
+![ipAddresses](/compSci/ipAddresses.png)
+
+Unicast addresses belong to a single network interface and a packet that is sent to a unicast address is delivered to the interface identified by that address.
+
+Loopback addresses are the addresses assigned to the loopback interface. Anything sent to these IP addresses loops around and becomes IP input on the local host. These addresses are often used when testing a client.
+
+Multicast addresses belong to a set of interfaces. A packet sent to a multicast address is delivered to all interfaces identified by
+that address.
+
+A broadcast address is used to target all systems on a specific subnet network instead of single hosts. In other words broadcast addresses allow information to be sent to all machines on a given subnet rather than to a specific machine so can also be classified as a multicast address.
+
+## Sockets
+
+Sockets are an abstraction through which applications can send and receive data through a network. A socket is one endpoint of a two-way communication link between two programs running on the network. A socket is bound to a port number so that the transport layer can identify the application that the data is destined to be sent to.
+
+Servers waits for requests on a particular port, when a client connects to the server service it discloses its own address and port so that the server knows where to send the response.
+
+There are stream Sockets which use the TCP protocol and provide a reliable byte stream between the two applications. Packages are delivered in the correct order and lost packages are retransmitted with help of the TCP protocol. The connection is also full duplex meaning data can be sent and received over one connection instead of needing one for each operation. When transmission is finished one or both parties close the connection.
+
+Datagram Sockets use the UDP protocol and aren't as reliable as Stream Sockets.
+
+![sockets](/compSci/sockets.png)
