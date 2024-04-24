@@ -1,0 +1,73 @@
+# General Knowledge
+
+## Definitions
+
+A distributed system is a set of interacting active components which are located in different locations and realize a common application. Each active component has its it's own independent set of instructions which means they can also run in parallel/concurrently. The location of an active component can be physically different to its other nodes in the system but it can also just be logically for example a different process.
+
+## Advantages and disadvantages
+
+Distributed systems can be used by multiple users at the same time that can interact with each other.
+
+Due to the concurrent nature of distributed systems it can also come with improvements in performance, scalability and use of idle resources.
+
+Depending on your design of the system you can also achieve higher reliability, stability and fault tolerance. For example if you have two of the same component running on different machines in different locations and one goes down you still have the other one running as a backup. Between the two components you can also split up the load instead of having one component constantly overloaded.
+
+Distributed systems do however come with a multitude of disadvantages.
+
+- If the components are located in different locations or on different machines you are depending on several physical components however you also do not have a single point of failure.
+- Designing the system can be much more complex as you might need more complex algorithms to manage consistency problems between the components and also have to take extra security precautions.
+- You also need to make sure that deployment can be orchestrated cleanly and that versioning is done correctly.
+
+## Client and server model
+
+Clients send requests to servers and therefore actively initialize communication with the server. In most cases Clients work with multiple servers at the same time.
+
+Servers provide some service/functionality and wait passively for requests from clients and can typically handle the requests concurrently or with queues. Server don't necessarily have to be on separate devices. One device can have multiple servers running at the same time.
+
+![clientServerModel](/compSci/clientServerModel.png)
+
+## Communication
+
+### Synchronous and Asynchronous
+
+Synchronous communication happens when messages between sender and receiver are exchanged in real time. An example of synchronous communication is human communication like a phone call or video meeting.
+
+Asynchronous communication happens when messages can be exchanged independent of time. It doesn’t require the receiver's immediate attention, allowing them to respond to the message at their convenience. Examples of asynchronous communication are emails, online forums etc.
+
+![syncAndAsync](/compSci/syncAndAsync.png)
+
+Interesting you can emulate asynchronous communication with synchronized calls and vice versa.
+
+```java title="Emulation of async call"
+id = service.submit(args);
+// do something else
+if(service.isReady(id)){
+    res = service.getResult(id);
+}
+```
+
+```java title="Emulation of sync call"
+ex.submit(task, handler);
+while(!handler.isReady(id)){
+    // busy waiting
+}
+res = handler.getResult(id);
+```
+
+### Styles
+
+#### Remote procedure calls - RPC
+
+When using this style of communication one process calls a procedure (subroutine or service) to execute in a different address space than its own. The procedure may be on the same system or a different system connected on a network and in most cases are synchronous. System calls in the unix operating systems are an example of this.
+
+You can differentiate between Procedural RPC where the server provides a set of operations and is typically stateless for example GraphQL and Object oriented RPC where the server hosts a set of object and typically has it's own state for example RMI.
+
+#### Massage based systems
+
+In message based systems like MQTT or RabbitMQ information is exchanged through messages. These messages can either be synchronous when exchanged over TCP or UDP, or they can be asynchronous for example in the case of MQTT where you have subscriptions.
+
+![messageSystem](/compSci/messageSystem.png)
+
+#### Shared repository
+
+Shared repository systems provide small interfaces which allow tuples to be created, read and deleted. REST would come under this category.

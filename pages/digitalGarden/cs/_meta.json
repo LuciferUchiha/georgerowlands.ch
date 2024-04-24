@@ -1,5 +1,7 @@
 {
     "theoretical": "Theoretical CS",
+    "distributedSystems": "Distributed Systems",
+    "patterns": "Design Patterns",
     "c": "C & System Programming",
     "cpp": "C++",
     "csharp": "C#",
