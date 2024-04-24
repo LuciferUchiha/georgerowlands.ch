@@ -1,6 +1,6 @@
-import Callout from "../../../../../components/Callout/Callout";
-import Graph from "../../../../../components/Graph/Graph";
-import Image from "../../../../../components/Image/Image";
+import Callout from "~/components/Callout/Callout";
+import Graph from "~/components/Graph/Graph";
+import Image from "~/components/Image/Image";
 
 # Multirelational Graph
 
@@ -92,8 +92,9 @@ export const multirelationalGraph = {
 A multireletional graph can also be split into layers of a multiplex graph. A multiplex graph is a graph where there
 are multiple layers of different edges but the same vertices.
 
-<Image src="/compSci/multiplexGraph.png"
-       caption="A multirelational graph split into a multiplex graph."
+<Image 
+    src="/cs/graphsMultiplex.png"
+    caption="A multirelational graph split into a multiplex graph."
 />
 
 ## Signed Graphs
@@ -139,6 +140,9 @@ to be balanced, the number of negative edges must be even (0 being even). This l
 triads:
 
 ![balancedTriads](/compSci/balancedTriads.png)
+<Image 
+    src="/cs/graphsBalancedTriads.png"
+/>
 
 The first and last one are the simplest as they are either all positive or all negative. The idea of the second one
 is that it is balanced because "the enemy of my enemy is my friend". The third one is a common scenario that leads to
@@ -200,7 +204,7 @@ $G$ connects a vertex in $V_1$ to a vertex in $V_2$. So there are no edges betwe
 This makes a 2-mode network a bipartite graph.
 
 <Image
-    src="/compSci/bipartiteGraph.png"
+    src="/cs/graphsBipartite.png"
     caption="Some examples of bipartite graphs."
     width={400}
 />

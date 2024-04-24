@@ -1,9 +1,9 @@
-import Callout from "../../../../../components/Callout/Callout";
-import Graph from "../../../../../components/Graph/Graph";
-import Caption from "../../../../../components/Caption/Caption";
-import Image from "../../../../../components/Image/Image";
-import {Block, SideBySideBlock} from "../../../../../components/SideBySideBlock/SideBySideBlock";
-import {Steps, Step, StepCircle} from "../../../../../components/Steps/Steps";
+import Callout from "~/components/Callout/Callout";
+import Caption from "~/components/Caption/Caption";
+import Graph from "~/components/Graph/Graph";
+import Image from "~/components/Image/Image";
+import {Block, SideBySideBlock} from "~/components/SideBySideBlock/SideBySideBlock";
+import {Steps, Step, StepCircle} from "~/components/Steps/Steps";
 
 # Centrality
 
@@ -188,7 +188,10 @@ In the above example using the degree centrality we saw that the green ones are 
 we can clearly visually see that the vertex inbetween them is the most important one as it connects the two communities.
 Because of this we could say that that vertex is in Brokerage position or is a Broker/Gatekeeper of information.
 
-![degreeCentralityIssue](/compSci/degreeCentralityIssue.png)
+<Image 
+    src="/cs/graphsDegreeCentralityIssue.png"
+    width={600}
+/>
 
 The betweenness centrality is a global measure that takes into account the whole graph and tries to solve the above
 issue. 
@@ -275,7 +278,10 @@ To normalize the betweenness centrality, you devide by the centrality by followi
 
 The Image below summarizes all the centrality measures we have seen so far and compares the most central vertices.
 
-![betweennessCentrality](/compSci/betweennessCentrality.png)
+<Image 
+    src="/cs/graphsBetweennessCentrality.png"
+    width={600}
+/>
 
 ### Eigenvector Centrality
 
@@ -305,22 +311,18 @@ To show the idea that the eigenvector centrality is based on the importance of t
 graph and calculate the eigenvector centrality using the degree centrality as the importance measure with the power 
 iteration method.
 
-<SideBySideBlock>
-    <Block>
-        <Image 
-            src="/compSci/eigenCentralityMatrix.png" 
-            caption="The adjacency matrix of the graph, mirrored because it is undirected." 
-            width={300}
-        />
-    </Block>
-        <Block>
-        <Image 
-            src="/compSci/eigenCentralityVector.png" 
-            caption="The initial importance measure, the degree of each vertex." 
-            width={300}
-        />
-    </Block>
-</SideBySideBlock>
+<Image 
+    src="/cs/graphsEigenCentralityMatrix.png" 
+    caption="The adjacency matrix of the graph, mirrored because it is undirected." 
+    width={400}
+/>
+
+<Image 
+    src="/cs/graphsEigenCentralityVector.png" 
+    caption="The initial importance measure, the degree of each vertex." 
+    width={400}
+/>
+
 
 #### Power Iteration Method
 
@@ -420,23 +422,16 @@ Where $I$ is the set of all vertices that have a path to $v$ and $d(u,v)$ is the
 $v$.
 
 <Callout type="example">
-
-<SideBySideBlock>
-    <Block>
-        <Image 
-            src="/compSci/proximityPrestigeInput.png" 
-            caption="The input graph for the proximity prestige."
-            width={300}
-        />
-    </Block>
-    <Block>
-        <Image 
-            src="/compSci/proximityPrestigeOutput.png" 
-            caption="The resulting proximity prestige for each vertex."
-            width={300}
-        />
-    </Block>
-</SideBySideBlock>
+<Image 
+    src="/cs/graphsProximityPrestigeInput.png" 
+    caption="The input graph for the proximity prestige."
+    width={500}
+/>
+<Image 
+    src="/cs/graphsProximityPrestigeOutput.png" 
+    caption="The resulting proximity prestige for each vertex."
+    width={500}
+/>
 
 $$
 \begin{align*}
@@ -459,7 +454,9 @@ The degree group centrality is the simplest group centrality measure. It is simp
 vertices outside the group that are directly connected to the group. So in the following graph with the group $G$ being
 defined as $G={v_6,v_7,v_8}$ the degree group centrality would be $\frac{3}{10}$ so $0.3$.
 
-![degreeGroupCentrality](/compSci/degreeGroupCentrality.png)
+<Image 
+    src="/cs/graphsDegreeGroupCentrality.png" 
+/>
 
 ### Closeness Group Centrality
 
@@ -484,7 +481,7 @@ centrality simply by calculating all the shortest paths between the vertices out
 of them go through the group.
 
 <Image 
-    src="/compSci/betweenessGroupCentrality.png" 
+    src="/cs/graphsBetweenessGroupCentrality.png" 
     caption="Our graph where the group we are inspecting contains the vertices C and E."
     width={400}
 />
