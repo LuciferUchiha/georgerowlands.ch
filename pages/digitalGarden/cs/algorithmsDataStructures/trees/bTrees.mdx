@@ -1,0 +1,102 @@
+# B-Trees
+
+The goal of a B-tree is to not have to load an entire tree into memory. Only a bit by bit can be loaded in for processing. The order of a B-tree means something slightly different then with a normal tree.
+
+If a B-tree has the order of $n$ then it has to meet the following conditions:
+
+1. Each node has a maximum of $2n$ elements.
+2. Each node, expect for the root, has at least n elements.
+3. Each node, that is not a leaf, has $m+1$ successors, where $m$ is the number of elements the node has.
+4. All leaf nodes are on the same level.
+5. All nodes have $m$ keys + reference to its data that are sorted in ascending orders of there keys and $m+1$ references to its successors.
+
+Below we can see a B-tree with the order of 2.
+
+![bTreeOrder2](/compSci/bTreeOrder2.png)
+
+## Operations
+
+### Search
+
+To find a key we start of in a node and look at its elements. We then increase our counter i until one of the elements either is the key or is larger then the key. If the element is the key we get the corresponding data. If not and the node is a leaf we could not find the key. Otherwise we continue recursively by getting the node that is on the right side of the element.
+
+```java
+E find(Node<K> node, K key) {
+ int i = 0;
+ while (i < node.m && key.compareTo(node.keys[i]) > 0) {
+  i++;
+ }
+ if (i < node.m && key.equals(node.keys[i])) {
+  return dataBlock(node.data[i]);
+ }
+ if (node.isLeaf()) {
+  return null;
+ }
+ Node<K> child = diskRead(node.successor[i]);
+ return find(child, key);
+}
+```
+
+### Insert
+
+When inserting we always want to insert in a leaf node. Here 3 scenarios can happen.
+
+#### Case 1
+
+The leaf isn't full and we can just simply add it.
+![bTreeInsertCase1](/compSci/bTreeInsertCase1.png)
+
+#### Case 2a
+
+The leaf is full so we have to split up the leaf. We split the leaf by taking the middle element and put it into the parent and create a new node with the elements that were to the right of the middle element.
+![bTreeInsertCase2a1](/compSci/bTreeInsertCase2a1.png)
+![bTreeInsertCase2a2](/compSci/bTreeInsertCase2a2.png)
+
+#### Case 2b
+
+It can happen that when splitting the node and putting the middle element in the parent the parent is already full so the you have to perform another split. This process can repeat all the way to the root until a new root is created.
+![bTreeInsertCase2b](/compSci/bTreeInsertCase2b.png)
+
+### Remove
+
+When removing an element we define 2 scenarios. Either the element we want to delete is in a leaf or in a inner node.
+
+#### From leaf
+
+If after the removal of the element the amount of elements in the node is still larger or equal to n the order of the B-tree, so $m\geq n$ nothing needs to be done.
+![bTreeRemoveLeaf1](/compSci/bTreeRemoveLeaf1.png)
+
+However if $m < n$ then the tree no longer meets the conditions we defined at the beginning. To restore these conditions we have to options. Either to borrow or combine.
+![bTreeRemoveLeaf2](/compSci/bTreeRemoveLeaf2.png)
+
+##### Borrow
+
+We can use this operation when for example the right node doesn't have enough elements and the left node has more then $n$ elements or the other way around then we can simply do almost like a left or right rotation.
+![bTreeRemoveBorrow](/compSci/bTreeRemoveBorrow.png)
+
+##### Borrow Variant
+
+Since we have anyway loaded the neighbouring node into the RAM we might as well use this situation to balance out the 2 nodes so that they have equal amounts of elements. This can be done by doing multiple rotations in a row.
+![bTreeRemoveBorrowVariant](/compSci/bTreeRemoveBorrowVariant.png)
+
+##### Combine
+
+We can use this operation when we can't borrow from a neighbouring node. So when no neighbours have more then $n$ elements. In this case we combine the 2 nodes together.
+![bTreeRemoveCombine](/compSci/bTreeRemoveCombine.png)
+
+##### Combine Variant
+
+Here we combine not 2 but 3 nodes together to make 2 nodes so that the resulting nodes are more then half full. The advantage of doing this is that the next insert or remove can be done very easily.
+![bTreeRemoveCombineVariant](/compSci/bTreeRemoveCombineVariant.png)
+
+#### From inner node
+
+Here just like in the binary tree we replace it with its symmetric successor which then always leads to a remove in a leaf.
+
+## Time Complexities
+
+If n is the order and N the total number of elements then we have the following time complexities
+
+- Search: worst case from root to leaf so O(log(n) * N)
+- Insert: Find the place O(log(n) *N), insertion is in most cases constant but can be O(log(n)* N).
+- Remove: Find the place O(log(n) *N), removal is in most cases constant but can be O(log(n)* N).

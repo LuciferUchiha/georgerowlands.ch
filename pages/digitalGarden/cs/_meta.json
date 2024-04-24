@@ -1,7 +1,11 @@
 {
-    "theoretical": "Theoretical CS",
+    "algorithmsDataStructures": "Algorithms & Data Structures",
     "distributedSystems": "Distributed Systems",
     "patterns": "Design Patterns",
+    "theoretical": "Theoretical CS",
+    "---": {
+        "type": "separator"
+      },
     "c": "C & System Programming",
     "cpp": "C++",
     "csharp": "C#",

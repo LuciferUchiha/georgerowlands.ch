@@ -8,7 +8,7 @@ const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
   ssr: false,
 });
 
-const GardenGraph = () => {
+export default function GardenGraph() {
   const router = useRouter();
   const { theme, systemTheme } = useTheme();
   const currentTheme = theme !== "system" ? theme : systemTheme;
@@ -44,5 +44,3 @@ const GardenGraph = () => {
     />
   );
 };
-
-export default GardenGraph;

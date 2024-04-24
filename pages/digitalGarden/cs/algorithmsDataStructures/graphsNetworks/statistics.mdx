@@ -1,0 +1,163 @@
+import Callout from "../../../../../components/Callout/Callout";
+
+# Statistics with Graphs
+
+## Hypothesis Testing
+
+The goal of a hypothesis test is to determine if there is a statistical relationship between two variables. To test
+if there is a relationship between two variables we check if the two variables have a correlation.
+
+When building a hypothesis test we have to define the null hypothesis often denoted as $H_0$ which is a test that 
+checks if there is no relationship between the two variables. We then also define an alternative hypothesis $H_1$ 
+which is a test that checks if there is a relationship between the two variables.
+
+The null hypothesis is the hypothesis that we want to reject. If we reject the null hypothesis then we accept the 
+alternative hypothesis. If we do not reject the null hypothesis then we do not accept the alternative hypothesis.
+
+Hypothesis tests also have a significance level which is the probability of rejecting the null hypothesis when it is 
+true (so a false positive). The significance level is usually denoted as $\alpha$ and is usually set to 0.05 (5%).
+
+## Permutation Tests
+
+When working with networks we use permutation tests to test our hypothesis because other tests assume that the data is 
+independent, which is not the case in networks for obvious reasons.
+
+In a permutation test we start with the initial state of the network and calculate the statistic of interest, i.e. the 
+correlation coefficient. We then randomly permute the network and calculate the statistic of interest again and keep 
+track of how many times the statistic of interest is greater than the initial statistic of interest. We then repeat this 
+process many times and compare the statistic of interest to the distribution of the permuted statistics. 
+
+The relative frequency of the statistic of interest being greater than the initial statistic of interest is the p-value. 
+The p-value is the probability of observing a statistic as extreme as the one observed given the null hypothesis is true. 
+
+<Callout type="example">
+
+The initial Pearson Correlation between the degree centrality and the "happiness" attribute of the vertices is 0.4.
+
+We then permute the network 10000 times and calculate the Pearson Correlation between the degree centrality and the 
+"happiness" attribute of the vertices for each permutation. We then count the number of times the Pearson Correlation 
+was greater or equal to 0.4 and divide it by the number of permutations. 
+
+Say we counted 200 times that the Pearson Correlation was greater or equal to 0.4 then the p-value would be 
+$200/10000 = 0.02$. This means that there is a 2% chance of observing a Pearson Correlation as extreme as 0.4 
+given the null hypothesis is true, i.e. we say there isn't a correlation, but there is a 2% chance of observing a 
+correlation as extreme as 0.4, so a 2% chance of a false positive.
+
+If the p-value is less than the significance level, i.e. $p < \alpha$, then we reject the null hypothesis and accept the 
+alternative hypothesis, i.e. we say there is a correlation. If the p-value is greater than the significance level, i.e. 
+$p > \alpha$, then we accept the null hypothesis and do not accept the alternative hypothesis, i.e. we say there 
+is no correlation.
+
+</Callout>
+
+### Monadic Tests
+
+A monadic test is a test for a relationship between vertex attributes, for example we hypothesize that rich people 
+are well connected.
+
+<Callout type="example">
+
+As always we set the significance level to 5%, $\alpha = 0.05$. We then calculate the initial Pearson Correlation 
+between the two variables.
+
+$$
+\begin{align*}
+\text{degree} &= [0.1,0.2,0.3,0.5,0.6] \\
+\text{wealth} &= [100, 400, 300, 900, 300]
+\end{align*}
+$$
+
+We get the initial value $r=0.522$, so we would be inclined to say that there is a moderate correlation.
+
+We then permute the network by shuffling both the degree and wealth attributes and calculate the Pearson Correlation again.
+
+$$
+\begin{align*}
+\text{degree} &= [0.5,0.3,0.1,0.6,0.2] \\
+\text{wealth} &= [300, 300, 100, 400, 900]
+\end{align*}
+$$
+
+and this time get $r=-0.04$ which is a weak correlation. We repeat this process 10000 times and count the number of 
+times $r \leq 0.522$ and divide it by the number of permutations. Say we counted 400 times that $r \leq 0.522$ then 
+the p-value would be $400/10000 = 0.0.4$. This means because the 4% is lower than the significance level of 5% we 
+reject the null hypothesis and accept the alternative hypothesis, i.e. we say there is a correlation.
+</Callout>
+
+### Dyadic Tests
+
+Dyadic tests are tests between relationships, i.e. the edges of the network unlike the monadic tests which are tests 
+between vertex attributes. To be able to do a dyadic test we need to have a multirelational network, i.e. a network 
+with multiple types of edges. This is then easily split into a multiplex graph, i.e. we have separate graph for each 
+type of relationship.
+
+<Callout type="example">
+For example we want to test if students that study together also drink together. Then we have a network showing who 
+studies with who and a network showing who drinks with who. To then calculate the Pearson Correlation between the two 
+networks we take their adjacency matrix, remove the diagonal elements because we are interested in relationships 
+between different people, and then calculate the Pearson Correlation between the two flattend matrices.
+
+$$
+\begin{align*}
+\text{study} &= \begin{bmatrix}
+0 & 10 & 4 & 3 \\
+10 & 0 & 2 & 0 \\
+4 & 2 & 0 & 2 \\
+3 & 0 & 2 & 0 \\
+\end{bmatrix} &= [10,4,3,10,2,0,4,2,2,3,0,2] \\
+\text{drink} &= \begin{bmatrix}
+0 & 3 & 2 & 0 \\
+3 & 0 & 1 & 0 \\
+2 & 1 & 0 & 1 \\
+0 & 0 & 1 & 0 \\
+\end{bmatrix}  &= [3,2,0,3,1,0,2,1,1,0,0,1]
+\end{align*}
+$$
+
+Based on these vectors we can then do our hypothesis tests.
+</Callout>
+
+#### QAP - Quadratic Assignment Procedure
+
+When doing dyadic tests we can't do our normal permutation tests and just randomly shuffle the vectors because we 
+would lose the structure of the network. To solve this we use the Quadratic Assignment Procedure (QAP) which is a 
+permutation test for dyadic tests. 
+
+When using QAP instead of randomly shuffling we swap an entire row and column with another. 
+
+<Callout type="example">
+
+We start with the initial adjacency matrix of the study network and then swap the first row and column with the 
+second row and column.
+
+$$
+\begin{align*}
+\text{study} &= \begin{bmatrix}
+0 & 10 & 4 & 3 \\
+10 & 0 & 2 & 0 \\
+4 & 2 & 0 & 2 \\
+3 & 0 & 2 & 0 \\
+\end{bmatrix} \Rightarrow \begin{bmatrix}
+0 & 10 & 2 & 0 \\
+10 & 0 & 4 & 3 \\
+2 & 4 & 0 & 2 \\
+0 & 3 & 2 & 0 \\
+\end{bmatrix}
+\end{align*}
+$$
+</Callout>
+
+### Mixed Tests
+
+But what if we want to test for a correlation between a vertex attribute and its edges? For example, we want to 
+test if people of the same gender communicate more often with each other then with of the opposite gender. 
+
+To do this we call it a mixed test but in the end it is just a dyadic test. We create a new network where the edges 
+somehow signify the vertex attributes. For example, we can create a network where the people are only connected if 
+they have the same gender.
+
+We then just simply do our dyadic test.
+
+Another possible test could be to see if the age of a person is correlated with the way they communicate. To do this 
+We can create a fully connected network where the weight of the edges is the age difference between the two people.
+And just like that we can do a dyadic test.
