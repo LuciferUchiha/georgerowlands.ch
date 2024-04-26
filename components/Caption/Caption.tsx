@@ -13,7 +13,7 @@ export default function Caption({
   );
 }
 
-export function MDXCaption({
+export function MdxCaption({
   children,
 }: {
   children: React.ReactNode;
