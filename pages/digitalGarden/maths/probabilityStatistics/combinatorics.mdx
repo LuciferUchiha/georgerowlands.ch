@@ -1,0 +1,201 @@
+import Callout from "~/components/Callout/Callout";
+
+# Combinatorics
+
+Die Kombinatorik ist ein Bereich der Mathematik, der sich mit der Anzahl der Möglichkeiten befasst, wie man Objekte auf
+verschiedene Arten auswählen, ordnen oder gruppieren kann.
+
+Zum Beispiel, wenn man aus einer Gruppe von 5 Personen 2 auswählt, gibt es insgesamt 10 Möglichkeiten, dies zu tun.
+
+Die Kombinatorik hilft uns, die Anzahl der möglichen Ergebnisse zu berechnen, während die Wahrscheinlichkeitsrechnung
+uns sagt, wie wahrscheinlich es ist, dass bestimmte Ergebnisse eintreten. Wenn man die Anzahl der möglichen Ergebnisse
+kennt, kann man die Wahrscheinlichkeit eines bestimmten Ergebnisses berechnen.
+
+## Urnenmodel
+
+Das Urnenmodell ist eine verbreitete Veranschaulichung, um viele Probleme der Wahrscheinlickeitsrechnung zu lösen.
+Dafür stellen wir uns vor wir haben eine Urne mit $n$ **verschiedene** Kugeln, die sich z.B. in ihrer Farbe oder einer
+Beschriftung unterscheiden und ziehen dann davon $k$ Kugeln. Dabei wird noch unterschieden, ob wir nach dem Ziehen einer
+Kugel, die Kugel wieder zurücklegen oder nicht.
+
+Oftmals wird auch das zufällige Ziehen der Kugeln eine **Stichprobe** genannt.
+
+![urnenModell](/maths/urnenModell.png)
+
+## Permutation
+
+Jede mögliche **Anordnung** von $n$ Kugeln heisst eine **Permutation** der $n$ Kugeln. Die Anzahl der Permutationen
+hängt noch davon ab, ob alle Kugeln verschieden sind (Ohne Wiederholung), oder ob es gewisse Kugeln mehrmals hat
+(Mit Wiederholung). Diese Unterscheidung macht man, weil die Permutationen nicht verschieden sind, wenn man die Kugeln
+die gleich sind vertauscht.
+
+![permutationMitWiederholung](/maths/permutationMitWiederholung.png)
+
+### Ohne Wiederholung
+
+Sind alle Kugeln verschieden, also gibt es keine Wiederholungen, dann ist die Anzahl der verschiedenen möglichen
+Permutationen, und somit auch Anordnungen
+
+$$
+Per(n)=n!
+$$
+
+Wir ziehen also aus einer Urne mit $n$ Kugeln $n$-mal eine Kugel daraus. Wir können uns also vorstellen das wir für den
+ersten Zug $n$ mögliche Kugeln, weil sich noch alle in der Urne befinden. Danach für den zweiten Zug gibt es nur noch
+$n-1$ mögliche Kugeln, die wir aus der Urne ziehen können, weil wir eine schone herausgenommen haben. Das geht weiter so
+bis keine Kugel mehr in der Urne sind. Am Schluss wird dann alles multipliziert was dann
+$n \cdot (n-1) \cdot (n-2)\cdot ... \cdot 2 \cdot 1 = n!$ ergibt.
+
+Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/permutation-ohne-wiederholung-1071).
+
+<Callout type="example" title="Beispiel Permutation ohne Wiederholung">
+Auf einem Regal sollen 3 verschiedene Bücher, $b_1, b_2, b_3$ angeordnet werden.
+
+Es gibt dann $3!=6$ verschiedene Anordnungen.
+$(b_1,b_2,b_3),(b_1,b_3,b_2),(b_2,b_1,b_3),(b_2,b_3,b_1),(b_3,b_1,b_2),(b_3,b_2,b_1)$
+</Callout>
+
+### Mit Wiederholung
+
+Wenn sich unter den Kugeln $n_1,n_2,...,n_k$ gleiche Kugeln befinden, also es Wiederholungen hat, so ist die Anzahl der
+verschiedenen Anordnungsmöglichkeiten
+
+$$
+Per(n;n_1,n_2,...,n_k) = \frac{n!}{n_1!n_2!...n_k!}
+$$
+
+Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/permutation-mit-wiederholung-1070).
+
+<Callout type="example" title="Beispiel Permutation mit Wiederholung">
+In einer Urne befinden sich 6 Kugeln, darunter sind 3 weisse, 2 graue und 1 schwarz. Die gleichfarbigen Kugeln sind
+nicht von einander unterscheidbar.
+
+Es gibt dann $\frac{6!}{3!2!1!} = \frac{6!}{3!2!} = 60$ verschiedene Anordnungsmöglichkeiten.
+</Callout>
+
+## Kombination
+
+Bei der **Kombination** werden nacheinander $k$ Kugeln aus einer Urne mit $n$ Kugeln gezogen. Dabei schauen wir nicht
+auf die Reihenfolge, in der wir die Kugeln ziehen, dass heisst, wenn wir 2 Kugeln ziehen und wir zuerst eine Schwarze und
+dann eine Weisse ziehen zählen wir als das gleiche Resultate wie wenn wir zuerst eine Weisse und dann eine Schwarze
+gezogen hätten.
+
+Hier unterscheiden wir auch wieder zwischen 2 Fälle, ob wir nach dem Ziehen die Kugel wieder in die Urne zurücklegen
+oder nicht.
+
+### Ohne Zurücklegen
+
+Hier lautet also die genaue Fragestellung "Auf wie vielen verschiedenen Arten können wir $k$ Kugeln aus einer Urne mit $n$
+verschiedenen Kugeln ziehen, ohne sie nach dem Ziehen zurückzulegen und ohne die Reihenfolge in der wir die Kugeln
+ziehen, zu beachten."
+
+Dieses Problem lässt sich ziemlich gut zu einer Permutation umwandeln. Wir können uns vorstellen, dass wir jede gezogene
+Kugel als 1 markieren und die anderen als 0. So bekommen wir zum Schluss eine Binärzahl mit $k$ mal eine 0 und $n-k$
+mal eine 1.
+Wir können uns nun die Frage stellen, wie viele verschiedene Anordnungsmöglichkeiten gibt es für die $n$ Zahlen mit
+$k$ und $n-k$ gleiche Zahlen.
+
+$$
+C(n;k) = Per(n;k,(n-k)) = \frac{n!}{k!(n-k)!} = \binom{n}{k}
+$$
+
+Was genau dem Binomialkoeffizienten entspricht.
+
+Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/ziehen-ohne-zuruecklegen-1077).
+
+<Callout type="example" title="Beispiel Kombination ohne zurücklegen">
+Im Lotto gibt es 49 Zahlen, davon werden 6 ohne wiederholung gezogen und die Reihenfolge der Zahlen wird nicht
+beachtet.
+
+So gibt es $\binom{49}{6}=13'983'816$ verschiedene Kombinationen
+</Callout>
+
+<Callout type="example" title="Enigma Beispiel Kombination ohne zurücklegen">
+Um eine Enigma maschine zu betätigen müssen 3 Rotoren von 5 ausgewählt werden. Das Militär hat sogar 8 Rotoren zur
+Auswahl.
+
+$\binom{5}{3}=10$ verschiedene Kombinationen
+
+$\binom{8}{3}=56$ verschiedene Kombinationen
+
+Wie man sieht Steigt die Zahl drastisch wenn man mehr Rotoren zur Auswahl hat.
+</Callout>
+
+### Mit Zurücklegen
+
+Wenn wir nach dem Ziehen die Kugeln wieder zurücklegen, dann kann es sein, dass eine Kugel mehrmals verwendet wird.
+Dabei kommen wir auf
+
+$$
+C_w(n;k) = \frac{(n+k-1)!}{k!(n-k)!} = \binom{n+k-1}{k}
+$$
+
+Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/ziehen-mit-zurucklegen-ohne-reihenfolge-1074).
+
+<Callout type="example" title="Beispiel Kombination mit zurücklegen">
+Wie viele Kombinationsmöglichkeiten gibt es beim dreimaligen Würfeln?
+
+Vergleicht man die drei Würfe mit der Anzahl der zu ziehenden Kugeln $k$ und die sechs möglichen Ergebnisse, nämlich
+die
+Würfelaugen 1 bis 6, mit der Gesamtzahl der Kugeln $n$, erhält man folgende Anzahl möglicher Ergebnisse:
+
+$$
+\binom{6 + 3 - 1}{3}=\binom{8}{3}=56
+$$
+</Callout>
+
+<Callout type="example" title="Gummibärchen-Orakel Beispiel Kombination mit zurücklegen">
+Beim sogenannten Gummibärchen-Orakel haben wir eine Tüte mit Gummibärchen. Wir wissen nicht die Anzahl der
+Gummibärchen
+aber das es sie in 5 verschiedene Farben gibt. Wir nehmen aus der Tüte 5 Gummibärchen. Die Frage ist demnach
+wie viele Farbkombinationen kann man ziehen.
+
+$$
+\binom{5 + 5 - 1}{5}=\binom{9}{5}=126
+$$
+</Callout>
+
+## Variation
+
+Bei der **Variation** haben wir genau die gleichen Überlegungen wie bei der Kombination, nur berücksichtigen wir jetzt
+die Reihenfolge, in der wir die Kugeln ziehen.
+
+### Ohne Zurücklegen
+
+Da wir $k$-mal aus einer Urne mit $n$ Kugeln ziehen und sie nicht zurücklegen haben wir eigentlich eine Kombination.
+Nur berücksichtigen wir jetzt die Reihenfolge. Also kommt die Frage noch auf wie viele Arten können wit $k$ Kugeln
+anordnen, eine Permutation mit $k!$  verschiedene Anordnungen. Somit kommen wir auf
+
+$$
+V(n;k) = k! \cdot C(n;k) = k! \cdot \frac{n!}{k!(n-k)!} = \frac{n!}{(n-k)!}
+$$
+
+Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/ziehen-ohne-zurucklegen-mit-reihenfolge-1073).
+
+<Callout type="example" title="Beispiel Variation ohne zurücklegen">
+Beim Pferdewetten muss in der sogenannten "Dreierwette" die Reihenfolge der ersten 3 Pferde die ins Ziel laufen
+korrekt
+angegeben werden. Die Frage ist nun wie viele Dreierwetten gibt es wenn das Rennen 10 Pferde hat.
+
+Es gibt also $\frac{10!}{(10 - 3)!} = \frac{10!}{7!} = 8 \cdot 9 \cdot 10 = 720$ verschiedene Dreierwetten.
+</Callout>
+
+### Mit Zurücklegen
+
+Da wir $k$-mal ziehen können wir uns vorstellen, dass wir $k$ Stellen haben und weil wir nach jeder Ziehung die Kugel
+wieder in die Urne legen haben wie bei jeder Ziehung $n$ mögliche Kugeln, die wir ziehen könnten. Daraus lässt sich folgen
+
+$$
+{V_w(n;k)} = {n \cdot n ... \cdot n = n^k}
+$$
+
+Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/ziehen-mit-zurucklegen-mit-reihenfolge-1072).
+
+<Callout type="example" title="Beispiel Variation mit zurücklegen">
+Bei einem Zahlenschloss hat es vier Ringe die je Zehn Ziffern haben. So gibt es $10^4=10000$ verschiedene
+Variationen, die Zahlen 0000 bis 9999.
+</Callout>
+
+## Zusammenfassung
+
+![kombinatorikUebersicht](/maths/kombinatorikUebersicht.png)

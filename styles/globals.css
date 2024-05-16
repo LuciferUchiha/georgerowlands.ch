@@ -3,12 +3,7 @@
 @tailwind utilities;
 
 @layer base {
-    html {
-        scroll-behavior: smooth;
-    }
-}
-
-@layer base {
+    /* So cell outputs are slightly indented */
     .code-output-wrapper {
         padding-left: 4rem;
     }

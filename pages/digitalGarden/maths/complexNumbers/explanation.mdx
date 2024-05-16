@@ -1,0 +1,525 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+
+# Complex Numbers
+
+<Callout type="todo">
+This needs to be translated
+</Callout>
+
+## Motivation
+
+In der Menge der natürlichen Zahlen $\mathbb{N}= \{1, 2, 3, . . .\}$ sind die Operationen subtrahieren wie multiplizieren abgeschlossen. Das heisst zwei natürliche
+Zahlen addiert oder multipliziert ergeben wieder eine natürliche Zahl.
+
+Will man nun auch noch die Operation subtrahieren einführen, so hat man das
+Problem, dass für nicht alle zwei natürlichen Zahlen es eine natürliche
+Differenz gibt z.B. $2-4 \notin \mathbb{N}$ und mehr generell $a-b \notin \mathbb{N}$ mit $b \geq a$.
+
+Um nun auch uneingeschränkt subtrahieren zu können, brauchen wir eine andere Zahlenmenge, für die die Operation subtrahieren abgeschlossen ist. Am besten eine
+Zahlenmenge in der die natürlichen Zahlen schon enthalten sind und die alten Operationen weiterhin abgeschlossen sind, eine sogenannte Mengenerweiterung. Diese neue Zahlenmenge sind die ganzen Zahlen $\mathbb{Z} = \{. . . ,−3,−2,−1, 0, 1, 2, 3, . . .\}$.
+
+Nun wollen wir auch noch Multiplikation umkehren also die Operation dividieren ausführen. Für gewisse Zahlenpaare ist dies möglich wie z.B. $4 \div 2=2$ aber schon bei $1 \div 4$ sind wir an unsere Grenzen gestossen. Wir brauchen also wieder eine sinnvolle Mengenerweiterung.
+Diese Erweiterung finden wir in der Menge der rationalen Zahlen $\mathbb{Q} = \{x|x=\frac{z}{n}, z \in \mathbb{Z}, n\in \mathbb{N}\}$.
+
+Nun können wir schon einige Operationen ausführen aber auch hier können wir schnell Defizite bemerken z.B. bei der Nutzung von Pythagoras theorem ($a^2+b^2=c^2$) wenn $a,b=1$ weil $\sqrt{2}$ unendliche viele Kommastellen hat. Auch hier brauchen wir eine sinnvolle Mengenerweiterung zu den reelen Zahlen. Ein grosser Teil der Analysis benutzt die reelen Zahlen aber es gibt immer noch Operationen die nicht abgeschlossen sind für reele Zahlen. Betrachten wir z.B. folgende Gleichung
+
+$$
+\begin{align*}
+    x^2 &= 0 \\
+    x^2 &= -1 \\
+    x &= \sqrt{-1} = ?
+\end{align*}
+$$
+
+## Imaginäre Einheit
+
+Wir definieren die Zahl $i$ als imaginäre Einheit
+
+$$
+i=\sqrt{-1}
+$$
+
+### Potenzen der imaginären Einheit
+
+$$
+\begin{align*}
+    i   &= \sqrt{-1} \\
+    i^2 &= (\sqrt{-1})^2 =-1 \\
+    i^3 &= i^2i=(-1)i = -i \\
+    i^4 &= i^2i^2 = (-1)(-1)=1 \\
+    i^5 &= i^4i=i
+\end{align*}
+$$
+
+Wir sehen also ein wiederholendes Muster und können also mehr allgemein formulieren
+
+$$
+i^{k+4n}=i^k, \forall k,n \in \mathbb{Z}
+$$
+
+somit könnn wir z.B für $i^{69}=i^{1+68}=i^{1+4\cdot17}=i$
+
+
+<Callout type="example">
+Beispiel Gleichungen mit komplexe Zahlen lösen
+
+$$
+\begin{align*}
+    x^2 + 4 &= 0 \\
+    x^2 &= -4 \\
+    x_{1,2}=\pm \sqrt{-4} = \pm \sqrt{4} \sqrt{-1} &= \pm 2i
+\end{align*}
+$$
+</Callout>
+
+<Callout type="example">
+Beispiel Gleichungen mit komplexe Zahlen lösen
+
+$$
+\begin{align*}
+x^2 + x + 1 &= 0 \\
+(x+\frac{1}{2})(x+\frac{1}{2}) + \frac{3}{4} &= 0 \\
+(x + \frac{1}{2})^2 &= -\frac{3}{4} \\
+x + \frac{1}{2} &= \pm \sqrt{-\frac{3}{4}} \\
+x &= -\frac{1}{2} \pm \sqrt{-\frac{3}{4}} \\
+x &= -\frac{1}{2} \pm \sqrt{\frac{3}{4}}\sqrt{-1} \\
+x_{1,2} &= -\frac{1}{2} \pm \frac{\sqrt{3}}{2}i
+\end{align*}
+$$
+</Callout>
+
+## Komplexe Zahlen
+
+Wir definieren die komplexe Zahl $z$ wie gefolgt
+
+$$
+z=a+bi \text{ mit } a,b \in \mathbb{R}
+$$
+
+wir bezeichnen $a$ als Realteil und $b$ als Imaginärteil. Oftmals wird diese Schreibform als kartesische Form, arithmetische Form oder algebraische Form. Oftmals begegnet man auch die folgende Schreibweise für den Realteil: $a=Re(z)=\Re(z)$ und für den Imaginärteil: $b=Im(z)=\Im(z)$. Die Menge der komplexen Zahlen wird wie gefolgt definiert
+
+$$
+\mathbb{C}=\{z|z=a+bi \text{ mit } a,b \in \mathbb{R}\}
+$$
+
+Die Menge der komplexen Zahlen enthält immer noch die Menge der reelen Zahlen. Dies ist einfach zu sehen, da sich jede reele Zahl $r$ als komplexe Zahl $z = r + 0i$ schreiben lässt somit ist $\mathbb{R} \subset \mathbb{C}$
+
+Eine gute Zusammenfassung zu komplexen Zahlen und ihre Operationen findets du [hier](https://www.youtube.com/watch?v=zB2VwWzpYx4) und [hier](https://www.youtube.com/watch?v=TSeC_2D8xNs&t=12s)
+
+### Gleichheit von Komplexen Zahlen
+
+Zwei komplexe Zahlen $z_1 = a + bi$ und $z_2 = c + bi$ mit $a, b, c, d \in \mathbb{R}$ sind genau dann gleich, wenn ihre Real- und Imaginärteile übereinstimmen.
+
+$$
+a+bi=c+di \iff a=c \land b=d
+$$
+
+### Operationen mit Komplexen Zahlen
+
+#### Addieren und subtrahieren
+
+Beginnen wir mal mit der Addition und betrachten wir alle Variablen als reele Zahlen.
+
+$$
+s=z_1 + z_2 = (a+bi) + (c+di)=(a+c)+i(b+d)
+$$
+
+Wir können also definieren, dass wir zwei komplexe Zahlen addieren/subtrahieren, indem wir ihre Real- und Imaginärteile addieren/subtrahieren.
+
+$$(a+bi)\pm (c+di)=(a \pm c) + i(c\pm d)$$
+
+<Callout type="example">
+Beispiel komplexe Zahlen addieren/subtrahieren
+
+$$
+\begin{align*}
+    (1+2i) + (4+5i) &= (1+4) + i(2+5) = 5 + 7i \\
+    (1-2i) + (-4 + 5i) &= (1-4)+i(-2+5)=-3 + 3i \\
+    (1+2i)-(4+5i) &= (1-4) + i(2-5) = -3 -3i
+\end{align*}
+$$
+</Callout>
+
+
+#### Multiplizieren
+
+Bei der Multiplikation gehen wir genau gleich vor
+
+$$
+\begin{align*}
+    z_1 \cdot z_2 &= (a + bi)(c+di)= ac + adi + bci +i^2bd \\
+    (\text{weil } i^2=-1) &= ac + adi + bci -bd \\
+    &= (ac - bd) + i(ad + bc)
+\end{align*}
+$$
+
+so können wir die Multiplikation von zwei komplexe Zahlen wie gefolgt definieren
+
+$$
+(a+bi)(c+di)=(ac-bd) + i(ad+bc)
+$$
+
+<Callout type="example">
+Beispiel komplexe Zahlen multiplizieren
+
+$$
+\begin{align*}
+    (1 + 2i)(3 − 4i)&=((1 \cdot 3)−(2 \cdot (−4)))+i((1 \cdot (−4))+(2 \cdot 3)) \\
+    &= 11 + 2i \\
+    (7 + 0i)(−8 + 0i)&=((7 \cdot(−8)) − (0 \cdot 0)) + i((7 \cdot 0) + (0 \cdot (−8))) \\
+    &= −56 + 0i \\
+    (a + ib)(a − ib) &= a^2 − i^2b^2 + i(a \cdot(−b) + ab) \\
+    &= a^2 + b^2
+\end{align*}
+$$
+</Callout>
+
+### Potenzieren
+
+Weil wir schon wissen wir wir komplexe Zahlen multiplizieren können, können wir sie auch potenzieren mit der allgemeinen binomische Formel
+
+$$
+(a +bi)^n = \sum_{k=0}^{n}{\binom{n}{k} a^{n-k}(bi)^k}
+$$
+
+<Callout type="example">
+Beispiel komplexe Zahlen multiplizieren
+
+$$
+\begin{align*}
+    (1+2i)^5 &= \sum_{k=0}^{5}{\binom{5}{k}1^{5-k}(2i)^k} \\
+    &= 1+5(2i)+10(2i)^2+10(2i)^3+5(2i)^4+(2i)^5 \\
+    \text{ersetzen mit potenzwerte} &= 1+10i-40-80i+80+32i \\
+    &= 41 -38i
+\end{align*}
+$$
+</Callout>
+
+
+### Komplexe Konjugation
+
+Zwei komplexe Zahlen die sich nur im Vorzeichen im Imaginärteil unterscheiden, nennt man konjugiert komplex. Wir schrieben dies wie gefolgt
+
+$$
+\begin{align*}
+    z = (a + bi) \\
+    z \text{ komplex konjugiert} = \overline{z} = (a-bi)
+\end{align*}
+$$
+
+### Dividieren
+
+Bei der Division haben wir einen imaginären Teil im Nenner, dies wollen wir aber nicht. dank dem 3-ten Binom lässt sich jedoch der Nenner reel machen. Damit wir im Nenner ein 3-tes Binom haben erweitern wir den Bruch im Nenner und Zähler mit dem Nenner komplex konjugiert.
+
+$$
+\begin{align*}
+    \frac{z_1}{z_2}&=\frac{z_1\overline{z_2}}{z_2\overline{z_2}} \\
+    \text{Als Erweiterung}&=\frac{a+bi}{c+di} = \frac{a+bi}{c+di}\frac{c-di}{c-di}=\frac{(ac+bd)+i(bc-ad)}{c^2+d^2} \\
+    \text{Als Formel}&= \frac{ac+bd}{c^2+d^2} +i \frac{bc-ad}{c^2+d^2}
+\end{align*}
+$$
+
+## Gauss'sche Zahlenebene
+
+Wir können jede komplexe Zahl $z=a +bi$ mit $a,b \in \mathbb{R}$ eindeutig identifizieren. Wir können jetzt auch jeder komplexe Zahl ein geordnetes Zahlenpaar $(a,b) \in \mathbb{R}^2$ zuweisen, was dann einem Punkt im kartesischen Koordinatensystem entspricht wenn man $a=x$ und $b=y$ . So haben wir eine Möglichkeit komplexe Zahlen im zweidimensionalen, reellen Raum darzustellen. Wir haben also
+
+$$
+f: \mathbb{C} \to \mathbb{R}^2, a+bi \mapsto (a,b)
+$$
+
+Diese Abbildung nennt man Komplexe oder Gauss'sche Zahlenebene. **Achtung!!!** wenn wir komplexe Zahlen darstellen dann werden oft Zeiger verwendet welche nicht mit Vektoren zu verwirren sind da auf Vektoren andere Operationen definiert sind auch wenn sie sehr ähnlich sind und oftmals auch sehr ähnlich funktionieren.
+
+![complexNumberCartesian](/maths/complexNumberCartesian.png)
+
+
+### Betrag einer komplexen Zahl
+
+Der Betrag einer komplexen Zahl $z = a + bi \in \mathbb{C}$ entspricht der Entfernung des Punktes $(a,b) \in \mathbb{R}^2$ vom Ursprung oder die Länge des Zeigers. Dies können wir so berechnen $|z|=\sqrt{z \overline{z}}=\sqrt{a^+b^2} \in \mathbb{R}$ oder mit der Formel
+
+$$
+|z|=|a+bi|=\sqrt{a^2+b^2}
+$$
+
+<Callout type="example">
+Beispiel Betrag einer komplexen Zahlen
+
+$$
+|1-2i|=\sqrt{1^2+(-2)^2}=\sqrt{1+4}=\sqrt{5}
+$$
+</Callout>
+
+### Argument einer komplexen Zahl
+
+Das Argument, Winkel oder Phasenwinkel einer komplexen Zahl $z = a + bi \in \mathbb{C}$ entspricht dem Winkel gegenüber der x-Achse. Wir definieren das Argument $\arg(z)$ wie gefolgt
+
+$$
+\arg(z)=\arg(a+bi)=
+\begin{cases}
+    \arctan(\frac{b}{a}) &a > 0 \\
+    \pi + \arctan(\frac{b}{a}) &a < 0 \\
+    \frac{\pi}{2} &a=0,b > 0 \\
+    -\frac{\pi}{2} &a=0,b < 0 \\
+    \text{undefined} &a=0,b=0
+\end{cases}
+$$
+
+Oder auch kürzer aber weniger verbreitet
+
+$$
+\varphi=arg(z)=\arg(a+bi)=
+\begin{cases}
+    \arccos(\frac{a}{r}) &\text{für } b \geq 0 \\
+    -\arccos(\frac{a}{r}) &\text{für } b < 0
+\end{cases}
+$$
+
+<Callout type="example">
+Beispiel Argument einer komplexen Zahlen
+
+$$
+\arg(1-2i)=\arctan(\frac{-2}{1}) = -1.1071rad = -1.1071rad \cdot \frac{180}{/pi} = -63.4321575^{\circ}
+$$
+
+</Callout>
+
+### Komplexe Zahlen im Polarkoordinatensystem
+
+Punkte in einem Koordinatensystem müssen nicht unbedingt im kartesischen
+Koordinatensystem sein. Wir können auch polare Koordinaten verwenden, wir müssen es dann nur Umwandeln. Dafür verwenden wir Betrag: $r=|z|$ und Argument: $\varphi=\arg(z)$ der komplexen Zahl.
+
+![complexNumberPolar](/maths/complexNumberPolar.png)
+
+### Goniometrische Darstellung
+
+Aus der Umrechnung von kartesische Koordinaten zu polare Koordinaten sehen wir, dass wir jede komplexe Zahl auch eindeutig schreiben können als
+
+$$
+z=r(\cos(\varphi) + i \sin(\varphi)) = r \text{ cis}(\varphi)
+$$
+
+wobei $r=|z| \in \mathbb{R}_0^+$ und $\varphi=\arg(z) \in [0,2\pi)$. Dies nennen wir die goniometrsiche Form.
+
+<Callout type="example">
+Beispiel Goniometrische Darstellung einer komplexen Zahlen
+
+$$
+\begin{align*}
+    z &= 1 + \sqrt{3}i \\
+    &\Rightarrow r=|z|=2, \varphi=\arg(z)=\frac{\pi}{3} \\
+    &\Rightarrow z=2(\cos(\frac{\pi}{3})+i \sin(\frac{\pi}{3})) = 2 \text{ cis}(\frac{\pi}{3})
+\end{align*}
+$$
+</Callout>
+
+## Rechenoperationen in der Gauss’schen Zahlenebene
+
+Schauen wir uns nun an wie die oben schon definierten Rechenoperationen von komplexen Zahlen auf der Gauss'schen Zahlenebene aussehen und ob wir sie vielleicht verbessern können.
+
+### Komplexe Konjugation und Negation
+
+Schauen wir uns zuerst einmal die Komplexe Konjugation und Negation an.
+
+![complexNumberConjugate](/maths/complexNumberConjugate.png)
+
+Wir sehen, dass die komplexe Konjugation eine Spiegelung an der x-Achse bewirkt. Wir sehen auch, dass eine negation eine Spiegelung am Ursprung bewirkt.
+
+### Addieren/subtrahieren
+
+Die Addition/Subtraktion von zwei komplexen Zahlen lässt sich wie die Addition zweier Vektoren interpretieren. Achtung sie sind aber nicht Vektoren sondern Zeiger!
+
+![complexNumberAdditionSubtraction](/maths/complexNumberAdditionSubtraction.png)
+
+Die Berechnung der Summe ist immer am einfachsten in der arithmetischen Form die goniometrische Form eignet sich nicht dafür.
+
+### Multiplizieren
+
+Wenn wir mit in der goniometrischer Darstellungsform eine Multiplikation probieren können wir auf folgendes stossen mit ein wenig komplizierter Auflösungen
+
+$$
+\begin{align*}
+    z_1 \cdot z_2 &= (r_1(\cos(\varphi_1) + i \sin(\varphi_1)))(r_2(\cos (\varphi_2) + i \sin (\varphi_2))) \\
+    &= r_1 \cdot r_2(\cos(\varphi_1)\cos(\varphi_2)−\sin(\varphi_1)\sin (\varphi_22)) \\
+    &\hspace{1cm} + i(\cos(\varphi_1)\sin(\varphi_2)+\sin(\varphi_1)\cos (\varphi_2)) \\
+    &= r_1 \cdot r_2(\cos(\varphi_1 + \varphi_2) + i \sin(\varphi_1 + \varphi_2)) \\
+    &= r_1 \cdot r_2 \text{cis}(\varphi_1 + \varphi_2)
+\end{align*}
+$$
+
+Wir können als mit der goniometrischer Darstellungsform viel einfacher und schneller multiplizieren wenn wir die folgender Formel verwenden
+
+$$
+z_1 \cdot z_2 = (r_1 \text{cis}(\varphi_1))(r_2 \text{cis}(\varphi_2))=r_1r_2\text{cis}(\varphi_1 + \varphi_2)
+$$
+
+Wird die komplexe Zahl $z_1 = a + ib = r \text{ cis}(\varphi)$ als Zeiger in der
+Gauss’schen Zahlenebene interpretiert, so bewirkt die Multiplikation von $z_1$ mit der
+komplexen Zahl $z_2 = s \text{ cis} (\alpha)$ eine Drehstreckung des Zeigers $z_1$. Der Zeiger wird dabei um den Faktor $s$ gestreckt und um den Winkel $\alpha$ (im gegenuhrzeigersinn) gedreht!
+
+![komplexeZahlenMutiplikation](/maths/complexNumberMultiplication.png)
+
+<Callout type="example">
+Interessante Beispiele bei der Multiplikation
+
+Das Produkt der beiden komplexen Zahlen $z_1 = a + bi = r \text{cis}(\varphi)$ und $z_2 = \overline{z_1} = a − bi = r cis (−\varphi)$ ergibt
+
+$$
+z_1z_2 =r \text{ cis}(\varphi) \cdot r \text{ cis}(−\varphi)= r\cdot r \text{ cis}(\varphi − \varphi) = r^2 \text{ cis}(0) = r^2
+$$
+
+Das Produkt der beiden komplexen Zahlen $z_1 = a + bi = r \text{cis}(\varphi)$ und $z_2 = 1 \text{cis}(\alpha)$ ergibt
+
+$$
+z1_z2 = r \text{ cis}(\varphi) 1 \cdot \text{ cis}(\alpha) = r \text{ cis}(\varphi + \alpha)
+$$
+
+Was auf der Gauss’schen Zahlenebene nur eine Drehung des Zeigers bewirkt.
+</Callout>
+
+### Division
+
+Wenn wir mit in der goniometrischer Darstellungsform eine Division probieren so sehen wir, dass es sehr viel einfacher und kürzer ist als in der algebraischen Form.
+
+$$
+\frac{z_1}{z_2}=\frac{r_1 \text{cis}(\varphi_1)}{r_2 \text{cis}(\varphi_2)}=\frac{r_1}{r_2} \text{cis}(\varphi_1 - \varphi_2)
+$$
+
+Der Betrag der Division ist also gleich der Division der Beträge und das Argument der Division entspricht der Differenz der Argumente.
+
+![komplexeZahlenDividieren](/maths/complexNumberDivision.png)
+
+### Satz von Moivre
+
+Als nächstes wollen wir die Operationen Potenzieren und Radizieren betrachten. Dafür werden wir den Satz von Moivre verwenden.
+
+#### Satz von Moivre Teil 1, potenzieren
+
+Weil die Multiplikation in der goniometrischen Darstellung einfacher zu berechnen
+ist als in der algebraischen Form, wollen wir die Potenzen ebenfalls in goniometrischer Darstellung definieren.
+
+$$
+\begin{align*}
+    z^2 &= (r \text{ cis}(\varphi))^2=(r \text{ cis}(\varphi))(r \text{ cis}(\varphi)) = r \cdot r \text{ cis}(\varphi + \varphi) \\
+    &= r^2 \text{ cis}(2\varphi)
+\end{align*}
+$$
+
+Daraus können wir dann die folgende Formel bauen für ganzzählige Potenzen $n \in \mathbb{Z}$
+
+$$
+z^n= (r \text{ cis}(\varphi))^n=r^n \text{ cis}(n\varphi)
+$$
+
+mehr dazu findest du [hier](https://www.youtube.com/watch?v=G_FRNyHpzrk)
+
+#### Satz von Moivre Teil 2, radizieren (wurzelziehen)
+
+In der reelen Zahlenmenge hat die Rechnung $x^4=1$ nur zwei Resultate $x_{1,2}=\pm1$. Jedoch gibt es in der komplexen Zahlenmenge für diese Rechnung 4 Resultate zwar $1,-1,i$ und $-i$. Dies gibt uns ein kleines Problem weil wir nicht mehr einfach $\pm$ hinschrieben können wenn wir die Wurzel ziehen. Damit wir alle Lösungen bekommen müssen wir die Periodizität ausnutzen. Wir wollen also folgendes problem lösen
+
+$$
+z^n= a + bi = r \text{ cis}(\varphi) \iff z=\sqrt[n]{r \text{ cis}(\varphi)}
+$$
+
+Wir wissen, dass das radizieren eine spezielle Form von potenzieren ist mit Dezimalzahlen
+$\sqrt[3]{x}=(x)^{\frac{1}{3}}$ nun müssen wir noch die Periodizität einbringen dann bekommen wir die folgende Formel
+
+$$
+z^n= r \text{ cis}(\varphi) \iff z_k=\sqrt[n]{r} \text{ cis}(\varphi + 2\pi k)^{\frac{1}{n}}=\sqrt[n]{r} \text{ cis}(\frac{\varphi}{n} + \frac{2\pi}{n} k)
+$$
+
+wobei $k=0,1,...n-1$
+
+mehr dazu findest du [hier](https://www.youtube.com/watch?v=BKdqTn2iO4s)
+
+<Callout type="example">
+Beispiel komplexe Zahlen radizieren
+
+$$
+\begin{align*}
+    z^2 &= i = 0 + 1i = 1 \text{ cis}(\frac{\pi}{2}) \iff z=\sqrt{i} =  \sqrt{1 \text{ cis}(\frac{\pi}{2})} \\
+    &\Rightarrow z_0 =  1 \text{ cis}(\frac{\pi}{4}) \\
+    &\Rightarrow z_1 =  1 \text{ cis}(\frac{\pi}{4}+\frac{2\pi}{2})= 1 \\
+    \text{ cis}(\frac{5\pi}{4})
+\end{align*}
+$$
+</Callout>
+
+## Exponential/Euler Form
+
+Bevor wir mit dem Logarithmieren starten können benötigen wir noch eine weitere Darstellungsform für die komplexen Zahlen. Dies ist die sogenannte Exponentialform auch oft Eulerform gennant. Um diese Darstellungsform herzuleiten arbeiten wir mit Potenzreihen.
+
+Ein gutes Video findest du auch [hier](https://www.youtube.com/watch?v=TGJHnQY9cjA)
+
+### Euler'sche Formel
+
+$$
+e^{ix}=\cos(x)+i\sin(x)=\text{cis}(x)
+$$
+
+Somit können wir dann komplexe Zahlen darstellen
+
+$$
+z=re^{i\varphi}
+$$
+
+### Logarithmieren
+
+Mit der exponentialform können wir nun logarithmieren.
+
+Wenn $z=-5+5i=5\sqrt{2}\text{ cis}(\frac{3\pi}{4})=5\sqrt{2}e^{i\frac{3\pi}{4}}$. Dann wollen wir folgendes ausrechnen
+
+$$
+\begin{align*}
+    \ln(z)&=\ln(5\sqrt{2}e^{i\frac{3\pi}{4}}) \\
+    &= \ln(5\sqrt{2})+\ln(e^{i\frac{3\pi}{4}}) \\
+    &= \ln(5\sqrt{2})+i\frac{3\pi}{4}
+\end{align*}
+$$
+
+Wir sehen, dass Der Logarithmus einer komplexen Zahl $z \neq 0$   ist wieder eine
+komplexe Zahl. Dabei ist der Realteil des Resultats gleich dem Logarithmus des Betrags und der Imaginärteil gleich dem Exponenten (plus ein ganzzahliges Vielfaches von 2$\pi$ wegen der Periodizität).
+
+$$
+\ln(z)=\ln(re^{i\varphi})=\ln(r)+i\varphi
+$$
+
+<Callout type="example">
+Beispiel logarithmieren mit Basiswechsel
+
+Wir wollen $\log_2(\sqrt{2}-\sqrt{2}i)$ berechnen dafür verwandeln wir wieder die Zahl zuerst in die Exponentialform $\sqrt{2}-\sqrt{2}i=2e^{i\frac{7\pi}{4}}$
+
+$$
+\log_2(2e^{i\frac{7\pi}{4}})=\frac{\ln(2e^{i\frac{7\pi}{4}})}{\ln(2)}=1+i\frac{\frac{7\pi}{4}}{ln(2)}
+$$
+
+</Callout>
+
+<Callout type="example">
+Beispiel negative Zahlen logarithmieren
+
+Wir wollen $\ln(-1)$ berechnen, mit reelen Zahlen ist es nicht möglich aber vielleicht ist es mit komplexen Zahlen möglich. Dafür müssen wir die Zahl zuerst in die Exponentialform umwandeln $-1=-1+0i=e^{i\pi}$
+
+$$
+\ln(-1)=\ln(e^{i\pi}) = i\pi
+$$
+</Callout>
+
+### Komplexe Zahlen im Exponenten
+
+Neben dem Logarithmieren liefert die Exponentialform eine Möglichkeit des Potenzierens mit der komplexen Zahl im Exponenten.
+
+$$
+e^z=e^{a+bi}=e^a e^{bi}= e^a \text{ cis}(b)
+$$
+
+<Callout type="example">
+Beispiel komplexe Zahl im Exponenten
+
+$$
+e^{1+i\pi}=e \text{ cis}(\pi)=-e
+$$
+
+$$
+2^i=e^{\ln(2^i)}=e^{i \ln(2)}=\text{cis}(\ln(2))
+$$
+</Callout>

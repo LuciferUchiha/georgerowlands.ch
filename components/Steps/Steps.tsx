@@ -1,11 +1,6 @@
 import React, { ReactNode } from 'react';
 
-interface StepCircleProps {
-  id: string;
-  scale?: number; // Optional scale prop (default is 1)
-}
-
-const StepCircle: React.FC<StepCircleProps> = ({ id, scale = 1 }) => {
+export const StepCircle = ({ id, scale = 1 } : { id: string, scale?: number }) => {
   const circleStyle = {
     transform: `scale(${scale})`,
   };
@@ -17,12 +12,7 @@ const StepCircle: React.FC<StepCircleProps> = ({ id, scale = 1 }) => {
   );
 };
 
-interface StepProps {
-  children: ReactNode;
-  id: string;
-}
-
-const Step: React.FC<StepProps> = ({ children, id }) => {
+export const Step = ({ id, children }: { id: string, children: ReactNode }) => {
   return (
     <div className="flex mb-4 items-start relative">
       <div className="flex-shrink-0 mt-1 mr-2">
@@ -35,16 +25,10 @@ const Step: React.FC<StepProps> = ({ children, id }) => {
   );
 };
 
-interface StepsProps {
-  children: ReactNode;
-}
-
-const Steps: React.FC<StepsProps> = ({ children }) => {
+export const Steps = ({ children }: { children: ReactNode }) => {
   return (
     <div className="mt-8 space-y-4 relative">
       {children}
     </div>
   );
 }
-
-export { Steps, Step, StepCircle };
