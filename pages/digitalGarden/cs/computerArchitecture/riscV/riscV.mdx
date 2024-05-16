@@ -1,0 +1,31 @@
+import Image from "~/components/Image/Image";
+
+# What is RISC-V?
+
+RISC-V is an open standard instruction set architecture that has been developed at the University of California, Berkeley since 1981 and is based on the established RISC principles which we will see when diving deeper.
+
+## CISC vs RISC
+
+Up until about 1986 most chip manufacturers were using the CISC (Complex Instruction Set Computers) Architecture, the most common example of this being the Intel x86 ISA which is widely used nowadays. However, they realized that it makes building the chips more complicated and slows down potential improvements. This brought on the switch to RISC (Reduced Instruction Set Computers) which focuses on having a small number of simple instructions and then letting the compilers resolve complexity. Some of the most common examples of RISC are MIPS, AMD ARM and the open-source RISC-V which is what we will be looking at.
+
+However, you might have realized that most computers that you interact with use x86, doesn't that mean that you aren't getting the best performance that you could? This is actually not true, almost all chips nowadays use the RISC architecture, including x86 chips. But I just said that x86 uses CISC? This is true for the early x86 chips, the x86 chips nowadays are hybrid chips. They support CISC instructions for backward compatibility as a lot of devices were already using CISC, however, inside the chips they convert the CISC instructions to RISC instructions and execute them, which makes them have a "RISC" core.
+
+## Extensions
+
+RISC-V aims to be as lightweight as possible which is why it allows for extensions to be added for certain functionalities. This allows chip manufacturers to only add what they need and not have instructions that they never intend to use or support. We will mainly be focusing on the `RV32IG` variant which is equivalent to `RV32IMAFD`.
+
+<Image 
+    src="/cs/archRiscVExtensions.png"
+    width={600}
+/>
+
+## Register Layout
+
+RISC-V has 32 (or 16 in the embedded variant) integer registers and with the floating-point extension another separate 32 floating-point registers. Since our focus is on the 32-bit variation each register can store 32 bits. These registers are essential to the CPU as it can only work with data that is in a register it can not work on data in main memory. So if we want to manipulate data that is in the main memory we need to first transfer the data from the main memory to a register.
+
+Certain registers have restrictions or should be used in a certain way. Most notable is that the first register will always store the value 0.
+
+<Image 
+    src="/cs/archRiscVRegisters.png"
+    width={600}
+/>

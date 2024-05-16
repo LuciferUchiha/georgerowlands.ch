@@ -1,16 +1,28 @@
-import ProgressBar from "../components/ProgressBar/ProgressBar";
+import { ReactTyped } from "react-typed";
+import GardenGraph from "~/components/GardenGraph/GardenGraph";
 
-<div className="absolute top-0 left-0 -z-10 h-full w-full opacity-40 invert bg-primary-800 dark:filter-none"
-     style={{background: "transparent url('https://gifimage.net/wp-content/uploads/2017/07/animated-rain-gif-10.gif')"}}
-></div>
+<div className="h-screen flex flex-row w-full">
+  <div className="self-center border border-[#ECECEC] dark:border-[#2A2A2A]">
+    <GardenGraph className="hidden"/>
+  </div>
+  <div className="mt-96 ml-8">
+      <ReactTyped 
+          strings={["Hello there, my name is"]}
+          className="text-3xl"
+          typeSpeed={40}
+          showCursor={false}
+          startDelay={500}
+      />
 
-<div className="flex flex-col flex-wrap h-[calc(100%-98px)] max-w-[34rem] justify-center">
-    <h3 className="text-base"> Hi, my name is </h3>
-    <h1 className="leading-[4.5rem] font-bold text-primary-500 dark:text-primary-700 text-6xl break-words">George Rowlands</h1>
-    <h2 className="break-words text-3xl font-bold">Computer Science Student</h2>
-    <div>
-        <h2 className="mb-4 text-3xl font-bold text-primary-500 dark:text-primary-700">Knowledge</h2>
-        <ProgressBar/>
-    </div>
+      <br />
+
+      <ReactTyped
+          strings={["George Rowlands"]}
+          className="font-bold text-primary-500 dark:text-primary-600 text-6xl"
+          typeSpeed={40}
+          startDelay={2200}
+          showCursor={false}
+      />
+
+  </div>
 </div>
-

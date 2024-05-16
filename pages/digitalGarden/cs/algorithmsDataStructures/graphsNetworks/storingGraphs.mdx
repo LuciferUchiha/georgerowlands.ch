@@ -1,0 +1,195 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+
+# Storing Graphs
+
+Because I am a computer scientist I don't just care about using graphs but also about how to store them. There are
+multiple ways of storing graphs. Depending on the type of graph and the requirements a certain storage method might
+be preferred as it might be more efficient in terms of memory or time complexity.
+
+## Adjacency Matrix
+
+An adjacency matrix is the most common and the most simple way of storing graphs. If we have a graph with $n$ vertices,
+we create an adjacency matrix with dimensions of $n \times n$. As the name suggests this matrix stores the adjacency of
+vertices i.e. the relationship between the vertices i.e. the edges.
+
+Below you can see an example of a very simple adjacency matrix of an undirected unweighted graph.
+
+<Image 
+    src="/cs/graphsAdjacencyMatrix.png"
+/>
+
+### Weighted and Unweighted Graphs
+
+If we have a weighted graph where the weights are integer values we can create the following matrix:
+
+```java
+int[][] G = new int[n][n]
+```
+
+The weight of the edge from vertex $x$ to vertex $y$ would then be stored at `G[y][x]`.
+
+If there is no edge between 2 vertices then there are multiple ways to indicate this. The simplest way would be to set
+the value to 0 (which it already is at initialization) another common approach is to set the weight to
+`Integer.MAX_VALUE`.
+
+The last possibility but the worst in space complexity is to use a `null` value. This is only possible if we use an
+object array instead of a primitive array. This would mean that instead of using `int[][]` we use `Integer[][]`.
+This would however mean that we would end up using a lot more memory as you can read more about
+[here](https://stackoverflow.com/a/65568047/10994912).
+
+If the graph is unweighted we can use the same int array and just store all edge weights as 1 or 0. We could however
+also use a 2D boolean array which interestingly does use less space in Java than an int array. In Java, a normal boolean
+variable uses 32 bits like an int. However, in an array each boolean value only takes up 8 bits because that is what the
+CPU likes to use internally. This means that a boolean array uses 4 times less space than an int array.
+
+### Directed and Undirected Graphs
+
+If the graph is undirected then we commonly set the value at `G[y][x]` and `G[x][y]` to the same value. This means that
+mathematically $G = G^T$ i.e. the matrix is symmetric along the diagonal, and that we could get away with only storing
+the upper or lower triangle of the matrix, which would half the memory usage. However, this would make the code more
+complicated.
+
+If the graph is directed then we only set the value at `G[y][x]` and not at `G[x][y]`. So $G \eq G^T$ is no longer
+guaranteed.
+
+The biggest problem with storing graphs with an adjacency matrix is that its space complexity is $O(n^2)$. What makes
+this worse is that a lot of the space is wasted as in most cases there are only a few edges between vertices making it
+a sparse matrix. Very rarely do we need to store a [complete graph](generalDefinition#complete-graphs).
+
+<Image 
+    src="/cs/graphsAdjacencyMatrixWeighted.png"
+/>
+
+### Implementation
+
+As mentioned although the adjacency matrix isn't the most efficient way of storing graphs it is the most common and
+very simple to implement. Below you can see a simple implementation for an undirected unweighted graph.
+
+```java
+public class UndirectedUnweightedGraph {
+    final boolean[][] adjMatrix;
+    final int n;
+
+    public GraphI(int numNodes) {
+        if (numNodes < 1) throw new IllegalArgumentException();
+        this.adjMatrix = new boolean[numNodes][numNodes];
+        this.n = numNodes;
+    }
+
+    public boolean addEdge(int x, int y) {
+        if (0 <= x && x < n && 0 <= y && y < n) {
+            if (adjMatrix[y][x]) return false; // already set
+            adjMatrix[y][x] = adjMatrix[x][y] = true;
+            return true;
+        }
+        throw new IndexOutOfBoundsException();
+    }
+}
+```
+
+## Edge List
+
+Another simple but less common way of storing graphs is to just store a list of the edges. The edges could have the
+following structure:
+
+```java
+class Edge {
+ int from, to, weight;
+}
+```
+
+If it is an unweighted graph the weight attribute could just be omitted and if it is an undirected graph you can either
+have two entries for each edge or handle from and to the same way when processing.
+
+The advantage of this solution is that it only uses $O(m)$ memory with $m$ being the number of edges. The disadvantage
+of this storage solution is that you can not quickly find out how many vertices are in the graph and what they are. This
+could however be solved by just adding another list containing all the vertices. This solution would then be very
+similar to the formal definition of a graph $G=(V, E)$. We would then have a memory usage of $O(n+m)$ with $n$ being the
+number of vertices and $m$ the number of edges.
+
+<Callout type="todo">
+    Implement this
+</Callout>
+
+## Adjacency Lists
+
+An adjacency list stores for each vertex has a list of its edges. An adjacency list can just be a simple array but the
+list storing the edges is most commonly a linked list due to the storage and length being dynamic. If the graph is
+undirected you can again either handle it by just storing an edge in one of the list, for example always in the source
+vertex, or you can also store it additionally in the destination vertexes list. This structure uses just like the edge
+table $O(n+m)$ memory with $n$ being the number of vertices and $m$ the number of edges.
+
+### Implementation
+
+<Callout type="todo">
+    Is this really correct and they way I want it?
+</Callout>
+
+```java
+public class UnweightedGraph<K> {
+    private static class Vertex<K> {
+        K data;
+        int indegree, deg = 0;
+        boolean visited;
+        List<Vertex<K>> adjList = new LinkedList<Vertex<K>>();
+
+        Vertex(K value) {
+            data = value;
+        }
+
+        boolean addEdgeTo(Vertex <K> to) {
+            return (adjList.contains(to)) ? false : adjList.add(to);
+        }
+    }
+
+    private Map<K, Vertex<K>> vertices;
+    private int nOfEdges = 0;
+
+    public UnweightedGraph() {
+        this(false);
+    }
+
+    public UnweightedGraph(boolean directed) {
+        super(directed);
+        vertices = new HashMap<K, Vertex<K>>();
+    }
+
+    public UnweightedGraph(UnweightedGraph<K> orig) { // copy constructor
+        this(orig.isDirected());
+        for (K k: orig.vertices.keySet()) {
+            addVertex(k);
+        }
+        for (Vertex<K> v: orig.vertices.values()) {
+            for (Vertex<K> w: v.adjList) {
+                addEdge(v.data, w.data);
+            }
+        }
+    }
+
+    public boolean addVertex(K vertex) {
+        if (vertex != null && !vertices.containsKey(vertex)) {
+            vertices.put(vertex, new Vertex<K>(vertex));
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean addEdge(K from, K to) {
+        Vertex<K> vf = vertices.get(from);
+        Vertex<K> vt = vertices.get(to);
+        if (vf != null && vt != null && vf.addEdgeTo(vt)) {
+            vt.indegree++;
+            if (!isDirected()) {
+                vt.addEdgeTo(vf);
+                vf.indegree++;
+            }
+            nOfEdges++;
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+```
