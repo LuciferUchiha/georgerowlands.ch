@@ -1,0 +1,152 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+
+# Arithmetic and Logical Operations
+
+Arithmetic and logical operations are some of the key building blocks for writing any program as almost any functionality boils down to them.
+
+## Arithmetic Operations
+
+In RISC-V all arithmetic operations have the same form, two sources (b and c) and one destination (a). Later on, we will learn more forms of operations and also how these operations are encoded to machine code, i.e to binary digits.
+
+```assembly
+add x20, x21, x20
+```
+
+This is in aid of the first design principle of RISC-V
+
+> Simplicity favors regularity.
+
+<Callout type="example">
+If we have the following C code
+
+```c
+// f in x19, g in x20, h in x21
+// i in x22, j in x23
+f = (g + h) – (i + j);
+```
+
+and we compile it we can expect that the following RISC-V code will be assembled.
+
+```assembly
+add x5, x20, x21
+add x6, x22, x23
+sub x19, x5, x6
+```
+
+Here we make use of the temporary registers `x5` and `x6`.
+</Callout>
+
+We will see what the immediate instructions are for further down.
+
+| Instruction                      | Type | Example                | Meaning                                     |
+| -------------------------------- | ---- | ---------------------- | ------------------------------------------- |
+| Add                              | R    | `add rd, rs1, rs2`     | `R[rd] = R[rs1] + R[rs2]`                   |
+| Subtract                         | R    | `sub rd, rs1, rs2`     | `R[rd] = R[rs1] – R[rs2]`                   |
+| Add immediate                    | I    | `addi rd, rs1, imm12`  | `R[rd] = R[rs1] + SignExt(imm12)`           |
+| Set less than                    | R    | `slt rd, rs1, rs2`     | `R[rd] = (R[rs1] < R[rs2])? 1 : 0`          |
+| Set less than immediate          | I    | `slti rd, rs1, imm12`  | `R[rd] = (R[rs1] < SignExt(imm12))? 1 : 0`  |
+| Set less than unsigned           | R    | `sltu rd, rs1, rs2`    | `R[rd] = (R[rs1] <u R[rs2])? 1 : 0`         |
+| Set less than immediate unsigned | I    | `sltiu rd, rs1, imm12` | `R[rd] = (R[rs1] <u SignExt(imm12))? 1 : 0` |
+| Load upper immediate             | U    | `lui rd, imm20`        | `R[rd] = SignExt(imm20 << 12)`              |
+| Add upper immediate to PC        | U    | `auipc rd, imm20`      | `R[rd] = PC + SignExt(imm20 << 12)`         |
+
+### Immediate Operands
+
+We often find ourselves using constants when working with operations, research actually estimates that 80% of the instructions have some constant value. For example, incrementing is just adding 1 etc. As this is the most common case RISC-V offers so-called immediate operands that work with a constant as a source instead of a registry address. This is also in aid of one of their design principles.
+
+> Make the common case fast.
+
+Immediate operands are faster as they avoid a load instruction. However, due to the way instructions are encoded we can only use constants that use up to 12 bits. However, later on, we will see how we can work with larger constants.
+
+```assembly
+addi x22, x22, 4
+```
+
+## Logical Operations
+
+We also often find ourselves manipulating or working with bits which is what the logical operations are for. They are in most high-level programming languages the same with the most common exception being for the arithmetic or logical shift right operation. The key difference between these 2 is that the arithmetic version fills the left with zeros where as the logical version fills it with the sign bit resulting in a sign-extension to preserve the decimal value.
+
+| Instruction                      | Type | Example               | Meaning                                 |
+| -------------------------------- | ---- | --------------------- | --------------------------------------- |
+| AND                              | R    | `and rd, rs1, rs2`    | `R[rd] = R[rs1] & R[rs2]`               |
+| OR                               | R    | `or rd, rs1, rs2`     | `R[rd] = R[rs1] | R[rs2]`               |
+| XOR                              | R    | `xor rd, rs1, rs2`    | `R[rd] = R[rs1] ^ R[rs2]`               |
+| AND immediate                    | I    | `andi rd, rs1, imm12` | `R[rd] = R[rs1] & SignExt(imm12)`       |
+| OR immediate                     | I    | `ori rd, rs1, imm12`  | `R[rd] = R[rs1] | SignExt(imm12)`       |
+| XOR immediate                    | I    | `xori rd, rs1, imm12` | `R[rd] = R[rs1] ^ SignExt(imm12)`       |
+| Shift left logical               | R    | `sll rd, rs1, rs2`    | `R[rd] = R[rs1] << R[rs2]`              |
+| Shift right arithmetic           | R    | `sra rd, rs1, rs2`    | `R[rd] = R[rs1] >> R[rs2] (arithmetic)` |
+| Shift right logical              | R    | `srl rd, rs1, rs2`    | `R[rd] = R[rs1] >> R[rs2] (logical)`    |
+| Shift left logical immediate     | I    | `slli rd, rs1, shamt` | `R[rd] = R[rs1] << shamt`               |
+| Shift right logical immediate    | I    | `srli rd, rs1, shamt` | `R[rd] = R[rs1] >> shamt (logical`      |
+| Shift right arithmetic immediate | I    | `srai rd, rs1, shamt` | `R[rd] = R[rs1] >> shamt (arithmetic)`  |
+
+If we look at the RISC-V logical operations there isn't anything special apart from there not being a NOT operation. This is because it can be simply implemented by using the XOR operation which sets a bit to 1 if the bits are different and otherwise a 0. To be more precise we XOR with the value that only consists of positive bits to simulate a NOT operation. However, we will come across pseudo instructions where there will be a NOT operation.
+
+## Operations With Large Constants
+
+If we want to work with constants larger than 12 bits we need to do use the following instruction:
+
+```assembly
+lui x19, 0x003D0
+```
+
+This instruction stands for load upper immediate and allows us to load the 20 most significant bits into a registry. The 12 remaining bits will be set to 0 but we can also set these by either adding or using an OR operation.
+
+<Image 
+    src="/cs/archLoadUpperImmediate.png"
+    width={600}
+/>
+
+## Assembly Optimization
+
+One of the main goals of a compiler is to optimize the program when writing the assembly code.
+
+```c
+// x in a0, y in a1
+int logical (int x, int y) {
+    int t1 = x ^ y;
+    int t2 = t1 >> 17;
+    int mask = (1 << 8) – 7;
+    int rval = t2 & mask;
+    return rval;
+}
+```
+
+```assembly
+xor a0, a0, a1      # a0 = x ^ y (t1)
+srai a0, a0, 17     # a0 = t1 >> 17 (t2)
+andi a0, a0, 249    # a0 = t2 & ((1 << 8) – 7)
+```
+
+In the above example, we can see that a few simple optimizations have been made:
+
+- Because x is only needed once we can use its registry to store the result of the first line instead of having to use a separate temporary registry
+- The calculation of the mask only consists of constants, which means it can be calculated at runtime. This results in the last two statements being combined into one instruction.
+
+```c
+// x in a0, y in a1, z in a2
+int arith (int x, int y, int z) {
+    int t1 = x + y;
+    int t2 = z + t1;
+    int t3 = x + 4;
+    int t4 = y * 48;
+    int t5 = t3 + t4;
+    int rval = t2 - t5;
+    return rval;
+}
+```
+
+```assembly
+add a5, a0, a1      # a5 = x + y (t1)
+add a2, a5, a2      # a2 = t1 + z (t2)
+addi a0, a0, 4      # a0 = x + 4 (t3)
+slli a5, a1, 1      # a5 = y * 2
+add a1, a5, a1      # a1 = a5 + y
+slli a5, a1, 4      # a5 = a1 * 16 (t4)
+add a0, a0, a5      # a0 = t3 + t4 (t5)
+sub a0, a2, a0      # a0 = t2 – t5 (rval)
+```
+
+In this example the assembly code is actually longer then the C code. However, it has been optimzed, length of code does not correspond to efficiency. To be more precise the multiplication has been optimized because multiplicaitons are very slow. So instead of multiplying the compiler tries to make use of bit shifts which are much fast. So `y * 48` becomes `(3y) << 4`. Another example of this would be replacint `7 * x` with `8 * x - x` which can be translated to `(x << 3) - x`.
