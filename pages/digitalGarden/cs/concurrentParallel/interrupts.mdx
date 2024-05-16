@@ -1,0 +1,96 @@
+# Interrupts
+
+Blocking methods can potentially take forever if the condition they are waiting for never occurs which can lead to big issues. For this reason, we want a mechanism to be able to stop/cancel waiting for a given condition and continue with the program.
+
+In Java, the static function `Thread.stop()` exists but is declared deprecated as it is unsafe. It is unsafe because the Thread that it is called on releases all the locks monitors the thread was holding. Any of the objects previously protected by these released locks which were in an inconsistent state become visible to the other threads and therefore potentially result in broken behavior. So we need to use a different mechanism.
+
+## Interrupt Flag
+
+Internally every thread in Java has a boolean flag corresponding to its interrupted status. When the method `interrupt()` is called on a thread the flag is set to `true`. If the thread is blocked i.e. it is in an invocation of `wait()`, `sleep()` or `join()` the flag is consumed/reset and an `InterruptedException` is thrown. If the thread is not blocked the flag is just set and can be polled and handled by the developer. The flag can be read with the `isInterrupted()` method. There is also the static function `Thread.interrupted()` which resets the flag and returns the old value. Important to know is that if the flag is set any subsequent `wait()`, `sleep()` or `join()` on that thread will immediately throw an `InterruptedException`.
+
+```java
+public static void main(String args[]) {
+    Thread.currentThread().interrupt(); // true
+    System.out.println(Thread.interrupted()); // prints true, now false
+    try {
+        Thread.sleep(1000);
+        System.out.println("ok1"); // prints
+    } catch (InterruptedException e) {
+        System.out.println("IE: " + Thread.currentThread().isInterrupted());
+    }
+    Thread.currentThread().interrupt(); // true
+    System.out.println(Thread.currentThread().isInterrupted()); // prints true
+    try {
+        Thread.sleep(1000);
+        System.out.println("ok2"); // doesn't print
+    } catch (InterruptedException e) {
+        System.out.println("IE: " + Thread.currentThread().isInterrupted()); // prints false
+    }
+}
+```
+
+## Handling InterruptedException
+
+When an `InterruptedException` is thrown there are a few possible reactions all with their own benefits.
+
+### Ignore
+
+The exception can be ignored if we know for a fact that the threads interrupt method is never called for example when it is in a local non-accessible thread class. Another use case for ignoring the exception is if we want an essential service to not be interruptable.
+
+```java
+try {
+    wait();
+} catch (InterruptedException e) {
+    //ignore
+}
+```
+
+### Propagate
+
+The exception can also be propagated up the call stack. Some simple cleanup can also be done in the exception handler before propagating.
+
+```java
+public synchronized void foo() throws InterruptedException {
+    ...
+    try {
+        wait(); // wait until not full
+    } catch ( InterruptedException e ) {
+        /* some cleanup */
+        throw e;
+    }
+    ...
+}
+```
+
+### Defer
+
+In some cases, it might not be possible to propagate the exception for example when the task is defined in a Runnable. Instead, we defer the handling to later point. For this, we restore the interrupted status so that code higher up on the call stack can handle the exception appropriately.
+
+```java
+try {
+    wait();
+} catch (InterruptedException e) {
+    // Restore the interrupted status
+    Thread.currentThread().interrupt();
+}
+```
+
+## Lost Wake-Up/Signal Problem
+
+A lost wake-up or signal is an event that can happen when a thread is notified with a `notify()` call and is simultaneously interrupted. This results in the notify signal getting lost and possibly leading to a deadlock as the rest of the code thinks the notify was executed without any issues. A possible scenario could look like this:
+
+1. Threads t1 and t2 are waiting in a wait()
+2. Thread t3 performs a notify => t1 is selected
+3. Thread t4 interrupts t1
+   1. wait called by t1 throws InterruptedException
+      1. t1 does not process notification
+      2. t2 does not wake up => Deadlock
+
+A solution to this problem is to call `notifyAll()` or `notify()` in the ExceptionHandler.
+
+```java
+catch (InterruptedException e) {
+    notify();
+    throw e;
+}
+```
