@@ -1,0 +1,100 @@
+# Dependency Injection and Beans
+
+Dependency Injection is a design pattern used in software development and is especially used in the Spring framework.
+Dependency Injection allows objects to be created with their dependencies explicitly provided, instead of the objects
+themselves having to be responsible for the creation of their dependencies. It is a way to achieve loose coupling
+between objects and their dependencies. This is also referred to as Inversion of Control, IoC which is another principle
+where instead of as in traditional programming, a component would create and control the objects it depends on in IoC the
+responsibility is shifted to a container or framework, in Springs case the Spring Container.
+
+![springIOC](/cs/springIoC.png)
+
+When working with Spring Dependency Injection is controlled by the Spring Container which is responsible for creating
+and managing the lifecycle of objects, and injecting their dependencies. The objects are referred to as beans. These
+beans are then kept track of in the Spring/Application Context which can be fetched as follows:
+
+```java
+@SpringBootApplication
+public class MyApplication {
+   public static void main(String[] args) {
+      ApplicationContext context = SpringApplication.run(MyApplication.class, args);
+      for (String beanName : context.getBeanDefinitionNames()) {
+         System.out.println(beanName);
+      }
+   }
+}
+```
+
+For the Spring Container to know what is a bean you use to define them using XML but nowadays, you just annotate Java
+Classes. The parent annotation is `@Bean`, however most of the time you will be using different ones such as `@Entity`,
+`@Component`, `@Controller`, `@Service` which all inherit from it. Once the bean is defined, the container reads manages
+it and can inject it into its dependencies. Dependency injection is also commonly referred to as auto-wiring
+relationships between beans, which is why in Spring you use the annotation `@Autowired` for a dependency to be injected.
+
+Beans are found and created most via a component scan. Packages are scanned for annotated classes. Scan is started in
+package of main class and then down the tree so make sure no beans above main package! can also override basePackage to
+start the scan.
+
+```java
+@Component("fooFormatter")
+public class FooFormatter {
+    public String format() {
+        return "foo";
+    }
+}
+```
+
+We can then inject the dependency in many ways such as Constructor injection, Setter injection or Field injection.
+Constructor being the best practice and the other being heavily debated:
+
+```java
+@Component
+public class FooServiceField {
+    @Autowired
+    private FooFormatter fooFormatter;
+}
+@Component
+public class FooServiceSetter {
+    private FooFormatter fooFormatter;
+    @Autowired
+    public void setFormatter(FooFormatter fooFormatter) {
+        this.fooFormatter = fooFormatter;
+    }
+}
+@Component
+public class FooServiceConstructor {
+    private FooFormatter fooFormatter;
+    @Autowired // optional
+    public FooServiceConstructor(FooFormatter fooFormatter) {
+        this.fooFormatter = fooFormatter;
+    }
+}
+```
+
+## Qualifiers and Primary Beans
+
+use qualifiers so that when interface is to be injected we can choose implementation. Or mark one as primary, i.e the
+default one to inject. Show example of in constructor
+
+## Spring Profiles
+
+Can setup different profiles for example in dev you want h2 database and matching services etc. and then for in prod use
+postgres or mysql. Or could also use for different languages, why would an api be language dependent? 2 beans with same
+name but then set different profiles and in application.properties set the active profile. there is a default profile and
+you can have multiple profiles.
+
+## Spring Bean Lifecycle
+
+all beans are made ready before application is considered ready for use. Can hook onto certain events to do certain thigns.
+Rarely need to do anything with this stuff. PreDestroy annotated method much more lightly to use.
+
+## Spring Stereotype
+
+@Component, Controller etc. A certain set of characteristics expected with a bean. Not always functional could also just
+be for readability/documentation. thia ahould prob be mentioned somewhere above.
+
+## Bean Scopes
+
+default is singelton, one isntance in the spring container. Other possibilites are prototype where new instance for each
+request and then more neach scopes such as request, session , global session, application??? and websocket. Could also
+make custom scope why idk. Set using scope annotation, almsot always singelton is fine.

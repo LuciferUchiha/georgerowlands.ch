@@ -1,0 +1,32 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+
+# Knapsack Problem
+
+The knapsack problem is a very popular problem with many different variations. The problem is as follows:
+
+> Given a set of items, each with a weight and a value, determine which items you should pick to maximize the value
+> while keeping the overall weight smaller than the limit of your knapsack (backpack).
+
+<Image
+    src="/cs/dpKnapsack.png"
+    caption="The knapsack problem."
+    width={300}
+/>
+
+Some popular variations of the knapsack problem are:
+
+- 0/1 Knapsack: You can either take an item or not take it.
+- Unbounded Knapsack: You can take an item multiple times.
+- Bounded Knapsack: You can take an item a limited number of times.
+- Fractional Knapsack: You can take a fraction of an item.
+
+The [subset sum problem](./subsetSum) is a variation of the knapsack problem where the weight of each item is equal to its value and
+the goal is not to maximize the value but to get a specific value and weight. In my definition of the subset sum problem I allowed
+an item to be used multiple times, so it is a variation of the unbounded knapsack problem.
+
+<Callout type="todo">
+    Actually implement the knapsack problem with the different variations.
+</Callout>
+
+

@@ -1,0 +1,290 @@
+import Image from "~/components/Image/Image";
+
+# Eigenvalues and Eigenvectors
+
+Before we talk about eigenvalues and eigenvectors let us just remind ourselves that vectors can be transformed using matrices. For example we can rotate a vector using the rotation matrix:
+
+$$
+\begin{bmatrix}
+  \cos\theta & -\sin\theta \\
+  \sin\theta &  \cos\theta \\
+\end{bmatrix}\begin{bmatrix}
+  x \\
+  y \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+  x' \\
+  y' \\
+\end{bmatrix}
+$$
+
+<Image 
+    src="/maths/vectorTransformationRotation2D.png" 
+    caption="Rotating a 2D vector by the angle theta"
+    width={400}
+/>
+
+Or we can use a matrix to scale a vector:
+
+$$
+\begin{bmatrix}
+  2 & 0 \\
+  0 & 2 \\
+\end{bmatrix}\begin{bmatrix}
+  4 \\
+  3 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+  8 \\
+  6 \\
+\end{bmatrix}
+$$
+
+<Image 
+    src="/maths/vectorTransformationScaling2D.png" 
+    caption="Scaling a 2D vector, in this case doubling its length"
+    width={300}
+/>
+
+Now let us go back to eigenvalues and eigenvectors. An eigenvector $\boldsymbol{v}$ of a square matrix $\boldsymbol{A}$ is defined as a non-zero vector such that the multiplication with $\boldsymbol{A}$ only changes the scale of the vector it does not change the direction. The scalar $\lambda$ is called the eigenvalue.
+
+$$
+\boldsymbol{Av}=\lambda \boldsymbol{v}
+$$
+
+Because there would be an infinite amount of solutions we limit the magnitude of the vector to $\parallel\boldsymbol{v}\parallel_2=1$.
+
+Let us look at an example of how to calculate the eigenvector and eigenvalue of
+
+$$
+\boldsymbol{A}=
+\begin{bmatrix}
+  0 & 1 \\
+  -2 & -3 \\
+\end{bmatrix}
+$$
+
+For this we can rewrite the problem and solve the following equations:
+
+$$
+\begin{align*}
+\boldsymbol{Av}=\lambda \boldsymbol{v} \\
+\boldsymbol{Av} - \lambda \boldsymbol{v} = 0 \\
+\boldsymbol{Av} - \lambda \boldsymbol{Iv} = 0
+(\boldsymbol{A} - \lambda \boldsymbol{I})\boldsymbol{v} = 0
+\end{align*}
+$$
+
+For there to be a solution where $\boldsymbol{v}$ is non-zero then the following must be true and which then must lead to the characteristic polynomial of $\boldsymbol{A}$. Solving the characteristic polynomial equaling 0 we can get between 0 and $n$ eigenvalues with $n$ being the number of dimensions of $\boldsymbol{A} \in \mathbb{R}^{n \times n}$:
+
+$$
+\begin{align*}
+det(\boldsymbol{A}-\lambda\boldsymbol{I}) &= 0 \\
+det\big(
+    \begin{bmatrix}
+      0 & 1 \\
+      -2 & -3 \\
+    \end{bmatrix}
+    - \begin{bmatrix}
+      \lambda & 0 \\
+      0 & \lambda \\
+    \end{bmatrix}
+\big) &= 0 \\
+det\big(
+    \begin{bmatrix}
+      -\lambda & 1 \\
+      -2 & -3-\lambda \\
+    \end{bmatrix}
+\big) &= \lambda^2+3\lambda+2=0 \\
+&\lambda_1 = -1,\,\lambda_2 = -2
+\end{align*}
+$$
+
+Now that we have the eigenvalues all we need to do is calculate the eigenvectors corresponding to each eigenvalue.
+
+$$
+\begin{align*}
+(\boldsymbol{A} - \lambda \boldsymbol{I})\boldsymbol{v} &= 0 \\
+\big(\begin{bmatrix}
+      0 & 1 \\
+      -2 & -3 \\
+\end{bmatrix}
+- \begin{bmatrix}
+      -1 & 0 \\
+      0 & -1 \\
+\end{bmatrix} \big)
+\begin{bmatrix}
+      v_1 \\
+      v_2 \\
+\end{bmatrix} &= 0 \\
+\begin{bmatrix}
+      1 & 1 \\
+      -2 & -2 \\
+\end{bmatrix}
+\begin{bmatrix}
+      v_1 \\
+      v_2 \\
+\end{bmatrix} &= 0 \\
+\begin{bmatrix}
+      v_1 + v_2 \\
+      -2v_1 -2v_2 \\
+\end{bmatrix} &= 0 \\
+&\Rightarrow v_1 = -v_2
+\end{align*}
+$$
+
+So we know $v_1 = -v_2$ since we constrict ourselves to vectors with a magnitude of 1 so $\sqrt{v_1^2 + (-v_1)^2}=1$ we get for eigenvalue $\lambda_1=-1$ the eigenvector
+
+$$
+\boldsymbol{v}=
+\begin{bmatrix}
+      0.707107 \\
+      -0.707107 \\
+\end{bmatrix}
+$$
+
+We can also calculate this using the following numpy code:
+
+
+```python
+import numpy as np
+
+A = np.array([[0, 1], [-2, -3]])
+e_values, e_vectors = np.linalg.eig(A)
+print(f"Eigenvalues: {e_values}")
+print(f"Eigenvectors: {e_vectors}")
+```
+<div class="code-output-wrapper">
+```
+    Eigenvalues: [-1. -2.]
+    Eigenvectors: [[ 0.70710678 -0.4472136 ]
+     [-0.70710678  0.89442719]]
+```
+</div>
+
+## Properties
+
+We can use the eigenvalues and eigenvectors of the matrix $\boldsymbol{A}$ to find out a lot about it
+
+- The trace of $\boldsymbol{A}$ is the sum of its eigenvalues $tr(\boldsymbol{A})=\sum_{i=1}^{n}{\lambda_i}$.
+- The determinant of $\boldsymbol{A}$ is the product of its eigenvalues $det(\boldsymbol{A})=\prod_{i=1}^{n}{\lambda_i}$.
+- The rank of $\boldsymbol{A}$ is amount of non-zero eigenvalues.
+
+
+
+```python
+print(f"Trace: {np.trace(A)}")
+print(f"Determinant: {np.linalg.det(A)}")
+print(f"Rank: {np.linalg.matrix_rank(A)}")
+```
+<div class="code-output-wrapper">
+```
+    Trace: -3
+    Determinant: 2.0
+    Rank: 2
+```
+</div>
+
+If $\boldsymbol{A}$ is a diagonal matrix then the eigenvalues are just the diagonal elements.
+
+
+
+```python
+D = np.diag([1, 2, 3])
+e_values, e_vectors = np.linalg.eig(D)
+print(f"Eigenvalues: {e_values}")
+print(f"Eigenvectors: {e_vectors}")
+```
+<div class="code-output-wrapper">
+```
+    Eigenvalues: [1. 2. 3.]
+    Eigenvectors: [[1. 0. 0.]
+     [0. 1. 0.]
+     [0. 0. 1.]]
+```
+</div>
+
+## Trick for 2 by 2 Matrices
+
+As presented in this [video by 3Blue1Brown](https://www.youtube.com/watch?v=e50Bj7jn9IQ) there is a cool formula that can be used to calculate the eigenvalues of a $2 \times 2$ matrix such as $\boldsymbol{A}=\begin{bmatrix}a & b \\ c & d\end{bmatrix}$. It rests upon two properties that have already been mentioned above:
+
+- The trace of $\boldsymbol{A}$ is the sum of its eigenvalues $tr(\boldsymbol{A})=\sum_{i=1}^{n}{\lambda_i}$. So in other words $a + d = \lambda_1 + \lambda_2$. We can also reform this to get the mean value of the two eigenvalues: $\frac{1}{2}tr(\boldsymbol{A})=\frac{a+d}{2}=\frac{\lambda_1 + \lambda_2}{2}=m$
+- The determinant of $\boldsymbol{A}$ is the product of its eigenvalues $det(\boldsymbol{A})=\prod_{i=1}^{n}{\lambda_i}$. So in other words $ad - bc = \lambda_1 \cdot \lambda_2 = p$.
+
+$$
+\lambda_1, \lambda_2 = m \pm \sqrt{m^2 - p}
+$$
+
+## Eigendecomposition
+
+The eigendecomposition is a way to split up **square** matrices into 3 matrices which can be useful in many applications. Eigendecomposition can be pretty easily derived from the above since it lead to the following equations:
+
+$$
+\begin{align*}
+    \boldsymbol{A}= \begin{bmatrix}5 & 2 & 0\\ 2 & 5 & 0\\ 4 & -1 & 4\end{bmatrix} \\
+    \boldsymbol{A}\begin{bmatrix}1\\ 1\\ 1\end{bmatrix} = 7 \cdot \begin{bmatrix}1\\ 1\\ 1\end{bmatrix} \\
+    \boldsymbol{A}\begin{bmatrix}0\\ 0\\ 1\end{bmatrix} = 4 \cdot \begin{bmatrix}0\\ 0\\ 1\end{bmatrix} \\
+    \boldsymbol{A}\begin{bmatrix}-1\\ 1\\ 5\end{bmatrix} = 3 \cdot \begin{bmatrix}-1\\ 1\\ 5\end{bmatrix}
+\end{align*}
+$$
+
+Instead of holding this information in three separate equations we can combine them to one equation using matrices. We combine the eigenvectors to a matrix where each column is a eigenvector and we create a diagonal matrix with the eigenvalues (by convention in order of small to large):
+
+$$
+\begin{align*}
+    \boldsymbol{A}\begin{bmatrix}
+        1 & 0 & -1 \\
+        1 & 0 & 1 \\
+        1 & 1 & 5
+    \end{bmatrix}
+    = \begin{bmatrix}
+         1 & 0 & -1 \\
+        1 & 0 & 1 \\
+        1 & 1 & 5
+    \end{bmatrix}
+    \begin{bmatrix}
+        7 & 0 & 0 \\
+        0 & 4 & 0 \\
+        0 & 0 & 3
+    \end{bmatrix}
+\end{align*} \\
+\boldsymbol{AX}=\boldsymbol{X}\Lambda \\
+\boldsymbol{AXX}^{-1}=\boldsymbol{X}\Lambda\boldsymbol{X}^{-1} \\
+\boldsymbol{A}=\boldsymbol{X}\Lambda\boldsymbol{X}^{-1}
+$$
+
+If $\boldsymbol{A}$ is a symmetric matrix then $\boldsymbol{Q}$ is guaranteed to be an orthogonal matrix because it is the eigenvectors of $\boldsymbol{A}$ concatenated. Because $\boldsymbol{Q}$ is orthogonal $\boldsymbol{Q}^{-1} = \boldsymbol{Q}^T$ which leads to the formula being simplified to 
+
+$$
+\boldsymbol{A}=\boldsymbol{X}\Lambda\boldsymbol{X}^T
+$$
+
+
+```python
+A = np.array([[5, 2, 0], [2, 5, 0], [4, -1, 4]])
+A
+```
+<div class="code-output-wrapper">
+```
+    array([[ 5,  2,  0],
+           [ 2,  5,  0],
+           [ 4, -1,  4]])
+```
+</div>
+
+
+```python
+X = np.array([[1, 0, -1], [1, 0, 1], [1, 1, 5]])
+Lambda = np.diag([7, 4, 3])
+inverse = np.linalg.inv(X)
+np.matmul(np.matmul(X, Lambda), inverse)
+```
+<div class="code-output-wrapper">
+```
+    array([[ 5.,  2.,  0.],
+           [ 2.,  5.,  0.],
+           [ 4., -1.,  4.]])
+```
+</div>

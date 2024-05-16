@@ -1,0 +1,73 @@
+import Image from "~/components/Image/Image";
+
+# OOP Design Principles
+
+## SOLID
+
+The SOLID principles are a set of five design principles that help software developers create more maintainable,
+flexible, and robust code. They were frist introduced by Robert C. Martin "Uncle Bob" in his book "Agile Software
+Development, Principles, Patterns, and Practices".
+
+### Single Responsibility Principle
+
+A class/method should only have a single purpose/responsibility and therefore only one reason to change.
+
+<Image 
+    src="/cs/patternsSolidSingleResponsibility.png"
+    width={500}
+/>
+
+### Open/Closed Principle
+
+Classes should be open for extension but closed for modification. To extend the behavior, new code should be added however old code should not have to be modified. This then prevents situations in which a change to classes also requires adaption of all depending classes. This is achieved with interfaces which allow different implementations by keep the same API.
+
+<Image 
+    src="/cs/patternsSolidOpenClose.png"
+    width={500}
+/>
+
+### Liskov Substitution Principle
+
+Subtypes should be substitutable for their base types.  
+
+<Image 
+    src="/cs/patternsSolidLiskov.png"
+    width={500}
+/>
+
+### Interface Segregation Principle
+
+Make fine-grained interfaces that are client specific instead of general purpose interfaces (Which slightly contradicts the strategy pattern). Clients should not be forced to depend on methods that they do not use.
+
+<Image 
+    src="/cs/patternsSolidInterface.png"
+    width={500}
+/>
+
+### Dependency Inversion Principle
+
+Depend on Abstractions not on concrete classes etc.
+
+<Image 
+    src="/cs/patternsSolidDependencyInversion.png"
+    width={500}
+/>
+
+## Other Good Coding Principles
+
+### Favor Composition over Inheritance
+
+By using composition for example in the strategy pattern instead of inheritance it allows us to be flexible at runtime.
+
+### Program to an interface, not and implementation
+
+Avoid referencing concrete classes, declare interfaces instead as then implementations are easily switched out.
+
+### Encapsulate what varies
+
+By encapsulating/hiding the parts that can vary for example implementations behind interfaces we can minimize the impact
+of that code because thanks to the interface we have a unified API.
+
+### KISS
+
+Keep it simple stupid. The simpler the code the easier it is to maintain and understand.

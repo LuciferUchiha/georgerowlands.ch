@@ -1,25 +1,21 @@
 {
-  "index": {
-    "type": "page",
-    "title": "George Rowlands",
-    "display": "hidden",
-    "theme": {
-      "typesetting": "article",
-      "layout": "full"
+    "index": {
+      "type": "page",
+      "title": "George Rowlands",
+      "display": "hidden",
+      "theme": {
+        "typesetting": "article",
+        "layout": "full"
+      }
+    },
+    "digitalGarden": {
+      "title": "Digital Garden 🌳",
+      "type": "page"
+    },
+    "contact": {
+      "title": "Contact ✉️",
+      "type": "page",
+      "href": "https://www.linkedin.com/in/georgerowlands/",
+      "newWindow": true
     }
-  },
-  "digitalGarden": {
-    "title": "Digital Garden",
-    "type": "page"
-  },
-  "recipes": {
-    "type": "page",
-    "display": "hidden"
-  },
-  "contact": {
-    "title": "Contact↗",
-    "type": "page",
-    "href": "https://www.linkedin.com/in/georgerowlands/",
-    "newWindow": true
   }
-}

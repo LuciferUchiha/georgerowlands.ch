@@ -1,0 +1,85 @@
+import Image from "~/components/Image/Image";
+
+## AVL Trees
+
+The AVL Tree, named after inventors **A**delson-**V**elsky and **L**andis is a self-balancing [binary search tree](./binarySearchTrees). For a tree to be **balanced** the heights of a nodes subtree can not differ more then 1.
+
+In other words the balance factor of a node is the difference between the height of the nodes left and right subtree. *bal(v)= height of right subtree of v - height of left subtree of v*. For a node to be balanced its balance factor has to be in {-1, 0, 1}, otherwise it is unbalanced. This then leads to for a tree to be balanced all of its nodes must be balanced.
+
+### Operations
+
+All of the operations, insert, search and remove work the same as with a binary tree. However, now after inserting or deleting we have to recalculate the balance factors of all of the nodes from the inserted/removed node. Important when a node was removed and replaced with its symmetrical successor we have to start at the lowest removed node. If after recalculating the balance factors the tree is no longer balanced we have to perform rebalancing operations till the tree is balanced again.
+
+There are 3 situations when a tree is unbalanced which then lead to different rebalancing operations.
+
+1. bal(p) and bal(v) have the same sign.
+2. bal(v) = 0
+3. bal(p) and bal(v) have deafferent signs.
+
+<Image
+    src="/cs/treesUnbalanced.png"
+    caption="A binary tree."
+/>
+
+#### Simple Rotations
+
+Situation 1 and 2 can be resolved with a simple rotation. Depending on which subtree has the higher absolute balance factor. If the left subtree is higher then the right subtree we perform a  **right rotation**. The other way around we perform a **left rotation**.
+
+<Image
+    src="/cs/treesAvlRotationRight.png"
+    caption="A binary tree."
+/>
+![avlLeftRotation](/compSci/avlLeftRotation.png)
+<Image
+    src="/cs/treesAvlRotationLeft.png"
+    caption="A binary tree."
+/>
+
+#### Double Rotations
+
+We can't resolve situation 3 with a simple rotation we need to do a so called double rotation. Here again we have 2 options depending which subtree is higher. either a **right-left double rotation** or a **left-right double rotation**.
+
+<Image
+    src="/cs/treesAvlRotationRightLeft.png"
+    caption="A binary tree."
+/>
+<Image
+    src="/cs/treesAvlRotationLeftRight.png"
+    caption="A binary tree."
+/>
+
+## Implementation
+
+We can notice that we often need to know the balance factors of a node. This can be calculated every time using the heights however this is very bad for performance instead we should store the balance factors with the nodes and update them when needed.
+
+### Insert
+
+If we insert a new node *v* and its parent is *p* then we have the following situations
+
+<Image
+    src="/cs/treesAvlUpinSituations.png"
+    caption="A binary tree."
+/>
+
+If the height of *p* doesn't change we just need to update the balance factor of *p* and are done. However if the height of *p* changes. So if the balance factor of *p* changes from 0 to +/-1 then we have to recursively update the balance factor of its parent *pp*. For this we use the so called upin(p) method.
+
+#### Upin Case 1
+
+If the height of *pp* doesn't change so the balance factor of *pp* changes from 0 to +/-1 we are done.
+
+<Image
+    src="/cs/treesAvlUpinCase1.png"
+    caption="A binary tree."
+/>
+
+#### Upin Case 2
+
+If the height of *pp* changes but the node stays balanced so the balance factor of *pp* changes from 0 to +/-1 we have to recursively update the balance factor of its parent with upin(pp).
+
+#### Upin Case 3
+
+If the height of *pp* changes and the node is no longer balanced so the balance factor of *pp* changes from +/-1 to +/- 2 we have to perform at the max 1 rotation.
+
+### Remove
+
+Here we use upout to update the balance factors however it can happen that more then 1 rotation is needed on the way to the root.

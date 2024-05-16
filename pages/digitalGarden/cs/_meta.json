@@ -1,0 +1,21 @@
+{
+    "algorithmsDataStructures": "Algorithms & Data Structures",
+    "concurrentParallel": "Concurrent & Parallel Programming",
+    "computerArchitecture": "Computer Architecture",
+    "distributedSystems": "Distributed Systems",
+    "machineLearning": "Machine Learning",
+    "patterns": "Design Patterns",
+    "theoretical": "Theoretical CS",
+    "---": {
+        "type": "separator"
+      },
+    "c": "C & System Programming",
+    "cpp": "C++",
+    "csharp": "C#",
+    "git": "Git",
+    "java": "Java",
+    "javaScript": "JavaScript",
+    "kotlin": "Kotlin",
+    "make": "Make",
+    "python": "Python"
+}
