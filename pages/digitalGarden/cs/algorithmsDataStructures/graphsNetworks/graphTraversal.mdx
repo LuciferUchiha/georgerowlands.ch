@@ -1,0 +1,76 @@
+import Image from "~/components/Image/Image";
+
+# Graph Traversal
+
+The goal of graph traversal is to visit each vertex in a graph. This can be done a multitude of ways.
+
+The general algorithm is as followed. We have a root vertex $s$, a set of all visited vertices $B$, a subset of $B$ which still has unvisited outgoing edges called $R$ and $O$ which holds the order in which the vertices were visited.
+
+```c
+add $s$ to $R$ and set s.visited = true
+
+while R is not empty
+ take any vertex v in R
+  if
+   v has no unvisited outgoing edges remove v from R
+  else
+   follow a unvisited edge from v to w
+   if !w.visited add w to R and set w.visited = true
+```
+
+With an adjacent list this takes $O(n+m)$ because each edge is followed once $O(m)$ and each vertex is added and removed from R $O(n)$.
+
+With an adjacent matrix this takes $O(n^2)$ because the entire matrix has to be checked for edges.
+
+## DFS - Depth First Search
+
+A depth first search (DFS) visits the child vertices of a chose vertex before visiting the sibling vertices. In other words it traverses the depth of any particular path before exploring its breadth. A stack (often the program's call stack via recursion) is generally used when implementing this algorithm.
+
+The algorithm begins with a root vertex it then transitions to an adjacent, unvisited vertex, until it can no longer find an unexplored vertex to transition to from its current location. The algorithm then backtracks until it finds a vertex connected to yet more unexplored vertices. This process carries on until the the algorithm has backtracked past the original "root" vertex from the very first step.
+
+So if in the general algorithm we replace "add w to R" with "call recursively dfs(w)". We then get something like this
+
+```java
+void dfs(Vertex v) {
+ print(v); v.visited=true;
+ for (Vertex w : v.adjList) {
+  if (!w.visited) {
+   dfs(w);
+  }
+ }
+}
+void dfs_variante(Vertex v) {
+ if (!v.visited) {
+  print(v); v.visited = true;
+  for (Vertex w : v.adjList) {
+   dfs_variante(w);
+  }
+ }
+}
+```
+
+## BFS - Breadth First Search
+
+Instead of searching down a single path until we can go no longer, we search all paths at a uniform depth, which is one unit, from the source before moving onto deeper paths. We will be adding vertices to the back of a queue to be searched from in the future. Thus, we start with our source vertex in the queue and then whenever we dequeue an item, we enqueue all of its "new" neighbours who are one unit away, so the queue stores all items of distance 1 from the source before all items who are distance 2 from the source, and so forth.
+
+```java
+void BFS(Vertex s) {
+ Queue<Vertex<K>> R = new LinkedList<Vertex<K>>();
+ print(v); s.visited = true;
+ R.add(s);
+ while(!R.isempty()) {
+  Vertex v = R.remove();
+  for(Vertex w : v.adjList) {
+   if(!w.visited) {
+    print(w); w.visited = true;
+    R.add(w);
+   }
+  }
+ }
+}
+```
+
+<Image 
+    src="/cs/graphsDFSandBFS.png"
+    caption="Comparison of DFS and BFS."
+/>

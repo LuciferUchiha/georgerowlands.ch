@@ -1,0 +1,75 @@
+import Callout from "~/components/Callout/Callout";
+
+# Main Ideas of Machine Learning
+
+Machine learning uses algorithms to automatically learn patterns and relationships from given data (training data), with
+the goal of making quantitative predictions (regression) or identifying structures to then classify the data.
+
+<Callout type="example">
+
+We have a lot of data on houses, including their, size, location, number of rooms, etc. the so called features of
+our data. We can then use this data, machine learning and a given target variable (sometimes also called label) in this
+case the price to predict the price of a new house given its features.
+
+    <Callout type="todo">
+    Add image of house data
+    </Callout>
+
+</Callout>
+
+Machine learning also has a lot of other applications such as clustering, dimensionality reduction and anomaly detection.
+
+## Data
+
+In machine learning, data is typically split into three different subsets: training data, validation data, and test data.
+
+The training data is used to train the machine learning model to learn patterns and relationships between the features and the target variable.
+Features can be of different shapes, for example numerical, categorical, or text-based, and so can the target variable
+depending on the model's goal. In the case of a house price it would be a continuous numerical value. But if we wanted to
+classify the house on whether it is expensive or not, the target variable would be a binary value.
+
+The model is trained by using an algorithm to adjust its parameters to minimize the difference between its
+predicted output and the actual target values in the training data. This process is often referred to as "fitting" the
+model to the training data.
+
+Once the model is trained, it is evaluated on the validation data to determine how well it can generalize to new, unseen
+data. The validation data is used to tune the hyperparameters of the model, which are parameters that are not learned
+from the training data but are set before training begins.
+
+After the hyperparameters have been tuned using the validation data, the model is tested on the test data to get an
+unbiased estimate of its performance. The test data should be representative of the data that the model will encounter
+in the real world, and it should be completely independent of the training and validation data to avoid bias.
+
+<Callout type="todo">
+Add image of data split
+</Callout>
+
+### Overfitting and Underfitting
+
+Not sure if this belongs here.
+
+## Supervised Learning
+
+## Unsupervised Learning
+
+## Classification vs Regression
+
+Binary classification vs multi-class classification
+
+## Clustering
+
+## Dimensionality Reduction
+
+## Anomaly Detection
+
+## Types of Learning
+
+
+
+### Semi-Supervised Learning
+
+### Reinforcement Learning
+
+### Deep Learning
+
+

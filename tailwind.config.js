@@ -12,11 +12,11 @@ const makePrimaryColor =
 
 /** @type {import("tailwindcss").Config} */
 module.exports = {
-    content: [
-        "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-        "./components/**/*.{js,ts,jsx,tsx}",
-        "./theme.config.tsx"
-    ],
+  content: [
+    './pages/**/*.{js,jsx,ts,tsx,md,mdx}',
+    './components/**/*.{js,jsx,ts,tsx,md,mdx}',
+    './theme.config.tsx'
+  ],
     theme: {
         screens: {
             sm: "640px",
@@ -52,6 +52,7 @@ module.exports = {
             orange: colors.orange,
             blue: colors.blue,
             yellow: colors.yellow,
+            green: colors.green,
             primary: {
                 50: makePrimaryColor(97),
                 100: makePrimaryColor(94),
@@ -92,8 +93,7 @@ module.exports = {
                     "90%": {transform: "translate(10%,5%)"},
                     "100%": {transform: "translate(5%,0)"}
                 }
-            }
-
+            },
         }
     },
     darkMode: "class"

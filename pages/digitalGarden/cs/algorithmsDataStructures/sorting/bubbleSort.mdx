@@ -1,0 +1,43 @@
+import Image from "~/components/Image/Image";
+
+# Bubble Sort
+
+When starting to study algorithms and data structures, the first algorithm that is usually taught is the Bubble Sort.
+It is a simple sorting algorithm that is easy to understand and implement. However, it is not very efficient and is not
+used in practice.
+
+The algorithm works by repeatedly swapping neighboring elements if they are in the wrong order, i.e. if we are sorting
+an array of numbers in ascending order we check if the current number is greater than the next number, if so we swap
+them, if not we go to the next.
+
+The algorithm is called Bubble Sort because with each iteration the largest element in the array "bubbles up" to the end
+of the array due to this swapping.
+
+<Image 
+    src="/cs/algdBubbleSort.gif"
+    caption="Visualization of the bubble sort algorithm."
+    width={400}
+/>
+
+```python
+def bubble_sort(arr):
+    for i in range(len(arr)):
+        for j in range(len(arr) - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+```
+
+From the code above we can see that the algorithm has a time complexity of $O(n^2)$ and a space complexity of $O(1)$ as
+it works in place.
+
+The above implementation can be slightly by considering the fact that after each iteration the largest element at the
+end of the array is already in the correct position, so we can reduce the number of iterations by 1 each time.
+
+```python
+def bubble_sort(arr):
+    for i in range(len(arr)):
+        for j in range(len(arr) - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+```
+
