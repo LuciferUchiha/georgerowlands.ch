@@ -22,6 +22,16 @@ if __name__ == "__main__":
     print("Starting jupyter-render")
 
     pages_path = "../pages/"
+
+    # render all notebooks in the pages folder by walking the directory
+    for root, dirs, files in os.walk(pages_path):
+        for file in files:
+            if file.endswith(".ipynb"):
+                print(f"Rendering {file}")
+                os.system(f"jupyter nbconvert --to nextra_exporter.NextraExporter {os.path.join(root, file)}")
+
+    # watch for changes in the pages folder and render the notebooks
+    print("Watching for changes in the pages folder")
     event_handler = Handler()
     observer = watchdog.observers.Observer()
     observer.schedule(event_handler, path=pages_path, recursive=True)

@@ -1,0 +1,88 @@
+# PageRank
+
+PageRank can be extended to matrix factorization. All related to graph embeddings.
+
+2 standford students start of google search engine. PageRank is the algorithm that google uses to rank web pages in their search engine results.
+
+web as a graph, nodes are web pages, edges are hyperlinks. PageRank is a centrality measure. It is a measure of the importance of a node in a graph.
+
+just think of pages as static. and hyperlinks are just navigational not transnational. i.e not to add or buy something etc.
+
+Wikipedia perfect example, directed graph.
+
+PageRank is a centrality measure. It is a measure of the importance of a node in a graph.
+
+link analysis algorithm. PageRank, Personalized PageRank, Random Walk with Restart.
+
+Think of links as votes, the more links to a page the more important it is, incoming links are more important than outgoing links because they are more difficult to get.
+
+Are all incoming links equal? No, the importance of the page casting the vote matters. A page casting a vote is more important if it has more incoming links.
+This becomes a recursive question and the idea of PageRank is to solve this recursively.
+
+if page i has importance x_i and d_i outgoing links, then the importance of each link is x_i/d_i. The importance of page i, x_i is the sum of the importance 
+of the pages casting votes for it, i.e incoming links. So x_i = sum_j x_j/d_j where j are the pages casting votes for page i.
+
+importance=rank
+
+A small example can be shown as a system of linear equations. you might think that you can then just solve the system of linear equations. But the problem is that
+this is not scalable. The matrix is very large and sparse. So we need to use an iterative method.
+
+stochastic adjacency matrix M, each column sums to 1. Called column stochastic matrix. Think of it as a probability distribution. How can this be interpreted?
+
+Rank vector, each page has a component in the rank vector. The rank vector is a probability distribution, i.e sums to 1. 
+
+The flow equation can then be written as r=M*r how can this be interpreted and an example.
+
+Can think of it as a random web surfer. At each time step the surfer is at a page and then follows a link to another page. The probability of following a link is
+the importance of the page casting the vote. The surfer is at page i with probability r_i. The probability of following a link from page i to page j is M_ij.
+
+p(t) is the probability distribution of the surfer at time t. p(t+1) is the probability distribution of the surfer at time t+1. p(t+1)=M*p(t). This is the flow equation.
+
+p(t) is a stationary distribution, i.e it has converged. p(t+1)=p(t)=p.
+
+Therefore r is also a stationary distribution. r=M*r. This is the PageRank equation.
+
+This then is related to the eigenvalue problem. M*r=r. r is the eigenvector where the eigenvalue is 1. This is the Perron-Frobenius theorem???? Because 1*r=M*r=r
+
+If you repeatly multiply M by itself, you will converge to the eigenvector with eigenvalue 1. This is the power method. And can be thought of the random surfer 
+repeatly following links. Till it converges to the stationary distribution. principal eigenvector, eigenvector with largest eigenvalue which is 1 here, why?
+
+We first assign each page a the rank 1/n where n=number of pages => r0. Then we repeatly multiply M by the rank vector. This is the power method repeated till convergence.
+
+In general takes about 50 iterations to converge. The power method is a very simple algorithm. It is also very scalable. It is also very easy to implement.
+
+We have two problems, dead ends/sinks and spider traps. Dead ends are pages with no outgoing links. Spider traps are all outgoing links stay within a group of pages.
+
+Sinks lead to importance "leaking" out of the graph, i.e dissapears, random walker falls off cliff. What does this mean, visualize.
+
+Spider traps lead to importance "trapped" in the system. What does this mean, visualize. Eventually they absorb all the importance. random walker is stuck.
+
+To solve this we can add beta which is a teleporting factor. This is the probability of following a link. 1-beta is the probability of teleporting to a random page.
+normally beta is between 0.8 and 0.9. 
+
+If a page is a dead end we can also make the teleporting factor 1, i.e if a columns sums to 0 we can make it sum to 1 
+by settings all the values to 1/n. It could theoritcally teleport again to the same page. But this is very unlikely. These dead ends anyway violate column stochasticity.
+
+The above can be nicely written as a sum or as the "Google" matrix. The Google matrix is a column stochastic matrix. It is a linear combination of the stochastic matrix
+and the teleporting matrix. The teleporting matrix is a matrix with all values 1/n. 
+
+## Personalized PageRank / Topic-Specific PageRank
+
+Have users and items where edges are purchases. We want to recommend items to users. We can use PageRank to find similar items. We want to find items that are similar
+to the items that the user has already purchased. We can use Personalized PageRank to do this. We want a recommender system.
+
+Doesn't teleport uniformly to all pages, but only to pages that are similar to the pages that the user has already visited i.e a subset denoted by S. 
+If S only contains one page then it is also called random walk with restart.
+
+Can find out which pages are most similiar to the page in S.
+
+Pages are similiar because the random walker often walks over the same pages. This is the intuition. It meassures similiarity over a lot of things like:
+the entire graph, direction of links and degree of pages.
+
+## Matrix Factorization and Graph Embeddings
+
+Instead of saying nodes are similiar if they appear on the same random walk, we just say they are similiar if they are connected.
+
+So we try to approximate the adjacency matrix with the product of two matrices, the embedding matrix and its transpose.
+
+
