@@ -1,0 +1,90 @@
+# Cloud Practitioner
+
+There are sample questions somewhere
+Hands on is free to 12 euro (depending on service different payment schemes but everything pay as you go per use/time)
+Aws console is where you actually do stuff
+Make sure account is activated and choose free support plan
+
+## What is cloud computing
+
+Client, server via network with ip addresses. Just like postboxes.
+Build up of a server: cpur, ram data and strucutred data (databases)
+Network our of cables routers switch and servers incl. dns
+
+Mainting own data center(server cluster) pay rent, power, scaling is limited, people etc. solution: cloud
+
+Cloud criteria from cloud computing lecture: 
+- on demand
+- Broad network access
+- Ressource sharing/pooling multi-tenancy
+- Rapid elasticity and scaliblity
+- Measured service pay as you go
+
+Types of clouds:
+- private (rackspace? Proxmox?)
+- public aws azure, gc
+- Hybrid some local some cloud.
+
+When using a cloud u Trade capital expense capex for operational expense opex
+
+Dont need to guess capacity, save on having to maintain a data center, high availability and fault tolerance
+
+Types of cloud computing:
+
+- IaaS, provide infrastructure highest level of flexibility (EC2, digital ocean)
+- PaaS, dont need to manage infrastructure just run app, elastic beanstalk
+- SaaS, just work no managment. Face rocgnition on aws or gmail
+
+Show different levels the 3 + on premise of what has to be managed.
+
+Aws has map on infrastructure.aws:
+- regions
+- availability zones
+- data centers
+- edge locations/points of presence
+
+Regions have 3-6 zones with each 1 or more datacenters. Each zone has redudant power, network and connectivity. Availability zones are isolated from each other for disasters. And are connected with high bandwidth, low-latency network within region
+
+A bit unclear of meaning of edge locations?
+
+
+
+How to choose a region:
+- compliance, data governance and legal requirements 
+- Proximity, reduce latency
+- Availiability, not all services are available in all regions
+- Pricing
+
+
+Search at the top is very useful as also has docs and tutorials
+
+Some services are global and have the same view no matter which region (can be seen in the top right)
+
+Can list services by region (link todo)
+
+Shared responsibility diagram shows who is responsible for what (u or aws) how u configure services are ur responsibility if u configure shit security ur fault. Aws is responsible for security on software and hardware level.
+
+## IAM - Identity and access management
+
+I am, to remember the acronym
+
+Is a global service. To manage accounts access. When signing up by default a root account is created and shouldnt be used or shared. Create a new user(IAM) and group(admin, policy adminaccess)rather then root. Groups only contain users. Users can belong to 0 to n groups.
+Users or groups can be assigned permissions/policies via json
+Use least privilege principle.
+When creating a user can force them to set new password on first signup if for others.
+Rather than using the provided sign in link for a user can create an alias. Whats the point only useful if using multiple accounts 
+
+Suggest to have in one admin and in other incognito window the other account.
+
+Inline policies are created on a single user. Otherwise users normally inhert policies via a group.
+Policies have language version, identifier and statement.
+
+Each statment has an id, effect (allow or deny), principal (to what), action (what actions are allowed or denied), ressource ( to which ressource), condition (for when it should be applied or not)
+
+Iamreadonly, iamfullacces.
+
+AdminstratorcAccess if you look at json just has allow * on oversthing. Can see api calls that are allowed and how is defined for each policy. * is wildcard as expected.
+
+Directly vs inline? Is it the same?
+
+## Ec2 - elastic compute cloud
