@@ -1,0 +1,397 @@
+# Coursera Machine Learning
+
+## Supervised Learning
+
+### Week 1 - Introduction
+
+Uses of ML without knowing it:
+- Instagram automatically tags images with labels or tags people in the background
+- Similiar movies to what you like on Netflix
+- Voice to text on your phone
+- Spam filter on your email
+
+"Machine Learning is the field of study that gives computers the ability to learn without being explicitly programmed." - Arthur Samuel (1959)
+
+Made a checkers program that could play thousands of games against itself and learn from its mistakes. The more it played, the better it got.
+
+Not everything can be defined with algorithms. For example, recognizing a face. We can't write an algorithm to recognize a face. We can't write an algorithm to recognize spam. We can't write an algorithm to recognize handwritten digits, etc.
+
+Hence Machine learning started. 
+
+AGI - Artificial General Intelligence - AI that can do anything a human can do. We are not there yet. It can think itself. It can learn itself. It can do anything a human can do.
+
+#### Supervised vs Unsupervised Learning
+
+Supervised learning, learn a function that maps an input to an output based on example input-output pairs. So it learns $f(x) = y$, where $x$ is the input and $y$ is the output.
+
+For example:
+
+- Email spam filter, where $x$ is the email and $y$ is spam or not spam.
+- Speech recognition, where $x$ is the audio clip and $y$ is the text transcript.
+- Image classification, where $x$ is the image and $y$ is the object in the image.
+- Machine translation, where $x$ is the sentence in one language and $y$ is the sentence in another language.
+- Online advertising, where $x$ is the user and $y$ is the probability of the user clicking on the ad.
+- Visual inspection, where $x$ is the image of a manufactured part and $y$ is the probability that the part is defective.
+
+After learning the function, we can then use it to predict the output for new values of $x$, never seen before.
+
+Predict housing prices based on the size of the house. input $x$ is the size of the house, output $y$ is the price of the house. We can then predict the price of a new house based on its size.
+
+Regression could fit a straight line or curve to the data to then predict the price of a new house. Perticular type of supervised learning. Task to predict a continuous value output.
+
+Classification is another type of supervised learning. Task to predict a discrete value output. For example, predict if a tumor is malignant or benign based on its size. $x$ is the size of the tumor, $y$ is 0 or 1, where 0 is benign and 1 is malignant.
+
+Classification allocates so-called classes, categories or labels to the input.
+
+Can be hard if the data is not linearly separable. For example, predict if a tumor is malignant or benign based on just its size is hard. But if we add another input, like the age of the patient, then it becomes easier.
+
+Learning algorithms tries to find some boundary line that separates the two classes. For example, a straight line that separates the two classes. This is called a classifier.
+
+Unsupervised learning is more used. No labels are given. The learning algorithm tries to find some structure/patterns or somehting interesting in the data. For example, clustering. Given a set of data points, group them into clusters. For example grouping the cancer patients into different groups based on their age and tumor size.
+
+- Google News uses clustering to group similar news articles together.
+- Anomaly detection is another example of unsupervised learning. Given a set of data points, find which ones are anomalies. For example, credit card fraud detection. Given a set of credit card transactions, find which ones are fraudulent.
+- Dimensionality reduction is another example of unsupervised learning. Given a set of data points, find a lower-dimensional representation of the data that captures the most important attributes of the data. 
+
+#### Linear Regression with One Variable
+
+Fitting a straight line to the data. Simple example of house prices. $x$ is the size of the house, $y$ is the price of the house. We want to predict the price of a new house based on its size. We can expect the price to increase as the size of the house increases.
+
+Is a Regression problem because we are predicting a continuous value output, i.e the price of the house.
+
+Training set is the data we use to train the model. We use the training set to learn the function $f(x) = y$. We use the training set to learn the parameters of the model.
+
+input/variable/feature is the size of the house, $x$. The output/target variable is the price of the house, $y$.
+
+An example of a training sample is $(x^{(i)}, y^{(i)})$, where $x^{(i)}$ is the size of the house and $y^{(i)}$ is the price of the house. The superscript $(i)$ denotes the $i$th training sample where if we have $m$ training samples, then $i = 1, 2, \dots, m$.
+
+The prediction of the model is $\hat{y}^{(i)}$, where $\hat{y}^{(i)}$ is the predicted price of the house given the size of the house $x^{(i)}$, called the hypothesis, y-hat. Where the hypothesis function approximates the true function $f(x) = y$.
+
+For linear regression with one variable, the hypothesis function is $h_\theta(x) = \theta_0 + \theta_1 x$, where $\theta_0$ and $\theta_1$ are the parameters of the model. The parameters are also called the weights of the model. The parameters are what we want to learn from the training data.
+The first parameter $\theta_0$ is called the bias parameter, y-intercept for 1d. The second parameter $\theta_1$ is called the slope parameter in linear regression.
+
+univariate linear regression because we have one input variable.
+
+Need some way to measure how well the model fits the data. We need some way to measure the error of the model. We need some way to measure the difference between the predicted value and the actual value. 
+This is called the cost function. The cost function measures the error of the model on the training data. We want to minimize the cost function. We want to minimize the error of the model on the training data.
+
+The cost function for linear regression is the mean squared error (MSE) cost function. We take the average because we dont want the cost function to depend on the number of training samples. 
+We square the error because we want to penalize large errors more than small errors, this also makes the cost function convex, which makes it easier to minimize but also removes the sign of the error, so we can't tell if the error is positive or negative.
+
+The cost function is $J(\theta_0, \theta_1) = \frac{1}{2m} \sum_{i=1}^m (\hat{y}^{(i)} - y^{(i)})^2 = \frac{1}{2m} \sum_{i=1}^m (h_\theta(x^{(i)}) - y^{(i)})^2$.
+
+We take 2m because we want to cancel out the 2 when we take the derivative of the cost function. this makes it easier to minimize with gradient descent. can also put the 1/2 inside the sum.
+
+The error is the difference between the predicted value and the actual value. The error is $e^{(i)} = \hat{y}^{(i)} - y^{(i)}$. which is also called the residual, because it is what is left over after the prediction.
+
+simplificiation by just minimizing w and where b is just 0. Showing the cost function is convex  is cool. Also show the contour plot of the cost function and how it can be interpreted as a bowl. The minimum is the bottom of the bowl.
+
+#### Gradient Descent
+
+GD thing from efalg was cool.
+
+Gradient descent is an optimization algorithm. It is an iterative algorithm. It is an algorithm that takes steps towards the minimum of the cost function. It can be used to minimize any differentiable function. It can be used to minimize the cost function of linear regression.
+
+If we have a function with one parameter, then we can use calculus to find the minimum of the function, however if we have a function with multiple parameters, then we can't use calculus to find the minimum of the function. We can use gradient descent to find the minimum of the function.
+
+GD is an iterative method that calculates the gradient, i.e. the derivative, of the function at the current point and then takes a step in the direction of the negative gradient. The negative gradient is the direction of steepest descent. The step size is called the learning rate, $\alpha$. 
+The learning rate controls how big the steps are. If the learning rate is too small, then it will take a long time to converge. If the learning rate is too big, then it might not converge at all. The learning rate is a hyperparameter of the model. LR can be constant or can be adaptive and 
+visualized. If the derivative is 0, then we have reached a minimum. If the derivative is positive, then we have to go left. If the derivative is negative, then we have to go right. The derivative is the slope of the tangent line at the current point. The derivative is the rate of change of the function at the current point.
+A saddle point is a point where the derivative is 0, but it is not a minimum.
+
+The gradient descent algorithm is $\theta_j := \theta_j - \alpha \frac{\partial}{\partial \theta_j} J(\theta_0, \theta_1)$, where $\theta_j$ is the $j$th parameter of the model, $\alpha$ is the learning rate and $J(\theta_0, \theta_1)$ is the cost function.
+
+GD however, is not guaranteed to converge to the global minimum. It can get stuck in a local minimum. It can also oscillate around the minimum. It can also take a long time to converge. It can also diverge. It can also converge to a saddle point.
+
+When actually implementing this you need to use temporary variables for the parameters, so you don't update the parameters before you have calculated the gradient for all the parameters.
+
+Show MSE with GD and the calculations, why the 2m is so much nicer. MSE only has one minimum, so GD will always converge to the global minimum. This is due to the convexity of the cost function. 
+If a function is convex, then it has only one minimum. If a function is not convex, then it can have multiple minima. If a function is not convex, then GD is not guaranteed to converge to the global minimum.
+
+"Batch GD" is when we use all the training samples to calculate the gradient (this is the default setup). There are other types of GD, like "Stochastic GD" where we use one training sample to calculate the gradient. "Mini-batch GD" is when we use a subset of the training samples to calculate the gradient??? I thought this was just called "Stochastic GD".
+
+### Week 2 - Regression with multiple input variables
+
+We have a vector $x$ of input variables, $x = (x_1, x_2, \dots, x_n)$, where $n$ is the number of input variables/features. The subscript is the feature the superscript the training sample. 
+A sample is therefore a vector of features. 
+
+For each feature we have a parameter $\theta_j$, where $j$ is the feature. The parameters are also called the weights of the model. The parameters are what we want to learn from the training data. Dont forget the bias parameter $\theta_0$ that is added at the end
+
+The hypothesis function is $h_\theta(x) = \theta_0 + \theta_1 x_1 + \theta_2 x_2 + \dots + \theta_n x_n = \theta_0 + \sum_{j=1}^n \theta_j x_j = \theta_0 + \theta^T x$, where $\theta = (\theta_1, \theta_2, \dots, \theta_n)$ is the vector of parameters and $x = (x_1, x_2, \dots, x_n)$ is the vector of features.
+
+Bias can be interpreted as a base price and then you pay for faetures.
+
+Can rewrite as dot product + bias.
+
+Can rewrite this to be slightly nicer by adding a 1 to the feature vector, $x_0 = 1$, and then the hypothesis function is $h_\theta(x) = \theta^T x$, where $\theta = (\theta_0, \theta_1, \dots, \theta_n)$ is the vector of parameters and $x = (x_0, x_1, \dots, x_n)$ is the vector of features.
+
+multivariate regression because we have multiple input variables.
+
+using vectors is not just fancy, it makes it more readable but also faster to implement and faster to run.
+
+Gradient descent is pretty much the same just defined slightly different.
+
+For pretty much only the linear regression model, we can use the normal equation to find the parameters that minimize the cost function. 
+
+#### Improving GD
+
+Plot contour plots per weight. Depending on the value range of a feature the contour plot can be very stretched out. i,e changing it can have a big effect on the cost function. This can make GD take a long time to converge. It can also make GD take a long time to converge depending on the learning rate, initial parameters and the feature values ranges.
+
+-> Rescale features can sovle this problem.
+
+MaxScale Devide by the maximum value of the feature. This will make the feature values range from 0 to 1.  
+
+Mean normalization subtract the mean from the feature values. This will make the feature values range from -1 to 1 i.e be around 0.
+
+Z-score normalization subtract the mean and divide by the standard deviation. This will make the feature values have a mean of 0 and a standard deviation of 1.
+
+Want all feature ranges to be in the same ballpark.
+
+What if the new value is outside the range of the training data?
+
+feature engineering -> choosing or engineer approprirate features. Can have a large impact on the performance of the model. Can also have a large impact on the performance of the model if you choose the wrong features.
+
+For example for a house the area might be better then width and height.
+
+#### Checking GD
+
+Can look at cost curve over the iterations/epochs. If it is decreasing, then it is working. If it is increasing, then it is not working. If it is oscillating, then the learning rate is too big. If it is not decreasing, then the learning rate is too small. 
+
+Has converged when the cost function is not decreasing anymore. 
+
+Can also do a convergence test. If the difference between the cost function of the current iteration and the previous iteration is smaller than some threshold, then it has converged, i.e. $|J(\theta^{(i)}) - J(\theta^{(i-1)})| < \epsilon$.
+
+#### Polynomial Regression
+
+not just linear lines but also quadratic, cubic, etc. curves to ur data
+
+if only have one feature, then can add more features by adding powers of the feature. For example, if we have one feature $x$, then we can add the features $x^2, x^3, \dots, x^n$. to make it polynomial.
+
+quadratic functions prob not optimal cause they go up and come down again.
+
+### Week 3 - Classification
+
+only 2 outputs/classes -> Binary Classification
+
+positive/negative -> spam/not spam, malignant/benign, etc.
+
+Linear regression with a threshold value could be used for binary classification. If the output is greater than the threshold, then it is positive, otherwise it is negative. However, this is not a good idea.
+
+Decison boundary can be effected by outliers because they can pull the line towards them.
+
+#### Logistic Regression
+
+Name can be confussing becaues used for classification not regression. Was given out of historical reasons.
+
+sigmoid function = logistic function = logistic activation function
+
+sigmoid function is $g(z) = \frac{1}{1 + e^{-z}}$, where $z$ is the input to the sigmoid function. The sigmoid function squashes the input to a value between 0 and 1, with the output being close to 1 if the input is positive and close to 0 if the input is negative. 
+
+Logistic regression is just doing linear regression and then applying the sigmoid function to the output of the linear regression. The hypothesis function is $h_\theta(x) = g(\theta^T x) = \frac{1}{1 + e^{-\theta^T x}}$, where $g(z) = \frac{1}{1 + e^{-z}}$ is the sigmoid function.
+
+This fixes the previous issue. Can think of it as the probability of the output being positive. If the output is greater than 0.5, then it is positive, otherwise it is negative.
+
+Whenever the linear regression is greater than 0, then the logistic regression is greater than 0.5. Whenever the linear regression is less than 0, then the logistic regression is less than 0.5. Where the linear regression is 0 is the decision boundary.
+
+Can visualize the decision boundary for 2 features nicely.
+
+If the decision boundary is not linear, then we can add polynomial features , i.e use polynomial logistic regression. For example a circle decision boundary.
+
+#### Cost Function for Logistic Regression
+
+If you use MSE as the cost function for logistic regression, then the cost function will be non-convex. Why? Example? Visulaize?
+
+So instead we use the logistic loss function also called the log loss function or cross entropy. for positive examples, the cost function is $-log(h_\theta(x))$. For negative examples, the cost function is $-log(1 - h_\theta(x))$. 
+
+if the prediction is close to the actual value, then the cost is low with 1/0 being the lowest cost. If the prediction is far from the actual value, then the cost is high. The log is negative, so we only get positve cost values.
+
+The nice thing about the log loss function is that it is convex. The function can also be rewritten to be easier to implememt, it is completly equivalent. 
+
+$-y log(h_\theta(x)) - (1 - y) log(1 - h_\theta(x))$. where y is the actual value, 0 or 1. If y is 1, then the cost function is $-log(h_\theta(x))$. If y is 0, then the cost function is $-log(1 - h_\theta(x))$.
+
+When running it over all test samples the negative sign can be taken outside the sum making it $-\frac{1}{m} \sum_{i=1}^m y^{(i)} log(h_\theta(x^{(i)})) + (1 - y^{(i)}) log(1 - h_\theta(x^{(i)}))$.
+
+This cost function is derived from maximum likelihood estimation. The cost function is the negative log likelihood function. The likelihood function is the probability of the data given the parameters. The maximum likelihood estimation is the process of finding the parameters that maximize the likelihood function.
+
+Likelhoods never made sense to me.
+
+Loss is the error of a single training sample. Cost is the average error of all the training samples.
+
+After calcualting the gradient looks very similar to linear regression. The only difference is the hypothesis function.
+
+
+#### Overfitting
+
+Underfitting, not fitting well -> high bias
+Overfitting, fitting too well -> high variance
+
+not sure about the definitions of bias and variance.
+
+more data can help with overfitting or feature engineering or regularization. Some features might not be useful or might be redundant.
+
+To avoid Overfitting, we can use regularization. Regularization is a technique to reduce the complexity of the model. Instead of removing features try to reduce the weights of the features.
+
+for the MSE we put lambda as a hyperparameter to the cost we add lambda/2m * sum of the weights squared. This will make the weights smaller. This is called L2 regularization or ridge regression.
+The higher the lambda, the smaller the weights. The higher the lambda, the more the weights are penalized. If lambda is too high, then the weights will be too small and the model will underfit.
+
+After taking the derivative of the cost function, the regularization just makes the weights smaller by subtracting lambda/m * theta_j from the gradient.
+
+## Advanced Learning Algorithms
+
+see deep learning page.
+
+### Week 4 - Decison Trees
+
+look at decision tree page.
+
+## Unsupervised Learning
+
+### Week 1 - Unsupervised Learning
+
+#### Clustering
+
+applications of clustering. customer segmentation, market segmentation, social network analysis, group news articles, etc.
+
+##### K-means
+
+need to define k, the number of clusters. need to define the distance metric. need to define the initial centroids. need to define the stopping criteria.
+
+initial centroids can be random or can be the first k data points. There are other ways to initialize the centroids.
+
+then go through each data point and assign it to the closest centroid. then update the centroids to be the mean of the data points assigned to that centroid. then repeat until convergence.
+
+the distance metric is usually the euclidean distance. but can also use other distance metrics.
+
+does the mean in the name is because it uses the mean to update the centroids?
+
+k means can also be used to assign sizes to tshirt sizes
+
+proof of why k means is minimizing the cost function. the cost function is the sum of the squared distances from the data points to their centroids. the cost function is convex, so k means is guaranteed to converge to the global minimum.
+
+the initialization of the centroids can have a big impact on the final result. so it is common to run k means multiple times with different initializations and then pick the best result based on the cost function. distorsion is the cost function???
+
+how to choose k? elbow method. plot the cost function vs k and then pick the k where the cost function starts to flatten out. this is called the elbow method. Often u already know k tho for a known downstream task.
+
+#### Anomaly Detection
+
+finding outliers or unusual data points. for example, credit card fraud detection, find broken machines in a factory, etc.
+
+Most commonly use density estimation. The idea is that the normal data points will have a high density meaning a high probability of occuring. The anomalous data points will have a low density meaning a low probability of occuring.
+
+any data point that has a probability lower than some threshold is considered an anomaly.
+
+The feature values are assumed to be independt and follow a gaussian distribution. We therefore get a probability for each feature value. We then multiply the probabilities to get the probability of the data point. We then compare the probability to the threshold to see if it is an anomaly or not.
+
+The gaussian distributions are calculated using the training data. 
+
+to evaulate the model we need some labeled data. We can use the labeled data with validation and test sets we can then finetuen the threshold.
+
+difference to supervised learning is we have very small positive examples and a lot of negative examples. anomaly detection learns to just detect the negative examples. supervised learning learns to detect both the positive and negative examples.
+
+features are very important for anomaly detection. if the features are not gaussian, then the model will not work well, can try and make them gaussian by applying a transformation to the features.¨
+
+### Week 2 - Recommender Systems
+
+recommendation one of the most common applications of machine learning. for example, netflix, amazon, youtube, etc.
+
+ratings from 1 to 5. 1 is bad, 5 is good. can also have binary ratings, like/dislike. can also have implicit ratings, like views, clicks, etc.
+
+movies can have features like a weight of movie genres, like it is 50% action, 30% comedy, 20% romance. can also have features like the actors, director, etc.
+
+can use the features and a linear regression for each user to predict the rating of a movie. Cost is the MSE.
+
+However, not realisitc to have a linear regression for each user, also less realistic to have the good features.
+
+#### Collaborative Filtering
+
+Based on the idea that similar users have similar ratings. Based on the idea that similar movies have similar ratings. I dont really like his explanation. 
+
+We want to learn a vector that when multiplied with the weights of a person give the ratings of that person. This vector is then a sort of latent feature of the movie, the weights of the liner model are the latent features of the user. The latent features are not known, they are learned from the data.
+
+So we then have 2 cost functions which are based on each other. The cost function for the user latent features is based on the cost function for the movie latent features. The cost function for the movie latent features is based on the cost function for the user latent features. This is called alternating least squares.
+
+These 2 costs can then be combined. This semmes rly gross.
+
+Can also use binary ratings like favorited, liked, etc. instead of using linear regression, we can use logistic regression. The cost function is then the log loss.
+
+mean normlization is good idea for the ratings, i.e subtract the mean rating from the ratings per movie.
+
+Is this based on the user or the movie????
+
+most similiar movies are closest using the latent vector of the movie.
+
+Problems: Cold start problem, new users and new movies. Sparsity problem, most users have not rated most movies. Dont use other features of the movie, like the genre, actors, etc. or of the user like age etc.
+
+#### Content Based Filtering
+
+Collaborative filtering is similiar users.
+
+content based filtering uses user features and movie features to predict the rating. We then have a vector of user features and a vector of movie features. We then use these vectors to predict the rating. The cost function is the MSE.
+
+we then multiply the user features with some weight vector and then do the same for the movie features(latent faeture/vector). We then use the dot product of the 2 vectors together to get the score.
+
+we can use deep learning to create these latent vectors, we then have 2 neural networks, one for the user features and one for the movie features. We then use the dot product of the 2 latent vectors to get the score.
+
+For big data we rather use retrieval and ranking. We first use a retrieval model to get a subset of the data. We then use a ranking model to rank the data. For example, we can use a retrieval model to get the top 100 movies and then use a ranking model to rank the top 100 movies.
+
+latent features can be precomputed and then used in the ranking model.
+
+#### PCA
+
+Reducing the number of features, i.e dimensions in a vector. For example, if we have a 3d vector, then we can project it onto a 2d plane. We can then use the 2d vector instead of the 3d vector. This is called dimensionality reduction.
+
+PCA is a technique for dimensionality reduction. PCA is an unsupervised learning algorithm. 
+
+It extracts the most important features of the data. or combinations of which. like if we have width and height of a car and reduce it to just size.
+
+normally good idea to first to normalization and scaling.
+
+when projecting onto an axis we want to minimize the distance between the data points and the axis. this is called the projection error. However we can't just project onto any axis, we want to project onto the axis that maximizes the variance of the data points. This is called the principal component. 
+The principal component is the axis that maximizes the variance of the data points. the variance contains the most information about the data. 
+
+PCA with multiple axis are all orthogonal to each other. The first principal component is the axis that maximizes the variance of the data points. The second principal component is the axis that maximizes the variance of the data points, but is orthogonal to the first principal component. 
+The third principal component is the axis that maximizes the variance of the data points, but is orthogonal to the first and second principal components. etc.
+
+apart from visulaizatin also useful for compression. can also use PCA for anomaly detection. can also use PCA for denoising. can also use PCA for feature engineering.
+
+### Week 3 - Reinforcement Learning
+
+cant be bothered.
+
+given a state decide on an action. The action changes the state and gives a reward. The goal is to maximize the reward. rewards being positve and negative.
+
+terminal states are the end. can be good or bad. can be multiple terminal states.
+
+the concept of return is the sum of the rewards. the goal is to maximize the return. 
+
+There is also a discount factor, gamma, which is between 0 and 1. The discount factor is used to discount future rewards. 
+
+there are lots of differenct policies which is the function that maps the state to the action. the goal is to find the best policy. often the policy is a neural network and deonted by pi.
+
+Markov decision process, mdp. Markov referes to the markov property. The markov property is that the future state only depends on the current state and action. The future state does not depend on the past states and actions. The markov property is not always true in the real world, but it is a good approximation.
+
+#### state-action value function Q
+
+Q(s,a) gives the return of taking action a in state s and then behave optimmaly after that. The goal is to find the optimal Q function. The optimal Q function is the Q function that maximizes the return.
+
+Is this q-learning?
+
+The policy then becomes the action that maximizes the Q function. The policy is the argmax of the Q function.
+
+Bellmans equation??? just basically the same but nicely written?
+
+Random stachastic environment? slightly changes bellman equation the next state is not deterministic but random.
+
+continous state spaces for example anywhere on a line rather then on a grid. state is then defined by a vector of features. Q function is then a neural network.
+
+to learn the q function the state is contaconted with the action and then fed into the neural network. the output is the q value for that state and action. for the action we can use one hot encoding for a video game, but for a car we can use a continous action space.
+
+replay buffer, is used to store the state, action, reward, next state, done. then sample from the replay buffer to train the neural network. 
+
+we can also isntead of conactoante the state and action, we can use the state as input and then output the q value for each action. this is called the dueling architecture, so an output activation for each possible action.
+
+dont always want to take the best action, sometimes want to explore. epsilon greedy, with probability epsilon take a random action, otherwise take the best action.
+
+mini batch gradient descent uses a small batch and then updates the neural network. this is more stable than updating the neural network after each sample.
+
+soft update???
