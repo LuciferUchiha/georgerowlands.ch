@@ -47,14 +47,11 @@ Regions have 3-6 zones with each 1 or more datacenters. Each zone has redudant p
 
 A bit unclear of meaning of edge locations?
 
-
-
 How to choose a region:
 - compliance, data governance and legal requirements 
 - Proximity, reduce latency
 - Availiability, not all services are available in all regions
 - Pricing
-
 
 Search at the top is very useful as also has docs and tutorials
 
@@ -66,25 +63,133 @@ Shared responsibility diagram shows who is responsible for what (u or aws) how u
 
 ## IAM - Identity and access management
 
-I am, to remember the acronym
-
-Is a global service. To manage accounts access. When signing up by default a root account is created and shouldnt be used or shared. Create a new user(IAM) and group(admin, policy adminaccess)rather then root. Groups only contain users. Users can belong to 0 to n groups.
-Users or groups can be assigned permissions/policies via json
-Use least privilege principle.
-When creating a user can force them to set new password on first signup if for others.
-Rather than using the provided sign in link for a user can create an alias. Whats the point only useful if using multiple accounts 
-
-Suggest to have in one admin and in other incognito window the other account.
-
-Inline policies are created on a single user. Otherwise users normally inhert policies via a group.
-Policies have language version, identifier and statement.
-
-Each statment has an id, effect (allow or deny), principal (to what), action (what actions are allowed or denied), ressource ( to which ressource), condition (for when it should be applied or not)
-
-Iamreadonly, iamfullacces.
-
-AdminstratorcAccess if you look at json just has allow * on oversthing. Can see api calls that are allowed and how is defined for each policy. * is wildcard as expected.
-
 Directly vs inline? Is it the same?
 
+The first service to look at is IAM, short for Identity and Access Management. This is the service that allows you to manage users and their level of access to the AWS Management Console.
+Because it is one of the most important services and is used to control access to all other services, it is a **global service**, meaning it is available in all regions.
+
+To remember the acronym, think of yourself saying "I am" the person who is going to manage the users and their permissions.
+
+When you first create an AWS account, you have created a **root account**. This account has complete access to all AWS services and can therfore also rack up a huge bill. 
+It is not recommended to use the root account for everyday tasks, or to share it with others. Instead, you should create use the **least privilege principle** and create an 
+**IAM user** for yourself and give it the necessary permissions. This is also a best practice for security reasons. 
+
+In AWS permissions are managed using **policies**. A policy is a document that defines permissions. It is written in JSON format and consists of a version, an identifier and a statement. 
+
+For example, the following policy `AdminstratorcAccess` allows all actions on all resources:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "*",
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+The `Effect` can be either `Allow` or `Deny`. The `Action` is the action that is allowed or denied on a `Resource`.
+Actions are API calls that allow you to interact with AWS services such as read, write delete etc. The `Resource` is the resource that the policy applies to such as an S3 bucket or an EC2 instance.
+The `*` is a wildcard that matches all actions or resources.
+
+When creating a new user, you can assign them permissions by attaching policies to them. You can also create **groups** and assign policies to the group and then add users to the group.
+You can also create an alias for the sign-in link, which can be useful if you are working with multiple accounts, for example for different projects. 
+
+In AWS users, groups, roles etc. are also reffered to as **identities**.
+
+### Types of Policies
+
+For a clear overview I suggest you look at the [AWS documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_managed-vs-inline.html) on the topic.
+
+However, in short there are three types of policies:
+
+- **Managed Policies**: These are standalone policies that you can attach to multiple identities. They are maintained by AWS and are the recommended way to assign permissions. 
+This is for example the `AdministratorAccess` policy that allows full access to all AWS services or the `IAMFullAccess` policy that allows full access to IAM.
+- **Customer Managed Policies**: These are policies that you create and manage yourself. You can attach them to multiple identities. This is when you define a custom policy 
+via JSON or the visual editor. These policies are stored in your account and are reusable.
+- **Inline Policies**: These are basically customer managed policies that are embedded directly into a single identity and are then also deleted when the identity is deleted.
+
+### Keeping Users Secure
+
+Can be found under Account settings and then password policy.
+
+When creating users for others there are some password policies that you can set to ensure that the passwords are secure:
+- **Minimum password length**
+- **Require specific character types**
+- **Allow users to change their own password**
+- **Require password change on first login**
+- **Password expiration** and **password reuse prevention**
+
+The most secure way to access the AWS Management Console is by using **Multi-Factor Authentication (MFA)**.
+
+MFA = something you know (password) and something you have (token on physical device)
+
+Virtual MFA devices like Google Authenticator or Authy
+Universal 2nd Factor (U2F) security key like YubiKey
+Hardware Key Fob MFA devices
+
+To activate MFA its at the top right of the console under Security Credentials. You can then choose to activate MFA for the root account.
+For IAM users you can activate the same MFA or enforce it for all users.
+
+### How to access AWS
+
+- **AWS Management Console**: Web-based user interface that you can use to access and manage AWS services.
+- **AWS Command Line Interface (CLI)**: Command line tool that allows you to control multiple AWS services from the command line and automate them through scripts.
+- **AWS Software Development Kits (SDKs)**: Libraries or APIs that allow you to interact with AWS services from your preferred programming language.
+
+Via access keys do not share. Can be used for CLI or SDKs. Can be rotated.
+To configure CLI you can use `aws configure` and enter your access key id , secret access key, region and output format (just enter for default).
+
+aws iam list-users to list users very useful
+
+What is cloudshell? is basically CLI in the management console, recommended to use it for CLI commands over local installation. 
+can alos download and upload files to it, seems very useful. Not available in all regions.
+
+### Roles
+
+In AWS some services might want to perform actions. For example an EC2 instance might want to access an S3 bucket. To do this you 
+can use **roles** which are similar to users but are assigned to AWS services.
+
+### Security Tools
+
+Can use **Credentials Report** to see all users and the status of their credentials. Account-level
+Can use **IAM Access Advisor** shows the services that a user has accessed and the last time they accessed them to align permissions with actual usage (least privilege principle). User-level
+
+## Billing and Cost Management
+
+We can view usage and billing information in the **Billing and Cost Management Dashboard**. Here we can also set up budgets and alerts to notify us when we are exceeding our budget. "charges by service" is useful to see what is costing the most.
+Zero cost budget or montly budget can be set up etc.
+
 ## Ec2 - elastic compute cloud
+
+One of the key compute services in AWS is EC2, short for Elastic Compute Cloud.
+
+IaaS
+
+Mainly consist of:
+- EC2, renting virtual machines
+- EBS, virtual block storage for EC2 (what is block storage?)
+- ELB, load balancer
+- ASG, auto scaling group
+
+Configuration: 
+- OS, linux, mac or windows
+- cpu and ram
+- storage, network attached storage with EBS or EFS or hardware storage with instance store
+- network card for speed, security group for firewall, public ip, private ip, dns
+- bootstrap script for configuration, ec2 user data for startup script, only runs once when instance is launched (restart?) installing updates, softeare
+- ec2 user data script runs as root
+
+show example of ec2 instances
+
+to ssh into ec2 create a key pair and use ssh -i key.pem ec2-user@ip
+in the security group allow port 22 for ssh and 80 for http as will start a Web server
+ebs volumes can be configured like deletion on termination, encryption, snapshotting etc.
+
+at the bottom of the advanced section of the ec2 instance creation there is a user data section where you can add a
+bash script that will run on startup. This can be used to install software, configure the instance etc. Why is it called user data?
+
+After starting and stopping an instance the public ip will change. To have a static ip you can use an elastic ip.
