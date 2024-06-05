@@ -4,7 +4,8 @@
     "dfa": "Deterministic Finite Automaton",
     "nfa": "Nondeterministic Finite Automaton",
     "regularExpressionsLanguages": "Regular Expressions & Languages",
+    "grammars": "Context-Free Grammars & Languages",
+    "pushdown": "Pushdown Automaton",
     "turingMachine": "Turing Machine",
-    "grammar": "Grammar",
     "kolomogorovComplexity": "Kolomogorov Complexity"
 }
