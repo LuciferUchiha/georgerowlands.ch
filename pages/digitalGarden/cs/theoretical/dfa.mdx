@@ -1,11 +1,12 @@
 # Deterministic Finite Automaton
 
-Meaning of the terms deterministic and finite in the context of automata theory.
+A deterministic finite automaton, short DFA, is a finite-state machine that can be in one of a finite number of states at any given time. It can only move from one state to another by following a set of rules called transitions. 
+The deterministic property means that the DFA will always make the same transition to the same state, given the same input, there is no stochastic element to the machine, i.e. there is only one path to follow.
 
-deterministic - no choice, only one path to follow
-finite - finite number of states
+DFAs are used to solve decision problems, such as deciding whether a given string is a member of a language or not.
 
-What do they do? solve decision problems. Do this in realtime and with a fixed amount of memory no variables.
+Importantly DFAs work in real time and without any memory or variables. They read the input string character by character and make decisions based on the current state and the read character.
+Once the last character of the input string has been read, the DFA will either accept or reject the input string based on the current state.
 
 ## Notation
 
