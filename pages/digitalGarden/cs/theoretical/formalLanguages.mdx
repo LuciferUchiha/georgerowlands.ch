@@ -132,6 +132,42 @@ $$
 
 ### Reverse of a Word
 
+The reverse of a word is the word with the symbols in the opposite order. This is denoted by the symbol $w^R$. 
+
+$$
+\begin{align*}
+w & = a_1a_2 \ldots a_n \\
+w^R & = a_na_{n-1} \ldots a_2a_1
+\end{align*}
+$$
+
+<Callout type="example">
+- $w = 101$, $w^R = 101$.
+- $w = abc$, $w^R = cba$.
+- $w = 101010$, $w^R = 010101$.
+- $w = \varepsilon$, $w^R = \varepsilon$.
+</Callout>
+
+We can also define the reverse of the concatenation of two words as the concatenation of the reverse of the two words in reverse order:
+
+$$
+(u \cdot v)^R = v^R \cdot u^R
+$$
+
+<Callout type="example">
+This is best shown by example:
+
+$$
+\begin{align*}
+u & = ab \\
+v & = cd \\
+u \cdot v & = abcd \\
+(u \cdot v)^R & = dcba \\
+v^R \cdot u^R & = dcba
+\end{align*}
+$$
+</Callout>
+
 ## Sets of Words
 
 If we have an alphabet $\Sigma$, we can define some special sets of words over that alphabet. Specifically we can define the set of all words of a certain length by using the power of the alphabet.
@@ -281,7 +317,7 @@ Because the suffix is a special case of a subword it follows all the same rules 
 
 ## Languages
 
-A language is a specific set of words over an alphabet commonly denoted by the symbol $L$. 
+A language is a specific set of words over an alphabet commonly denoted by the symbol $L$. More precisly a language is a subset of the set of all words over an alphabet.
 
 $$
 L \subseteq \Sigma^*
@@ -308,7 +344,9 @@ L = \{00, 11, 0011, 0101, 0110, 1001, 1010, 1100, \ldots\}
 $$
 </Callout>
 
-If a $L$ is a language over an alphabet $\Sigma_1$ and $\Sigma_2$ is a superset of $\Sigma_1$, then $L$ is also a language over $\Sigma_2$:
+### Sub and Supersets of Languages
+
+If $L$ is a language over an alphabet $\Sigma_1$ and $\Sigma_2$ is a superset of $\Sigma_1$, then $L$ is obviously also a language over $\Sigma_2$:
 
 $$
 L \subseteq \Sigma_1^* \subseteq \Sigma_2^*
@@ -326,7 +364,7 @@ $$
 L_{\varepsilon} \subseteq \Sigma^* \text{ for all } \Sigma
 $$
 
-However this does not mean that the empty set and the set containing only the empty word are the same.
+However, this does not mean that the empty set and the set containing only the empty word are the same.
 
 $$
 L_\emptyset \neq L_{\varepsilon}
@@ -334,4 +372,60 @@ $$
 
 ### Operations on Languages
 
-Concatenation, kleene star, all set operations, union, intersection, difference, and complement can be applied to languages.
+Because languages are just sets we can apply the common set operations to them. This includes union, intersection, difference, and complement. These are all self explanatory and work the way as expected.
+However, when the operation is binary, i.e. it takes two languages as input, the two languages must be over the same alphabet.
+
+<Callout type="info">
+- Union: $L_1 \cup L_2 = \{w \mid w \in L_1 \text{ or } w \in L_2\}$
+- Intersection: $L_1 \cap L_2 = \{w \mid w \in L_1 \text{ and } w \in L_2\}$
+- Difference: $L_1 - L_2 = \{w \mid w \in L_1 \text{ and } w \notin L_2\}$
+- Complement: $L^C = \{w \mid w \notin L\}$ or $L_1^C = \Sigma^* - L_1$ i.e the set of all words over the alphabet that are not in the language.
+</Callout>
+
+In addition to these set operations, we can also apply the operations of concatenation and the Kleene star to languages. These operations are defined in the same way as for words.
+
+#### Concatenation
+
+When concatenating two languages, we concatenate every word in the first language with every word in the second language.
+
+$$
+L_1 \cdot L_2 = \{w_1 \cdot w_2 \mid w_1 \in L_1, w_2 \in L_2\}
+$$
+
+This is also called the product of two languages. The concatenation of two languages is very similar to the cartesian product of two sets. This is clearly visible in the example below.
+
+<Callout type="example">
+- $L_1 = \{a, b\}$, $L_2 = \{c, d\}$, $L_1 \cdot L_2 = \{ac, ad, bc, bd\}$.
+- $L_1 = \{101, 010\}$, $L_2 = \{11, 00\}$, $L_1 \cdot L_2 = \{10111, 10100, 01011, 01000\}$.
+</Callout>
+
+#### Kleene Star
+
+Using the concatenation operation we can also define the Kleene star of a language. The Kleene star of a language is the set of all words that can be made by concatenating any number of words from the original languages.
+For this we define the following:
+
+$$
+\begin{align*}
+L^0 & = \{\varepsilon\} \\
+L^1 & = L \\
+L^2 & = L \cdot L \\
+L^{n+1} & = L \cdot L^n
+\end{align*}
+$$
+
+We can then define the Kleene star of a language as:
+
+$$
+L^* = \bigcup_{i \geq 0} L^i = L^0 \cup L^1 \cup L^2 \cup \ldots
+$$
+
+We can also define the Kleene plus, i.e the set of all words that can be made by concatenating any number of words from the original language except the empty word:
+
+$$
+L^+ = L^* - \{\varepsilon\} = \bigcup_{i \geq 1} L^i = L^1 \cup L^2 \cup L^3 \cup \ldots
+$$
+
+<Callout type="example">
+- $L = \{a, b\}$, $L^* = \{\varepsilon, a, b, aa, ab, ba, bb, aaa, aab, aba, abb, baa, bab, bba, bbb, \ldots\}$.
+- $L = \{101, 010\}$, $L^* = \{\varepsilon, 101, 010, 101101, 101010, 010101, 010010, 101101101, 101101010, \ldots\}$.
+</Callout>

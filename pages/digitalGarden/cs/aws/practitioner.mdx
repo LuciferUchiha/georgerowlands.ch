@@ -372,4 +372,36 @@ store objects (files) in buckets (folders). buckets must have a globally unique 
 but are stored in a region.
 
 objects have a key (full path) prefix + object name. Seems like a folder but doesn't actually exist.
-max size of an object is 5TB. can store any type of file like images, videos, backups, logs etc.-01DS
+object values are the content. max size of an object is 5TB and can store any type of file like images, videos, backups, logs etc.
+When uploading more then 5GB must use "multipart upload", X/5GB parts.
+object metadata, list of text key value pairs like content type from system or user.
+object tags unicode key value pairs by user for organization, cost allocation etc. max 10 tags per object.
+version id for versioning if versioning is enabled. can be used to restore previous versions of an object.
+
+### Security
+
+- user based, IAM policies, sets which api calls a user can make
+- resource based, bucket policies, bucket wide rules such as public access, cross account access etc.
+    - Object Access Control List (ACL), fine grained control
+    - Bucket Access Control List (ACL), less common
+
+objects can be encrypted with encryption keys
+
+Bucket policies, that allows anyone to read, i.e public read access. principal are the users that are allowed to do the action, therefor * is everyone.
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicRead",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::mybucketname/*"
+        }
+    ]
+}
+```
+
+You can set block "all public access" to true to prevent public access to the bucket even if there is a bucket policy that allows it.
