@@ -322,3 +322,54 @@ use 3rd party high performance file systems like windows file server or lustre f
 native and supported for windows via smb and integrated with Microsoft Active Directory for user authentication.
 
 Lustre is Linux and cluster file system for high performance computing. for ML and analytics workloads.
+
+## ELS and ASG
+
+ELS is an elastic load balancer that distributes incoming traffic across multiple targets like ec2 instances.
+ASG is an auto scaling group that automatically adjusts the number of ec2 instances in response to demand.
+
+Scalability = ability to handle increased load, either:
+- vertically, for call center instead of junior operator hire senior operator, common for databases
+- horizontally (elasticity), for call center just get more operators, implies a distributed system, common for web servers
+- elasticity = ability to automatically increase or decrease capacity based on demand, auto-scaling pay per use
+- agility = agile development, fast deployment, fast changes, fast feedback
+
+high availability = ability to stay up and running, run in at least 2 availability zones to survivie a disaster.
+
+both require load balancing and auto scaling. high availability also wants multi AZ mode for both.
+
+load balancer forward internet traffic to multiple ec2 instances downstream. load balancer can be internal or external, i.e internet facing or not.
+single point of acces, spread load, high availability, fault tolerance, health checks for downstream instances.
+
+EBS = managed load balancer, meaning aws manages the load balancer for you makes sure is up and running, scales automatically, no need to worry about maintenance.
+Can setup custom load balancer which is cheaper but more work.
+
+4 types of load balancers:
+- Application Load Balancer (ALB), http and https grpc, layer 7, http routing features, static dns/url
+- Network Load Balancer (NLB), TCP, high performance, layer 4, static ip through elastic ip
+- Gateway Load Balancer, layer 3, GENEVE protocol on ip packets, route traffic to firewalls managed by ec2 instances for intrusion detection etc. traffic is checked and insprected via GWLB.
+- Classic Load Balancer, retired 2023, layer 4 and 7
+
+traffic is routed to "target groups" which depend on the protocol and port. can have multiple target groups per load balancer. and each target group can have multiple targets.
+
+ASG for auto scaling, like shopping during the day but not at night. can scale out (add instances) or scale in (remove instances) based on demand. 
+Can setup min/desired/max, they can also be registerd to a target group. the ASG will also replace unhealthy instances because of health checks.
+
+launch templates are instructions for the ASG on how to launch instances. can be used to launch instances with specific configurations like ami, instance type, key pair etc.
+
+scaling strategies:
+- manual, not recommended, update the desired capacity manually
+- dynamic, either simple or step scaling, based on cloudwatch alarms based on a trigger like cpu usage > 70% for 5 minutes add or under 30% for 5 minutes remove instances??
+target tracking scaling, scale out or in to keep a metric at a specific value like cpu usage at 70%.
+lastly scheduled scaling, scale out or in based on a schedule like every saturday scale out for sports betting website.
+- predictive scaling, machine learning to predict future demand based on historical data. will provision instances in advance for easy pattern recognition.
+
+## S3 - Simple Storage Service
+
+many use cases like backup and storage, disaster recovery, archiving, hybrid cloud storage, data lakes, static websites etc.
+
+store objects (files) in buckets (folders). buckets must have a globally unique name across all regions and accounts. buckets is a global service 
+but are stored in a region.
+
+objects have a key (full path) prefix + object name. Seems like a folder but doesn't actually exist.
+max size of an object is 5TB. can store any type of file like images, videos, backups, logs etc.-01DS
