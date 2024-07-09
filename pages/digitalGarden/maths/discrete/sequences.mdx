@@ -1,4 +1,5 @@
 import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
 
 # Sequences 
 
@@ -35,6 +36,16 @@ Where the function $f$ maps the natural numbers i.e. the index to the real numbe
 
 The index is often written as a subscript to the variable name, e.g. $a_n$ is the n-th element of the sequence.
 
+## Forms of Sequences
+
+Sequences can be defined primarly in three ways: Enumeration, explicitly with a formula, or recursively.
+
+### Enumeration
+
+### Explicitly
+
+### Recursively
+
 ## Equality
 
 Two sequences are equal if they have the same length and each element is equal to the corresponding element in the other sequence. Meaning that for two sequences to be equal, they must have the same elements in the same order. 
@@ -51,13 +62,135 @@ $$
 
 ## Order Pair
 
-An ordered pair is a sequence of exactly two elements. This is often used to represent points in a two-dimensional space. 
+An ordered pair is a sequence of exactly two elements. This is often used to represent points in a two-dimensional space, i.e the x and y coordinates of a point 
+in the Cartesian coordinate system.
+
+<Image 
+    src="/maths/sequencesOrderPair.png"
+    caption="An ordered pair (x, y) representing a point in a two-dimensional space."
+    width={500}
+/>
 
 ## n-tuple
 
 The idea of an ordered pair can be generalized for any finite number of elements a so called n-tuple.
+n-tuples are sequences of exactly n elements and are commonly seen in computer science and mathematics.
+
+In linear algebra a vector is often represented as an n-tuple. For example a 3-dimensional vector in 
+3D space can be represented as a 3-tuple. This would correspond to a row-vector which we like to transpose to a column-vector.
+
+
+<Image 
+    src="/maths/sequencesNTuple.png"
+    caption="An n-tuple (a1, a2, a3, ..., an) representing a vector in n-dimensional space."
+    width={500}
+/>
 
 ## Sum Operator
+
+The sum operator or also sometimes called sigma operator or summation is a mathematical operator that represents the addition of a sequence of objects, most commonly numbers but can also be other mathematical objects that support addition.
+
+When the series of numbers is defined such as $(1,2,3,4,5)$ we commonly write the summation as:
+
+$$
+1 + 2 + 3 + 4 + 5 = 15
+$$
+
+However most often a series is defined by some pattern/formula or function. In this case we use the sum operator to represent the sum of the series. 
+The sum operator is written as a capital sigma $\sum$ and then usually has a lower and upper bound. The lower bound is the starting index of the series and the upper bound is the ending index of the series. The index is usually a natural number. 
+This index is then used in the formula to represent the current element of the series.
+
+$$
+\sum_{i=1}^{n} i = 1 + 2 + 3 + ... + n
+$$
+
+more generally the sum operator is defined as the following where $a_i$ is the i-th element of the sequence.
+
+$$
+\sum_{i=1}^{n} a_i = a_1 + a_2 + a_3 + ... + a_n
+$$
+
+Because a sequence can be defined by a function, the sum operator can also be used to represent the sum of a function.
+For computer scientists it can also be useful to think of the sum operator as a loop. The lower bound is the starting index of the loop and the upper bound is the ending index of the loop. The formula inside the sum operator is then the body of the loop.
+
+```java
+int sum = 0;
+for (int i = 1; i <= n; i++) {
+    sum += f(i);
+}
+```
+
+Depending on the context the upper and/or lower bound are sometimes omitted. If the lower bound is omitted it is assumed to be 1 and if the upper bound is omitted it is assumed to be infinity or the length of the sequence $n$.
+Other common notations are $\sum_{0 \leq i \leq 5} i$ or $\sum_{s \in S} s$ where $S$ is a set.
+
+When a infinite sequence is summed up it is called a [series](/digitalGarden/maths/calculus/series/intro).
+
+<Callout type="example">
+- $\sum_{i=1}^{5} i = 1 + 2 + 3 + 4 + 5 = 15$
+- $\sum_{i=1}^{5} i^2 = 1 + 4 + 9 + 16 + 25 = 55$
+- $\sum_{i=1}^{5} a_i = a_1 + a_2 + a_3 + a_4 + a_5$
+</Callout>
+
+### Special Cases
+
+There are some special cases of the sum operator that are worth mentioning:
+
+- **Empty Sum**: The sum of an empty sequence is defined to be 0. This is because there are no elements to sum.
+- **Single Element Sum**: The sum of a sequence with only one element is equal to that element. This is because there is only one element to sum.
+
+### Nested Sums
+
+The sum operator can also be nested. This means we can sum over multiple indices. 
+This is useful when working with multi-dimensional sequences or functions.
+
+$$
+\sum_{i=1}^{n} \sum_{j=1}^{m} a_{i,j} = a_{1,1} + a_{1,2} + ... + a_{n,m}
+$$
+
+Just like with nested loops in programming languages, the inner sum is executed for each iteration of the outer sum.
+
+```java
+int sum = 0;
+for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= m; j++) {
+        sum += f(i, j);
+    }
+}
+```
+
+<Callout type="example">
+- $\sum_{i=1}^{2} \sum_{j=1}^{2} i*j = 1*1 + 1*2 + 2*1 + 2*2 = 1 + 2 + 2 + 4 = 9$
+- $\sum_{i=1}^{2} \sum_{j=1}^{2} i+j = 1+1 + 1+2 + 2+1 + 2+2 = 2 + 3 + 3 + 4 = 12$
+</Callout>
+
+### Properties
+
+We can derive some properties of the sum operator from the properties of addition and multiplication that can make it easier to work with sums.
+
+$$
+\begin{align*}
+\sum_{i=l}^{u} C \cdot f(i) &= C \cdot \sum_{i=l}^{u} f(i) & \text{Distributive property of multiplication} \\
+\sum_{i=l}^{u} (f(i) + g(i)) &= \sum_{i=l}^{u} f(i) + \sum_{i=l}^{u} g(i) & \text{Commutative property of addition} \\
+\sum_{i=l}^{u} f(i) &= \sum_{i=l+k}^{u+k} f(i-k) & \text{Shifting the index} \\
+\sum_{i=l}^{u} f(i) &= \sum_{i=l}^{m} f(i) + \sum_{i=m+1}^{u} f(i) & \text{Splitting the sum} \\
+\sum_{i=l}^{u} f(i) &= \sum_{i=l}^{u} f(u+l-i) & \text{Reversing the sum order} \\
+\sum_{i=k_0}^{k_1} \sum_{j=l_0}^{l_1} f(i,j) &= \sum_{j=l_0}^{l_1} \sum_{i=k_0}^{k_1} f(i,j) & \text{Commutative property of addition}
+\end{align*}
+$$
+
+### Finding Closed Forms
+
+Story of Gauss and the sum of the first 100 numbers.
+
+$$
+\sum_{i=1}^{n} i = 1 + 2 + 3 + ... + n = \frac{n(n+1)}{2}
+$$
+
+<Callout type="proof">
+By induction?
+</Callout>
+
+This probably also relates to big O notation and the time complexity of algorithms i think?
 
 ## Product Operator
 
@@ -245,8 +378,10 @@ Sind $a_n$ und $b_n$ konvergente Folgen mit den Grenzwerten $a$ bzw. $b$, so ist
 
 Für eine rationale Folge, die im Zähler aus einem Polynom k-ten Grades
 und im Nenner aus einem Polynom l-ten Grades besteht, gilt:
- $$\lim_{n \to \infty}{{a_kn^k+a_{k-1}n^{k-1}+...+a_0}\over{b_ln^l+b_{l-1}n^{l-1}+...+b_0}} = \begin{dcases}
+$$
+ \lim_{n \to \infty}{{a_kn^k+a_{k-1}n^{k-1}+...+a_0}\over{b_ln^l+b_{l-1}n^{l-1}+...+b_0}} = \begin{dcases}
         {a_k\over b_k} *\infty, falls\space k >l \\
         {a_k\over b_k} , falls\space k=l \\
         0 , falls\space k<l
-\end{dcases}$$
+\end{dcases}
+$$
