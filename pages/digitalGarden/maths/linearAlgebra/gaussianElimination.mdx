@@ -6,12 +6,86 @@ The gaussian elimination algorithm, sometimes called the row reduction algorithm
 simple operations on the rows of the matrix. The allowed operations are:
 
 - Swapping two rows
-- Multiplying a row by a nonzero number
-- Adding a multiple of one row to another row, the multiple can also be negative resulting in subtracting a multiple of one row from another row.
+- Multiplying a row by a non-zero number
+- Adding a row to another row. This can also be combined with the above operation of multiplying a row to be able to add a multiple of a row to another. The multiple can also be negative resulting in subtracting a multiple of one row from another row.
+
+These operations are allowed because they do not change the solution set of the system of linear equations. When solving a system of linear equations the conventional way 
+by using algebra you are also performing the same operations but in a different way.
+
+<Callout type="example">
+Given the system of linear equations:
+
+$$
+\begin{vmatrix}
+2x - 2y + 4z = 6 \\
+-5x + 6y -7z = -7 \\
+3x + 2y + z = 9
+\end{vmatrix}
+$$
+
+You would probably solve it by trying to eliminate one variable at a time. For example let's solve the first equation for $x$:
+
+$$
+\begin{align*}
+2x = 2y - 4z + 6 \\
+\rightarrow x = y - 2z + 3
+\end{align*}
+$$
+
+Now we can substitute this into the second equation:
+
+$$
+\begin{align*}
+-5x + 6y -7z = -7 \\
+& \rightarrow -5(y - 2z + 3) + 6y - 7z = -7 \\
+& \rightarrow -5y + 10z - 15 + 6y - 7z = -7 \\
+& \rightarrow y + 3z = 8
+\end{align*}
+$$
+
+and the third equation:
+
+$$
+\begin{align*}
+3x + 2y + z = 9 \\
+& \rightarrow 3(y - 2z + 3) + 2y + z = 9 \\
+& \rightarrow 3y - 6z + 9 + 2y + z = 9 \\
+& \rightarrow 5y - 5z = 0 
+\end{align*}
+$$
+
+The above step could also have been achieved by addiding/subtracting the correct multiple of the first equation to the second and third equation, which is what the gaussian elimination algorithm does.
+To remove the $x$ variable from the second equation we could subtract the first equation multiplied by $-\frac{5}{2}$ from the second equation:
+
+First we multiply the first equation by $-\frac{5}{2}$:
+
+$$
+\begin{align*}
+2x - 2y + 4z = 6 \\ 
+& \rightarrow -\frac{5}{2}(2x - 2y + 4z) = -\frac{5}{2} \cdot 6 \\
+& \rightarrow -5x + 5y - 10z = -15 
+\end{align*}
+$$
+
+Now we subtract this from the second equation:
+
+$$
+\begin{align*}
+-5x + 6y -7z = -7 \\
+& \rightarrow -5x + 6y -7z - (-5x + 5y - 10z) = -7 - (-15) \\
+& \rightarrow y + 3z = 8
+\end{align*}
+$$
+
+And we have the same result as before. This process can be repeated for the third equation to get the same result as before.
+We can then also repeat the process to eliminate the $y$ variable from the third equation by adding/subtracting the correct multiple of the second equation to the third equation.
+
+Then to finally solve for the variables we can perform back substitution, i.e take the found value for $z$ and substitute it into the second equation to solve for $y$ and then substitute the found value for $y$ and $z$ into the first equation to solve for $x$.
+</Callout>
 
 ## Row Echelon Form
 
-Before looking at the algorithm, we need to define what it means for a matrix to be in row echelon form. A matrix is in row echelon form if it satisfies the following conditions:
+Above we have seen the idea of the algorithm but before looking at the algorithm, we need to define what it means for a matrix to be in row echelon form. A matrix is in row echelon form if it satisfies the following conditions:
 
 - All rows that only contain zeros are at the bottom of the matrix.
 - The first nonzero element in each row, called the leading entry or pivot, is to the right of all the pivots of the rows above it.
@@ -64,7 +138,11 @@ $$
 
 ## Solving Linear Systems
 
-Orignally the gaussian elimination algorithm was developed to solve systems of linear equations. Before the algorithm can be used to solve a system of linear equations, 
+Orignally the gaussian elimination algorithm was developed to solve systems of linear equations. 
+
+SAY SOMETHING ABOUT USUALLY IT IS USED FOR SQUARE MATRICES
+
+Before the algorithm can be used to solve a system of linear equations, 
 the system must be transformed into a matrix, to be more specific, an augmented matrix. An augmented matrix is a matrix that contains the coefficients of the variables 
 on the left side of the vertical line and the constants on the right side of the vertical line.
 
@@ -217,6 +295,30 @@ $$
 And now we have our augmented matrix in reduced row echelon form! We can now easily see that $x = \frac{3}{2}$ and $y = 1$ and that is it!
 </Callout>
 
+### Free Variables
+
+the columns that do not contain a pivot are called free variables. The number of free variables is equal to the number of columns minus the number of pivots.
+
+### Compacted Form
+
+especially when working with large matrices, it can be useful to compact the matrix by only looking at the columns that still need to be processed.
+
+## Calculating the Rank
+
+<Callout type="todo">
+TODO in reduced row echelon form, the number of pivots is the rank of the matrix, i.e. number of non-zero rows. Proof column rank = row rank 
+</Callout>
+
+### Number of Solutions
+
+using the rank of the matrix we can determine the number of solutions to a system of linear equations.
+
+Meaning of regular and singular matrices???
+
+Also something about homogenous systems and non-homogenous systems. Trivial solutions and non-trivial solutions.
+
+Consistency conditions
+
 ## Calculating the Inverse
 
 The gaussian elimination method can be extended to calculate the inverse of a matrix. Because the inverse of a matrix is only defined for square matrices, 
@@ -346,10 +448,4 @@ $$
 0.75 & -0.25 & 0.25
 \end{bmatrix}
 $$
-</Callout>
-
-## Calculating the Rank
-
-<Callout type="todo">
-TODO in reduced row echelon form, the number of pivots is the rank of the matrix, i.e. number of non-zero rows. Proof column rank = row rank 
 </Callout>
