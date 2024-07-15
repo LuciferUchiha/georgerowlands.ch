@@ -5,46 +5,64 @@ import Callout from "~/components/Callout/Callout";
 Logic theory is a branch of maths that deals with formal systems of logic. Logic theory is also commonly reffered to as boolean algebra 
 as it primarly deals with the boolean values of true and false.
 
-<Callout type="todo">
-Not propositions but statements.
+## Statements
 
-Also add open sentence that depend on variables.
-</Callout>
-
-## Propositions
-
-A proposition is a statement that is either true or false. For example, the statement "Zürich is in Switzerland" is a proposition because it is either true or false, but not both. 
+A statement is something such as a sentence that is either true or false. For example, the sentence "Zürich is in Switzerland" is a statement because it is either true or false, but not both. 
 A true/truthy value is represented by the symbol $T$ or $1$ and a false/falsy value is represented by the symbol $F$ or $0$.
 
 <Callout type="example">
-- "There are more wheels then doors in the world" is a proposition because it is either true or false. However, I don't know the answer to this question.
-- "My name is George" is a proposition (True).
-- "The sky is green" is a proposition (False).
-- "What time is it?" is not a proposition because it is a question.
-- "This proposition is false" is not a proposition because it is a paradox. If it is a proposition then it must be false which would make it true, but if it is true then it must be false.
+- "There are more wheels then doors in the world" is a statement because it is either true or false. However, I don't know the answer to this question.
+- "My name is George" is a statement (True).
+- "The sky is green" is a statement (False).
+- "What time is it?" is not a statement because it is a question.
+- "This statement is false" is not a statement because it is a paradox. If it is a statement then it must be false which would make it true, but if it is true then it must be false.
 </Callout>
 
-### Compound Propositions
+### Compound Statements
 
-Propositions can be combined to form compound propositions. 
+Statements can be combined to form compound statements. Just like in natural language, we can use words such as "and", "or" and "not" to combine statements, later 
+we will see that these are also the names of logical operators that are used to combine statements. 
+
+The smallest unit of a compound statement is a simple statement or sometimes called an atomic statement. 
+This is a statement that cannot be broken down any further. 
 
 <Callout type="example">
-If we have the proposition $p$ = "Zürich is in Switzerland" (True) and the proposition $q$ = "Zürich is the capital of Switzerland" (False, it is Bern), we can combine them to form the compound proposition:
+If we have the statement $p$ = "Zürich is in Switzerland" (True) and the statement $q$ = "Zürich is the capital of Switzerland" (False, it is Bern), we can combine them to form the compound statement:
 
-"Zürich is in Switzerland and Zürich is the capital of Switzerland" which is false.
+"Zürich is in Switzerland AND Zürich is the capital of Switzerland" which is false.
+
+We can also combine them to form the compound statement:
+
+"Zürich is in Switzerland OR Zürich is the capital of Switzerland" which is true.
+
+We can also combine them to form the compound statement:
+
+"Zürich is in Switzerland AND Zürich is NOT the capital of Switzerland" which is true.
+</Callout>
+
+### Open Sentences
+
+An open sentence is a sentence that contains a variable. The sentence is not a statement because it is not true or false until the variable is assigned a value.
+When the variable is assigned a value the open sentence becomes a statement. Unlike a closed/simple/definite statement that we have seen so far, 
+an open sentence can be true for some values of the variable and false for other values of the variable, it only has a definite 
+truth value when the variable is assigned a value.
+
+<Callout type="example">
+The sentence "x is greater then 5" is an open sentence because it is not true or false until we assign a value to the variable $x$.
+If we assign the value $x = 6$ then the sentence is true, but if we assign the value $x = 4$ then the sentence is false.
 </Callout>
 
 ## Logical Operators
 
-Rather then using words to express propositions and combinations we can use symbols and operators. Each logical operator has a truth table that defines the output of the operator based on the input propositions.
+Rather then using words to express statements and combinations we can use symbols and operators. Each logical operator has a truth table that defines the output of the operator based on the input statements.
 
 These operators are not just used in logic theory but also in programming languages and circuits in the form of logical gates.
 
 ### Conjunction (AND)
 
-The conjunction operator is represented by the symbol $\land$ and is true only if both the input propositions $p$ **and** $q$ are true. Hence the name "AND". To remember the symbol $\land$ think of it as a capital letter "A" for "AND".
+The conjunction operator is represented by the symbol $\land$ and is true only if both the input statements $p$ **and** $q$ are true. Hence the name "AND". To remember the symbol $\land$ think of it as a capital letter "A" for "AND".
 
-The truth table for the conjunction operator is as follows for the input propositions $p$ and $q$:
+The truth table for the conjunction operator is as follows for the input statements $p$ and $q$:
 
 | $p$ | $q$ | $p \land q$ |
 | :-: | :-: | :-: |
@@ -55,9 +73,9 @@ The truth table for the conjunction operator is as follows for the input proposi
 
 ### Disjunction (OR)
 
-The disjunction operator is represented by the symbol $\lor$ and is true if at least one of the input propositions $p$ **or** $q$ is true. Hence the name "OR". 
+The disjunction operator is represented by the symbol $\lor$ and is true if at least one of the input statements $p$ **or** $q$ is true. Hence the name "OR". 
 
-The truth table for the disjunction operator is as follows for the input propositions $p$ and $q$:
+The truth table for the disjunction operator is as follows for the input statements $p$ and $q$:
 
 | $p$ | $q$ | $p \lor q$ |
 | :-: | :-: | :-: |
@@ -68,10 +86,10 @@ The truth table for the disjunction operator is as follows for the input proposi
 
 ### Negation (NOT)
 
-The negation operator is a unary operator, meaning it only takes one input proposition $p$ rather then two, like the previous operators. The negation operator is represented by the symbol $\lnot$ and is true if the input proposition $p$ is false and false if the input proposition $p$ is true. 
-Hence the name "NOT", as it negates, inverts or flips the input proposition. Sometimes the negation operator is represented by an exclamation mark $!$, as this is often the symbol used in programming languages.
+The negation operator is a unary operator, meaning it only takes one input statement $p$ rather then two, like the previous operators. The negation operator is represented by the symbol $\lnot$ and is true if the input proposition $p$ is false and false if the input proposition $p$ is true. 
+Hence the name "NOT", as it negates, inverts or flips the input statement. Sometimes the negation operator is represented by an exclamation mark $!$, as this is often the symbol used in programming languages.
 
-The truth table for the negation operator is as follows for the input proposition $p$:
+The truth table for the negation operator is as follows for the input statement $p$:
 
 | $p$ | $\lnot p$ |
 | :-: | :-: |
