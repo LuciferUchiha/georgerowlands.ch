@@ -1,5 +1,32 @@
 # Equivalence Relations
 
+A relation $R$ is an equivalence relation if it is reflex, symmetric and transitive. To show that the relation 
+$R$ is an equivalence relation, we can write instead of $aRb$, $a \equiv b$ or $a \sim b$ if the relation is clear and 
+$a$ is related to $b$. If the relation is not clear, we can write $a \equiv_R b$ or $a \sim_R b$.
+
+Therefore we know that a relation $R$ is an equivalence relation if it satisfies the following properties:
+
+- $\forall a \in A, a \equiv_R a$ (reflexive)
+- $\forall a, b \in A, a \equiv_R b \implies b \equiv_R a$ (symmetric)
+- $\forall a, b, c \in A, a \equiv_R b \land b \equiv_R c \implies a \equiv_R c$ (transitive)
+
+This makes sense if we think of we compare it to our normal understandin of "equivalence":
+- We say that two things that are the same are equivalent to each other (reflexive).
+- If something is equivalent to something else, then that something else is equivalent to the first thing (symmetric).
+- If something is equivalent to something else, and that something else is equivalent to another thing, then the first thing is equivalent to the other thing (transitive).
+
+<Callout type="example">
+For the set $A = \{1, 2, 3\}$, the relation $R = \{(1, 1), (2, 2), (3, 3), (2,3), (3, 2)\}$ is an equivalence relation.
+
+- The relation $R$ is reflexive because $(1, 1), (2, 2), (3, 3) \in R$.
+- The relation $R$ is symmetric because $(2, 3), (3, 2) \in R$. $(1,2)$ and $(2,1)$ do not have to be in $R$.
+- The relation $R$ is transitive because $(2, 3), (3, 2) \in R$ and $(2, 2), (3, 3) \in R$.
+</Callout>
+
 ## Equivalence Classes
 
 also how they relate to partitions
+
+$$
+\[a\]_R = \{x \in A | x \equiv_R a\}
+$$
