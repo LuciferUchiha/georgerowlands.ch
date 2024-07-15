@@ -71,9 +71,34 @@ The truth table for the conjunction operator is as follows for the input stateme
 | $1$ | $0$ | $0$ |
 | $1$ | $1$ | $1$ |
 
+<Callout type="example">
+- $1 \land 1 = 1$
+- $1 \land 0 = 0$
+- $(0 \land 1 \land 1) \land 1 = 0$ Notice that we can chain multiple conjunction operators together by going from left to right and using brackets to group the statements.
+- $(1 \land 1 \land 1) \land (1 \land 1) = 1$
+
+We can see a pattern here, the conjunction operator is only true if all the input statements are true, as soon as one of the input statements is false the output is false.
+
+Let's look at the truth table for a composition of conjunction operators:
+
+| $p$ | $q$ | $r$ | $p \land q \land r$ |
+| :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $0$ | $0$ |
+| $0$ | $0$ | $1$ | $0$ |
+| $0$ | $1$ | $0$ | $0$ |
+| $0$ | $1$ | $1$ | $0$ |
+| $1$ | $0$ | $0$ | $0$ |
+| $1$ | $0$ | $1$ | $0$ |
+| $1$ | $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ | $1$ |
+
+</Callout>
+
+
 ### Disjunction (OR)
 
 The disjunction operator is represented by the symbol $\lor$ and is true if at least one of the input statements $p$ **or** $q$ is true. Hence the name "OR". 
+To not get $\land$ and $\lor$ confused just remember that $\land$ looks like a capital letter "A" for "AND" and therefore $\lor$ is the other one, "OR".
 
 The truth table for the disjunction operator is as follows for the input statements $p$ and $q$:
 
@@ -83,6 +108,34 @@ The truth table for the disjunction operator is as follows for the input stateme
 | $0$ | $1$ | $1$ |
 | $1$ | $0$ | $1$ |
 | $1$ | $1$ | $1$ |
+
+<Callout type="example">
+- $1 \lor 1 = 1$
+- $1 \lor 0 = 1$
+- $(0 \lor 1 \lor 1) \lor 1 = 1$
+- $(1 \lor 1 \lor 1) \lor (0 \lor 0) = 1$
+
+We can see a pattern here, the disjunction operator is true if at least one of the input statements is true, if all the input statements are false then the output is false.
+
+Let's look at the truth table for a composition of disjunction operators:
+
+| $p$ | $q$ | $r$ | $p \lor q \lor r$ |
+| :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $0$ | $0$ |
+| $0$ | $0$ | $1$ | $1$ |
+| $0$ | $1$ | $0$ | $1$ |
+| $0$ | $1$ | $1$ | $1$ |
+| $1$ | $0$ | $0$ | $1$ |
+| $1$ | $0$ | $1$ | $1$ |
+| $1$ | $1$ | $0$ | $1$ |
+| $1$ | $1$ | $1$ | $1$ |
+
+Let's also look at the conjunction and disjunction operators together:
+
+- $(1 \land 1) \lor (1 \land 0) = 1$
+- $(1 \land 1) \land (1 \land 0) = 0$
+- $(1 \land 0) \lor (0 \land 1) = 0$
+</Callout>
 
 ### Negation (NOT)
 
@@ -96,21 +149,157 @@ The truth table for the negation operator is as follows for the input statement 
 | $0$ | $1$ |
 | $1$ | $0$ |
 
-## Conditional Statements
+<Callout type="warning">
+The precdence of the not operator is higher then the other operators, meaning that it is evaluated first. This is similar to how in maths the brackets are evaluated first.
 
-If, then, implies
+For example, the statement $\lnot 1 \land 0$ is evaluated as $(\lnot 1) \land 0$ which is $0$. If the precedence was the other way around then the statement would be evaluated as $\lnot (1 \land 0)$ which is $1$.
+So remember that the negation operator is evaluated first and depending on the desired outcome you might need to use brackets to group the statements.
+</Callout>
 
-## Bi-Conditional Statements
+## Conditional Statements (IF THEN)
 
-If and only if, logically equivalent, twice implies
+A conditional statement is often reffered to as an "if-then" statement or implication. The conditional operator is represented by the symbol $\implies$ and is true if the input statement $p$ is false **or** the output statement $q$ is true.
+So we can say that the following statements are equivalent:
 
-Biconditional
+$$
+p \implies q = \lnot p \lor q
+$$
 
-## Logical Equivalence
+The conditional operator is also called the implication operator because it implies that if the input statement is true then the output statement is also true.
+The statement "If it is raining, then the ground is wet" can be written using the implication operator as $r \implies w$.
+If $r$ is true then $w$ must also be true, but if $r$ is false then $w$ can be either true or false, i.e the ground can be wet even if it is not raining.
 
-three lines
+The truth table for the Conditional operator is as follows for the input statements $p$ and $q$:
 
-## Tautologies
+| $p$ | $q$ | $p \implies q$ |
+| :-: | :-: | :-: |
+| $0$ | $0$ | $1$ |
+| $0$ | $1$ | $1$ |
+| $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ |
+
+To remember the truth table you can either remember that the conditional operator is only false if the input statement is true and the output statement is false, otherwise it is true.
+
+The operator's direction is from left to right, meaning that the input statement is on the left and the output statement is on the right. 
+However, we can also write the conditional operator in the other direction, i.e $q \impliedby p$ which is equivalent to $p \implies q$.
+
+$$
+p \implies q = q \impliedby p
+$$
+
+<Callout type="example">
+Let's look at the truth table for a composition including the conditional operator:
+
+| $p$ | $q$ | $r$ | $(p \implies q) \land r$ |
+| :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $0$ | $0$ |
+| $0$ | $0$ | $1$ | $1$ |
+| $0$ | $1$ | $0$ | $0$ |
+| $0$ | $1$ | $1$ | $1$ |
+| $1$ | $0$ | $0$ | $0$ |
+| $1$ | $0$ | $1$ | $0$ |
+| $1$ | $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ | $1$ |
+</Callout>
+
+## Biconditional Statements (IF AND ONLY IF)
+
+A biconditional statement is often reffered to as an "if and only if" statement. The biconditional operator is represented by the symbol $\iff$ and is true if both the input statement $p$ **and** the output statement $q$ are true **or** both the input statement $p$ **and** the output statement $q$ are false.
+The biconditional operator is also called the equivalence operator because it states that the input statement is equivalent to the output statement.
+
+The truth table for the Biconditional operator is as follows for the input statements $p$ and $q$:
+
+| $p$ | $q$ | $p \iff q$ |
+| :-: | :-: | :-: |
+| $0$ | $0$ | $1$ |
+| $0$ | $1$ | $0$ |
+| $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ | 
+
+The "bi" in biconditional means two, so we can think of the biconditional operator as two conditional operators combined together. We can 
+actually show that this is the case, i.e that the biconditional operator is equivalent to two conditional operators:
+
+$$
+p \iff q = (p \implies q) \land (q \implies p)
+$$
+
+<Callout type="proof">
+Let's prove that the biconditional operator is equivalent to two conditional operators:
+
+| $p$ | $q$ | $p \implies q$ | $q \implies p$ | $(p \implies q) \land (q \implies p)$ | $p \iff q$ |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $1$ | $1$ | $1$ | $1$ |
+| $0$ | $1$ | $1$ | $0$ | $0$ | $0$ |
+| $1$ | $0$ | $0$ | $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ | $1$ | $1$ | $1$ |
+
+As we can see the two statements are equivalent, the biconditional operator is equivalent to two conditional operators. This 
+is very important when we want to prove that two statements are logically equivalent as most proofs are done using the conditional operator.
+</Callout>
+
+### Logical Equivalence
+
+In logic theory we also sometimes want to express that two statements are logically equivalent, meaning that have the same truth value.
+This could be done by using the biconditional operator $\iff$ which is true if both the input statements $p$ and $q$ are true **or** both the input statements $p$ and $q$ are false.
+
+However, most often we prefer to write this using the equivalence symbol $\equiv$ which is true if both the input statements $p$ and $q$ have the same truth value.
+So we could change our statement from above of the conditional operator to be:
+
+$$
+p \implies q \equiv \lnot p \lor q
+$$
+
+and the biconditional operator to be:
+
+$$
+p \iff q \equiv (p \implies q) \land (q \implies p)
+$$
+
+There is no real difference between the two from my understanding. The biconditional operator used to combine two statements into one, 
+while the equivalence operator is used to state that two statements are equivalent.
+
+## Tautologies and Contradictions
+
+A tautology is a statement that is always true, no matter what the input is for the statement. A fun tautology is 
+Shakespeare's "To be or not to be" because it is always true, it is a tautology. Or the statement "It will rain or 
+it will not rain" is also a tautology because it is always true, it cannot be both raining and not raining at the same time.
+
+$$
+p \lor \lnot p
+$$
+
+To check if a statement is a tautology we can use a truth table and check if the output is always true.
+
+| $p$ | $\lnot p$ | $p \lor \lnot p$ |
+| :-: | :-: | :-: |
+| $0$ | $1$ | $1$ |
+| $1$ | $0$ | $1$ |
+
+On the other hand, a contradiction is a statement that is always false, no matter what the input is for the statement. 
+The most obvious contradiction is the "The world is round and the world is not round", it is always false because either 
+the world is round or it is not round, it cannot be both, hence it is a contradiction.
+
+$$
+p \land \lnot p
+$$
+
+| $p$ | $\lnot p$ | $p \land \lnot p$ |
+| :-: | :-: | :-: |
+| $0$ | $1$ | $0$ |
+| $1$ | $0$ | $0$ |
+
+<Callout type="example">
+Let's find out if the statement is a tautology or a contradiction:
+
+| $p$ | $q$ | $\lnot p$ | $\lnot q$ | $p \lor q$ | $\lnot p \land \lnot q$ | $(p \lor q) \lor (\lnot p \land \lnot q)$ |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $1$ | $1$ | $0$ | $1$ | $1$ |
+| $0$ | $1$ | $1$ | $0$ | $1$ | $0$ | $1$ |
+| $1$ | $0$ | $0$ | $1$ | $1$ | $0$ | $1$ |
+| $1$ | $1$ | $0$ | $0$ | $1$ | $0$ | $1$ |
+
+As we can see the statement is a tautology because the output is always true.
+</Callout>
 
 ## Predicates
 
@@ -134,6 +323,6 @@ also a generalized form with quantifiers???
 
 arguments with therefore symbol
 
-modus ponens, modus tollens, elimnation
+modus ponens, modus tollens, elimination
 
 instatination or something for quantifiers
