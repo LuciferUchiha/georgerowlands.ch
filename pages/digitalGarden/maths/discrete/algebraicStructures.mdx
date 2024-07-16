@@ -1,10 +1,101 @@
+import Callout from "~/components/Callout/Callout";
+
 # Algebraic Structures
 
 ## Operations
 
+### Commutativity
+
+An operation $*$ is commutative if for all $a, b \in S$:
+
+$$
+a * b = b * a
+$$
+
+In other words, the order of the operands does not matter.
+
+<Callout type="example">
+Addition and multiplication are commutative operations. For example:
+
+$$
+\begin{align*}
+2 + 3 &= 3 + 2 = 5 \\
+2 \cdot 3 &= 3 \cdot 2 = 6
+\end{align*}
+$$
+
+Subtraction and division are not commutative operations. For example:
+
+$$
+\begin{align*}
+2 - 3 &\neq 3 - 2 \\
+2 \div 3 &\neq 3 \div 2
+\end{align*}
+$$
+</Callout>
+
 ### Associativity
 
-### Commutativity
+An operation $*$ is associative if for all $a, b, c \in S$:
+
+$$
+a * (b * c) = (a * b) * c
+$$
+
+In other words, the grouping of the operands does not matter. So you can group the operands in any way you like
+as long as the order of the operands is preserved and there are no other operations in between.
+
+<Callout type="example">
+Addition and multiplication are associative operations. For example:
+
+$$
+\begin{align*}
+2 + (3 + 4) &= (2 + 3) + 4 = 9 \\
+2 \cdot (3 \cdot 4) &= (2 \cdot 3) \cdot 4 = 24
+\end{align*}
+$$
+
+### Distributivity
+
+An operation $*$ is distributive with respect to another operation $+$ if for all $a, b, c \in S$:
+
+$$
+a * (b + c) = (a * b) + (a * c) 
+$$
+
+and
+
+$$
+(b + c) * a = (b * a) + (c * a)
+$$
+
+In other words, the operation "distributes" itself over the other operation. You can think of 
+distributing as copying the operation to each of the operands of the other operation.
+
+<Callout type="example">
+The operation of multiplication is distributive with respect to addition. For example:
+
+$$
+2 \cdot (3 + 4) = (2 \cdot 3) + (2 \cdot 4) = 14
+$$
+</Callout>
+
+#### Left Distributivity
+
+An operation $*$ is left distributive if for all $a, b, c \in S$ the operation is distributive with respect to $+$ 
+when the operation is on the left:
+
+$$
+a * (b + c) = (a * b) + (a * c)
+$$
+
+not necessarily:
+
+$$
+(b + c) * a = (b * a) + (c * a)
+$$
+
+#### Right Distributivity
 
 ### Identity
 
@@ -17,4 +108,6 @@
 ## Monoids
 
 ## Groups
+
+## Rings
 
