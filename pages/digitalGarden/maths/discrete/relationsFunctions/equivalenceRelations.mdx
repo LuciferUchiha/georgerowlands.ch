@@ -1,3 +1,5 @@
+import Callout from "~/components/Callout/Callout";
+
 # Equivalence Relations
 
 A relation $R$ is an equivalence relation if it is reflex, symmetric and transitive. To show that the relation 
@@ -25,8 +27,30 @@ For the set $A = \{1, 2, 3\}$, the relation $R = \{(1, 1), (2, 2), (3, 3), (2,3)
 
 ## Equivalence Classes
 
-also how they relate to partitions
+Given an equivalence relation $R$ on a set $A$, the equivalence class is a subset of $A$ that contains all the elements that are equivalent to a given element $a \in A$. 
+The equivalence class of $a$ is denoted by $[a]$ if the relation is clear, or $[a]_R$ if the relation is not clear. 
+More formally, the equivalence class of $a$ is defined as:
 
 $$
-\[a\]_R = \{x \in A | x \equiv_R a\}
+[a]_R = \{b \in A | a \equiv_R b\}
 $$
+
+Because of the reflexive, symmetric and transitive properties of the equivalence relation, the equivalence classes partition the set $A$ into subsets 
+that must either be equal or disjoint. So for any elements $a, b \in A$:
+
+- If $a \equiv_R b$, then $[a]_R = [b]_R$ 
+- Or if $a \not\equiv_R b$, then $[a]_R \cap [b]_R = \emptyset$.
+
+<Callout type="example">
+For the set $A = \{1, 2, 3\}$ and the equivalence relation $R = \{(1, 1), (2, 2), (3, 3), (2,3), (3, 2)\}$, the equivalence classes are:
+
+- $[1]_R = \{1\}$
+- $[2]_R = \{2, 3\}$
+- $[3]_R = \{2, 3\}$
+
+As we can see, $[2]_R = [3]_R$ and $[1]_R \cap [2]_R = \emptyset$ and therefore the equivalence classes partition the set $A$.
+</Callout>
+
+### Equivalence Classes as Modulo
+
+interesting but not really important
