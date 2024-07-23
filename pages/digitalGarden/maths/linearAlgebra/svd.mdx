@@ -39,7 +39,7 @@ for i in range(0, len(e_values)):
     U.append(u_i)
 U@Sigma@V.T
 ```
-<div class="code-output-wrapper">
+<div className="code-output-wrapper">
 ```
     array([[-5.18214154,  1.89367286,  2.74943852],
            [ 1.95955405,  5.01675209,  1.2880268 ],
@@ -53,7 +53,7 @@ We can see that we lose some precision due to floating number operations but the
 ```python
 np.round(U@Sigma@V.T)
 ```
-<div class="code-output-wrapper">
+<div className="code-output-wrapper">
 ```
     array([[-5.,  2.,  3.],
            [ 2.,  5.,  1.],
@@ -68,7 +68,7 @@ We can also just use the built in svd of numpy which is more efficient and accur
 U, Sigma, Vh = np.linalg.svd(A)
 U@np.diag(Sigma)@Vh
 ```
-<div class="code-output-wrapper">
+<div className="code-output-wrapper">
 ```
     array([[-5.,  2.,  3.],
            [ 2.,  5.,  1.],

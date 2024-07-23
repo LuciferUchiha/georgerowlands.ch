@@ -16,12 +16,15 @@ a_{m1} & a_{m2} & \cdots & a_{mn}
 \end{bmatrix}
 $$
 
-The elements of a matrix are indexed by their row and then there column. So $a_{ij}$ is the element in the $i$th row and $j$th column. This means that a matrix can also be 
+The elements of a matrix are indexed by their row and then there column. So $a_{ij}$ or sometimes also $(\boldsymbol{A})_{ij}$is the element in the $i$th row and $j$th column. This means that a matrix can also be 
 defined as $\boldsymbol{A} = [a_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$.
 
 <Callout type="example">
     $$ 
-    \boldsymbol{A} = \begin{bmatrix}1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}
+    \begin{align*}
+    \boldsymbol{A} = \begin{bmatrix}1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} \\
+    \boldsymbol{B} = \begin{bmatrix}1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \end{bmatrix}
+    \end{align*}
     $$
 </Callout>
 
@@ -30,11 +33,11 @@ defined as $\boldsymbol{A} = [a_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$.
     as a $2 \times 3$ matrix, not a $3 \times 2$ matrix, so $\boldsymbol{A} \in \mathbb{R}^{2 \times 3}$.
 </Callout>
 
-A matrix with only one row is called a row vector and a matrix with only one column is called a column vector. For some applications it is useful to of a normal vector as a 
-column vector. 
+A matrix with only one row is called a row vector or [n-tuple]() and a matrix with only one column is called a column vector. When talking about vectors
+we usually refer to column vectors. A matrix that only has one row and one column can be thought of as a normal number and is called a scalar.
 
 <Callout type="example">
-    A column vector, i.e. a normal vector, can be written as follows:
+    A column vector, i.e. ur usual vector, can be written as follows:
 
     $$
     \boldsymbol{v} \in \mathbb{R}^{n \times 1} = \begin{bmatrix}v_1 \\ v_2 \\ \vdots \\ v_n \end{bmatrix}
@@ -45,138 +48,21 @@ column vector.
     $$
     \boldsymbol{v} \in \mathbb{R}^{1 \times n} = \begin{bmatrix}v_1 & v_2 & \cdots & v_n \end{bmatrix}
     $$
-</Callout>
 
-In some cases it is useful to think of a matrix as a collection of column vectors. So a matrix with $n$ columns can be thought of as $n$ column vectors concatenated together. 
-This is also called the column space of a matrix.
+    A scalar can be written as follows:
 
-<Image src="/maths/matrixColumnSpace.png"
-       caption="A matrix as a collection of column vectors, i.e. a column space."
-       width={300}
-/>
-
-Another way is to think of a matrix as a collection of row vectors. So a matrix with $m$ rows can be thought of as $m$ row vectors stacked on top of each other. This is also 
-called the row space of a matrix.
-
-<Image src="/maths/matrixRowSpace.png"
-       caption="A matrix as a collection of row vectors, i.e. a row space."
-       width={300}
-/>
-
-## Transpose
-
-The transpose of a matrix is a matrix where the rows and columns are swapped. The transpose of the matrix $\boldsymbol{A}$ is written as $\boldsymbol{A}^T$. 
-Formally the element in the $i$-th row and $j$-th column in the matrix $\boldsymbol{A}$ becomes the element in the $j$-th row and $i$-th column in the 
-matrix $\boldsymbol{A}^T$. So $a_{ij}^T = a_{ji}$.
-
-<Callout type="example">
-    Transposing a column vector:
     $$
-    \boldsymbol{v} = \begin{bmatrix}
-    v_1 \\ v_2 \\ \vdots \\ v_n 
-    \end{bmatrix} \Rightarrow \boldsymbol{v}^T = \begin{bmatrix}
-    v_1 & v_2 & \cdots & v_n 
-    \end{bmatrix}
-    $$
-
-    Transposing a row vector:
-    $$
-    \boldsymbol{v} = \begin{bmatrix}
-    v_1 & v_2 & \cdots & v_n 
-    \end{bmatrix} \Rightarrow \boldsymbol{v}^T = \begin{bmatrix}
-    v_1 \\ v_2 \\ \vdots \\ v_n 
-    \end{bmatrix}
-    $$
-
-    Transposing a matrix:
-    $$
-    \boldsymbol{A} = \begin{bmatrix}
-    1 & 2 & 3 \\ 
-    4 & 5 & 6 
-    \end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
-    1 & 4 \\
-    2 & 5 \\
-    3 & 6
-    \end{bmatrix}
+    \boldsymbol{v} \in \mathbb{R}^{1 \times 1} = \begin{bmatrix}v \end{bmatrix} = v
     $$
 </Callout>
 
-As we can see in the example above the transpose of a row vector is a column vector and the transpose of a column vector is a row vector. This also shows that 
-transposing a matrix results in a matrix with its dimensions swapped. So the transpose of a $m \times n$ matrix is a $n \times m$ matrix.
-
-### Properties
-
-#### Transposing a Transposed Matrix
-
-If a matrix is transposed twice it is the same as the original matrix:
-
-$$
-(\boldsymbol{A}^T)^T = \boldsymbol{A}
-$$
-
-<Callout type="example">
-$$
-\boldsymbol{A} = \begin{bmatrix} 
-1 & 2 & 3 \\ 
-4 & 5 & 6 
-\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix} 
-1 & 4 \\
-2 & 5 \\
-3 & 6 
-\end{bmatrix} \Rightarrow (\boldsymbol{A}^T)^T = \begin{bmatrix} 
-1 & 2 & 3 \\ 
-4 & 5 & 6 
-\end{bmatrix} = \boldsymbol{A}
-$$
-</Callout>
-
-### Transposing on a Computer
-
-When you want the transpose of a matrix you don't actually need to perform any operations. You can just change the way you access the elements of the matrix. Rather than
-accessing the elements row by row you can access them column by column. 
-
-<Image src="/maths/matrixTransposeOnComputers.png"
-       caption="Reading a matrix and its transpose."
-       width={200}
-/>
-
-Depending on the size of the matrix and how many times you need to access the elements of the matrix this can be a lot faster than actually transposing the matrix. However, 
-if you need to access the elements of the matrix multiple times it is probably faster to transpose the matrix first and then access the elements due to memory locality.
-
-To transpose a square matrix in-place you can use the following algorithm which you can think of as swapping the elements of the matrix along the diagonal:
-
-```java
-for (int i = 0; i < n; i++) {
-    for (int j = i + 1; j < n; j++) {
-        swap(A[i][j], A[j][i]);
-    }
-}
-```
-
-For a non-square matrix you need to use a slightly different algorithm.
-
-## Inverse
-
-<Callout type="todo">
-    This section is still a work in progress!
-</Callout>
-
-## Determinant
-
-<Callout type="todo">
-    This section is still a work in progress!
-</Callout>
-
-## Types of Matrices
-
-There are a number of different types of matrices that are used in linear algebra. We will discuss some of the most common ones here.
-
-### Square Matrix
+## Square Matrix
 
 As you can imagine a square matrix is a matrix where the number of rows and columns are equal. So a square matrix is an $n \times n$ matrix, i.e. 
 $\boldsymbol{A} \in \mathbb{R}^{n \times n}$. Square matrices have a number of useful properties and are therefore often used in many different applications.
 
 $$
+\boldsymbol{A} \in \mathbb{R}^{n \times n} =
 \begin{bmatrix}
 a_{11} & a_{12} & \cdots & a_{1n} \\
 a_{21} & a_{22} & \cdots & a_{2n} \\
@@ -187,6 +73,7 @@ $$
 
 <Callout type="example">
 $$
+\boldsymbol{A} =
 \begin{bmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6 \\
@@ -195,7 +82,9 @@ $$
 $$
 </Callout>
 
-### Triangular Matrix
+## Zero Matrix
+
+## Triangular Matrix
 
 The diagonal elements of a matrix are the elements where the row and column index are equal. So $a_{ii}$ is a diagonal element. A triangular matrix is a matrix where all the 
 elements above or below the diagonal are $0$. If all the elements above the diagonal are $0$ it is called a **lower triangular matrix** becuase it only has elements below the 
@@ -203,9 +92,10 @@ diagonal that are non-zero. If all the elements below the diagonal are $0$ it is
 non-zero. Only square matrices can be triangular matrices!
 
 <Callout type="example">
-A lower triangular matrix:
+A lower triangular matrix $\boldsymbol{L}$:
 
 $$
+\boldsymbol{L} =
 \begin{bmatrix}
 1 & 0 & 0 \\
 2 & 3 & 0 \\
@@ -213,9 +103,10 @@ $$
 \end{bmatrix}
 $$
 
-An upper triangular matrix:
+An upper triangular matrix $\boldsymbol{U}$:
 
 $$
+\boldsymbol{U} =
 \begin{bmatrix}
 1 & 2 & 3 \\
 0 & 4 & 5 \\
@@ -224,7 +115,7 @@ $$
 $$
 </Callout>
 
-#### Diagonal Matrix
+## Diagonal Matrix
 
 A diagonal matrix is a matrix where all the elements that are not on the diagonal are zero. So $a_{ij} = 0$ for all $i \neq j$. This means that a 
 diagonal matrix is both a lower and upper triangular matrix and therefore also a square matrix.
@@ -239,11 +130,12 @@ $$
 $$
 </Callout>
 
-### Identity Matrix
+## Identity Matrix
 
 An identity matrix is a diagonal matrix where all the diagonal elements are equal to $1$. The identity matrix is often denoted as $\boldsymbol{I}$ or $\boldsymbol{I}_n$ 
-where $n$ is the number of rows and columns in the matrix. The identity matrix is a special matrix as it is neutral element for matrix multiplication or also called the 
-identity element. This means that if you multiply any matrix with the identity matrix you get the same matrix back. So $\boldsymbol{A} \boldsymbol{I} = \boldsymbol{A}$.
+where $n$ is the number of rows and columns in the matrix.
+
+Also called unit matrix. and a diag matrix with all 1s on the diagonal.
 
 <Callout type="example">
 $$
@@ -253,71 +145,6 @@ $$
 0 & 0 & 1
 \end{bmatrix}
 $$
-</Callout>
-
-### Symmetric Matrix
-
-If a matrix is equal to its transpose it is called a symmetric matrix. So $\boldsymbol{A} = \boldsymbol{A}^T$ and for each element in the matrix $a_{ij} = a_{ji}$.
-As you can quite easily imagine a prerequisite for a matrix to be symmetric is that it is a square matrix as otherwise the transpose of the matrix would have different dimensions.
-
-Another thing that makes sense is that a diagonal matrix is always symmetric as all the elements that are not on the diagonal are zero.
-
-<Callout type="example">
-A symmetric matrix:
-
-$$
-\boldsymbol{A} = \begin{bmatrix}
-1 & 2 & 3 \\
-2 & 4 & 5 \\
-3 & 5 & 6
-\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
-1 & 2 & 3 \\
-2 & 4 & 5 \\
-3 & 5 & 6
-\end{bmatrix} = \boldsymbol{A}
-$$
-
-A diagonal matrix is also symmetric:
-
-$$
-\boldsymbol{A} = \begin{bmatrix}
-1 & 0 & 0 \\
-0 & 2 & 0 \\
-0 & 0 & 3
-\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
-1 & 0 & 0 \\
-0 & 2 & 0 \\
-0 & 0 & 3
-\end{bmatrix} = \boldsymbol{A}
-$$
-</Callout>
-
-#### Skew-Symmetric Matrix
-
-A skew-symmetric matrix is a matrix where the elements of the matrix are equal to the negative of the elements in the transpose of the matrix. 
-So $\boldsymbol{A} = -\boldsymbol{A}^T$ and for each element in the matrix $a_{ij} = -a_{ji}$.
-
-<Callout type="example">
-$$
-\boldsymbol{A} = \begin{bmatrix}
-0 & 2 & -3 \\
--2 & 0 & 5 \\
-3 & -5 & 0
-\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
-0 & -2 & 3 \\
-2 & 0 & -5 \\
--3 & 5 & 0
-\end{bmatrix} = -\boldsymbol{A}
-$$
-</Callout>
-
-### Orthogonal / Orthonormal Matrix
-
-Very unclear what the difference is between these two. I think an orthogonal matrix is a matrix where the columns are orthogonal to each other but don't have to be normalised.
-And an orthonormal matrix is a matrix where the columns are orthogonal to each other and are normalised, i.e. have a length of $1$.
-
-<Callout type="todo">
-    This section is still a work in progress!
 </Callout>
 
 ## Matrix Operations
@@ -384,6 +211,9 @@ $$
 </Callout>
 
 ### Matrix Multiplication
+
+The identity matrix is a special matrix as it is neutral element for matrix multiplication or also called the 
+identity element. This means that if you multiply any matrix with the identity matrix you get the same matrix back. So $\boldsymbol{A} \boldsymbol{I} = \boldsymbol{A}$.
 
 Matrix multiplication is a bit more complex than addition and scalar multiplication. One would think that multiplying two matrices together would be as simple as multiplying 
 each element of the first matrix with the corresponding element in the second matrix and would therefore just like addition be an element-wise operation and only defined for 
@@ -511,8 +341,7 @@ For the element $c_{11}$ (top left) we get the following:
 $$
 \begin{align*}
 c_{11} &= 1 \cdot 5 + 2 \cdot 7 = 19 \\
-c_{11} &= 5 \cdot 1 + 6 \cdot 3 = 23
-\\
+c_{11} &= 5 \cdot 1 + 6 \cdot 3 = 23 \\
 19 &\neq 23
 \end{align*}
 $$
@@ -522,6 +351,189 @@ $$
 #### Strassen's Algorithm
 
 #### Winograd's Algorithm
+
+### Transpose
+
+The transpose of a matrix is a matrix where the rows and columns are swapped. The transpose of the matrix $\boldsymbol{A}$ is written as $\boldsymbol{A}^T$. 
+Formally the element in the $i$-th row and $j$-th column in the matrix $\boldsymbol{A}$ becomes the element in the $j$-th row and $i$-th column in the 
+matrix $\boldsymbol{A}^T$. 
+
+$$
+\boldsymbol{A} = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
+a_{11} & a_{21} & \cdots & a_{m1} \\
+a_{12} & a_{22} & \cdots & a_{m2} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{1n} & a_{2n} & \cdots & a_{mn}
+\end{bmatrix}
+$$
+
+Or also more formally:
+
+$$
+(\boldsymbol{A}^T)_{ij} = (\boldsymbol{A})_{ji}
+$$
+
+<Callout type="example">
+    Transposing a matrix:
+    $$
+    \boldsymbol{A} = \begin{bmatrix}
+    1 & 2 & 3 \\ 
+    4 & 5 & 6 
+    \end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
+    1 & 4 \\
+    2 & 5 \\
+    3 & 6
+    \end{bmatrix}
+    $$
+
+    Transposing a column vector:
+    $$
+    \boldsymbol{v} = \begin{bmatrix}
+    v_1 \\ v_2 \\ \vdots \\ v_n 
+    \end{bmatrix} \Rightarrow \boldsymbol{v}^T = \begin{bmatrix}
+    v_1 & v_2 & \cdots & v_n 
+    \end{bmatrix}
+    $$
+
+    Transposing a row vector:
+    $$
+    \boldsymbol{v} = \begin{bmatrix}
+    v_1 & v_2 & \cdots & v_n 
+    \end{bmatrix} \Rightarrow \boldsymbol{v}^T = \begin{bmatrix}
+    v_1 \\ v_2 \\ \vdots \\ v_n 
+    \end{bmatrix}
+    $$
+</Callout>
+
+As we can see in the example above the transpose of a row vector is a column vector and the transpose of a column vector is a row vector. This also shows that 
+transposing a matrix results in a matrix with its dimensions swapped. So the transpose of a $m \times n$ matrix is a $n \times m$ matrix.
+
+#### Transposing a Transposed Matrix
+
+If a matrix is transposed twice it is the same as the original matrix:
+
+$$
+(\boldsymbol{A}^T)^T = \boldsymbol{A}
+$$
+
+<Callout type="example">
+$$
+\boldsymbol{A} = \begin{bmatrix} 
+1 & 2 & 3 \\ 
+4 & 5 & 6 
+\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix} 
+1 & 4 \\
+2 & 5 \\
+3 & 6 
+\end{bmatrix} \Rightarrow (\boldsymbol{A}^T)^T = \begin{bmatrix} 
+1 & 2 & 3 \\ 
+4 & 5 & 6 
+\end{bmatrix} = \boldsymbol{A}
+$$
+</Callout>
+
+
+#### Symmetric Matrix
+
+If a matrix is equal to its transpose it is called a symmetric matrix. So $\boldsymbol{A} = \boldsymbol{A}^T$ and for each element in the matrix $a_{ij} = a_{ji}$.
+As you can quite easily imagine a prerequisite for a matrix to be symmetric is that it is a square matrix as otherwise the transpose of the matrix would have different dimensions.
+
+Another thing that makes sense is that a diagonal matrix is always symmetric as all the elements that are not on the diagonal are zero.
+
+<Callout type="example">
+A symmetric matrix:
+
+$$
+\boldsymbol{A} = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 5 \\
+3 & 5 & 6
+\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 5 \\
+3 & 5 & 6
+\end{bmatrix} = \boldsymbol{A}
+$$
+
+A diagonal matrix is also symmetric:
+
+$$
+\boldsymbol{A} = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 3
+\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 3
+\end{bmatrix} = \boldsymbol{A}
+$$
+</Callout>
+
+##### Skew-Symmetric Matrix
+
+A skew-symmetric matrix is a matrix where the elements of the matrix are equal to the negative of the elements in the transpose of the matrix. 
+So $\boldsymbol{A} = -\boldsymbol{A}^T$ and for each element in the matrix $a_{ij} = -a_{ji}$.
+
+<Callout type="example">
+$$
+\boldsymbol{A} = \begin{bmatrix}
+0 & 2 & -3 \\
+-2 & 0 & 5 \\
+3 & -5 & 0
+\end{bmatrix} \Rightarrow \boldsymbol{A}^T = \begin{bmatrix}
+0 & -2 & 3 \\
+2 & 0 & -5 \\
+-3 & 5 & 0
+\end{bmatrix} = -\boldsymbol{A}
+$$
+</Callout>
+
+#### Transposing on a Computer
+
+When you want the transpose of a matrix you don't actually need to perform any operations. You can just change the way you access the elements of the matrix. Rather than
+accessing the elements row by row you can access them column by column. 
+
+<Image src="/maths/matrixTransposeOnComputers.png"
+       caption="Reading a matrix and its transpose."
+       width={200}
+/>
+
+Depending on the size of the matrix and how many times you need to access the elements of the matrix this can be a lot faster than actually transposing the matrix. However, 
+if you need to access the elements of the matrix multiple times it is probably faster to transpose the matrix first and then access the elements due to memory locality.
+
+To transpose a square matrix in-place you can use the following algorithm which you can think of as swapping the elements of the matrix along the diagonal:
+
+```java
+for (int i = 0; i < n; i++) {
+    for (int j = i + 1; j < n; j++) {
+        swap(A[i][j], A[j][i]);
+    }
+}
+```
+
+For a non-square matrix you need to use a slightly different algorithm.
+
+### Rank
+
+<Callout type="todo">
+    Ranks seem a bit annoying but not hugely complex.
+</Callout>
+
+<Callout type="todo">
+    frobenius and trace will not be used until later so maybe move them to a different section.
+</Callout>
+
+### Inverse
+
+<Callout type="todo">
+    This section is still a work in progress!
+</Callout>
 
 ### Frobenius Norm
 
@@ -575,8 +587,17 @@ $$
     Add properties of the trace. and proof that it is the sum of the eigenvalues.
 </Callout>
 
-### Rank
+### Determinant
 
 <Callout type="todo">
-    Ranks seem a bit annoying but not hugely complex.
+    This section is still a work in progress!
+</Callout>
+
+## Orthogonal / Orthonormal Matrix
+
+Very unclear what the difference is between these two. I think an orthogonal matrix is a matrix where the columns are orthogonal to each other but don't have to be normalised.
+And an orthonormal matrix is a matrix where the columns are orthogonal to each other and are normalised, i.e. have a length of $1$.
+
+<Callout type="todo">
+    This section is still a work in progress!
 </Callout>
