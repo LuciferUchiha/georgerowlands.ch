@@ -88,146 +88,13 @@ In linear algebra a vector is often represented as an n-tuple. For example a 3-d
     width={500}
 />
 
-## Sum Operator
+## Properties of Sequences
 
-The sum operator or also sometimes called sigma operator or summation is a mathematical operator that represents the addition of a sequence of objects, most commonly numbers but can also be other mathematical objects that support addition.
+### Monotony
 
-When the series of numbers is defined such as $(1,2,3,4,5)$ we commonly write the summation as:
+Increasing and decreasing
 
-$$
-1 + 2 + 3 + 4 + 5 = 15
-$$
-
-However most often a series is defined by some pattern/formula or function. In this case we use the sum operator to represent the sum of the series. 
-The sum operator is written as a capital sigma $\sum$ and then usually has a lower and upper bound. The lower bound is the starting index of the series and the upper bound is the ending index of the series. The index is usually a natural number. 
-This index is then used in the formula to represent the current element of the series.
-
-$$
-\sum_{i=1}^{n} i = 1 + 2 + 3 + ... + n
-$$
-
-more generally the sum operator is defined as the following where $a_i$ is the i-th element of the sequence.
-
-$$
-\sum_{i=1}^{n} a_i = a_1 + a_2 + a_3 + ... + a_n
-$$
-
-Because a sequence can be defined by a function, the sum operator can also be used to represent the sum of a function.
-For computer scientists it can also be useful to think of the sum operator as a loop. The lower bound is the starting index of the loop and the upper bound is the ending index of the loop. The formula inside the sum operator is then the body of the loop.
-
-```java
-int sum = 0;
-for (int i = 1; i <= n; i++) {
-    sum += f(i);
-}
-```
-
-Depending on the context the upper and/or lower bound are sometimes omitted. If the lower bound is omitted it is assumed to be 1 and if the upper bound is omitted it is assumed to be infinity or the length of the sequence $n$.
-Other common notations are $\sum_{0 \leq i \leq 5} i$ or $\sum_{s \in S} s$ where $S$ is a set.
-
-When a infinite sequence is summed up it is called a [series](/digitalGarden/maths/calculus/series/intro).
-
-<Callout type="example">
-- $\sum_{i=1}^{5} i = 1 + 2 + 3 + 4 + 5 = 15$
-- $\sum_{i=1}^{5} i^2 = 1 + 4 + 9 + 16 + 25 = 55$
-- $\sum_{i=1}^{5} a_i = a_1 + a_2 + a_3 + a_4 + a_5$
-</Callout>
-
-### Special Cases
-
-There are some special cases of the sum operator that are worth mentioning:
-
-- **Empty Sum**: The sum of an empty sequence is defined to be 0. This is because there are no elements to sum.
-- **Single Element Sum**: The sum of a sequence with only one element is equal to that element. This is because there is only one element to sum.
-
-### Nested Sums
-
-The sum operator can also be nested. This means we can sum over multiple indices. 
-This is useful when working with multi-dimensional sequences or functions.
-
-$$
-\sum_{i=1}^{n} \sum_{j=1}^{m} a_{i,j} = a_{1,1} + a_{1,2} + ... + a_{n,m}
-$$
-
-Just like with nested loops in programming languages, the inner sum is executed for each iteration of the outer sum.
-
-```java
-int sum = 0;
-for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= m; j++) {
-        sum += f(i, j);
-    }
-}
-```
-
-<Callout type="example">
-- $\sum_{i=1}^{2} \sum_{j=1}^{2} i*j = 1*1 + 1*2 + 2*1 + 2*2 = 1 + 2 + 2 + 4 = 9$
-- $\sum_{i=1}^{2} \sum_{j=1}^{2} i+j = 1+1 + 1+2 + 2+1 + 2+2 = 2 + 3 + 3 + 4 = 12$
-</Callout>
-
-### Properties
-
-We can derive some properties of the sum operator from the properties of addition and multiplication that can make it easier to work with sums.
-
-$$
-\begin{align*}
-\sum_{i=l}^{u} C \cdot f(i) &= C \cdot \sum_{i=l}^{u} f(i) & \text{Distributive property of multiplication} \\
-\sum_{i=l}^{u} (f(i) + g(i)) &= \sum_{i=l}^{u} f(i) + \sum_{i=l}^{u} g(i) & \text{Commutative property of addition} \\
-\sum_{i=l}^{u} f(i) &= \sum_{i=l+k}^{u+k} f(i-k) & \text{Shifting the index} \\
-\sum_{i=l}^{u} f(i) &= \sum_{i=l}^{m} f(i) + \sum_{i=m+1}^{u} f(i) & \text{Splitting the sum} \\
-\sum_{i=l}^{u} f(i) &= \sum_{i=l}^{u} f(u+l-i) & \text{Reversing the sum order} \\
-\sum_{i=k_0}^{k_1} \sum_{j=l_0}^{l_1} f(i,j) &= \sum_{j=l_0}^{l_1} \sum_{i=k_0}^{k_1} f(i,j) & \text{Commutative property of addition}
-\end{align*}
-$$
-
-### Finding Closed Forms
-
-Story of Gauss and the sum of the first 100 numbers.
-
-$$
-\sum_{i=1}^{n} i = 1 + 2 + 3 + ... + n = \frac{n(n+1)}{2}
-$$
-
-<Callout type="proof">
-By induction?
-</Callout>
-
-This probably also relates to big O notation and the time complexity of algorithms i think?
-
-## Product Operator
-
-## Reele Folge
-
-Ist eine Funktion $a:N \mapsto R$, $n \mapsto a_n$
-**Index** = $n$
-**Glieder** = Die reelen Zahlen $a_n$
-Jedem Index $n$ wird eine reele Zahl (Folgenglied) $a_n$ zugeordnet.
-**Aufzählende Darstellung**: Alle Folgenglieder der Reihe nach. $a_1, a_2,a_3, ...$
-**Explite Darstellung**: Ein Bildungsgesetz welches ein Term mit $n$ ist.
-
-:::note
-
-$a_n={n-1 \over n}$
-$a_1=0, a_2={1\over2}, a_3={2\over3}, ...$
-
-:::
-
-**Rekursive Darstellung** Eine Rechenvorschrift, wie aus den vorangegangenen Folgegliedern das n-te Folgeglied berechnet werden kann.
-Bei rekursiver Folgen ist **k-te Ordnung** das tiefste $a_{n-k}$ in der Rechenvorschrift. Es müssen bis $a_k$ schon vorgegben werden.
-
-:::note
-
-**Fibonacci-Folge**
-$a_1 = 1, a_2=1$
-
-$$a_n=a_{n-1}+a_{n-2}$$
-ist durch eine rekursive Darstellung 2. Ordnung beschrieben.
-
-:::
-
-## Eigenschaften von Folgen
-
-### Monotonie
+strictly monotonically increasing
 
 Eine Folge $a_n$ heisst
 **Monoton wachsend**, falls für alle Folgenglieder gilt $a_n \leq a_{n+1}$
@@ -264,7 +131,7 @@ Zeig das die Folge $a_n={2^{n+1}\over 3^n}$ streng monoton fallend ist.
 
 :::
 
-### Berschränktheit
+### Boundedness
 
 Eine Folge $a_n$ heisst
 **Nach oben beschränkt**, wenn es eine Zahl $S$ gibt, so dass $a_n \leq S$ für alle $n \in N$ gilt. $S$ heisst eine obere Schranke der Folge.
@@ -281,7 +148,7 @@ $a_n=(-1)^n *n^2= -1,4,-9,16,...$ weder nach oben noch nach unten
 
 :::
 
-### Konvergenz
+### Limits and Convergence
 
 :::note
 
@@ -338,26 +205,7 @@ $N_{0.2}=14$
 
 :::
 
-## Spezielle Folgen
-
-**Nullfolge** eine Folge die den Grenzwert 0 besitzt.
-**Harmonische Folge** $a_n={1\over n}$ ist eine Nullfolge
-
-## Geometrsiche Folge
-
-Folgen der Form: $a_n= a_1 *q^{n-1}$ sind geometrische Folgen.
- Jedes Glied ist das geometrische Mittel seiner beiden Nachbarglieder $a_n=\sqrt {a_{n-1}+a_{n+1}}$
-
-### Konvergenzkriterien für geometrische Folgen
-
-Eine geometrische Folge $a_n= a_1* q^{n-1}$
-
-- mit $|q|>1$ ist divergent
-- mit $|q|<1$ ist konvergent mit Grenzwert 0
-- mit $q=1$ ist eine konstante Folge $a_1$
-- mit $q=-1$ ist divergent, da alternierend.
-
-## Rechenregeln konvergente Folgen
+#### Using Convergent Sequences
 
 Sind $a_n$ und $b_n$ konvergente Folgen mit den Grenzwerten $a$ bzw. $b$, so ist auch die Folge:
 
@@ -366,7 +214,32 @@ Sind $a_n$ und $b_n$ konvergente Folgen mit den Grenzwerten $a$ bzw. $b$, so ist
 - $a_n *b_n$ konvergent mit $\lim_{n \to \infty}{a_n* b_n}={{\lim_{n \to \infty}{a_n}} * {\lim_{n \to \infty}{b_n}}}={a * b}$
 - $a_n \over b_n$ konvergent mit $\lim_{n \to \infty}{a_n \over b_n}={{\lim_{n \to \infty}{a_n}} \over {\lim_{n \to \infty}{b_n}}}={a \over b}$ falls $b \neq 0$
 
-## Rationale Folgen
+## Special Sequences
+
+### Artihmetic Sequences
+
+### Zero Sequences
+
+### Harmonic Sequences
+
+**Nullfolge** eine Folge die den Grenzwert 0 besitzt.
+**Harmonische Folge** $a_n={1\over n}$ ist eine Nullfolge
+
+## Geometric Sequences
+
+Folgen der Form: $a_n= a_1 *q^{n-1}$ sind geometrische Folgen.
+ Jedes Glied ist das geometrische Mittel seiner beiden Nachbarglieder $a_n=\sqrt {a_{n-1}+a_{n+1}}$
+
+### Convergence of Geometric Sequences
+
+Eine geometrische Folge $a_n= a_1* q^{n-1}$
+
+- mit $|q|>1$ ist divergent
+- mit $|q|<1$ ist konvergent mit Grenzwert 0
+- mit $q=1$ ist eine konstante Folge $a_1$
+- mit $q=-1$ ist divergent, da alternierend.
+
+## Rational Sequences
 
 Für eine rationale Folge, die im Zähler aus einem Polynom k-ten Grades
 und im Nenner aus einem Polynom l-ten Grades besteht, gilt:
