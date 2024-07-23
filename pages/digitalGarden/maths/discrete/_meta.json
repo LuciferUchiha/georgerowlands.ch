@@ -2,8 +2,10 @@
   "logicTheory": "Logic Theory",
   "setTheory": "Set Theory",
   "intervals": "Intervals",
-  "combinatorics": "Combinatorics",
+  "sequences": "Sequences",
   "relationsFunctions": "Relations & Functions",
   "algebraicStructures": "Algebraic Structures",
+  "homomorphisms": "Homomorphisms",
+  "combinatorics": "Combinatorics",
   "proofs": "Proofs"
 }
