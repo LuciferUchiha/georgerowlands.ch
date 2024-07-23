@@ -1,1 +1,92 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+
 # Recurrence Relations
+
+A reccurance relation is a function that generates a sequence as a function of the index of the sequence and one 
+or more previous terms of the sequence.
+
+$$
+a_n = f(n, a_{n-1}, a_{n-2}, \ldots, a_{n-k}) \quad \text{for} \quad n \geq k
+$$
+
+where $n$ is the index of the sequence and $a_n$ is the $n$th term of the sequence. The elements 
+$a_{n-1}, a_{n-2}, \ldots, a_{n-k}$ are the previous terms of the sequence. 
+
+If the reccurance relation only depends on the previous term, then it is called a first order reccurance relation 
+and can be written as:
+
+$$
+\begin{align*}
+a_n = &f(n, a_{n-1}) \quad \text{for} \quad n \geq 1 \\
+&f: \mathbb{N} \times X \rightarrow X
+\end{align*}
+$$
+
+where $X$ is the set of all possible values of the sequence. More generally, a reccurance relation of order $k$
+can be written as:
+
+$$
+\begin{align*}
+a_n = &f(n, a_{n-1}, a_{n-2}, \ldots, a_{n-k}) \quad \text{for} \quad n \geq k \\
+&f: \mathbb{N} \times X^k \rightarrow X
+\end{align*}
+$$
+
+<Callout type="warning">
+When defining a reccurance relation, it is important to specify the initial conditions of the sequence.
+If the reccurance relation is of order $k$, then the first $k$ terms of the sequence must be specified.
+</Callout>
+
+<Callout type="example">
+There are some very common and well known reccurance relations. For example, the Fibonacci sequence is defined by the 
+second order reccurance relation:
+
+$$
+\begin{align*}
+a_0 &= 0 \\
+a_1 &= 1 \\
+a_n &= a_{n-1} + a_{n-2}
+\end{align*}
+$$
+
+where $F_n$ is the $n$th term of the Fibonacci sequence.
+
+A popular way to visualize reccurance relations is to draw a call or recursion tree, which
+shows the recursive calls made by the function. The call tree for the Fibonacci sequence is shown below:
+
+<Image 
+    src="/maths/relationsFibonacci.png"
+    caption="The call tree for the Fibonacci sequence."
+    width={700}
+/>
+
+If we wanted to code the Fibonacci sequence, we could use the following recursive function:
+
+```java
+public int fib(int n) {
+    if (n <= 1)
+        return n;
+    return fib(n - 1) + fib(n - 2);
+}
+```
+
+However, this function can be shown to have a time complexity of $O(2^n)$, which is very slow. Instead we 
+can use dynamic programming to improve the time complexity to $O(n)$ as shown and discussed [here](/digitalGarden/cs/algorithmsDataStructures/dynamicProgramming/introduction).
+
+Another example is the factorial function, which is defined by the first order reccurance relation:
+
+$$
+\begin{align*}
+a_0 &= 1 \\
+a_n &= n \cdot a_{n-1}
+\end{align*}
+$$
+
+where $n!$ is the factorial of $n$. Or as is more commonly written:
+
+$$
+0! = 1 \quad \text{and} \quad n! = n \cdot (n-1)!
+$$
+
+</Callout>
