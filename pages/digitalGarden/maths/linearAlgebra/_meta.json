@@ -1,8 +1,8 @@
 {
   "linearEquations": "Linear Equations",
+  "gaussianElimination": "Gaussian Elimination",
   "matrices": "Matrices",
   "vectors": "Vectors",
-  "gaussianElimination": "Gaussian Elimination",
   "hadamardProduct": "Hadamard Product",
   "broadcasting": "Broadcasting",
   "luDecomposition": "LU Decomposition",

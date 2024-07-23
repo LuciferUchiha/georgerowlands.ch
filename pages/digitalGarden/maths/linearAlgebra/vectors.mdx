@@ -23,26 +23,14 @@ This arrow can be moved around, but it's direction and length will remain the sa
 
 A norm is a function that assigns a non-negative length or size to each vector. There are many different types of norms, but the most common ones are the $L_1$ and $L_2$ norms, 
 also known as the Manhattan and Euclidean norms respectively. The $L_p$ norm is a generalization of the $L_1$ and $L_2$ norms. We denote a vector's norm by writting it in between 
-two vertical bars, e.g. $\|\boldsymbol{x}\|$, and the subscript denotes the type of norm, e.g. $\|\boldsymbol{x}\|_1$ or $\|\boldsymbol{x}\|_2$ etc.
-
-### Absolute Value
-
-The absolute value of a number is the distance of that number from zero on the number line. It is always positive, or zero if the number is zero.
-
-$$
-|x| = \begin{cases}
-    x, & \text{if } x \geq 0 \\
-    -x, & \text{if } x < 0
-\end{cases}
-$$
-
-<Callout type="example">
-If $x = 5$, then $|x| = 5$. If $x = -5$, then $|x| = -(-5) = 5$.
-</Callout>
+two vertical bars, e.g. $\|\boldsymbol{x}\|$, and the subscript denotes the type of norm, e.g. $\|\boldsymbol{x}\|_1$ or $\|\boldsymbol{x}\|_2$ etc. If 
+the subscript is omitted, then the $L_2$ norm is assumed.
 
 ### Manhattan Norm
 
-The Manhattan norm or $L_1$ norm is defined as the sum of the absolute values of the vector's components. It is called the Manhattan norm because it is the distance 
+The Manhattan norm or $L_1$ norm is defined as the sum of the [absolute values]() of the vector's components. 
+
+It is called the Manhattan norm because it can be thought of as the distance 
 between two points along the axis of a rectangular grid, like the streets of Manhattan or any other city with a grid-like structure.
 
 $$
@@ -51,7 +39,7 @@ $$
 
 <Image
     src="/maths/vectorManhattenNorm.png"
-    caption="As we can see no matter how we move along the roads of Manhattan, the distance between two points is always the same, the red and green path are the same length."
+    caption="No matter how we move along the roads of Manhattan, the distance between two points is always the same."
     width={400}
     />
 
@@ -88,6 +76,19 @@ $$
     caption="We can see the 2D case of the Euclidean norm and the 3D case of the Euclidean norm."
     width={400}
     />
+
+#### Schwarz Inequality
+
+$$
+|\boldsymbol{x} \cdot \boldsymbol{y}| \leq \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
+$$
+
+#### Triangle Inequality
+
+$$
+\[|| \boldsymbol{x} + \boldsymbol{y} ||\] \leq \[|| \boldsymbol{x} ||\] + \[|| \boldsymbol{y} ||\]
+$$
+
 
 ### P-Norm
 
@@ -128,81 +129,11 @@ $$
 $$
 </Callout>
 
-## Linear Independence
+## Operations on Vectors and Matrices
 
-Two vectors are linearly independent if neither of them can be written as a linear combination of the other. In other words, two vectors are linearly independent if 
-they are not scalar multiples of each other. It is however easier to find to define and check for linear dependence. The vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ 
-are linearly dependent if:
+All the vector operations can be thought of as matrix operations, because a vector can be thought of as a matrix with one column.
 
-$$
-\boldsymbol{a} = c\boldsymbol{b} \quad \text{for some } c \in \mathbb{R}
-$$
-
-this can also be written as:
-
-$$
-\boldsymbol{a} - c\boldsymbol{b} = \boldsymbol{0}
-$$
-
-where $\boldsymbol{0}$ is the zero vector. This means that the vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent 
-if they are collinear, i.e. they lie on the same line. The two equations above can also be used to define linear independence, we just replace the equal sign with a 
-not equal sign.
-
-<Image
-    src="/maths/vectorLinearDependence2D.png"
-    caption="The left two vectors are linearly independent, while the right two vectors are linearly dependent."
-    width={400}
-    />
-
-<Callout type="example">
-If $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
-
-$$
-\boldsymbol{a} = \begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
-    2 \\
-    4 \\
-    6
-\end{bmatrix}
-$$
-
-then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent because:
-
-$$
-\boldsymbol{a} = 2\boldsymbol{b}
-$$
-
-However, if $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
-
-$$
-\boldsymbol{a} = \begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
-    2 \\
-    3 \\
-    4
-\end{bmatrix}
-$$
-
-then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly independent because no scalar multiple of $\boldsymbol{b}$ can be equal to $\boldsymbol{a}$.
-</Callout>
-
-### Linear Independence of More Than Two Vectors
-
-Never used this.
-
-## Geometric Stuff
-
-with planes, orthogonal projections, etc. normal vectors
-
-## Operations
-
-### Addition
+### Vector Addition
 
 To add two vectors together, we simply add the corresponding components of the vectors together i.e. we just add element-wise. This also means that the two vectors 
 must have the same number of components/dimensions. So we can add two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$ together as follows:
@@ -358,7 +289,7 @@ vector, and then drawing a vector from the head of the second vector to the head
 I prefer the first way of visualizing vector subtraction, because it is easier to see that the order in which we subtract the vectors matters. When using the second way you 
 can easily draw the vectors in the wrong order, which will give you the wrong result (negative of the correct result).
 
-### Dot Product
+### Inner/Dot Product
 
 The dot product is a way of multiplying two vectors together to get a scalar. The dot product is also called the inner product or the scalar product because it results in a 
 scalar, not to be confused with the scalar multiplication of a vector! The dot product of two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$ is denoted as 
@@ -458,6 +389,15 @@ $$
 \boldsymbol{x} \cdot \boldsymbol{y} = 0
 $$
 
+### Matrix Vector Multiplication
+
+
+#### Linear Combinations
+
+as a matrix times a vector can relate this back to a coefficient matrix and a solution vector.
+
+### Inner Product
+
 ### Vector Projection
 
 ### Cross Product
@@ -494,8 +434,85 @@ have a length of one.
     width={500}
     />
 
-## Span
+## Linear Independence
+
+Two vectors are linearly independent if neither of them can be written as a linear combination of the other. In other words, two vectors are linearly independent if 
+they are not scalar multiples of each other. It is however easier to find to define and check for linear dependence. The vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ 
+are linearly dependent if:
+
+$$
+\boldsymbol{a} = c\boldsymbol{b} \quad \text{for some } c \in \mathbb{R}
+$$
+
+this can also be written as:
+
+$$
+\boldsymbol{a} - c\boldsymbol{b} = \boldsymbol{0}
+$$
+
+where $\boldsymbol{0}$ is the zero vector. This means that the vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent 
+if they are collinear, i.e. they lie on the same line. The two equations above can also be used to define linear independence, we just replace the equal sign with a 
+not equal sign.
+
+<Image
+    src="/maths/vectorLinearDependence2D.png"
+    caption="The left two vectors are linearly independent, while the right two vectors are linearly dependent."
+    width={400}
+    />
+
+<Callout type="example">
+If $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
+
+$$
+\boldsymbol{a} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
+    2 \\
+    4 \\
+    6
+\end{bmatrix}
+$$
+
+then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent because:
+
+$$
+\boldsymbol{a} = 2\boldsymbol{b}
+$$
+
+However, if $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
+
+$$
+\boldsymbol{a} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
+    2 \\
+    3 \\
+    4
+\end{bmatrix}
+$$
+
+then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly independent because no scalar multiple of $\boldsymbol{b}$ can be equal to $\boldsymbol{a}$.
+</Callout>
+
+### Linear Independence of More Than Two Vectors
+
+Never used this.
 
 ## Basis
 
-Something with orthonormal basis and quantum computing
+unit vectors, basis of a vector space, standard basis, orthonormal basis
+
+also in quantum computing
+
+## Span
+
+is the set of all possible linear combinations of the vectors in the set. 
+either plane or line or nothing in 2d space.
+
+What about in 3d? with 2 vectors? some plane
+
+goes back to linear independence

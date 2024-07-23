@@ -11,7 +11,7 @@
 {%- if cell.metadata.html_output  %}
     {{ super() }}
 {%- else  -%}
-<div class="code-output-wrapper">
+<div className="code-output-wrapper">
 ```
 {{ super().strip('\n') }}
 ```

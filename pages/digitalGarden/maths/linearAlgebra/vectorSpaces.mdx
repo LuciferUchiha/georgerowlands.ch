@@ -1,3 +1,6 @@
+import Callout from '~/components/Callout/Callout';
+import Image from '~/components/Image/Image';
+
 # Vector Spaces
 
 a vector space (also called a linear space) is a set whose elements, often called vectors, can be added together and multiplied ("scaled") by numbers called scalars.
@@ -17,3 +20,25 @@ ring homomorphism from the field F into the endomorphism ring of this group.
 Subtraction of two vectors can be defined as the addition of the first vector with the additive inverse of the second vector.
 
 Even more concisely, a vector space is a module over a field.
+
+## Row and Column Space
+
+<Callout type="todo">
+    Row and column space probably does not belong here and is not completely clear and finished.
+</Callout>
+
+In some cases it is useful to think of a matrix as a collection of column vectors. So a matrix with $n$ columns can be thought of as $n$ column vectors concatenated together. 
+This is also called the column space of a matrix.
+
+<Image src="/maths/matrixColumnSpace.png"
+       caption="A matrix as a collection of column vectors, i.e. a column space."
+       width={300}
+/>
+
+Another way is to think of a matrix as a collection of row vectors. So a matrix with $m$ rows can be thought of as $m$ row vectors stacked on top of each other. This is also 
+called the row space of a matrix.
+
+<Image src="/maths/matrixRowSpace.png"
+       caption="A matrix as a collection of row vectors, i.e. a row space."
+       width={300}
+/>

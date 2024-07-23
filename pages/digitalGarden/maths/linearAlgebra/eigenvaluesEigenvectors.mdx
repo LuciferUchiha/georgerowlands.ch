@@ -156,7 +156,7 @@ e_values, e_vectors = np.linalg.eig(A)
 print(f"Eigenvalues: {e_values}")
 print(f"Eigenvectors: {e_vectors}")
 ```
-<div class="code-output-wrapper">
+<div className="code-output-wrapper">
 ```
     Eigenvalues: [-1. -2.]
     Eigenvectors: [[ 0.70710678 -0.4472136 ]
@@ -179,7 +179,7 @@ print(f"Trace: {np.trace(A)}")
 print(f"Determinant: {np.linalg.det(A)}")
 print(f"Rank: {np.linalg.matrix_rank(A)}")
 ```
-<div class="code-output-wrapper">
+<div className="code-output-wrapper">
 ```
     Trace: -3
     Determinant: 2.0
@@ -197,7 +197,7 @@ e_values, e_vectors = np.linalg.eig(D)
 print(f"Eigenvalues: {e_values}")
 print(f"Eigenvectors: {e_vectors}")
 ```
-<div class="code-output-wrapper">
+<div className="code-output-wrapper">
 ```
     Eigenvalues: [1. 2. 3.]
     Eigenvectors: [[1. 0. 0.]
@@ -266,7 +266,7 @@ $$
 A = np.array([[5, 2, 0], [2, 5, 0], [4, -1, 4]])
 A
 ```
-<div class="code-output-wrapper">
+<div className="code-output-wrapper">
 ```
     array([[ 5,  2,  0],
            [ 2,  5,  0],
@@ -281,7 +281,7 @@ Lambda = np.diag([7, 4, 3])
 inverse = np.linalg.inv(X)
 np.matmul(np.matmul(X, Lambda), inverse)
 ```
-<div class="code-output-wrapper">
+<div className="code-output-wrapper">
 ```
     array([[ 5.,  2.,  0.],
            [ 2.,  5.,  0.],

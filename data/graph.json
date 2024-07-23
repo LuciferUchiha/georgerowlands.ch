@@ -5,16 +5,28 @@
             "target": "/digitalGarden/cs/git/basics"
         },
         {
-            "source": "/digitalGarden/maths/discrete/sequences",
-            "target": "/digitalGarden/maths/discrete/setTheory"
+            "source": "/digitalGarden/maths/discrete/setTheory",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/bags"
         },
         {
             "source": "/digitalGarden/maths/discrete/setTheory",
             "target": "/digitalGarden/maths/complexNumbers/explanation"
         },
         {
+            "source": "/digitalGarden/maths/discrete/relationsFunctions/recurrenceRelations",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/dynamicProgramming/introduction"
+        },
+        {
             "source": "/digitalGarden/maths/commonFunctions/binomialCoefficient",
             "target": "/digitalGarden/maths/commonFunctions/factorial"
+        },
+        {
+            "source": "/digitalGarden/maths/calculus/sequencesAndSeries/sequences",
+            "target": "/digitalGarden/maths/discrete/setTheory"
+        },
+        {
+            "source": "/digitalGarden/maths/calculus/sequencesAndSeries/sequences",
+            "target": "/digitalGarden/maths/discrete/relationsFunctions/recurrenceRelations"
         }
     ],
     "nodes": [
@@ -359,10 +371,6 @@
             "name": "Makefiles"
         },
         {
-            "id": "/digitalGarden/cs/theoretical/grammar",
-            "name": "Grammar"
-        },
-        {
             "id": "/digitalGarden/cs/theoretical/kolomogorovComplexity",
             "name": "Kolomogorov Complexity"
         },
@@ -375,8 +383,16 @@
             "name": "Turing Machine"
         },
         {
+            "id": "/digitalGarden/cs/theoretical/pushdown",
+            "name": "Pushdown Automaton"
+        },
+        {
             "id": "/digitalGarden/cs/theoretical/regularExpressionsLanguages",
             "name": "Regular Expressions & Languages"
+        },
+        {
+            "id": "/digitalGarden/cs/theoretical/grammars",
+            "name": "Context-Free Grammars & Languages"
         },
         {
             "id": "/digitalGarden/cs/theoretical/problems",
@@ -623,6 +639,10 @@
             "name": "Interoperability"
         },
         {
+            "id": "/digitalGarden/cs/aws/practitioner",
+            "name": "Cloud Practitioner"
+        },
+        {
             "id": "/digitalGarden/cs/concurrentParallel/actorModel",
             "name": "Actor Model"
         },
@@ -823,10 +843,6 @@
             "name": "Combinatorics "
         },
         {
-            "id": "/digitalGarden/maths/discrete/sequences",
-            "name": "Sequences "
-        },
-        {
             "id": "/digitalGarden/maths/discrete/proofs",
             "name": "Proofs"
         },
@@ -843,8 +859,12 @@
             "name": "Algebraic Structures"
         },
         {
+            "id": "/digitalGarden/maths/discrete/homomorphisms",
+            "name": "Homomorphisms"
+        },
+        {
             "id": "/digitalGarden/maths/discrete/relationsFunctions/partialOrders",
-            "name": "Partial Orders"
+            "name": "Partial & Total Orders"
         },
         {
             "id": "/digitalGarden/maths/discrete/relationsFunctions/recurrenceRelations",
@@ -889,6 +909,10 @@
         {
             "id": "/digitalGarden/maths/linearAlgebra/matrices",
             "name": "Matrices"
+        },
+        {
+            "id": "/digitalGarden/maths/linearAlgebra/linearMaps",
+            "name": "Linear Maps"
         },
         {
             "id": "/digitalGarden/maths/linearAlgebra/linearEquations",
@@ -976,7 +1000,7 @@
         },
         {
             "id": "/digitalGarden/maths/calculus/functions",
-            "name": "Functions"
+            "name": "Function Analysis"
         },
         {
             "id": "/digitalGarden/maths/calculus/differentiation",
@@ -991,20 +1015,36 @@
             "name": "Newton's Methods"
         },
         {
-            "id": "/digitalGarden/maths/calculus/series/taylor",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/productOperator",
+            "name": "Product Operator"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/taylor",
             "name": "Taylor Series"
         },
         {
-            "id": "/digitalGarden/maths/calculus/series/power",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/power",
             "name": "Power Series"
         },
         {
-            "id": "/digitalGarden/maths/calculus/series/fourier",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/series",
+            "name": "What is a Series?"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/sumOperator",
+            "name": "Sum Operator"
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/fourier",
             "name": "Fourier Series"
         },
         {
-            "id": "/digitalGarden/maths/calculus/series/seriesConvergence",
-            "name": "Series & Convergence"
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/sequences",
+            "name": "Sequences "
+        },
+        {
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/convergence",
+            "name": "Convergence of Series"
         },
         {
             "id": "/digitalGarden/maths/calculus/integrals/integrationByPartialFractions",
