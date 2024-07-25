@@ -6,6 +6,8 @@ jobs:
     steps:
     - name: Check out repository code
       uses: actions/checkout@v4.1.7
+      with:
+          fetch-depth: 0
     - name: Setup Python
       uses: actions/setup-python@v5.1.1
       with:
@@ -15,6 +17,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r ./chunker/requirements.txt
     - name: Get changed files
+      id: changed-files
       uses: tj-actions/changed-files@v44
     - name: List all changed files
       env:
