@@ -34,7 +34,8 @@ defined as $\boldsymbol{A} = [a_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$.
 </Callout>
 
 A matrix with only one row is called a row vector or [n-tuple]() and a matrix with only one column is called a column vector. When talking about vectors
-we usually refer to column vectors. A matrix that only has one row and one column can be thought of as a normal number and is called a scalar.
+we usually refer to column vectors. A matrix that only has one row and one column can be thought of as a normal number and is called a scalar and therefore omit the matrix brackets.
+To differentiate between the three types of matrices we usually use bold capital letters for matrices, bold lower case letters for column vectors and normal lower case letters for scalars.
 
 <Callout type="example">
     A column vector, i.e. ur usual vector, can be written as follows:
@@ -58,7 +59,8 @@ we usually refer to column vectors. A matrix that only has one row and one colum
 
 ## Square Matrix
 
-As you can imagine a square matrix is a matrix where the number of rows and columns are equal. So a square matrix is an $n \times n$ matrix, i.e. 
+As you can imagine a square matrix is a matrix where the number of rows and columns are equal. The number of rows or columns $n$
+is reffered to as the order of the square matrix. So a square matrix of order $n$ is an $n \times n$ matrix, i.e. 
 $\boldsymbol{A} \in \mathbb{R}^{n \times n}$. Square matrices have a number of useful properties and are therefore often used in many different applications.
 
 $$
@@ -84,12 +86,105 @@ $$
 
 ## Zero Matrix
 
+If a matrix only contains elements that are zero it is called a zero matrix. A zero matrix is denoted as $\boldsymbol{O}$ as the 
+dimensions are usually implied by the context. If you want to be explicit you can also write $\boldsymbol{O}_{m \times n}$ where $m$ is the number of rows and $n$ is the number of columns.
+
+$$
+\boldsymbol{O} = \begin{bmatrix}
+0 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & 0
+\end{bmatrix}
+$$
+
+If the matrix is a column vector we usually use the lower case letter $\boldsymbol{o}$ to denote a zero vector.
+
+$$
+\boldsymbol{o} = \begin{bmatrix}
+0 \\ 0 \\ 0
+\end{bmatrix}  
+$$
+
+## Diagonal Matrix
+
+A diagonal matrix is a square matrix where all the elements that are not on the main diagonal are zero. 
+The main diagonal is the diagonal that goes from the top left to the bottom right of the matrix, in other words
+where the row and column index are equal, i.e. $a_{ij}$ where $i = j$.
+
+So a diagonal matrix is where $a_{ij} = 0$ for all $i \neq j$ and $\boldsymbol{A} \in \mathbb{R}^{n \times n}$.
+If a diagonal matrix is defined by the following elements $d_{11}, d_{22}, \ldots, d_{nn}$ then the matrix can be written as:
+
+$$
+\boldsymbol{D} = \text{diag}(d_{11}, d_{22}, \ldots, d_{nn}) = \begin{bmatrix}
+d_{11} & 0 & \cdots & 0 \\
+0 & d_{22} & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & d_{nn}
+\end{bmatrix}
+$$
+
+<Callout type="example">
+$$
+\boldsymbol{D} = 
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 2 & 0 \\
+0 & 0 & 3
+\end{bmatrix} = \text{diag}(1, 2, 3)
+$$
+</Callout>
+
+The definition of a diagonal matrix can also be extended to non-square matrices. In this case the matrix is still a diagonal matrix if all the elements that are not on the main diagonal are zero.
+
+<Callout type="example">
+The following non-square matrix are still diagonal matrices:
+
+$$
+\boldsymbol{D}_1 =
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 4 & 0 \\
+0 & 0 & -3 \\
+0 & 0 & 0
+\end{bmatrix} \text{ and } \boldsymbol{D}_2 =
+\begin{bmatrix}
+1 & 0 & 0 & 0 & 0 \\
+0 & 4 & 0 & 0 & 0 \\
+0 & 0 & -3 & 0 & 0
+\end{bmatrix}
+$$
+</Callout>
+
+## Identity Matrix
+
+An identity matrix sometimes also called unit matrix or identity of order $n$ is a square diagonal matrix where all the diagonal elements are equal to $1$. The identity matrix is often denoted as $\boldsymbol{I}$ or $\boldsymbol{I}_n$ 
+where $n$ is the number of rows and columns in the matrix.
+
+<Callout type="example">
+$$
+\boldsymbol{I_3} = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix} = \text{diag}(1, 1, 1)
+$$
+</Callout>
+
 ## Triangular Matrix
 
-The diagonal elements of a matrix are the elements where the row and column index are equal. So $a_{ii}$ is a diagonal element. A triangular matrix is a matrix where all the 
-elements above or below the diagonal are $0$. If all the elements above the diagonal are $0$ it is called a **lower triangular matrix** becuase it only has elements below the 
-diagonal that are non-zero. If all the elements below the diagonal are $0$ it is called a **upper triangular matrix** because it only has elements above the diagonal that are
-non-zero. Only square matrices can be triangular matrices!
+A triangular matrix is a square matrix where all the elements above or below the main diagonal are $0$. If all the elements above the diagonal are $0$ it is called a **lower triangular matrix** becuase it only has elements below the 
+diagonal that are non-zero:
+
+$$
+(\boldsymbol{L})_{ij} = 0 \text{ for all } i < j
+$$
+
+If all the elements below the diagonal are $0$ it is called a **upper triangular matrix** because it only has elements above the diagonal that are
+non-zero:
+
+$$
+(\boldsymbol{U})_{ij} = 0 \text{ for all } i > j
+$$
 
 <Callout type="example">
 A lower triangular matrix $\boldsymbol{L}$:
@@ -115,38 +210,6 @@ $$
 $$
 </Callout>
 
-## Diagonal Matrix
-
-A diagonal matrix is a matrix where all the elements that are not on the diagonal are zero. So $a_{ij} = 0$ for all $i \neq j$. This means that a 
-diagonal matrix is both a lower and upper triangular matrix and therefore also a square matrix.
-
-<Callout type="example">
-$$
-\begin{bmatrix}
-1 & 0 & 0 \\
-0 & 2 & 0 \\
-0 & 0 & 3
-\end{bmatrix}
-$$
-</Callout>
-
-## Identity Matrix
-
-An identity matrix is a diagonal matrix where all the diagonal elements are equal to $1$. The identity matrix is often denoted as $\boldsymbol{I}$ or $\boldsymbol{I}_n$ 
-where $n$ is the number of rows and columns in the matrix.
-
-Also called unit matrix. and a diag matrix with all 1s on the diagonal.
-
-<Callout type="example">
-$$
-\boldsymbol{I_3} = \begin{bmatrix}
-1 & 0 & 0 \\
-0 & 1 & 0 \\
-0 & 0 & 1
-\end{bmatrix}
-$$
-</Callout>
-
 ## Matrix Operations
 
 ### Matrix Addition
@@ -163,7 +226,13 @@ a_{m1} + b_{m1} & a_{m2} + b_{m2} & \cdots & a_{mn} + b_{mn}
 \end{bmatrix}
 $$
 
-Or more formally $\boldsymbol{A} + \boldsymbol{B} = [a_{ij} + b_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$. 
+Or more formally:
+
+$$
+\boldsymbol{A} + \boldsymbol{B} = (\boldsymbol{A} + \boldsymbol{B})_{ij} = (\boldsymbol{A})_{ij} + (\boldsymbol{B})_{ij}
+$$
+
+
 
 <Callout type="example">
 $$
@@ -176,6 +245,53 @@ $$
 \end{bmatrix} = \begin{bmatrix}
 8 & 10 & 12 \\
 14 & 16 & 18
+\end{bmatrix}
+$$
+</Callout>
+
+#### Additive Identity
+
+As you can expect the addition of any matrix with the null matrix results in the original matrix:
+
+$$
+\boldsymbol{A} + \boldsymbol{O} = \boldsymbol{A}
+$$
+
+#### Additive Inverse
+
+We can also expect to find a matrix $\boldsymbol{B}$ that when added to $\boldsymbol{A}$ results in the null matrix:
+
+$$
+\boldsymbol{A} + \boldsymbol{B} = \boldsymbol{O}
+$$
+
+The matrix $\boldsymbol{B}$ is called the additive inverse of $\boldsymbol{A}$ and is denoted as $-\boldsymbol{A}$ where 
+each element in the matrix is defined as the negative of the corresponding element in the matrix $\boldsymbol{A}$:
+
+$$
+(-\boldsymbol{A})_{ij} = -(\boldsymbol{A})_{ij}
+$$
+
+By using the additive inverse we can also subtract two matrices. The subtraction of two matrices is defined as the addition of the first matrix and the additive inverse of the second matrix:
+
+$$
+\boldsymbol{A} - \boldsymbol{B} = \boldsymbol{A} + (-\boldsymbol{B})
+$$
+
+<Callout type="example">
+$$
+\boldsymbol{A} - \boldsymbol{B} = \begin{bmatrix}
+7 & 8 & 9 \\
+10 & 11 & 12
+\end{bmatrix} - \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix} = \begin{bmatrix}
+7 - 1 & 8 - 2 & 9 - 3 \\
+10 - 4 & 11 - 5 & 12 - 6
+\end{bmatrix} = \begin{bmatrix}
+6 & 6 & 6 \\
+6 & 6 & 6
 \end{bmatrix}
 $$
 </Callout>
@@ -193,7 +309,11 @@ s \cdot a_{m1} & s \cdot a_{m2} & \cdots & s \cdot a_{mn}
 \end{bmatrix}
 $$
 
-Or more formally $s \cdot \boldsymbol{A} = [s \cdot a_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$.
+Or more formally:
+
+$$
+s \cdot \boldsymbol{A} = (s \cdot \boldsymbol{A})_{ij} = s \cdot (\boldsymbol{A})_{ij}
+$$
 
 <Callout type="example">
 $$
@@ -212,19 +332,17 @@ $$
 
 ### Matrix Multiplication
 
-The identity matrix is a special matrix as it is neutral element for matrix multiplication or also called the 
-identity element. This means that if you multiply any matrix with the identity matrix you get the same matrix back. So $\boldsymbol{A} \boldsymbol{I} = \boldsymbol{A}$.
-
 Matrix multiplication is a bit more complex than addition and scalar multiplication. One would think that multiplying two matrices together would be as simple as multiplying 
 each element of the first matrix with the corresponding element in the second matrix and would therefore just like addition be an element-wise operation and only defined for 
-matrices with the same dimensions. However, this is not the case, this would be the Hadamard product of two matrices.
+matrices with the same dimensions. However, this is not the case, this would be the [Hadamard product]() of two matrices. The reason for a more complex 
+definition is due to relationship that the matrix multiplication has with linear transformations to which we will come later.
 
-Matrix multiplication is only defined for matrices where the number of columns in the first matrix is equal to the number of rows in the second matrix. We will see why this is 
-the case later. The result of multiplying two matrices together is a new matrix where the number of rows is equal to the number of rows in the first matrix and the number of 
+Matrix multiplication is only defined for matrices where the number of columns in the first matrix is equal to the number of rows in the second matrix.
+We will see why this is the case later. The result of multiplying two matrices together is a new matrix where the number of rows is equal to the number of rows in the first matrix and the number of 
 columns is equal to the number of columns in the second matrix. So the dimensions in a matrix multiplication are defined as follows: 
 
 $$
-\boldsymbol{A} \in \mathbb{R}^{l \times m} \cdot \boldsymbol{B} \in \mathbb{R}^{m \times n} = \boldsymbol{C} \in \mathbb{R}^{l \times n}
+\boldsymbol{A} \in \mathbb{R}^{\color{red}{m} \times \color{blue}{n}} \text{ and } \boldsymbol{B} \in \mathbb{R}^{\color{blue}{n} \times \color{green}{p}} \Rightarrow \boldsymbol{C} = \boldsymbol{A} \cdot \boldsymbol{B} \in \mathbb{R}^{\color{red}{m} \times \color{green}{p}}
 $$
 
 <Image src="/maths/matrixMultiplicationDimensions.png"
@@ -233,10 +351,18 @@ $$
 />
 
 The actual calculation of the elements in the resulting matrix is a bit more complex. The element in the $i$-th row and $j$-th column in the resulting matrix is defined as 
-the dot product of the $i$-th row in the first matrix and the $j$-th column in the second matrix. So $c_{ij} = \boldsymbol{a}_i \cdot \boldsymbol{b}_j$. More formally:
+the sum of the products of the elements in the $i$-th row of the first matrix and the $j$-th column of the second matrix. So the element $c_{ij}$ in the resulting matrix is calculated as follows:
 
 $$
 c_{ij} = a_{i1} \cdot b_{1j} + a_{i2} \cdot b_{2j} + \cdots + a_{im} \cdot b_{mj} = \sum_{k=1}^m a_{ik} \cdot b_{kj}
+$$
+
+or more formally:
+
+$$
+\boldsymbol{C} =
+\boldsymbol{A} \cdot \boldsymbol{B} = (\boldsymbol{A} \cdot \boldsymbol{B})_{ij} = \sum_{k=1}^m (\boldsymbol{A})_{ik} \cdot (\boldsymbol{B})_{kj} 
+= \sum_{k=1}^m a_{ik} \cdot b_{kj}
 $$
 
 <Image src="/maths/matrixMultiplication.png"
@@ -244,7 +370,7 @@ $$
        width={400}
 />
 
-In the example above the element are calculated as followed:
+In the visualization above the elements would be calculated as follows:
 
 $$
 \begin{align*}
@@ -254,6 +380,11 @@ c_{33} = a_{31} \cdot b_{13} + a_{32} \cdot b_{23}
 $$
 
 <Callout type="example">
+
+I suggest to start with the first row of the first matrix and the first column of the second matrix and calculate the element in the resulting matrix. 
+Then move on to the second column of the second matrix and calculate the element in the resulting matrix. 
+Once you have calculated all the elements in the first row of the resulting matrix move on to the second row of the first matrix and repeat the process.
+
 $$
 \begin{bmatrix}
 1 & 2 & 3 \\
@@ -269,14 +400,17 @@ $$
 $$
 </Callout>
 
-#### Properties
+#### Commutative Property
 
-##### Commutative Property
+Matrix multiplication is not commutative so:
 
-Matrix multiplication is not commutative, i.e. $\boldsymbol{A} \cdot \boldsymbol{B} \neq \boldsymbol{B} \cdot \boldsymbol{A}$. This means that the order in which you multiply 
+$$
+\boldsymbol{A} \cdot \boldsymbol{B} \neq \boldsymbol{B} \cdot \boldsymbol{A}
+$$
+
+This means that the order in which you multiply 
 is important! This already becomes apparent when you look at the dimensions of the matrices. If you multiply a $2 \times 3$ matrix with a $3 \times 2$ matrix you get a 
 $2 \times 2$ matrix. However, if you multiply a $3 \times 2$ matrix with a $2 \times 3$ matrix you get a $3 \times 3$ matrix.
-
 
 <Callout type="example">
 $$
@@ -306,11 +440,9 @@ $$
 \end{bmatrix}
 \end{align*}
 $$
-</Callout>
 
 Even if the dimensions of the matrices are the same the result of the matrix multiplication can be different depending on the order of the matrices. 
 
-<Callout type="example">
 $$
 \begin{align*}
 \begin{bmatrix}
@@ -336,7 +468,7 @@ $$
 \end{align*}
 $$
 
-For the element $c_{11}$ (top left) we get the following:
+For the element $c_{11}$ we can clearly see why the order of the matrices is important:
 
 $$
 \begin{align*}
@@ -345,8 +477,179 @@ c_{11} &= 5 \cdot 1 + 6 \cdot 3 = 23 \\
 19 &\neq 23
 \end{align*}
 $$
-
 </Callout>
+
+There are however some special matrices that are commutative to each other. 
+These matrices are called **commutative matrices** or **commute** to each other so:
+
+$$
+\boldsymbol{A} \cdot \boldsymbol{B} = \boldsymbol{B} \cdot \boldsymbol{A}
+$$
+
+<Callout type="example">
+For the three matrices $\boldsymbol{A}$, $\boldsymbol{B}$ and $\boldsymbol{C}$:
+
+$$
+\boldsymbol{A} = \begin{bmatrix}
+2 & 6 \\
+1 & 7
+\end{bmatrix} \quad \boldsymbol{B} = \begin{bmatrix}
+-3 & -1 \\
+2 & 1
+\end{bmatrix} \quad \boldsymbol{C} = \begin{bmatrix}
+15 & 6 \\
+1 & 20
+\end{bmatrix}
+$$
+
+We can calculate the following:
+
+$$
+\begin{align*}
+\boldsymbol{AB} = \begin{bmatrix}
+6 & 4 \\
+11 & 6
+\end{bmatrix} \quad \boldsymbol{BA} = \begin{bmatrix}
+-7 & -25 \\
+5 & 19
+\end{bmatrix} \\
+\boldsymbol{AC} = \begin{bmatrix}
+36 & 132 \\
+22 & 146
+\end{bmatrix} \quad \boldsymbol{CA} = \begin{bmatrix}
+36 & 132 \\
+22 & 146
+\end{bmatrix} \\
+\end{align*}
+$$
+
+We can see that the matrices $\boldsymbol{A}$ and $\boldsymbol{C}$ commute to each other.
+
+$$
+\boldsymbol{A} \cdot \boldsymbol{C} = \boldsymbol{C} \cdot \boldsymbol{A}
+\quad \text{and} \quad
+\boldsymbol{A} \cdot \boldsymbol{B} \neq \boldsymbol{B} \cdot \boldsymbol{A}
+$$
+</Callout>
+
+#### Associative Property
+
+Matrix multiplication is associative so:
+
+$$
+(\boldsymbol{A} \cdot \boldsymbol{B}) \cdot \boldsymbol{C} = \boldsymbol{A} \cdot (\boldsymbol{B} \cdot \boldsymbol{C})
+$$
+
+This mean that the order in which you group the matrices in a multiplication does not matter. However,
+this does not mean that the order in which you multiply the matrices does not matter. As we have seen before matrix multiplication is not commutative.
+
+The associative property is very useful for linear transformations as it allows you to combine multiple transformations into a single transformation.
+
+<Callout type="proof">
+We have the following matrices:
+
+$$
+\boldsymbol{A} \in \mathbb{R}^{m \times n} \quad \boldsymbol{B} \in \mathbb{R}^{n \times p} \quad \boldsymbol{C} \in \mathbb{R}^{p \times q}
+$$
+
+Then we can see that the following two equations become the same:
+
+$$
+\begin{align*}
+((\boldsymbol{A}  \boldsymbol{B}) \boldsymbol{C})_{ik} &=
+\sum_{l=1}^p (\boldsymbol{A}  \boldsymbol{B})_{il}  c_{lk} =
+\sum_{l=1}^p \sum_{j=1}^n a_{ij} b_{jl}  c_{lk} \\
+(\boldsymbol{A} (\boldsymbol{B} \boldsymbol{C}))_{ij} &=
+\sum_{j=1}^n a_{ij} (\boldsymbol{B} \boldsymbol{C})_{jk} =
+\sum_{j=1}^n \sum_{l=1}^p a_{ij} b_{jl}  c_{lk}
+\end{align*}
+$$
+</Callout>
+
+
+#### Distributive Property
+
+The matrix multiplication is left distributive over addition and right distributive over addition so:
+
+$$
+\begin{align*}
+\boldsymbol{A} \cdot (\boldsymbol{B} + \boldsymbol{C}) = \boldsymbol{A} \cdot \boldsymbol{B} + \boldsymbol{A} \cdot \boldsymbol{C} \\
+(\boldsymbol{A} + \boldsymbol{B}) \cdot \boldsymbol{C} = \boldsymbol{A} \cdot \boldsymbol{C} + \boldsymbol{B} \cdot \boldsymbol{C}
+\end{align*}
+$$
+
+<Callout type="proof">
+For the matrices $\boldsymbol{A}$, $\boldsymbol{B}$ and $\boldsymbol{C}$:
+
+$$
+\boldsymbol{A} \in \mathbb{R}^{m \times n} \quad \boldsymbol{B} \in \mathbb{R}^{m \times n} \quad \boldsymbol{C} \in \mathbb{R}^{n \times p}
+$$
+    
+Then we can see that the following two equations become the same:
+
+$$
+\begin{align*}
+((\boldsymbol{A} + \boldsymbol{B}) \cdot \boldsymbol{C})_{ij} &= \sum_{k=1}^n (\boldsymbol{A} + \boldsymbol{B})_{ik} c_{kj} \\
+&= \sum_{k=1}^n (a_{ik} + b_{ik}) c_{kj} = \sum_{k=1}^n a_{ik} c_{kj} + b_{ik} c_{kj} = \sum_{k=1}^n a_{ik} c_{kj} + \sum_{k=1}^n b_{ik} c_{kj} \\
+&= (\boldsymbol{A} \cdot \boldsymbol{C})_{ij} + (\boldsymbol{B} \cdot \boldsymbol{C})_{ij}
+\end{align*}
+$$
+</Callout>
+
+#### Multiplicative Identity
+
+With regards to matrix multiplication the identity matrix is a special matrix. 
+The identity matrix functions as the multiplicative identity or also called the neutral element for matrix multiplication. 
+Meaning that if you multiply any matrix with the identity matrix you get the same matrix back. 
+The identity matrix is also commute to any matrix. 
+
+$$
+\boldsymbol{I} \cdot \boldsymbol{A} = \boldsymbol{A} \cdot \boldsymbol{I} = \boldsymbol{A}
+$$
+
+The reason as to why the identity matrix functions as the multiplicative identity can quite easily be seen if you 
+think of the first row in the identity matrix as selecting all the elements in the first row of the second matrix.
+Then the second row in the identity matrix selects all the elements in the second row of the second matrix and so on. So the identity matrix just selects the elements in the matrix.
+
+<Callout type="example">
+$$
+\boldsymbol{I} \cdot {A} =
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix} \cdot \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix} = \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+$$
+
+The same is true for the other way around:
+
+$$
+\boldsymbol{A} \cdot {I} =
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix} \cdot \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix} = \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+$$
+</Callout>
+
+#### Permutation Matrix
 
 #### Strassen's Algorithm
 
@@ -378,8 +681,13 @@ $$
 (\boldsymbol{A}^T)_{ij} = (\boldsymbol{A})_{ji}
 $$
 
+This results in the transpose of a row vector being a column vector and the transpose of a column vector being a row vector. The same goes for a matrix
+where the transpose of a matrix results in a matrix with its dimensions swapped. So the transpose of a $m \times n$ matrix is a $n \times m$ matrix.
+
+
 <Callout type="example">
     Transposing a matrix:
+
     $$
     \boldsymbol{A} = \begin{bmatrix}
     1 & 2 & 3 \\ 
@@ -391,7 +699,9 @@ $$
     \end{bmatrix}
     $$
 
-    Transposing a column vector:
+    Transposing a column vector is very useful when you want to write vectors in a readable way in a text,
+    as you can see. Most commonly in textbooks when a vector is defined it is defined as a transposed column vector.
+
     $$
     \boldsymbol{v} = \begin{bmatrix}
     v_1 \\ v_2 \\ \vdots \\ v_n 
@@ -400,7 +710,8 @@ $$
     \end{bmatrix}
     $$
 
-    Transposing a row vector:
+    Transposing a row vector: 
+
     $$
     \boldsymbol{v} = \begin{bmatrix}
     v_1 & v_2 & \cdots & v_n 
@@ -410,12 +721,10 @@ $$
     $$
 </Callout>
 
-As we can see in the example above the transpose of a row vector is a column vector and the transpose of a column vector is a row vector. This also shows that 
-transposing a matrix results in a matrix with its dimensions swapped. So the transpose of a $m \times n$ matrix is a $n \times m$ matrix.
+#### Properties of Transpose
 
-#### Transposing a Transposed Matrix
-
-If a matrix is transposed twice it is the same as the original matrix:
+There are a few useful properties of the transpose of a matrix that are worth remembering.
+Thist first ist that if a matrix is transposed twice it is the same as the original matrix:
 
 $$
 (\boldsymbol{A}^T)^T = \boldsymbol{A}
@@ -437,6 +746,14 @@ $$
 $$
 </Callout>
 
+Further ones are:
+
+$$
+\begin{align*}
+(\boldsymbol{A} + \boldsymbol{B})^T &= \boldsymbol{A}^T + \boldsymbol{B}^T \\
+(\boldsymbol{A} \cdot \boldsymbol{B})^T &= \boldsymbol{B}^T \cdot \boldsymbol{A}^T
+\end{align*}
+$$
 
 #### Symmetric Matrix
 
@@ -517,22 +834,64 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-For a non-square matrix you need to use a slightly different algorithm.
+For a non-square matrix you need to use a slightly more complex algorithm.
+
+### Inverse
+
+The inverse of a matrix is a matrix that when multiplied with the original matrix results in the identity matrix. The inverse of a matrix is denoted as $\boldsymbol{A}^{-1}$.
+
+$$
+\boldsymbol{A} \cdot \boldsymbol{A}^{-1} = \boldsymbol{A}^{-1} \cdot \boldsymbol{A} = \boldsymbol{I}
+$$
+
+Not all matrices have an inverse. A matrix that has an inverse is called an regular/invertible/non-singular matrix. A matrix that does not have an inverse is called a degenerate/singular/non-invertible matrix.
+If a matrix is invertible then the inverse is unique.
+
+Similarily the inverse of a matrix has some properties that are worth remembering:
+
+$$
+\begin{align*}
+(\boldsymbol{A}^{-1})^{-1} &= \boldsymbol{A} \\
+(\boldsymbol{A} \cdot \boldsymbol{B})^{-1} &= \boldsymbol{B}^{-1} \cdot \boldsymbol{A}^{-1} \\
+(\boldsymbol{A} + \boldsymbol{B})^{-1} &\neq \boldsymbol{A}^{-1} + \boldsymbol{B}^{-1}
+\end{align*}
+$$
+
+<Callout type="example">
+The following matrix is invertible:
+
+$$
+\boldsymbol{A} = \begin{bmatrix}
+1 & 2 & 1 \\
+4 & 4 & 5 \\
+6 & 7 & 7
+\end{bmatrix} \quad \text{with} \quad \boldsymbol{A}^{-1} = \begin{bmatrix}
+-7 & -7 & 6 \\
+2 & 1 & -1 \\
+4 & 5 & -4
+\end{bmatrix}
+$$
+
+The following simple matrix is not invertible:
+
+$$
+\boldsymbol{A} = \begin{bmatrix}
+2 & 4 \\
+2 & 4
+\end{bmatrix}
+$$
+</Callout>
+
+#### Calculating the Inverse
+
+<Callout type="todo">
+    How to calculate the inverse of a matrix and know if a matrix is invertible.
+</Callout>
 
 ### Rank
 
 <Callout type="todo">
-    Ranks seem a bit annoying but not hugely complex.
-</Callout>
-
-<Callout type="todo">
-    frobenius and trace will not be used until later so maybe move them to a different section.
-</Callout>
-
-### Inverse
-
-<Callout type="todo">
-    This section is still a work in progress!
+    Ranks seem a bit annoying but not hugely complex. also somehow related to the determinant and the inverse.
 </Callout>
 
 ### Frobenius Norm
