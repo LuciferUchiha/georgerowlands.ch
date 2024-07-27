@@ -46,7 +46,7 @@ def save_documents_to_jsonl(documents: list[PineconeDocument], file_path):
             writer.write(doc_dict)
 
 
-def get_documents() -> list[Document]:
+def get_all_documents() -> list[Document]:
     pages_path = "../pages/"
 
     excluded_files = ["../pages/index.mdx", "../pages/_app.mdx"]
@@ -65,6 +65,19 @@ def get_documents() -> list[Document]:
                 doc = Document(page_content=file_content,
                                metadata={"path": file_path})
                 documents.append(doc)
+
+    return documents
+
+
+def get_documents_by_path(file_paths: list[str]) -> list[Document]:
+    documents = []
+    for file_path in file_paths:
+        if not file_path.endswith(".mdx"):
+            continue
+
+        file_content = open(file_path, "r", encoding="utf8").read()
+        doc = Document(page_content=file_content, metadata={"path": file_path})
+        documents.append(doc)
 
     return documents
 
@@ -136,6 +149,15 @@ def upsert_chunks_to_index(index, chunks: list[PineconeDocument], batch_size: in
         index.upsert(vectors=[doc.dict() for doc in batch])
 
 
+def delete_files_from_index(index, file_paths: list[str]):
+    ids = []
+    for file_path in file_paths:
+        for ids in index.list(prefix=file_path):
+            ids.append(ids)
+
+    index.delete(ids=ids)
+
+
 def embed_documents(documents: list[Document], batch_size: int = 256, model: str = "text-embedding-3-small") -> list[tuple[Document, list[float]]]:
     embedded_documents = []
     for i in tqdm(range(0, len(documents), batch_size)):
@@ -152,8 +174,24 @@ def embed_documents(documents: list[Document], batch_size: int = 256, model: str
 if __name__ == "__main__":
     index = setup_index(index_name="digital-garden")
 
-    documents = get_documents()
-    print(f"Found {len(documents)} documents")
+    if os.getenv("CI_CD", False):
+        print("CI/CD run, skipping embedding and indexing")
+        # upsert all the added files
+        added_file_paths = os.getenv("ADDED_FILE_PATHS")
+        # remove and upsert all the renamed and modified files
+        modified_file_paths = os.getenv("MODIFIED_FILE_PATHS")
+        renamed_file_paths = os.getenv("RENAMED_FILE_PATHS")
+        # remove all the deleted files
+        deleted_file_paths = os.getenv("DELETED_FILE_PATHS")
+
+        files_to_remove = deleted_file_paths + renamed_file_paths + modified_file_paths
+        delete_files_from_index(index, files_to_remove)
+
+        files_to_upsert = added_file_paths + modified_file_paths + renamed_file_paths
+        documents = get_documents_by_path(files_to_upsert)
+    else:
+        documents = get_all_documents()
+
     processed_documents = [preprocess(document) for document in documents]
 
     chunks = chunk_pages(processed_documents)
@@ -170,7 +208,8 @@ if __name__ == "__main__":
 
     # just for fun, how many words have I roughly written
     total_chars = sum([len(chunk.page_content) for chunk in chunks])
-    total_words = sum([len(chunk.page_content.split()) for chunk in chunks])
+    total_words = sum([len(chunk.page_content.split())
+                       for chunk in chunks])
     total_book_pages = total_chars // 2000
     print(
         f"You have written about {total_chars} characters, {total_words} words, which is about {total_book_pages} book pages")
