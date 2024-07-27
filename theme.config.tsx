@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { DocsThemeConfig, useConfig } from "nextra-theme-docs";
 import Image from "next/image";
 import GiscusComments from "~/components/GiscusComments/GiscusComments";
+import ChatBot from "~/components/ChatBot/ChatBot";
 
 const config: DocsThemeConfig = {
   project: {
@@ -80,6 +81,9 @@ const config: DocsThemeConfig = {
   search: {
     // TODO I can replace the component that is shown for when nothing was found with an image of a dead tree with "emptyResult",
     placeholder: "Search the Garden...",
+  },
+  navbar: {
+    extraContent: <ChatBot />,
   },
   sidebar: { defaultMenuCollapseLevel: 1 },
   toc: {
