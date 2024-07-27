@@ -1,16 +1,16 @@
 import type { Config } from "tailwindcss"
-const colors = require("tailwindcss/colors");
 
-// basically all of this is copied from the docs-theme which allows me to have the same settings as the nextra docs theme
-// without having to use the nx prefix (mainly wanted this for the primary color amonst other things).
-const makePrimaryColor =
-    l =>
-        ({opacityValue}) => {
-            if (opacityValue === undefined) {
-                return `hsl(var(--nextra-primary-hue) 100% ${l}%)`;
-            }
-            return `hsl(var(--nextra-primary-hue) 100% ${l}% / ${opacityValue})`;
-        };
+type OpacityFunction = (params: { opacityValue: any }) => string;
+
+// Define the makePrimaryColor function
+const makePrimaryColor = (l: number): OpacityFunction => {
+    return ({ opacityValue }) => {
+        if (opacityValue === undefined) {
+            return `hsl(var(--nextra-primary-hue) 100% ${l}%)`;
+        }
+        return `hsl(var(--nextra-primary-hue) 100% ${l}% / ${opacityValue})`;
+    };
+};
 
 const config = {
   darkMode: ["class"],
@@ -43,33 +43,6 @@ const config = {
     letterSpacing: {
       tight: "-0.015em"
     },
-    colors: {
-      transparent: "transparent",
-      current: "currentColor",
-      black: "#000",
-      white: "#fff",
-      gray: colors.gray,
-      slate: colors.slate,
-      neutral: colors.neutral,
-      red: colors.red,
-      orange: colors.orange,
-      blue: colors.blue,
-      yellow: colors.yellow,
-      green: colors.green,
-      primary: {
-        50: makePrimaryColor(97),
-        100: makePrimaryColor(94),
-        200: makePrimaryColor(86),
-        300: makePrimaryColor(77),
-        400: makePrimaryColor(66),
-        500: makePrimaryColor(50),
-        600: makePrimaryColor(45),
-        700: makePrimaryColor(39),
-        750: makePrimaryColor(35),
-        800: makePrimaryColor(32),
-        900: makePrimaryColor(24)
-      }
-    },
     container: {
       center: true,
       padding: "2rem",
@@ -79,7 +52,20 @@ const config = {
     },
     extend: {
       colors: {
-        dark: "#111"
+        dark: "#111",
+        primary: {
+          50: makePrimaryColor(97)({ opacityValue: undefined }),
+          100: makePrimaryColor(94)({ opacityValue: undefined }),
+          200: makePrimaryColor(86)({ opacityValue: undefined }),
+          300: makePrimaryColor(77)({ opacityValue: undefined }),
+          400: makePrimaryColor(66)({ opacityValue: undefined }),
+          500: makePrimaryColor(50)({ opacityValue: undefined }),
+          600: makePrimaryColor(45)({ opacityValue: undefined }),
+          700: makePrimaryColor(39)({ opacityValue: undefined }),
+          750: makePrimaryColor(35)({ opacityValue: undefined }),
+          800: makePrimaryColor(32)({ opacityValue: undefined }),
+          900: makePrimaryColor(24)({ opacityValue: undefined }),
+        },
       },
       keyframes: {
         "accordion-down": {
@@ -106,7 +92,7 @@ const config = {
           "80%": {transform: "translate(-15%,0)"},
           "90%": {transform: "translate(10%,5%)"},
           "100%": {transform: "translate(5%,0)"}
-        }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",

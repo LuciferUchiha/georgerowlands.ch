@@ -1,5 +1,4 @@
-import { LuBrainCircuit } from "react-icons/lu";
-import { LuInfo } from "react-icons/lu";
+import { LuBrainCircuit, LuInfo } from "react-icons/lu";
 import {
   Sheet,
   SheetContent,
@@ -24,6 +23,8 @@ import {
 
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { Textarea } from "~components/ui/textarea";
+import { Button } from "~components/ui/button";
 
 export default function ChatBot() {
   return (
@@ -53,9 +54,10 @@ export default function ChatBot() {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>
-                      Your OpenAI API key is required to use the chatbot.
-                      You can create an API key here. <br /> The key you provide will not 
-                      be sent or stored on any servers, only in your browser.
+                        Your OpenAI API key is required to use the chatbot. You
+                        can create an API key here. <br /> The key you provide
+                        will not be sent or stored on any servers, only in your
+                        browser.
                       </p>
                     </TooltipContent>
                   </Tooltip>
@@ -75,6 +77,15 @@ export default function ChatBot() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+          <div className="fixed bottom-0 my-6 gap-4 w-full flex flex-row">
+            <Textarea
+              className="resize-none text-base w-[640px]"
+              placeholder="Send a message..."
+            />
+            <Button className="w-24">
+              Send
+            </Button>
           </div>
         </div>
       </SheetContent>
