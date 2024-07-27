@@ -69,19 +69,6 @@ def get_all_documents() -> list[Document]:
     return documents
 
 
-def get_documents_by_path(file_paths: list[str]) -> list[Document]:
-    documents = []
-    for file_path in file_paths:
-        if not file_path.endswith(".mdx"):
-            continue
-
-        file_content = open(file_path, "r", encoding="utf8").read()
-        doc = Document(page_content=file_content, metadata={"path": file_path})
-        documents.append(doc)
-
-    return documents
-
-
 def preprocess(document: Document) -> Document:
     # let's see how good it works if we do nothing
     return document
@@ -128,39 +115,39 @@ def chunk_pages(documents: list[Document]) -> list[Document]:
 
 
 def setup_index(index_name: str):
-    if index_name not in pc.list_indexes().names():
-        pc.create_index(
-            name=index_name,
-            dimension=1536,
-            metric="cosine",
-            spec=ServerlessSpec(
-                cloud='aws',
-                region='us-east-1'
-            )
+    if index_name in pc.list_indexes().names():
+        print(f"Index {index_name} already exists. Deleting it.")
+        pc.delete_index(name=index_name)
+
+    pc.create_index(
+        name=index_name,
+        dimension=1536,
+        metric="cosine",
+        spec=ServerlessSpec(
+            cloud='aws',
+            region='us-east-1'
         )
+    )
+
+    # disable deletion protection to be able to reset the index
+    pc.configure_index(
+        name=index_name,
+        deletion_protection="disabled",
+    )
 
     index = pc.Index(index_name)
     return index
 
 
-def upsert_chunks_to_index(index, chunks: list[PineconeDocument], batch_size: int = 1000):
-    for i in tqdm(range(0, len(chunks), batch_size)):
+def upsert_chunks_to_index(index, chunks: list[PineconeDocument], batch_size: int = 256):
+    for i in tqdm(range(0, len(chunks), batch_size), desc="Upserting chunks to index"):
         batch = chunks[i:i + batch_size]
         index.upsert(vectors=[doc.dict() for doc in batch])
 
 
-def delete_files_from_index(index, file_paths: list[str]):
-    ids = []
-    for file_path in file_paths:
-        for ids in index.list(prefix=file_path):
-            ids.append(ids)
-
-    index.delete(ids=ids)
-
-
 def embed_documents(documents: list[Document], batch_size: int = 256, model: str = "text-embedding-3-small") -> list[tuple[Document, list[float]]]:
     embedded_documents = []
-    for i in tqdm(range(0, len(documents), batch_size)):
+    for i in tqdm(range(0, len(documents), batch_size), desc="Embedding documents"):
         batch = documents[i:i + batch_size]
         batch_texts = [doc.page_content for doc in batch]
         response = client.embeddings.create(
@@ -174,28 +161,11 @@ def embed_documents(documents: list[Document], batch_size: int = 256, model: str
 if __name__ == "__main__":
     index = setup_index(index_name="digital-garden")
 
-    if os.getenv("CI_CD", False):
-        print("CI/CD run, skipping embedding and indexing")
-        # upsert all the added files
-        added_file_paths = os.getenv("ADDED_FILE_PATHS")
-        # remove and upsert all the renamed and modified files
-        modified_file_paths = os.getenv("MODIFIED_FILE_PATHS")
-        renamed_file_paths = os.getenv("RENAMED_FILE_PATHS")
-        # remove all the deleted files
-        deleted_file_paths = os.getenv("DELETED_FILE_PATHS")
-
-        files_to_remove = deleted_file_paths + renamed_file_paths + modified_file_paths
-        delete_files_from_index(index, files_to_remove)
-
-        files_to_upsert = added_file_paths + modified_file_paths + renamed_file_paths
-        documents = get_documents_by_path(files_to_upsert)
-    else:
-        documents = get_all_documents()
+    documents = get_all_documents()
 
     processed_documents = [preprocess(document) for document in documents]
 
     chunks = chunk_pages(processed_documents)
-    chunks = chunks[:10]
 
     embedded_chunks = embed_documents(chunks)
     pinecone_chunks = [PineconeDocument.from_document_with_embedding(
