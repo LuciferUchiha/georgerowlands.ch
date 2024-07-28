@@ -92,8 +92,12 @@ export default function ChatBot() {
         {
           headers: {
             "Content-Type": "application/json",
-            "Api-Key": process.env.PINECONE_API_KEY,
+            "Api-Key": process.env.NEXT_PUBLIC_PINECONE_KEY,
             "X-Pinecone-API-Version": "2024-07",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
+            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Api-Key, X-Pinecone-API-Version",
           },
         }
       );
