@@ -27,11 +27,29 @@ import { Textarea } from "~components/ui/textarea";
 import { Button } from "~components/ui/button";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { get } from "http";
+
+type Role = "system" | "user" | "assistant";
+
+type Message = {
+  role: Role;
+  content: string;
+};
+
+type Embedding = number[];
+
+type Context = {
+  id : string;
+  page_content : string;
+};
 
 export default function ChatBot() {
-  const [apiKey, setApiKey] = useState("");
-  const [model, setModel] = useState("gpt-4o");
-  const [inputValue, setInputValue] = useState("");
+  const [apiKey, setApiKey] = useState<string>("");
+  const [model, setModel] = useState<string>("gpt-4o");
+  const [inputValue, setInputValue] = useState<string>("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [queryEmbedding, setQueryEmbedding] = useState<Embedding>();
+  const [context, setContext] = useState<Context[]>([]);
 
   useEffect(() => {
     const value = localStorage.getItem("apiKey") || ""
@@ -42,12 +60,16 @@ export default function ChatBot() {
     localStorage.setItem("apiKey", key)
   }
 
-  const embed_text = (text: string) => {
-    axios
-      .post(
+  const add_message = (role: Role, content: string) => {
+    setMessages([...messages, { role: role, content: content}]);
+  }
+  const rag = async (question: string) => {
+    try {
+      // Step 1: Embed the question
+      const embedResponse = await axios.post(
         "https://api.openai.com/v1/embeddings",
         {
-          input: text,
+          input: question,
           model: "text-embedding-3-small",
         },
         {
@@ -56,18 +78,36 @@ export default function ChatBot() {
             Authorization: `Bearer ${apiKey}`,
           },
         }
-      )
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+      );
+      const embedding = embedResponse.data.data[0].embedding;
+      console.log("embedding", embedding);
 
-  const send_message = (text: string) => {
-    axios
-      .post(
+      // Step 2: Get context using the embedding
+      const contextResponse = await axios.post(
+        "https://digital-garden-br88je8.svc.aped-4627-b74a.pinecone.io/query",
+        {
+          vector: embedding,
+          top_k: 5,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Api-Key": process.env.PINECONE_API_KEY,
+            "X-Pinecone-API-Version": "2024-07",
+          },
+        }
+      );
+      const matches = contextResponse.data.matches;
+      const contexts = matches.map((match: { id: string; page_content: string }) => {
+        return {
+          id: match.id,
+          page_content: match.page_content,
+        };
+      });
+      console.log("contexts", contexts);
+
+      // Step 3: Send the message along with the context
+      const messageResponse = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
           model: model,
@@ -78,9 +118,9 @@ export default function ChatBot() {
             },
             {
               role: "user",
-              content: text,
+              content: question,
             },
-          ]
+          ],
         },
         {
           headers: {
@@ -88,14 +128,16 @@ export default function ChatBot() {
             Authorization: `Bearer ${apiKey}`,
           },
         }
-      )
-      .then((response) => {
-        console.log(response.data.choices[0].text);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }
+      );
+      const answer = messageResponse.data.choices[0].text;
+      console.log("answer", answer);
+      add_message("assistant", answer);
+    } catch (error) {
+      console.error(error);
+      add_message("assistant", "Sorry, there was an error processing your request.");
+    }
+    console.log(messages);
+  };
 
   return (
     <Sheet>
@@ -169,8 +211,9 @@ export default function ChatBot() {
             <Button
               className="w-24"
               onClick={() => {
-                embed_text("What is the capital of France?");
-                send_message(inputValue);
+                add_message("user", inputValue);
+                rag(inputValue);
+                setInputValue("");
               }}
             >
               Send
