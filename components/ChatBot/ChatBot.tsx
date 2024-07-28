@@ -25,8 +25,78 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~components/ui/textarea";
 import { Button } from "~components/ui/button";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 export default function ChatBot() {
+  const [apiKey, setApiKey] = useState("");
+  const [model, setModel] = useState("gpt-4o");
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(() => {
+    const value = localStorage.getItem("apiKey") || ""
+    setApiKey(value)
+  }, [])
+
+  const saveKeyToLocalStorage = (key: string) => {
+    localStorage.setItem("apiKey", key)
+  }
+
+  const embed_text = (text: string) => {
+    axios
+      .post(
+        "https://api.openai.com/v1/embeddings",
+        {
+          input: text,
+          model: "text-embedding-3-small",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const send_message = (text: string) => {
+    axios
+      .post(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          model: model,
+          messages: [
+            {
+              role: "system",
+              content: "You are a helpful assistant.",
+            },
+            {
+              role: "user",
+              content: text,
+            },
+          ]
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data.choices[0].text);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   return (
     <Sheet>
       <SheetTrigger>
@@ -42,7 +112,7 @@ export default function ChatBot() {
         </SheetHeader>
         <div className="mt-4">
           <div className="flex flex-row justify-between">
-            <div className="flex flex-col w-48 mr-4">
+            <div className="flex flex-col w-96 mr-4">
               <div className="flex flex-row">
                 <Label htmlFor="apiKey" className="mb-2 mr-2">
                   OpenAI API Key
@@ -63,11 +133,22 @@ export default function ChatBot() {
                   </Tooltip>
                 </TooltipProvider>
               </div>
-              <Input id="apiKey" placeholder="sk-********" />
+              <Input
+                id="apiKey"
+                placeholder="sk-********"
+                value={apiKey}
+                onChange={(e) => {
+                  setApiKey(e.target.value)
+                  saveKeyToLocalStorage(e.target.value)
+                }}
+              />
             </div>
             <div className="flex flex-col w-48">
               <Label className="mb-2">Model</Label>
-              <Select defaultValue="gpt-4o">
+              <Select
+                defaultValue="gpt-4o"
+                onValueChange={(value) => setModel(value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="gpt-4o" />
                 </SelectTrigger>
@@ -82,8 +163,16 @@ export default function ChatBot() {
             <Textarea
               className="resize-none text-base w-[640px]"
               placeholder="Send a message..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
             />
-            <Button className="w-24">
+            <Button
+              className="w-24"
+              onClick={() => {
+                embed_text("What is the capital of France?");
+                send_message(inputValue);
+              }}
+            >
               Send
             </Button>
           </div>
