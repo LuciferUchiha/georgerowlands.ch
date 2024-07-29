@@ -1,5 +1,5 @@
 "use client";
-import {useState, useLayoutEffect, useEffect} from "react";
+import {useState, useEffect} from "react";
 
 const getWindowDimensions = () => {
     if (typeof window === "undefined") {
