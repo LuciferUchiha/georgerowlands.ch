@@ -5,19 +5,315 @@ import Image from "~/components/Image/Image";
 
 ## What is a Vector?
 
-Depending on the field you are working in, a vector can mean different things. In computer science, a vector is just a list of numbers, i.e. a 1D array. 
+We have already seen that vectors are just special types of matrices with either one row or one column, primarly with one column.
+However, depending on the field you are working in, a vector can mean many different things. In computer science, a vector is just a list of numbers, i.e. a 1D array or n-tuple.
+The elements of a vector are more commonly called components rather than elements.
 
-In maths, a vector can be thought of as an arrow in space that have starting and ending point, also reffered to as the tail and the head of the vector. Most commonly 
+In maths, a vector can be thought of as an arrow in space that have a starting and ending point, also reffered to as the tail and the head of the vector. Most commonly 
 vectors are denoted by a lowercase letter either in bold or with an arrow above it, e.g. $\vec{v}$ or $\boldsymbol{v}$. If the vector is defined by two points, $A$ and $B$, 
-then the vector is denoted as $\vec{AB}$.
+then the vector is denoted as $\vec{AB}$, this type of vector is a position vector. Usually the starting point of the vector is at the origin,
+$(0, 0)$ in 2D space or $(0, 0, 0)$ in 3D space etc. making the head of the vector the point $(x, y)$ or $(x, y, z)$ etc.
 
-<Callout type="todo">
-Not sure yet how I want to nicely formulate and show all this. I want to show that moving the vector around doesn't change it i.e it is only defined by it's direction and length.
-But I also want to show ortsvektor (position vector)? How does 3blue1brown do it? Also define components
+<Image
+    src="/maths/vectorPosition.png"
+    caption="We can see that the vectors defined from the origin are equivalent to the point coordinates."
+    width={500}
+    />
+
+Vectors are easily visualized in 2D and 3D space, but can be extended to any number of dimensions. 
+If we define that all vectors have the same starting point, they can be uniquely be defined by their ending point 
+which is the same as the direction and length of the vector. The length of the vector is also called the magnitude.
+
+This is also in line with vectors in physics, where vectors are used to represent physical quantities that have both magnitude and direction 
+such as velocity, force, acceleration, etc. For example, a force vector indicates both the magnitude of the force and 
+the direction in which it is applied. Unlike position vectors, these vectors do not necessarily have a fixed starting point at the origin. 
+Instead, they can be applied at any point in space, and their effects are determined by their magnitude and direction. 
+The length of the vector represents the magnitude of the physical quantity, and the direction of the arrow indicates the direction in which the quantity acts.
+
+<Image
+    src="/maths/vectorPhysics.png"
+    caption="Vectors being used to denote force and acceleration of a car."
+    width={500}
+    />
+
+## Basic Operations on Vectors and Matrices
+
+All the vector operations can be thought of as matrix operations, because a vector can be thought of as a matrix with one column.
+
+### Vector Addition
+
+To add two vectors together, we simply add the corresponding components of the vectors together i.e. we just add element-wise. This also means that the two vectors 
+must have the same number of components/dimensions. This is equivalent to matrix addition.
+So we can add two vectors $\boldsymbol{x} \in \mathbb{R}^n$ and $\boldsymbol{y} \in \mathbb{R}^n$ as follows:
+
+$$
+\begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix} + \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_n
+\end{bmatrix} = \begin{bmatrix}
+    x_1 + y_1 \\
+    x_2 + y_2 \\
+    \vdots \\
+    x_n + y_n
+\end{bmatrix}
+$$
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} + \begin{bmatrix}
+    4 \\
+    5 \\
+    6
+\end{bmatrix} = \begin{bmatrix}
+    1 + 4 \\
+    2 + 5 \\
+    3 + 6
+\end{bmatrix} = \begin{bmatrix}
+    5 \\
+    7 \\
+    9
+\end{bmatrix}
+$$
 </Callout>
 
-A vector therefore has a direction and a length/magnitude. 
-This arrow can be moved around, but it's direction and length will remain the same. Vectors are easily visualized in 2D and 3D space, but can be extended to any number of dimensions.
+We can also visualize vector addition nicely in 2D and 3D space with position vectors. We can think of vector addition as moving the tail of the second vector to the head of the first vector. The 
+resulting vector is the vector that starts at the tail of the first vector and ends at the head of the second vector.
+
+<Image
+    src="/maths/vectorAddition.png"
+    caption="Vector addition in 2D."
+    width={400}
+    />
+
+### Scalar Multiplication
+
+We can multiply a vector by a scalar, i.e. a number, by multiplying each component of the vector by the scalar. So if we have a vector $\boldsymbol{x}$ and a scalar $s$, 
+then we can multiply them together as follows:
+
+$$
+s\boldsymbol{x} = s \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix} = \begin{bmatrix}
+    sx_1 \\
+    sx_2 \\
+    \vdots \\
+    sx_n
+\end{bmatrix}
+$$
+
+<Callout type="example">
+$$
+2\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} = \begin{bmatrix}
+    2 \cdot 1 \\
+    2 \cdot 2 \\
+    2 \cdot 3
+\end{bmatrix} = \begin{bmatrix}
+    2 \\
+    4 \\
+    6
+\end{bmatrix}
+$$
+</Callout>
+
+We can also visualize scalar multiplication nicely in 2D and 3D space. We can think of scalar multiplication as stretching or shrinking the vector by the scalar. This is 
+why scalar multiplication is also called vector scaling and the number is called the scalar. If the scalar is negative, then the vector will be flipped around, i.e. it will
+point in the opposite direction.
+
+<Image
+    src="/maths/vectorScalarMultiplication.png"
+    caption="Scalar multiplication of a vector in 2D."
+    width={400}
+    />
+
+### Subtraction
+
+Subtracting two vectors is the same as adding the first vector to the negative of the second vector, i.e. multiplying the second vector by $-1$. So if we have two vectors
+we can subtract them as follows:
+
+$$
+\boldsymbol{x} - \boldsymbol{y} = \boldsymbol{x} + (-\boldsymbol{y})
+$$
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} - \begin{bmatrix}
+    4 \\
+    5 \\
+    6
+\end{bmatrix} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} + \begin{bmatrix}
+    -4 \\
+    -5 \\
+    -6
+\end{bmatrix} = \begin{bmatrix}
+    1 + (-4) \\
+    2 + (-5) \\
+    3 + (-6)
+\end{bmatrix} = \begin{bmatrix}
+    -3 \\
+    -3 \\
+    -3
+\end{bmatrix}
+$$
+</Callout>
+
+When visualizing the subtraction of two vectors, we can think of it as adding the negative of the second vector to the first
+vector, i.e. moving the tail of the second vector after flipping it to the head of the first vector.
+
+<Image
+    src="/maths/vectorSubtraction.png"
+    caption="Vector subtraction in 2D."
+    width={400}
+    />
+
+
+### Matrix-Vector Multiplication
+
+
+#### Linear Combinations
+
+as a matrix times a vector can relate this back to a coefficient matrix and a solution vector.
+
+
+### Inner Product
+
+The inner product or also called the dot product is the most common type of vector multiplication. This is defined 
+just like the matrix multiplication. However, so the dimensions of the two vectors must be the same. To achieve this,
+the second vector is transposed. The dot product is often denoted as$\boldsymbol{x} \cdot \boldsymbol{y}$, but sometimes
+also as $\langle \boldsymbol{x}, \boldsymbol{y} \rangle$ rather than $\boldsymbol{x}^T \cdot \boldsymbol{y}$ to
+avoid confusion with the matrix multiplication or scalar multiplication.
+So if we have two vectors $\boldsymbol{x} \in \mathbb{R}^{n \times 1}$ and 
+$\boldsymbol{y} \in \mathbb{R}^{n \times 1}$, then we can multiply them together as follows:
+
+$$
+\langle \boldsymbol{x}, \boldsymbol{y} \rangle = \boldsymbol{x} \cdot \boldsymbol{y} =
+\boldsymbol{x}^T\boldsymbol{y} = \begin{bmatrix}
+    x_1 & x_2 & \dots & x_n
+\end{bmatrix} \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_n
+\end{bmatrix} = x_1y_1 + x_2y_2 + \dots + x_ny_n = \sum_{i=1}^n x_iy_i
+$$
+
+From the dimensions we can also clearly see that the dot product results in a scalar which is 
+why it is also called the scalar product, not to be confused with scalar multiplication!
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \cdot \begin{bmatrix}
+    4 \\
+    5 \\
+    6
+\end{bmatrix} = 1 \cdot 4 + 2 \cdot 5 + 3 \cdot 6 = 4 + 10 + 18 = 32
+$$
+</Callout>
+
+Unlike the matrix multiplication, the dot product is commutative, meaning that the order in which we multiply the vectors together does not matter.
+
+<Callout type="info" title="Why is the dot product commutative?">
+The dot product is also commutative for real numbers, meaning that the order in which we multiply the vectors together does not matter as long
+as the first vector is transposed. This is because the dot product is the sum of the products of the corresponding components of the two vectors 
+and the pairs of components are the same in both cases. 
+
+$$
+\begin{bmatrix}
+    x_1 & x_2 & \dots & x_n
+\end{bmatrix} \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_n
+\end{bmatrix} = x_1y_1 + x_2y_2 + \dots + x_ny_n = y_1x_1 + y_2x_2 + \dots + y_nx_n = \begin{bmatrix}
+    y_1 & y_2 & \dots & y_n
+\end{bmatrix} \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix}
+$$
+</Callout>
+
+The question now is what is the dot product actually? 
+
+
+We can also visualize the dot product nicely in 2D and 3D space. The dot product of two vectors is the cosine of the angle between the two vectors multiplied by the length of 
+the two vectors if we place the tails at the same point. So if we have two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, then we can calculate the dot product as follows:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{y} = \|\boldsymbol{x}\| \|\boldsymbol{y}\| \cos(\theta)
+$$
+
+where $\theta$ is the angle between the two vectors. We can also calculate the angle between the two vectors by rewriting the equation above as follows:
+
+$$
+\theta = \cos^{-1}\left(\frac{\boldsymbol{x} \cdot \boldsymbol{y}}{\|\boldsymbol{x}\| \|\boldsymbol{y}\|}\right)
+$$
+
+Where $\cos^{-1}$ is the inverse cosine function, also called the arccosine function.
+
+<Image
+    src="/maths/vectorDotProductAngle.png"
+    caption="Calculating the angle between two vectors using the dot product."
+    width={400}
+    />
+
+<Callout type="example">
+If $\boldsymbol{x}$ and $\boldsymbol{y}$ are defined as:
+
+$$
+\boldsymbol{x} = \begin{bmatrix}
+    3 \\
+    -2
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{y} = \begin{bmatrix}
+    1 \\
+    7
+\end{bmatrix}
+$$
+
+then the angle between $\boldsymbol{x}$ and $\boldsymbol{y}$ is:
+
+$$
+\begin{align*}
+\theta &= \cos^{-1}\left(\frac{\boldsymbol{x} \cdot \boldsymbol{y}}{\|\boldsymbol{x}\| \|\boldsymbol{y}\|}\right) \\
+&= \cos^{-1}\left(\frac{3 \cdot 1 + (-2) \cdot 7}{\sqrt{3^2 + (-2)^2} \sqrt{1^2 + 7^2}}\right) \\
+&= \cos^{-1}\left(\frac{3 - 14}{\sqrt{9 + 4} \sqrt{1 + 49}}\right) \\
+&= \cos^{-1}\left(\frac{-11}{\sqrt{13} \sqrt{50}}\right) \\
+&= 115.6^\circ
+\end{align*}
+$$
+</Callout>
 
 ## Norms
 
@@ -89,7 +385,6 @@ $$
 \[|| \boldsymbol{x} + \boldsymbol{y} ||\] \leq \[|| \boldsymbol{x} ||\] + \[|| \boldsymbol{y} ||\]
 $$
 
-
 ### P-Norm
 
 The idea of the $L_p$ norm is to generalize the $L_1$ and $L_2$ norms. The $L_p$ norm is defined as:
@@ -129,257 +424,6 @@ $$
 $$
 </Callout>
 
-## Operations on Vectors and Matrices
-
-All the vector operations can be thought of as matrix operations, because a vector can be thought of as a matrix with one column.
-
-### Vector Addition
-
-To add two vectors together, we simply add the corresponding components of the vectors together i.e. we just add element-wise. This also means that the two vectors 
-must have the same number of components/dimensions. So we can add two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$ together as follows:
-
-$$
-\begin{bmatrix}
-    x_1 \\
-    x_2 \\
-    \vdots \\
-    x_n
-\end{bmatrix} + \begin{bmatrix}
-    y_1 \\
-    y_2 \\
-    \vdots \\
-    y_n
-\end{bmatrix} = \begin{bmatrix}
-    x_1 + y_1 \\
-    x_2 + y_2 \\
-    \vdots \\
-    x_n + y_n
-\end{bmatrix}
-$$
-
-<Callout type="example">
-$$
-\begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} + \begin{bmatrix}
-    4 \\
-    5 \\
-    6
-\end{bmatrix} = \begin{bmatrix}
-    1 + 4 \\
-    2 + 5 \\
-    3 + 6
-\end{bmatrix} = \begin{bmatrix}
-    5 \\
-    7 \\
-    9
-\end{bmatrix}
-$$
-</Callout>
-
-We can also visualize vector addition nicely in 2D and 3D space. We can think of vector addition as moving the tail of one vector to the head of the other vector. The 
-resulting vector is the vector that starts at the tail of the first vector and ends at the head of the second vector.
-
-<Image
-    src="/maths/vectorAddition.png"
-    caption="Vector addition in 2D."
-    width={400}
-    />
-
-From the image above we can also see that the order in which we add the vectors does not matter, i.e. the vector addition is commutative. 
-
-### Scalar Multiplication
-
-We can multiply a vector by a scalar, i.e. a number, by multiplying each component of the vector by the scalar. So if we have a vector $\boldsymbol{x}$ and a scalar $c$, 
-then we can multiply them together as follows:
-
-$$
-c\boldsymbol{x} = c \begin{bmatrix}
-    x_1 \\
-    x_2 \\
-    \vdots \\
-    x_n
-\end{bmatrix} = \begin{bmatrix}
-    cx_1 \\
-    cx_2 \\
-    \vdots \\
-    cx_n
-\end{bmatrix}
-$$
-
-<Callout type="example">
-$$
-2\begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} = \begin{bmatrix}
-    2 \cdot 1 \\
-    2 \cdot 2 \\
-    2 \cdot 3
-\end{bmatrix} = \begin{bmatrix}
-    2 \\
-    4 \\
-    6
-\end{bmatrix}
-$$
-</Callout>
-
-We can also visualize scalar multiplication nicely in 2D and 3D space. We can think of scalar multiplication as stretching or shrinking the vector by the scalar. This is 
-why scalar multiplication is also called vector scaling and the number is called the scalar. If the scalar is negative, then the vector will be flipped around, i.e. it will
-point in the opposite direction.
-
-<Image
-    src="/maths/vectorScalarMultiplication.png"
-    caption="Scalar multiplication of a vector in 2D."
-    width={400}
-    />
-
-### Subtraction
-
-Subtracting two vectors is the same as adding the first vector to the negative of the second vector, i.e. multiplying the second vector by $-1$. So if we have two vectors
-we can subtract them as follows:
-
-$$
-\boldsymbol{x} - \boldsymbol{y} = \boldsymbol{x} + (-\boldsymbol{y})
-$$
-
-<Callout type="example">
-$$
-\begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} - \begin{bmatrix}
-    4 \\
-    5 \\
-    6
-\end{bmatrix} = \begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} + \begin{bmatrix}
-    -4 \\
-    -5 \\
-    -6
-\end{bmatrix} = \begin{bmatrix}
-    1 + (-4) \\
-    2 + (-5) \\
-    3 + (-6)
-\end{bmatrix} = \begin{bmatrix}
-    -3 \\
-    -3 \\
-    -3
-\end{bmatrix}
-$$
-</Callout>
-
-When visualizing the subtraction of two vectors, we can think of it in two ways. The first way is to think of it as adding the negative of the second vector to the first
-vector, i.e. moving the tail of the second vector to the head of the first vector. We can also visualize it by moving the tail of the second vector to the tail of the first 
-vector, and then drawing a vector from the head of the second vector to the head of the first vector.
-
-<Image
-    src="/maths/vectorSubtraction.png"
-    caption="Vector subtraction in 2D."
-    width={400}
-    />
-
-I prefer the first way of visualizing vector subtraction, because it is easier to see that the order in which we subtract the vectors matters. When using the second way you 
-can easily draw the vectors in the wrong order, which will give you the wrong result (negative of the correct result).
-
-### Inner/Dot Product
-
-The dot product is a way of multiplying two vectors together to get a scalar. The dot product is also called the inner product or the scalar product because it results in a 
-scalar, not to be confused with the scalar multiplication of a vector! The dot product of two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$ is denoted as 
-$\boldsymbol{x} \cdot \boldsymbol{y}$ and is defined as:
-
-$$
-\boldsymbol{x} \cdot \boldsymbol{y} = x_1y_1 + x_2y_2 + \dots + x_ny_n = \sum_{i=1}^n x_iy_i
-$$
-
-As we can see it is the sum of the products of the corresponding components of the two vectors meaning that the two vectors must have the same number of components/dimensions. 
-
-<Callout type="example">
-$$
-\begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} \cdot \begin{bmatrix}
-    4 \\
-    5 \\
-    6
-\end{bmatrix} = 1 \cdot 4 + 2 \cdot 5 + 3 \cdot 6 = 4 + 10 + 18 = 32
-$$
-</Callout>
-
-The dot product is also commutative, meaning that the order in which we multiply the vectors together does not matter $\boldsymbol{x} \cdot \boldsymbol{y} = 
-\boldsymbol{y} \cdot \boldsymbol{x}$.
-
-Just as we can think of the matrix multiplication as the dot product of the rows of the first matrix and the columns of the second matrix, we can also think of the dot as 
-the matrix multiplication of a $1 \times n$ matrix and a $n \times 1$ matrix. So if we have two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, then we can think of the two 
-vectors as matrices, transpose one of them and then multiply them together as follows:
-
-$$
-\boldsymbol{x} \cdot \boldsymbol{y} = \boldsymbol{x}^T\boldsymbol{y} = \begin{bmatrix}
-    x_1 & x_2 & \dots & x_n
-\end{bmatrix} \begin{bmatrix}
-    y_1 \\
-    y_2 \\
-    \vdots \\
-    y_n
-\end{bmatrix}
-$$
-
-We can also visualize the dot product nicely in 2D and 3D space. The dot product of two vectors is the cosine of the angle between the two vectors multiplied by the length of 
-the two vectors if we place the tails at the same point. So if we have two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, then we can calculate the dot product as follows:
-
-$$
-\boldsymbol{x} \cdot \boldsymbol{y} = \|\boldsymbol{x}\| \|\boldsymbol{y}\| \cos(\theta)
-$$
-
-where $\theta$ is the angle between the two vectors. We can also calculate the angle between the two vectors by rewriting the equation above as follows:
-
-$$
-\theta = \cos^{-1}\left(\frac{\boldsymbol{x} \cdot \boldsymbol{y}}{\|\boldsymbol{x}\| \|\boldsymbol{y}\|}\right)
-$$
-
-Where $\cos^{-1}$ is the inverse cosine function, also called the arccosine function.
-
-<Image
-    src="/maths/vectorDotProductAngle.png"
-    caption="Calculating the angle between two vectors using the dot product."
-    width={400}
-    />
-
-<Callout type="example">
-If $\boldsymbol{x}$ and $\boldsymbol{y}$ are defined as:
-
-$$
-\boldsymbol{x} = \begin{bmatrix}
-    3 \\
-    -2
-\end{bmatrix} \quad \text{and} \quad \boldsymbol{y} = \begin{bmatrix}
-    1 \\
-    7
-\end{bmatrix}
-$$
-
-then the angle between $\boldsymbol{x}$ and $\boldsymbol{y}$ is:
-
-$$
-\begin{align*}
-\theta &= \cos^{-1}\left(\frac{\boldsymbol{x} \cdot \boldsymbol{y}}{\|\boldsymbol{x}\| \|\boldsymbol{y}\|}\right) \\
-&= \cos^{-1}\left(\frac{3 \cdot 1 + (-2) \cdot 7}{\sqrt{3^2 + (-2)^2} \sqrt{1^2 + 7^2}}\right) \\
-&= \cos^{-1}\left(\frac{3 - 14}{\sqrt{9 + 4} \sqrt{1 + 49}}\right) \\
-&= \cos^{-1}\left(\frac{-11}{\sqrt{13} \sqrt{50}}\right) \\
-&= 115.6^\circ
-\end{align*}
-$$
-</Callout>
-
 #### Orthogonal Vectors
 
 We call two vectors orthogonal if the angle between them is 90 degrees, i.e. they are perpendicular to each other. If two vectors are orthogonal, then their dot product is 
@@ -388,13 +432,6 @@ zero, because $\cos(90) = 0$. So if we have two vectors $\boldsymbol{x}$ and $\b
 $$
 \boldsymbol{x} \cdot \boldsymbol{y} = 0
 $$
-
-### Matrix Vector Multiplication
-
-
-#### Linear Combinations
-
-as a matrix times a vector can relate this back to a coefficient matrix and a solution vector.
 
 ### Inner Product
 
