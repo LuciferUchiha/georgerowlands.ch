@@ -200,9 +200,9 @@ vector, i.e. moving the tail of the second vector after flipping it to the head 
 as a matrix times a vector can relate this back to a coefficient matrix and a solution vector.
 
 
-### Inner Product
+### Dot Product
 
-The inner product or also called the dot product is the most common type of vector multiplication. This is defined 
+The dot product or also called the inner product is the most common type of vector multiplication. This is defined 
 just like the matrix multiplication. However, so the dimensions of the two vectors must be the same. To achieve this,
 the second vector is transposed. The dot product is often denoted as$\boldsymbol{x} \cdot \boldsymbol{y}$, but sometimes
 also as $\langle \boldsymbol{x}, \boldsymbol{y} \rangle$ rather than $\boldsymbol{x}^T \cdot \boldsymbol{y}$ to
@@ -247,6 +247,7 @@ as the first vector is transposed. This is because the dot product is the sum of
 and the pairs of components are the same in both cases. 
 
 $$
+\begin{align*}
 \begin{bmatrix}
     x_1 & x_2 & \dots & x_n
 \end{bmatrix} \begin{bmatrix}
@@ -254,16 +255,159 @@ $$
     y_2 \\
     \vdots \\
     y_n
-\end{bmatrix} = x_1y_1 + x_2y_2 + \dots + x_ny_n = y_1x_1 + y_2x_2 + \dots + y_nx_n = \begin{bmatrix}
+\end{bmatrix} = x_1y_1 + x_2y_2 + \dots + x_ny_n\\
+\begin{bmatrix}
     y_1 & y_2 & \dots & y_n
 \end{bmatrix} \begin{bmatrix}
     x_1 \\
     x_2 \\
     \vdots \\
     x_n
-\end{bmatrix}
+\end{bmatrix} = y_1x_1 + y_2x_2 + \dots + y_nx_n
+\end{align*}
 $$
 </Callout>
+
+### Norms
+
+A norm is a function denoted by $\|\cdot\|$ that maps vectors to real values and satisfies the following properties:
+
+- It is positiv definit meaning it assigns a non-negative real numbers, i.e a length or size to each vector. 
+- If the norm of a vector is zero, then the vector is the zero vector.
+- The norm of a vector scaled by a scalar is equal to the absolute value of the scalar times the norm of the vector, 
+i.e. $\|s\boldsymbol{x}\| = |s|\|\boldsymbol{x}\|$ where $s \in \mathbb{R}$ and $\boldsymbol{x} \in \mathbb{R}^n$.
+- The triangle inequality holds which we will see later.
+
+In simple terms the norm of a vector is the length of the vector. There are many different types of norms, but the most common ones are the $L_1$ and $L_2$ norms, 
+also known as the Manhattan and Euclidean norms respectively. The $L_p$ norm is a generalization of the $L_1$ and $L_2$ norms. We denote a vector's norm by writting it in between 
+two vertical bars, e.g. $\|\boldsymbol{x}\|$, and the subscript denotes the type of norm, e.g. $\|\boldsymbol{x}\|_1$ or $\|\boldsymbol{x}\|_2$ etc. If 
+the subscript is omitted, then the $L_2$ norm is assumed.
+
+#### Manhattan Norm
+
+The Manhattan norm or $L_1$ norm is defined as the sum of the [absolute values]() of the vector's components. 
+
+It is called the Manhattan norm because it can be thought of as the distance 
+between two points along the axis of a rectangular grid, like the streets of Manhattan or any other city with a grid-like structure.
+No matter how we move along the roads of Manhattan, the distance between two points is always the same.
+
+$$
+\|\boldsymbol{x}\|_1 = |x_1| + |x_2| + \dots + |x_n| = \sum_{i=1}^n |x_i|
+$$
+
+<Image
+    src="/maths/vectorManhattenNorm.png"
+    caption="No matter how we move along the roads of Manhattan, the distance between two points is always the same."
+    width={400}
+    />
+
+<Callout type="example">
+If $\boldsymbol{x}$ is defined as:
+
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix}
+$$
+
+then the $L_1$ norm of $\boldsymbol{x}$ is:
+
+$$
+\|\boldsymbol{x}\|_1 = |1| + |2| + |3| = 6
+$$
+</Callout>
+
+#### Euclidean Norm
+
+As the name suggests, the Euclidean norm or $L_2$ norm is the distance between two points in Euclidean space, i.e. the straight line distance between two points. 
+For the 2D case, the Euclidean norm is just the Pythagorean theorem, i.e the length of the hypotenuse of a right-angled triangle.
+
+$$
+\|\boldsymbol{x}\|_2 = \sqrt{x_1^2 + x_2^2 + \dots + x_n^2} = \sqrt{\sum_{i=1}^n x_i^2}
+$$
+
+From the defintion above we can actually see that the Euclidean norm is the square root of the dot product of the vector with itself.
+
+$$
+\|\boldsymbol{x}\|_2 = \sqrt{\boldsymbol{x} \cdot \boldsymbol{x}} = \sqrt{\langle \boldsymbol{x}, \boldsymbol{x} \rangle}
+$$
+
+<Image
+    src="/maths/vectorEuclideanNorm.png"
+    caption="We can see the 2D case of the Euclidean norm and the 3D case of the Euclidean norm."
+    width={400}
+    />
+
+##### Schwarz Inequality
+
+The Schwarz inequality states that the dot product of two vectors is always less than or equal to the product of the two vectors' norms.
+
+$$
+|\boldsymbol{x} \cdot \boldsymbol{y}| \leq \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
+$$
+
+This inequality is also called the Cauchy-Schwarz inequality. 
+
+<Callout type="proof">
+Equality holds if and only if one of the vectors is a scalar multiple of the other vector, i.e. the vectors are linearly dependent.
+</Callout>
+
+##### Triangle Inequality
+
+For a norm to be a norm, one of the properties it must satisfy is the triangle inequality. 
+The triangle inequality states that the norm of the sum of two vectors is less than or equal to the sum of 
+the norms of the two vectors.
+
+$$
+\|\boldsymbol{x} \pm \boldsymbol{y}\|_2 \leq \|\boldsymbol{x}\|_2 \pm \|\boldsymbol{y}\|_2
+$$
+
+<Callout type="proof">
+Can be derived from the Schwarz inequality.
+</Callout>
+
+#### P-Norm
+
+The idea of the $L_p$ norm is to generalize the $L_1$ and $L_2$ norms. The $L_p$ norm is defined as:
+
+$$
+\|\boldsymbol{x}\|_p = \left(|x_1|^p + |x_2|^p + \dots + |x_n|^p\right)^{\frac{1}{p}} = \left(\sum_{i=1}^n |x_i|^p\right)^{\frac{1}{p}}
+$$
+
+An arbitrary norm is rarely used in practice, most commonly the $L_1$ and $L_2$ norms are used. For some use-cases the $L_\infty$ norm is used, which is defined as:
+
+$$
+\|\boldsymbol{x}\|_\infty = \max_i |x_i|
+$$
+
+In other words, the $L_\infty$ norm is vector component with the largest absolute value.
+
+<Callout type="example">
+If $\boldsymbol{x}$ is defined as:
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix}
+$$
+
+then the $L_4$ norm of $\boldsymbol{x}$ is:
+
+$$
+\|\boldsymbol{x}\|_4 = \left(|1|^4 + |2|^4 + |3|^4\right)^{\frac{1}{4}} = \left(1 + 16 + 81\right)^{\frac{1}{4}} = 4
+$$
+
+and the $L_\infty$ norm of $\boldsymbol{x}$ is:
+
+$$
+\|\boldsymbol{x}\|_\infty = \max_i |x_i| = \max\{1, 2, 3\} = 3
+$$
+</Callout>
+
+#### Meaning of the Dot Product
 
 The question now is what is the dot product actually? 
 
@@ -312,115 +456,6 @@ $$
 &= \cos^{-1}\left(\frac{-11}{\sqrt{13} \sqrt{50}}\right) \\
 &= 115.6^\circ
 \end{align*}
-$$
-</Callout>
-
-## Norms
-
-A norm is a function that assigns a non-negative length or size to each vector. There are many different types of norms, but the most common ones are the $L_1$ and $L_2$ norms, 
-also known as the Manhattan and Euclidean norms respectively. The $L_p$ norm is a generalization of the $L_1$ and $L_2$ norms. We denote a vector's norm by writting it in between 
-two vertical bars, e.g. $\|\boldsymbol{x}\|$, and the subscript denotes the type of norm, e.g. $\|\boldsymbol{x}\|_1$ or $\|\boldsymbol{x}\|_2$ etc. If 
-the subscript is omitted, then the $L_2$ norm is assumed.
-
-### Manhattan Norm
-
-The Manhattan norm or $L_1$ norm is defined as the sum of the [absolute values]() of the vector's components. 
-
-It is called the Manhattan norm because it can be thought of as the distance 
-between two points along the axis of a rectangular grid, like the streets of Manhattan or any other city with a grid-like structure.
-
-$$
-\|\boldsymbol{x}\|_1 = |x_1| + |x_2| + \dots + |x_n| = \sum_{i=1}^n |x_i|
-$$
-
-<Image
-    src="/maths/vectorManhattenNorm.png"
-    caption="No matter how we move along the roads of Manhattan, the distance between two points is always the same."
-    width={400}
-    />
-
-<Callout type="example">
-If $\boldsymbol{x}$ is defined as:
-
-$$
-\begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix}
-$$
-
-then the $L_1$ norm of $\boldsymbol{x}$ is:
-
-$$
-\|\boldsymbol{x}\|_1 = |1| + |2| + |3| = 6
-$$
-</Callout>
-
-### Euclidean Norm
-
-As the name suggests, the Euclidean norm or $L_2$ norm is the distance between two points in Euclidean space, i.e. the straight line distance between two points. 
-For the 2D case, the Euclidean norm is the length of the hypotenuse of a right-angled triangle with the vector's components as the other two sides, i.e. 
-the Pythagorean theorem. 
-
-$$
-\|\boldsymbol{x}\|_2 = \sqrt{x_1^2 + x_2^2 + \dots + x_n^2} = \sqrt{\sum_{i=1}^n x_i^2}
-$$
-
-<Image
-    src="/maths/vectorEuclideanNorm.png"
-    caption="We can see the 2D case of the Euclidean norm and the 3D case of the Euclidean norm."
-    width={400}
-    />
-
-#### Schwarz Inequality
-
-$$
-|\boldsymbol{x} \cdot \boldsymbol{y}| \leq \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
-$$
-
-#### Triangle Inequality
-
-$$
-\[|| \boldsymbol{x} + \boldsymbol{y} ||\] \leq \[|| \boldsymbol{x} ||\] + \[|| \boldsymbol{y} ||\]
-$$
-
-### P-Norm
-
-The idea of the $L_p$ norm is to generalize the $L_1$ and $L_2$ norms. The $L_p$ norm is defined as:
-
-$$
-\|\boldsymbol{x}\|_p = \left(|x_1|^p + |x_2|^p + \dots + |x_n|^p\right)^{\frac{1}{p}} = \left(\sum_{i=1}^n |x_i|^p\right)^{\frac{1}{p}}
-$$
-
-An arbitrary norm is rarely used in practice, most commonly the $L_1$ and $L_2$ norms are used. For some use-cases the $L_\infty$ norm is used, which is defined as:
-
-$$
-\|\boldsymbol{x}\|_\infty = \max_i |x_i|
-$$
-
-In other words, the $L_\infty$ norm is vector component with the largest absolute value.
-
-<Callout type="example">
-If $\boldsymbol{x}$ is defined as:
-$$
-\begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix}
-$$
-
-then the $L_4$ norm of $\boldsymbol{x}$ is:
-
-$$
-\|\boldsymbol{x}\|_4 = \left(|1|^4 + |2|^4 + |3|^4\right)^{\frac{1}{4}} = \left(1 + 16 + 81\right)^{\frac{1}{4}} = 4
-$$
-
-and the $L_\infty$ norm of $\boldsymbol{x}$ is:
-
-$$
-\|\boldsymbol{x}\|_\infty = \max_i |x_i| = \max\{1, 2, 3\} = 3
 $$
 </Callout>
 
