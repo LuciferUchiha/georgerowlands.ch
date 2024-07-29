@@ -1,0 +1,5 @@
+python-dotenv==1.0.1
+jsonlines==4.0.0
+langchain==0.2.11
+openai==1.37.1
+pinecone-client[grpc]==5.0.0
