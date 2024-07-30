@@ -335,10 +335,11 @@ export default function ChatBot() {
         className="dark:border-zinc-800 min-w-full md:min-w-[800px]"
       >
         <SheetHeader>
-          <SheetTitle>Talk to the Garden</SheetTitle>
+          <SheetTitle>Talk to the Digital Garden</SheetTitle>
           <SheetDescription>
             Using Retrieval Augmented Generation (RAG) you can talk to the
-            garden and ask questions.
+            garden and ask questions about the content. The assistant will try
+            to help you find the answer and provide references to the content.
           </SheetDescription>
         </SheetHeader>
         <div className="mt-4">
@@ -409,7 +410,7 @@ export default function ChatBot() {
               }}
             />
             <Button
-              className="w-24"
+              className="min-w-16 mr-12"
               onClick={() => {
                 handleMessageSend();
               }}
