@@ -125,7 +125,7 @@ const MessageList = ({ messages }: { messages: Message[] }) => {
   // scrollable div
   return (
     <div
-      className="flex flex-col overflow-y-auto gap-4 h-[calc(100vh-350px)] md:h-[calc(100vh-320px)]"
+      className="flex flex-col overflow-y-auto gap-4 max-h-[calc(100vh-22rem)] md:max-h-[calc(100vh-20rem)]"
       id="message-list"
     >
       {messages.map((message, index) => (
@@ -205,7 +205,7 @@ export default function ChatBot() {
     rag(input);
     setInputValue("");
     scrollToBottom("message-list");
-  }
+  };
 
   const rag = async (question: string) => {
     try {
