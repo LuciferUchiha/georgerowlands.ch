@@ -125,7 +125,7 @@ const MessageList = ({ messages }: { messages: Message[] }) => {
   // scrollable div
   return (
     <div
-      className="flex flex-col overflow-y-auto gap-4 max-h-[calc(100vh-22rem)] md:max-h-[calc(100vh-20rem)]"
+      className="flex flex-col overflow-y-auto gap-4 flex-1 h-[62vh] md:h-[65vh]"
       id="message-list"
     >
       {messages.map((message, index) => (
@@ -332,7 +332,7 @@ export default function ChatBot() {
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="dark:border-zinc-800 min-w-full md:min-w-[800px]"
+        className="dark:border-zinc-800 min-w-full md:min-w-[800px] min-h-screen flex flex-col"
       >
         <SheetHeader>
           <SheetTitle>Talk to the Digital Garden</SheetTitle>
@@ -343,7 +343,7 @@ export default function ChatBot() {
           </SheetDescription>
         </SheetHeader>
         <div className="mt-4">
-          <div className="flex flex-row justify-between flex-wrap gap-4">
+          <div className="flex flex-row justify-between flex-wrap gap-4 flex-none">
             <div className="flex flex-col w-96">
               <div className="flex flex-row">
                 <Label htmlFor="apiKey" className="mb-2 mr-2">
@@ -392,7 +392,7 @@ export default function ChatBot() {
           <div className="mt-4">
             <MessageList messages={messages} />
           </div>
-          <div className="fixed bottom-0 my-6 gap-4 w-full flex flex-row">
+          <div className="my-6 gap-4 w-full flex flex-row flex-none">
             <Textarea
               className="resize-none text-base w-[640px] bg-zinc-200 dark:bg-zinc-800"
               placeholder="Send a message..."
