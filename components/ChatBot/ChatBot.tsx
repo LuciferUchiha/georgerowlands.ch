@@ -55,7 +55,7 @@ const MessageCard = ({ role, content }: Message) => {
       }`}
     >
       <div
-        className={`p-4 max-w-[90%] rounded-lg ${
+        className={`max-w-[90%] rounded-lg ${
           role === "assistant"
             ? "bg-zinc-800 text-zinc-50"
             : "bg-zinc-100 text-zinc-800"
@@ -67,7 +67,7 @@ const MessageCard = ({ role, content }: Message) => {
             rehypePlugins={[rehypeKatex]}
             components={{
               p: ({ children, ...props }) => (
-                <p className="mx-4" {...props}>
+                <p className="my-4" {...props}>
                   {children}
                 </p>
               ),
@@ -236,7 +236,7 @@ export default function ChatBot() {
         },
         {
           headers: {
-            "Api-Key": process.env.NEXT_PUBLIC_PINECONE_KEY || "",
+            "Api-Key": process.env.PINECONE_KEY || "",
           },
         }
       );
