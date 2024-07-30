@@ -50,12 +50,12 @@ type Context = {
 const MessageCard = ({ role, content }: Message) => {
   return (
     <div
-      className={`px-4 flex flex-row ${
+      className={`flex flex-row ${
         role === "assistant" ? "justify-start" : "justify-end"
       }`}
     >
       <div
-        className={`max-w-[90%] rounded-lg ${
+        className={`px-4 max-w-[90%] rounded-lg ${
           role === "assistant"
             ? "bg-zinc-800 text-zinc-50"
             : "bg-zinc-100 text-zinc-800"
@@ -125,7 +125,7 @@ const MessageList = ({ messages }: { messages: Message[] }) => {
   // scrollable div
   return (
     <div
-      className="flex flex-col overflow-y-auto h-[calc(100vh-300px)] gap-4"
+      className="flex flex-col overflow-y-auto gap-4 h-[calc(100vh-350px)] md:h-[calc(100vh-320px)]"
       id="message-list"
     >
       {messages.map((message, index) => (
@@ -336,7 +336,7 @@ export default function ChatBot() {
       >
         <SheetHeader>
           <SheetTitle>Talk to the Digital Garden</SheetTitle>
-          <SheetDescription>
+          <SheetDescription className="hidden md:block">
             Using Retrieval Augmented Generation (RAG) you can talk to the
             garden and ask questions about the content. The assistant will try
             to help you find the answer and provide references to the content.
