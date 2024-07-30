@@ -26,6 +26,11 @@ import { Textarea } from "~components/ui/textarea";
 import { Button } from "~components/ui/button";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import Markdown from "react-markdown";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
+import "katex/dist/katex.min.css";
+import remarkGfm from "remark-gfm";
 
 type Role = "system" | "user" | "assistant";
 
@@ -35,8 +40,8 @@ type Message = {
 };
 
 type Context = {
-  id : string;
-  page_content : string;
+  id: string;
+  page_content: string;
   path: string;
   title: string;
   score: number;
@@ -50,28 +55,83 @@ const MessageCard = ({ role, content }: Message) => {
       }`}
     >
       <div
-        className={`p-4 max-w-[80%] rounded-lg ${
+        className={`p-4 max-w-[90%] rounded-lg ${
           role === "assistant"
             ? "bg-zinc-800 text-zinc-50"
-            : "bg-zinc-50 text-zinc-800"
+            : "bg-zinc-100 text-zinc-800"
         }`}
       >
-        {content}
+        <div id="markdown">
+          <Markdown
+            remarkPlugins={[remarkMath, remarkGfm]}
+            rehypePlugins={[rehypeKatex]}
+            components={{
+              p: ({ children, ...props }) => (
+                <p className="mb-4" {...props}>
+                  {children}
+                </p>
+              ),
+              pre: ({ children, ...props }) => (
+                <pre
+                  className={`overflow-x-auto ${
+                    role === "assistant"
+                      ? "bg-zinc-900"
+                      : "bg-zinc-200"
+                  } p-4 rounded-md mb-4`}
+                  {...props}
+                >
+                  {children}
+                </pre>
+              ),
+              li: ({ children, ...props }) => (
+                <li className="list-disc ml-4" {...props}>
+                  {children}
+                </li>
+              ),
+              code: ({ children, ...props }) => (
+                <code
+                  className={`overflow-x-auto italic font-normal ${
+                    role === "assistant"
+                      ? "bg-zinc-900"
+                      : "bg-zinc-200"
+                  } p-1 rounded-md`}
+                  {...props}
+                >
+                  {children}
+                </code>
+              ),
+              a: ({ children, ...props }) => (
+                <a
+                  className="text-primary-500 underline"
+                  {...props}
+                >
+                  {children}
+                </a>
+              ),
+            }}
+          >
+            {content}
+          </Markdown>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 const MessageList = ({ messages }: { messages: Message[] }) => {
   // scrollable div
   return (
-    <div className="flex flex-col overflow-y-auto h-[calc(100vh-300px)]">
+    <div className="flex flex-col overflow-y-auto h-[calc(100vh-300px)] gap-4">
       {messages.map((message, index) => (
-        <MessageCard key={index} role={message.role} content={message.content} />
+        <MessageCard
+          key={index}
+          role={message.role}
+          content={message.content}
+        />
       ))}
     </div>
   );
-}
+};
 
 const getPrompt = (question: string, contexts: Context[]) => {
   const parsedContexts = contexts.map((context) => {
@@ -82,7 +142,8 @@ const getPrompt = (question: string, contexts: Context[]) => {
   return `Please answer the following question, using the following documents. If
   any of the documents where helpful, please include their links in the references.
   If the question is just general conversation or chit-chat do not use or include any 
-  references.
+  references. Write any math equations in LaTeX format between a pair of $ symbols if 
+  inlined, or between a pair of $$ symbols if on a separate line.
 
   Documents:
   ${context}
@@ -91,27 +152,27 @@ const getPrompt = (question: string, contexts: Context[]) => {
   ${question}
 
   Answer:`;
-}
+};
 
 export default function ChatBot() {
-  const [threshold, setThreshold] = useState<number>(0.375);
+  const [threshold, setThreshold] = useState<number>(0.4);
   const [apiKey, setApiKey] = useState<string>("");
   const [model, setModel] = useState<string>("gpt-4o");
   const [inputValue, setInputValue] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
-    const value = localStorage.getItem("apiKey") || ""
-    setApiKey(value)
-  }, [])
+    const value = localStorage.getItem("apiKey") || "";
+    setApiKey(value);
+  }, []);
 
   const saveKeyToLocalStorage = (key: string) => {
-    localStorage.setItem("apiKey", key)
-  }
+    localStorage.setItem("apiKey", key);
+  };
 
   const addMessage = (role: Role, content: string) => {
     setMessages((messages) => [...messages, { role, content }]);
-  }
+  };
 
   const updateLastMessage = (content: string) => {
     setMessages((messages) => {
@@ -119,7 +180,7 @@ export default function ChatBot() {
       newMessages[messages.length - 1].content += content;
       return newMessages;
     });
-  }
+  };
 
   const rag = async (question: string) => {
     try {
@@ -145,7 +206,7 @@ export default function ChatBot() {
         "https://digital-garden-br88je8.svc.aped-4627-b74a.pinecone.io/query",
         {
           vector: embedding,
-          topK: 5,
+          topK: 8,
           includeMetadata: true,
         },
         {
@@ -155,72 +216,85 @@ export default function ChatBot() {
         }
       );
       const matches = contextResponse.data.matches;
-      const contexts = matches.map((match: { id: string; score:number, metadata: any }) => {
-        const title = match.metadata["Header 1"];
-        const cleanPath = match.metadata.path.replaceAll("../pages", "").replaceAll(".mdx", "");
-        return {
-          id: match.id,
-          page_content: match.metadata.page_content,
-          path: cleanPath,
-          title: title,
-          score: match.score,
-        };
-      });
+      const contexts = matches.map(
+        (match: { id: string; score: number; metadata: any }) => {
+          const title = match.metadata["Header 1"];
+          const cleanPath = match.metadata.path
+            .replaceAll("../pages", "")
+            .replaceAll(".mdx", "");
+          return {
+            id: match.id,
+            page_content: match.metadata.page_content,
+            path: cleanPath,
+            title: title,
+            score: match.score,
+          };
+        }
+      );
       console.log("contexts", contexts);
-      const filteredContexts = contexts.filter((context) => context.score > threshold);
+      const filteredContexts = contexts.filter(
+        (context) => context.score > threshold
+      );
       console.log("filteredContexts", filteredContexts);
 
       // all messages minus the last one
       const prevMessages = messages.slice(0, messages.length);
       // Step 3: Send the message along with the context
-      const messageResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: [
-            {
-              role: "system",
-              content: "You are a helpful assistant.",
-            },
-            ...prevMessages,
-            {
-              role: "user",
-              content: getPrompt(question, filteredContexts),
-            },
-          ],
-          stream: true,
-        }),
-      });
-      const reader = messageResponse.body?.pipeThrough(new TextDecoderStream()).getReader();
+      const messageResponse = await fetch(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [
+              {
+                role: "system",
+                content: "You are a helpful assistant.",
+              },
+              ...prevMessages,
+              {
+                role: "user",
+                content: getPrompt(question, filteredContexts),
+              },
+            ],
+            stream: true,
+          }),
+        }
+      );
+      const reader = messageResponse.body
+        ?.pipeThrough(new TextDecoderStream())
+        .getReader();
       if (!reader) throw new Error("Failed to create a reader");
       addMessage("assistant", "");
       while (true) {
         const { value, done } = await reader.read();
         if (done) break;
         let dataDone = false;
-        const arr = value.split('\n');
+        const arr = value.split("\n");
         arr.forEach((data) => {
-          if (data.length === 0) return; 
-          if (data.startsWith(':')) return; // ignore sse comment message
-          if (data === 'data: [DONE]') {
+          if (data.length === 0) return;
+          if (data.startsWith(":")) return; // ignore sse comment message
+          if (data === "data: [DONE]") {
             dataDone = true;
             return;
           }
           const json = JSON.parse(data.substring(6));
           console.log(json);
           const delta = json.choices[0].delta.content;
-          if (delta)
-            updateLastMessage(delta);
+          if (delta) updateLastMessage(delta);
         });
         if (dataDone) break;
       }
     } catch (error) {
       console.error(error);
-      addMessage("assistant", "Sorry, there was an error processing your request.");
+      addMessage(
+        "assistant",
+        "Sorry, there was an error processing your request."
+      );
     }
     console.log(messages);
   };
@@ -266,16 +340,17 @@ export default function ChatBot() {
                 placeholder="sk-********"
                 value={apiKey}
                 onChange={(e) => {
-                  setApiKey(e.target.value)
-                  saveKeyToLocalStorage(e.target.value)
+                  setApiKey(e.target.value);
+                  saveKeyToLocalStorage(e.target.value);
                 }}
               />
             </div>
             <div className="flex flex-col w-32">
-              <Label className="mb-2">Threshold</Label>
+              <Label className="mb-2">Threshold (K=5)</Label>
               <Input
                 type="number"
                 defaultValue={threshold}
+                value={threshold}
                 onChange={(e) => {
                   const value = parseFloat(e.target.value);
                   if (value < 0 || value > 1) return;
@@ -304,11 +379,15 @@ export default function ChatBot() {
           </div>
           <div className="fixed bottom-0 my-6 gap-4 w-full flex flex-row">
             <Textarea
-              className="resize-none text-base w-[640px]"
+              className="resize-none text-base w-[640px] bg-zinc-200 dark:bg-zinc-800"
               placeholder="Send a message..."
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => {
+                // if it is shift+enter, work as a new line
+                if (e.key === "Enter" && e.shiftKey) {
+                  return;
+                }
                 if (e.key === "Enter") {
                   addMessage("user", inputValue);
                   rag(inputValue);
