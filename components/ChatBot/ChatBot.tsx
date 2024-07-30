@@ -50,7 +50,7 @@ type Context = {
 const MessageCard = ({ role, content }: Message) => {
   return (
     <div
-      className={`flex flex-row ${
+      className={`px-4 flex flex-row ${
         role === "assistant" ? "justify-start" : "justify-end"
       }`}
     >
@@ -236,7 +236,7 @@ export default function ChatBot() {
         },
         {
           headers: {
-            "Api-Key": process.env.PINECONE_KEY || "",
+            "Api-Key": process.env.NEXT_PUBLIC_PINECONE_KEY || "",
           },
         }
       );
