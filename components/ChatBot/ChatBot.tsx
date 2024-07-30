@@ -67,16 +67,14 @@ const MessageCard = ({ role, content }: Message) => {
             rehypePlugins={[rehypeKatex]}
             components={{
               p: ({ children, ...props }) => (
-                <p className="mb-4" {...props}>
+                <p className="mx-4" {...props}>
                   {children}
                 </p>
               ),
               pre: ({ children, ...props }) => (
                 <pre
                   className={`overflow-x-auto ${
-                    role === "assistant"
-                      ? "bg-zinc-900"
-                      : "bg-zinc-200"
+                    role === "assistant" ? "bg-zinc-900" : "bg-zinc-200"
                   } p-4 rounded-md mb-4`}
                   {...props}
                 >
@@ -84,30 +82,35 @@ const MessageCard = ({ role, content }: Message) => {
                 </pre>
               ),
               li: ({ children, ...props }) => (
-                <li className="list-disc ml-4" {...props}>
+                <li className="list-disc ml-12" {...props}>
                   {children}
                 </li>
               ),
               code: ({ children, ...props }) => (
                 <code
                   className={`overflow-x-auto italic font-normal ${
-                    role === "assistant"
-                      ? "bg-zinc-900"
-                      : "bg-zinc-200"
+                    role === "assistant" ? "bg-zinc-900" : "bg-zinc-200"
                   } p-1 rounded-md`}
                   {...props}
                 >
                   {children}
                 </code>
               ),
-              a: ({ children, ...props }) => (
-                <a
-                  className="text-primary-500 underline"
-                  {...props}
-                >
-                  {children}
-                </a>
-              ),
+              a: ({ children, ...props }) => {
+                const isEternalLink = (props as any).href.startsWith("http");
+                const textColor = isEternalLink
+                  ? "text-blue-500"
+                  : "text-primary-400";
+
+                return (
+                  <a
+                    className={`${textColor} underline font-semibold`}
+                    {...props}
+                  >
+                    {children}
+                  </a>
+                );
+              },
             }}
           >
             {content}
@@ -121,7 +124,10 @@ const MessageCard = ({ role, content }: Message) => {
 const MessageList = ({ messages }: { messages: Message[] }) => {
   // scrollable div
   return (
-    <div className="flex flex-col overflow-y-auto h-[calc(100vh-300px)] gap-4">
+    <div
+      className="flex flex-col overflow-y-auto h-[calc(100vh-300px)] gap-4"
+      id="message-list"
+    >
       {messages.map((message, index) => (
         <MessageCard
           key={index}
@@ -131,6 +137,15 @@ const MessageList = ({ messages }: { messages: Message[] }) => {
       ))}
     </div>
   );
+};
+
+const scrollToBottom = (id: string) => {
+  const scrollableElement = document.getElementById(id);
+  if (scrollableElement) {
+    setTimeout(() => {
+      scrollableElement.scrollTo(0, scrollableElement.scrollHeight);
+    }, 0);
+  }
 };
 
 const getPrompt = (question: string, contexts: Context[]) => {
@@ -181,6 +196,16 @@ export default function ChatBot() {
       return newMessages;
     });
   };
+
+  const handleMessageSend = () => {
+    const input = inputValue.trim();
+    if (input.length === 0) return;
+
+    addMessage("user", input);
+    rag(input);
+    setInputValue("");
+    scrollToBottom("message-list");
+  }
 
   const rag = async (question: string) => {
     try {
@@ -286,6 +311,7 @@ export default function ChatBot() {
           console.log(json);
           const delta = json.choices[0].delta.content;
           if (delta) updateLastMessage(delta);
+          scrollToBottom("message-list");
         });
         if (dataDone) break;
       }
@@ -304,7 +330,10 @@ export default function ChatBot() {
       <SheetTrigger>
         <LuBrainCircuit className="w-[24px] h-[24px]" />
       </SheetTrigger>
-      <SheetContent side="right" className="min-w-[800px] dark:border-zinc-800">
+      <SheetContent
+        side="right"
+        className="dark:border-zinc-800 min-w-full md:min-w-[800px]"
+      >
         <SheetHeader>
           <SheetTitle>Talk to the Garden</SheetTitle>
           <SheetDescription>
@@ -313,27 +342,12 @@ export default function ChatBot() {
           </SheetDescription>
         </SheetHeader>
         <div className="mt-4">
-          <div className="flex flex-row justify-between">
+          <div className="flex flex-row justify-between flex-wrap gap-4">
             <div className="flex flex-col w-96">
               <div className="flex flex-row">
                 <Label htmlFor="apiKey" className="mb-2 mr-2">
                   OpenAI API Key
                 </Label>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger className="flex flex-col">
-                      <LuInfo />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>
-                        Your OpenAI API key is required to use the chatbot. You
-                        can create an API key here. <br /> The key you provide
-                        will not be sent or stored on any servers, only in your
-                        browser.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
               </div>
               <Input
                 id="apiKey"
@@ -346,7 +360,7 @@ export default function ChatBot() {
               />
             </div>
             <div className="flex flex-col w-32">
-              <Label className="mb-2">Threshold (K=5)</Label>
+              <Label className="mb-2">Threshold (K=8)</Label>
               <Input
                 type="number"
                 defaultValue={threshold}
@@ -389,18 +403,15 @@ export default function ChatBot() {
                   return;
                 }
                 if (e.key === "Enter") {
-                  addMessage("user", inputValue);
-                  rag(inputValue);
-                  setInputValue("");
+                  e.preventDefault();
+                  handleMessageSend();
                 }
               }}
             />
             <Button
               className="w-24"
               onClick={() => {
-                addMessage("user", inputValue);
-                rag(inputValue);
-                setInputValue("");
+                handleMessageSend();
               }}
             >
               Send
