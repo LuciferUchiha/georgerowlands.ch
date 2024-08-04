@@ -6,9 +6,9 @@ import ChatBot from "~/components/ChatBot/ChatBot";
 
 const config: DocsThemeConfig = {
   project: {
-    link: "https://github.com/LuciferUchiha/georgerowlands.ch",
+    link: "https://github.com/LuciferUchiha/georgerowlands.ch/tree/main/",
   },
-  docsRepositoryBase: "https://github.com/LuciferUchiha/georgerowlands.ch",
+  docsRepositoryBase: "https://github.com/LuciferUchiha/georgerowlands.ch/tree/main/",
   primaryHue: 270,
   nextThemes: {
     defaultTheme: "dark",

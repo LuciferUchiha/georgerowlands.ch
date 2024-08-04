@@ -4,7 +4,7 @@ import Giscus from "@giscus/react";
 export default function GiscusComments() {
     // This is done so that is loaded client side and skips hydration, no idea what this means but stackoverflow does
     const [showChild, setShowChild] = useState(false);
-    const pathNameBlacklist = ["/", "/about", "/recipes"];
+    const pathNameBlacklist = ["/"];
     useEffect(() => {
         setShowChild(true);
     }, []);
@@ -21,8 +21,8 @@ export default function GiscusComments() {
             id="giscus-comments"
             repo="LuciferUchiha/georgerowlands.ch"
             repoId="R_kgDOIt7MZQ"
-            category="Announcements"
-            categoryId="DIC_kwDOIt7MZc4CT8rz"
+            category="Digital Garden Giscus"
+            categoryId="DIC_kwDOIt7MZc4ChZB7"
             mapping="pathname"
             reactionsEnabled="1"
             emitMetadata="0"

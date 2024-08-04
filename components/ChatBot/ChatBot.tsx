@@ -1,4 +1,4 @@
-import { LuBrainCircuit, LuInfo } from "react-icons/lu";
+import { BsRobot } from "react-icons/bs";
 import {
   Sheet,
   SheetContent,
@@ -328,7 +328,7 @@ export default function ChatBot() {
   return (
     <Sheet>
       <SheetTrigger>
-        <LuBrainCircuit className="w-[24px] h-[24px]" />
+        <BsRobot className="w-[24px] h-[24px]" />
       </SheetTrigger>
       <SheetContent
         side="right"
@@ -383,8 +383,11 @@ export default function ChatBot() {
                   <SelectValue placeholder="gpt-4o" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="gpt-4o">gpt-4o</SelectItem>
-                  <SelectItem value="gpt-4o-mini">gpt-4o-mini</SelectItem>
+                  <SelectItem value="gpt-4o">GPT-4o</SelectItem>
+                  <SelectItem value="gpt-4o-mini">GPT-4o Mini</SelectItem>
+                  <SelectItem value="gpt-4">GPT-4</SelectItem>
+                  <SelectItem value="gpt-4-turbo">GPT-4 Turbo</SelectItem>
+                  <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
                 </SelectContent>
               </Select>
             </div>
