@@ -1,6 +1,8 @@
 import os
 import re
 
+pages_folder = "../pages"
+
 
 def check_for_md_images(mdx_files: list[str]):
     """
@@ -45,12 +47,25 @@ def check_page_links(mdx_files: list[str]):
             for line in lines:
                 # check for page links, make sure not an image link so no exclamation mark in front with negative lookbehind
                 match = re.search(r'\[.*\]\((?!.*\..*\))(.*)\)', line)
+
+                # TODO handle in between ``` code blocks and ` inline code blocks
                 if match:
-                    print(f"Found page link in {mdx_file} on line {
-                          lines.index(line) + 1} to {match.group(1)}")
-                    # check if the page file exists
+                    link = match.group(1)
+                    # if it's a local link, i.e to a header in the same file it starts with a hash
+                    if link.startswith("#"):
+                        continue
+
                     page_path = os.path.join(
-                        os.path.dirname(mdx_file), match.group(1))
+                        os.path.dirname(mdx_file), link)
+
+                    # remove the "header" part of the path, i.e the hash part
+                    page_path = page_path.split("#")[0]
+
+                    # full path to the page file
+                    page_path = f"{pages_folder}{page_path}.mdx"
+                    print(f"Found page link in {mdx_file} on line {
+                        lines.index(line) + 1} to {page_path}")
+
                     if not os.path.exists(page_path):
                         print(f"Page link from {mdx_file} on line {
                               lines.index(line) + 1} to {page_path} does not exist")
@@ -60,7 +75,6 @@ def check_page_links(mdx_files: list[str]):
 
 
 if __name__ == '__main__':
-    pages_folder = "../pages"
     mdx_files = []
 
     for root, dirs, files in os.walk(pages_folder):

@@ -2,18 +2,18 @@ import Callout from "~/components/Callout/Callout";
 
 # Writing Proofs
 
-The idea of a proof is to show that a statement is definetly and unequivocally true. This is done by providing a [logical argument]() that shows that the statement is true.
+The idea of a proof is to show that a statement is definetly and unequivocally true. This is done by providing a [logical argument](/digitalGarden/maths/discrete/logicTheory#logical-inference-and-arguments) that shows that the statement is true.
 
 ## Prooving Conditional Statements
 
-We start with the basic building block of proofs, the [conditional statement](). The conditional statement is a statement of the form "If P then Q", $P \rightarrow Q$. 
+We start with the basic building block of proofs, the [conditional statement](/digitalGarden/maths/discrete/logicTheory#conditional-statements-if-then). The conditional statement is a statement of the form "If P then Q", $P \rightarrow Q$. 
 P is often called the hypothesis and Q is called the conclusion.
 
 So the first step in writing a proof is to write the statement that we want to prove in the form of a conditional statement. This can be done for almost 
 all mathematical statements that we want to prove. 
 
 Why do we use conditional statements? Because they are easy to prove if we know that the hypothesis is true then we can show that the conclusion is true 
-thanks to truth table of the conditional statement $P \rightarrow Q$ and the [logical inference rule of modus ponens]. So in other words we must 
+thanks to truth table of the conditional statement $P \rightarrow Q$ and the [logical inference rule of modus ponens](/digitalGarden/maths/discrete/logicTheory#logical-inference-and-arguments). So in other words we must 
 show that the condition of P being true forces Q to be true.
 
 As a reminder, the truth table of the conditional statement is:
@@ -135,7 +135,7 @@ Contrapositive proofs work just like direct proofs by using logical inference ru
 The only difference is that we prove the contrapositive of the original statement. So rather than proving the statement "If P then Q", we prove the statement "If not Q then not P".
 We do this because in some cases it is easier to prove the contrapositive statement than the original statement. 
 However, we must be careful when creating the contrapositive statement to make sure that it is equivalent to the original statement as in some 
-cases you might need to use [De Morgan's Laws]() to show that the contrapositive statement is equivalent to the original statement. As 
+cases you might need to use [De Morgan's Laws](/digitalGarden/maths/discrete/logicTheory#de-morgrans-laws) to show that the contrapositive statement is equivalent to the original statement. As 
 a reminder, here are De Morgan's Laws:
 
 $$
@@ -193,7 +193,7 @@ Therefore, $7n + 9$ is odd by the definition of an odd integer and therefore not
 
 Unlike direct and contrapositive proofs, proof by contradiction can be used to prove any statement, not just conditional statements.
 The idea behind proof by contradiction is to assume that the statement we want to prove is false and then show that this assumption leads to 
-non-sense or a contradiction. This contradiction then shows that the original statement must therefore be true. So for the 
+non-sense or a [contradiction](/digitalGarden/maths/discrete/logicTheory#tautologies-and-contradictions). This contradiction then shows that the original statement must therefore be true. So for the 
 statement $P$ we assume $\lnot P$ and performing some logical steps and arrive to a contradiction of the form $C \land \lnot C$.
 
 <Callout type="proof">
@@ -259,7 +259,7 @@ This leads to the contradiction that $n^2$ is both even and odd. Therefore if $n
 
 ## Prooving Biconditional Statements
 
-Some statements can not be put into the form of a conditional statement but rather a biconditional statement. The biconditional statement is a statement of the form "P if and only if Q", $P \iff Q$.
+Some statements can not be put into the form of a conditional statement but rather a [biconditional statement](/digitalGarden/maths/discrete/logicTheory#biconditional-statements-if-and-only-if). The biconditional statement is a statement of the form "P if and only if Q", $P \iff Q$.
 However, we know that $P \iff Q$ is equivalent to $(P \implies Q) \land (Q \implies P)$, so we can prove a biconditional statement by proving the two conditional statements that make up the biconditional statement.
 
 <Callout type="proof">
