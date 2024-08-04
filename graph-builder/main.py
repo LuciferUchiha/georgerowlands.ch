@@ -18,13 +18,21 @@ if __name__ == "__main__":
                     print(f"Node for {os.path.join(root, file)}")
                     content = f.read()
                     # relative unix style path, no backslashes
-                    url = "/" + os.path.relpath(os.path.join(root, file), pages_path).replace("\\", "/")
+                    url = "/" + \
+                        os.path.relpath(os.path.join(root, file),
+                                        pages_path).replace("\\", "/")
                     # remove the extension
                     url = url.replace(".mdx", "")
+
+                    # if the file is index then the url should be the directory
+                    if url.endswith("index"):
+                        url = url[:-5]
+
                     for line in content.split("\n"):
                         # if it is a title make a node
                         if line.startswith("# "):
                             title = line[2:]
+
                             nodes.append({"id": url, "name": title})
 
     # walk through the entire digital garden to find all the links
@@ -35,7 +43,9 @@ if __name__ == "__main__":
                     print(f"Link for {os.path.join(root, file)}")
                     content = f.read()
                     # relative unix style path, no backslashes
-                    url = "/" + os.path.relpath(os.path.join(root, file), pages_path).replace("\\", "/")
+                    url = "/" + \
+                        os.path.relpath(os.path.join(root, file),
+                                        pages_path).replace("\\", "/")
                     # remove the extension
                     url = url.replace(".mdx", "")
                     for node in nodes:
@@ -48,6 +58,7 @@ if __name__ == "__main__":
     # save the nodes and links to a json file
     print("Exporting graph.json")
     with open("../data/graph.json", "w") as f:
-        json.dump({"nodes": nodes, "links": links}, f, sort_keys=True, indent=4, separators=(',', ': '))
+        json.dump({"nodes": nodes, "links": links}, f,
+                  sort_keys=True, indent=4, separators=(',', ': '))
 
     print("Completed graph-builder")
