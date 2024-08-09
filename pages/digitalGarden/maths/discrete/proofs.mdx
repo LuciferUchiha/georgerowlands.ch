@@ -1,8 +1,16 @@
 import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
 
 # Writing Proofs
 
 The idea of a proof is to show that a statement is definetly and unequivocally true. This is done by providing a [logical argument](/digitalGarden/maths/discrete/logicTheory#logical-inference-and-arguments) that shows that the statement is true.
+There are three different types of statements:
+
+1. **Theorem**: A statement that is known to be true and therefore can and has been proven.
+2. **Conjecture**: A statement that is believed to be true or false but has not been proven yet.
+3. **Disproof**: A statement that is known to be false and therefore can and has been disproven.
+
+When writing a proof we are trying to show that a conjecture is actually a theorem. 
 
 ## Prooving Conditional Statements
 
@@ -297,17 +305,177 @@ Proof:
 Therefore we've shown that an integer $n$ is odd if and only if $n^2$ is odd. $\blacksquare$
 </Callout>
 
-## Existence and Uniqueness Proofs
+## Universal and Existential Quantifiers
 
-constructive and non-constructive proofs
+When we are proving conditional statements we are actually proving statements of the form $\forall x, P(x) \implies Q(x)$. 
+So by default we are actually already proving universally quantified statements. However, sometimes we want to prove an 
+existential statement of the form $\exists x, P(x)$. To prove an existential statement we must show that there exists at least one
+element that satisfies the statement. This can be done by providing an example of an element that satisfies the statement.
+
+<Callout type="example">
+**There exists an even prime number.**
+
+Proof: The number 2 is an even prime number.
+</Callout>
+
+However, often a single example is not enough to prove a conditional statement but rather we need to show that an example does exist.
+This is the difference between a constructive proof and a non-constructive proof. In a constructive proof we provide a 
+specific example that satisfies the statement, while in a non-constructive proof we show that an example does exist but we don't provide a specific example.
+
+Below is an example of a non-constructive proof for a conditional statement containing an existential statement.
+
+<Callout type="example">
+**If $a,b \in \mathbb{N}$, then there exist integers $k$ and $l$ for which $gcd(a,b) = ak + bl$, where $gcd(a,b)$ is the greatest common divisor of $a$ and $b$.**
+
+This is a conditional statement with an existential statment embedded in it:
+
+$$
+a,b \in \mathbb{N} \implies \exists k,l \in \mathbb{Z}, gcd(a,b) = ak + bl
+$$
+
+Proof: Suppose $a,b \in \mathbb{N}$.
+- Then the set $S = \{ak + bl \mid k,l \in \mathbb{Z}\}$ is a set of all possible linear combinations of $a$ and $b$.
+- Let $d$ be the smallest positive integer in $S$.
+- Then $d = ak + bl$ for some integers $k$ and $l$.
+- To show that $d$ is the greatest common divisor of $a$ and $b$ we must show that $d$ divides both $a$ and $b$.
+- Let $r$ be the remainder when $a$ is divided by $d$, so $a = dq + r$ for some integers $q$ and $r$ where $0 \leq r < d$.
+- Then $r = a - dq = a - q(ak + bl) = a(1 - qk) + b(-ql)$.
+- Therefore $r$ has the form $ak + bl$ and is in the set $S$. However, $r < d$ so $r = 0$. And thus $d$ divides $a$.
+- Similarly, $d$ divides $b$.
+- Now we must show that $d$ is the greatest common divisor of $a$ and $b$.
+- We know that $a = gcd(a,b)m$ and $b = gcd(a,b)n$ for some integers $m$ and $n$.
+- Then $d = ak + bl = gcd(a,b)km + gcd(a,b)ln = gcd(a,b)(km + ln)$.
+- Thus $d$ is a multiple of $gcd(a,b)$ and therefore $d \geq gcd(a,b)$.
+- However, $d$ can't be greater than $gcd(a,b)$ because $d$ is the smallest positive integer in $S$.
+
+Therefore, there exist integers $k$ and $l$ for which $gcd(a,b) = ak + bl$. $\blacksquare$
+</Callout>
+
+### Uniqueness Proofs
+
+Sometimes we want to show that there is only one element that satisfies a statement. In other words 
+an existenial statement of the form "there exists a unique element $x$ such that $P(x)$". So there 
+is only exactly one element that satisfies the statement. To prove that there is only one element that satisfies the statement we must produce an 
+element that satisfies the statement and then show that no other element satisfies the statement.
+
+<Callout type="example">
+**If $a,b \in \mathbb{R} \land a \neq 0$, then there exists a unique real number $x$ such that $ax + b = 0$.**
+
+Proof: Suppose $a,b \in \mathbb{R}$ and $a \neq 0$.
+- Then $x = -\frac{b}{a}$ is a real number that satisfies $ax + b = 0$.
+- To show that $x$ is unique we must show that no other real number satisfies $ax + b = 0$.
+- Suppose $s$ is another real number that satisfies $as + b = 0$.
+- Then $as + b = ax + b$ so $as = ax$ and thus $s = x$.
+
+Therefore there exists a unique real number $x$ such that $ax + b = 0$. $\blacksquare$
+</Callout>
 
 ## Disproving Statements
+
+So far we have only looked at how to prove that a statement is true. However, sometimes we want to show that a statement is false.
+Just because we can't find a proof that a statement is true doesn't mean that the statement is false. So we want a way 
+to show that a statement is always false. This is called a disproof, and the process of showing that a statement is false is called disproving.
+
+The process of disproving is actually pretty simple, rather than proving that the statement is true we prove that the statement is false.
+This is done by showing that the negation of the statement is true. So if the statement is $P$ we show that $\lnot P$ is true.
+
+### Disproof of Universal Statements
+
+We already know that by default a statement is actually a universally quantified statement of the form:
+
+$$
+\forall x, P(x)
+$$
+
+So to disprove a universal statement we must show that there exists at least one element that does not satisfy the statement, in other words:
+
+$$
+\lnot \forall x, P(x) \equiv \exists x, \lnot P(x)
+$$
+
+This is called finding a counterexample to the statement. A counterexample is an element that does not satisfy the statement. 
+Just providing a single counterexample isn't great, you should also show how the counterexample was found and why it is a counterexample.
+
+<Callout type="example">
+**For all integers $n$, $f(n) = n^2 -n + 11$ is a prime number.**
+
+| $n$ | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+| $f(n)$ | 11 | 11 | 13 | 17 | 23 | 31 | 41 | 53 | 67 | 83 | 101 | 121 | 143 |
+
+For $n=11$, $f(11) = 11^2 - 11 + 11 = 11^2$ which is not a prime number. Therefore the statement is false.
+
+Disproof: The statement "For all integers $n$, $f(n) = n^2 -n + 11$ is a prime number" is false. For 
+a counterexample we can use $n=11$ where $f(11) = 11^2 - 11 + 11 = 11^2$ which is not a prime number. $\blacksquare$
+</Callout>
+
+The same goes for a conditional statement, to disprove a conditional statement $P \implies Q$ we must show that there exists an element for which $P$ is true but $Q$ is false 
+as this makes the statement false.
+
+<Callout type="example">
+**If $A, B$ and $C$ are sets, then $A \setminus (B \cap C) = (A \setminus B) \cap (A \setminus C)$.**
+
+To see where the counterexample comes from we can draw two venn diagrams, one for the left hand side and one for the right hand side.
+
+Disproof: The statement "If $A, B$ and $C$ are sets, then $A \setminus (B \cap C) = (A \setminus B) \cap (A \setminus C)$" is false. 
+For a counterexample we can use $A = \{1,2,3\}$, $B = \{1,2\}$ and $C = \{2,3\}$. Then $A \setminus (B \cap C) = \{1,3\}$ and $(A \setminus B) \cap (A \setminus C) = \{\}$.
+Therefore $A \setminus (B \cap C) \neq (A \setminus B) \cap (A \setminus C)$. $\blacksquare$
+</Callout>
+
+### Disproof of Existential Statements
+
+If we want to disprove an existential statement of the form:
+
+$$
+\exists x, P(x)
+$$
+
+We must proove the negation of the statement:
+
+$$
+\lnot \exists x, P(x) \equiv \forall x, \lnot P(x)
+$$
+
+So in other words we must show that for all elements the statement is false. However this is again equivalent to just proving 
+a universal statement. So to disprove an existential statement we do not use a counterexample but rather a proof that the statement is false for all elements.
+
+<Callout type="example">
+**There exists a real number $x$ such that $x^4 < x < x^2$.**
+
+Disproof: Suppose for the sake of contradiction that there exists a real number $x$ such that $x^4 < x < x^2$.
+- Then $x$ must be positive as it is greater than the non-negative number $x^4$.
+- We can then devide the inequality by $x$ to get $x^3 < 1 < x$.
+- And subtract 1 from all sides to get $x^3 - 1 < 0 < x - 1$.
+- We can then extract the factors of the left hand side to get $(x-1)(x^2 + x + 1) < 0 < x - 1$ and devide by $x-1$ to get $x^2 + x + 1 < 0 < 1$.
+- However the left hand side is always positive so we have a contradiction.
+
+This leads to the contradiction that $x^4$ is both positve and negative. Therefore there exists no real number $x$ such that $x^4 < x < x^2$. $\blacksquare$
+</Callout>
+
+<Callout type="info">
+Notice that we used a proof by contradiction to disprove the statement. Because we want to disprove $P$ we show that $\lnot P$ is true. 
+Then to prove that $\lnot P$ is true by contradiction we assume that $\lnot \lnot P$ is true which is equivalent to $P$ being true 
+and then we show that this assumption leads to a contradiction. This is the same as proving that $P$ is false.
+</Callout>
 
 ## Proof by Induction
 
 well ordering principle or property ???
 
+<Image 
+    src="/maths/proofsInduction.png"
+    caption="A visual representation of the principle of mathematical induction."
+    width={600}
+/>
+
 ### Strong Induction
+
+hard to show that S_k implies S_k+1 but can show that some lower S_m implies S_k+1 for m < k
+
+Assume that all S_k are true for k < n and show that this forces S_k+1 to be true.
+
+### Smallest Counterexample
+
+hybrid between induction and contradiction
 
 ## Proofs Involving Sets
 
