@@ -1,0 +1,188 @@
+import Callout from '~/components/Callout/Callout';
+import Image from '~/components/Image/Image';
+
+# Vector and Matrix Spaces
+
+## Fields
+
+Before we talk about vector spaces I want to talk about a similar concept you have already been using a lot called fields.
+Fields are written using upper-case hollow letters such as $\mathbb{Z,R,C}$. Seems familar? A field is a set of elements for which the basic 
+arithmetic operations are defined:
+- Addition and subtraction
+- Multiplication and division.
+
+In relation to vectors these fields are just used to indicate the dimensionality of a vector. For example the field $\mathbb{R}^3$ indicates that the vector is a 3-dimensional vector with real numbers 
+such as $\boldsymbol{x}^T = [1, 2, 3]$.
+
+## Vector Spaces
+
+On the other hand a vector space or also called linear space is a set of elements for which addition and 
+scalar multiplication is defined. The elements of a vector space are then called vectors, which we have already gotten to know.
+Vector spaces are usually written using italicized upper-case letters such as $\it{V}$.
+More specifally the elements of a vector space $\it{V}$ must have the following properties where $\boldsymbol{o}$ is the null vector:
+
+- **Additive inverse**: $\boldsymbol{v} + (-\boldsymbol{v}) = \boldsymbol{o}$.
+- **Additive identity**: $\boldsymbol{v} + \boldsymbol{o} = \boldsymbol{v}$.
+- **Addition is commutative**: $\boldsymbol{v} + \boldsymbol{w} = \boldsymbol{w} + \boldsymbol{v}$.
+- **Addition is associative**: $(\boldsymbol{v} + \boldsymbol{w}) + \boldsymbol{u} = \boldsymbol{v} + (\boldsymbol{w} + \boldsymbol{u})$.
+- **Scalar multiplication identity**: $1 \cdot \boldsymbol{v} = \boldsymbol{v}$.
+- **Scalar multiplication is distributive over vector addition**: $a \cdot (\boldsymbol{v} + \boldsymbol{w}) = a \cdot \boldsymbol{v} + a \cdot \boldsymbol{w}$.
+
+For our "normal" vectors where the elements are real numbers we already know this is the case. Therefore the set of all vectors with our defintions of vector addition 
+and scalar multiplication is a vector space, the so called real vector space. However, with proper defintions of these operations this idea can be extended to create a vector space where the elements 
+of the vectors are complex numbers or functions.
+
+An equivalent definition of a vector space can be given, which is much more concise but uses lots of fancy words from abstract algebra.
+The first four axioms (related to vector addition) say that a vector space is an abelian/commutative group under 
+addition, and the remaining axioms (related to the scalar multiplication) say that this operation defines a 
+ring homomorphism from the field F into the endomorphism ring of this group. Even more concisely, a vector space is a module over a field.
+
+### Subspaces and Ambient Spaces
+
+We often don't actually care about vector spaces, but much more about subspaces. A subspace is a subset of a vector space that is itself is a vector space. 
+The ambient space is the vector space that contains the subspace. Think of it this way. We can have a 3-dimensional ambient space, so a room. 
+In this room we can then add a wall, or a plane which is a 2-dimensional subspace. This plane is then a vector space itself, but it is contained in the 3-dimensional ambient space.
+
+Lets look at some examples of subspaces. Think of a vector $\boldsymbol{v}$ in 2-dimensional space. Now we can obtain a set of vectors that are all multiples of the vector $\boldsymbol{v}$. If 
+we then think of all the points we can reach we get a infinetly long line through the origin. This line is a 1-dimensional subspace of the 2-dimensional ambient space.
+We can then then take another vector $\boldsymbol{w}$ and do the same thing. This will give us another line through the origin and another 1-dimensional subspace. If we now 
+combine these two vectors as a linear combination we get a plane through the origin. This plane is a 2-dimensional subspace of the 2-dimensional ambient space. So it 
+covers the whole space. We also often then say that $\boldsymbol{v}$ and $\boldsymbol{w}$ span the subspace.
+
+<Image src="/maths/vectorSubSpace.png"
+       caption="On the left we can see a plane, which is a 2-dimensional subspace in a 3-dimensional ambient space. On the right we can see a line, which is a 1-dimensional subspace in a 2-dimensional ambient space."
+       width={800}
+/>
+
+So we can formally define a subspace $\it{S}$ of a vector space $\it{V}$ as a subset of $\it{V}$ that satisfies the following properties:
+
+$$
+\forall \boldsymbol{u}, \boldsymbol{v} \in \it{S} \text{ and } \forall a, b \in \mathbb{R}: a\boldsymbol{u} + b\boldsymbol{v} \in \it{S}
+$$
+
+So if we take any two vectors from the subspace and multiply them with any scalar we get a vector that is also in the subspace (closure under addition and scalar multiplication). Additionaly 
+the subspace must contain the null vector $\boldsymbol{o}$. This is because the null vector is always in the subspace. If we take any vector or linear combination of vectors in the subspace and multiply it with 0 we get the null vector.
+
+<Callout type="warning" title="Do any two vectors span a plane?">
+Think of this question before you read on. The answer is no. Two vectors can only span a plane if they are linearly independent. This means that they are not multiples of each other. If they are multiples of each other they are linearly dependent and they only span a line.
+</Callout>
+
+### 0-Dimensional Subspace
+
+We saw above that in an ambient space of dimension $2$ we can have subspaces of dimension $1$ and $2$. However, we can also have subspaces of dimension $0$. 
+This 0-dimensional subspace can be created by taking the null vector $\boldsymbol{o}$. No matter how many times we multiply it with a scalar it will always stay the null vector and 
+just a point at the origin. This is a 0-dimensional subspace. 
+
+This means that in an $n$-dimensional vector space we can create $n+1$ subspaces. One for each dimension from $0$ to $n$.
+
+### Span
+
+The span of a set of vectors is the set of all possible linear combinations of the vectors. This is quiet clearly related to subspaces
+as subspaces are the set of all possible linear combinations of a set of vectors. The span of a set of vectors is a subspace of the vector space.
+This is why it is often said that a subspaces is spanned by a set of vectors.
+
+$$
+span(\{\boldsymbol{v}_1, \boldsymbol{v}_2, \ldots, \boldsymbol{v}_n\}) = \{a_1\boldsymbol{v}_1 + a_2\boldsymbol{v}_2 + \ldots + a_n\boldsymbol{v}_n | a_1, a_2, \ldots, a_n \in \mathbb{R}\}
+$$
+
+<Callout type="example">
+- $span(\{\begin{bmatrix} 0 \\ 0 \end{bmatrix}\}) = \{\begin{bmatrix} 0 \\ 0 \end{bmatrix}\}$, a 0-dimensional subspace in a 2-dimensional ambient space.
+- $span(\{\begin{bmatrix} 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \end{bmatrix}\}) = \{\begin{bmatrix} a \\ b \end{bmatrix} | a, b \in \mathbb{R}\}$, a 2-dimensional subspace (plane) in a 2-dimensional ambient space.
+- $span(\{\begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}, \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 2 \\ 2 \\ 2 \end{bmatrix}\}) = \{\begin{bmatrix} a \\ b \\ c \end{bmatrix} | a, b, c \in \mathbb{R}\}$, a 2-dimensional subspace in a 3-dimensional ambient space.
+</Callout>
+
+### Basis
+
+We have already seen above that some vectors don't actually increase the dimensionality of the subspace they are in.
+This has to do with them being a linear combination of the other vectors. So if we have a specific subspace we might want to find the minimal set of vectors that spans this subspace. This is called a basis.
+More formally a basis of some subspace is a set of vectors that are linearly independent and span the subspace.
+The most common example of a basis is the standard basis $S$ that
+spans the real vector space. The standard basis is the set of vectors $\boldsymbol{e}_1, \boldsymbol{e}_2, \ldots, \boldsymbol{e}_n$ where $\boldsymbol{e}_i$ is the vector with a 1 at the $i$-th position and 0 elsewhere.
+
+$$
+S = \{\boldsymbol{e}_1, \boldsymbol{e}_2, \ldots, \boldsymbol{e}_n\} = \{\begin{bmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ \vdots \\ 0 \end{bmatrix}, \ldots, \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 1 \end{bmatrix}\}
+$$
+
+A subspace can have many different bases, but all bases have the same number of vectors. This number is called the dimension of the subspace.
+So any linearly independent set of 2 vectors with 2 components will span a 2-dimensional subspace in a 2-dimensional ambient space.
+
+<Callout type="example">
+Some basis for the 2-dimensional real vector space $\mathbb{R}^2$:
+
+- $B_1 = \{\begin{bmatrix} 1 \\ 1 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \end{bmatrix}\}$
+- $B_2 = \{\begin{bmatrix} 2 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 2 \end{bmatrix}\}$
+- $B_3 = \{\begin{bmatrix} 1 \\ 1 \end{bmatrix}, \begin{bmatrix} 0 \\ 2 \end{bmatrix}\}$
+</Callout>
+
+#### Orthogonal and Orthonormal Basis
+
+Certain bases are better then others as they make calculations easier and have nice properties. 
+
+One of these categrories are orthogonal bases. An orthogonal basis is a basis where all the vectors are orthogonal to each other.
+This means that the inner/dot product of any two vectors in the basis is zero. However, this does require that that the vector space is a inner product space, which is a vector space with an inner product defined on it. 
+
+Another category are orthonormal bases. An orthonormal basis is a basis where all the vectors are orthogonal to each other and have a length of 1. This means that the inner/dot product of any two vectors in the basis is zero and the 
+inner/dot product of a vector with itself is 1 because the length of a vector is the square root of the inner product of the vector with itself. An example of an orthonormal basis is the standard basis of the real vector space.
+
+### Coordinate Vectors
+
+We know vectors are identified by their magnitude and direction. Most often it also easist to think of a vector in its standard position, an arrow pointing from the origin to somewhere in space. In the 
+standard position the point the vector is pointing to in the cartesian coordinate system is the point that matches the vectors components. This sequence of coordinates is called the coordinate vector of the vector.
+More formally the coordinate vector of a vector $\boldsymbol{v}$ with respect to a basis $B = \{\boldsymbol{v}_1, \boldsymbol{v}_2, \ldots, \boldsymbol{v}_n\}$ is the set of scalars $a_1, a_2, \ldots, a_n$ such that for any vector from the vector space spanned by the basis
+$\boldsymbol{v} = a_1\boldsymbol{v}_1 + a_2\boldsymbol{v}_2 + \ldots + a_n\boldsymbol{v}_n$. In the standard position the vector space is spanned by the standard basis vectors $\boldsymbol{e}_1, \boldsymbol{e}_2, \ldots, \boldsymbol{e}_n$ 
+which is why the coordinates are just the components of the vector and the coordinate vector is the vector itself. However, we have seen that a vector space can be spanned many different bases, so the coordinate vector of a vector can change depending on the basis.
+
+$$
+[\boldsymbol{v}]_B = \begin{bmatrix} a_1 \\ a_2 \\ \vdots \\ a_n \end{bmatrix}
+$$
+
+<Image src="/maths/vectorSpaceCoordinates.png"
+       caption="The same vector can have different coordinate vectors depending on the basis."
+       width={800}
+/>
+
+<Callout type="example">
+We have the vector $\boldsymbol{p} = \begin{bmatrix} 2 \\ 3 \end{bmatrix}$ in $\mathbb{R}^2$.
+We then have the standard basis $S=\{\begin{bmatrix} 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \end{bmatrix}\}$.
+The coordinate vector of $\boldsymbol{p}$ with respect to the standard basis $S$ is then:
+
+$$
+\begin{align*}
+\boldsymbol{p} &= \begin{bmatrix} 2 \\ 3 \end{bmatrix} = 2\begin{bmatrix} 1 \\ 0 \end{bmatrix} + 3\begin{bmatrix} 0 \\ 1 \end{bmatrix} \\
+[\boldsymbol{p}]_S &= \begin{bmatrix} 2 \\ 3 \end{bmatrix}
+\end{align*}
+$$
+
+Now if we have the basis $B=\{\begin{bmatrix} 1 \\ 1 \end{bmatrix}, \begin{bmatrix} 0 \\ 2 \end{bmatrix}\}$ the coordinate vector of $\boldsymbol{p}$ with respect to the basis $B$ is:
+
+$$
+\begin{align*}
+\boldsymbol{p} &= \begin{bmatrix} 2 \\ 3 \end{bmatrix} = 2\begin{bmatrix} 1 \\ 1 \end{bmatrix} + \frac{1}{2}\begin{bmatrix} 0 \\ 2 \end{bmatrix} \\
+[\boldsymbol{p}]_B &= \begin{bmatrix} 2 \\ \frac{1}{2} \end{bmatrix}
+\end{align*}
+$$
+</Callout>
+
+## Matrix Spaces
+
+### Column Space
+
+In some cases it is useful to think of a matrix as a collection of column vectors. So a matrix with $n$ columns can be thought of as $n$ column vectors concatenated together. 
+This is also called the column space of a matrix.
+
+<Image src="/maths/matrixColumnSpace.png"
+       caption="A matrix as a collection of column vectors, i.e. a column space."
+       width={300}
+/>
+
+### Row Space
+
+Another way is to think of a matrix as a collection of row vectors. So a matrix with $m$ rows can be thought of as $m$ row vectors stacked on top of each other. This is also 
+called the row space of a matrix.
+
+<Image src="/maths/matrixRowSpace.png"
+       caption="A matrix as a collection of row vectors, i.e. a row space."
+       width={300}
+/>
+
+## Null Space of a Matrix
