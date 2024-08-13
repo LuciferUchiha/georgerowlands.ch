@@ -14,12 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "~/components/ui/tooltip";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~components/ui/textarea";
@@ -67,7 +61,7 @@ const MessageCard = ({ role, content }: Message) => {
             rehypePlugins={[rehypeKatex]}
             components={{
               p: ({ children, ...props }) => (
-                <p className="my-4" {...props}>
+                <p className="py-4" {...props}>
                   {children}
                 </p>
               ),
@@ -148,25 +142,42 @@ const scrollToBottom = (id: string) => {
   }
 };
 
+const isJsonString = (str: string) => {
+  try {
+      JSON.parse(str);
+  } catch (e) {
+      return false;
+  }
+  return true;
+}
+
 const getPrompt = (question: string, contexts: Context[]) => {
   const parsedContexts = contexts.map((context) => {
     return `[${context.title}](${context.path}):\n${context.page_content}\n\n`;
   });
   const context = parsedContexts.join("");
 
-  return `Please answer the following question, using the following documents. If
-  any of the documents where helpful, please include their links in the references.
-  If the question is just general conversation or chit-chat do not use or include any 
-  references. Write any math equations in LaTeX format between a pair of $ symbols if 
-  inlined, or between a pair of $$ symbols if on a separate line.
-
-  Documents:
-  ${context}
-
-  Question:
-  ${question}
-
-  Answer:`;
+  return `Please answer the following question, using the following documents. \
+The link of each document is written before the content. If \
+any of the documents where helpful, include their links after \
+the sentence in the answer that they were helpful for. Write the link exactly as provided \
+do not change or add any text. \
+\
+If the question is just general conversation or chit-chat do not use or include any \
+references in the answer. \
+\
+Write any math equations identically as they appear in the documents, \
+between single or double dollar signs. \
+\
+At the end of the answer, ask the user if they have any further questions. \
+\
+Documents: \
+${context}
+\
+Question: \
+${question}
+\
+Answer:`;
 };
 
 export default function ChatBot() {
@@ -243,8 +254,8 @@ export default function ChatBot() {
       const matches = contextResponse.data.matches;
       const contexts = matches.map(
         (match: { id: string; score: number; metadata: any }) => {
-          const title = match.metadata["Header 1"];
-          const cleanPath = match.metadata.path
+          const title = match.metadata["title"];
+          const cleanPath = match.metadata.full_path
             .replaceAll("../pages", "")
             .replaceAll(".mdx", "");
           return {
@@ -262,9 +273,20 @@ export default function ChatBot() {
       );
       console.log("filteredContexts", filteredContexts);
 
-      // all messages minus the last one
-      const prevMessages = messages.slice(0, messages.length);
       // Step 3: Send the message along with the context
+      const prompt = getPrompt(question, filteredContexts);
+      const conversation = [
+        {
+          role: "system",
+          content: "You are a helpful assistant.",
+        },
+        ...messages,
+        {
+          role: "user",
+          content: prompt,
+        },
+      ]
+      console.log("conversation", conversation);
       const messageResponse = await fetch(
         "https://api.openai.com/v1/chat/completions",
         {
@@ -275,45 +297,40 @@ export default function ChatBot() {
           },
           body: JSON.stringify({
             model: model,
-            messages: [
-              {
-                role: "system",
-                content: "You are a helpful assistant.",
-              },
-              ...prevMessages,
-              {
-                role: "user",
-                content: getPrompt(question, filteredContexts),
-              },
-            ],
+            messages: conversation,
             stream: true,
           }),
         }
       );
-      const reader = messageResponse.body
-        ?.pipeThrough(new TextDecoderStream())
-        .getReader();
-      if (!reader) throw new Error("Failed to create a reader");
+      const stream = messageResponse.body?.getReader();
+
+      if (!stream) {
+        throw new Error("No stream");
+      }
+
       addMessage("assistant", "");
+
       while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        let dataDone = false;
-        const arr = value.split("\n");
-        arr.forEach((data) => {
-          if (data.length === 0) return;
-          if (data.startsWith(":")) return; // ignore sse comment message
-          if (data === "data: [DONE]") {
-            dataDone = true;
-            return;
+        const { done, value } = await stream.read();
+        if (done) {
+          break;
+        }
+
+        const text = new TextDecoder().decode(value);
+        if (text) {
+          const chunks = text.split("\n").filter((chunk) => chunk.length > 0);
+          for (let chunk of chunks) {
+            chunk = chunk.replace("data: ", "");
+            if (isJsonString(chunk)) {
+              const messageChunk = JSON.parse(chunk);
+              const deltaContent = messageChunk.choices[0].delta.content;
+              if (deltaContent) {
+                updateLastMessage(messageChunk.choices[0].delta.content);
+                scrollToBottom("message-list");
+              }
+            }
           }
-          const json = JSON.parse(data.substring(6));
-          console.log(json);
-          const delta = json.choices[0].delta.content;
-          if (delta) updateLastMessage(delta);
-          scrollToBottom("message-list");
-        });
-        if (dataDone) break;
+        }
       }
     } catch (error) {
       console.error(error);
