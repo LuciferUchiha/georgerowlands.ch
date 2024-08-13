@@ -10,6 +10,7 @@ from tqdm import tqdm
 from pydantic import BaseModel
 from openai import OpenAI
 from dotenv import load_dotenv
+from slugify import slugify
 
 load_dotenv()
 pinecone_key = os.getenv("PINECONE_KEY")
@@ -106,8 +107,22 @@ def chunk_pages(documents: list[Document]) -> list[Document]:
             for chunk_content in split_chunks_content:
                 chunk = Document(page_content=chunk_content,
                                  metadata=split.metadata.copy())
+
+                # full path using the deepest markdown header
+                current_lvl = header_level
+                while current_lvl > 0:
+                    header_key = f"Header {current_lvl}"
+                    if header_key in chunk.metadata:
+                        chunk.metadata["full_path"] = chunk.metadata["path"] + \
+                            "#" + slugify(chunk.metadata[header_key])
+                        chunk.metadata["title"] = f"{chunk.metadata["Header 1"]} - {chunk.metadata[header_key]}" if current_lvl > 1 else chunk.metadata["Header 1"]
+                        break
+                    current_lvl -= 1
+
+                # add a unique id to the chunk based on the doc_path and the position in the doc
                 doc_position += 1
                 chunk.metadata["id"] = f"{doc_id}#{doc_position}"
+
                 chunks.append(chunk)
 
     print(f"Split to {len(chunks)} chunks")
