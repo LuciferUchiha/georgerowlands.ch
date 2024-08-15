@@ -165,24 +165,206 @@ $$
 
 ## Matrix Spaces
 
+In some cases it is useful to think of a matrix as a collection of vectors.
+
 ### Column Space
 
-In some cases it is useful to think of a matrix as a collection of column vectors. So a matrix with $n$ columns can be thought of as $n$ column vectors concatenated together. 
-This is also called the column space of a matrix.
+A matrix can be thought of as a collection of column vector. So a matrix with $n$ columns can be thought of as $n$ column vectors concatenated together. 
+If we then take the span of these column vectors we get a subspace of the vector space. This subspace is called the column space of a matrix. The number of 
+rows in the matrix is the dimensionality of the ambient space. The largest number of linearly independent column vectors is the dimension of the column space, this corresponds to the rank of the matrix. 
+If all the column vectors are linearly independent then the column vectors also form a basis of the column space.
+The column space of the matrix $\boldsymbol{A} \in R^{m \times n}$ is denoted as $C(\boldsymbol{A})$.
 
-<Image src="/maths/matrixColumnSpace.png"
-       caption="A matrix as a collection of column vectors, i.e. a column space."
-       width={300}
-/>
+$$
+\begin{align*}
+C(\boldsymbol{A}) &= \{x_1\boldsymbol{a}_1 + x_2\boldsymbol{a}_2 + \ldots + x_n\boldsymbol{a}_n | x_1, x_2, \ldots, x_n \in \mathbb{R}\, \text{and} \, \boldsymbol{a}_i \in \mathbb{R}^m\} \\
+C(\boldsymbol{A}) &= span(\{\boldsymbol{a}_1, \boldsymbol{a}_2, \ldots, \boldsymbol{a}_n\}) 
+\end{align*}
+$$
+
+<Callout type="example">
+Lets look at the following matrices:
+
+$$
+\boldsymbol{A} = \begin{bmatrix} 
+1 & 2 & 4 \\ 
+0 & 4 & 4 \\
+4 & 1 & 9 \\
+6 & 0 & 12 \\
+1 & 1 & 3 
+\end{bmatrix} \text{, } \boldsymbol{B} = \begin{bmatrix} 
+1 & 2 & 3 & 5 \\
+0 & 8 & 13 & 21 \\   
+0 & 0 & 34 & 55 \\
+0 & 0 & 0 & 89
+\end{bmatrix}
+$$
+
+Determining the ambient spaces is easy as we just need to count the number of rows, i.e the components of the vectors. The column spaces are then the span of the column vectors.
+
+To find the dimension of the column space we can use the rank of the matrix. The rank of matrix $\boldsymbol{A}$ is $2$ because the third column vector is two times the first column vector plus the second column vector.
+The rank of matrix $\boldsymbol{B}$ is $4$, i.e it is full rank. 
+
+Therefore the column space of matrix $\boldsymbol{A}$ is a 2-dimensional subspace in a 5-dimensional ambient space and the column space of matrix $\boldsymbol{B}$ is a 4-dimensional subspace in a 4-dimensional ambient space.
+</Callout>
+
+#### Column Space of AA^T
+
+Interestingly the column space of the matrix $\boldsymbol{A}\boldsymbol{A}^T$ is the same as the column space of the matrix $\boldsymbol{A}$. 
+
+Firstly if $\boldsymbol{A}$ is a $m \times n$ then $\boldsymbol{A}\boldsymbol{A}^T$ is a $m \times m$ matrix. So we can see that the ambient spaces are the same, but the number of column vectors is different.
+The ambient spaces being the same is a however a good precondition for the column spaces being the same. 
+
+If we then look at what the matrix multiplication for $\boldsymbol{A}^T\boldsymbol{A}$ actually is, we can see that it is 
+just a linear combination of the column vectors of $\boldsymbol{A}$. This means that the column space of $\boldsymbol{A}\boldsymbol{A}^T$ is the same as the column space of $\boldsymbol{A}$. Because a vector space is 
+defined by all the possible linear combinations of the vectors that span it. Thus a linear combination of the column vectors of $\boldsymbol{A}$ can not leave the column space of $\boldsymbol{A}$ so it must be at least a subset of the vector space. But because we also know 
+that the rank of $\boldsymbol{A}\boldsymbol{A}^T$ is the same as the rank of $\boldsymbol{A}$ due to the **rank-nullity theorem** we know that the column spaces have the same dimensionality and therefore must be the same. However, the basis 
+of the column space of $\boldsymbol{A}\boldsymbol{A}^T$ is different from the basis of the column space of $\boldsymbol{A}$ because the vectors are different and the number of vectors is different. Therefore we can say the following:
+
+$$
+C(\boldsymbol{A}\boldsymbol{A}^T) = C(\boldsymbol{A})
+$$
+
+<Callout type="example">
+If we look at the matrix multiplication we can see the linear combination of the column vectors of $\boldsymbol{A}$ in the matrix $\boldsymbol{A}\boldsymbol{A}^T$.
+
+$$
+\begin{align*}
+\begin{bmatrix}
+0 & 10 \\
+3 & 7 \\
+5 & 3 \\
+\end{bmatrix} \begin{bmatrix}
+0 & 3 & 5 \\
+10 & 7 & 3 \\
+\end{bmatrix} &= \begin{bmatrix}
+0 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix} 
++ 10 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
+\quad
+3 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix}
++ 7 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
+\quad
+5 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix}
++ 3 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
+\end{bmatrix} \\
+&= \begin{bmatrix}
+100 & 70 & 30 \\
+70 & 58 & 34 \\
+30 & 34 & 34 \\
+\end{bmatrix}
+\end{align*}
+$$
+</Callout>
+
+#### Membership of a Vector in the Column Space
+
+If we have a vector $\boldsymbol{v}$ and we want to know if it is in the column space of a matrix $\boldsymbol{A}$ we are actually asking the question of 
+whether the vector $\boldsymbol{v}$ can be written as a linear combination of the column vectors of $\boldsymbol{A}$. This is the same as asking if the vector $\boldsymbol{v}$ is in the span of the column vectors of $\boldsymbol{A}$. 
+This turns into our favorite equation to solve:
+
+$$
+\boldsymbol{A}\boldsymbol{x} = \boldsymbol{v}
+$$
+
+Where $\boldsymbol{x}$ is the vector containing the linear weights of the linear combination. If we can find a solution for $\boldsymbol{x}$ then the vector $\boldsymbol{v}$ is in the column space of $\boldsymbol{A}$.
+This equation can be solved using gaussian elimination. If the vector $\boldsymbol{v}$ is not in the column space of $\boldsymbol{A}$ then the equation has no solution. This can be interpreted as if the say the matrix 
+$\boldsymbol{A} \in \mathbb{R}^{3 \times 3}$ has a column space that is a plane in $\mathbb{R}^3$ and the vector $\boldsymbol{v}$ is a vector that is not in the plane. Then the vector $\boldsymbol{v}$ is not in the column space of $\boldsymbol{A}$.
+
+<Callout type="example">
+$$
+\begin{align*}
+\begin{bmatrix}
+2 & 1 \\ 
+4 & 4 \\
+0 & 0 \\
+\end{bmatrix} \begin{bmatrix}
+x_1 \\ x_2 \\
+\end{bmatrix} &= \begin{bmatrix}
+4 \\ 12 \\ 0 \\
+\end{bmatrix} \\
+\begin{bmatrix}
+2 & 1 \\
+4 & 4 \\
+0 & 0 \\
+\end{bmatrix} \begin{bmatrix}
+1 \\ 2 \\
+\end{bmatrix} &= \begin{bmatrix}
+4 \\ 12 \\ 0 \\
+\end{bmatrix}
+\end{align*}
+$$
+
+Therefore the vector is in the column space of the matrix.
+</Callout>
+
+##### Augment-rank Algorithm
+
+There is also another way to determine if a vector is in the column space of a matrix. This is the augment-rank algorithm. The idea is very simple and relies 
+on the fact that the rank of a matrix is equivalent to the dimensionality of the spanned space. If we concatonate the matrix $\boldsymbol{A}$ with the vector $\boldsymbol{v}$ and then calculate the rank of the augmented matrix. 
+If the rank of the augmented matrix is the same as the rank of the matrix $\boldsymbol{A}$ then the vector $\boldsymbol{v}$ is in the column space of the matrix $\boldsymbol{A}$ because the vector $\boldsymbol{v}$ can be written as a linear combination of the column vectors of $\boldsymbol{A}$.
+If the rank increases then the vector $\boldsymbol{v}$ is not in the column space of the matrix $\boldsymbol{A}$ and has added a new dimension to the spanned space.
+
+To calculate the rank of the augmented matrix we can use gaussian elimination to bring the matrix into row-echelon form. The rank of the matrix is then the number of non-zero rows in the row-echelon form.
 
 ### Row Space
 
-Another way is to think of a matrix as a collection of row vectors. So a matrix with $m$ rows can be thought of as $m$ row vectors stacked on top of each other. This is also 
-called the row space of a matrix.
+Just like a matrix can be thought of as a collection of column vectors it can also be thought of as a collection of row vectors. If we then take the span of these row vectors we get a subspace of the vector space. This subspace is called the row space of a matrix. The number of
+columns in the matrix is the dimensionality of the ambient space. The largest number of linearly independent row vectors is the dimension of the row space, this corresponds to the rank of the matrix.
+The row space of the matrix $\boldsymbol{A} \in R^{m \times n}$ is denoted as $R(\boldsymbol{A})$.
 
-<Image src="/maths/matrixRowSpace.png"
-       caption="A matrix as a collection of row vectors, i.e. a row space."
-       width={300}
-/>
+$$
+\begin{align*}
+R(\boldsymbol{A}) &= \{x_1\boldsymbol{a}_1 + x_2\boldsymbol{a}_2 + \ldots + x_n\boldsymbol{a}_n | x_1, x_2, \ldots, x_n \in \mathbb{R}\, \text{and} \, \boldsymbol{a}_i \in \mathbb{R}^n\} \\
+R(\boldsymbol{A}) &= span(\{\boldsymbol{a}_1, \boldsymbol{a}_2, \ldots, \boldsymbol{a}_n\})
+\end{align*}
+$$
 
-## Null Space of a Matrix
+Therefore by taking the transpose of the matrix we can interchange the row space and the column space. This means that the row space of the matrix $\boldsymbol{A}$ is the same as the column space of the matrix $\boldsymbol{A}^T$ and vice versa.
+
+$$
+R(\boldsymbol{A}) = C(\boldsymbol{A}^T) \text{, } C(\boldsymbol{A}) = R(\boldsymbol{A}^T)
+$$
+
+From the above it is quiet easily to see that if a matrix is symmetric then the row space is the same as the column space. This is because the matrix is the same as its transpose.
+Also if the matrix is full rank then the row space is the same as the column space. This is because the two spaces then have the same dimensionality and therefore must be the same.
+
+#### Row Space of A^TA
+
+Just like for the column space of $\boldsymbol{A}\boldsymbol{A}^T$ the row space of $\boldsymbol{A}^T\boldsymbol{A}$ is the same as the row space of $\boldsymbol{A}$ because we can show that the matrix is a linear combination of the row vectors of $\boldsymbol{A}$.
+So we can say the following:
+
+$$
+\begin{align*}
+R(\boldsymbol{A}^T\boldsymbol{A}) &= R(\boldsymbol{A}) \\
+C(\boldsymbol{A}^T\boldsymbol{A}) &= C(\boldsymbol{A}) \\
+\end{align*}
+$$
+
+And because the matrices $\boldsymbol{A}^T\boldsymbol{A}$ and $\boldsymbol{A}\boldsymbol{A}^T$ are symmetric we can also say that the column spaces are the same as the row spaces:
+
+$$
+\begin{align*}
+C(\boldsymbol{A}^T\boldsymbol{A}) &= R(\boldsymbol{A}^T\boldsymbol{A})  \\
+C(\boldsymbol{A}\boldsymbol{A}^T) &= R(\boldsymbol{A}\boldsymbol{A}^T) \\
+\end{align*}
+$$
+
+However this does not mean that $C(\boldsymbol{A}) = R(\boldsymbol{A})$. This is only the case if the matrix is symmetric and full rank.
+
+### Null Space of a Matrix
+
+Not interested in trivial case where $\boldsymbol{x} = \boldsymbol{o}$.
+
+$$
+N(\boldsymbol{A}) = \{\beta \boldsymbol{x} | \boldsymbol{A}\boldsymbol{x} = \boldsymbol{o}, \boldsymbol{x} \in \mathbb{R}^n\} \setminus \{\boldsymbol{o}\}
+$$
+
+#### Left Null Space
+
+null space of the transpose of the matrix. $(\boldsymbol{y}^T\boldsymbol{A})^T = \boldsymbol{o}^{TT}$ is the same as $\boldsymbol{A}^T\boldsymbol{y} = \boldsymbol{o}$.	
+
+$$
+N(\boldsymbol{A}^T) = \{\beta \boldsymbol{x} | \boldsymbol{x}^T\boldsymbol{A} = \boldsymbol{o}^T, \boldsymbol{x} \in \mathbb{R}^m\} \setminus \{\boldsymbol{o}^T\}
+$$
+
+## Orthogonal Subspaces and Complements

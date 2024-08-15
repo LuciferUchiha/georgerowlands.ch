@@ -1,17 +1,20 @@
 {
-  "linearEquations": "Linear Equations",
+  "equations": "Linear Equations",
   "gaussianElimination": "Gaussian Elimination",
   "matrices": "Matrices",
   "vectors": "Vectors",
-  "hadamardProduct": "Hadamard Product",
-  "broadcasting": "Broadcasting",
+  "rank": "Matrix Rank",
+  "transformations": "Linear Transformations",
+  "inverse": "Matrix Inverse",
   "luDecomposition": "LU Decomposition",
   "vectorMatrixSpaces": "Vector and Matrix Spaces",
-  "linearMaps": "Linear Maps",
   "determinants": "Determinants",
   "qrDecomposition": "QR Decomposition",
   "eigenvaluesEigenvectors": "Eigenvalues and Eigenvectors",
   "svd": "SVD - Singular Value Decomposition",
   "pca": "PCA - Principal Component Analysis",
-  "moorePenrose": "Moore-Penrose Pseudoinverse"
+  "moorePenrose": "Moore-Penrose Pseudoinverse",
+  "hadamardProduct": "Hadamard Product",
+  "crossProduct": "Cross Product",
+  "broadcasting": "Broadcasting"
 }
