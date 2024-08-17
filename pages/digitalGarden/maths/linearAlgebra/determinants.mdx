@@ -1,0 +1,133 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+
+# Determinants
+
+The determinant of a matrix is a scalar value just like the rank that says something about the matrix. The determinant is 
+only defined for square matrices and is denoted as $det(A)$ or $|A|$ for the matrix $A \in \mathbb{R}^{n \times n}$. The 
+determinant of a matrix is $0$ if the matrix is singular. So in other words if the determinant of a matrix is $0$, then the
+matrix can not be inverted and the rank of the matrix is less than $n$ where $n$ is the number of rows and columns of 
+the matrix. For this reason, the determinant is a useful tool in linear algebra as it can be used to check if a matrix is 
+invertible before attempting to invert it.
+
+## Calculating Determinants
+
+### Determinant of a 2x2 Matrix
+
+$$
+det(A) = \begin{vmatrix}
+a & b \\
+c & d
+\end{vmatrix} = ad - bc
+$$
+
+<Image src="/maths/determinantDerivasion.png"
+       caption="Augmented matrix for easier calculation of the determinant of a 3x3 matrix."
+       width={500}
+/>
+
+<Callout type="info">
+From the 3Blue1Brown video on determinants, the determinant of a matrix can be thought of as the scaling factor of the 
+matrix when it is used as a transformation matrix. Imagine the normalized basis of a vector space forming a square or a cube with 
+area or volume of 1. When the transformation matrix is applied to the basis, the determinant of the matrix tells us how much 
+the area or volume of the basis has been scaled by. If the determinant is 0, then the area or volume of the basis has been 
+squinched down to 0 because the matrix has squished the basis down to a lower dimension. If the determinant is negative, then
+the area or volume of the basis has been flipped.
+
+<Image src="/maths/determinantTransformation.png"
+       caption="Augmented matrix for easier calculation of the determinant of a 3x3 matrix."
+       width={500}
+/>
+</Callout>
+
+### Determinant of a 3x3 Matrix
+
+$$
+det(A) = \begin{vmatrix}
+a & b & c \\
+d & e & f \\
+g & h & i
+\end{vmatrix} = aei + bfg + cdh - ceg - bdi - afh
+$$
+
+<Image src="/maths/determinantsAugment.png"
+       caption="Augmented matrix for easier calculation of the determinant of a 3x3 matrix."
+       width={500}
+/>
+
+### Determinant of a 4x4 Matrix
+
+<Image src="/maths/determinantsExpansion4to3.png"
+       caption="The calculation of the determinant of a 4x4 matrix can be done by expanding the matrix into 3x3 matrices."
+       width={700}
+/>
+
+### Laplace Expansion
+
+general formula for calculating the determinant of an n x n matrix
+
+<Image src="/maths/determinantsExpansion3to2.png"
+       caption="The calculation of the determinant of a 3x3 matrix can be done by expanding the matrix into 2x2 matrices."
+       width={700}
+/>
+works recursivly for n x n matrices also for n=2.
+
+### Determinant of a Triangular Matrix
+
+The determinant of a triangular matrix is the product of the diagonal elements of the matrix. 
+
+## Characteristic Polynomial
+
+Allows us to find the eigenvalues of a matrix and represent a matrix as a polynomial
+
+## Effect of Operations on Determinants
+
+### Transpose
+
+When transposing a matrix the determinant stays the same. This is because all the transpose only changed the order in which 
+the elements are multiplied with each other and added together. Multiplication and addition are commutative operations so 
+the order does not matter as long as the grouping of the elements stays the same.
+
+<Callout type="proof">
+For a 2x2 matrix $A$:
+
+$$
+det(A) = \begin{vmatrix}
+a & b \\
+c & d
+\end{vmatrix} = ad - bc \quad \text{and} \quad det(A^T) = \begin{vmatrix}
+a & c \\
+b & d
+\end{vmatrix} = ad - cb
+$$
+
+For a 3x3 matrix $A$:
+
+$$
+det(A) = \begin{vmatrix}
+a & b & c \\
+d & e & f \\
+g & h & i
+\end{vmatrix} = aei + bfg + cdh - ceg - bdi - afh \quad \text{and} \quad det(A^T) = \begin{vmatrix}
+a & d & g \\
+b & e & h \\
+c & f & i
+\end{vmatrix} = aei + dhc + gbf - gec - dbi - ahf
+$$
+</Callout>
+
+### Swapping Rows
+
+Each time two rows are swapped the determinant of the matrix changes sign.
+
+### Adding Multiples of Rows
+
+When a multiple of one row is added to another row the determinant of the matrix stays the same. The extra 
+terms cancel each other out when calculating the determinant.
+
+### Row Scaling
+
+When a row is scaled by a factor $k$ the determinant of the matrix is scaled by the same factor $k$.
+
+Therefore if the entire matrix is scaled by a factor $k$ the determinant of the matrix is scaled by $k^n$ where $n$ is the
+number of rows or columns of the square matrix.
