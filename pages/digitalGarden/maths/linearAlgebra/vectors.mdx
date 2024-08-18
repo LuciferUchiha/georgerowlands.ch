@@ -199,6 +199,74 @@ vector, i.e. moving the tail of the second vector after flipping it to the head 
 
 as a matrix times a vector can relate this back to a coefficient matrix and a solution vector.
 
+#### Linear Independence
+
+Two vectors are linearly independent if neither of them can be written as a linear combination of the other. In other words, two vectors are linearly independent if 
+they are not scalar multiples of each other. It is however easier to find to define and check for linear dependence. The vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ 
+are linearly dependent if:
+
+$$
+\boldsymbol{a} = c\boldsymbol{b} \quad \text{for some } c \in \mathbb{R}
+$$
+
+this can also be written as:
+
+$$
+\boldsymbol{a} - c\boldsymbol{b} = \boldsymbol{0}
+$$
+
+where $\boldsymbol{0}$ is the zero vector. This means that the vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent 
+if they are collinear, i.e. they lie on the same line. The two equations above can also be used to define linear independence, we just replace the equal sign with a 
+not equal sign.
+
+<Image
+    src="/maths/vectorLinearDependence2D.png"
+    caption="The left two vectors are linearly independent, while the right two vectors are linearly dependent."
+    width={400}
+    />
+
+<Callout type="example">
+If $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
+
+$$
+\boldsymbol{a} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
+    2 \\
+    4 \\
+    6
+\end{bmatrix}
+$$
+
+then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent because:
+
+$$
+\boldsymbol{a} = 2\boldsymbol{b}
+$$
+
+However, if $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
+
+$$
+\boldsymbol{a} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
+    2 \\
+    3 \\
+    4
+\end{bmatrix}
+$$
+
+then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly independent because no scalar multiple of $\boldsymbol{b}$ can be equal to $\boldsymbol{a}$.
+</Callout>
+
+##### Linear Independence of More Than Two Vectors
+
+Never used this.
+
 ### Dot Product
 
 The dot product or also called the inner product is the most common type of vector multiplication. This is defined 
@@ -503,70 +571,30 @@ have a length of one.
     width={500}
     />
 
-## Linear Independence
+#### Standard Unit Vectors
 
-Two vectors are linearly independent if neither of them can be written as a linear combination of the other. In other words, two vectors are linearly independent if 
-they are not scalar multiples of each other. It is however easier to find to define and check for linear dependence. The vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ 
-are linearly dependent if:
-
-$$
-\boldsymbol{a} = c\boldsymbol{b} \quad \text{for some } c \in \mathbb{R}
-$$
-
-this can also be written as:
+An example of orthonormal vectors are the standard unit vectors. The standard unit vectors can be thought of as the vectos that correspond to the axes of a coordinate system.
+Later on we will see that these vectors can be used to span any vector space and form the standard basis of the vector space. The standard unit vectors are denoted as 
+$\boldsymbol{e}_i$ where $i$ is the index of the vector. The $i$ also corresponds to the index of the component that is one, while all other components are zero. The 
+dimensionality of the vector is inferred from the index, so $\boldsymbol{e}_1$ is a 1D vector, $\boldsymbol{e}_2$ is a 2D vector, $\boldsymbol{e}_3$ is a 3D vector 
+depending on the context.
 
 $$
-\boldsymbol{a} - c\boldsymbol{b} = \boldsymbol{0}
+\boldsymbol{e}_i = \begin{bmatrix}
+    0 \\
+    \vdots \\
+    1 \\
+    \vdots \\
+    0
+\end{bmatrix}
 $$
 
-where $\boldsymbol{0}$ is the zero vector. This means that the vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent 
-if they are collinear, i.e. they lie on the same line. The two equations above can also be used to define linear independence, we just replace the equal sign with a 
-not equal sign.
+It is quiet easy to see that the standard unit vectors are orthonormal, because they are orthogonal to each other and have a length of one. It also easy to see that 
+any vector can be written as a linear combination of the standard unit vectors, this is why they are so useful and will become an important concept later on when 
+talking about vector spaces and bases.
 
 <Image
-    src="/maths/vectorLinearDependence2D.png"
-    caption="The left two vectors are linearly independent, while the right two vectors are linearly dependent."
-    width={400}
+    src="/maths/vectorsStandardUnitVectors.png"
+    caption="The standard unit vectors here in 3D space are i, j, and k. We can see how the vector a can be written as a linear combination of the standard unit vectors." 
+    width={700}
     />
-
-<Callout type="example">
-If $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
-
-$$
-\boldsymbol{a} = \begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
-    2 \\
-    4 \\
-    6
-\end{bmatrix}
-$$
-
-then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent because:
-
-$$
-\boldsymbol{a} = 2\boldsymbol{b}
-$$
-
-However, if $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
-
-$$
-\boldsymbol{a} = \begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
-    2 \\
-    3 \\
-    4
-\end{bmatrix}
-$$
-
-then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly independent because no scalar multiple of $\boldsymbol{b}$ can be equal to $\boldsymbol{a}$.
-</Callout>
-
-### Linear Independence of More Than Two Vectors
-
-Never used this.

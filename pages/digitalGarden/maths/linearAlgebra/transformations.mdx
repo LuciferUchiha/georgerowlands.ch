@@ -47,11 +47,75 @@ Because $T(c\boldsymbol{u}) = cT(\boldsymbol{u})$ the transformation satisfies h
 </Callout>
 
 <Callout type="example" title="Linear Transformation with Different Dimensions">
+A linear transformation can also be between vectors of different dimensions. For example:
 
+$$
+T: R^2 \rightarrow R^3, T \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 2x \\ 3y \\ 0 \end{bmatrix}
+$$
+
+This transformation is still linear because it satisfies the two conditions. The additional dimension in the output vector is just simply set to 0 so it doesn't affect the linearity of the transformation.
+
+$$
+\begin{align*}
+T(\boldsymbol{u} + \boldsymbol{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \\ 0 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \\ 0 \end{bmatrix} \\
+T(\boldsymbol{u}) + T(\boldsymbol{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \\ 0 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \\ 0 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \\ 0 \end{bmatrix}
+\end{align*}
+$$
+
+$$
+\begin{align*}
+T(c\boldsymbol{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \\ 0 \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \\ 0 \end{bmatrix} \\
+cT(\boldsymbol{u}) &= c \begin{bmatrix} 2x \\ 3y \\ 0 \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \\ 0 \end{bmatrix}
+\end{align*}
+$$
+
+We can also do the same for a linear transformation where the input vector has more dimensions than the output vector.
+
+$$
+T: R^3 \rightarrow R^2, T \begin{bmatrix} x \\ y \\ z \end{bmatrix} = \begin{bmatrix} 2x \\ 3y \end{bmatrix}
+$$
+
+This transformation is still linear because it satisfies the two conditions. The additional dimensions in the input vector are simply ignored and don't affect the linearity of the transformation.
+
+$$
+\begin{align*}
+T(\boldsymbol{u} + \boldsymbol{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \\ z_1 + z_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix} \\
+T(\boldsymbol{u}) + T(\boldsymbol{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix}
+\end{align*}
+$$
+
+$$
+\begin{align*}
+T(c\boldsymbol{u}) &= T \begin{bmatrix} cx \\ cy \\ cz \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix} \\
+cT(\boldsymbol{u}) &= c \begin{bmatrix} 2x \\ 3y \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix}
+\end{align*}
+$$
 </Callout>
 
 <Callout type="example" title="Invalid Linear Transformation">
+However, not all transformations are linear. Lets look at an example of a transformation that is not linear:
 
+$$
+T: R^2 \rightarrow R^2, T \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} x^2 \\ y^2 \end{bmatrix}
+$$
+
+This transformation is not linear because it doesn't satisfy the additivity condition:
+
+$$
+\begin{align*}
+T(\boldsymbol{u} + \boldsymbol{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} (x_1 + x_2)^2 \\ (y_1 + y_2)^2 \end{bmatrix} = \begin{bmatrix} x_1^2 + 2x_1x_2 + x_2^2 \\ y_1^2 + 2y_1y_2 + y_2^2 \end{bmatrix} \\
+T(\boldsymbol{u}) + T(\boldsymbol{v}) &= \begin{bmatrix} x_1^2 \\ y_1^2 \end{bmatrix} + \begin{bmatrix} x_2^2 \\ y_2^2 \end{bmatrix} = \begin{bmatrix} x_1^2 + x_2^2 \\ y_1^2 + y_2^2 \end{bmatrix}
+\end{align*}
+$$
+
+It also doesn't satisfy the homogeneity condition:
+
+$$
+\begin{align*}
+T(c\boldsymbol{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} (cx)^2 \\ (cy)^2 \end{bmatrix} = \begin{bmatrix} c^2x^2 \\ c^2y^2 \end{bmatrix} \\
+cT(\boldsymbol{u}) &= c \begin{bmatrix} x^2 \\ y^2 \end{bmatrix} = \begin{bmatrix} cx^2 \\ cy^2 \end{bmatrix}
+\end{align*}
+$$
 </Callout>
 
 ## Matrices as Transformations
