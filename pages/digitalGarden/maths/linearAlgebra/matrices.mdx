@@ -365,27 +365,94 @@ $$
 = \sum_{k=1}^m a_{ik} \cdot b_{kj}
 $$
 
-There are three different ways to think about matrix multiplication, the row view, the column view and the element view. The first way would be to think of how 
-a single element in the resulting matrix is calculated. This 
+There are three different ways to think about matrix multiplication, the element view, the row view and the column view. The first way would be to think of how 
+a single element in the resulting matrix is calculated. A single element in row $i$ and column $j$ is calculated as the sum of the products of the elements in the $i$-th row of the first matrix and the $j$-th column of the second matrix.
+Later on you will see that this is the dot product of the $i$-th row and the $j$-th column as vectors. 
+
+<Image src="/maths/matrixMultiplicationElement.png"
+       caption="Element-wise view of matrix multiplication."
+       width={700}
+/>
 
 <Callout type="example">
-
-I suggest to start with the first row of the first matrix and the first column of the second matrix and calculate the element in the resulting matrix. 
-Then move on to the second column of the second matrix and calculate the element in the resulting matrix. 
-Once you have calculated all the elements in the first row of the resulting matrix move on to the second row of the first matrix and repeat the process.
-
 $$
+\begin{align*}
 \begin{bmatrix}
-1 & 2 & 3 \\
-4 & 5 & 6
-\end{bmatrix} \cdot \begin{bmatrix}
-7 & 8 \\
-9 & 10 \\
-11 & 12
-\end{bmatrix} = \begin{bmatrix}
-58 & 64 \\
-139 & 154
+1 & 2 \\
+3 & 4
+\end{bmatrix} \begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix} &= \begin{bmatrix}
+1a + 2c & \quad\quad \\
+\quad\quad & \quad\quad \\
+\end{bmatrix} \\ 
+&= \begin{bmatrix}
+1a + 2c & 1b + 2d \\
+3a + 4c & 3b + 4d
 \end{bmatrix}
+\end{align*}
+$$
+</Callout>
+
+The second way to think about matrix multiplication is to see how a column in the resulting matrix is calculated. The first column in the resulting matrix corresponds to the linear combination of the columns in the left matrix where the 
+weights are the elements in the first column of the right matrix. This pattern carries on for the other columns in the resulting matrix.    
+
+<Image src="/maths/matrixMultiplicationColumn.png"
+       caption="Column-wise view of matrix multiplication."
+       width={700}
+/>
+
+<Callout type="example">
+$$
+\begin{align*}
+\begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix} \begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix} &= \begin{bmatrix}
+a \begin{bmatrix} 1 \\ 3 \end{bmatrix} + b \begin{bmatrix} 2 \\ 4 \end{bmatrix} & \quad\quad\quad\quad\quad \\
+\end{bmatrix} \\
+&= \begin{bmatrix}
+a \begin{bmatrix} 1 \\ 3 \end{bmatrix} + b \begin{bmatrix} 2 \\ 4 \end{bmatrix} & c \begin{bmatrix} 1 \\ 3 \end{bmatrix} + d \begin{bmatrix} 2 \\ 4 \end{bmatrix}
+\end{bmatrix} = \begin{bmatrix}
+1a + 2b & 1c + 2d \\
+3a + 4b & 3c + 4d
+\end{bmatrix}
+\end{align*}
+$$
+</Callout>
+
+The third way to think about matrix multiplication is to see how a row in the resulting matrix is calculated. The first row in the resulting matrix corresponds to the linear combination of the rows in the right matrix where the
+weights are the elements in the first row of the left matrix. This pattern carries on for the other rows in the resulting matrix.
+
+<Image src="/maths/matrixMultiplicationRow.png"
+       caption="Row-wise view of matrix multiplication."
+       width={700}
+/>
+
+<Callout type="example">
+$$
+\begin{align*}
+\begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix} \begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix} &= \begin{bmatrix}
+1 \begin{bmatrix} a & b \end{bmatrix} + 2 \begin{bmatrix} c & d \end{bmatrix} \\
+\quad\quad\quad\quad\quad \end{bmatrix} \\
+&= \begin{bmatrix}
+1 \begin{bmatrix} a & b \end{bmatrix} + 2 \begin{bmatrix} c & d \end{bmatrix} \\
+3 \begin{bmatrix} a & b \end{bmatrix} + 4 \begin{bmatrix} c & d \end{bmatrix}
+\end{bmatrix} = \begin{bmatrix}
+1a + 2c & 1b + 2d \\
+3a + 4c & 3b + 4d
+\end{bmatrix}
+\end{align*}
 $$
 </Callout>
 
@@ -555,7 +622,6 @@ $$
 $$
 </Callout>
 
-
 #### Distributive Property
 
 The matrix multiplication is left distributive over addition and right distributive over addition so:
@@ -598,7 +664,8 @@ $$
 
 The reason as to why the identity matrix functions as the multiplicative identity can quite easily be seen if you 
 think of the first row in the identity matrix as selecting all the elements in the first row of the second matrix.
-Then the second row in the identity matrix selects all the elements in the second row of the second matrix and so on. So the identity matrix just selects the elements in the matrix.
+Then the second row in the identity matrix selects all the elements in the second row of the second matrix and so on. So it can be thought of as the 1 in each row/column 
+of the identity matrix selecting the corresponding row/column in the second matrix.
 
 <Callout type="example">
 $$
@@ -639,6 +706,55 @@ $$
 </Callout>
 
 #### Permutation Matrix
+
+We have seen that the identity matrix is a special matrix that functions as the multiplicative identity for matrix multiplication and can be used to select the 
+corresponding row/column in another matrix. A permutation matrix commonly denoted as $\boldsymbol{P}$
+is a matrix that can be used to permute the rows or columns of another matrix. A permutation matrix is a square matrix where each row and column contains exactly one 1 and all the other elements are 0.
+Depending on if you want to permute the rows or the columns you can use the permutation matrix as the left or right matrix in the multiplication.
+
+To permute the rows of a matrix you can use the permutation matrix as the left matrix in the multiplication. By swapping the rows of the identity matrix you can permute the rows of the matrix.
+
+<Callout type="example">
+We can swap the first and second row of the matrix $\boldsymbol{A}$:
+
+$$
+\boldsymbol{P} \boldsymbol{A} = \begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix} \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix} = \begin{bmatrix}
+4 & 5 & 6 \\
+1 & 2 & 3 \\
+7 & 8 & 9
+\end{bmatrix}
+$$
+</Callout>
+
+To permute the columns of a matrix you can use the permutation matrix as the right matrix in the multiplication. By swapping the columns of the identity matrix you can permute the columns of the matrix.
+
+<Callout type="example">
+We can swap the first and second column of the matrix $\boldsymbol{A}$:
+
+$$
+\boldsymbol{A} \boldsymbol{P} = \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix} \begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix} = \begin{bmatrix}
+2 & 1 & 3 \\
+5 & 4 & 6 \\
+8 & 7 & 9
+\end{bmatrix}
+$$
+</Callout>
 
 #### Strassen's Algorithm
 
