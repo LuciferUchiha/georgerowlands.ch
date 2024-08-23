@@ -829,7 +829,7 @@ where the transpose of a matrix results in a matrix with its dimensions swapped.
 #### Properties of Transpose
 
 There are a few useful properties of the transpose of a matrix that are worth remembering.
-Thist first ist that if a matrix is transposed twice it is the same as the original matrix:
+Thist first it that if a matrix is transposed twice it is the same as the original matrix:
 
 $$
 (\boldsymbol{A}^T)^T = \boldsymbol{A}
@@ -851,7 +851,8 @@ $$
 $$
 </Callout>
 
-Further ones are:
+Another important property is that when you apply a transpose to some expression in brackets the order of the matrices is reversed. For 
+addition this does not matter as it is commutative but for multiplication it does matter. So:
 
 $$
 \begin{align*}
@@ -943,22 +944,23 @@ For a non-square matrix you need to use a slightly more complex algorithm.
 
 ### Inverse
 
-The inverse of a matrix is a matrix that when multiplied with the original matrix results in the identity matrix. The inverse of a matrix is denoted as $\boldsymbol{A}^{-1}$.
+The inverse of a matrix is a very important and special matrix that when multiplied with the original matrix results in the identity matrix. The inverse of a matrix is denoted as $\boldsymbol{A}^{-1}$.
 
 $$
 \boldsymbol{A} \cdot \boldsymbol{A}^{-1} = \boldsymbol{A}^{-1} \cdot \boldsymbol{A} = \boldsymbol{I}
 $$
 
 Not all matrices have an inverse. A matrix that has an inverse is called an regular/invertible/non-singular matrix. A matrix that does not have an inverse is called a degenerate/singular/non-invertible matrix.
-If a matrix is invertible then the inverse is unique.
+If a matrix is invertible then the inverse is unique, i.e. there is only one inverse for a matrix. For now we will not discuss how to calculate the inverse of a matrix 
+or when a matrix is invertable but we will do so later on in the corresponding sections for [matrix rank](), [determinant]() and [matrix inversion]().
 
-Similarily the inverse of a matrix has some properties that are worth remembering:
+Similarily to the transpose of a matrix the inverse of a matrix has some properties that are worth remembering:
 
 $$
 \begin{align*}
 (\boldsymbol{A}^{-1})^{-1} &= \boldsymbol{A} \\
 (\boldsymbol{A} \cdot \boldsymbol{B})^{-1} &= \boldsymbol{B}^{-1} \cdot \boldsymbol{A}^{-1} \\
-(\boldsymbol{A} + \boldsymbol{B})^{-1} &\neq \boldsymbol{A}^{-1} + \boldsymbol{B}^{-1}
+(\boldsymbol{A} + \boldsymbol{B})^{-1} &\neq \boldsymbol{A}^{-1} + \boldsymbol{B}^{-1} \neq \boldsymbol{A}^{-1} + \boldsymbol{B}^{-1}
 \end{align*}
 $$
 
@@ -987,16 +989,8 @@ $$
 $$
 </Callout>
 
-#### Calculating the Inverse
-
 <Callout type="todo">
-    How to calculate the inverse of a matrix and know if a matrix is invertible.
-</Callout>
-
-### Rank
-
-<Callout type="todo">
-    Ranks seem a bit annoying but not hugely complex. also somehow related to the determinant and the inverse.
+    Parts below here are still a work in progress and might not belong here.
 </Callout>
 
 ### Frobenius Norm
@@ -1049,12 +1043,6 @@ $$
 
 <Callout type="todo">
     Add properties of the trace. and proof that it is the sum of the eigenvalues.
-</Callout>
-
-### Determinant
-
-<Callout type="todo">
-    This section is still a work in progress!
 </Callout>
 
 ## Orthogonal / Orthonormal Matrix

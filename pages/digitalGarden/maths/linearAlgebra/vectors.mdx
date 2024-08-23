@@ -3,16 +3,15 @@ import Image from "~/components/Image/Image";
 
 # Vectors
 
-## What is a Vector?
-
 We have already seen that vectors are just special types of [matrices](/digitalGarden/maths/linearAlgebra/matrices) with either one row or one column, primarly with one column.
 However, depending on the field you are working in, a vector can mean many different things. In computer science, a vector is just a list of numbers, i.e. a 1D array or n-tuple.
 The elements of a vector are more commonly called components rather than elements.
 
 In maths, a vector can be thought of as an arrow in space that have a starting and ending point, also reffered to as the tail and the head of the vector. Most commonly 
-vectors are denoted by a lowercase letter either in bold or with an arrow above it, e.g. $\vec{v}$ or $\boldsymbol{v}$. If the vector is defined by two points, $A$ and $B$, 
+vectors are denoted by a lowercase letter either in bold or with an arrow above it, e.g. $\vec{v}$ or $\boldsymbol{v}$. If the vector is defined by two coordinate points, $A$ and $B$, 
 then the vector is denoted as $\vec{AB}$, this type of vector is a position vector. Usually the starting point of the vector is at the origin,
-$(0, 0)$ in 2D space or $(0, 0, 0)$ in 3D space etc. making the head of the vector the point $(x, y)$ or $(x, y, z)$ etc.
+$(0, 0)$ in 2D space or $(0, 0, 0)$ in 3D space etc. making the head of the vector the point $(x, y)$ or $(x, y, z)$ etc. this vector is then in the standard position. However, 
+it is important to note that the vector is independent of the starting point, i.e. the vector is the same no matter where it starts only the direction and length of the vector matter.
 
 <Image
     src="/maths/vectorPosition.png"
@@ -36,11 +35,7 @@ The length of the vector represents the magnitude of the physical quantity, and 
     width={500}
     />
 
-## Basic Operations on Vectors and Matrices
-
-All the vector operations can be thought of as matrix operations, because a vector can be thought of as a matrix with one column.
-
-### Vector Addition
+## Vector Addition
 
 To add two vectors together, we simply add the corresponding components of the vectors together i.e. we just add element-wise. This also means that the two vectors 
 must have the same number of components/dimensions. This is equivalent to matrix addition.
@@ -87,7 +82,7 @@ $$
 $$
 </Callout>
 
-We can also visualize vector addition nicely in 2D and 3D space with position vectors. We can think of vector addition as moving the tail of the second vector to the head of the first vector. The 
+We can also visualize vector addition nicely in 2D and 3D space with position vectors. Geometrically we can think of vector addition as moving the tail of the second vector to the head of the first vector. The 
 resulting vector is the vector that starts at the tail of the first vector and ends at the head of the second vector.
 
 <Image
@@ -96,10 +91,10 @@ resulting vector is the vector that starts at the tail of the first vector and e
     width={400}
     />
 
-### Scalar Multiplication
+## Scalar Multiplication
 
 We can multiply a vector by a scalar, i.e. a number, by multiplying each component of the vector by the scalar. So if we have a vector $\boldsymbol{x}$ and a scalar $s$, 
-then we can multiply them together as follows:
+then we can multiply them together just like when we multiply a matrix by a scalar:
 
 $$
 s\boldsymbol{x} = s \begin{bmatrix}
@@ -133,7 +128,7 @@ $$
 $$
 </Callout>
 
-We can also visualize scalar multiplication nicely in 2D and 3D space. We can think of scalar multiplication as stretching or shrinking the vector by the scalar. This is 
+We can also visualize scalar multiplication nicely in 2D and 3D space. Geometrically we can think of scalar multiplication as stretching or shrinking the vector by the scalar. This is 
 why scalar multiplication is also called vector scaling and the number is called the scalar. If the scalar is negative, then the vector will be flipped around, i.e. it will
 point in the opposite direction.
 
@@ -143,7 +138,7 @@ point in the opposite direction.
     width={400}
     />
 
-### Subtraction
+## Subtraction
 
 Subtracting two vectors is the same as adding the first vector to the negative of the second vector, i.e. multiplying the second vector by $-1$. So if we have two vectors
 we can subtract them as follows:
@@ -191,15 +186,113 @@ vector, i.e. moving the tail of the second vector after flipping it to the head 
     width={400}
     />
 
+Another geometric interpretation of vector subtraction is that the resulting vector is the vector that points from the head of the second vector to the head of the first vector 
+after moving the tail of the second vector to the tail of the first vector. From this 
+interpretation, we can clearly see that the subtraction of two vectors is not commutative, i.e. the order in which we subtract the vectors matters as the resulting vector 
+will point in the opposite direction just like in normal subtraction, $1 - 2 = -1$ and $2 - 1 = 1$. If you think of $\boldsymbol{b} - \boldsymbol{a}$ as the vector $\boldsymbol{c}$, then 
+you can also see that $\boldsymbol{a} + \boldsymbol{c} = \boldsymbol{b}$ and after rewriting the equation we get $\boldsymbol{c} = \boldsymbol{b} - \boldsymbol{a}$ visually.
 
-### Matrix-Vector Multiplication
+<Image
+    src="/maths/vectorSubtractionGeometric.png"
+    caption="The geometric interpretation of vector subtraction."
+    width={500}
+    />
 
+## Multiplication between Vectors and Matrices
 
-#### Linear Combinations
+A vector can be left or right multiplied by a matrix. The multiplication between a vector and a matrix is defined just as the matrix multiplication so the dimensions of the two 
+must be compatible. If we have a matrix $\boldsymbol{A} \in \mathbb{R}^{m \times n}$ and a column vector $\boldsymbol{x} \in \mathbb{R}^{n \times 1}$, then we can multiply them together
+as follows:
 
-as a matrix times a vector can relate this back to a coefficient matrix and a solution vector.
+$$
+\begin{align*}
+\boldsymbol{A}\boldsymbol{x} &= \begin{bmatrix}
+    a_{11} & a_{12} & \dots & a_{1n} \\
+    a_{21} & a_{22} & \dots & a_{2n} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{m1} & a_{m2} & \dots & a_{mn}
+\end{bmatrix} \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix} \\
+&= \begin{bmatrix}
+    a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n \\
+    a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n \\
+    \vdots \\
+    a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n
+\end{bmatrix} = \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_m
+\end{bmatrix}
+\end{align*}
+$$
 
-#### Linear Independence
+As we can see from the definition above, the result is another column vector with $m$ components. We can also see that the resulting vector is a linear combination of the columns of the matrix $\boldsymbol{A}$ where 
+the weights are the components of the vector $\boldsymbol{x}$. This is why when the matrix is square the multiplication is often called a linear transformation, because it transforms the vector into another vector.
+If the vector is on the left side of the matrix, then the vector needs to be transposed for the multiplication to work, i.e. the dimensions of the vector must be compatible with the matrix. 
+So if we have a row vector $\boldsymbol{x}^T \in \mathbb{R}^{1 \times n}$ and a matrix $\boldsymbol{A} \in \mathbb{R}^{n \times m}$, then we can multiply them together as follows:
+
+$$
+\begin{align*}
+\boldsymbol{x}^T\boldsymbol{A} &= \begin{bmatrix}
+    x_1 & x_2 & \dots & x_n
+\end{bmatrix} \begin{bmatrix}
+    a_{11} & a_{12} & \dots & a_{1m} \\
+    a_{21} & a_{22} & \dots & a_{2m} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{n1} & a_{n2} & \dots & a_{nm}
+\end{bmatrix} \\
+&= \begin{bmatrix}
+    x_1a_{11} + x_2a_{21} + \dots + x_na_{n1} & \dots & x_1a_{1m} + x_2a_{2m} + \dots + x_na_{nm}
+\end{bmatrix} = \begin{bmatrix}
+    y_1 & y_2 & \dots & y_m
+\end{bmatrix}
+\end{align*}
+$$
+
+Just like when right multiplying a vector by a matrix, the result is a row vector with $m$ components. We can also see that the resulting vector is a linear combination of the rows of the matrix $\boldsymbol{A}$ where
+the weights are the components of the vector $\boldsymbol{x}$.
+
+<Callout type="example">
+A right multiplication of a matrix and a vector:
+
+$$
+\begin{bmatrix}
+    1 & 2 \\
+    3 & 4
+\end{bmatrix} \begin{bmatrix}
+    5 \\
+    6
+\end{bmatrix} = \begin{bmatrix}
+    1 \cdot 5 + 2 \cdot 6 \\
+    3 \cdot 5 + 4 \cdot 6
+\end{bmatrix} = \begin{bmatrix}
+    17 \\
+    39
+\end{bmatrix}
+$$
+
+A left multiplication of a matrix and a vector:
+
+$$
+\begin{bmatrix}
+    5 & 6
+\end{bmatrix} \begin{bmatrix}
+    1 & 2 \\
+    3 & 4
+\end{bmatrix} = \begin{bmatrix}
+    5 \cdot 1 + 6 \cdot 3 & 5 \cdot 2 + 6 \cdot 4
+\end{bmatrix} = \begin{bmatrix}
+    23 & 34
+\end{bmatrix}
+$$
+</Callout>
+
+## Linear Independence
 
 Two vectors are linearly independent if neither of them can be written as a linear combination of the other. In other words, two vectors are linearly independent if 
 they are not scalar multiples of each other. It is however easier to find to define and check for linear dependence. The vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ 
@@ -263,11 +356,11 @@ $$
 then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly independent because no scalar multiple of $\boldsymbol{b}$ can be equal to $\boldsymbol{a}$.
 </Callout>
 
-##### Linear Independence of More Than Two Vectors
+### Linear Independence of More Than Two Vectors
 
 Never used this.
 
-### Dot Product
+## Dot Product
 
 The dot product or also called the inner product is the most common type of vector multiplication. This is defined 
 just like the matrix multiplication. However, so the dimensions of the two vectors must be the same. To achieve this,
@@ -335,7 +428,7 @@ $$
 $$
 </Callout>
 
-### Norms
+## Norms
 
 A norm is a function denoted by $\|\cdot\|$ that maps vectors to real values and satisfies the following properties:
 
@@ -350,7 +443,7 @@ also known as the Manhattan and Euclidean norms respectively. The $L_p$ norm is 
 two vertical bars, e.g. $\|\boldsymbol{x}\|$, and the subscript denotes the type of norm, e.g. $\|\boldsymbol{x}\|_1$ or $\|\boldsymbol{x}\|_2$ etc. If 
 the subscript is omitted, then the $L_2$ norm is assumed.
 
-#### Manhattan Norm
+### Manhattan Norm
 
 The Manhattan norm or $L_1$ norm is defined as the sum of the [absolute values](/digitalGarden/maths/commonFunctions/absolute) of the vector's components. 
 
@@ -386,7 +479,7 @@ $$
 $$
 </Callout>
 
-#### Euclidean Norm
+### Euclidean Norm
 
 As the name suggests, the Euclidean norm or $L_2$ norm is the distance between two points in Euclidean space, i.e. the straight line distance between two points. 
 For the 2D case, the Euclidean norm is just the Pythagorean theorem, i.e the length of the hypotenuse of a right-angled triangle.
@@ -407,7 +500,7 @@ $$
     width={400}
     />
 
-##### Schwarz Inequality
+#### Schwarz Inequality
 
 The Schwarz inequality states that the dot product of two vectors is always less than or equal to the product of the two vectors' norms.
 
@@ -421,7 +514,7 @@ This inequality is also called the Cauchy-Schwarz inequality.
 Equality holds if and only if one of the vectors is a scalar multiple of the other vector, i.e. the vectors are linearly dependent.
 </Callout>
 
-##### Triangle Inequality
+#### Triangle Inequality
 
 For a norm to be a norm, one of the properties it must satisfy is the triangle inequality. 
 The triangle inequality states that the norm of the sum of two vectors is less than or equal to the sum of 
@@ -435,7 +528,7 @@ $$
 Can be derived from the Schwarz inequality.
 </Callout>
 
-#### P-Norm
+### P-Norm
 
 The idea of the $L_p$ norm is to generalize the $L_1$ and $L_2$ norms. The $L_p$ norm is defined as:
 
@@ -474,7 +567,7 @@ $$
 $$
 </Callout>
 
-### Meaning of the Dot Product
+## Meaning of the Dot Product
 
 The question now is what is the dot product actually? 
 
@@ -526,7 +619,7 @@ $$
 $$
 </Callout>
 
-#### Orthogonal Vectors
+### Orthogonal Vectors
 
 We call two vectors orthogonal if the angle between them is 90 degrees, i.e. they are perpendicular to each other. If two vectors are orthogonal, then their dot product is 
 zero, because $\cos(90) = 0$. So if we have two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, then we can check if they are orthogonal as follows:
@@ -535,11 +628,105 @@ $$
 \boldsymbol{x} \cdot \boldsymbol{y} = 0
 $$
 
-### Outer Product
+## Outer Product
 
-### Vector Projection
+The outer product of two vectors is the opposite of the dot product. The outer product of two vectors results in a matrix. So if we have two vectors $\boldsymbol{x} \in \mathbb{R}^{m \times 1}$ and $\boldsymbol{y} \in \mathbb{R}^{n \times 1}$, 
+then we can multiply them together as follows to get a matrix $\boldsymbol{A} \in \mathbb{R}^{m \times n}$. The outer product can be denoted as a matrix multiplication or as with the symbol $\otimes$.
 
-### Normalization
+$$
+\boldsymbol{A} = \boldsymbol{x}\boldsymbol{y}^T = \boldsymbol{x} \otimes \boldsymbol{y} = \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_m
+\end{bmatrix} \begin{bmatrix}
+    y_1 & y_2 & \dots & y_n
+\end{bmatrix} = \begin{bmatrix}
+    x_1y_1 & x_1y_2 & \dots & x_1y_n \\
+    x_2y_1 & x_2y_2 & \dots & x_2y_n \\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_my_1 & x_my_2 & \dots & x_my_n
+\end{bmatrix}
+$$
+
+Or more formally:
+
+$$
+(\boldsymbol{A})_{ij} = (\boldsymbol{x}\boldsymbol{y}^T)_{ij} = (\boldsymbol{x} \otimes \boldsymbol{y})_{ij} = x_iy_j
+$$
+
+From above we can see that the outer product of two vectors results in a matrix where the columns are the first vector scaled by the components of the second vector and the rows are the second vector scaled by the components of the first vector.
+So the matrix forms a dependent set of vectors, i.e. the columns/rows of the matrix are linearly dependent. Because the size of largest set of linearly independent vectors is 1, the rank of the matrix is 1.
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \begin{bmatrix}
+    4 & 5 & 6
+\end{bmatrix} = \begin{bmatrix}
+    1 \cdot 4 & 1 \cdot 5 & 1 \cdot 6 \\
+    2 \cdot 4 & 2 \cdot 5 & 2 \cdot 6 \\
+    3 \cdot 4 & 3 \cdot 5 & 3 \cdot 6
+\end{bmatrix} = \begin{bmatrix}
+    4 & 5 & 6 \\
+    8 & 10 & 12 \\
+    12 & 15 & 18
+\end{bmatrix}
+$$
+</Callout>
+
+### Matrix Multiplication as Outer Product
+A fourth view of matrix multiplication is that it is the sum of the outer products of the columns of the first matrix and the rows of the second matrix. 
+So you can interpret each outer product as a layer of the resulting matrix. This in turn shows that any matrix can be written as a sum of rank 1 matrices.
+
+<Image
+    src="/maths/matrixMultiplicationLayer.png"
+    caption="Matrix multiplication as the sum of the outer products of the columns of the first matrix and the rows of the second matrix."
+    width={600}
+    />
+
+<Callout type="example">
+The matrix multiplication of two matrices $\boldsymbol{A}$ and $\boldsymbol{B}$ can be written as the sum of the outer products of the columns of $\boldsymbol{A}$ and the rows of $\boldsymbol{B}$.
+
+$$
+\begin{align*}
+\begin{bmatrix}
+    1 & 2 \\
+    3 & 4
+\end{bmatrix} \begin{bmatrix}
+    a & b \\
+    c & d
+\end{bmatrix} &= \begin{bmatrix}
+    1 \\
+    3
+\end{bmatrix} \begin{bmatrix}
+    a & b
+\end{bmatrix} + \begin{bmatrix}
+    2 \\
+    4
+\end{bmatrix} \begin{bmatrix}
+    c & d
+\end{bmatrix} \\
+&= \begin{bmatrix}
+    1 \cdot a & 1 \cdot b \\
+    3 \cdot a & 3 \cdot b
+\end{bmatrix} + \begin{bmatrix}
+    2 \cdot c & 2 \cdot d \\
+    4 \cdot c & 4 \cdot d
+\end{bmatrix} = \begin{bmatrix}
+    a + 2c & b + 2d \\
+    3a + 4c & 3b + 4d
+\end{bmatrix}
+\end{align*}
+$$
+</Callout>
+
+## Vector Projection
+
+## Normalization
 
 Normalizing means to bring something into some sort of normal or standard state. In the case of vectors, normalizing means to scale the vector in a way that it's length is 
 equal to one. Often we denote a normalized vector by adding a hat to the vector, e.g. $\hat{\boldsymbol{x}}$ is the normalized vector of $\boldsymbol{x}$. So we can 
@@ -560,7 +747,7 @@ normalized vectors are also called unit vectors and if they are placed at the or
     width={400}
     />
 
-#### Orthonormal Vector
+### Orthonormal Vector
 
 We can now combine the idea of orthogonal vectors and normalized vectors to get orthonormal vectors. Orthonormal vectors are vectors that are orthogonal to each other and 
 have a length of one. 
@@ -571,7 +758,7 @@ have a length of one.
     width={500}
     />
 
-#### Standard Unit Vectors
+### Standard Unit Vectors
 
 An example of orthonormal vectors are the standard unit vectors. The standard unit vectors can be thought of as the vectos that correspond to the axes of a coordinate system.
 Later on we will see that these vectors can be used to span any vector space and form the standard basis of the vector space. The standard unit vectors are denoted as 
