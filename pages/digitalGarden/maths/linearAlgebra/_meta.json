@@ -13,8 +13,10 @@
   "qrDecomposition": "QR Decomposition",
   "eigenvaluesEigenvectors": "Eigenvalues and Eigenvectors",
   "svd": "SVD - Singular Value Decomposition",
-  "pca": "PCA - Principal Component Analysis",
   "moorePenrose": "Moore-Penrose Pseudoinverse",
+  "quadraticForms": "Quadratic Forms",
+  "definiteness": "Definiteness of a Matrix",
+  "pca": "PCA - Principal Component Analysis",
   "hadamardProduct": "Hadamard Product",
   "crossProduct": "Cross Product",
   "broadcasting": "Broadcasting"
