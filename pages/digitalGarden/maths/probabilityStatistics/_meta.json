@@ -6,6 +6,6 @@
   "independentRandomVariables": "Independent Random Variables",
   "markovChains": "Markov Chains",
   "queueingTheory": "Queueing theory",
-  "covariance": "Covariance",
+  "stdVarianceCovariance": "Standard Deviation, Variance and Covariance",
   "randomStuff": "Random Stuff"
 }
