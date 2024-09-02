@@ -459,7 +459,48 @@ and then we show that this assumption leads to a contradiction. This is the same
 
 ## Proof by Induction
 
-well ordering principle or property ???
+We have all been introduced to one of the problems that gauss solved as a child. The problem was to find the sum of the first $n$ natural numbers. 
+Gauss solved this problem by noticing that the sum of the first $n$ natural numbers can be written as follows:
+
+$$
+\sum_{i=1}^{n} i = 1 + 2 + 3 + \ldots + n = \frac{n(n+1)}{2}
+$$
+
+The question now is how could we actually prove this? I visual proof would be to write out the first $n$ natural numbers in a row and then write them out in reverse order below. 
+Then we can see that the sum of the first and last number is $n+1$, the sum of the second and second to last number is $n+1$ and so on. 
+
+||||||||
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|$1$| $2$| $3$| $\ldots$| $n-2$| $n-1$| $n$|
+|$n$| $n-1$| $n-2$| $\ldots$| $3$| $2$| $1$|
+|$n + 1$| $n + 1$| $n + 1$| $\ldots$| $n + 1$| $n + 1$| $n + 1$|
+
+So the result of the first $n$ natural numbers is $n(n+1)$. However, we can see that we have counted each number twice so we must divide by 2 to get the result $\frac{n(n+1)}{2}$. 
+The problem with this proof is that it is not a proof but rather an explanation of why the formula is true, we want to prove that the formula is true for all $n$. 
+
+This type of proof is often used in computer sciene where we want to prove that an algorithm has a certain time complexity. In those proofs we often have some recursive relation and using telescoping sums we can find a closed form solution to the sum.
+We can then prove that the closed form solution is the same as the recursive relation by using proof by induction.
+
+This is where proof by induction comes in. We want to prove the statement "For all $n \in \mathbb{N}$ the sum of the first $n$ natural numbers is $\frac{n(n+1)}{2}$". We notice 
+that this statement is a universally quantified statement and could therefore also be written as a list of statements:
+
+$$
+\begin{align*}
+1 &= \frac{1(1+1)}{2} \\
+1 + 2 &= \frac{2(2+1)}{2} \\
+1 + 2 + 3 &= \frac{3(3+1)}{2} \\
+&\vdots \\
+\sum_{i=1}^{n} i &= \frac{n(n+1)}{2}
+\end{align*}
+$$
+
+Proof by induction is exactly for this case where we have an infinite number of statements that we want to prove. 
+The structure of a proof by induction is as follows:
+- **Base Case**: Prove that the statement is true for the first element, $n=1$.
+- **Inductive Hypothesis**: Assume that the statement is true for some $n=k$.
+- **Inductive Step**: Show that if the statement is true for $n=k$ then it is also true for $n=k+1$. Notice that this is an implication, so we are proving a conditional statement.
+
+The analogy for why this works can be seen as a row of dominos. If we can show that the first domino falls (is true) and show that if the $k$'th domino falling causes the $k+1$'th domino to fall then all dominos must fall.
 
 <Image 
     src="/maths/proofsInduction.png"
@@ -467,11 +508,45 @@ well ordering principle or property ???
     width={600}
 />
 
+<Callout type="proof">
+**The statements $S_1, S_2, S_3, \ldots$ are all true.**
+
+Proof: 
+
+1. **Base Case**: Show that $S_1$ is true.
+2. **Inductive Hypothesis**: Assume that $S_k$ is true for some $k$.
+3. **Inductive Step**: Show that if $S_k$ is true then $S_{k+1}$ is true, so $S_k \implies S_{k+1}$.
+
+Therefore, the statements $S_1, S_2, S_3, \ldots$ are all true. $\blacksquare$
+</Callout>
+
+Because of the inductive hypothesis we know that the statement is true for $n=k$ so the left hand side of the implication is true.
+Then we must show that the statement is true for $n=k+1$ so the right hand side of the implication is true. This often 
+involves some algebraic manipulation using the inductive hypothesis to show that the statement is true for $n=k+1$.
+
+<Callout type="example">
+**For all $n \in \mathbb{N}$, the sum of the first $n$ natural numbers is $\frac{n(n+1)}{2}$.**
+
+Proof:
+1. **Base Case**: For $n=1$, the sum of the first natural number is $1 = \frac{1(1+1)}{2} = \frac{2}{2} = 1$.
+2. **Inductive Hypothesis**: Assume that the sum of the first $k$ natural numbers is $\frac{k(k+1)}{2}$.
+3. **Inductive Step**: Show that if the sum of the first $k$ natural numbers is $\frac{k(k+1)}{2}$ then the sum of the first $k+1$ natural numbers is $\frac{(k+1)(k+2)}{2}$.
+- Because of the inductive hypothesis we know the sum of the first $k$ natural numbers is $\frac{k(k+1)}{2}$.
+- So we must show that the sum of the first $k+1$ natural numbers is $\frac{(k+1)(k+2)}{2}$.
+- The sum of the first $k+1$ natural numbers is $1 + 2 + 3 + \ldots + k + (k+1)$.
+- By the inductive hypothesis we know that the sum of the first $k$ natural numbers is $\frac{k(k+1)}{2}$.
+- So the sum of the first $k+1$ natural numbers is $\frac{k(k+1)}{2} + (k+1) = \frac{k(k+1) + 2(k+1)}{2} = \frac{(k+1)(k+2)}{2}$.
+
+Therefore, for all $n \in \mathbb{N}$, the sum of the first $n$ natural numbers is $\frac{n(n+1)}{2}$. $\blacksquare$
+</Callout>
+
 ### Strong Induction
 
 hard to show that S_k implies S_k+1 but can show that some lower S_m implies S_k+1 for m < k
 
 Assume that all S_k are true for k < n and show that this forces S_k+1 to be true.
+
+Why do I need multiple base cases?
 
 ### Smallest Counterexample
 
