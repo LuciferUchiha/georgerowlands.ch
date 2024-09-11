@@ -28,5 +28,5 @@
   "linkAnalysis": "Link Analysis",
   "pageRank": "PageRank",
   "gnn": "Graph Neural Networks",
-  "rnn": "Recurrent Neural Networks"
+  "llms": "Large Language Models"
 }
