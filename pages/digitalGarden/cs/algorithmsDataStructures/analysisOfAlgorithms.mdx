@@ -209,7 +209,7 @@ T(1) = 1
 T(2) = 3
 T(n) = 3n^log2(3)
 
-## Big Omega
+## Big Omega and Big Theta
 
 Unlike Big O which is an upper bound on the growth rate of a function, Big Omega is a lower bound on the growth rate of a function. In simpler terms, Big Omega is used to describe the best-case scenario of an algorithm.
 More formally, a function $f(n)$ is said to be in $\Omega(g(n))$ where $g(n)$ is a growth function and the following condition is satisfied for all $n > n_0$:
@@ -218,8 +218,6 @@ $$
 f(n) \in \Omega(g(n)) \iff \exists c > 0, n_0 > 0 \text{ such that } f(n) \geq c \cdot g(n)
 $$
 
-## Big Theta
-
 Big Theta combines the concepts of Big O and Big Omega. It is used to describe the tight bound on the growth rate of a function meaning it gives both an upper and lower bound on the growth rate of a function. 
 More formally, a function $f(n)$ is said to be in $\Theta(g(n))$ where $g(n)$ is a growth function and the following condition is satisfied for all $n > n_0$:
 
@@ -227,21 +225,37 @@ $$
 f(n) \in \Theta(g(n)) \iff \exists c_1, c_2 > 0, n_0 > 0 \text{ such that } c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)
 $$
 
-## Average Case Analysis
-
-Using probability to find the average case time complexity of an algorithm. Seems annoying.
+<Image 
+    src="/cs/algdAsymptoticNotations.png"
+    width="800"
+/>
 
 ## Master Theorem
 
-### Standard Form
+The master theorem is a formula for quickly determining the time complexity of divide-and-conquer algorithms. 
+More specifically, it determines the tight asymptotic bound theta $\Theta(g(n))$ for the time complexity of an algorithm that can be expressed as a reccurance relation.
+It requires the reccurance relation to be in a specific form, but if it is then the time complexity can be determined by just 
+simply looking at the reccurance relation and extracting parameters from it. The reccurance relation needs to be in the form:
 
 $$
 T(n) = aT\left(\frac{n}{b}\right) + f(n)
 $$
 
-### Non-Standard Form
+We can then determine the time complexity of the algorithm by looking at the parameters $a$, $b$ and the function $f(n)$. 
+We also need to calculate the following value which is the relationship between the number of subproblems and the size of the subproblems:
+
+$$
+c_{\text{crit}} = \log_b a = \frac{\log_2 a}{\log_2 b} = \frac{\text{log of # subproblems}}{\text{log of relative size of subproblems}}
+$$
+
+The master theorem then determines the time complexity based on the following three cases:
 
 Doesnt work for all cases, like fibonacci. Solve using telescoping.
+
+## Average Case Analysis
+
+Using probability to find the average case time complexity of an algorithm. Seems annoying.
+Shows that the average case time complexity of quicksort is $O(n \log n)$.
 
 ## Amortized Analysis
 
