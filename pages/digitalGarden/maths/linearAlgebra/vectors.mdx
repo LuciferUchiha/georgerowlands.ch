@@ -623,18 +623,63 @@ $$
     width={400}
     />
 
-#### Schwarz Inequality
+#### Cauchy-Schwarz Inequality
 
-The Schwarz inequality states that the dot product of two vectors is always less than or equal to the product of the two vectors' norms.
+The Cauchy-Schwarz inequality states that the dot product of two vectors is always less than or equal to the product of the two vectors' norms.
 
 $$
 |\boldsymbol{x} \cdot \boldsymbol{y}| \leq \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
 $$
 
-This inequality is also called the Cauchy-Schwarz inequality. 
-
 <Callout type="proof">
-Equality holds if and only if one of the vectors is a scalar multiple of the other vector, i.e. the vectors are linearly dependent.
+We want to prove that for any two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, the inequality holds.
+
+**Case 1**: When one of the vectors is the zero vector
+
+If one of the vectors is the zero vector, then the inequality holds because the dot product is zero and the product of the norms are also zero. 
+So then the inequality becomes:
+
+$$
+0 \leq 0
+$$
+
+**Case 2**: If both vectors are unit vectors
+
+If both vectors are unit vectors, then the inequality becomes the following:
+
+$$
+|\boldsymbol{x} \cdot \boldsymbol{y}| \leq 1
+$$
+
+We can then rewrite the dot product as the cosine of the angle between the two vectors, because the norms are one this also simplifies to:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{y} = \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 \cos(\theta) = \cos(\theta)
+$$
+
+The cosine of the angle between two vectors is always between -1 and 1. The inequality however also takes the absolute value of the dot product, so the inequality holds.
+
+$$
+|\boldsymbol{x} \cdot \boldsymbol{y}| = |\cos(\theta)| \leq 1
+$$
+
+**Case 3**: Any two vectors
+
+If the vectors are not unit vectors, then we can scale the vectors to be unit vectors. We don't need to worry about dividing by zero as we've already shown, if any of the vectors is the zero vector the inequality becomes zero.
+
+$$
+\boldsymbol{u} = \frac{\boldsymbol{x}}{\|\boldsymbol{x}\|_2} \quad \text{and} \quad \boldsymbol{v} = \frac{\boldsymbol{y}}{\|\boldsymbol{y}\|_2}
+$$
+
+From above we know that $|\boldsymbol{u} \cdot \boldsymbol{v}| \leq 1$, so we can write the following:
+
+$$
+\begin{align*}
+\boldsymbol{x} \cdot \boldsymbol{y} &= \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 (\boldsymbol{u} \cdot \boldsymbol{v}) \\
+|\boldsymbol{x} \cdot \boldsymbol{y}| &= \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 |\boldsymbol{u} \cdot \boldsymbol{v}| \\
+|\boldsymbol{x} \cdot \boldsymbol{y}| &\leq \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
+\end{align*}
+$$
 </Callout>
 
 #### Triangle Inequality
