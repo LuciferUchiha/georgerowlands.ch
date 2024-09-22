@@ -684,16 +684,47 @@ $$
 
 #### Triangle Inequality
 
-For a norm to be a norm, one of the properties it must satisfy is the triangle inequality. 
-The triangle inequality states that the norm of the sum of two vectors is less than or equal to the sum of 
-the norms of the two vectors.
+The triangle inequality states that the norm of the sum of two vectors is less than or equal to the sum of the norms of the two vectors.
 
 $$
 \|\boldsymbol{x} \pm \boldsymbol{y}\|_2 \leq \|\boldsymbol{x}\|_2 \pm \|\boldsymbol{y}\|_2
 $$
 
+This can also visually be seen in the 2D case, where the direct path from one point to another is always shorter than the path that goes through another point. Or also that 
+the hypotenuse of a triangle is always shorter than the sum of the other two sides.
+
+vectorTriangleInequality.png
+<Image
+    src="/maths/vectorTriangleInequality.png"
+    width={400}
+    />
+
 <Callout type="proof">
-Can be derived from the Schwarz inequality.
+Let's first look at the norm of the sum of two vectors squared.
+
+$$
+\begin{align*}
+\|\boldsymbol{x} + \boldsymbol{y}\|_2^2 &= (\boldsymbol{x} + \boldsymbol{y}) \cdot (\boldsymbol{x} + \boldsymbol{y}) \\
+&= \boldsymbol{x} \cdot \boldsymbol{x} + \boldsymbol{x} \cdot \boldsymbol{y} + \boldsymbol{y} \cdot \boldsymbol{x} + \boldsymbol{y} \cdot \boldsymbol{y} \\
+&= \|\boldsymbol{x}\|_2^2 + 2\boldsymbol{x} \cdot \boldsymbol{y} + \|\boldsymbol{y}\|_2^2
+\end{align*}
+$$
+
+Now we can use the Cauchy-Schwarz inequality on the middle term and get:
+
+$$
+2\boldsymbol{x} \cdot \boldsymbol{y} \leq 2\|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
+$$
+
+So we can rewrite the norm of the sum of two vectors squared and take the square root to get the triangle inequality.
+
+$$
+\begin{align*}
+\|\boldsymbol{x} + \boldsymbol{y}\|_2^2 &\leq \|\boldsymbol{x}\|_2^2 + 2\|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 + \|\boldsymbol{y}\|_2^2 \\
+&= (\|\boldsymbol{x}\|_2 + \|\boldsymbol{y}\|_2)^2 \\
+\|\boldsymbol{x} + \boldsymbol{y}\|_2 &\leq \|\boldsymbol{x}\|_2 + \|\boldsymbol{y}\|_2
+\end{align*}
+$$
 </Callout>
 
 ### P-Norm
