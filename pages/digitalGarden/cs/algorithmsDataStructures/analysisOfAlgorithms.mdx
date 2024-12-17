@@ -10,7 +10,8 @@ This can be done by running the algorithm on inputs of various sizes and benchma
 Thus, a more abstract approach is needed, where we analyze algorithms in terms of time and space complexity which focuses on how an algorithm behaves as the input size grows.
 
 In time complexity analysis, we measure the number of basic operations an algorithm performs relative to the size of the input, often focusing on the worst-case scenario. 
-While some operations like addition may be considered "cheap" or fast, we focus on more expensive operations like multiplications, comparisons, and data movements (e.g., swaps).
+While some operations like addition may be considered "cheap" or fast, we focus on more expensive operations like multiplications, comparisons, and data movements (e.g., swaps). 
+For example on the Intel Sandy Bridge(2011-2013) an addition is 3 cycles, and a multiplication is 5. However, this can change with different hardware and depends if SIMD instructions are used which can do multiple operations in parallel.
 
 Similarly, space complexity measures the amount of memory an algorithm uses as the input size increases. For instance, an algorithm might use a constant amount of memory, or it might require additional memory proportional to the size of the input, such as a complete copy of the input data.
 
@@ -196,18 +197,103 @@ This recursive relation makes sense if you think about multiplying two numbers r
 
 From the closed-form solution, we can quickly see that the time complexity of standard multiplication is $O(n^2)$. We can set $c = 1$ and $n_0 = 1$ to satisfy the inequality $T(n) \leq c \cdot n^2$ for all $n \geq n_0$.
 
-### Karatsuba
+### Karatsuba Algorithm
 
-uses more additions but fewer multiplications, divide and conquer algorithm
+The Karatsuba algorithm, named after Anatolii Karatsuba, was discovered in 1960 and revolutionized the multiplication of large numbers. Before Karatsuba's work, it was generally believed that $O(n^2)$ was the best possible time complexity for multiplying two numbers.
+However, with Karatsuba's algorithm demonstrated it is possible to perform multiplication faster than the standard approach by reducing the number of multiplicative operations at the expense of a few more additions which are considered by far cheaper on most hardware.
 
-for simplicity, assume n is a power of 2 because we need to divide the numbers in half. However then after need to take 
-some logs to get the correct time complexity based on n so we can compare the two algorithms.
+The Karatsuba algorithm uses a divide and conquer approach, splitting each number into two smaller parts, multiplying them recursively, and combining the results in a clever way to remove a multiplication operation. 
+The algorithm is as follows for multiplying two $n$-digit numbers $x$ and $y$ where we assume $n$ is a power of 2 for easier splitting:
 
-example
+$$
+(10^{n/2}a + b)(10^{n/2}c + d) = 10^n \textcolor{red}{a \cdot c} + 10^{n/2} \textcolor{red}{a \cdot c} + 10^{n/2} \textcolor{green}{b \cdot d} + \textcolor{green}{b \cdot d} + 10^{n/2} \textcolor{orange}{(a - b) \cdot (d - c)}
+$$
 
-T(1) = 1
-T(2) = 3
-T(n) = 3n^log2(3)
+Where $a$ and $b$ are the first and second half of $x$ and $c$ and $d$ are the first and second half of $y$. The algorithm then recursively calculates the following three multiplications recursively:
+- $\textcolor{red}{a \cdot c}$
+- $\textcolor{green}{b \cdot d}$
+- $\textcolor{orange}{(a - b) \cdot (d - c)}$
+
+<Image 
+    src="/cs/algdKaratsuba.png"
+    caption="Karatsuba algorithm for multiplying two numbers."
+    width="600"
+/>
+
+We can quiet easily see that the reccurance relation for the Karatsuba algorithm is as follows if we only focus on the number of multiplications:
+
+$$
+T(2^k) = \begin{cases}
+1 & \text{if } k = 0 \\
+3T(2^{k-1}) & \text{if } k > 0
+\end{cases}
+$$
+
+This is because for the base case where $n=1$ so $k=0$ we only need 1 multiplication and then if we want to multiply two numbers with two digits we need to perform 3 multiplications and then for two numbers with 4 digits we need to perform 3 times a multiplication of two numbers with 2 digits etc.
+Using telescoping we can find the closed form solution and then show the time complexity of the Karatsuba algorithm.
+
+$$
+\begin{align*}
+l=1 \quad T(2^k) &= 3T(2^{k-1}) \\
+l=2 \quad T(2^k) &= 3(3T(2^{k-2})) = 3^2T(2^{k-2}) \\
+l=3 \quad T(2^k) &= 3^2(3T(2^{k-3})) = 3^3T(2^{k-3}) \\
+l=4 \quad T(2^k) &= 3^3(3T(2^{k-4})) = 3^4T(2^{k-4}) \\
+\end{align*}
+$$
+
+We can see the pattern is as follows:
+
+$$
+T(2^k) = 3^kT(2^0) = 3^k
+$$
+
+<Callout type="proof">
+Proof by induction that $T(2^k) = 3^k$ is the correct closed form solution to the reccurance relation $T(2^k) = 3T(2^{k-1})$ with $T(1) = 1$.
+
+1. Base case: $T(1) = T(2^0) = 1 = 3^0$ which is true.
+2. Inductive hypothesis: Assume $T(2^k) = 3^k$ is true for some $k \geq 0$.
+3. Inductive step: Show that if the hypothesis is true for $k$ then it is also true for $k+1$.
+- $T(2^{k+1}) = 3T(2^k) = 3 \cdot 3^k = 3^{k+1}$
+
+Therefore, by induction $T(2^k) = 3^k$ is the correct closed form solution to the reccurance relation $T(2^k) = 3T(2^{k-1})$ with $T(1) = 1$.
+</Callout>
+
+However, we want the time complexity in terms of $n$ not $k$ so we need to find the relationship between $n$ and $k$. We know that $n = 2^k$ so $k = \log_2 n$. We can then substitute $k = \log_2 n$ and use 
+the fact that any number can be written as $a^{\log_a b} = b$ and the Logarithmic identity $\log_a b \cdot \log_b a = 1$ to get the time complexity in terms of $n$:
+
+$$
+T(n) = 3^{\log_2 n} = (2^{\log_2 3})^{\log_2 n} = 2^{\log_2 3 \cdot \log_2 n} = n^{\log_2 3} \approx n^{1.58}
+$$
+
+Therefore, the time complexity of the Karatsuba algorithm is $O(n^{1.58})$ which is faster than the standard multiplication algorithm with time complexity $O(n^2)$.
+
+<Callout type="example">
+Let's first show how it works for multiplying two 2-digit numbers $23 \cdot 56$ so where $n=1$ and $a=2$, $b=3$, $c=5$ and $d=6$.
+
+$$
+\begin{align*}
+62 \cdot 37 &= (10^{2/2} \cdot 6 + 2)(10^{2/2} \cdot 3 + 7) \\
+&= 10^2 \textcolor{red}{6 \cdot 3} + 10^{2/2} \textcolor{red}{6 \cdot 3} + 10^{2/2} \textcolor{green}{2 \cdot 7} + \textcolor{green}{2 \cdot 7} + 10^{2/2} \textcolor{orange}{(6 - 2) \cdot (7 - 3)} \\
+&= 10^2 \cdot \textcolor{red}{18} + 10^{2/2} \cdot \textcolor{red}{18} + 10^{2/2} \cdot \textcolor{green}{14} + \textcolor{green}{14} + 10^{2/2} \cdot \textcolor{orange}{16} \\
+&= 1800 + 180 + 140 + 14 + 160 \\
+&= 2294
+\end{align*}
+$$
+
+If we now use the Karatsuba algorithm to multiply two 4-digit numbers $6237 \cdot 5898$ it get's a bit more complicated by hand but the algorithm is the same. We split the numbers into two parts and then recursively multiply them:
+
+$$
+\begin{align*}
+6237 \cdot 5898 &= (10^{4/2} \cdot 62 + 37)(10^{4/2} \cdot 58 + 98) \\
+&= 10^4 \textcolor{red}{62 \cdot 58} + 10^{4/2} \textcolor{red}{62 \cdot 58} + 10^{4/2} \textcolor{green}{37 \cdot 98} + \textcolor{green}{37 \cdot 98} + 10^{4/2} \textcolor{orange}{(62 - 37) \cdot (98 - 58)} \\
+\textcolor{red}{62 \cdot 58} &= 10^2 6 \cdot 5 + 10^1 6 \cdot 5 + 10^1 2 \cdot 8 + 2 \cdot 8 + 10^1 (6 - 2) \cdot (8 - 5) \\
+&= 3000 + 300 + 160 + 16 + 120 \\
+&= 3596
+\text{... and so on for the other recursive multiplications}
+\end{align*}
+$$
+
+</Callout>
 
 ## Big Omega and Big Theta
 

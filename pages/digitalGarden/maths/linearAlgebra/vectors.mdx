@@ -83,7 +83,7 @@ $$
 </Callout>
 
 We can also visualize vector addition nicely in 2D and 3D space with position vectors. Geometrically we can think of vector addition as moving the tail of the second vector to the head of the first vector. The 
-resulting vector is the vector that starts at the tail of the first vector and ends at the head of the second vector.
+resulting vector is the vector that starts at the tail of the first vector and ends at the head of the second vector. This also results in the the two vectors forming the sides of a parallelogram.
 
 <Image
     src="/maths/vectorAddition.png"
@@ -198,6 +198,129 @@ you can also see that $\boldsymbol{a} + \boldsymbol{c} = \boldsymbol{b}$ and aft
     width={500}
     />
 
+## Linear Combination
+
+If we combine the concepts of vector addition and scalar multiplication, we get the concept of a linear combination. A linear combination of vectors is the sum of the vectors scaled by some scalars.
+So if we have a set of vectors $\boldsymbol{v}_1, \boldsymbol{v}_2, \dots, \boldsymbol{v}_n$ and a set of scalars $s_1, s_2, \dots, s_n$, then we can combine them as follows:
+
+$$
+s_1\boldsymbol{v}_1 + s_2\boldsymbol{v}_2 + \dots + s_n\boldsymbol{v}_n = \sum_{i=1}^n s_i\boldsymbol{v}_i = \boldsymbol{x}
+$$
+
+The scalars $s_1, s_2, \dots, s_n$ are the weights of the vectors, i.e. they determine how much each vector contributes to the resulting vector.
+
+<Callout type="example">
+If $\boldsymbol{v}$ and $\boldsymbol{w}$ are defined as:
+
+$$
+\boldsymbol{v} = \begin{bmatrix}
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{w} = \begin{bmatrix}
+    3 \\
+    -1
+\end{bmatrix}
+$$
+
+We can combine them as follows:
+
+$$
+2\boldsymbol{v} + -1\boldsymbol{w} = 2\begin{bmatrix}
+    2 \\
+    3
+\end{bmatrix} + -1\begin{bmatrix}
+    3 \\
+    -1
+\end{bmatrix} = \begin{bmatrix}
+    4 \\
+    6
+\end{bmatrix} + \begin{bmatrix}
+    -3 \\
+    1
+\end{bmatrix} = \begin{bmatrix}
+    1 \\
+    7
+\end{bmatrix}
+$$
+</Callout>
+
+Linear combinations are the basis(hehe) of linear algebra and are used to define many more complex concepts such as linear independence, vector spaces, and linear transformations.
+
+<Callout type="example" title="All vectors are Linear Combinations">
+We can show that all vectors are linear combinations of other vectors. For example we can create all vectors with two components $\boldsymbol{u} \in \mathbb{R}^2$ by combining the following two vectors:
+
+$$
+\boldsymbol{e}_1 = \begin{bmatrix}
+    1 \\
+    0
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{e}_2 = \begin{bmatrix}
+    0 \\
+    1
+\end{bmatrix}
+$$
+
+This becomes pretty clear if we think of the two vectors as x and y axis in 2D space. Any point in 2D space can be defined by the x and y coordinates, i.e. the linear combination of the two vectors. 
+These vectors are called the standard basis vectors and we will go into more detail about them later. However, these are not the only vectors that can be used to create all vectors in 2D space,
+we could also use the following two vectors:
+
+$$
+\boldsymbol{v} = \begin{bmatrix}
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{w} = \begin{bmatrix}
+    3 \\
+    -1
+\end{bmatrix}
+$$
+
+We can show that any vector $\boldsymbol{u} \in \mathbb{R}^2$ can be created by combining the two vectors by setting up a system of equations and seeing if we can solve it.
+
+$$
+\begin{align*}
+s_1\boldsymbol{v} + s_2\boldsymbol{w} &= \begin{bmatrix}
+    u_1 \\
+    u_2
+\end{bmatrix} \\
+s_1\begin{bmatrix}
+    2 \\
+    3
+\end{bmatrix} + s_2\begin{bmatrix}
+    3 \\
+    -1
+\end{bmatrix} &= \begin{bmatrix}
+    u_1 \\
+    u_2
+\end{bmatrix} \\
+\begin{bmatrix}
+    2s_1 + 3s_2 \\
+    3s_1 - s_2
+\end{bmatrix} &= \begin{bmatrix}
+    u_1 \\
+    u_2
+\end{bmatrix}
+\end{align*}
+$$
+
+So we can see that depending on what values we want our vector $\boldsymbol{u}$ to have, we can find the scalars $s_1$ and $s_2$ that create the vector. This is the basis of linear combinations. However,
+not any two vectors can be used to create all vectors in 2D space, the two vectors must form a basis for the space. In other words they must be linearly independent and span the space. We will go into more detail about this later.
+</Callout>
+
+### Special Combinations
+
+Depending on the scalars we use in the combination, we can create some special types of combinations:
+
+- **Linear**: We have already seen this case where the scalars can be any real number, so $s_1, s_2, \dots, s_n \in \mathbb{R}$.
+- **Affine**: This is a linear combination where the sum of the scalars is equal to one, i.e. $\sum_{i=1}^n s_i = 1$. The affine combination is used to create a point that lies on a line or plane defined by the vectors. This is because the 
+combination can be rewritten as follows: $s_1\boldsymbol{v}_1 + s_2\boldsymbol{v}_2= s_1\boldsymbol{v}_1 + (1 - s_1)\boldsymbol{v}_2= \boldsymbol{v}_1 + (1 - s_1)(\boldsymbol{v}_2 - \boldsymbol{v}_1)$.
+- **Conic**: This is a linear combination where the scalars are non-negative, i.e. $s_1, s_2, \dots, s_n \geq 0$. The conic combination is used to create a point that lies inside the convex hull of the vectors. The convex hull is the smallest convex set that contains all the vectors.    
+- **Convex**: This is a mix between the affine and conic combinations, i.e. the scalars are non-negative and the sum of the scalars is equal to one, i.e. $\sum_{i=1}^n s_i = 1$ and $s_1, s_2, \dots, s_n \geq 0$. The convex combination is used to create a point that lies inside the convex hull of the vectors and on the line or plane defined by the vectors.   
+
+<Image
+    src="/maths/vectorCombinationTypes.png"
+    caption="The yellow are represent the vectors that can be created by the combinations of the two vectors."
+    width={700}
+    />
+    
 ## Multiplication between Vectors and Matrices
 
 A vector can be left or right multiplied by a matrix. The multiplication between a vector and a matrix is defined just as the matrix multiplication so the dimensions of the two 
@@ -500,32 +623,108 @@ $$
     width={400}
     />
 
-#### Schwarz Inequality
+#### Cauchy-Schwarz Inequality
 
-The Schwarz inequality states that the dot product of two vectors is always less than or equal to the product of the two vectors' norms.
+The Cauchy-Schwarz inequality states that the dot product of two vectors is always less than or equal to the product of the two vectors' norms.
 
 $$
 |\boldsymbol{x} \cdot \boldsymbol{y}| \leq \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
 $$
 
-This inequality is also called the Cauchy-Schwarz inequality. 
-
 <Callout type="proof">
-Equality holds if and only if one of the vectors is a scalar multiple of the other vector, i.e. the vectors are linearly dependent.
+We want to prove that for any two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, the inequality holds.
+
+**Case 1**: When one of the vectors is the zero vector
+
+If one of the vectors is the zero vector, then the inequality holds because the dot product is zero and the product of the norms are also zero. 
+So then the inequality becomes:
+
+$$
+0 \leq 0
+$$
+
+**Case 2**: If both vectors are unit vectors
+
+If both vectors are unit vectors, then the inequality becomes the following:
+
+$$
+|\boldsymbol{x} \cdot \boldsymbol{y}| \leq 1
+$$
+
+We can then rewrite the dot product as the cosine of the angle between the two vectors, because the norms are one this also simplifies to:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{y} = \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 \cos(\theta) = \cos(\theta)
+$$
+
+The cosine of the angle between two vectors is always between -1 and 1. The inequality however also takes the absolute value of the dot product, so the inequality holds.
+
+$$
+|\boldsymbol{x} \cdot \boldsymbol{y}| = |\cos(\theta)| \leq 1
+$$
+
+**Case 3**: Any two vectors
+
+If the vectors are not unit vectors, then we can scale the vectors to be unit vectors. We don't need to worry about dividing by zero as we've already shown, if any of the vectors is the zero vector the inequality becomes zero.
+
+$$
+\boldsymbol{u} = \frac{\boldsymbol{x}}{\|\boldsymbol{x}\|_2} \quad \text{and} \quad \boldsymbol{v} = \frac{\boldsymbol{y}}{\|\boldsymbol{y}\|_2}
+$$
+
+From above we know that $|\boldsymbol{u} \cdot \boldsymbol{v}| \leq 1$, so we can write the following:
+
+$$
+\begin{align*}
+\boldsymbol{x} \cdot \boldsymbol{y} &= \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 (\boldsymbol{u} \cdot \boldsymbol{v}) \\
+|\boldsymbol{x} \cdot \boldsymbol{y}| &= \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 |\boldsymbol{u} \cdot \boldsymbol{v}| \\
+|\boldsymbol{x} \cdot \boldsymbol{y}| &\leq \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
+\end{align*}
+$$
 </Callout>
 
 #### Triangle Inequality
 
-For a norm to be a norm, one of the properties it must satisfy is the triangle inequality. 
-The triangle inequality states that the norm of the sum of two vectors is less than or equal to the sum of 
-the norms of the two vectors.
+The triangle inequality states that the norm of the sum of two vectors is less than or equal to the sum of the norms of the two vectors.
 
 $$
 \|\boldsymbol{x} \pm \boldsymbol{y}\|_2 \leq \|\boldsymbol{x}\|_2 \pm \|\boldsymbol{y}\|_2
 $$
 
+This can also visually be seen in the 2D case, where the direct path from one point to another is always shorter than the path that goes through another point. Or also that 
+the hypotenuse of a triangle is always shorter than the sum of the other two sides.
+
+vectorTriangleInequality.png
+<Image
+    src="/maths/vectorTriangleInequality.png"
+    width={400}
+    />
+
 <Callout type="proof">
-Can be derived from the Schwarz inequality.
+Let's first look at the norm of the sum of two vectors squared.
+
+$$
+\begin{align*}
+\|\boldsymbol{x} + \boldsymbol{y}\|_2^2 &= (\boldsymbol{x} + \boldsymbol{y}) \cdot (\boldsymbol{x} + \boldsymbol{y}) \\
+&= \boldsymbol{x} \cdot \boldsymbol{x} + \boldsymbol{x} \cdot \boldsymbol{y} + \boldsymbol{y} \cdot \boldsymbol{x} + \boldsymbol{y} \cdot \boldsymbol{y} \\
+&= \|\boldsymbol{x}\|_2^2 + 2\boldsymbol{x} \cdot \boldsymbol{y} + \|\boldsymbol{y}\|_2^2
+\end{align*}
+$$
+
+Now we can use the Cauchy-Schwarz inequality on the middle term and get:
+
+$$
+2\boldsymbol{x} \cdot \boldsymbol{y} \leq 2\|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
+$$
+
+So we can rewrite the norm of the sum of two vectors squared and take the square root to get the triangle inequality.
+
+$$
+\begin{align*}
+\|\boldsymbol{x} + \boldsymbol{y}\|_2^2 &\leq \|\boldsymbol{x}\|_2^2 + 2\|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 + \|\boldsymbol{y}\|_2^2 \\
+&= (\|\boldsymbol{x}\|_2 + \|\boldsymbol{y}\|_2)^2 \\
+\|\boldsymbol{x} + \boldsymbol{y}\|_2 &\leq \|\boldsymbol{x}\|_2 + \|\boldsymbol{y}\|_2
+\end{align*}
+$$
 </Callout>
 
 ### P-Norm
