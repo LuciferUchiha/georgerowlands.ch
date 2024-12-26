@@ -2,28 +2,101 @@ import Image from "~/components/Image/Image";
 
 # Insertion Sort
 
-The insertion sort algorithm is a bit more complex than the bubble sort or selection sort but still relatively simple.
-You can think of it in the following way:
+| Situation | Comparisons | Swaps | Total Time Complexity |
+|-----------|-------------|-------|-----------------------|
+| Worst     | $O(n^2)$ with binary search $O(n \log n)$ | $O(n^2)$ | $O(n^2)$ |
+| Best      | $\Omega(n)$ | $\Omega(1)$ | $\Omega(n)$ |
+| Tight     | - | - | - |
 
-Imagine you have a deck of cards, and you want to sort them in ascending order.
-You assume that the first card is already sorted. Then, you take the second card and compare it to the first card, if
+The insertion sort algorithm is a bit more complex than the bubble sort or selection sort. Rather then trying to 
+maintain the following invariant:
+
+$$
+\text{Invariant(i)}: \text{After the $i$th iteration, the $i$ largest elements are in the correct position.}
+$$
+
+We might come up with a new invariant:
+
+$$
+\text{Invariant(i)}: \text{After the $i$th iteration, the array is sorted up to the $i$th element.}
+$$
+
+The idea of this invariant is that the firts $i$ elements are sorted, the might not be the correct elements in the correct position, but they are sorted. 
+With each iteration, we insert the next element into the sorted part of the array, whilst maintaining the invariant. This 
+is why the algorithm is called insertion sort.
+
+You can also think of a real-world example to understand the insertion sort algorithm. Imagine you have a deck of cards, and you want to sort them in ascending order.
+You assume that the first card is already in the correct position. Then, you take the second card and compare it to the first card, if
 it is smaller, you place it in front of it. Now the first two cards are sorted. Then, you take the third card and
-compare it to the ones before it, one after another until you find the right place to insert it, hence the name
-insertion sort as you repeatedly insert cards into the sorted part of the deck. This way the sorted part of the array slowly grows from left to right.
+compare it to the ones before it, one after another until you find the right place to insert it.
+This way the sorted part of the array slowly grows from left to right.
+
+To find the correct position for the key element, we start at the element before the key and move backwards until we find the correct position. 
+We then insert the key element into the correct position by shifting all elements to the right.
+
+```java
+public void insertionSort(int[] arr) {
+    for (int i = 1; i < arr.length; i++) {
+        int key = arr[i];
+        
+        // find the correct position for the key
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j]; // shift elements to the right
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+```
 
 <Image 
     src="/cs/algdInsertionSort.gif"
     caption="The input array."
 />
 
-```python
-def insertion_sort(arr):
-    for i in range(1, len(arr)):
-        key = arr[i]
-        j = i - 1
-        # Compare key with each element to the left of it until a smaller one is found
-        while j >= 0 and key < arr[j]:
-            arr[j + 1] = arr[j]
-            j -= 1
-        arr[j + 1] = key
-```
+## Correctness
+
+As the algorithm was built around the invariant
+
+$$
+\text{Invariant(i)}: \text{After the $i$th iteration, the array is sorted up to the $i$th element.}
+$$
+
+we can use induction to prove that the algorithm correctly sorts the array in $n$ iterations with the invariant holding for all $i$.
+
+## Time Complexity
+
+We start by analyzing the number of comparisons. The comparison takes place in the while loop condition. 
+In the worst-case scenario, the array is sorted in descending order, and we have to compare the key element with all elements in the sorted part of the array.
+This results in $1 + 2 + 3 + \ldots + n-1 = \frac{n(n-1)}{2}$ comparisons. Meaning the number of comparisons is in $O(n^2)$. 
+In the best case scenario, the array is already sorted, and we only have to compare the key element with the last element in the sorted part of the array. 
+This results in $n-1$ comparisons. Meaning the number of comparisons is in $\Omega(n)$.
+
+We can imagine that the number of swaps can be rather large as we have to shift all elements to the right. 
+The worst case is when the array is sorted in descending order, and we always have to insert the key element at 
+the beginning of the array, resulting in $1 + 2 + 3 + \ldots + n-1 = \frac{n(n-1)}{2}$ swaps. Meaning the number of swaps is in $O(n^2)$. 
+The best case is when the array is already sorted, and we don't have to make any swaps. Meaning the number of swaps is in $\Omega(1)$.
+
+In the above code we are shifting the values to the right and finding the correct position for the key element at 
+the same time. However, because we know that the initial array is sorted up to the $i$th element, we can also use 
+a binary search to find the correct position for the key element and then shift all elements to the right after.
+This variation of the insertion sort algorithm is called binary insertion sort and would reduce the number of 
+comparisons in the worst-case scenario to $O(n \log n)$, but the number of swaps would still be in $O(n^2)$.
+
+```java
+public void binaryInsertionSort(int[] arr) {
+    for (int i = 1; i < arr.length; i++) {
+        int key = arr[i];
+        
+        // find the correct position for the key
+        int j = binarySearch(arr, key, 0, i - 1);
+        
+        // shift elements to the right
+        for (int k = i; k > j; k--) {
+            arr[k] = arr[k - 1];
+        }
+        arr[j] = key;
+    }
+}
+

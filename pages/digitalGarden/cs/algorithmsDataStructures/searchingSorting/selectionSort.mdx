@@ -3,11 +3,17 @@ import Callout from "~/components/Callout/Callout";
 
 # Selection Sort
 
+| Situation | Comparisons | Swaps | Total Time Complexity |
+|-----------|-------------|-------|-----------------------|
+| Worst     | $O(n^2)$ | $O(n)$ | $O(n^2)$ |
+| Best      | $\Omega(n^2)$ | $\Omega(1)$ | $\Omega(n^2)$ |
+| Tight     | $\Theta(n^2)$ | - | $\Theta(n^2)$ |
+
 From the invariant we used to prove the correctness of the [bubble sort algorithm](/cs/algorithmsDataStructures/searchingSorting/bubbleSort), 
 we could come up with a new sorting algorithm. 
 
 $$
-\text{Invariant(i)}: \text{After the $i$th iteration of the outer loop, the $i$ largest elements are in the correct position.}
+\text{Invariant(i)}: \text{After the $i$th iteration, the $i$ largest elements are in the correct position.}
 $$
 
 Rather then bubbling up the largest element to the end of the array, we could 
