@@ -3,6 +3,12 @@ import Callout from "~/components/Callout/Callout";
 
 # Bubble Sort
 
+| Situation | Comparisons | Swaps | Total Time Complexity |
+|-----------|-------------|-------|-----------------------|
+| Worst     | $O(n^2)$ | $O(n^2)$ | $O(n^2)$ |
+| Best      | $\Omega(n)$ | $\Omega(1)$ | $\Omega(n)$ |
+| Tight     | - | - | - |
+
 With the [binary search algorithm](/digitalGarden/cs/algorithmsDataStructures/searchingSorting/binarySearch) we have 
 seen that we can search for an element quicker than with a linear search if the collection is sorted. But how do we sort 
 a collection in the first place? This is where sorting algorithms come in.
@@ -62,7 +68,7 @@ in the array "bubbles" up to its correct position.
 To prove the correctness of the Bubble Sort we can use induction with an invariant. we can define the following invariant: 
 
 $$
-\text{Invariant(i)}: \text{After the $i$th iteration of the outer loop, the $i$ largest elements are in the correct position.}
+\text{Invariant(i)}: \text{After the $i$th iteration, the $i$ largest elements are in the correct position.}
 $$
 
 <Callout type="proof">
@@ -87,7 +93,7 @@ made.
 
 First we start with the number of comparisons. The outer loop runs $n$ times and the inner loop runs $n-1$ times. 
 This means that the total number of comparisons is $n (n-1) = n^2 - n$. Meaning that the number of comparisons is 
-in $O(n^2)$. Because The number of comparisons is always the same no matter the content of the array, so the best 
+in $O(n^2)$. Because The number of comparisons in the above implementation is always the same no matter the content of the array, so the best 
 and worst case of the number of comparisons is the same, we can more accurately say that the number of comparisons is 
 in $\Theta(n^2)$.
 
@@ -120,3 +126,26 @@ $$
 $$
 
 which is still in $\Theta(n^2)$, although the constant factor is halved.
+
+We can also optimize the number of comparisons for the best case scenario by adding a flag to check if any swaps were made. 
+If no swaps were made in an iteration, the array is already sorted, and we can break out of the outer loop. Resulting 
+in the best case number of comparisons being in $\Omega(n)$. Meaning that bubble sort is actually not in $\Theta(n^2)$.
+
+```java
+public void bubbleSort(int[] arr) {
+    for (int i = 0; i < arr.length; i++) {
+        boolean swapped = false;
+        for (int j = 0; j < arr.length - 1 - i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = true;
+            }
+        }
+        if (!swapped) {
+            break;
+        }
+    }
+}
+```
