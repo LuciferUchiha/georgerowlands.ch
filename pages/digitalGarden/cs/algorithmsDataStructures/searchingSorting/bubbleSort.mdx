@@ -1,17 +1,55 @@
 import Image from "~/components/Image/Image";
+import Callout from "~/components/Callout/Callout";
 
 # Bubble Sort
 
-When starting to study algorithms and data structures, the first algorithm that is usually taught is the Bubble Sort.
-It is a simple sorting algorithm that is easy to understand and implement. However, it is not very efficient and is not
-used in practice.
+With the [binary search algorithm](/digitalGarden/cs/algorithmsDataStructures/searchingSorting/binarySearch) we have 
+seen that we can search for an element quicker than with a linear search if the collection is sorted. But how do we sort 
+a collection in the first place? This is where sorting algorithms come in.
 
-The algorithm works by repeatedly swapping neighboring elements if they are in the wrong order, i.e. if we are sorting
-an array of numbers in ascending order we check if the current number is greater than the next number, if so we swap
-them, if not we go to the next.
+Let's first discuss what it formally means to sort a collection. A collection of $n$ elements is sorted if the following 
+holds:
 
-The algorithm is called Bubble Sort because with each iteration the largest element in the array "bubbles up" to the end
-of the array due to this swapping.
+> Given a collection $A$ of $n$ elements, $A[0], A[1], \ldots, A[n-1]$, the sorting algorithm finds a permutation/reordering 
+> of the elements such that $A[0] \leq A[1] \leq \ldots \leq A[n-1]$ (for ascending order).
+
+There are many different sorting algorithms, but let's start by developing an algorithm that simply checks if the given 
+collection is sorted. This algorithm simply goes through the array of integers and checks if the current element is less 
+than or equal to the next element. 
+
+```java
+public boolean isSorted(int[] arr) {
+    for (int i = 0; i < arr.length - 1; i++) {
+        if (arr[i] > arr[i + 1]) {
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+From this algorithm we can develop our first sorting algorithm, the Bubble Sort algorithm. The idea is that it goes 
+through the array and if the current element is greater than the next element, it swaps them, trying to correct the 
+order of the elements.
+
+```java
+public void bubbleSort(int[] arr) {
+    for (int i = 0; i < arr.length; i++) {
+        for (int j = 0; j < arr.length - 1; j++) {
+            // if the elements are in the wrong order
+            if (arr[j] > arr[j + 1]) {
+                // swap elements
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+```
+
+The algorithm is called Bubble Sort because when visualizing the algorithm it looks as if with each iteration the element 
+in the array "bubbles" up to its correct position.
 
 <Image 
     src="/cs/algdBubbleSort.gif"
@@ -19,25 +57,66 @@ of the array due to this swapping.
     width={400}
 />
 
-```python
-def bubble_sort(arr):
-    for i in range(len(arr)):
-        for j in range(len(arr) - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+## Correctness
+
+To prove the correctness of the Bubble Sort we can use induction with an invariant. we can define the following invariant: 
+
+$$
+\text{Invariant(i)}: \text{After the $i$th iteration of the outer loop, the $i$ largest elements are in the correct position.}
+$$
+
+<Callout type="proof">
+We want to prove that the invariant holds for all $i$ and therefore also for $n$, where $n$ is the number of elements in the array.
+
+1. **Base Case**: After the first iteration, the largest element is in the correct position. This is because the largest 
+element will always be swapped and end up at the end of the array.
+2. **Induction hypothesis**: We assume that the invariant holds for some $i$.
+3. **Inductive step**: We want to show that the invariant holds for $i+1$. After $i$ iterations, the $i$ largest elements 
+are in the correct position, i.e at the end of the array. In the $i+1$ iteration, the $i+1$ largest element will be swapped 
+until it is next to the $i$ largest element. This means that after the $i+1$ iteration, the $i+1$ largest elements are 
+in the correct position.
+
+Therefore, the invariant holds for all $i$ and the array is sorted after $n$ iterations, showing that the Bubble Sort 
+algorithm is correct.
+</Callout>
+
+## Time Complexity
+
+To analyze the time complexity of the Bubble Sort algorithm, we can count the number of comparisons and swaps that are 
+made. 
+
+First we start with the number of comparisons. The outer loop runs $n$ times and the inner loop runs $n-1$ times. 
+This means that the total number of comparisons is $n (n-1) = n^2 - n$. Meaning that the number of comparisons is 
+in $O(n^2)$. Because The number of comparisons is always the same no matter the content of the array, so the best 
+and worst case of the number of comparisons is the same, we can more accurately say that the number of comparisons is 
+in $\Theta(n^2)$.
+
+The number of swaps depends on the content of the array. If the array is already sorted, no swaps are needed. If the 
+array is sorted in reverse order, we have the worst case scenario where we have to swap every time. The number of swaps 
+is therefore in $O(n^2)$ and $\Omega(1)$.
+
+The above implementation can also be slightly improved by considering the fact that after each iteration the largest element 
+is guaranteed to be in the correct position. This means that we can reduce the number of elements we need to check in the 
+inner loop by one each time. Making the for loops look like this:
+
+```java
+for (int i = 0; i < arr.length; i++) {
+    for (int j = 0; j < arr.length - 1 - i; j++) {
+        // same code as before
+    }
+}
 ```
 
-From the code above we can see that the algorithm has a time complexity of $O(n^2)$ and a space complexity of $O(1)$ as
-it works in place.
+However, asymptotically this changes nothing. The number of comparisons is then: 
 
-The above implementation can be slightly by considering the fact that after each iteration the largest element at the
-end of the array is already in the correct position, so we can reduce the number of iterations by 1 each time.
+$$
+(n-1) + (n-2) + \ldots + 1
+$$ 
 
-```python
-def bubble_sort(arr):
-    for i in range(len(arr)):
-        for j in range(len(arr) - i - 1):
-            if arr[j] > arr[j + 1]:
-                arr[j], arr[j + 1] = arr[j + 1], arr[j]
-```
+which can be simplified using the gaussian sum to:
 
+$$
+(n-1) + (n-2) + \ldots + 1 = \sum_{i=1}^{n-1} i = \frac{n(n-1)}{2} = \frac{1}{2}(n^2 - n)
+$$
+
+which is still in $\Theta(n^2)$, although the constant factor is halved.

@@ -1,29 +1,70 @@
 import Image from "~/components/Image/Image";
+import Callout from "~/components/Callout/Callout";
 
 # Selection Sort
 
-The selection sort algorithm is probably one of the most intuitive sorting algorithms and the one I actually use when
-sorting a deck of cards. The algorithm works by iterating through the list, finding the smallest element, and moving it
-to the front of the array. Then, the algorithm repeats this process for the rest of the array, moving the next smallest
-element to the second position, and so on until the array is sorted.
+From the invariant we used to prove the correctness of the [bubble sort algorithm](/cs/algorithmsDataStructures/searchingSorting/bubbleSort), 
+we could come up with a new sorting algorithm. 
 
-The algorithm is called a selection sort because it works by repeatedly selecting the smallest remaining element.
+$$
+\text{Invariant(i)}: \text{After the $i$th iteration of the outer loop, the $i$ largest elements are in the correct position.}
+$$
+
+Rather then bubbling up the largest element to the end of the array, we could 
+instead find the largest element and just move it to the end of the array. This is the idea behind the so called Selection Sort 
+algorithm. The name comes from the fact that the algorithm works by repeatedly selecting the largest remaining element and moving 
+it to the end of the array until the entire array is sorted. This selection process is what gives the algorithm its name.
+
+This process makes the selection sort algorithm probably one of the most intuitive sorting algorithms and the one I actually use when
+sorting a deck of cards. A common variation of the selection sort is rather than moving the largest element to the end of the array, 
+we move the smallest element to the front of the array. The effect would be the same, but we would then have to change the invariant to reflect this.
+
+```java
+public void selectionSort(int[] arr) {
+    // sort by moving the largest element to the end of the array
+    for (int i = arr.length - 1; i > 0; i--) {
+        int maxIndex = 0;
+        for (int j = 1; j <= i; j++) {
+            if (arr[j] > arr[maxIndex]) {
+                maxIndex = j;
+            }
+        }
+        // swap largest element to the correct position
+        int temp = arr[i];
+        arr[i] = arr[maxIndex];
+        arr[maxIndex] = temp;
+    }
+}
+```
 
 <Image 
     src="/cs/algdSelectionSort.gif"
-    caption="Visualization of the selection sort algorithm."
+    caption="Visualization of the selection sort algorithm. This is the variation where the smallest element is moved to the front of the array, not the largest to the end."
 />
 
-```python
-def selection_sort(arr):
-    for i in range(len(arr)):
-        min_index = i
-        # Find the index of the smallest element in the unsorted portion of the array.
-        for j in range(i + 1, len(arr)):
-            if arr[j] < arr[min_index]:
-                min_index = j
-        arr[i], arr[min_index] = arr[min_index], arr[i]
-```
+## Correctness
 
-Just like the bubble sort, the selection sort is an in-place sorting algorithm and has a time complexity of $O(n^2)$ and
-a space complexity of $O(1)$.
+The correctness of the selection sort algorithm is basically given by the invariant and will not be proven here.
+
+## Time Complexity
+
+Just like with the bubble sort algorithm we will analyze the number of comparisons and swaps to determine the time complexity of the selection sort algorithm.
+
+The number of comparisons is just like in the bubble sort algorithm the same no matter the content of the array. 
+The number of comparisons is given by number of iterations of the outer loop times the number of iterations of the inner loop. 
+Which is the same as in the improved bubble sort algorithm, $\frac{n(n-1)}{2} = \frac{1}{2}(n^2 - n)$. Meaning 
+the number of comparisons is in $\Theta(n^2)$.
+
+In the implementation above we always make a swap. Making the worst case number of swaps the number of outer loop iterations in $O(n)$. 
+However, if $\text{maxIndex} = i$ we don't need to make a swap. If we checked for this at the end of the inner loop we would add 
+$n-1$ comparisons, which wouldn't asymptotically change the number of comparisons but would reduce the number of swaps in
+the best case, where the array is already sorted, to $\Omega(1)$. 
+
+```java
+//same as above
+if (maxIndex != i) {
+    int temp = arr[i];
+    arr[i] = arr[maxIndex];
+    arr[maxIndex] = temp;
+}
+```
