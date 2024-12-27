@@ -6,10 +6,10 @@
   "linkedLists": "Linked Lists",
   "queues": "Queues",
   "stacks": "Stacks",
+  "graphsNetworks": "Graphs & Networks",
   "trees": "Trees",
   "searchingSorting": "Searching & Sorting",
   "dynamicProgramming": "Dynamic Programming",
-  "graphsNetworks": "Graphs & Networks",
   "hashTables": "Hash Tables",
   "np": "What is NP-Hard?"
 }
