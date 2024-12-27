@@ -1,5 +1,6 @@
 import os
 import json
+import re
 
 
 if __name__ == "__main__":
@@ -49,7 +50,10 @@ if __name__ == "__main__":
                     # remove the extension
                     url = url.replace(".mdx", "")
                     for node in nodes:
-                        if f"({node['id']})" in content:
+                        # either the node id is one of these two patterns:
+                        # - (node["id"])
+                        # - (node["id"]#some-text)
+                        if re.search(f"\\({node['id']}\\)", content) or re.search(f"\\({node['id']}#.*\\)", content):
                             links.append({"source": url, "target": node["id"]})
 
     print(f"Nodes: {len(nodes)}")
