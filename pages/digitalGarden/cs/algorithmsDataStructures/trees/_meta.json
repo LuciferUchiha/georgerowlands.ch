@@ -1,8 +1,8 @@
 {
   "generalDefinition": "General Definition",
   "binaryTrees": "Binary Trees",
+  "heaps": "Heaps & Priority Queues",
   "binarySearchTrees": "Binary Search Trees",
   "avlTrees": "AVL Trees",
-  "bTrees": "B-Trees",
-  "heaps": "Heaps"
+  "bTrees": "B-Trees"
 }
