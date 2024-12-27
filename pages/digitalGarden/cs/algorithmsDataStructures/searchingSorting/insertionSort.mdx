@@ -9,7 +9,7 @@ import Image from "~/components/Image/Image";
 | Tight     | - | - | - |
 
 The insertion sort algorithm is a bit more complex than the bubble sort or selection sort. Rather then trying to 
-maintain the following invariant:
+maintain the following invariant from the [correctness proof of the bubble sort algorithm](/digitalGarden/cs/algorithmsDataStructures/searchingSorting/bubbleSort#correctness):
 
 $$
 \text{Invariant(i)}: \text{After the $i$th iteration, the $i$ largest elements are in the correct position.}
@@ -21,7 +21,7 @@ $$
 \text{Invariant(i)}: \text{After the $i$th iteration, the array is sorted up to the $i$th element.}
 $$
 
-The idea of this invariant is that the firts $i$ elements are sorted, the might not be the correct elements in the correct position, but they are sorted. 
+The idea of this invariant is that the first $i$ elements are sorted, the might not be the correct elements in the correct position, but they are sorted. 
 With each iteration, we insert the next element into the sorted part of the array, whilst maintaining the invariant. This 
 is why the algorithm is called insertion sort.
 
