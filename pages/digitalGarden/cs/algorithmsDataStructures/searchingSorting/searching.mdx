@@ -37,17 +37,40 @@ public int linearSearch(int[] arr, int target) {
     width={600}
 />
 
+### Correctness
+
 The correctness of the linear search algorithm is quite obvious. If the target item is in the collection, we will 
 eventually find it. If the target item is not in the collection, we will check every item and return $-1$.
+
+### Analysis
+
+To analyze the time complexity of the linear search algorithm, we focus on the number of comparisons that we have to make.
 
 In the worst-case scenario, the target item is not in the collection, and we have to check every item. This results 
 in a time complexity of $O(n)$. This is also what gives it the name "linear search" as the time complexity grows 
 linearly with the size of the collection, $n$. Sometimes the linear search is also called the sequential search as 
 it searches the collection sequentially, one item at a time.
 
+In the best case scenario, the target item is the first item in the collection, and we only have to check one item. This results in a time complexity of $\Omega(1)$.
+
+We can also analyze the time complexity formally using a recurrence relation:
+
+$$
+T(n) \leq \begin{cases}
+    c & \text{if } n = 1 \\
+    T(n-1) + c & \text{if } n > 1
+\end{cases}
+$$
+
+where $c$ is the time it takes to check if the target item is equal to the current item. We can quickly come 
+to the hypothesis via for example telescoping that $T(n) \leq n \cdot c$ and prove with induction that the time 
+complexity of the linear search algorithm really is $O(n)$. 
+
 ### Lower Bound of Unstructured Search
 
-Is the linear search the most optimal algorithm using comparisons that we can use to search an unstructured collection? 
+Is linear search the most optimal algorithm using comparisons that we can use to search an unstructured collection?
+Importantly here we as always in computer science are interested in the worst-case scenario. So can we do better than 
+$O(n)$ comparisons in the worst-case scenario?
 
 The answer is yes. The lower bound of unstructured search is therefore $\Omega(n)$ which also means that the linear 
 search is optimal for unstructured collections and in $\Theta(n)$.
@@ -106,9 +129,13 @@ public int binarySearch(int[] arr, int target) {
     width={600}
 />
 
+### Correctness
+
 The correctness of the binary search algorithm is also quite obvious. If the target item is in the collection, we will 
 eventually find it by dividing the collection in half each time. If the target item is not in the collection, we will 
 eventually run out of items to check.
+
+### Analysis
 
 To analyze the time complexity of the binary search algorithm, we can use a recurrence relation. We avoid having 
 issues with rounding and splitting the collection by assuming that the collection size is a power of 2. So we let 

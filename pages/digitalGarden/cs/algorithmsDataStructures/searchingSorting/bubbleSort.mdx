@@ -95,7 +95,7 @@ First we start with the number of comparisons. The outer loop runs $n$ times and
 This means that the total number of comparisons is $n (n-1) = n^2 - n$. Meaning that the number of comparisons is 
 in $O(n^2)$. Because The number of comparisons in the above implementation is always the same no matter the content of the array, so the best 
 and worst case of the number of comparisons is the same, we can more accurately say that the number of comparisons is 
-in $\Theta(n^2)$.
+in $\Theta(n^2)$. 
 
 The number of swaps depends on the content of the array. If the array is already sorted, no swaps are needed. If the 
 array is sorted in reverse order, we have the worst case scenario where we have to swap every time. The number of swaps 
@@ -125,7 +125,16 @@ $$
 (n-1) + (n-2) + \ldots + 1 = \sum_{i=1}^{n-1} i = \frac{n(n-1)}{2} = \frac{1}{2}(n^2 - n)
 $$
 
-which is still in $\Theta(n^2)$, although the constant factor is halved.
+which is still in $\Theta(n^2)$, although the constant factor is halved. This can also be written as a recurrence relation:
+
+$$
+T(n) = \begin{cases}
+    1 & \text{if } n = 1 \\
+    T(n-1) + n-1 & \text{if } n > 1
+\end{cases}
+$$
+
+and then proven by induction with the hypothesis that $T(n) = n^2 - n$.
 
 We can also optimize the number of comparisons for the best case scenario by adding a flag to check if any swaps were made. 
 If no swaps were made in an iteration, the array is already sorted, and we can break out of the outer loop. Resulting 

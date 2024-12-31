@@ -1,26 +1,10 @@
 import Image from "~/components/Image/Image";
 
-# Binary Trees
-
-A binary tree is a tree with the order of 2. Meaning that a node is either a leaf or has left and/or right child.
-
-<Image
-    src="/cs/treesBinary.png"
-    caption="A binary tree."
-/>
-
-By adding empty leaves we can make sure the binary tree is always filled which can make certain operations and algorithms easier. We add the empty leaves by first adding 2 empty leaves to all leaves which make the leaves to inner nodes. Then all inner nodes that only have one child receive an empty leaf.
-
-<Image
-    src="/cs/treesBinaryAlternative.png"
-    caption="A binary tree."
-/>
-
-## Traversal orders
+# Traversing a Binary Tree
 
 There are multiple ways to traverse a tree each one giving a different result.
 
-### Pre-order, NLR
+## Pre-order, NLR
 
 In this order a node visited before its left and right subtree is traversed.
 
@@ -33,7 +17,7 @@ In this order a node visited before its left and right subtree is traversed.
     caption="A binary tree."
 />
 
-### Post-order, LRN
+## Post-order, LRN
 
 In this order a node is visited after its left and right subtree has been traversed.
 
@@ -46,7 +30,7 @@ In this order a node is visited after its left and right subtree has been traver
     caption="A binary tree."
 />
 
-### In-order, LNR
+## In-order, LNR
 
 In this order a node is visited in between the traversal of its left and right subtree.
 
