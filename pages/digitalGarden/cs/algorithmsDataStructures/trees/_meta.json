@@ -1,8 +1,8 @@
 {
   "trees": "What is a Tree?",
-  "binaryTrees": "Binary Trees",
   "heaps": "Heaps & Priority Queues",
   "binarySearchTrees": "Binary Search Trees",
   "avlTrees": "AVL Trees",
-  "bTrees": "B-Trees"
+  "bTrees": "B-Trees",
+  "traversal": "Traversing a Binary Tree"
 }
