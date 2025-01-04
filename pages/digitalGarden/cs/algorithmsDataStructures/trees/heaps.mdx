@@ -57,6 +57,11 @@ We can also reverse the calculation to find the parent of a node at index $i$ by
 | Right child of $i$      | $2i+1$                |
 | Parent Node of $i$      | $\lfloor i/2 \rfloor$ |
 
+There is one problem with this indexing scheme and is also the largest drawback of heaps and why we don't use the 
+heap sort algorithm as much as other sorting algorithms. The problem is the lack of locality in the array. 
+We are not accessing the elements in a contiguous way but rather jumping around the array. Making it harder 
+for the CPU to cache the elements and slowing down the algorithm.
+
 ## Remove Root
 
 We know to extract the max or min element we can remove the root element. However doing so breaks 
