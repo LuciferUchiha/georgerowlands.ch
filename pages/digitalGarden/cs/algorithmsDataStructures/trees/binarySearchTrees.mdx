@@ -25,9 +25,11 @@ We start of with a similar idea as with implementing a [priority queue with a he
 We create a so called binary search tree. This is a binary tree where each node has a key and an element. The idea is that we want to structure 
 the tree in such a way that we can easily search for a specific key. So similar to in a [binary search](/digitalGarden/cs/algorithmsDataStructures/searching/binarySearch)
 where we make use of the fact that the data is sorted, or in a heap where we make use of the fact that the children are always smaller than the 
-parent, we enforce a similar structure in the binary search tree by making sure that the tree maintains the following properties:
-- The left subtree of a node contains only nodes with keys less than the node's key.
-- The right subtree of a node contains only nodes with keys greater than the node's key.
+parent, we enforce a similar structure in the binary search tree. This is the so called **Search-Tree Property**:
+
+> For every node $x$ in the tree, the keys in the left subtree of $x$ are less than the key of $x$ and the keys in the right subtree of $x$ are
+> larger than the key of $x$.
+
 So in a way we are creating a "stricter" heap, as when searching in the heap we might still have to search through all the elements. The idea with 
 this specific structure is that we can quickly determine if to look in the left or right subtree and therefore removing half of the tree each time 
 we move down a level.
@@ -157,7 +159,8 @@ public Node<K, E> findSuccessor(Node<K, E> parent){
 
 When we want to add a new node to the tree we start at the root and compare the key of the new node with the key of the root. If the new key is 
 smaller we move to the left child, if it is larger we move to the right child. If we find the key already exists during this process we return false. 
-Otherwise we repeat this process until we reach a leaf node. We then add the new node as a child of the leaf node.
+Otherwise we repeat this process until we reach a node that doesn't have a child in the direction we want to move. We then add the new node as a 
+child of the node we have reached.
 
 ```java	
 public boolean add(K key, E value, Node<K, E> parent){
@@ -194,7 +197,7 @@ This again has a time complexity of $O(h)$ where $h$ is the height of the tree. 
 therefore also the height and the time complexity of the operations is dependent on the order in which the elements are added. If we add the 
 elements in a sorted order the tree will become a linked list and the time complexity of the operations will be $O(n)$. So unfortunately the 
 binary search tree is not enough to guarantee the time complexity of $O(\log n)$ for all operations. So we need to find some way to keep 
-the tree complete like in a heap to keep the height as low as possible.
+the tree balanced on both sides. This is where the [AVL tree](/digitalGarden/cs/algorithmsDataStructures/trees/avlTrees) comes in.
 
 <Image
     src="/cs/algdBinarySearchTreeAddingOrder.png"
