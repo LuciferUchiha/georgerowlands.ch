@@ -2,98 +2,202 @@ import Image from "~/components/Image/Image";
 
 # Binary Search Trees
 
-A binary search tree is a [binary tree](./binaryTrees) where each node has a key. *key(v)=Key of the node v*. The important thing here is that in the left subtree of a node there are only nodes with keys that are smaller than the key of the node. In the right subtree accordingly only nodes with a key that are the same or larger.
+We want to be able to implement a data structure that allows us to store and search for data in an efficient way. To be more specific 
+we want a data structure that only allows us to store data with unique keys, i.e we can't have duplicates. This matches the requirements 
+for the abstract data type of a dictionary/map, the key uniqueness is also like a set. 
+We want the following operations to be efficient:
+- **Adding**: Add a new element to the data structure. Whilst making sure the key hasn't been added before.
+- **Searching**: Find an element in the data structure by its key.
+- **Removing**: Remove an element from the data structure by its key. 
 
-Interestingly when traversing the tree in-order we can see that the keys ascend.
+If we analyze some already known data structures and the run time of their operations we can see that the biggest bottleneck is the search operation 
+to make sure the key is never added twice. Which is why we focus on designing a data structure that makes searching as efficient as possible, the goal 
+would be to have a time complexity of $O(\log n)$ for all operations.
+
+| Data structure | Adding | Searching | Removing |
+|----------------|--------|-----------|----------|
+| Unsorted array | $O(n)$ | $O(n)$ | $O(n)$ |
+| Sorted array | $O(n)$ | $O(\log n)$ | $O(n)$ |
+| Linked list | $O(n)$ | $O(n)$ | $O(n)$ |
+| Heap | $O(\log n)$ | $O(n)$ | $O(\log n)$ |
+
+We start of with a similar idea as with implementing a [priority queue with a heap](/digitalGarden/cs/algorithmsDataStructures/trees/heaps). 
+We create a so called binary search tree. This is a binary tree where each node has a key and an element. The idea is that we want to structure 
+the tree in such a way that we can easily search for a specific key. So similar to in a [binary search](/digitalGarden/cs/algorithmsDataStructures/searching/binarySearch)
+where we make use of the fact that the data is sorted, or in a heap where we make use of the fact that the children are always smaller than the 
+parent, we enforce a similar structure in the binary search tree by making sure that the tree maintains the following properties:
+- The left subtree of a node contains only nodes with keys less than the node's key.
+- The right subtree of a node contains only nodes with keys greater than the node's key.
+So in a way we are creating a "stricter" heap, as when searching in the heap we might still have to search through all the elements. The idea with 
+this specific structure is that we can quickly determine if to look in the left or right subtree and therefore removing half of the tree each time 
+we move down a level.
 
 <Image
     src="/cs/treesBinarySearchInOrder.png"
-    caption="A binary tree."
+    caption="A simple binary search tree."
 />
 
-### Operations
+## Searching 
 
-#### Insert
+When searching for a specific key we start at the root and compare the key of the node with the key we are looking for. If the keys are equal we 
+return the element of the node. If the key we are looking for is smaller we move to the left child, if it is larger we move to the right child. We 
+repeat this process until we reach a leaf node. If we reach a leaf node and the key of the leaf node is not equal to the key we are looking for we 
+return null. 
 
-When inserting a node you need to find the ideal place for insertion. This is started by comparing it with the root and seeing whether it belongs in the left or right half. This is then repeated recursively repeated until the insertion point is found.
+<Image
+    src="/cs/algdBinarySearchTreeSearching.png"
+    caption="The search operation in a binary search tree."
+    width={600}
+/>
 
-#### Search
+So we can quickly see that the time complexity of the search operation is dependent on the height of the tree so $O(h)$ where $h$ is the height of 
+the tree. 
 
-When searching for a specific key we follow a similar process as with when inserting. By comparing the key with the roots key and then carrying on down the tree. If we don't just want the first node but all nodes with this key, once the first node is found we carry on down the right subtree until it is empty.
+```java 
+public E search(K key, Node<K, E> parent){
+    // we have not found the key
+    if (parent == null) {
+        return null;
+    }
+    // the key is found
+    if (key.compareTo(parent.key)) {
+        return parent.value;
+    }
+    // the key is smaller than the current node
+    else if (key.compareTo(parent.key) < 0) {
+        return search(key, parent.left);
+    }
+    // the key is larger than the current node
+    else {
+        return search(key, parent.right);
+    }
+}
+```
 
-#### Remove
+## Removing
 
-When removing a node we distinguish between 3 different cases.
+When we want to remove a node there are three cases we need to consider:
+1. The node is a leaf node, i.e it has no children.
+2. The node has one child.
+3. The node has two children.
 
-##### Leaf
-
-We search for the node and then simply remove it, nothing complicated.
+Let's start with the easiest case, when the node is a leaf node. Once we have found the node we want to remove we simply remove it from the tree.
 
 <Image
     src="/cs/treesBinarySearchRemoveLeaf.png"
     caption="A binary tree."
 />
 
-##### Node with 1 child
-
-We search for the node to be removed and remove it. The child of the removed node then takes its place. Also nothing complicated.
+The second case, when the node has one child is also quite simple. We start by finding the node to be removed. We then replace the node with 
+its child.
 
 <Image
     src="/cs/treesBinarySearchRemove1Child.png"
     caption="A binary tree."
 />
 
-##### Node with 2 children
-
-We search for the node to be removed. We then look for the symmetrical (inorder) successor, which is the node in the right subtree that is the furthest left. We then replace the to be removed node with the symmetrical successor. Lastly we delete the symmetrical successor at its original position which is either case 1 or 2.
+The last case is the most complex as we need to maintain the structure of the tree. We start by finding the node to be removed. However, now we 
+need to find a replacement for the node, the so called successor. In this case we look for the symmetrical successor. This is the node 
+that is "closest" to the node to be removed. The closest node is the node with the smallest key in the right subtree of the node to be removed, 
+so the leftmost node in the right subtree. We then replace the node to be removed with the successor.
 
 <Image
     src="/cs/treesBinarySearchRemove2Children.png"
     caption="A binary tree."
 />
 
-```java
-private Node<K, E> remove(Node<K,E> node, K key){
- if (node == null) {
-  return null;
- }
- else {
-  int c = key.compareTo(node.key);
-  if (c < 0) {
-   node.left = remove(node.left, key);
-  }
-  else if (c > 0) {
-   node.right = remove(node.right, key);
-  }
-  else {
-   if (node.left == null) {
-    node = node.right;
-    nodeCount--;
-   }
-   else if (node.right == null) {
-    node = node.left;
-    nodeCount--;
-   }
-   else {
-    Node<K, E> succ = symSucc(node.right);
-    succ.right = remove(node.right, succ.key);
-    succ.left = node.left;
-    node = succ;
-   }
-  }
-  return node;
- }
+```java	
+public boolean remove(K key, Node<K, E> parent){
+    // the key is not found
+    if (parent == null) {
+        return false;
+    }
+    // the key is found
+    if (key.compareTo(parent.key) == 0) {
+        // the node is a leaf node
+        if (parent.left == null && parent.right == null) {
+            parent = null;
+        }
+        // the node has one child
+        else if (parent.left == null) {
+            parent = parent.right;
+        }
+        else if (parent.right == null) {
+            parent = parent.left;
+        }
+        // the node has two children
+        else {
+            Node<K, E> successor = findSuccessor(parent.right);
+            parent.key = successor.key;
+            parent.value = successor.value;
+            // a simple leaf node removal
+            remove(successor.key, parent.right); 
+        }
+        return true;
+    }
+    // the key is smaller than the current node
+    else if (key.compareTo(parent.key) < 0) {
+        return remove(key, parent.left);
+    }
+    // the key is larger than the current node
+    else {
+        return remove(key, parent.right);
+    }
 }
 
-private Node<K, E> symSucc(Node<K,E> node){
- Node<K, E> succ = node;
- while (succ.left != null) {
-  succ = succ.left;
- }
- return succ;
+public Node<K, E> findSuccessor(Node<K, E> parent){
+    if (parent.left == null) {
+        return parent;
+    }
+    return findSuccessor(parent.left);
 }
 ```
 
-### Time complexities
+## Adding 
 
-The time complexities of the operations depend on the height of the tree. In the worst case all operations take O(n), when the tree has become like a list. In the best case all operations O(log n), this is when the tree is complete(excluding the last level). From this we can see it is important to keep the height as small as possible to have the best time complexities.
+When we want to add a new node to the tree we start at the root and compare the key of the new node with the key of the root. If the new key is 
+smaller we move to the left child, if it is larger we move to the right child. If we find the key already exists during this process we return false. 
+Otherwise we repeat this process until we reach a leaf node. We then add the new node as a child of the leaf node.
+
+```java	
+public boolean add(K key, E value, Node<K, E> parent){
+    // the key already exists
+    if (key.compareTo(parent.key) == 0) {
+        return false;
+    }
+    // the key is smaller than the current node
+    else if (key.compareTo(parent.key) < 0) {
+        if (parent.left == null) {
+            parent.left = new Node<>(key, value);
+            return true;
+        }
+        return add(key, value, parent.left);
+    }
+    // the key is larger than the current node
+    else {
+        if (parent.right == null) {
+            parent.right = new Node<>(key, value);
+            return true;
+        }
+        return add(key, value, parent.right);
+    }
+}
+```
+
+<Image
+    src="/cs/algdBinarySearchTreeAdding.png"
+    caption="The add operation in a binary search tree."
+    width={400}
+/>
+
+This again has a time complexity of $O(h)$ where $h$ is the height of the tree. However, you might notice that the structure of the tree and 
+therefore also the height and the time complexity of the operations is dependent on the order in which the elements are added. If we add the 
+elements in a sorted order the tree will become a linked list and the time complexity of the operations will be $O(n)$. So unfortunately the 
+binary search tree is not enough to guarantee the time complexity of $O(\log n)$ for all operations. So we need to find some way to keep 
+the tree complete like in a heap to keep the height as low as possible.
+
+<Image
+    src="/cs/algdBinarySearchTreeAddingOrder.png"
+    caption="The order in which the elements are added to the tree affects the structure of the tree."
+    width={500}
+/>
