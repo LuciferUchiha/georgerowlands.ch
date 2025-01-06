@@ -112,7 +112,7 @@ need to do anything. And because the height of $u$ does not change we do not nee
 The second subcase is when $h_r(u)$ and $h_l(u)$ were the same before the insertion so now after increasing $h_l(u)$ by 1 the left subtree is one 
 node higher than the right subtree $h_l(u) = h_r(u) + 1$. In this case the balance factor changes from 0 to -1. This again does not break the AVL 
 property so we do not need to do anything. However, the height of $u$ changes so we have to update the balance factor of $u$ and the heights and 
-balance factors of the ancestors and recursively check if the AVL property is still satisfied and if not perform the necessary corrections.
+balance factors of the ancestors. If one of the ancestors becomes unbalanced we have one of the scenarios below which can be solved with a rotation. 
 
 The third subcase is when $h_r(u)$ was before the insertion one node shorter than $h_l(u)$ so now after increasing $h_l(u)$ by 1 the left subtree is 
 two nodes higher than the right subtree $h_l(u) = h_r(u) + 2$. In this case the balance factor changes from -1 to -2. This breaks the AVL property so 
@@ -154,6 +154,14 @@ a left rotation on $u$.
     src="/cs/algdAVLRightLeftRotation.png"
     caption="A right-left rotation on node $u$ to rebalance the tree."
 />
+
+After performing a rotation or double rotation we are finished and no longer need to update the heights and balance factors of the ancestors when inserting. 
+However, when removing a node we might not be finished after performing a rotation. We still have to update the heights and balance factors of the 
+ancestors and check if the AVL property is still satisfied until we reach the root of the tree.
+
+So we see that we can maintain the AVL property when inserting or deleting a node in $O(\log n)$ time. The worst case scenario is when we remove a node 
+and have to repeatedly perform a rotation and update the heights and balance factors of the ancestors until we reach the root of the tree. But because 
+the height of the tree is $O(\log n)$ we can say that the time complexity is $O(\log n)$.
 
 ## Other Advantages of AVL Trees
 
