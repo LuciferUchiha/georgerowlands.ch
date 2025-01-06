@@ -24,15 +24,21 @@ so called **AVL Property**:
 > For every node $x$ in the tree, the difference in height between the left and right subtree of $x$ is at most 1.
 
 So if we use the following notations:
-- $T_l(v)$: the left subtree of node $v$
-- $T_r(v)$: the right subtree of node $v$
+- $T_l(v)$: the left subtree of node $v$.
+- $T_r(v)$: the right subtree of node $v$.
 - $h_l(v)$: the height of the left subtree of node $v$. But because we are talking about the height of the subtree and need to account for leaf 
 nodes we increase the height by 1. So if $v$ is a leaf node then $h_l(v) = 0$ and otherwise $h_l(v) = 1 +$ the height of the left subtree of $v$.
-- $h_r(v)$: the height of the right subtree of node $v$
+- $h_r(v)$: the height of the right subtree of node $v$ defined in the same way as $h_l(v)$.
 - $bal(v)$: the balance factor of node $v$ so $bal(v) = h_r(v) - h_l(v)$
 
+<Image
+    src="/cs/algdAVLHeights.png"
+    caption="Height of the left and right subtree of a node $v$."
+    width={300}
+/>
+
 Then the we can say that a tree is balanced and satisfies the AVL property if:
-> $|h_l(v) - h_r(v)| \leq 1$ or $|bal(v)| \leq 1$ for all nodes $v$ in the tree.
+> $|h_r(v) - h_l(v)| \leq 1$ or $|bal(v)| \leq 1$ for all nodes $v$ in the tree.
 
 <Image
     src="/cs/algdAVLBalancedVsUnbalanced.png"
@@ -81,82 +87,73 @@ say that the height of the tree is $O(\log n)$ where $n$ is the number of nodes 
 
 ## Maintaining a Balanced Tree
 
-All of the operations, insert, search and remove work the same as with a binary tree. However, now after inserting or deleting we have to recalculate the balance factors of all of the nodes from the inserted/removed node. Important when a node was removed and replaced with its symmetrical successor we have to start at the lowest removed node. If after recalculating the balance factors the tree is no longer balanced we have to perform rebalancing operations till the tree is balanced again.
+We have seen that the AVL property leads to a tree of height of $O(\log n)$ which means that all operations should run in $O(\log n)$ time. 
+However, we still need to show that we can maintain this property when we insert or remove nodes from the tree and that we can do this in $O(\log n)$ time. 
 
-There are 3 situations when a tree is unbalanced which then lead to different rebalancing operations.
+We will insert and delete nodes in the same way as with a binary search tree. However, after inserting or deleting a node we have to check if the 
+AVL property is still satisfied. Let's first think about which heights and therefore also balance factors can change when we insert or delete a node. 
+We quickly see that only the ancestors of the inserted or deleted node can have their heights changed. So we only need to update the heights and balance 
+factors of the ancestors. 
 
-1. bal(p) and bal(v) have the same sign.
-2. bal(v) = 0
-3. bal(p) and bal(v) have deafferent signs.
+To keep a tree balanced we can just look at the different scenarios of when a node is inserted into the left subtree of a node. As in the end we 
+focus on the balance factor and whether we are inserting or deleting a node doesn't matter as the height change is the same. The only difference 
+between doing it in the left or right subtree is the sign of the balance factor and the direction of the rotation we have to perform.
 
-<Image
-    src="/cs/treesUnbalanced.png"
-    caption="A binary tree."
-/>
+There are two possible scenarios when a node is inserted into the left subtree of a node $u$:
+1. The height of the left subtree $T_l(u)$ does not change. In this case $h_l(u)$ does not change and therefore also not the balance factor $bal(u)$ and the 
+heights and balance factors of the ancestors.
+2. The height of the left subtree $T_l(u)$ increases by 1 as we are only focusing on inserting nodes into the left subtree. We know have to make three 
+further cases depending on $h_r(u)$, the height of the right subtree $T_r(u)$:
 
-#### Simple Rotations
+The first subcase is when $h_r(u)$ was one node higher than $h_l(u)$ before the insertion so now after increasing $h_l(u)$ by 1 the two subtrees have 
+the same height $h_l(u) = h_r(u)$. In this case the balance factor changes from 1 to 0. However, this does not break the AVL property so we do not 
+need to do anything. And because the height of $u$ does not change we do not need to update the heights and balance factors of the ancestors.
 
-Situation 1 and 2 can be resolved with a simple rotation. Depending on which subtree has the higher absolute balance factor. If the left subtree is higher then the right subtree we perform a  **right rotation**. The other way around we perform a **left rotation**.
+The second subcase is when $h_r(u)$ and $h_l(u)$ were the same before the insertion so now after increasing $h_l(u)$ by 1 the left subtree is one 
+node higher than the right subtree $h_l(u) = h_r(u) + 1$. In this case the balance factor changes from 0 to -1. This again does not break the AVL 
+property so we do not need to do anything. However, the height of $u$ changes so we have to update the balance factor of $u$ and the heights and 
+balance factors of the ancestors and recursively check if the AVL property is still satisfied and if not perform the necessary corrections.
 
-<Image
-    src="/cs/treesAvlRotationRight.png"
-    caption="A binary tree."
-/>
-![avlLeftRotation](/compSci/avlLeftRotation.png)
-<Image
-    src="/cs/treesAvlRotationLeft.png"
-    caption="A binary tree."
-/>
+The third subcase is when $h_r(u)$ was before the insertion one node shorter than $h_l(u)$ so now after increasing $h_l(u)$ by 1 the left subtree is 
+two nodes higher than the right subtree $h_l(u) = h_r(u) + 2$. In this case the balance factor changes from -1 to -2. This breaks the AVL property so 
+we have to perform a rotation to rebalance the tree. 
 
-#### Double Rotations
-
-We can't resolve situation 3 with a simple rotation we need to do a so called double rotation. Here again we have 2 options depending which subtree is higher. either a **right-left double rotation** or a **left-right double rotation**.
-
-<Image
-    src="/cs/treesAvlRotationRightLeft.png"
-    caption="A binary tree."
-/>
-<Image
-    src="/cs/treesAvlRotationLeftRight.png"
-    caption="A binary tree."
-/>
-
-## Implementation
-
-We can notice that we often need to know the balance factors of a node. This can be calculated every time using the heights however this is very bad for performance instead we should store the balance factors with the nodes and update them when needed.
-
-### Insert
-
-If we insert a new node *v* and its parent is *p* then we have the following situations
+The rotation depends on the following. If the inserted node is in the left subtree of the left child of $u$ then we perform a single rotation. 
+To be more precise we perform a right rotation on $u$. This rotation means that we replace $u$ and make $u$ the right child of it. In the image below 
+$u$ is the node with the key 1 and the inserted node is the node with the key 3.
 
 <Image
-    src="/cs/treesAvlUpinSituations.png"
-    caption="A binary tree."
+    src="/cs/algdAVLRightRotation.png"
+    caption="A right rotation on node $u$ to rebalance the tree."
 />
 
-If the height of *p* doesn't change we just need to update the balance factor of *p* and are done. However if the height of *p* changes. So if the balance factor of *p* changes from 0 to +/-1 then we have to recursively update the balance factor of its parent *pp*. For this we use the so called upin(p) method.
-
-#### Upin Case 1
-
-If the height of *pp* doesn't change so the balance factor of *pp* changes from 0 to +/-1 we are done.
+If we were looking at the situation where the inserted node was in the right subtree of $u$ not the left subtree as we have restricted ourselves so far 
+then just the direction of the rotation would change meaning that we would perform a left rotation on $u$ instead of a right rotation.
 
 <Image
-    src="/cs/treesAvlUpinCase1.png"
-    caption="A binary tree."
+    src="/cs/algdAVLLeftRotation.png"
+    caption="A left rotation on node $u$ to rebalance the tree."
 />
 
-#### Upin Case 2
+If the inserted node is in the right subtree of the left child of $u$ then it gets a bit more complicated. Just doing a single rotation no matter 
+if it is a left or right rotation does not work. We have to perform a double rotation. If we are focusing on the situation again where the node was 
+inserted into the left subtree of $u$ then we first perform a left rotation on the left child of $u$ and then a right rotation on $u$. In the image 
+below $u$ is the node with the key 3 and the inserted node is the node with the key 2. The first left rotation recreates the situation above that 
+we can then solve with a right rotation.
 
-If the height of *pp* changes but the node stays balanced so the balance factor of *pp* changes from 0 to +/-1 we have to recursively update the balance factor of its parent with upin(pp).
+<Image
+    src="/cs/algdAVLLeftRightRotation.png"
+    caption="A left-right rotation on node $u$ to rebalance the tree."
+/>
 
-#### Upin Case 3
+Again if we were looking at the situation where the inserted node was in the right subtree of $u$ not the left subtree as we have restricted ourselves 
+so far then just the direction of the rotations would change meaning that we would first perform a right rotation on the left child of $u$ and then 
+a left rotation on $u$.
 
-If the height of *pp* changes and the node is no longer balanced so the balance factor of *pp* changes from +/-1 to +/- 2 we have to perform at the max 1 rotation.
-
-### Remove
-
-Here we use upout to update the balance factors however it can happen that more then 1 rotation is needed on the way to the root.
-
+<Image
+    src="/cs/algdAVLRightLeftRotation.png"
+    caption="A right-left rotation on node $u$ to rebalance the tree."
+/>
 
 ## Other Advantages of AVL Trees
 
