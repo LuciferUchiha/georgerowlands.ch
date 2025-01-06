@@ -3,19 +3,20 @@ import Image from "~/components/Image/Image";
 
 # What is a Tree?
 
-
-
 In Computer science a tree is a data structure that is used to represent a hierarchical structure within a set of elements.
 A tree consists of node that are connected by edges. Each node has a corresponding value, the so called **key**.
 This concept might sound familiar because it is similar to a graph. However, in a tree:
 - All nodes are connected by edges, making a tree a connected graph, so there no isolated nodes.
 - The tree has a hierarchical structure where one node, the root, serves as the starting point. The root has no parent 
 nodes and all other nodes have exactly one parent node. This is why are also often called a **rooted tree**.
+
 In most visualizations the root is at the top and the children are below it, creating the hierarchical tree like structure. 
 
 Because each node only has one parent, **there is always exactly one path from one node to another node**. This is why 
 trees are acyclic, meaning there are **no cycles in the tree**. If there were two different paths from one node to another
 there would be a cycle in the graph and the hierarchical structure would be lost. 
+
+Therefore any graph that is connected and acyclic is a tree. A forest is a collection of trees so any graph that is acyclic as each connected component is a tree. 
 
 <Image
     src="/cs/treesSubtree.png"
@@ -26,6 +27,8 @@ In trees there are a few relationships between nodes that are important to know:
 - **Root:** We have already seen that just like in the real world a tree always has a root. This 
 is the node at the top of the tree and is the only node that has no parent.
 - **Children & Parents:** A child node is a node that is connected to a node above it, the so called parent. 
+- **Ancestors:** If we follow the path from a node to the root we get all the ancestors of that node.
+- **Descendants:** If we follow the path from a node to all its children and their children we get all the descendants of that node.
 - **Siblings:** Just like in the real world a sibling is a node that shares the same parent. 
 - **Subtrees:** If we focus on a specific node and look at all of its children and their children (the nodes descendants) we get a subtree. 
 - **Leaves**: Just like in the real world a leaf is a node that just hangs there with nothing below it, i.e 
@@ -75,7 +78,5 @@ now inner nodes. Then all inner nodes that only have one child receive an empty 
     caption="A binary tree that has been filled with empty leaves."
     width={400}
 />
-
-## Forests 
 
 ## Monte Carlo Trees
