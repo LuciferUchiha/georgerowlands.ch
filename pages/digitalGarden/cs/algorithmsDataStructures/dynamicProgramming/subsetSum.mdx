@@ -46,10 +46,6 @@ target sum. This is because we have to try all possible combinations of the elem
 sums to the target sum. This is also why dynamic programming is so useful for this problem because it can drastically
 improve the time complexity.
 
-<Callout type="todo">
-    What does it mean for a problem to be NP-complete? Is the subset sum problem NP-complete etc.?
-</Callout>
-
 ## Can Sum
 
 Our first approach to this problem is most lightly a brute force approach. We can use recursion to solve this problem
@@ -153,6 +149,51 @@ public boolean canSum(int targetSum, int[] numbers) {
     return memo[targetSum];
 }
 ```
+
+We can also solve the problem in a similar way if we can only use each element in the array once. We would then just focus on the subproblem of 
+"Can we construct the target sum $S$ using the first $i$ elements in the array?". This again leads us to making the decision between using the 
+current element or not using the current element. This leads us to the following recursive function:
+
+$$
+\text{canSum}(i, S) = \text{canSum}(i-1, S) \lor \text{canSum}(i-1, S - \text{array}[i])
+$$
+
+Where the first part of the or statement is the case where we don't use the current element and the second part is the case where we use the current element. 
+Keep in mind that in the second part we need to check if $S - \text{array}[i] \geq 0$.
+
+<Image
+    src="/cs/dpSubsetSumTable.png"
+    caption="The dp table for the subset sum problem if we can only use each element once."
+/>
+
+```java
+public boolean canSum(int[] array, int targetSum) {
+    int n = array.length;
+    boolean[][] dp = new boolean[n + 1][targetSum + 1];
+    for (int i = 0; i <= n; i++)
+        dp[i][0] = true;
+
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= targetSum; j++) {
+            if (j - array[i - 1] >= 0)
+                dp[i][j] = dp[i - 1][j] || dp[i - 1][j - array[i - 1]];
+            else
+                dp[i][j] = dp[i - 1][j];
+        }
+    }
+    return dp[n][targetSum];
+}
+```
+
+## Pseudo Polynomial Time
+
+The subset sum problem is a very interesting problem with a time complexity of $O(n^m)$ where $n$ is the length of the array and $m$ is the target sum. 
+This is because time complexity doesn't only depend on the size of the input but also on the value of the input. The input length is actually 
+$O(n + log(m))$ because the target sum is a number and needs $log(m)$ bits to be stored. In practical terms, the $log(m)$ term is usually ignored 
+because it is very small compared to $n$ but still dominates the time complexity.
+
+So if $m=2^n$ then the time complexity is exponential in $O(n \cdot 2^n)$ but if $m=n^c$ then the time complexity is polynomial in $O(n^{c+1})$. This is why the 
+subset sum problem is said to be in pseudo polynomial time.
 
 ## Count Sum
 
