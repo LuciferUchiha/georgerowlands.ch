@@ -6,11 +6,13 @@
   "bfs": "Breadth First Search",
   "topologicalSortOrdering": "Topological Sort/Ordering",
   "shortestPath": "Shortest Path Algorithms",
-  "allPairsShortestPath": "All Pairs Shortest Path",
+  "allPairsShortestPath": "All Pairs Shortest Paths",
   "eulerian": "Eulerian Graphs",
   "hamiltonian": "Hamiltonian Graphs",
   "mst": "Minimum Spanning Trees",
   "matrices": "Matrices and Graphs",
+  "maxFlow": "Maximum Flows",
+  "matching": "Matchings",
   "analysis": "Analyzing Graphs",
   "machineLearning": "Using Graphs in Machine Learning"
 }
