@@ -103,6 +103,69 @@ and the $y$-coordinate is the output value obtained by evaluating $f(x)$.
 Graphs of Functions play a crucial role in analyzing and understanding the behavior of functions and studying their
 overall patterns and trends.
 
+## Connected Components
+
+Simply put a connected component is a subgraph of the original graph where all vertices are connected to each other. So
+There are no disconnected vertices in a connected component. These can quiet easily be seen by eye but the definition
+can become more complex when we look at directed graphs.
+
+### Undirected Graphs
+
+In an undirected graph, a connected component is a subset of vertices such that there is a path between every pair of
+vertices in the subset. In other words, a connected component is a subgraph of the original graph where all vertices
+are connected to each other.
+
+This could be useful for example to find out if a graph is fully connected or not. If the graph has only one connected
+component, then it is fully connected. If it has more than one connected component, then it is not fully connected.
+
+If we think of a communication network, then a connected component would be a group of people that can communicate with
+each other. If there are multiple connected components, then there are groups of people that cannot communicate with
+each other.
+
+<Image 
+    src="/cs/graphsConnectedComponents.png"
+    width={600}
+/>
+
+To find the connected components of a graph, we can simply use either a breadth-first search or a depth-first search
+over all vertices. The algorithm would then look something like this:
+
+<Image
+    src="/cs/graphsConnectedComponentsDFS.png"
+    width={600}
+    caption="Finding the number of connected components using a depth-first search."
+/>
+
+### Directed Graphs
+
+In a directed graph the directions of the edges matter. This gives us two types of connected components, weakly
+connected components and strongly connected components.
+
+#### Weakly Connected Components
+
+Weakly connected components are the same as connected components in an undirected graphs. So you just ignore the
+directions of the edges.
+
+<Image 
+    src="/cs/graphsWeaklyConnectedComponents.png"
+/>
+
+#### Strongly Connected Components
+
+Strongly connected components are a bit more complex. In a directed graph, a strongly connected component is a subset of
+vertices such that there is a path between every pair of vertices in the subset, but the path must follow the direction
+of the edges.
+
+<Image 
+    src="/cs/graphsStronglyConnectedComponents.png"
+/>
+
+### Giant Components
+
+If a connected component includes a large portion of the graph, then it is commonly referred to as a
+**"giant component"**. There is no strict definition of what a giant component is, but it is commonly used to refer to
+connected components that include more than 50% of the vertices in the graph.
+
 ## Types of Graphs
 
 ### Complete Graphs
