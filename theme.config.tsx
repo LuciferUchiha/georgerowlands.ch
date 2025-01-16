@@ -41,6 +41,7 @@ const config: DocsThemeConfig = {
         <meta property="og:url" content={url} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
+        <link rel="icon" type="image/x-icon" href="/logo.svg"/>
       </>
     );
   },
