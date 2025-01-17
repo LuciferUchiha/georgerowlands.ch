@@ -48,6 +48,21 @@ So in the above example, $\text{deg(Alice)}=3$ and therefore Alice has the most 
 - **Isolated Vertex**: A vertex with degree 0 is called an isolated vertex. So it is a vertex that is not connected to any other vertex 
 and is therefore isolated. In the above example, John is an isolated vertex.
 
+## Handshaking Lemma
+
+The handshaking lemma is a simple but important theorem in graph theory that if you think about it makes sense. The handshaking 
+lemma says that the sum of the degrees of all the vertices in a graph is equal to twice the number of edges in the graph. So 
+more formally:
+
+$$
+\sum_{v \in V} \text{deg}(v) = 2|E|
+$$
+
+The intuition behind this is that each edge connects two vertices, so it contributes 1 to the degree of the two vertices. You 
+can also imagine it as a handshake, hence the name. So each vertex is a person an edge is then that person stretching out their 
+arm to the middle and the other person (vertex) doing the same and then they shake hands. So for each handshake (edge) two people 
+need to strech out their arm (degree).
+
 ## Networks vs Graphs
 
 The title of this section is "Graphs and Networks" and commonly these two terms are used interchangeably so what is a Network and what is 
@@ -214,8 +229,10 @@ vertex would be the same. This is called a **closed walk**. More formally:
 > A sequence of vertices $(v_1, v_2, \ldots, v_k)$ is a closed walk if it is a walk $3 \leq k$ and $v_1 = v_k$.
 
 We say that a closed walk needs to have at least 3 vertices as a closed walk with only 2 vertices would be our house to our house 
-which isn't exactly a good walk for our health. Notice also that on a walk or a closed walk we can visit the same vertex multiple 
-times. So we can go from our house to the park and back to our house and then to the shop and back to our house. This changes 
+which isn't exactly a good walk for our health. We can also observe in a closed walk that the start and end vertex are incident to 
+an even number of edges. This makes sense as we need to exit and enter the vertex an even number of times.
+Notice also that on a walk or a closed walk we can visit the same vertex multiple times. 
+So we can go from our house to the park and back to our house and then to the shop and back to our house. This changes 
 when we look at a path. A **path** is a walk where we do not visit the same vertex twice. More formally:
 
 > A sequence of vertices $(v_1, v_2, \ldots, v_k)$ is a path if it is a walk and $v_i \neq v_j$ for all $i \neq j$.
@@ -397,7 +414,15 @@ A forest is a collection of trees so any graph that is acyclic as each connected
 
 A complete graph is a graph where each vertex is connected to every other vertex, very simple. In other words, a
 complete graph contains all possible edges which is why it is also commonly called a fully connected graph. 
-A complete graph with $n$ vertices is denoted as $K_n$.
+A complete graph with $n$ vertices is denoted as $K_n$. If a graph has $n$ vertices then the maximum number of edges 
+it can have is defined as follows:
+
+$$
+n-1 + n-2 + \ldots + 1 = \sum_{i=1}^{n-1} i = \frac{n(n-1)}{2} = \frac{|V|(|V|-1)}{2}
+$$
+
+The idea here is we start at one vertex and then connect it to all other vertices, then we move to the next vertex and 
+connect it to all the other remaining vertices and so on until we have connected all vertices.
 
 For example, the below graph is a complete graph with 5 vertices, $K_5$.
 
@@ -427,27 +452,28 @@ export const completeGraph = {
     graph={completeGraph}
 />
 
-## Handshaking Lemma and Density
+### Graph Density
 
-$$
-\sum_{v \in V} \text{deg}(v) = 2|E|
-$$
-
-this leads us to the definition of the density of a graph. 
-
+Now that we know what a complete graph is and the maximum number of edges it can have, we can define the density of a graph.
 The density of a graph is the ratio of the number of edges to the number of possible edges. So in other words how
-densely connected the graph is. In a directed graph there are $|V|(|V|-1)$ possible edges. Which means the density of
-a directed graph is:
+densely connected the graph is or how close it is to being a complete graph. As the density of a graph is a ratio it can be between 0 and 1.
 
-$$
-D = \frac{|E|}{|V|(|V|-1)}
-$$
-
-In an undirected graph, there are $\frac{|V|(|V|-1)}{2}$ possible edges. Which means the density of an undirected graph
-is:
+In an undirected graph, we have seen that there are $\frac{|V|(|V|-1)}{2}$ possible edges. Which means the density of an undirected graph
+is defined as:
 
 $$
 D = \frac{|E|}{\frac{|V|(|V|-1)}{2}} = \frac{2|E|}{|V|(|V|-1)}
 $$
 
-So in the above example, the density of the graph is $\frac{8}{20} = 0.4$.
+In a directed graph there are $|V|(|V|-1)$ possible edges because each vertex can have an edge to every other vertex 
+except itself due to the direction of the edges. So the density of a directed graph is:
+
+$$
+D = \frac{|E|}{|V|(|V|-1)}
+$$
+
+<Image 
+    src="/cs/graphDensity.png"
+    caption="The effect of adding edges to a graph on the density"
+    width={500}
+/>
