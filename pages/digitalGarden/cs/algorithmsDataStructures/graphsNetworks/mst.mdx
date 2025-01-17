@@ -1,0 +1,92 @@
+import Image from "~/components/Image/Image";
+import Callout from "~/components/Callout/Callout";
+
+# Minimum Spanning Trees
+
+Imagine you are given a graph that consists of all of the capitals in Europe as vertices and the capitals are connected if there is a direct flight 
+between them. The weight of each edge is the cost of the flight between the two capitals. Because all of the capitals are popular travel destinations 
+we can say that the graph is connected, meaning every capital is reachable from every other capital.
+
+Now a company is analyzing how they can then send their employees to all of the capitals in Europe. The 
+company only care about there being one path between each capital, they don't want multiple paths between the same capital to keep it simple. 
+Because there is only one path between each capital, there can not be any cycles in the graph and because the graph is connected, the resulting 
+graph will be a tree. Because the company wants each capital so each vertex to be reachable we it results in a special kind of tree called a 
+spanning tree, as the tree spans all of the vertices in the graph. More formally we can define a spanning tree as:
+
+> A spanning tree of a graph $G$ is a subgraph that is a tree containing all the vertices of $G$.
+
+<Image 
+    src="/cs/graphSpanningTree.png"
+    caption="A graph and its spanning trees."
+/>
+
+Now let's define the total weight of a graph as the sum of the weights of all of the edges in the graph. More formally:
+
+$$
+\text{weight}(G) = \sum_{e \in E} w(e) 
+$$
+
+Where $E$ is the set of all edges in the graph and $w(e)$ is the weight of the edge $e$.
+The company now wants to optimize the cost of sending 
+their employees to all of the capitals in Europe. So what they want is to find the spanning tree with the minimum total weight. This is called the 
+minimum spanning tree (MST) problem. This example for the problem only works if we assume all cities are equally important, otherwise we would 
+obviously analyze which capital is visited the most and then optimize the route based on that.
+
+<Image 
+    src="/cs/graphMST.png"
+    caption="A graph and all the possible spanning trees. The minimum spanning tree is the one with the smallest total weight, 8 in this case."
+/>
+
+In this example negative weights anyway do not make sense as the cost of a flight can not be negative. But in general, the weights of the edges 
+can be negative, and will not change the problem, the only thing that can happen is that the minimum spanning trees weight becomes negative. 
+Lets look at some of the properties of minimum spanning trees.
+
+## Uniqueness
+
+If each edge in the graph has a unique weight, then the minimum spanning tree is unique. 
+
+However, just because the weights are not unique does not mean that the minimum spanning tree is not unique. If all the weights in an MST solution 
+are smaller than the weights of the other edges, then the MST is unique as these edges would not make the tree any lighter. An obvious example is 
+given an MST you add lots of edges that are the same weight but heavier than the heaviest edge in the MST, then the MST is still the same. 
+
+<Image 
+    src="/cs/graphsMSTUniqueness.png"
+    caption="A graph with equal weights can have multiple minimum spanning trees."
+/>
+
+## Cycle Property
+
+The cycle property is very simple, if you have a cycle in the original graph $G$ and you have an edge $e$ with the maximum weight in that cycle, 
+then $e$ can not be part of the minimum spanning tree. The reason and proof for this is relatively simple. Let's assume that $e$ is part of the 
+minimum spanning tree, then because $e$ can be replaced by any other edge in the cycle, the total weight of the minimum spanning tree would 
+decrease. This is a contradiction because we assumed that the minimum spanning tree was the minimum spanning tree.
+
+<Image 
+    src="/cs/graphMSTCycle.png"
+    caption="A MST can not contain the edge with the maximum weight in a cycle."
+/>
+
+## Cut Property
+
+The cut property also relates to the Uniqueness of an MST. A graph can have many equal weights but if they are never the minimum 
+weight in a cut, then the MST is unique.
+
+<Image 
+    src="/cs/graphsMSTCut.png"
+    caption="The minimum edge crossing the cut is part of the minimum spanning tree."
+/>
+
+## Minimum-cost Edge Property
+
+<Callout type="proof">
+
+</Callout>
+
+## Boruvka's Algorithm
+
+
+## Prim's Algorithm
+
+## Kruskal's Algorithm
+
+### Union-Find Data Structure
