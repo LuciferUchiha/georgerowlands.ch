@@ -705,6 +705,63 @@ $$
 $$
 </Callout>
 
+#### Matrix Exponentiation by Squaring
+
+Using exponentiation by squaring you can quickly calculate the power of any number. The idea is to make use 
+of the fact that multiplication is associative so:
+
+$$
+a^{10} = a^{5} \cdot a^{5} = (a^{2} \cdot a^{2} \cdot a) \cdot (a^{2} \cdot a^{2} \cdot a)
+$$
+
+So rather then performing 9 multiplications if we memorize the results we only need to perform the following multiplications:
+
+$$
+\begin{align*}
+a^{2} &= a \cdot a \\
+a^{4} &= a^{2} \cdot a^{2} \\
+a^{5} &= a^{4} \cdot a \\
+a^{10} &= a^{5} \cdot a^{5}
+\end{align*}
+$$
+
+Which is only 4 multiplications rather then 9. This can be generalized to any power of $k$:
+
+$$
+a^k = \begin{cases}
+1 & \text{if } k = 0 \\
+a & \text{if } k = 1 \\
+(a^{\frac{k}{2}}) \cdot (a^{\frac{k}{2}}) & \text{if } k \text{ is even} \\
+a \cdot (a^{\frac{k-1}{2}}) \cdot (a^{\frac{k-1}{2}}) & \text{if } k \text{ is odd}
+\end{cases}
+$$
+
+This can also be applied to matrices. The matrix exponentiation by squaring is defined in the same way as for numbers:
+
+$$
+\boldsymbol{A}^k = \begin{cases}
+\boldsymbol{I} & \text{if } k = 0 \\
+\boldsymbol{A} & \text{if } k = 1 \\
+(\boldsymbol{A}^{\frac{k}{2}}) \cdot (\boldsymbol{A}^{\frac{k}{2}}) & \text{if } k \text{ is even} \\
+\boldsymbol{A} \cdot (\boldsymbol{A}^{\frac{k-1}{2}}) \cdot (\boldsymbol{A}^{\frac{k-1}{2}}) & \text{if } k \text{ is odd}
+\end{cases}
+$$
+
+#### Matrix Chain Multiplication
+
+<Callout type="todo">
+This is not yet complete and is just a rough scribbling
+</Callout>
+
+When you want to multiply multiple matrices the number of multiplications can quickly add up. However, you can use the associative property to 
+group the matrices in a way that you can minimize the number of multiplications. So given some matrices $\boldsymbol{A}_1, \boldsymbol{A}_2, \ldots, \boldsymbol{A}_n$ 
+where the matrix $\boldsymbol{A}_i$ has dimensions $\mathbb{R}^{m_{i-1} \times m_i}$ we want to find the product of all the matrices with the least amount of multiplications.
+
+Show example with 3 matrices of dimensions $k \times 1$, $1 \times k$ and $k \times 1$. Results in either $O(k)$ or $O(k^2)$ multiplications.
+
+We can write a dynamic programming algorithm to find the optimal way to multiply the matrices. The algorithm is called the **Matrix Chain Multiplication** algorithm.
+and runs in $O(n^3)$ time which is anyway the time complexity of multiplying one matrix with another matrix.
+
 #### Permutation Matrix
 
 We have seen that the identity matrix is a special matrix that functions as the multiplicative identity for matrix multiplication and can be used to select the 
