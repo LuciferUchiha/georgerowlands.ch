@@ -1,0 +1,70 @@
+# Limits
+
+$$
+\lim_{x \to p} (f(x) + g(x)) = \lim_{x \to p} f(x) + \lim_{x \to p} g(x)
+$$
+
+$$
+\lim_{x \to p} (f(x) - g(x)) = \lim_{x \to p} f(x) - \lim_{x \to p} g(x)
+$$
+
+When can this be done? For example the limit of $(n^2 - n)$ is not $\infty - \infty$ but rather just $\infty$ after simplification.
+
+$$
+\lim_{x \to p} (f(x) \cdot g(x)) = \lim_{x \to p} f(x) \cdot \lim_{x \to p} g(x)
+$$
+
+$$
+\lim_{x \to p} \frac{f(x)}{g(x)} = \frac{\lim_{x \to p} f(x)}{\lim_{x \to p} g(x)}
+$$
+
+$$
+\lim_{x \to p} f(x)^{g(x)} = \lim_{x \to p} f(x)^{\lim_{x \to p} g(x)}
+$$
+
+most often the variable $x$ approaches the value $p=\infty$. This then results in the following rules where $C$ is a constant:
+
+$$
+\lim_{x \to \infty} C = C
+$$
+
+$$
+\lim_{x \to \infty} f(x) = C \pm \infty = \pm \infty
+$$
+
+$$
+\lim_{x \to \infty} f(x) = C \cdot \infty = \begin{cases} \infty & \text{if } C > 0 \\ -\infty & \text{if } C < 0 \end{cases}
+$$
+
+And if it is negative infinity then + and - are swapped.
+
+$$
+\lim_{x \to \infty} f(x) = \frac{C}{\infty} = 0
+$$
+
+$$
+\lim_{x \to \infty} f(x) = \frac{\infty}{C} = \begin{cases} \infty & \text{if } C > 0 \\ -\infty & \text{if } C < 0 \end{cases}
+$$
+
+$$
+\lim_{x \to \infty} f(x) = \infty^C = \begin{cases} \infty & \text{if } C > 0 \\ 0 & \text{if } C < 0 \end{cases}
+$$
+
+$$
+\lim_{x \to \infty} f(x) = C^{\infty} = \begin{cases} \infty & \text{if } C > 1 \\ 0 & \text{if } 0 < C < 1 \end{cases}
+$$
+
+$$
+\lim_{x \to \infty} f(x) = C^{-\infty} = \begin{cases} 0 & \text{if } C > 1 \\ \infty & \text{if } 0 < C < 1 \end{cases}
+$$
+
+## L'Hôpital's Rule
+
+There are some special cases where the limit of a function is not immediately obvious. In these cases we can use L'Hôpital's Rule to find the limit.
+
+$$
+\lim_{x \to p} \frac{f(x)}{g(x)} = \lim_{x \to p} \frac{f'(x)}{g'(x)}
+$$
+
+Where $f'(x)$ and $g'(x)$ are the derivatives of $f(x)$ and $g(x)$ respectively. This rule can be applied multiple times if the limit is still not obvious. 
+Scenarios where this rule is useful are when the limit is of the form $\frac{0}{0}$ or $\frac{\pm \infty}{\pm \infty}$.
