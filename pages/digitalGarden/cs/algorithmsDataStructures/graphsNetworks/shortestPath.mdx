@@ -184,3 +184,81 @@ Now what if we used Dijkstra's algorithm on a graph with negative weights. Then 
 on which the algorithm is based on would not hold. This is why Dijkstra's algorithm can only be used on graphs with non-negative weights.
 
 ## Bellman-Ford Algorithm
+
+The Bellman-Ford algorithm is another algorithm that can be used to find the shortest path between a source vertex and all other vertices in a 
+graph. It is slower than Dijkstra's algorithm with a time complexity of $O(mn)$ where $m$ is the number of edges and $n$ is the number of vertices. 
+However, unlike Dijkstra's algorithm, the Bellman-Ford algorithm can handle graphs with negative weights. The key problem with Dijkstra's algorithm 
+and why it can not handle negative weights is that it doesn't revist a vertex after it has been relaxed. So if a shorter path exists through a 
+a longer path with negative weights the algorithm will not find it.
+
+The only restriction is that the graph can not contain negative cycles, so a cycle where the sum of the weights is negative. The reason for this 
+is that if there is a negative cycle in the graph then there is no shortest path between the vertices in the graph as we can just repeatedly 
+traverse the cycle and get a shorter path each time. However, the Bellman-Ford algorithm will detect if there is a negative cycle in the graph 
+and return that there is no shortest path between the vertices in the graph.
+
+<Image 
+   src="/cs/graphsNegativeCycle.png"
+   width={500}
+/>
+
+Bellman-Ford is just like Dijkstra's algorithm a greedy dynamic programm and works in a similar way by relaxing the distances to the start vertex. 
+However, rather then using a priority queue to pick the vertex with the smallest distance to the start vertex and then relaxing all its 
+neighbors, the Bellman-Ford algorithm relaxes all the edges in the graph $n-1$ times. 
+
+So we iterate $n-1$ times over all the edges in the graph and look at the end points of the edges. So if we have an edge from $u$ to $v$ with weight $w$ we relax the distance to $v$ by adding the weight 
+of the edge to the distance to $u$. This way we can be sure that we have found the shortest path between the vertices in the graph. In the first iteration 
+we only know that we can reach the start vertex with a distance of 0. All other vertices have a distance of infinity. In the second iteration we 
+know that we can reach all the vertices that are directly connected to the start vertex with the weight of the edge between the two vertices and so on. 
+
+As already mentioned before a shortest path between two vertices can have at most $n-1$ edges as walk doesn't make sense. So after $n-1$ 
+iterations all the shortest paths have been found. We do these multiple iterations for the possibility of negative weight in the graph making 
+previous paths shorter. If we do a $n$th iteration and we find that we can still relax the distances then we know that there is a negative cycle in the graph.
+
+The time complexity of the Bellman-Ford algorithm is $O(mn)$ because we iterate over all the edges $n$ times. 
+
+```java
+public int[] bellmanFord(List<List<Integer>> graph, List<List<Integer>> weights, int start) {
+   int[] dist = new int[graph.size()];
+   Arrays.fill(dist, Integer.MAX_VALUE);
+   dist[start] = 0;
+   for (int i = 0; i < graph.size() - 1; i++) {
+      // relax all edges
+      for (int u = 0; u < graph.size(); u++) {
+         for (int j = 0; j < graph.get(u).size(); j++) {
+            int v = graph.get(u).get(j);
+            int weight = weights.get(u).get(j);
+            // relax edge
+            if (dist[u] + weight < dist[v]) {
+               dist[v] = dist[u] + weight;
+            }
+         }
+      }
+   }
+   // check for negative cycles
+   for (int u = 0; u < graph.size(); u++) {
+      for (int j = 0; j < graph.get(u).size(); j++) {
+         int v = graph.get(u).get(j);
+         int weight = weights.get(u).get(j);
+         if (dist[u] + weight < dist[v]) {
+            // we would relax the distance again so there is a negative cycle
+            return new int[0];
+         }
+      }
+   }
+   return dist;
+}
+```
+
+graphsBellmanFordFirstRelax.png
+<Image 
+   src="/cs/graphsBellmanFordFirstRelax.png"
+/>
+<Image 
+   src="/cs/graphsBellmanFordSecondRelax.png"
+/>
+<Image 
+   src="/cs/graphsBellmanFordThirdRelax.png"
+/>
+<Image 
+   src="/cs/graphsBellmanFordFourthRelax.png"
+/>
