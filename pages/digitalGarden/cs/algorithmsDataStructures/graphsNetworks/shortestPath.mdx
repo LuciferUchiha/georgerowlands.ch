@@ -1,5 +1,7 @@
-# Shortest Path Algorithms
+import Image from "~/components/Image/Image";
+import Callout from "~/components/Callout/Callout";
 
+# Shortest Path Algorithms
 
 The diameter of a graph is the longest shortest path between two vertices in the graph. So in the above example, the
 diameter of the graph is 3 as the longest shortest path is between Michael and Karen.
@@ -9,55 +11,176 @@ diameter of the graph is 3 as the longest shortest path is between Michael and K
 - Bellman-Ford algorithm
 - A* algorithm
 
-Before we see how to find the shortest path from vertex $a$ to vertex $b$ we need to define a few things.
 
-$D(a,b)=$the length of the shortest path from vertex $a$ to vertex $b$. If no such path exists, the length is $\infty$.
+One of the most known problems in graph theory is the shortest path problem. The problem is to find the shortest path between two vertices 
+$u$ and $v$ in a graph. Depending on the type of graph the definition of shortest path can vary. 
 
-If the graph is unweighted the length of a path is the number of edges it takes to get from $a$ to $b$. If however the graph is weighted the length is the sum of the edge weights.
+<Image 
+    src="/cs/graphsShortestPath.png"
+    caption="Shortest path between two points. A maze can be a graph."
+    width={400}
+/>
 
-Single source shortest path (SSSP) are all the shortest paths from vertex $s$ to all other vertices.
+## Unweighted Graphs
 
-## For Unweighted Graphs
+In an unweighted graph, the shortest path is the path with the fewest number of edges. This would be the same as if we would give all edge 
+the weight of 1 or just the same positive weight.
 
-In an unweighted graph we can just use a BFS as this starts with all vertices with distance 1 then 2 etc.
+$$
+\text{dist}(u, v) = \text{n of edges in the shortest path from u to v}
+$$
+
+To solve this problem we can simply use the [Breadth First Search (BFS) algorithm](/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/bfs).
+As with BFs we start at the source vertex $s$ and visit all the vertices that are at distance 1 from $s$ if we haven't found our target vertex $t$ 
+we go to the next level and visit all the vertices that are at distance 2 from $s$ and so on. Once we have found the target vertex we know 
+that the shortest path has been found and we can stop the algorithm. To be able to reconstruct the path we also have to store from which node 
+we came to the current node.
 
 ```java
-void BFS(Vertex s) {
- Queue<Vertex<K>> R = new LinkedList<Vertex<K>>();
- s.dist = 0;
- R.add(s);
- while(!R.isempty()) {
-  Vertex v = R.remove();
-  for(Vertex w : v.adjList) {
-   if (w.dist == Integer.MAX_VALUE) {
-    w.dist = v.dist + 1;
-    R.add(w);
+public List<Integer> shortestPath(List<List<Integer>> graph, int start, int target) {
+   boolean[] visited = new boolean[graph.size()];
+   // store from which node we came to the current node
+   int[] parent = new int[graph.size()];
+   Arrays.fill(parent, -1);
+   Queue<Integer> queue = new LinkedList<>();
+   queue.add(start);
+   visited[start] = true;
+   while (!queue.isEmpty()) {
+      int node = queue.poll();
+      if (node == target) {
+         break;
+      }
+      for (int neighbor : graph.get(node)) {
+         if (!visited[neighbor]) {
+               visited[neighbor] = true;
+               parent[neighbor] = node;
+               queue.add(neighbor);
+         }
+      }
    }
-  }
- }
+
+   // couldn't find the target
+   if (parent[target] == -1) {
+      return Collections.emptyList();
+   }
+
+   // reconstruct the path
+   List<Integer> path = new ArrayList<>();
+   for (int at = target; at != -1; at = parent[at]) {
+      path.add(at);
+   }
+   Collections.reverse(path);
+   return path;
 }
 ```
 
-## For weighted graphs
+We know that the time complexity of BFS is $O(m + n)$ where $m$ is the number of edges and $n$ is the number of vertices. This algorithm also shows 
+that the time complexity of finding the shortest path between two vertices or the shortest path to all vertices from a single vertex is the same as 
+in the worst case we have to visit all vertices and edges in the graph. This is why when we talk about the shortest path problem we are actually 
+talking about the single source shortest path problem or one-to-all shortest path problem.
 
-For a weighted graph this is slightly trickier as the shortest path isn't necessarily the path with the least edges.
+If we draw a tree where all the nodes that are at distance $d$ from the source node $s$ are at level $d$ then we have a so called BFS tree or 
+shortest path tree. The tree is rooted at the source node $s$ and the shortest path from $s$ to any other node in the graph is the path from $s$ to 
+the node in the BFS tree. The BFS tree is a subgraph of the original graph and it contains all the vertices in the graph.
 
-### Dijkstra's algorithm
+<Image 
+    src="/cs/graphsShortestPathTree.png"
+    caption="Shortest path tree"
+    width={400}
+/>
 
-1. Assign all the vertices the attributes "finished", "Distance and „Via/Predecessor“. Initialize the distance of the root vertex as 0 and all others as $\infty$.
-2. While there are unvisited nodes. So finished=false and distance $\leq \infty$.
-   1. Choose the vertex $v$ with the smallest distance.
-   2. Set $v.finished = true$
-   3. For all vertices $w$ that have and edge between $v$ and $w$
-      1. Set int d = v.dist + edge weight between $v$ and $w$.
-      2. if(d < w.dist) w.dist = d; w.via = v;
+We can also use the [Depth First Search (DFS) algorithm](/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/dfs) to find the shortest path 
+between two vertices in an unweighted graph. However, breadth-first search is preferred due to the possible recursion overhead of DFS. If we know 
+that the graph is a DAG we can also use topological ordering to find the shortest path between two vertices.
 
-The time complexity of this algorithm is as followed. For 1 While loop step 1 takes $O(n)$, step 2 takes $O(1)$, step 3 takes $O(outdeg(v))$
+<Callout type="todo">
+    Add example of using DFS to find the shortest path in an unweighted graph.
 
-For n While loops this the becomes $O(n^2 + m)$
+   Add example of using topological ordering to find the shortest path in a DAG. Is this really worth the effort?
+</Callout>
 
-### Improvements
+## Dijkstra's Algorithm
 
-We could save the vertices that are not finished in a Set so we don't have to look through the entire table. This however doesn't have an effect on the time complexity.
+For weighted graph, the shortest path is the path with the smallest sum of weights of the edges. For now we will assume that all the weights 
+are positive. 
 
-We could save the vertices that are not finished in a Min-Heap. Init=$=(n)$ step 1 then becomes deleteMin() which is $O(log n)$ and step 3 becomes decreaseKey outdeg times O(log n). With these improvements our time complexity is O((n+m)log n).
+$$
+\text{d}(u, v) = \text{minumum sum of weights of the edges in the shortest path from u to v}
+$$
+There are some important properties of the shortest path problem that we should be aware of. The first one is Triangle Inequality. The triangle 
+inequality states that the shortest path between two vertices is the direct path between the two vertices. So more formally:
+
+$$
+\text{d}(u, v) \leq \text{d}(u, w) + \text{d}(w, v)
+$$
+
+<Image 
+    src="/cs/graphsTriangleInequality.png"
+    caption="Triangle inequality visualized"
+    width={400}
+/>
+
+This leads to the fact that if the shortest path between two vertices is $v_1, v_2, \ldots, v_n$ then the subpath between any two vertices 
+$v_i$ and $v_j$ is also the shortest path between these two vertices. This is also why we can say that the shortest path will always be a path 
+and not a walk as it would make no sense to visit a vertex more than once. We can also define this formally:
+
+$$
+\text{d}(u, v) = \text{d}(u, v_i) + \text{d}(v_i, v_j) + \text{d}(v_j, v)
+$$
+
+Or in other words:
+
+$$
+\text{d}(u, v) = \text{d}(u, v_i) + w(v_i, v) \quad \text{for some vertex } v_i
+$$
+
+The idea of Dijkstra's algorithm to find the shortest path between two vertices is based on these properties. It's a greedy algorithm that 
+can also be seen as a dynamic program. The goal is to iterativly build up the shortest paths from the source vertex to all other vertices by 
+finding the ideal $v_i$ for each vertex $v$. When it has found a $v_i$ that is better then the previous one it updates the shortest path to 
+the vertex $v$, this process is also called relaxation. However, when doing so we want to be sure that $\text{d}(u, v_i)$ is already the 
+final solution so we need to bring some sort of order into our dynamic program. We do this we sorting the vertices by their distance to the 
+source vertex. This is why we use a priority queue to store the vertices and always take the vertex with the smallest distance to the source 
+vertex and then relax all the edges that go out from this vertex. 
+
+```java
+public int[] dijkstra(List<List<Integer>> graph, List<List<Integer>> weights, int start) {
+   int[] dist = new int[graph.size()];
+   Arrays.fill(dist, Integer.MAX_VALUE);
+   dist[start] = 0;
+   // store the vertex and its current minimum distance to the source vertex
+   PriorityQueue<Pair>> pq = new PriorityQueue<>(Comparator.comparingInt(p -> p.second));
+   pq.decreaseKey(start, 0);
+   while (!pq.isEmpty()) {
+      Pair<Integer, Integer> pair = pq.poll();
+      int node = pair.first;
+      int distance = pair.second;
+      
+      for (int i = 0; i < graph.get(node).size(); i++) {
+         int neighbor = graph.get(node).get(i);
+         int weight = weights.get(node).get(i);
+         // relax neighbors
+         if (dist[node] + weight < dist[neighbor]) {
+            dist[neighbor] = dist[node] + weight;
+            pq.decreaseKey(neighbor, dist[neighbor]);
+         }
+      }
+   }
+   return dist;
+}
+```
+
+<Image 
+   src="/cs/graphsDijkstra.gif"
+   caption="Dijkstra's algorithm visualized"
+/>
+
+The time complexity of Dijkstra's algorithm is $O((m+n) \log n)$ where $m$ is the number of edges and $n$ is the number of vertices. The reason 
+for this is that the minimum is extracted $n$ times and the decreaseKey operations is called $m$ times which both have a time complexity of 
+$O(\log n)$. If a Fibonacci heap is used as the priority queue the time complexity of Dijkstra's algorithm changes from $O((m+n) \log n)$ to $O(m + n \log n)$.
+
+However at the moment I have no idea how a Fibonacci heap works.
+
+Now what if we used Dijkstra's algorithm on a graph with negative weights. Then the properties mentioned above such as the triangle inequality 
+on which the algorithm is based on would not hold. This is why Dijkstra's algorithm can only be used on graphs with non-negative weights.
+
+## Bellman-Ford Algorithm
