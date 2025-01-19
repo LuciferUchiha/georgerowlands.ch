@@ -21,8 +21,13 @@ The goal is now to find the shortest path between all pairs of vertices in a gra
 
 ## Floyd-Warshall Algorithm
 
-The Floyd-Warshall algorithm is a dynamic programming algorithm that solves the all pairs shortest path problem. The algorithm works by considering 
-
-
 ## Johnson's Algorithm
+
+Johnson's idea was to be able to use Dijkstra's algorithm for the all pairs shortest path problem for graphs with real weights. The idea is 
+to transform the graph so that all the weights are non-negative without changing the shortest path between the vertices and then run Dijkstra's 
+algorithm for each vertex in the graph.
+
+The first transformation I would come up with to make all the weights non-negative is to find the edge with the smallest weight and then add 
+the absolute value of that weight to all the edges in the graph. This would make all the weights non-negative. The question is if this 
+transformation would change the shortest path between the vertices. The answer is unfortunately yes. If we have a path between two vertices
 
