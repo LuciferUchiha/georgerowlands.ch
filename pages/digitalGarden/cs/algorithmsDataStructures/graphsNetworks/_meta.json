@@ -4,7 +4,7 @@
   "storingGraphs": "Storing Graphs",
   "bfs": "Breadth First Search",
   "dfs": "Depth First Search",
-  "topologicalSortOrdering": "Topological Sort/Ordering",
+  "topologicalOrdering": "Topological Ordering",
   "shortestPath": "Shortest Path Algorithms",
   "allPairsShortestPath": "All Pairs Shortest Paths",
   "eulerHamilton": "Eulerian and Hamiltonian Graphs",
