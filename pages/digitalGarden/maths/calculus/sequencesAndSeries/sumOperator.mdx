@@ -110,6 +110,13 @@ $$
 
 If it starts at 0 instead of 1 then the formula changes slightly to $2^{n+1} - 1$.
 
+$$
+\sum{i=0}^{n} ar^k = a + ar + ar^2 + ... + ar^n = \begin{cases}
+a(n+1) & \text{if } r = 1 \\
+\frac{a(r^{n+1} - 1)}{r - 1} & \text{if } r \neq 1
+\end{cases}
+$$
+
 <Callout type="proof">
 By induction?
 </Callout>
