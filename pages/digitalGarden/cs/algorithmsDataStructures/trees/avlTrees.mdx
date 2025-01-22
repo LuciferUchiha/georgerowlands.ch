@@ -29,7 +29,7 @@ So if we use the following notations:
 - $h_l(v)$: the height of the left subtree of node $v$. But because we are talking about the height of the subtree and need to account for leaf 
 nodes we increase the height by 1. So if $v$ is a leaf node then $h_l(v) = 0$ and otherwise $h_l(v) = 1 +$ the height of the left subtree of $v$.
 - $h_r(v)$: the height of the right subtree of node $v$ defined in the same way as $h_l(v)$.
-- $bal(v)$: the balance factor of node $v$ so $bal(v) = h_r(v) - h_l(v)$
+- $bal(v)$: the balance factor of node $v$ so $bal(v) = h_l(v) - h_r(v)$.
 
 <Image
     src="/cs/algdAVLHeights.png"
@@ -38,7 +38,7 @@ nodes we increase the height by 1. So if $v$ is a leaf node then $h_l(v) = 0$ an
 />
 
 Then the we can say that a tree is balanced and satisfies the AVL property if:
-> $|h_r(v) - h_l(v)| \leq 1$ or $|bal(v)| \leq 1$ for all nodes $v$ in the tree.
+> $|h_l(v) - h_r(v)| \leq 1$ or $|bal(v)| \leq 1$ for all nodes $v$ in the tree.
 
 <Image
     src="/cs/algdAVLBalancedVsUnbalanced.png"
@@ -106,16 +106,16 @@ heights and balance factors of the ancestors.
 further cases depending on $h_r(u)$, the height of the right subtree $T_r(u)$:
 
 The first subcase is when $h_r(u)$ was one node higher than $h_l(u)$ before the insertion so now after increasing $h_l(u)$ by 1 the two subtrees have 
-the same height $h_l(u) = h_r(u)$. In this case the balance factor changes from 1 to 0. However, this does not break the AVL property so we do not 
+the same height $h_l(u) = h_r(u)$. In this case the balance factor changes from -1 to 0. However, this does not break the AVL property so we do not 
 need to do anything. And because the height of $u$ does not change we do not need to update the heights and balance factors of the ancestors.
 
 The second subcase is when $h_r(u)$ and $h_l(u)$ were the same before the insertion so now after increasing $h_l(u)$ by 1 the left subtree is one 
-node higher than the right subtree $h_l(u) = h_r(u) + 1$. In this case the balance factor changes from 0 to -1. This again does not break the AVL 
+node higher than the right subtree $h_l(u) = h_r(u) + 1$. In this case the balance factor changes from 0 to 1. This again does not break the AVL 
 property so we do not need to do anything. However, the height of $u$ changes so we have to update the balance factor of $u$ and the heights and 
 balance factors of the ancestors. If one of the ancestors becomes unbalanced we have one of the scenarios below which can be solved with a rotation. 
 
 The third subcase is when $h_r(u)$ was before the insertion one node shorter than $h_l(u)$ so now after increasing $h_l(u)$ by 1 the left subtree is 
-two nodes higher than the right subtree $h_l(u) = h_r(u) + 2$. In this case the balance factor changes from -1 to -2. This breaks the AVL property so 
+two nodes higher than the right subtree $h_l(u) = h_r(u) + 2$. In this case the balance factor changes from 1 to 2. This breaks the AVL property so 
 we have to perform a rotation to rebalance the tree. 
 
 The rotation depends on the following. If the inserted node is in the left subtree of the left child of $u$ then we perform a single rotation. 
@@ -135,6 +135,7 @@ then just the direction of the rotation would change meaning that we would perfo
     caption="A left rotation on node $u$ to rebalance the tree."
 />
 
+Importantly the subtrees of the nodes that are rotated are also reattached in a way so that the binary search tree property is maintained.
 If the inserted node is in the right subtree of the left child of $u$ then it gets a bit more complicated. Just doing a single rotation no matter 
 if it is a left or right rotation does not work. We have to perform a double rotation. If we are focusing on the situation again where the node was 
 inserted into the left subtree of $u$ then we first perform a left rotation on the left child of $u$ and then a right rotation on $u$. In the image 
@@ -158,6 +159,17 @@ a left rotation on $u$.
 After performing a rotation or double rotation we are finished and no longer need to update the heights and balance factors of the ancestors when inserting. 
 However, when removing a node we might not be finished after performing a rotation. We still have to update the heights and balance factors of the 
 ancestors and check if the AVL property is still satisfied until we reach the root of the tree.
+
+We can summarize these rotations based on the balance factor of the node $u$ and the balance factor of the left or right children as follows where 
+$bf(v)$ is the balance factor of node $v$ where $bf(v) = h_l(v) - h_r(v)$ and $bf(v.left)$ is the balance factor of the left child of node $v$ and 
+$bf(v.right)$ is the balance factor of the right child of node $v$:
+
+| Rotation | Condition | Signs of the balance factors |
+|----------|-----------|-----------------------------|
+| Right | $bf(v) > 1$ and $bf(v.left) \geq 0$ | same, both positive |
+| Left-Right | $bf(v) > 1$ and $bf(v.left) < 0$ | different |
+| Left | $bf(v) < -1$ and $bf(v.right) \leq 0$ | same, both negative |
+| Right-Left | $bf(v) < -1$ and $bf(v.right) > 0$ | different |
 
 So we see that we can maintain the AVL property when inserting or deleting a node in $O(\log n)$ time. The worst case scenario is when we remove a node 
 and have to repeatedly perform a rotation and update the heights and balance factors of the ancestors until we reach the root of the tree. But because 
