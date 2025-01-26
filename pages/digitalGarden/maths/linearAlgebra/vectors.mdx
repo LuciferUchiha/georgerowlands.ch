@@ -3,15 +3,24 @@ import Image from "~/components/Image/Image";
 
 # Vectors
 
-We have already seen that vectors are just special types of [matrices](/digitalGarden/maths/linearAlgebra/matrices) with either one row or one column, primarly with one column.
-However, depending on the field you are working in, a vector can mean many different things. In computer science, a vector is just a list of numbers, i.e. a 1D array or n-tuple.
-The elements of a vector are more commonly called components rather than elements.
+It always a tricky to decide if you should first introduce vectors or [matrices](/digitalGarden/maths/linearAlgebra/matrices) when teaching linear 
+algebra. As vectors can be seen as a special case of matrices but matrices can also be seen as a collection of vectors. However, most commonly 
+vectors are introduced first as they can be visualized easier and are more intuitive. 
 
-In maths, a vector can be thought of as an arrow in space that have a starting and ending point, also reffered to as the tail and the head of the vector. Most commonly 
-vectors are denoted by a lowercase letter either in bold or with an arrow above it, e.g. $\vec{v}$ or $\boldsymbol{v}$. If the vector is defined by two coordinate points, $A$ and $B$, 
-then the vector is denoted as $\vec{AB}$, this type of vector is a position vector. Usually the starting point of the vector is at the origin,
-$(0, 0)$ in 2D space or $(0, 0, 0)$ in 3D space etc. making the head of the vector the point $(x, y)$ or $(x, y, z)$ etc. this vector is then in the standard position. However, 
-it is important to note that the vector is independent of the starting point, i.e. the vector is the same no matter where it starts only the direction and length of the vector matter.
+
+So what is a vector? Depending on the field you are working in, a vector can mean many different things. In computer science, a vector is just a 
+list of numbers, i.e. a 1D array or n-tuple such as `[1,2,4]`.
+
+The elements of a vector are usual reffered to as components in the maths world.
+
+In maths, a vector can be thought of as an arrow in space that has a starting and ending point, also reffered to as the head and the tail of the 
+vector. Most commonly vectors are denoted by a lowercase letter either in bold or with an arrow above it, e.g. $\vec{v}$ or $\boldsymbol{v}$. If 
+the vector is defined by two coordinate points, $A=(2,1)$ and $B=(4,5)$, then the vector is denoted as $\vec{AB}$, this type of vector is called a position 
+vector as it shows how to get to the position of $B$ from the position of $A$.
+
+Usually the starting point of the vector is at the origin, $(0, 0)$ in 2D space or $(0, 0, 0)$ in 3D space etc. making the head of the vector the 
+point $(x, y)$ or $(x, y, z)$ etc. this vector is then in the standard position. However, it is important to note that the vector is independent 
+of the starting point, i.e. the vector is the same no matter where it starts only the direction and length of the vector matter.
 
 <Image
     src="/maths/vectorPosition.png"
@@ -21,7 +30,8 @@ it is important to note that the vector is independent of the starting point, i.
 
 Vectors are easily visualized in 2D and 3D space, but can be extended to any number of dimensions. 
 If we define that all vectors have the same starting point, they can be uniquely be defined by their ending point 
-which is the same as the direction and length of the vector. The length of the vector is also called the magnitude.
+which is the same as the direction and length of the vector. The length of the vector is also called the magnitude. 
+Vectors in math can however, also be seen as movement in space so they do not be in a specific position but can be anywhere in space.
 
 This is also in line with vectors in physics, where vectors are used to represent physical quantities that have both magnitude and direction 
 such as velocity, force, acceleration, etc. For example, a force vector indicates both the magnitude of the force and 
@@ -38,7 +48,7 @@ The length of the vector represents the magnitude of the physical quantity, and 
 ## Vector Addition
 
 To add two vectors together, we simply add the corresponding components of the vectors together i.e. we just add element-wise. This also means that the two vectors 
-must have the same number of components/dimensions. This is equivalent to matrix addition.
+must have the same number of components. This is equivalent to matrix addition.
 So we can add two vectors $\boldsymbol{x} \in \mathbb{R}^n$ and $\boldsymbol{y} \in \mathbb{R}^n$ as follows:
 
 $$
@@ -82,14 +92,23 @@ $$
 $$
 </Callout>
 
-We can also visualize vector addition nicely in 2D and 3D space with position vectors. Geometrically we can think of vector addition as moving the tail of the second vector to the head of the first vector. The 
-resulting vector is the vector that starts at the tail of the first vector and ends at the head of the second vector. This also results in the the two vectors forming the sides of a parallelogram.
+We can also visualize vector addition nicely in 2D and 3D space with position vectors. Geometrically we can think of vector addition as 
+adding the two movements of the vectors together, i.e. we first move along the first vector and then along the second vector. This results in the
+moving the tail of the second vector to the head of the first vector. The 
+resulting vector is the vector that starts at the tail of the first vector and ends at the head of the second vector. However, we can 
+also change the order of the vectors along which we move, i.e. we can first move along the second vector and then along the first vector. 
+This can be clearly seen in the image below where the two different orders form a parallelogram, showing that the order of vector addition does not matter, 
+i.e. the addition of vectors is commutative, $\boldsymbol{x} + \boldsymbol{y} = \boldsymbol{y} + \boldsymbol{x}$.
 
 <Image
     src="/maths/vectorAddition.png"
     caption="Vector addition in 2D."
     width={400}
     />
+
+This idea can also be extended to adding multiple vectors together, i.e. we can add more than two vectors together by adding the vectors in any order. 
+Now we get more routes that all lead to the same point, the result. The number of routes is equal to the number of permutations of the vectors, i.e. 
+the number of ways we can order the vectors which for $n$ vectors is $n!$.
 
 ## Scalar Multiplication
 
@@ -200,14 +219,54 @@ you can also see that $\boldsymbol{a} + \boldsymbol{c} = \boldsymbol{b}$ and aft
 
 ## Linear Combination
 
-If we combine the concepts of vector addition and scalar multiplication, we get the concept of a linear combination. A linear combination of vectors is the sum of the vectors scaled by some scalars.
-So if we have a set of vectors $\boldsymbol{v}_1, \boldsymbol{v}_2, \dots, \boldsymbol{v}_n$ and a set of scalars $s_1, s_2, \dots, s_n$, then we can combine them as follows:
+If we combine the concepts of vector addition and scalar multiplication, we get the concept of a linear combination. So if we have 
+two vectors $\boldsymbol{x}, \boldsymbol{y} \in \mathbb{R}^m$ and two scalars $s, t \in \mathbb{R}$, then we can define $\boldsymbol{z}$ 
+as the linear combination of the two vectors as follows:
 
 $$
+\boldsymbol{z} = s\boldsymbol{x} + t\boldsymbol{y} = s\begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_m
+\end{bmatrix} + t\begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_m
+\end{bmatrix} = \begin{bmatrix}
+    sx_1 + ty_1 \\
+    sx_2 + ty_2 \\
+    \vdots \\
+    sx_m + ty_m
+\end{bmatrix}
+$$
+
+This idea can be extended to more than two vectors and scalars. So if we have a set of vectors $\boldsymbol{v}_1, \boldsymbol{v}_2, \dots, 
+\boldsymbol{v}_n \in \mathbb{R}^m$ and a set of scalars $s_1, s_2, \dots, s_n \in \mathbb{R}$, then we can combine them as follows:
+
+$$
+\boldsymbol{z} =
+s_1 \begin{bmatrix}
+    v_{11} \\
+    v_{12} \\
+    \vdots \\
+    v_{1m}
+\end{bmatrix} + s_2 \begin{bmatrix}
+    v_{21} \\
+    v_{22} \\
+    \vdots \\
+    v_{2m}
+\end{bmatrix} + \dots + s_n \begin{bmatrix}
+    v_{n1} \\
+    v_{n2} \\
+    \vdots \\
+    v_{nm}
+\end{bmatrix} =
 s_1\boldsymbol{v}_1 + s_2\boldsymbol{v}_2 + \dots + s_n\boldsymbol{v}_n = \sum_{i=1}^n s_i\boldsymbol{v}_i = \boldsymbol{x}
 $$
 
-The scalars $s_1, s_2, \dots, s_n$ are the weights of the vectors, i.e. they determine how much each vector contributes to the resulting vector.
+The scalars $s_1, s_2, \dots, s_n$ are also often called weights as they determine how much each vector contributes to the resulting vector.
 
 <Callout type="example">
 If $\boldsymbol{v}$ and $\boldsymbol{w}$ are defined as:
@@ -244,9 +303,13 @@ $$
 $$
 </Callout>
 
-Linear combinations are the basis(hehe) of linear algebra and are used to define many more complex concepts such as linear independence, vector spaces, and linear transformations.
+Linear combinations are the basis (you will get this joke later on) of linear algebra and are used to define many more complex concepts such as linear independence, vector spaces, and linear transformations.
 
 <Callout type="example" title="All vectors are Linear Combinations">
+<Callout type="todo">
+This example is a work in progress, for all of this stuff lambda and mu would be better.
+</Callout>
+
 We can show that all vectors are linear combinations of other vectors. For example we can create all vectors with two components $\boldsymbol{u} \in \mathbb{R}^2$ by combining the following two vectors:
 
 $$
@@ -291,18 +354,33 @@ s_1\begin{bmatrix}
     u_1 \\
     u_2
 \end{bmatrix} \\
-\begin{bmatrix}
-    2s_1 + 3s_2 \\
-    3s_1 - s_2
-\end{bmatrix} &= \begin{bmatrix}
-    u_1 \\
-    u_2
-\end{bmatrix}
+\begin{vmatrix}
+s_1 \cdot 2 + s_2 \cdot 3 = u_1 \\
+s_1 \cdot 3 + s_2 \cdot -1 = u_2
+\end{vmatrix}
 \end{align*}
 $$
 
-So we can see that depending on what values we want our vector $\boldsymbol{u}$ to have, we can find the scalars $s_1$ and $s_2$ that create the vector. This is the basis of linear combinations. However,
-not any two vectors can be used to create all vectors in 2D space, the two vectors must form a basis for the space. In other words they must be linearly independent and span the space. We will go into more detail about this later.
+To solve this we can first eliminate $s_2$ from the first equation by multiplying the second equation by 3 and adding it to the first equation. 
+We can then solve for $s_1$ and substitute it back into the second equation to solve for $s_2$. This will give us formulas to calculate the scalars $s_1$ and $s_2$ 
+that create any vector $\boldsymbol{u}$.
+
+However, if we try and do the same for the following two vectors:
+
+$$
+\boldsymbol{v} = \begin{bmatrix}
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{w} = \begin{bmatrix}
+    4 \\
+    6
+\end{bmatrix}
+$$
+
+Show for general vectors v,w and u and where the system of equations is unsolvable.
+
+However, not any two vectors can be used to create all vectors in 2D space, the two vectors must form a basis for the space. In other words they 
+must be linearly independent and span the space. We will go into more detail about this later.
 </Callout>
 
 ### Special Combinations
@@ -322,6 +400,10 @@ combination can be rewritten as follows: $s_1\boldsymbol{v}_1 + s_2\boldsymbol{v
     />
     
 ## Multiplication between Vectors and Matrices
+
+<Callout type="todo">
+This belongs in the matrix section.
+</Callout>
 
 A vector can be left or right multiplied by a matrix. The multiplication between a vector and a matrix is defined just as the matrix multiplication so the dimensions of the two 
 must be compatible. If we have a matrix $\boldsymbol{A} \in \mathbb{R}^{m \times n}$ and a column vector $\boldsymbol{x} \in \mathbb{R}^{n \times 1}$, then we can multiply them together
@@ -415,74 +497,6 @@ $$
 $$
 </Callout>
 
-## Linear Independence
-
-Two vectors are linearly independent if neither of them can be written as a linear combination of the other. In other words, two vectors are linearly independent if 
-they are not scalar multiples of each other. It is however easier to find to define and check for linear dependence. The vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ 
-are linearly dependent if:
-
-$$
-\boldsymbol{a} = c\boldsymbol{b} \quad \text{for some } c \in \mathbb{R}
-$$
-
-this can also be written as:
-
-$$
-\boldsymbol{a} - c\boldsymbol{b} = \boldsymbol{0}
-$$
-
-where $\boldsymbol{0}$ is the zero vector. This means that the vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent 
-if they are collinear, i.e. they lie on the same line. The two equations above can also be used to define linear independence, we just replace the equal sign with a 
-not equal sign.
-
-<Image
-    src="/maths/vectorLinearDependence2D.png"
-    caption="The left two vectors are linearly independent, while the right two vectors are linearly dependent."
-    width={400}
-    />
-
-<Callout type="example">
-If $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
-
-$$
-\boldsymbol{a} = \begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
-    2 \\
-    4 \\
-    6
-\end{bmatrix}
-$$
-
-then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent because:
-
-$$
-\boldsymbol{a} = 2\boldsymbol{b}
-$$
-
-However, if $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
-
-$$
-\boldsymbol{a} = \begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
-    2 \\
-    3 \\
-    4
-\end{bmatrix}
-$$
-
-then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly independent because no scalar multiple of $\boldsymbol{b}$ can be equal to $\boldsymbol{a}$.
-</Callout>
-
-### Linear Independence of More Than Two Vectors
-
-Never used this.
-
 ## Dot Product
 
 The dot product or also called the inner product is the most common type of vector multiplication. This is defined 
@@ -551,12 +565,42 @@ $$
 $$
 </Callout>
 
+There are also other properties of the dot product that are important to know:
+scalars can be factored out of the dot product, i.e:
+
+$$
+s\boldsymbol{x} \cdot \boldsymbol{y} = s(\boldsymbol{x} \cdot \boldsymbol{y}) = \boldsymbol{x} \cdot s\boldsymbol{y}
+$$
+
+the dot product is distributive, i.e:
+
+$$
+\boldsymbol{x} \cdot (\boldsymbol{y} + \boldsymbol{z}) = \boldsymbol{x} \cdot \boldsymbol{y} + \boldsymbol{x} \cdot \boldsymbol{z}
+$$
+
+To prove this we can use some rules from the sum operator:
+
+$$
+\begin{align*}
+\boldsymbol{x} \cdot (\boldsymbol{y} + \boldsymbol{z}) &= \sum_{i=1}^m x_i(y_i + z_i) \\
+&= \sum_{i=1}^m (x_iy_i + x_iz_i) \\
+&= \sum_{i=1}^m x_iy_i + \sum_{i=1}^m x_iz_i \\
+&= \boldsymbol{x} \cdot \boldsymbol{y} + \boldsymbol{x} \cdot \boldsymbol{z}
+\end{align*}
+$$
+
+We can also show that the dot product with itself is always positive or zero, i.e:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{x} \geq 0 \quad \text{because} \quad \boldsymbol{x} \cdot \boldsymbol{x} = \sum_{i=1}^n x_i^2
+$$
+
 ## Norms
 
 A norm is a function denoted by $\|\cdot\|$ that maps vectors to real values and satisfies the following properties:
 
 - It is positiv definit meaning it assigns a non-negative real numbers, i.e a length or size to each vector. 
-- If the norm of a vector is zero, then the vector is the zero vector.
+- If the norm of a vector is zero, then the vector is the zero vector, i.e. $\|\boldsymbol{x}\| = 0 \iff \boldsymbol{x} = \boldsymbol{0}$.
 - The norm of a vector scaled by a scalar is equal to the absolute value of the scalar times the norm of the vector, 
 i.e. $\|s\boldsymbol{x}\| = |s|\|\boldsymbol{x}\|$ where $s \in \mathbb{R}$ and $\boldsymbol{x} \in \mathbb{R}^n$.
 - The triangle inequality holds which we will see later.
@@ -623,6 +667,9 @@ $$
     width={400}
     />
 
+We say a vector is a unit vector if its norm is one, i.e. $\|\boldsymbol{x}\|_2 = 1$. The set of all unit vectors visualized in 
+2D space therefore forms a circle with a radius of one around the origin, the so called unit circle.
+
 #### Cauchy-Schwarz Inequality
 
 The Cauchy-Schwarz inequality states that the dot product of two vectors is always less than or equal to the product of the two vectors' norms.
@@ -687,7 +734,7 @@ $$
 The triangle inequality states that the norm of the sum of two vectors is less than or equal to the sum of the norms of the two vectors.
 
 $$
-\|\boldsymbol{x} \pm \boldsymbol{y}\|_2 \leq \|\boldsymbol{x}\|_2 \pm \|\boldsymbol{y}\|_2
+\|\boldsymbol{x} + \boldsymbol{y}\|_2 \leq \|\boldsymbol{x}\|_2 + \|\boldsymbol{y}\|_2
 $$
 
 This can also visually be seen in the 2D case, where the direct path from one point to another is always shorter than the path that goes through another point. Or also that 
@@ -699,7 +746,7 @@ the hypotenuse of a triangle is always shorter than the sum of the other two sid
     />
 
 <Callout type="proof">
-Let's first look at the norm of the sum of two vectors squared.
+Because both sides of the inequality are positive, we can look at the squares to make the proof easier.
 
 $$
 \begin{align*}
@@ -724,6 +771,8 @@ $$
 \|\boldsymbol{x} + \boldsymbol{y}\|_2 &\leq \|\boldsymbol{x}\|_2 + \|\boldsymbol{y}\|_2
 \end{align*}
 $$
+
+We can also prove the cauchy schwarz inequality using the triangle inequality.
 </Callout>
 
 ### P-Norm
@@ -765,7 +814,7 @@ $$
 $$
 </Callout>
 
-## Meaning of the Dot Product
+## Angle between Vectors
 
 The question now is what is the dot product actually? 
 
@@ -921,12 +970,6 @@ $$
 \end{align*}
 $$
 </Callout>
-
-## Linear Projections
-
-Is a bigger topic
-can be related to matrix transformations via the outer product of the two vectors or something
-is related to the dot product and the angle between the two vectors and the length of the two vectors
 
 ## Normalization
 
