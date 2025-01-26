@@ -65,7 +65,7 @@ products together and if the diagonal goes from the top right to the bottom left
 
 <Image src="/maths/determinantsAugment.png"
        caption="Rule of Sarrus for calculating the determinant of a 3x3 matrix."
-       width={400}
+       width={350}
 />
 
 ## Properties of the Determinant
@@ -276,7 +276,7 @@ So now if $d = g = h = 0$ then the determinant simplifies to just the product of
 can be seen for a lower triangular matrix so where $b = c = f = 0$ then the determinant is just the product of the diagonal elements $adi$. So we then have:
 - $det(\text{upper/lower triangular matrix}) = aei$
 - $det(\text{diagonal matrix}) = aei$
-- $det(\text{\boldsymbol{I}}) = 1$
+- $det(\boldsymbol{I}) = 1$
 
 ### Determinant of Symmetric Matrices
 
@@ -342,11 +342,15 @@ $$
 So we can see that this formula generalizes to the formula for the determinant of a $2 \times 2$ matrix that we derived earlier. Now let's 
 look at the formula for the determinant of a $3 \times 3$ matrix.
 
+<Image 
+src="/maths/determinantCoFactor.png"
+/>
 
+Which can also be written as:
 
-Which can be written as:
-
-
+<Image 
+src="/maths/determinantCoFactorDense.png"
+/>
 
 So we can actually calculate the determinant of a $3 \times 3$ matrix using the formula for the determinant of a $2 \times 2$ matrix. This then further generalizes to 
 higher dimensions so we could calculate the determinant of a $4 \times 4$ matrix using the formula for the determinant of a $3 \times 3$ matrix and so on. 
@@ -432,5 +436,61 @@ $$
 
 ## Cramer's Rule
 
-https://www.youtube.com/watch?v=jBsC34PxzoM&list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab&index=12&t=580s
+We can also solve a system of linear equations using the determinant of a matrix. This is called Cramer's rule. So let's say we have a system of linear equations: 
 
+$$
+\begin{bmatrix}
+a_{11} & a_{12} & a_{13} \\
+a_{21} & a_{22} & a_{23} \\
+a_{31} & a_{32} & a_{33}
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3
+\end{bmatrix} = \begin{bmatrix}
+b_1 \\
+b_2 \\
+b_3
+\end{bmatrix}
+$$
+
+The idea then relies on the fact that we can then construct the following equation:
+
+$$
+\begin{bmatrix}
+a_{11} & a_{12} & a_{13} \\
+a_{21} & a_{22} & a_{23} \\
+a_{31} & a_{32} & a_{33}
+\end{bmatrix}
+\begin{bmatrix}
+x_1 & 0 & 0 \\
+x_2 & 1 & 0 \\
+x_3 & 0 & 1
+\end{bmatrix} = \begin{bmatrix}
+b_1 & a_{12} & a_{13} \\
+b_2 & a_{22} & a_{23} \\
+b_3 & a_{32} & a_{33}
+\end{bmatrix}
+$$
+
+We can then see that the middle matrix is a triangular matrix and so the determinant is the product of the diagonal elements, which in this case is just $x_1$. So if we denote the 
+special matrix on the right where the $i$-th column is replaced by the vector $\boldsymbol{b}$ as $\mathscr{B}_i$ and use the fact that the determinant of a matrix multiplied by 
+another matrix is the product of the determinants of the two matrices we get:
+
+$$
+\begin{align*}
+det(\boldsymbol{A}) \cdot x_1 = det(\mathscr{B}_1) \\
+x_1 = \frac{det(\mathscr{B}_1)}{det(\boldsymbol{A})}
+\end{align*}
+$$
+
+In the same way we can then also calculate $x_2$ and $x_3$ by replacing the $i$-th column of the matrix $\boldsymbol{A}$ with the vector $\boldsymbol{b}$ and then calculating the 
+determinant of the resulting matrix. So more generally we can solve a system of linear equations using Cramer's rule as:
+
+$$
+x_i = \frac{det(\mathscr{B}_i)}{det(\boldsymbol{A})}
+$$
+
+We can also see that if the system is not solvable, i.e the matrix $\boldsymbol{A}$ isn't full rank and doesn't have an inverse, then the determinant of the matrix is also 0 
+and we wouldn't be able to do the division. So solving a system of linear equations using Cramer's rule stays consistent with our other methods.
