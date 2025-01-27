@@ -242,6 +242,44 @@ $$
 \boldsymbol{Q}^{-1} = \boldsymbol{Q}^T.
 $$
 
+Orthogonal matrices also have the nice property of preserving the norm of a vector. So if we have an orthogonal matrix 
+$\boldsymbol{Q} \in \mathbb{R}^{n \times n}$ and let $\boldsymbol{x} \in \mathbb{R}^n$ be any vector. So if we consider
+ the transformed vector $\boldsymbol{y} = \boldsymbol{Q} \boldsymbol{x}$. Then the norm of $\boldsymbol{y}$ is:
+
+$$
+\|\boldsymbol{y}\| = \sqrt{\boldsymbol{y}^T \boldsymbol{y}} = \sqrt{(\boldsymbol{Q} \boldsymbol{x})^T (\boldsymbol{Q} \boldsymbol{x})}.
+$$
+
+Using the associative property of matrix multiplication and the fact that $\boldsymbol{Q}^T \boldsymbol{Q} = \boldsymbol{I}$ (since $\boldsymbol{Q}$ is orthogonal), we get:
+
+$$
+\|\boldsymbol{y}\| = \sqrt{\boldsymbol{x}^T (\boldsymbol{Q}^T \boldsymbol{Q}) \boldsymbol{x}} = \sqrt{\boldsymbol{x}^T \boldsymbol{I} \boldsymbol{x}} = \sqrt{\boldsymbol{x}^T \boldsymbol{x}} = \|\boldsymbol{x}\|.
+$$
+
+Thus, the norm of a vector is preserved under multiplication by an orthogonal matrix. An orthogonal matrix also 
+preserves the inner product of two vectors. The inner product of two vectors $\boldsymbol{x}, \boldsymbol{z} \in \mathbb{R}^n$ is defined as:
+
+$$
+\langle \boldsymbol{x}, \boldsymbol{z} \rangle = \boldsymbol{x}^T \boldsymbol{z}.
+$$
+
+Now consider the transformed vectors $\boldsymbol{y} = \boldsymbol{Q} \boldsymbol{x}$ and $\boldsymbol{w} = \boldsymbol{Q} \boldsymbol{z}$. The inner product of $\boldsymbol{y}$ and $\boldsymbol{w}$ is:
+
+$$
+\langle \boldsymbol{y}, \boldsymbol{w} \rangle = \boldsymbol{y}^T \boldsymbol{w} = (\boldsymbol{Q} \boldsymbol{x})^T (\boldsymbol{Q} \boldsymbol{z}).
+$$
+
+Using the associative property of matrix multiplication and the fact that $\boldsymbol{Q}^T \boldsymbol{Q} = \boldsymbol{I}$, we have:
+
+$$
+\langle \boldsymbol{y}, \boldsymbol{w} \rangle = \boldsymbol{x}^T (\boldsymbol{Q}^T \boldsymbol{Q}) \boldsymbol{z} = \boldsymbol{x}^T \boldsymbol{I} \boldsymbol{z} = \boldsymbol{x}^T \boldsymbol{z} = \langle \boldsymbol{x}, \boldsymbol{z} \rangle.
+$$
+
+Thus, the inner product of two vectors is also preserved under multiplication by an orthogonal matrix. These two properties give us 
+an important insight into linear transformations that are defined by orthogonal matrices. The geometric interpretation is that 
+Orthogonal matrices represent **rigid transformations** of space, such as rotations and reflections. These transformations 
+do not distort the lengths of vectors or the angles between them, which is why both the norm and the inner product remain unchanged.
+
 ### Projections with Orthogonal Matrices
 
 Suppose we are given $\boldsymbol{Q} \in \mathbb{R}^{m \times n}$ that has orthonormal columns. We now want to project a vector 
