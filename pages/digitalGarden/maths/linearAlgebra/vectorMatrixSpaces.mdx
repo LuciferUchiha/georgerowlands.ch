@@ -264,6 +264,72 @@ $$
 Important is that the column space is spanned by the original columns of the matrix and not the columns in the row echelon form. The row echelon form is just a way to find the linearly independent columns.
 </Callout>
 
+#### Column Space of AA^T
+
+Interestingly the column space of the matrix $\boldsymbol{A}\boldsymbol{A}^T$ is the same as the column space of the matrix $\boldsymbol{A}$. 
+
+Firstly if $\boldsymbol{A}$ is a $m \times n$ then $\boldsymbol{A}\boldsymbol{A}^T$ is a $m \times m$ matrix. So we can see that the ambient spaces are the same, but the number of column vectors is different.
+The ambient spaces being the same is a however a good precondition for the column spaces being the same. 
+
+If we then look at what the matrix multiplication for $\boldsymbol{A}^T\boldsymbol{A}$ actually is, we can see that it is 
+just a linear combination of the column vectors of $\boldsymbol{A}$. 
+
+$$
+\boldsymbol{A}\boldsymbol{A}^T = \begin{bmatrix}
+\boldsymbol{a}_{11} & \boldsymbol{a}_{12} & \ldots & \boldsymbol{a}_{1n} \\
+\boldsymbol{a}_{21} & \boldsymbol{a}_{22} & \ldots & \boldsymbol{a}_{2n} 
+\end{bmatrix} \begin{bmatrix}
+\boldsymbol{a}_{11} & \boldsymbol{a}_{21} \\
+\boldsymbol{a}_{12} & \boldsymbol{a}_{22} \\
+\vdots & \vdots \\
+\boldsymbol{a}_{1n} & \boldsymbol{a}_{2n} \\
+\end{bmatrix} = \begin{bmatrix}
+\boldsymbol{c}_{11} & \boldsymbol{c}_{12} \\
+\boldsymbol{c}_{21} & \boldsymbol{c}_{22} \\
+\end{bmatrix}
+$$
+
+This means that the column space of $\boldsymbol{A}\boldsymbol{A}^T$ is the same as the column space of $\boldsymbol{A}$. Because a vector space is 
+defined by all the possible linear combinations of the vectors that span it. Thus a linear combination of the column vectors of $\boldsymbol{A}$ can 
+not leave the column space of $\boldsymbol{A}$ so it must be at least a subset of the vector space. But because we also know 
+that the rank of $\boldsymbol{A}\boldsymbol{A}^T$ is the same as the rank of $\boldsymbol{A}$ due to the **rank-nullity theorem** we know that 
+the column spaces have the same dimensionality and therefore must be the same. So we can say the following: 
+
+$$
+C(\boldsymbol{A}\boldsymbol{A}^T) = C(\boldsymbol{A})
+$$
+
+<Callout type="example">
+If we look at the matrix multiplication we can see the linear combination of the column vectors of $\boldsymbol{A}$ in the matrix $\boldsymbol{A}\boldsymbol{A}^T$.
+
+$$
+\begin{align*}
+\begin{bmatrix}
+0 & 10 \\
+3 & 7 \\
+5 & 3 \\
+\end{bmatrix} \begin{bmatrix}
+0 & 3 & 5 \\
+10 & 7 & 3 \\
+\end{bmatrix} &= \begin{bmatrix}
+0 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix} 
++ 10 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
+\quad
+3 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix}
++ 7 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
+\quad
+5 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix}
++ 3 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
+\end{bmatrix} \\
+&= \begin{bmatrix}
+100 & 70 & 30 \\
+70 & 58 & 34 \\
+30 & 34 & 34 \\
+\end{bmatrix}
+\end{align*}
+$$
+</Callout>
+
 #### Membership of a Vector in the Column Space
 
 If we have a vector $\boldsymbol{b}$ and we want to know if it is in the column space of a matrix $\boldsymbol{A}$ we are actually asking the question of 
@@ -383,6 +449,51 @@ $$
 R(\boldsymbol{A}) = span(\{\begin{bmatrix} 1 & 2 & 0 & 3 \end{bmatrix}, \begin{bmatrix} 2 & 4 & 1 & 4 \end{bmatrix}\}) = \mathbb{R}^2
 $$
 </Callout>
+
+#### Row Space of A^TA
+
+Very similarly as for the column space of $\boldsymbol{A}\boldsymbol{A}^T$ the row space of $\boldsymbol{A}^T\boldsymbol{A}$ is the same as the row space of $\boldsymbol{A}$ because we can show that the matrix is a linear combination of the row vectors of $\boldsymbol{A}$.
+
+$$
+\boldsymbol{A}^T\boldsymbol{A} = \begin{bmatrix}
+\boldsymbol{a}_{11} & \boldsymbol{a}_{21} & \ldots & \boldsymbol{a}_{n1} \\
+\boldsymbol{a}_{12} & \boldsymbol{a}_{22} & \ldots & \boldsymbol{a}_{n2}
+\end{bmatrix} \begin{bmatrix}
+\boldsymbol{a}_{11} & \boldsymbol{a}_{12} \\
+\boldsymbol{a}_{21} & \boldsymbol{a}_{22} \\
+\vdots & \vdots \\
+\boldsymbol{a}_{n1} & \boldsymbol{a}_{n2} \\
+\end{bmatrix} = \begin{bmatrix}
+\boldsymbol{r}_{11} & \boldsymbol{r}_{12} \\
+\boldsymbol{r}_{21} & \boldsymbol{r}_{22} \\
+\end{bmatrix}
+$$
+
+So we formally have the following:
+
+$$
+R(\boldsymbol{A}^T\boldsymbol{A}) = R(\boldsymbol{A})
+$$
+
+So we can say the following:
+
+$$
+\begin{align*}
+R(\boldsymbol{A}^T\boldsymbol{A}) &= R(\boldsymbol{A}) \\
+C(\boldsymbol{A}^T\boldsymbol{A}) &= C(\boldsymbol{A}) \\
+\end{align*}
+$$
+
+And because the matrices $\boldsymbol{A}^T\boldsymbol{A}$ and $\boldsymbol{A}\boldsymbol{A}^T$ are symmetric we can also say that the column spaces are the same as the row spaces:
+
+$$
+\begin{align*}
+C(\boldsymbol{A}^T\boldsymbol{A}) &= R(\boldsymbol{A}^T\boldsymbol{A})  \\
+C(\boldsymbol{A}\boldsymbol{A}^T) &= R(\boldsymbol{A}\boldsymbol{A}^T) \\
+\end{align*}
+$$
+
+However this does not mean that $C(\boldsymbol{A}) = R(\boldsymbol{A})$. This is only the case if the matrix is symmetric and full rank.
 
 ### Null Space
 
@@ -605,74 +716,3 @@ P_m is the space of polynomials of degree m. This is a vector space because the 
 ## Vector Spaces with Dot Products
 
 from this you can then also define orthogonality and therefore also orthonormal bases.
-
-#### Column Space of AA^T
-
-Interestingly the column space of the matrix $\boldsymbol{A}\boldsymbol{A}^T$ is the same as the column space of the matrix $\boldsymbol{A}$. 
-
-Firstly if $\boldsymbol{A}$ is a $m \times n$ then $\boldsymbol{A}\boldsymbol{A}^T$ is a $m \times m$ matrix. So we can see that the ambient spaces are the same, but the number of column vectors is different.
-The ambient spaces being the same is a however a good precondition for the column spaces being the same. 
-
-If we then look at what the matrix multiplication for $\boldsymbol{A}^T\boldsymbol{A}$ actually is, we can see that it is 
-just a linear combination of the column vectors of $\boldsymbol{A}$. This means that the column space of $\boldsymbol{A}\boldsymbol{A}^T$ is the same as the column space of $\boldsymbol{A}$. Because a vector space is 
-defined by all the possible linear combinations of the vectors that span it. Thus a linear combination of the column vectors of $\boldsymbol{A}$ can not leave the column space of $\boldsymbol{A}$ so it must be at least a subset of the vector space. But because we also know 
-that the rank of $\boldsymbol{A}\boldsymbol{A}^T$ is the same as the rank of $\boldsymbol{A}$ due to the **rank-nullity theorem** we know that the column spaces have the same dimensionality and therefore must be the same. However, the basis 
-of the column space of $\boldsymbol{A}\boldsymbol{A}^T$ is different from the basis of the column space of $\boldsymbol{A}$ because the vectors are different and the number of vectors is different. Therefore we can say the following:
-
-$$
-C(\boldsymbol{A}\boldsymbol{A}^T) = C(\boldsymbol{A})
-$$
-
-<Callout type="example">
-If we look at the matrix multiplication we can see the linear combination of the column vectors of $\boldsymbol{A}$ in the matrix $\boldsymbol{A}\boldsymbol{A}^T$.
-
-$$
-\begin{align*}
-\begin{bmatrix}
-0 & 10 \\
-3 & 7 \\
-5 & 3 \\
-\end{bmatrix} \begin{bmatrix}
-0 & 3 & 5 \\
-10 & 7 & 3 \\
-\end{bmatrix} &= \begin{bmatrix}
-0 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix} 
-+ 10 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
-\quad
-3 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix}
-+ 7 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
-\quad
-5 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix}
-+ 3 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
-\end{bmatrix} \\
-&= \begin{bmatrix}
-100 & 70 & 30 \\
-70 & 58 & 34 \\
-30 & 34 & 34 \\
-\end{bmatrix}
-\end{align*}
-$$
-</Callout>
-
-#### Row Space of A^TA
-
-Just like for the column space of $\boldsymbol{A}\boldsymbol{A}^T$ the row space of $\boldsymbol{A}^T\boldsymbol{A}$ is the same as the row space of $\boldsymbol{A}$ because we can show that the matrix is a linear combination of the row vectors of $\boldsymbol{A}$.
-So we can say the following:
-
-$$
-\begin{align*}
-R(\boldsymbol{A}^T\boldsymbol{A}) &= R(\boldsymbol{A}) \\
-C(\boldsymbol{A}^T\boldsymbol{A}) &= C(\boldsymbol{A}) \\
-\end{align*}
-$$
-
-And because the matrices $\boldsymbol{A}^T\boldsymbol{A}$ and $\boldsymbol{A}\boldsymbol{A}^T$ are symmetric we can also say that the column spaces are the same as the row spaces:
-
-$$
-\begin{align*}
-C(\boldsymbol{A}^T\boldsymbol{A}) &= R(\boldsymbol{A}^T\boldsymbol{A})  \\
-C(\boldsymbol{A}\boldsymbol{A}^T) &= R(\boldsymbol{A}\boldsymbol{A}^T) \\
-\end{align*}
-$$
-
-However this does not mean that $C(\boldsymbol{A}) = R(\boldsymbol{A})$. This is only the case if the matrix is symmetric and full rank.
