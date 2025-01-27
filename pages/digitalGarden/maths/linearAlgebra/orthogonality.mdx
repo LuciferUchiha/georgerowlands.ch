@@ -1,14 +1,121 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+
 # Orthogonality
 
-two vectors are orthogonal if their dot product is zero
+We have already seen that we say two vectors are orthogonal if their dot product is zero or in other words the angle between them is 90 degrees. For non-zero vectors, this can 
+be seen from the formula for the dot product of two vectors:
 
-two subspaces are orthogonal if every vector in the first subspace is orthogonal to every vector in the second subspace
+$$
+\begin{align*}
+\cos(\theta) &= \frac{\boldsymbol{a} \cdot b}{||a|| \cdot ||b||} = 0 \quad \text{where} \quad \theta = 90^{\circ} \\
+\boldsymbol{a} \cdot \boldsymbol{b} &= \cos(\theta) \cdot ||a|| \cdot ||b|| = 0
+\end{align*}
+$$
 
-To check if two spaces are orthogonal we just need to check if the basis vectors of one space are orthogonal to the basis vectors of the other space
+This is due to the fact of the $\cos(90^{\circ}) = 0$, then the entire multiplication becomes zero. 
+We can also write the dot product in matrix multiplication notation which can be useful in some cases:
 
-If two spaces are orthogonal then the set of basis is linearly independent. so no intersection between the two spaces and union of the two spaces makes a larger space.
+$$
+\boldsymbol{a} \cdot \boldsymbol{b} = \boldsymbol{a}^T \cdot \boldsymbol{b} = \sum_{i=1}^{n} a_i \cdot b_i
+$$
 
-If two spaces are orthogonal then the dimension of the intersection of the two spaces is zero
+We also commonly use the following notation if two vectors are orthogonal:
+
+$$
+\boldsymbol{a} \perp \boldsymbol{b} \iff \boldsymbol{a} \cdot \boldsymbol{b} = 0
+$$
+
+From these two equations of the dot product we can see some important properties of orthogonal vectors:
+- Every vector is orthogonal to the zero vector, again because the multiplications just become zero.
+- The length of the vectors do not matter, only the direction of the vectors matter. This can be seen in the equation for the angle 
+between two vectors, as if the angle is 90 degrees then the cosine term becomes zero and the length of the vectors do not matter.
+
+However the most important property of orthogonal vectors is that they are linearly independent. If there are two vectors then this is rather obvious 
+as if they were dependent then one vector would just be a scalar multiple of the other vector so they would be collinear and pointing in the same direction. If there are more 
+than two vectors then the same logic applies. Think of two vectors that are orthogonal to each other in 3D space. The linear combination of these 
+two vectors spans a plane. If we then add a third vector that is orthogonal to the other 2 vectors then this vector can not be in the plane, 
+or in other words be a linear combination of the other two vectors. So the third vector must be linearly independent of the other two vectors. 
+
+<Image src="/maths/orthogonalVectors.png"
+       caption="Adding a third orthogonal vector must be linearly independent of the other two vectors"
+       width={600}
+/>
+
+We can also immediately see that the third vector is orthogonal to the entire plane so all the linear combinations of the first two vectors. We 
+can also think of this more formally. If we a vector that is a linear combination of the other two orthogonal vectors then the only way that this 
+vector can be orthogonal to the other two vectors is if one of the coefficients of the linear combination is zero making the vector just a scalar 
+multiple of the other vector which would make the vectors dependent. The same logic applies to more than 3 vectors.
+
+$$
+\begin{align*}
+\boldsymbol{c} &= \lambda \boldsymbol{a} + \mu \boldsymbol{b} \\
+\boldsymbol{c} \cdot \boldsymbol{a} &= \sum_{i=1}^{n} c_i \cdot a_i \\
+&= \sum_{i=1}^{n} (\lambda a_i + \mu b_i) \cdot a_i \\
+&= \sum_{i=1}^{n} (\lambda a_i \cdot a_i) + (\mu b_i \cdot a_i) \\
+&= \lambda \sum_{i=1}^{n} a_i \cdot a_i + \mu \sum_{i=1}^{n} b_i \cdot a_i \\
+&= \lambda \sum_{i=1}^{n} a_i^2 = 0 \implies \lambda = 0 \implies \boldsymbol{c} = \mu \boldsymbol{b}
+\end{align*}
+$$
+
+## Orthogonal Subspaces
+
+Orthogonality also extends to subspaces. We say two subspaces are orthogonal if every vector in the first subspace is orthogonal to every vector in the second subspace.  
+So, in other words, we define two subspaces $A$ and $B$ to be orthogonal if the following holds:
+
+$$
+A \perp B \iff \forall \boldsymbol{a} \in A, \forall \boldsymbol{b} \in B, \boldsymbol{a} \perp \boldsymbol{b}
+$$
+
+We have already seen that orthogonal vectors are linearly independent and that a vector in a vector space can be written as a linear combination of the basis vectors of the vector space.  
+So, if we combine these two facts, then we can see that for two subspaces to be orthogonal, only the basis vectors of one subspace must be orthogonal to the basis vectors of the other subspace.  
+Because if the basis vectors are orthogonal, then so are all the linear combinations of the basis vectors and therefore also all the vectors in the subspace.
+
+This means that for two subspaces to be orthogonal, the basis vectors of one subspace must be orthogonal to the basis vectors of the other subspace.  
+This is enough to show that the two subspaces are orthogonal. So, more formally, if we have two subspaces $A$ and $B$ with basis vectors  
+$\boldsymbol{a}_1, \boldsymbol{a}_2, \ldots, \boldsymbol{a}_m$ and $\boldsymbol{b}_1, \boldsymbol{b}_2, \ldots, \boldsymbol{b}_n$, respectively,  
+then the following must hold:
+
+$$
+A \perp B \iff \forall i, j, \boldsymbol{a}_i \perp \boldsymbol{b}_j
+$$
+
+So we want to show that the following linear combination only holds if the basis vectors are orthogonal:
+
+$$
+\begin{align*}
+\boldsymbol{a} \in A \quad \text{and} \quad \boldsymbol{b} \in B \\
+\boldsymbol{a} \cdot \boldsymbol{b} &= 0 \\
+&= \sum_{i=1}^{m} \lambda_i \boldsymbol{a}_i \cdot \sum_{j=1}^{n} \mu_j \boldsymbol{b}_j \\
+&= \sum_{i=1}^{m} \sum_{j=1}^{n} \lambda_i \mu_j \boldsymbol{a}_i \cdot \boldsymbol{b}_j \\
+&= \sum_{i=1}^{m} \sum_{j=1}^{n} \lambda_i \mu_j (0) = 0
+\end{align*}
+$$
+
+So, if the basis vectors are orthogonal, then the subspaces are orthogonal. Another possibility is if one of the coefficients is zero, but then 
+one of the vectors would just be the zero vector and all the vectors in the subspace would be orthogonal to the zero vector.
+
+So we know that if the basis vectors are orthogonal, then the subspaces are orthogonal. This also means that the basis vectors of the two 
+subspaces are linearly independent from our previous findings so the only vector that is in both subspaces is the zero vector. More formally:
+
+$$
+\it{A} \perp \it{B} \implies \it{A} \cap \it{B} = \{\boldsymbol{0}\}
+$$
+
+Because the basis vectors of the two subspaces are linearly independent we can also create a new subspace that is the union of the two subspaces:
+
+$$
+\begin{align*}
+\it{C} &= \it{A} \cup \it{B} \\
+&= \{\lambda \boldsymbol{a} + \mu \boldsymbol{b} \mid \lambda, \mu \in \mathbb{R} \, \text{and} \, \boldsymbol{a} \in A, \boldsymbol{b} \in B\}
+&= \text{span}(\boldsymbol{a}_1, \boldsymbol{a}_2, \ldots, \boldsymbol{a}_m, \boldsymbol{b}_1, \boldsymbol{b}_2, \ldots, \boldsymbol{b}_n)
+\end{align*}
+$$
+
+The dimension of the new subspace is then the sum of the dimensions of the two subspaces, $\text{dim}(C) = \text{dim}(A) + \text{dim}(B)$ as we 
+define the dimension of a subspace as the number of basis vectors of the subspace. 
+
+### Orthogonal Complement
 
 We can find the orthogonal complement of a space
 
