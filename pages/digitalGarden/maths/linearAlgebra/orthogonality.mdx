@@ -106,42 +106,123 @@ Because the basis vectors of the two subspaces are linearly independent we can a
 
 $$
 \begin{align*}
-\it{C} &= \it{A} \cup \it{B} \\
+\it{C} &= \it{A} \oplus \it{B} \\
 &= \{\lambda \boldsymbol{a} + \mu \boldsymbol{b} \mid \lambda, \mu \in \mathbb{R} \, \text{and} \, \boldsymbol{a} \in A, \boldsymbol{b} \in B\}
 &= \text{span}(\boldsymbol{a}_1, \boldsymbol{a}_2, \ldots, \boldsymbol{a}_m, \boldsymbol{b}_1, \boldsymbol{b}_2, \ldots, \boldsymbol{b}_n)
 \end{align*}
 $$
 
+Where $\oplus$ denotes the direct sum of the two subspaces, so it contains all the vectors that are in both subspaces and 
+their linear combinations. We can't just take the union of the two subspaces as neither of the subspaces would be closed under addition.
 The dimension of the new subspace is then the sum of the dimensions of the two subspaces, $\text{dim}(C) = \text{dim}(A) + \text{dim}(B)$ as we 
 define the dimension of a subspace as the number of basis vectors of the subspace. 
 
 ### Orthogonal Complement
 
-We can find the orthogonal complement of a space
+If we have a subspace $\it{A}$ then we can define a special subspace called the orthogonal complement of $\it{A}$, denoted $\it{A}^{\perp}$. 
+The orthogonal complement of a subspace is the set of all vectors that are orthogonal to every vector in the subspace. So, more formally if 
+we have a subspace $\it{A}$ of $\mathbb{R}^n$ then the orthogonal complement of $\it{A}$ is defined as:
 
-The null space of a matrix is the orthogonal complement of the row space of the matrix or the column space of the transpose of the matrix
-Together the entire space can be spanned
+$$
+\it{A}^{\perp} = \{\boldsymbol{x} \in \mathbb{R}^n \mid \boldsymbol{x}^T \boldsymbol{a} = 0 \, \forall \boldsymbol{a} \in A\}
+$$
 
-the compliment of the compliment is the original space
+These means that we can decompose a vector space into two subspaces, the subspace itself and the orthogonal complement of the subspace. 
+This comes from the idea that a vector space has $n$ dimensions/basis vectors, if we then take a subspace of the vector space then this 
+subspace has $k \leq n$ dimensions/basis vectors. The orthogonal complement of the subspace then has $n - k$ dimensions/basis vectors because 
+the two subspaces are orthogonal and the basis vectors of the two subspaces are linearly independent. So then when joining the two subspaces 
+together we get the entire vector space, also called the ambient space. This can be written as:
 
-## Projections
+$$
+\it{A} \subset \mathbb{R}^n \implies \mathbb{R}^n = \it{A} \oplus \it{A}^{\perp} = \{\boldsymbol{a} + \boldsymbol{x} \mid \boldsymbol{a} \in A, \boldsymbol{x} \in A^{\perp}\}
+$$
 
-A^TA is invertable and symmetric because have same nullspace as A
+So this means that every vector in the ambient space can be written as a linear combination of a vector in the subspace and a vector in the 
+orthogonal complement of the subspace. From this it also naturally follows that the orthogonal complement of the orthogonal complement of a 
+subspace is the subspace itself:
 
-projection matrix
+$$
+\mathbb{R}^n = \it{A} \oplus \it{A}^{\perp} = (\it{A}^{\perp})^{\perp} \oplus \it{A}^\perp \implies \it{A} = (\it{A}^{\perp})^{\perp}
+$$
 
-## Least Squares
+### Orthogonality of Matrix Subspaces
 
-## Gram-Schmidt
+We have seen that we can define some subspaces of a matrix. Specifically, we can define the column space $C(A)$, row space $R(A)$, null space 
+$N(A)$ and solution space $Sol(A, b)$ of a matrix $A$. Now let's explore how these spaces are connected through orthogonality and their orthogonal 
+complements.
 
-orthornormal basis
+We know that the null space $N(A)$ consists of all vectors $\boldsymbol{x}$ such that $\boldsymbol{Ax} = \boldsymbol{o}$. This means that every 
+vector in $N(A)$ is orthogonal to every row of $A$. Why? Because multiplying $\boldsymbol{x}$ by $A$ can be thought of as taking the dot 
+product of $\boldsymbol{x}$ with each row of $A$, and for $A\boldsymbol{x} = \boldsymbol{o}$, these dot products must all be zero. We also 
+know that the row space $R(A)$ consists of all vectors that can be written as a linear combination of the rows of $A$. This means that every 
+vector in $R(A)$ is orthogonal to every vector in $N(A)$. Therefore, the null space of $A$ is the orthogonal complement of the row space $R(A)$:
 
-make projections easier
+$$
+N(A) = R(A)^{\perp} = C(A^T)^{\perp}
+$$
 
-## QR Decomposition
+This is a very important relationship between the row space and the null space of a matrix. It also tells us that 
+together, the row space and the null space span the entire ambient space $\mathbb{R}^n$.
 
-## Psuedo Inverses
+$$
+\mathbb{R}^n = R(A) \oplus N(A)
+$$
 
-## Farkas Lemma
+This also matches up when we look at the dimensionalities of the different spaces. For a matrix $A \in \mathbb{R}^{m \times n}$ we have:
+- Our ambient space is the number of columns of the matrix $A$, $n$ so $\mathbb{R}^n$.
+- The row space $R(A)$ has dimension $r$ where $r$ is the rank of the matrix $A$.
+- The null space $N(A)$ has dimension $n - r$. 
+- So the sum of the dimensions of the row space and the null space is $r + (n - r) = n$ which is the dimension of the ambient space.
 
-Don't think this is worth my time
+From taking the orthogonal complement of the above equation we also get:
+
+$$
+N(A)^{\perp} = R(A) = C(A^T)
+$$
+
+We can now look at what this means for solving a system of linear equations. For this we know that the column space $C(A)$ represents all possible 
+linear combinations of the columns of $A$, and the null space $N(A)$ captures all solutions to the equation $A\boldsymbol{x} = \boldsymbol{o}$.
+So how can we tie this to the solution space $Sol(A, b)$ to solving general systems of linear equations $A\boldsymbol{x} = \boldsymbol{b}$?
+
+If a solution $\boldsymbol{x}$ exists, then we know it involves checking if $\boldsymbol{b}$ lies in the column space $C(A)$. If $\boldsymbol{b} 
+\notin C(A)$, then no solution exists because $\boldsymbol{b}$ cannot be written as a linear combination of the columns of $A$.
+
+When $\boldsymbol{b} \in C(A)$, we now from our definition of the solution space that the solution space $Sol(A, b)$ is a shifted version of the 
+null space $N(A)$. So the general solution to the equation $A\boldsymbol{x} = \boldsymbol{b}$ is:
+
+$$
+\boldsymbol{x} = \boldsymbol{x}_p + \boldsymbol{x}_n
+$$
+
+Where $\boldsymbol{x}_p$ is a particular solution to the equation and $\boldsymbol{x}_n$ is a solution to the homogeneous equation $A\boldsymbol{x} = \boldsymbol{o}$, i.e $\boldsymbol{x}_n \in N(A)$.
+So we get:
+
+$$
+\{\boldsymbol{x} \in \mathbb{R}^n \mid A\boldsymbol{x} = \boldsymbol{b}\} = \boldsymbol{x}_p + N(A)
+$$
+
+The particular solution $\boldsymbol{x}_p$ that shifts the null space to form the solution space must come from the row space $R(A)$. The reason for this 
+is that to reach somwhere that is not in the null space we must move in a direction that we can't reach from the null space. So we have to 
+move in a direction that is orthogonal to the null space, i.e. in the row space. So the particular solution $\boldsymbol{x}_p$ must be in the row space $R(A)$. 
+This then gives us the following equation:
+
+$$
+\{\boldsymbol{x} \in \mathbb{R}^n \mid \boldsymbol{Ax} = \boldsymbol{b}\} = \boldsymbol{x} + N(A) \text{where} \boldsymbol{x} \in R(A) \text{ so that } \boldsymbol{Ax} = \boldsymbol{b}
+$$
+
+We have also seen that the column space of $\boldsymbol{A}$ is the same as the column space of $\boldsymbol{AA}^T$ so and the same relation 
+holds for the row space of $\boldsymbol{A}$ and $\boldsymbol{A}^T\boldsymbol{A}$. So we can summarize the following relationships:
+
+$$
+\begin{align*}
+C(A) &= R(A^T) \\
+R(A) &= C(A^T) \\
+C(A) &= C(AA^T) \\
+R(A) &= R(A^TA) \\
+C(A^TA) &= R(A^TA) \\
+C(AA^T) &= R(AA^T) \\
+N(A) &= R(A)^{\perp} = C(A^T)^{\perp} \\
+N(A^TA) &= R(A^TA)^{\perp} = R(A)^{\perp} = C(A^T)^{\perp} \\
+C(A^T) &= C(A^TA)
+\end{align*}
+$$
