@@ -34,13 +34,16 @@ const config: DocsThemeConfig = {
         ? `${frontMatter.title} – George Rowlands' Digital Garden`
         : "George Rowlands' Digital Garden";
     const description =
-      frontMatter.description || "George Rowlands' Digital Garden";
+      frontMatter.description || "George Rowlands' Digital Garden. A place to learn about Computer Science, Mathmatics, Machine Mearning and Artific Intelligence. Study notes for students by a student.";
 
     return (
       <>
         <meta property="og:url" content={url} />
+        <meta name="url" content={url} />
         <meta property="og:title" content={title} />
+        <meta name="title" content={title} />
         <meta property="og:description" content={description} />
+        <meta name="description" content={description} />
         <link rel="icon" type="image/x-icon" href="/logo.svg"/>
       </>
     );
