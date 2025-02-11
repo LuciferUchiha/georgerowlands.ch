@@ -1,15 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@screen xl {
-    div:has(> aside) {
-        min-width: 120rem;
-    }
-    aside {
-        min-width: 20rem;
-    }
-    .nextra-toc {
-        min-width: 20rem;
-    }
-}
