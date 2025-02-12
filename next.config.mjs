@@ -24,6 +24,6 @@ export default withNextra({
     images: {
         formats: [ 'image/webp' ],
         // it can 0 also for disabling
-        //minimumCacheTTL: 60
+        minimumCacheTTL: 60
     },
 });
