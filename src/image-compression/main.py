@@ -1,3 +1,4 @@
+# brew install pngcrush gifsicle
 import concurrent.futures
 import pathlib
 import os
@@ -6,7 +7,7 @@ import shutil
 import imghdr
 
 
-def compress_image(input_path: str, output_path: str):
+def compress_png(input_path: str, output_path: str):
     subprocess.run(
         f"pngcrush -brute {input_path} {output_path}",
         shell=True,
@@ -15,23 +16,35 @@ def compress_image(input_path: str, output_path: str):
     )
 
 
+def compress_gif(input_path: str, output_path: str):
+    subprocess.run(
+        f"gifsicle -O3 {input_path} -o {output_path}",
+        shell=True,
+        check=True,
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL  # suppress output
+    )
+
+
 def process_single_image(input_path):
+    input_file_size = os.path.getsize(input_path)
+    output_path = os.path.join(os.path.dirname(
+        input_path), f"compressed_{os.path.basename(input_path)}")
     if imghdr.what(input_path) == "png":
-        input_file_size = os.path.getsize(input_path)
-        output_path = os.path.join(os.path.dirname(
-            input_path), f"compressed_{os.path.basename(input_path)}")
-        compress_image(input_path, output_path)
-        if not os.path.exists(output_path):
-            return None
-        output_file_size = os.path.getsize(output_path)
+        compress_png(input_path, output_path)
+    elif imghdr.what(input_path) == "gif":
+        compress_gif(input_path, output_path)
+    else:
+        return None
 
-        # replace the original file with the compressed file
-        shutil.move(output_path, input_path)
+    if not os.path.exists(output_path):
+        return None
 
-        # calculate bytes saved
-        bytes_saved = input_file_size - output_file_size
-        return (input_path, bytes_saved)
-    return None
+    # replace the original file with the compressed file
+    output_file_size = os.path.getsize(output_path)
+    shutil.move(output_path, input_path)
+    # calculate bytes saved
+    bytes_saved = input_file_size - output_file_size
+    return (input_path, bytes_saved)
 
 
 if __name__ == "__main__":
