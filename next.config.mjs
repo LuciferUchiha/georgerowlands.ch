@@ -3,8 +3,9 @@ import simplePlantUML from '@akebifiky/remark-simple-plantuml';
 
 const withNextra = nextra({
     images: {
-        formats: [ 'image/webp' ]
+        formats: [ 'image/webp' ],
         // it can 0 also for disabling
+        minimumCacheTTL: 60
     },
     theme: 'nextra-theme-docs',
     themeConfig: './theme.config.tsx',
