@@ -6,6 +6,11 @@ export default function Nextra({ Component, pageProps }) {
   return (
     <Main>
       <Component {...pageProps} />
+      <script 
+          defer src='https://static.cloudflareinsights.com/beacon.min.js' 
+          data-cf-beacon='{"token": "218573f1543148e7afcef47d3dac7f1f"}'
+        >
+      </script>
     </Main>
   );
 }
