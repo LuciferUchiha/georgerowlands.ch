@@ -1,5 +1,0 @@
-# georgerowlands.ch
-
-## Installation
-
-## Usage
