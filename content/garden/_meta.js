@@ -1,7 +1,9 @@
 export default {
-    index: "My Digital Garden",
+    index: "",
     '###': {
         type: 'separator',
     },
+    cs: "Computer Science",
+    maths: "Mathematics",
     ml: "Machine Learning",
 }

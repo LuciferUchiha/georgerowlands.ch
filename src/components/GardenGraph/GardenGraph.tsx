@@ -15,7 +15,6 @@ export default function GardenGraph() {
   const { theme, systemTheme } = useTheme();
   const currentTheme = theme !== "system" ? theme : systemTheme;
   const background = currentTheme === "dark" ? "#111" : "#fff";
-  const textColor = currentTheme === "dark" ? "#fff" : "#000";
 
   const windowDimensions = useWindowDimensions();
 
@@ -29,11 +28,12 @@ export default function GardenGraph() {
       width={750}
       height={750}
       backgroundColor={background}
-      nodeColor={() => "x#8000FF"}
+      nodeRelSize={10}
+      nodeColor={() => "#8000FF"}
       nodeLabel={(node) =>
-        `<span style="color: ${textColor}">${node.name}</span>`
+        `<span>${node.name}</span>`
       }
-      linkColor={() => "x#8000FF"}
+      linkColor={() => "#8000FF"}
       linkOpacity={0.5}
       onNodeHover={(node) => {
         document.body.style.cursor = node ? "pointer" : null;
@@ -43,7 +43,6 @@ export default function GardenGraph() {
           router.push(node.id);
         }
       }}
-      
     />
   );
 };

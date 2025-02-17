@@ -1,0 +1,81 @@
+
+# Decision Trees
+
+Trees with decision nodes and leaf nodes. Decision nodes ask a question and split the data based on the answer. 
+Leaf nodes are the final nodes that predict the outcome either a class label or a value.
+
+The goal is to create a tree that asks questions that best split the data to make the most accurate predictions.
+
+Need to pick the first question to ask. The question should split the data into subsets that are as pure as possible
+pure meaning that all the data in the subset belongs to the same class. The measure of purity can be entropy or gini impurity etc.
+also minimize impurity, also want to minimize the number of questions asked to avoid overfitting. Can also define a max depth.
+Or when the number of samples in a node is below a certain threshold or the purity didnt improve by a certain threshold.
+
+How does this relate to cross-entropy? 
+Entropy is a measure of impurity in a bunch of examples. It is 0 when all examples are of the same class. It is 1 when the examples are evenly split between classes.
+if x is 0.5 then the entropy is 1. If x is 0 or 1 then the entropy is 0. Hence the entropy is a measure of impurity. the fomula looks a lot like the log loss function so it is related.
+
+p1 =fraction of examples in class 1, p2 = fraction of examples in class 2, i.e. 1-p1
+
+$$Entropy = -p1log2(p1) - p2log2(p2)$$
+
+When choosing we want to minimize the entropy. but we also need to normalize it by the number of examples in the node so the entropy is not biased towards nodes with more examples.
+
+So we cant just add the entropys of the 2 branches and average them. We need to weight them by the number of examples in each branch. Does this also matter for binary classification?
+
+Can then calculate the information gain by subtracting the weighted entropy of the branches from the entropy of the parent node. "reductiion entropy" which is like weve never made a split before.
+
+We do recursive splitting until good tree.
+
+if we have categorical features we can split on them. If we have numerical features we can split on them by choosing a threshold and splitting on the threshold.
+When a categorical feature has many categories, we can use a binary/one-hot encoding to turn it into a numerical feature. k possible values can be encoded as k binary features.
+
+finding the threshold for a numerical feature is a bit more complex. You can sort the values and then try all midpoints between the values. so if you have 3 values you have 2 midpoints.
+
+## Using multiple decision trees
+
+one tree can be overfitting i.e very sensitive to small changes in the data. so we can use multiple trees and average their predictions, this is called a Tree Ensemble.
+
+Sampling with replacement is called bootstrapping. We can use bootstrapping to create multiple datasets from the original dataset. We can then train a tree on each dataset.
+
+replacement because a sample gets put back in the dataset after it is picked. So the same sample can be picked multiple times.
+
+Random forest is a tree ensemble where each tree is trained on a different dataset. The predictions are then averaged this uses the wisdom of the crowd to make predictions.
+
+what is difference of bagging and bootstrapping? both seem to do the same.
+
+Random forst can be further randomized to make the trees more different from each other. To avoid always having the same root decision for example.
+
+From n features randomly select k features and then pick the best feature from those k features. k is usually sqrt(n) for classification.
+
+in the random forest when building the dataset all samples have the same probability of being picked. In gradient boosting the probability of being picked is weighted by the error of the previous tree.
+So we give missclassified samples a higher probability of being picked. This is called boosting.
+
+decsiion trees work great for tabular data structured data. They dont work well for unstructured data like images or text or audio.
+
+small trees can be visualized and interpreted. They can be used for feature selection. They can handle missing values. They can handle categorical and numerical features.
+
+## Classification Trees
+
+Can be used for classification, i.e. in the leaves we have the class labels.
+
+### Building a Classification Tree
+
+#### Gini Impurity
+
+## Regression Trees
+
+Can be used for regression, i.e. in the leaves we then get a prediction of the target variable. if multiple examples end up in the same leaf we can take the average of the target variable.
+
+Instead of using entropy or gini impurity we can use the variance of the target variable as a measure of impurity. we can then weight the variance of the branches by the number of examples in the branch and subtract the weighted variance of the branches from the variance of the parent node.
+
+### Building a Regression Tree
+
+## Pruning a Tree
+
+Pruning is a technique to reduce the size of the tree by removing nodes that do not provide much information.
+
+## Problems with Decision Trees
+
+They can overfit the data. They are sensitive to small changes in the data. They can create biased trees if some classes dominate. 
+They can't handle unseen data well.

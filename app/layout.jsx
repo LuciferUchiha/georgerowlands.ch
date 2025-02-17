@@ -152,7 +152,7 @@ export default async function RootLayout({ children }) {
           navbar={navbar}
           search={search}
           pageMap={await getPageMap()}
-          sidebar={{ autoCollapse: true }}
+          sidebar={{ autoCollapse: true, defaultMenuCollapseLevel: 1 }}
           docsRepositoryBase="https://github.com/LuciferUchiha/georgerowlands.ch/tree/main/"
           footer={footer}
           // ... Your additional layout options
