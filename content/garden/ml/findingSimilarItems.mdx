@@ -15,15 +15,15 @@ We can generalize this problem to finding near-neighbors in a high dimensional s
 
 The jaccard similarity of two sets is the size of their intersection divided by the size of their union:
 
-$$
+```math
 sim(A, B) = \frac{|A \cap B|}{|A \cup B|}
-$$
+```
 
 The jaccard distance is then defined as
 
-$$
+```math
 d(A, B) = 1 - \frac{|A \cap B|}{|A \cup B|}
-$$
+```
 
 This leads to the desired result of if the documents are similar then the distance is small.
 

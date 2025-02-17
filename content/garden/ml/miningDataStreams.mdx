@@ -75,16 +75,16 @@ We assume that after seeing $t$ elements, the sample contains each element seen 
 
 Inductive step: For an element already in the sample the probability that it stays in the sample is:
 
-$$
+```math
 (t+1 \text{ discarded}) + \Big((t+1 \text{ not discarded}) (\text{element not picked})\Big) \newline
 = (1- \frac{s}{t+1})+\Big((\frac{s}{t+1})(\frac{s-1}{s})\Big) = \frac{t}{t+1}
-$$
+```
 
 So if time is now $t \to t+1$ then the probability that the tuple is still in the sample is 
 
-$$
+```math
 \frac{s}{t}\cdot \frac{t}{t+1} = \frac{s}{t+1}
-$$
+```
 
 ## Queries Over a Sliding Window
 
@@ -103,9 +103,9 @@ Thanks to our stream structure we can generalize this query to how many 1s are i
 
 As mentioned before we don't just want to keep track of the last $N$ elements. Instead, we might think of maintaining 2 counters, $A$ for the number of 1s from the beginning of the stream and $B$ for the number of 0s from the beginning of the stream. If we then assume that the distribution is uniform we would get the following formula:
 
-$$
+```math
 N \cdot \frac{A}{A+B}
-$$
+```
 
 This solution is very simple but not very accurate as the distribution is not necessarily as uniform as we assumed. To prove this we can just think of the sales of Ice cream, it might be sold a lot in summer but much less in winter.
 
@@ -149,9 +149,9 @@ When new values come into the system we need to maintain our data structure. If 
 
 Now we just need to know how to query the DGIM data structure we have created to estimate the number of 1s in the sliding window. For this, we sum the sizes, i.e number of 1s of all the blocks apart from the last block. For the last block, we only add half the size. We only take half of the last block because we do not know how many 1s of the last black are actually still within the sliding window. This is also what leads us to our error of 50%. We can prove this by assuming the last block has the size $2^r$, then we assume that half i.e $2^{r-1}$ of its 1s are still in the window. We can also assume that there is at least one block of each size smaller than $2^r$ which sums up to $1+2+4+...+2^{r-1}= 2^r -1$. So our max error can be defined as the following:
 
-$$
+```math
 \frac{2^{r-1}}{2^r -1}
-$$
+```
 
 #### Reducing Error
 
@@ -211,9 +211,9 @@ The storage required for this algorithm is also very small. If we use $k$ hash f
 
 First, let us define what a moment is and then see what they can be used for. Suppose we have a data stream $S$ and the set $A$ contains all the distinct elements in the stream. We then let $m_i$ be the number of times the value $i$ occurs in the stream $S$. We can then define the $k$-th moment as:
 
-$$
+```math
 \sum_{i \in A}{(m_i)^k}
-$$
+```
 
 <Callout type="example">
 If we have the stream $S=[x,y,x,y,z,z,z,x,z]$ then the 2nd moment is $3^2+2^2+4^2=29$

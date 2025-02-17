@@ -74,45 +74,45 @@ Pearson's correlation coefficient is the most common correlation coefficient, an
 between two variables. If we have the two variables $X$ and $Y$, which have $n$ values, then the Pearson's correlation
 coefficient is defined as:
 
-$$
+```math
 \begin{align*}
 r_{X,Y} &= \frac{n \cdot \sum_{i=1}^{n}{(x_i - y_i)} - \sum_{i=1}^{n}{x_i} \cdot \sum_{i=1}^{n}{y_i}}
 {\sqrt{n \cdot \sum_{i=1}^{n}{x_i^2} - (\sum_{i=1}^{n}{x_i})^2} \cdot \sqrt{n \cdot \sum_{i=1}^{n}{y_i^2} - (\sum_{i=1}^{n}{y_i})^2}} \\
 &= \frac{\sum_{i=1}^{n}{(x_i - \bar{x}) \cdot (y_i - \bar{y})}}
 {\sqrt{\sum_{i=1}^{n}{(x_i - \bar{x})^2}} \cdot \sqrt{\sum_{i=1}^{n}{(y_i - \bar{y})^2}}}
 \end{align*}
-$$
+```
 
 This formula can look a bit scary, but it is actually quite simple. Let us start with a few quick reminders. The mean
 value of a variable $X$ is defined as:
 
-$$
+```math
 E(X) = \mu_X = \bar{x} = \frac{1}{n} \cdot \sum_{i=1}^{n}{x_i}
-$$
+```
 
 The variance of a variable $X$ is defined as:
 
-$$
+```math
 \begin{align*}
 Var(X) &= E(X^2) - E(X)^2 \\
 &= \frac{1}{n} \cdot \sum_{i=1}^{n}{x_i^2} - (\frac{1}{n} \cdot \sum_{i=1}^{n}{x_i})^2
 \end{align*}
-$$
+```
 
 The standard deviation of a variable $X$ is defined as:
 
-$$
+```math
 \sigma(X) = \sqrt{Var(X)}
-$$
+```
 
 And lastly the covariance between two variables $X$ and $Y$ is defined as:
 
-$$
+```math
 \begin{align*}
 \text{cov}(X,Y) &= E((X - \mu_X) \cdot (Y - \mu_Y)) \\
 &= \frac{1}{n} \cdot \sum_{i=1}^{n}{(x_i - \bar{x}) \cdot (y_i - \bar{y})}
 \end{align*}
-$$
+```
 
 <Callout type="todo">
     This can be linked to all the other articles about statistics.
@@ -123,9 +123,9 @@ $n$, and the denominator is the product of the standard deviation of $X$ and $Y$
 correlation coefficient is the covariance between $X$ and $Y$ divided by the product of the standard deviation of $X$
 and $Y$. So we can rewrite the formula as:
 
-$$
+```math
 r_{X,Y} = \frac{\text{cov}(X,Y)}{\sigma_X \cdot \sigma_Y}
-$$
+```
 
 <Callout type="example">
 
@@ -163,12 +163,12 @@ $$
 
     Now we can calculate the Pearson's correlation coefficient:
 
-    $$
+    ```math
     \begin{align*}
         r_{X,Y} &= \frac{7 \cdot 13262 - 22.7 \cdot 3970}{\sqrt{7 \cdot 76.01 - 22.7^2} \cdot \sqrt{7 \cdot 2322400 - 3970^2}} \\
         &= \frac{2715}{2864.22} \approx 0.95
     \end{align*}
-    $$
+    ```
 
 </Callout>
 
@@ -182,16 +182,16 @@ the highest value of the variable getting the rank $n$, we then have $R(X)$ and 
 Then the Spearman's rank correlation coefficient is actually calculated just as the Pearson's correlation coefficient
 between the two ranked variables. Often the Spearman's rank correlation coefficient is denoted as $r_s$.
 
-$$
+```math
 r_s = \frac{\text{cov}(R(X),R(Y))}{\sigma_{R(X)} \cdot \sigma_{R(Y)}}
-$$
+```
 
 If all the ranks are unique (which is often the case if there aren't any duplicates in the data), then the formula can
 be simplified to:
 
-$$
+```math
 r_s = 1 - \frac{6 \cdot \sum_{i=1}^{n}{(R(X_i) - R(Y_i))^2}}{n \cdot (n^2 - 1)} = 1 - \frac{6 \cdot \sum_{i=1}^{n}{d_i^2}}{n \cdot (n^2 - 1)}
-$$
+```
 
 <Image
     src="/cs/correlationSpearman.png"
@@ -203,7 +203,7 @@ $$
 
 Isn't this also used in image classification to see how close classes are?
 
-## Coefficient of determination - $r^2$
+## Coefficient of determination R-Squared
 
 ## Cross Correlation
 

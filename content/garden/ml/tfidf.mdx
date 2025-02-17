@@ -13,21 +13,21 @@ The main idea of TF is that a word is important to a document if the word occurs
 
 To solve this the relative frequency is taken instead of the absolute frequency i.e the nominator is the raw count of the term $t$ in the document $d$ and the denominator is simply the total number of terms in document $d$.
 
-$$
+```math
 \mathrm{tf}(t,d) = \frac{f_{t,d}}{\sum_{t'\in d}{f_{t',d}}}
-$$
+```
 
 There are also some common alternatives for example using the highest frequency as the denominator.
 
-$$
+```math
 \mathrm{tf}(t,d) = \frac{f_{t,d}}{\mathrm{max}(f_{t',d}: t'd \in d)}
-$$
+```
 
 With the introduction of a hyperparameter $k$ you have the so-called augmented term frequency which is also commonly seen with $k=0.5$ for shorter documents.
 
-$$
+```math
 \mathrm{tf}(t,d) = k + (1-k) \frac{f_{t,d}}{\mathrm{max}(f_{t',d}: t'd \in d)}
-$$
+```
 
 <Callout type="example">
     Let's say we have a document with the text "the offside rule is a rule in football". We then want to calculate the term frequency of the word "rule". The document has a total of 8 words and the word "rule" occurs 2 times. The term frequency of the word "rule" in the document is then $\frac{2}{8} = 0.25$. So the word "rule" is 25% of the document.
@@ -43,21 +43,21 @@ The IDF measures how much information a word provides i.e. if it is common or ra
 
 So for the corpus of documents $D$ with $|D|=N$ being the number of documents in the corpus and $n_t$ being the number of documents the term $t$ occurs in the inverse document frequency can be defined as:
 
-$$
+```math
 \mathrm{idf}(t, D) = \log{\frac{N}{n_t}}
-$$
+```
 
 To avoid division by zero also commonly changed to:
 
-$$
+```math
 \mathrm{idf}(t, D) = \log{\frac{N}{1 + n_t}}
-$$
+```
 
 We can then finally combine the two components to form the TF-IDF score of a term $t$ in the document $d$ of corpus $D$ :
 
-$$
+```math
 \mathrm{tfidf}(t,d,D)=\mathrm{tf}(t,d) \cdot \mathrm{idf}(t,D)
-$$
+```
 
 <Callout type="example">
     Let's say we have the following corpus of documents:

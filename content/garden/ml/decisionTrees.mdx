@@ -17,7 +17,9 @@ if x is 0.5 then the entropy is 1. If x is 0 or 1 then the entropy is 0. Hence t
 
 p1 =fraction of examples in class 1, p2 = fraction of examples in class 2, i.e. 1-p1
 
-$$Entropy = -p1log2(p1) - p2log2(p2)$$
+```math
+Entropy = -p1log2(p1) - p2log2(p2)
+```
 
 When choosing we want to minimize the entropy. but we also need to normalize it by the number of examples in the node so the entropy is not biased towards nodes with more examples.
 

@@ -40,7 +40,9 @@ Basic idea is to use a probabilistic model to model the probability of a node ha
 
 So the weighted average of class probabilities of the neighbors. Can for example intiialize the lables with ground-truth and if unlabled set the label to 0.5 for two classes.
 
-$$P(y_v=c) = \frac{1}{\sum_{u \in N(v)} w_{vu}} \sum_{u \in N(v)} w_{vu} P(y_v = c)$$
+```math
+P(y_v=c) = \frac{1}{\sum_{u \in N(v)} w_{vu}} \sum_{u \in N(v)} w_{vu} P(y_v = c)
+```
 
 where $w_{vu}$ is the weight of the edge between $v$ and $u$ and $P(y_v = c)$ is the probability of node $v$ having label $c$.
 
@@ -122,7 +124,9 @@ because the ndoe order is arbitrary, the aggregation function needs to be symmet
 
 Simple idea is to just sum or average the messages. and then pass it through a FNN.
 
-$$h_v^{(k+1)} = \sigma \left( W_k \sum_{u \in N(v)}{\frac{h_u^{(k)}}{|N(v)|} + B_k h_v^{(k)}} \right)$$
+```math
+h_v^{(k+1)} = \sigma \left( W_k \sum_{u \in N(v)}{\frac{h_u^{(k)}}{|N(v)|} + B_k h_v^{(k)}} \right)
+```
 
 where $h_v^{(k)}$ is the embedding of node $v$ at layer $k$, $W_k$ is the weight matrix of layer $k$, $B_k$ is the bias matrix of layer $k$ 
 and $\sigma$ is the activation function.
