@@ -1,0 +1,152 @@
+# Interoperability
+
+## The `dynamic` Type
+
+### Advantages
+
+Interoperability with dynamic languages and frameworks
+
+```csharp
+dynamic d = "Test";
+Console.WriteLine(d); // Output: Test
+d = d.ToUpper();
+Console.WriteLine(d); // Output: TEST
+d = 3; // d changes its runtime type to int
+Console.WriteLine(d); // Output: 3
+d += 7;
+Console.WriteLine(d); // Output: 10
+```
+
+### Disadvantages
+
+Deactivates type checking and IntelliSense, Everything compiles:
+
+```csharp
+dynamic speaker = new NonSenseTalker();
+speaker.HelloWorld();
+speaker.Im().Just().Demonstrating().This().Feature();
+speaker.GoodBye();
+```
+
+## Run python in C #
+
+```csharp
+static dynamic Calculate(string expression) {
+  var engine = Python.CreateEngine();
+  return engine.Execute(expression);
+ /*To execute Script
+ engine.Execute("import pythonDemo\n pythonDemo.factorial(1000)");
+ */
+}
+
+static void Main(string[] args) {
+  dynamic result = Calculate("2 * 3");
+  Console.WriteLine("result : {0}", result);
+}
+```
+
+## ExpandoObject
+
+ExpandoObjects implements dynamic properties
+
+```csharp
+dynamic o = new ExpandoObject();
+o.Test = 123;
+o.Foo = "hallo";
+o.Bar = new object();
+o.F = (Action)(() => Console.WriteLine("Action done"));
+o.F()
+Console.WriteLine(o.Foo);
+```
+
+## Custom Dynamic Types
+
+```csharp
+public class World : DynamicObject
+    {
+        private Cities _cities;
+
+        public World(Cities cities)
+        {
+            _cities = cities;
+        }
+
+        public override bool TryGetMember(GetMemberBinder binder, out object result)
+        {
+            result = _cities.CityList.FirstOrDefault(city => city.Name == binder.Name)
+                     ?? (object) $"The city \"{binder.Name}\" does not exist!";
+
+            return true;
+        }
+
+        public override bool TrySetMember(SetMemberBinder binder, object? args)
+        {
+            City city = null;
+            try
+            {
+                city = _cities[binder.Name];
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"The city \"{binder.Name}\" does not exist!");
+            }
+
+            try
+            {
+                var inputs = (args as string).Split(':');
+                switch (inputs[0])
+                {
+                    case "Population":
+                        city.Population = Convert.ToInt32(inputs[1]);
+                        break;
+                    case "Latitude":
+                        city.Location.Latitude = Convert.ToDouble(inputs[1]);
+                        break;
+                    case "Longitude":
+                        city.Location.Longitude = Convert.ToDouble(inputs[1]);
+                        break;
+                    default: throw new ArgumentException("Invalid property assigned");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentException("Invalid property value passed");
+            }
+
+            return true;
+        }
+    }
+```
+
+public virtual bool TryInvokeMember(InvokeBinder binder, Object[] args , out Object result) so you can call dynamic methods like duck.Quack();
+
+## P/Invoke
+
+Allows you to execute unmanaged/native code for example you can call a C++ DLL.
+
+1. Locates the DLL containing the function.
+2. Loads the DLL into memory.
+3. Locates the address of the function in memory and pushes its arguments
+onto the stack, marshaling data as required.
+4. Transfers control to the unmanaged function
+
+```csharp
+class Test {
+ [DllImport("user32.dll)"]
+ static extern int MessageBox(uint hWnd, string text, string caption, uint type);
+    static void Main() {
+      MessageBox(0, "Calling native code isn't that cool?", "", 1,
+    }
+}
+```
+
+## COM interoperability
+
+COM stands for "Component Object Model". Mostly used to control Microsoft products, windows word etc. So for example you can build plugins.
+
+```csharp
+using Word = Microsoft.Office.Interop.Word
+var word = new Word.Application();
+word.Documents.Add();
+word.ActiveDocument.SaveAs("test.doc");
+```

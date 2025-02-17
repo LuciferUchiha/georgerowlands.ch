@@ -1,0 +1,13 @@
+{
+  "basics": "The Basics",
+  "objectsClassesPrototypes": "Objects, Classes and Prototypes",
+  "bindingThis": "Binding and This",
+  "arraysIterables": "Arrays and Iterables",
+  "modules": "Modules",
+  "dom": "The DOM",
+  "asyncPromises": "Async and Promises",
+  "metaProgramming": "Meta Programming",
+  "tools": "Tools for JavaScript",
+  "typeScript": "TypeScript",
+  "react": "React"
+}

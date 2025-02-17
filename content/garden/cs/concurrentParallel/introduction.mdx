@@ -1,0 +1,65 @@
+import Image from "@components/Image/Image";
+
+# Introduction to Concurrent Programming
+
+## Moore's Law
+
+Moore's law isn't really a law but rather an observation by Gordon Moore in 1965 that the number of transistors on a
+microchip/CPU doubles about every year which would lead to exponential growth.
+
+<Image 
+    src="/cs/concurrentMooresLaw.png"
+    width={600}
+/>
+
+We can also observe this but there is a reason why people say that Moore's law is dead. Apart from the transistor
+amount, everything else has slowly leveled out, meaning we can't get much more out of our CPUs, instead we can have
+multicore CPUs which will have no impact on most current applications as they do not make use of concurrent programming.
+But if they would, they could gain a massive speedup.
+
+<Image 
+    src="/cs/concurrentProgrammingMeme.png"
+    width={500}
+/>
+
+## Amdahl's Law
+
+Amdahl's law is a formula to predict the maximum speedup using a multicore CPU with $N$ processors/cores based on the
+proportion of parallelizable components of a program $p$ and the serial components $1-p$:
+
+$$
+speedup \leq \frac{1}{(1-p)+ \frac{p}{N}}
+$$
+
+<Image 
+    src="/cs/concurrentAmdahlsLawExample.png"
+    width={600}
+/>
+
+When looking at the potential speedup depending on the proportion of parallelizable components and processors we can see
+after a certain point around the 64 mark the gain becomes very little.
+
+<Image 
+    src="/cs/concurrentAmdahlsLawWearoff.png"
+    width={600}
+/>
+
+## Concurrent Programming
+
+When talking about programs there are three main subsets: serial programs, concurrent programs and parallel programs.
+
+<Image 
+    src="/cs/concurrentProgramSubsets.png"
+    width={600}
+/>
+
+Concurrent programs have multiple logical threads whereas serial programs just have one. To solve a problem concurrently
+need to handle events that could happen at the same time. Because of this concurrent programs are often
+non-deterministic, meaning results depend on the timing of events. Parallel programs compute components simultaneously
+so in parallel. To solve a problem with parallelism you need to break the problem down into pieces that can be done in
+parallel. Concurrent programs aren't necessarily parallel but being concurrent is a precondition for a parallel program.
+
+<Image 
+    src="/cs/concurrentVsParallel.png"
+    width={300}
+/>
