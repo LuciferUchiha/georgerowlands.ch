@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@variant dark (&:where(.dark *));
+
+@theme {
+    --color-primary-50: hsl(var(--nextra-primary-hue) 100% 97%);
+    --color-primary-100: hsl(var(--nextra-primary-hue) 100% 94%);
+    --color-primary-200: hsl(var(--nextra-primary-hue) 100% 87%);
+    --color-primary-300: hsl(var(--nextra-primary-hue) 100% 77%);
+    --color-primary-400: hsl(var(--nextra-primary-hue) 100% 66%);
+    --color-primary-500: hsl(var(--nextra-primary-hue) 100% 50%);
+    --color-primary-600: hsl(var(--nextra-primary-hue) 100% 45%);
+    --color-primary-700: hsl(var(--nextra-primary-hue) 100% 39%);
+    --color-primary-800: hsl(var(--nextra-primary-hue) 100% 35%);
+    --color-primary-900: hsl(var(--nextra-primary-hue) 100% 32%);
+    --color-primary-950: hsl(var(--nextra-primary-hue) 100% 24%);
+}

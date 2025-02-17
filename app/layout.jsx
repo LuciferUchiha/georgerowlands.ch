@@ -158,6 +158,7 @@ export default async function RootLayout({ children }) {
           // ... Your additional layout options
           nextThemes = {{
             defaultTheme: "dark",
+            attribute: 'class',
           }}
           editLink= "Edit this page on GitHub ✍🏻"
           feedback={{

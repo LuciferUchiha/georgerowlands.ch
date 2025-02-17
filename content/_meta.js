@@ -5,7 +5,8 @@ export default {
         display: "hidden",
         theme: {
             typesetting: "article",
-            layout: "full"
+            layout: "full",
+            toc: false
         }
     },
     garden: {

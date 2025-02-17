@@ -46,8 +46,6 @@ const classes: Record<CalloutType, string> = {
   ),
 };
 
-const capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
-
 type CalloutProps = {
   type?: CalloutType;
   emoji?: string | ReactElement;
@@ -61,6 +59,8 @@ export default function Callout({
   emoji = TypeToEmoji[type],
   title = "",
 }: CalloutProps): ReactElement {
+  const capitalizeFirstLetter = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
   title =
     title === "" && type != "default" ? capitalizeFirstLetter(type) : title;
   return (
