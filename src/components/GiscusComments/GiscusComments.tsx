@@ -1,12 +1,12 @@
 "use client";
 
 import {useState, useEffect} from "react";
-import { useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Giscus from "@giscus/react";
 
 export default function GiscusComments() {
     // ensure giscus is reloaded when client side route is changed
-    const { route } = useRouter();
+    const pathname  = usePathname();
     // This is done so that is loaded client side and skips hydration, no idea what this means but stackoverflow does
     const [showChild, setShowChild] = useState(false);
     const pathNameBlacklist = ["/"];
@@ -23,7 +23,7 @@ export default function GiscusComments() {
     } else {
 
         const comments = pathNameBlacklist.indexOf(window.location.pathname) > -1 ? <></> : <Giscus
-            key={route}
+            key={pathname}
             id="giscus-comments"
             repo="LuciferUchiha/georgerowlands.ch"
             repoId="R_kgDOIt7MZQ"
