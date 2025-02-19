@@ -1,0 +1,12 @@
+[project]
+name = "ipynb-to-mdx"
+version = "0.1.0"
+description = "Converts Jupyter Notebooks to MDX to then be rendered by Nextra"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "jupyter>=1.1.1",
+    "nbconvert>=7.16.6",
+    "numpy>=2.2.3",
+    "watchdog>=6.0.0",
+]
