@@ -3,13 +3,13 @@ import { Head, Search } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
 import 'nextra-theme-docs/style.css'
 import './globals.css'
-import BuyMeACoffee from '../public/buymeacoffee.svg'
+import BuyMeACoffee from '../public/buyMeACoffee.svg'
 import Image from 'next/image'
  
 export const metadata = {
   // Define your metadata here
   // For more information on metadata API, see: https://nextjs.org/docs/app/building-your-application/optimizing/metadata
-  description: "George Rowlands' Digital Garden. A place to learn about Computer Science, Mathmatics, Machine Mearning and Artific Intelligence. Study notes for students by a student.",
+  description: "George Rowlands' Digital Garden. A place to learn about Computer Science, Mathematics, Machine Learning and Artificial Intelligence. Study notes for students by a student.",
   metadataBase: new URL('https://georgerowlands.ch'),
   keywords: [
     'Nextra',
