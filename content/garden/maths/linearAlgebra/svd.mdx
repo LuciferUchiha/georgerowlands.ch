@@ -1,0 +1,85 @@
+# SVD - Singular Value Decomposition
+
+The eigendecomposition only works for square matrices, the singular value decomposition, short SVD, is a generalization of the eigendecomposition allowing it to be used for rectangular matrices. Singular value decomposition uses 3 matrices just like the eigendecomposition.
+
+```math
+\boldsymbol{A}=\boldsymbol{U}\Sigma\boldsymbol{V}^T
+```
+
+The first matrix $\boldsymbol{U}$ is the so-called left singular value matrix which is an orthogonal matrix meaning $\boldsymbol{UU}^T=\boldsymbol{I}$, the second matrix $\Sigma$ is the singular value matrix which is very just like the matrix containing the eigenvalues in the eigendecomposition a diagonal matrix. The last matrix $\boldsymbol{V}^T$ is the right singular value matrix which is also an orthogonal matrix. To find the values we can do the following transformations which make it very similar to the eigendecomposition.
+
+```math
+\begin{align*}
+    \boldsymbol{A}^T\boldsymbol{A}=\boldsymbol{V}\Sigma^T\boldsymbol{U}^T\boldsymbol{U}\Sigma\boldsymbol{V}^T \\
+    \boldsymbol{A}^T\boldsymbol{A}=\boldsymbol{V}(\Sigma^T\Sigma)\boldsymbol{V}^T
+\end{align*}
+```
+
+Because $\Sigma$ is a diagonal matrix the multiplication with its transpose results again in a diagonal matrix. Which gives it the same form as the eigendecomposition. To get the matrix $\boldsymbol{U}$ we can do something very similar.
+
+```math
+\begin{align*}
+    \boldsymbol{A}\boldsymbol{A}^T=\boldsymbol{U}\Sigma\boldsymbol{V}^T\boldsymbol{V}\Sigma^T\boldsymbol{U}^T \\
+    \boldsymbol{A}\boldsymbol{A}^T=\boldsymbol{U}(\Sigma\Sigma^T)\boldsymbol{U}^T
+\end{align*}
+```
+
+
+
+```python
+import numpy as np
+
+A = np.array([[-5,2,3], [2, 5, 1], [-3,1,-5]])
+e_values, e_vectors = np.linalg.eigh(A.T@A) # @ is same as np.matmul
+Sigma = np.diag(np.sqrt(e_values))
+V = e_vectors
+U = []
+for i in range(0, len(e_values)):
+    u_i = A@V[:,i]/np.linalg.norm(A@V[:,i])
+    U.append(u_i)
+U@Sigma@V.T
+```
+<div className="code-output-wrapper">
+```
+    array([[-5.18214154,  1.89367286,  2.74943852],
+           [ 1.95955405,  5.01675209,  1.2880268 ],
+           [-2.7028794 ,  1.11633398, -5.07755598]])
+```
+</div>
+
+We can see that we lose some precision due to floating number operations but these can be fixed using the round operation.
+
+
+```python
+np.round(U@Sigma@V.T)
+```
+<div className="code-output-wrapper">
+```
+    array([[-5.,  2.,  3.],
+           [ 2.,  5.,  1.],
+           [-3.,  1., -5.]])
+```
+</div>
+
+We can also just use the built in svd of numpy which is more efficient and accurate.
+
+
+```python
+U, Sigma, Vh = np.linalg.svd(A)
+U@np.diag(Sigma)@Vh
+```
+<div className="code-output-wrapper">
+```
+    array([[-5.,  2.,  3.],
+           [ 2.,  5.,  1.],
+           [-3.,  1., -5.]])
+```
+</div>
+
+
+Solving equations using svd???? Or only because we can solve equations using moore penrose and one way to compute is with SVD.
+
+## Image Compression
+
+
+

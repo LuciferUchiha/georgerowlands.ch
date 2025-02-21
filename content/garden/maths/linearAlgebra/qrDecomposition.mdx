@@ -1,0 +1,260 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
+# QR Decomposition
+
+## Gram-Schmidt Process
+
+We have seen that having an **orthonormal basis** is extremely useful in linear algebra, particularly when calculating the projection of a vector 
+onto a subspace spanned by a set of vectors. With an orthonormal basis, operations such as projections become simpler and more computationally 
+efficient. However, in general, the basis vectors of a subspace are not orthonormal. This is where the **Gram-Schmidt process** comes into play.
+
+The Gram-Schmidt process is a systematic method for converting a set of linearly independent vectors into a set of orthonormal vectors. These 
+orthonormal vectors span the same subspace as the original vectors but have the added advantage of being orthogonal (pairwise perpendicular) 
+and normalized (unit length).
+
+So the idea is given a set of linearly independent vectors $a_1, a_2, \ldots, a_n$, the goal of the Gram-Schmidt process is to construct a 
+set of orthonormal vectors $q_1, q_2, \ldots, q_n$ such that:
+1. The span of $q_1, q_2, \ldots, q_n$ is the same as the span of $a_1, a_2, \ldots, a_n$.
+2. Each vector $q_i$ is orthogonal to all the previous vectors $q_1, q_2, \ldots, q_{i-1}$.
+3. Each $q_i$ has unit norm, i.e., $\|q_i\| = 1$.
+
+To better understand the process, we will first demonstrate it for two vectors and then generalize it to $n$ vectors.
+For the first vector, we simply normalize it to obtain $q_1$, the first orthonormal vector:
+
+```math
+q_1 = \frac{a_1}{\|a_1\|}
+```
+
+For the second vector $a_2$, we want to make it orthogonal to $q_1$. From the image below, we can see that to make $a_2$ orthogonal 
+to $q_1$, we can subtract the projection of $a_2$ onto $q_1$ from $a_2$. If you recall the projection formula, the vector we 
+get after subtracting the projection is often referred to as the **error vector**. 
+
+<Image 
+    src="/maths/gramSchmidt2d.png" 
+    caption="The Gram-Schmidt process in 2D space."
+    width={500} 
+/>
+
+So we subtract from $a_2$ a multiple of $q_1$ such that the resulting vector is orthogonal to $q_1$. This is then followed by 
+normalizing the resulting vector to get $q_2$. To do this, we use the formula for projecting a vector onto a subspace. In general, 
+the formula for projecting a vector $\boldsymbol{b}$ onto a subspace $S$ spanned by the columns of a matrix $\boldsymbol{A}$ is defined as:
+
+```math
+\text{proj}_S(\boldsymbol{b}) = \boldsymbol{A}(\boldsymbol{A}^T\boldsymbol{A})^{-1}\boldsymbol{A}^T\boldsymbol{b}
+```
+
+In the specific case of projecting a vector $\boldsymbol{b}$ onto another vector $\boldsymbol{a}$, this simplifies to:
+
+```math
+\text{proj}_S(\boldsymbol{b}) = \frac{\boldsymbol{aa}^T}{\boldsymbol{a}^T\boldsymbol{a}}\boldsymbol{b}
+```
+
+Using this, we now calculate the projection of $a_2$ onto $q_1$:
+
+```math
+\text{proj}_{q_1}(a_2) = \frac{q_1^T a_2}{q_1^T q_1} q_1
+```
+
+The orthogonal component of $a_2$, denoted as $\hat{q}_2$, is obtained by subtracting this projection from $a_2$:
+
+```math
+\hat{q}_2 = a_2 - \text{proj}_{q_1}(a_2) = a_2 - \frac{q_1^T a_2}{q_1^T q_1} q_1
+```
+
+Finally, we normalize $\hat{q}_2$ to obtain $q_2$, the second orthonormal vector:
+
+```math
+q_2 = \frac{\hat{q}_2}{\|\hat{q}_2\|} = \frac{a_2 - \frac{q_1^T a_2}{q_1^T q_1} q_1}{\left\| a_2 - \frac{q_1^T a_2}{q_1^T q_1} q_1 \right\|}
+```
+
+We notice that if $a_2$ is already orthogonal to $q_1$ then the projection becomes the zero vector, and $q_2$ is simply 
+the normalized version of $a_2$:
+
+```math
+q_2 = \frac{a_2}{\|a_2\|}
+```
+
+We can check that $q_1$ and $q_2$ are orthogonal by calculating their dot product:
+
+```math
+\begin{align*}
+q_1^Tq_2 &= q_1^T\left(\frac{a_2 - (a_2^Tq_1)q_1}{\|a_2 - (a_2^Tq_1)q_1\|}\right) \\
+&= \frac{q_1^Ta_2 - (q_1^Ta_2)q_1^Tq_1}{\|a_2 - (a_2^Tq_1)q_1\|} \\
+&= \frac{q_1^Ta_2 - q_1^Ta_2}{\|a_2 - (a_2^Tq_1)q_1\|} \\
+&= \frac{0}{\|a_2 - (a_2^Tq_1)q_1\|} = 0
+\end{align*}
+```
+
+### General Case
+
+The process can be extended to $n$ vectors. For each vector $a_k$ ($k = 1, 2, \ldots, n$), we subtract the projections 
+of $a_k$ onto all the previously computed orthonormal vectors $q_1, q_2, \ldots, q_{k-1}$. The resulting vector is then normalized.
+So we can summarize the Gram-Schmidt process as follows:
+1. Start with $q_1 = \frac{a_1}{\|a_1\|}$.
+2. For $k = 2, 3, \ldots, n$:
+   - Subtract the projections of $a_k$ onto all previous $q_i$ vectors:
+     ```math
+     \hat{q}_k = a_k - \sum_{i=1}^{k-1} \text{proj}_{q_i}(a_k) = a_k - \sum_{i=1}^{k-1} \frac{q_i^T a_k}{q_i^T q_i} q_i
+     ```
+   - Normalize the resulting vector:
+     ```math
+     q_k = \frac{\hat{q}_k}{\|\hat{q}_k\|}
+     ```
+
+The intuition behind the Gram-Schmidt process is that we initially have a vector that has some components in the directions of the other vectors. 
+So we could think of the vector $a_n$ as a sum of the orthogonal direction $q_n$ and the direction of the other vectors:
+
+```math
+a_n = \lambda q_n + \sum_{i=1}^{n-1} \mu_i q_i
+```
+
+So by subtracting the projection of the vector onto the previously computed orthonormal vectors, we are systematically removing components of 
+the vector that lie in the directions of those vectors. This ensures that the resulting vector is orthogonal and linearly independent
+to all the previous ones. Normalization then ensures that the vector has unit length, completing the orthonormalization process.
+
+<Image 
+    src="/maths/gramSchmidt3d.gif" 
+    caption="Visualization of the Gram-Schmidt process with three vectors in 3D space."
+    width={500} 
+/>
+
+The correctness of the Gram-Schmidt process can be proven via mathematical induction. However, this proof is omitted here for brevity.
+
+## QR Decomposition
+
+The Gram-Schmidt process not only provides a systematic way to construct orthonormal bases, but it also gives rise to a powerful matrix 
+factorization called the **QR decomposition**. Given a matrix $\boldsymbol{A}$ with linearly independent columns, the QR decomposition 
+is defined as:
+
+```math
+\boldsymbol{A} = \boldsymbol{Q} \boldsymbol{R}
+```
+
+Where $\boldsymbol{Q}$ is an orthonormal matrix, meaning its columns are orthonormal vectors (i.e., $\boldsymbol{Q}^T\boldsymbol{Q} = \boldsymbol{I}$) and 
+$\boldsymbol{R}$ is an upper triangular matrix, meaning all entries below the diagonal are zero. We define the matrix $\boldsymbol{R}$ as: 
+
+```math
+\boldsymbol{R} = \boldsymbol{Q}^T\boldsymbol{A}
+```
+
+As when we left multiply the decomposition by $\boldsymbol{Q}^T$, we get $\boldsymbol{R} = \boldsymbol{Q}^T\boldsymbol{A}$ because 
+$\boldsymbol{Q}^T\boldsymbol{Q} = \boldsymbol{I}$.
+
+The QR decomposition naturally comes from the Gram-Schmidt process as we start with the columns of $\boldsymbol{A}$ and construct an orthonormal 
+set of vectors which result in the columns of $\boldsymbol{Q}$. 
+What this decomposition is then telling us is that we can reconstruct each column of $\boldsymbol{A}$ as a linear combination of the columns of $\boldsymbol{Q}$, 
+where the coefficients of this linear combination are given by the entries of $\boldsymbol{R}$.
+
+To see this explicitly, let $\boldsymbol{A}$ be a matrix with columns $\boldsymbol{a}_1, \boldsymbol{a}_2, \ldots, \boldsymbol{a}_n$. Using 
+Gram-Schmidt, we construct the orthonormal vectors $\boldsymbol{q}_1, \boldsymbol{q}_2, \ldots, \boldsymbol{q}_n$ such that:
+
+```math
+\boldsymbol{a}_k = \sum_{i=1}^k r_{ik} \boldsymbol{q}_i
+```
+
+Here, $r_{ik}$ are the coefficients that describe how each column of $\boldsymbol{A}$ is expressed as a linear combination of the orthonormal 
+vectors. These coefficients form the entries of the upper triangular matrix $\boldsymbol{R}$. 
+
+You might be wondering how we already know that $\boldsymbol{R}$ is upper triangular. To understand why $\boldsymbol{R}$ is upper triangular, 
+consider the structure of the Gram-Schmidt process. Each vector $\boldsymbol{q}_k$ is constructed to be orthogonal to the previous vectors 
+$\boldsymbol{q}_1, \boldsymbol{q}_2, \ldots, \boldsymbol{q}_{k-1}$. This means that for $i < k$, the projection of $\boldsymbol{a}_k$ onto 
+$\boldsymbol{q}_i$ is zero. Consequently, the entries $r_{ik}$ for $i > k$ are also zero. This pattern implies that $\boldsymbol{R}$ is upper 
+triangular, as all entries below the diagonal vanish. Let's look at the case where $\boldsymbol{A}$ has three columns:
+
+```math
+\boldsymbol{A} = \begin{bmatrix} \boldsymbol{a}_1 & \boldsymbol{a}_2 & \boldsymbol{a}_3 \end{bmatrix}
+, \quad \boldsymbol{Q} = \begin{bmatrix} \boldsymbol{q}_1 & \boldsymbol{q}_2 & \boldsymbol{q}_3 \end{bmatrix},
+ \quad \boldsymbol{R} = \begin{bmatrix} r_{11} & r_{12} & r_{13} \\ 0 & r_{22} & r_{23} \\ 0 & 0 & r_{33} \end{bmatrix}.
+```
+
+```math
+\begin{bmatrix} \boldsymbol{a}_1 & \boldsymbol{a}_2 & \boldsymbol{a}_3 \end{bmatrix} = 
+\begin{bmatrix} \boldsymbol{q}_1 & \boldsymbol{q}_2 & \boldsymbol{q}_3 \end{bmatrix}
+\begin{bmatrix} r_{11} & r_{12} & r_{13} \\ 0 & r_{22} & r_{23} \\ 0 & 0 & r_{33} \end{bmatrix}.
+```
+
+Lastly let's look at some of the subspaces of the matrix $\boldsymbol{A}$ and compare them to the decomposition.
+First let's compare the column space of $\boldsymbol{A}$ to the column space of $\boldsymbol{Q}$.
+The column space of $\boldsymbol{Q}$, denoted $\boldsymbol{C(Q)}$, is the same as the column space of $\boldsymbol{A}$, denoted 
+$\boldsymbol{C(A)}$. This arises naturally from the Gram-Schmidt process, as $\boldsymbol{Q}$ is constructed by orthonormalizing the 
+columns of $\boldsymbol{A}$. In other words, the orthonormal vectors in $\boldsymbol{Q}$ span the same subspace as the original 
+(linearly independent) columns of $\boldsymbol{A}$.
+
+This property is crucial because it means that $\boldsymbol{Q}$ retains all the information about the subspace spanned by $\boldsymbol{A}$, 
+making $\boldsymbol{Q}$ an ideal basis for performing projections and other computations in that subspace.
+
+We can also observe this when looking at the projection matrix onto the column space of $\boldsymbol{A}$:
+
+```math
+\begin{align*}
+\boldsymbol{P} &= \boldsymbol{Q}(\boldsymbol{Q}^T\boldsymbol{Q})^{-1}\boldsymbol{Q}^T \\
+&= \boldsymbol{Q}\boldsymbol{Q}^T
+\end{align*}
+```
+
+Now, considering the QR decomposition $\boldsymbol{A} = \boldsymbol{Q}\boldsymbol{R}$, we can see that:
+
+```math
+\begin{align*}
+\text{Proj}_{\boldsymbol{C(A)}}\boldsymbol{A} &= \boldsymbol{Q}\boldsymbol{Q}^T\boldsymbol{A} \\
+&= \boldsymbol{Q}\boldsymbol{Q}^T\boldsymbol{A} \\
+&= \boldsymbol{Q}\boldsymbol{Q}^T\boldsymbol{Q}\boldsymbol{R} \\
+&= \boldsymbol{Q}\boldsymbol{R} \\
+&= \boldsymbol{A}
+\end{align*}
+```
+
+This confirms that $\boldsymbol{Q}\boldsymbol{R}$ accurately reconstructs $\boldsymbol{A}$, and the projection matrix 
+$\boldsymbol{Q}\boldsymbol{Q}^T$ preserves the structure of $\boldsymbol{A}$ within its column space.
+
+Now let's also look at the null space of $\boldsymbol{A}$ and $\boldsymbol{R}$.
+The matrix $\boldsymbol{R}$ is an upper triangular matrix with nonzero diagonal entries. This property is a direct consequence of the linear 
+independence of the columns of $\boldsymbol{A}$. During the Gram-Schmidt process, each new vector $\boldsymbol{q}_k$ is orthogonalized with 
+respect to all the previous vectors $\boldsymbol{q}_1, \boldsymbol{q}_2, \ldots, \boldsymbol{q}_{k-1}$. As a result, each diagonal entry $r_{kk}$ 
+of $\boldsymbol{R}$ corresponds to the norm of the orthogonalized vector $\hat{\boldsymbol{q}}_k$, which is nonzero because the columns of 
+$\boldsymbol{A}$ are linearly independent.
+
+Since $\boldsymbol{R}$ is upper triangular with nonzero diagonal entries, it is invertible. The invertibility of $\boldsymbol{R}$ also ensures 
+that the null space of $\boldsymbol{R}$ is trivial, i.e., $\text{N}(\boldsymbol{R}) = \{\boldsymbol{0}\}$. Consequently, the null space of 
+$\boldsymbol{A}$ is also trivial because $\boldsymbol{A} = \boldsymbol{Q}\boldsymbol{R}$, and $\boldsymbol{Q}$ is full rank.
+
+### Applications of QR Decomposition
+
+As we have already seen we can solve the least squares problem very easily with an orthonormal basis. If we are 
+given a linear system of equations and the QR decomposition of the matrix $\boldsymbol{A}$, we can also solve 
+these systems efficiently. So suppose we want to solve the linear system of equations:
+
+```math
+\boldsymbol{A}\boldsymbol{x} = \boldsymbol{b}.
+```
+
+Using QR decomposition, we write $\boldsymbol{A} = \boldsymbol{Q}\boldsymbol{R}$. Substituting this into the equation gives:
+
+```math
+\boldsymbol{Q}\boldsymbol{R}\boldsymbol{x} = \boldsymbol{b}.
+```
+
+Left-multiplying both sides by $\boldsymbol{Q}^T$ because $\boldsymbol{Q}^T\boldsymbol{Q} = \boldsymbol{I}$ the equation simplifies to:
+
+```math
+\boldsymbol{R}\boldsymbol{x} = \boldsymbol{Q}^T\boldsymbol{b}.
+```
+
+Since $\boldsymbol{R}$ is upper triangular, this system can then efficiently solved using **back substitution** and a matrix-vector 
+multiplication. 
+
+We can actually even further improve our solution for solving the least squares problem where we encounter an overdetermined system 
+that doesn't have an exact solution. In this case, we seek a solution that minimizes the error, i.e., the **least squares solution**:  
+
+```math
+\min_{\boldsymbol{x}} \|\boldsymbol{A}\boldsymbol{x} - \boldsymbol{b}\|_2
+```
+
+Using the QR decomposition, the least squares problem reduces to solving:
+
+```math
+\boldsymbol{R}\boldsymbol{x} = \boldsymbol{Q}^T\boldsymbol{b}.
+```
+
+Again, this can then efficiently be solved using back substitution.
