@@ -35,6 +35,7 @@ export default function GardenGraph() {
       }
       linkColor={() => "#8000FF"}
       linkOpacity={0.5}
+      linkWidth={3}
       onNodeHover={(node) => {
         document.body.style.cursor = node ? "pointer" : null;
       }}

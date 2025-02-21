@@ -1,0 +1,813 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
+# Set Theory
+
+A **set** is a collection of distinct objects. To create a set you simply list the objects between curly brackets. The objects in a set are called **elements** or **members** of the set. 
+The **order of the elements in the set is not important**, and **an element can only appear once in a set**. If an element appears more than once, it is considered only once in the set. 
+
+<Callout type="example">
+- The set of the first three positive numbers is $\{1,2,3\}$.
+- The order doesn't matter, therefore, $\{1,2,3\}$ is the same as $\{3,1,2\}$.
+- Each element can only appear once, so $\{1,2,2,3\}$ is the same as $\{1,2,3\}$.
+</Callout>
+
+However, a set doesn't have to contain numbers. A set also doesn't have to have a certain amount of elements it could also be infinite. This allows us to differentiate between **finite** and **infinite** sets.
+A set can also have no elements at all, the so-called **empty set**, and is represented by the symbol $\emptyset$. You may also see the notation of $\{\}$ or $\phi$ (phi) for the empty set. However I will be using $\emptyset$.
+
+<Callout type="example">
+- The infinite set of all positive integers is $\{1,2,3,...\}$.
+- The finite set of all colors in the rainbow is $\{red, orange, yellow, green, blue, indigo, violet\}$.
+- The set of the three primary colors is $\{red, green, blue\}$.
+</Callout>
+
+Because a set is a collection of distinct objects it can also contain other sets. This is called a **nested set**. 
+
+<Callout type="example">
+- A set of sets: $\{\{1,2\},\{3,4\}\}$
+- A set of sets of colors: $\{\{red, green\},\{blue, yellow\}\}$
+</Callout>
+
+## Cardinality
+
+The cardinality of a set is the number of elements/members in that set. The cardinality of the empty set is 0. The cardinality of a finite set is a positive integer. The cardinality of an infinite set is infinity.
+Importantly becuase of the definition of a set repeated elements are not counted. The cardinality of the set $A = \{1,2,3\}$ is denoted by:
+
+```math
+|A| = 3
+```
+
+Not to be confused with the absolute value of a number.
+
+<Callout type="example">
+```math
+\begin{align*}
+|\emptyset| &= 0 \\
+|\{1,2,3\}| &= 3 \\
+|\{1,2,2,3\}| &= 3 \\
+|\{\{1,2\},\{3,4\}\}| &= 2 \\
+|\{\{\}\}| &= 1
+\end{align*}
+```
+</Callout>
+
+## Membership
+
+To indicate that an element is a member of a set the symbol $\in$ is used. To indicate that an element is not a member of a set the symbol $\notin$ is used.
+
+<Callout type="example">
+If $A=\{a,b,c\}$ then:
+
+- Is a member of the set: $a \in A$ or $a \in \{a,b,c\}$
+- Is not a member of the set: $d \notin A$ or $d \notin \{a,b,c\}$
+</Callout>
+
+## Equality
+
+Because sets are characterized by their elements, two sets are only equal if they have the exact same elements. More formally, two sets $A$ and $B$ are equal if and only if every element of $A$ is an element of $B$ and every element of $B$ is an element of $A$:
+
+```math
+A=B \iff \forall x(x \in A \iff x \in B)
+```
+
+For sets to be equal, they must also have the same cardinality:
+
+```math
+A=B \implies |A| = |B|
+```
+
+<Callout type="example">
+- $\{1,2,3\} = \{3,2,1\}$ because the order of the elements doesn't matter.
+- $\{1,2,3\} \neq \{1,2,3,4\}$ because the second set has an element that is not in the first set.
+- $\{1,2,3\} = \{1,2,2,3\}$ because only the distinct elements are considered.
+</Callout>
+
+## Venn Diagrams
+
+When working with sets, it can be very helpful to visualize them with venn diagrams. The sets are usually represented by circles. By creating a venn diagram, you can easily see the relations between sets.
+
+<Image 
+    src="/maths/setsVennDiagrams.png"
+    caption="Venn diagram showing the relation between cats, dogs and birds."
+    width={500}
+/>
+
+## Sub and Superset
+
+$A$ is a **subset** of a set $B$ if all elements of $A$ are also elements of $B$. $B$ is then also the so-called **superset** of $A$. This is written as:
+
+```math
+A \subseteq B \iff \forall x(x \in A \implies x \in B)
+```
+
+The superset relation is the opposite of the subset relation, so $B \supseteq A$. This is written as:
+
+```math
+B \supseteq A \iff A \subseteq B
+```
+
+If $C$ is not a subset of $D$, then we write $C \nsubseteq D$, and if $D$ is not a superset of $C$, then we write $D \nsupseteq C$.
+
+<Callout type="example">
+- $\{1,2\} \subseteq \{1,2,3\}$ because all elements of the first set are also in the second set.
+- $\{1,2,3\} \subseteq \{1,2,3\}$ because all elements of the first set are also in the second set.
+- $\{1,2,3\} \nsubseteq \{1,2\}$ because not all elements of the first set are in the second set.
+- $\{1,2,3\} \supseteq \{1,2\}$ because all elements of the second set are also in the first set.
+</Callout>
+
+If we analyse the cardinality of a subset and its superset, we can see that the cardinality of the subset has to be less than or equal to the cardinality of the superset:
+
+```math
+A \subseteq B \implies |A| \leq |B|
+```
+
+If the symbol $\subseteq$ is underlined, then the sets can also be equal.
+
+If $A$ is a subset of $B$ but not equal to $B$, then $A$ is called a **proper subset** of $B$. 
+The same goes for the superset relation, if $B$ is a superset of $A$ but not equal to $A$, then $B$ is called a **proper superset** of $A$.
+However, a set is never a proper subset or superset of itself because it is equal to itself and can therefore not be a proper subset or superset.
+
+```math
+A \subset B \iff A \subseteq B \land A \neq B
+```
+
+<Image 
+    src="/maths/setsSubsets.png"
+    caption="Venn diagram showing the difference between a subset and a proper subset."
+    width={700}
+/>
+
+<Callout type="example">
+- $\{1,2\} \subset \{1,2,3\}$ because all elements of the first set are also in the second set but the sets are not equal.
+- $\{1,2,3\} \not \subset \{1,2,3\}$ because all elements of the first set are also in the second set and the sets are equal. Therefore it is not a proper subset but just a subset.
+- $\{1,2,3\} \not \subset \{1,2\}$ because not all elements of the first set are in the second set.
+- $\{1,2,3\} \supset \{1,2\}$ because all elements of the second set are also in the first set but the sets are not equal.
+</Callout>
+
+We can refine the above statement regarding the cardinality of a subset if it is a proper subset:
+
+```math
+A \subset B \implies |A| < |B|
+```
+
+Because if the cardinality of the subset is equal to the cardinality of the superset, then the sets are equal and not a proper subset.
+
+<Callout type="info">
+Because the empty set has no elements, it is a subset of every set, including itself. Therefore $\emptyset \subseteq A$ or $\emptyset \subset A$ for every set $A$.
+
+- $\emptyset \subset \{1,2,3\}$
+- $\emptyset \subseteq \{1,2,3\}$
+- $\emptyset \subseteq \emptyset$
+- $\emptyset \not \subset \emptyset$ because the sets are equal.
+</Callout>
+
+## Defining a Set
+
+There are multiple ways to define a set.
+
+### Roster Notation
+
+The roster or also called enumeration notation defines a set by listing its elements between curly brackets separated by commas. This is the most common way to define a set and is what I have been using in the examples above.
+
+<Callout type="example">
+- The set of the first three positive numbers is $\{1,2,3\}$.
+- The set of the first three positive even numbers is $\{2,4,6\}$.
+</Callout>
+
+### Semantic Definition
+
+Sets can be described semantically using words and rules. This notation is less preffered as it can be more confusing, unclear and ambiguous.
+
+<Callout type="example">
+Let $A$ be the first 3 positive integers that are odd. Therefore the set is then $A=\{1,3,5\}$
+Let $B$ be the set of colors of the French flag. Therefore the set is then $B=\{blue,white,red\}$
+</Callout>
+
+### Set-Builder Notation
+
+This is probably the hardest notation to understand. The set-builder notation specifies a set as a selection from a larger set, determined by a condition on those elements. It commonly uses the following form:
+
+```math
+\{x \mid P(x)\}
+```
+
+Where $x$ is the variable, and $P(x)$ is the statement or condition that $x$ must satisfy to be an element of the set. The vertical bar "|" is read as "such that". So the description can be read as "the set of all elements $x$ such that $x$ satisfies $P(x)$".
+
+<Callout type="example">
+If we define the set $\Bbb{Z}$ as the set of all integers, then the set of all positive integers that are less than 5 can be defined as:
+
+```math
+F = \{ a \mid a \in \Bbb{Z} \text{ and } 0 \leq a \leq 5\}=\{0,1,2,3,4,5\}
+```
+
+Another example is the set of all even numbers:
+
+```math
+E = \{ x \mid x \in \Bbb{Z} \text{ and } x \text{ is even}\}=\{0,2,-2,4,-4,6,-6,...\}
+```
+
+We could mathmatically define when a number is even:
+
+```math
+E = \{ x \mid x \in \Bbb{Z} \text{ and } \exists k \in \Bbb{Z} \text{ such that } x=2k\}
+```
+
+</Callout>
+
+## Sets of Numbers
+
+The most common use of sets is to define the different types of numbers. The following are the most common sets of numbers and their notation:
+
+- **Natural Numbers** $\Bbb{N}$: The set of positive integers. Depending on the author, this set can include 0 or not.
+- **Integers** $\Bbb{Z}$: The set of positive and negative whole numbers, including zero.
+- **Rational Numbers** $\Bbb{Q}$: The set of numbers that can be expressed as a fraction of two integers.
+- **Real Numbers** $\Bbb{R}$: The set of all rational and irrational numbers.
+- **Complex Numbers** $\Bbb{C}$: The set of numbers that can be expressed in the form $a+bi$ where $a$ and $b$ are real numbers and $i$ is the imaginary unit.
+
+If we visualize these sets with a venn diagram, we can see how they are related to each other and are all subsets of each other.
+
+```math
+\Bbb{N} \subset \Bbb{Z} \subset \Bbb{Q} \subset \Bbb{R} \subset \Bbb{C}
+```
+
+<Image 
+    src="/maths/setsOfNumbers.png"
+    caption="Venn diagram showing the all the sets of numbers."
+    width={500}
+/>
+
+### Natural Numbers
+
+The natural numbers are the set of positive integers. The set of natural numbers is denoted by:
+
+```math
+\Bbb{N} =\{0,1,2,3,...\}
+```
+
+Depending on the author, 0 is included or not in the set of natural numbers. I prefer to include 0 in the set of natural numbers, as it makes more sense to me. This can cause confusion, so it is important to know some of the different notations used:
+
+- If $\Bbb{N} =\{1,2,3,...\}$ then 0 is not included in the set of natural numbers. The authors that do not include 0 in the set of natural numbers use the following notation to then include it $\Bbb{N}_0 =\{0,1,2,3,...\}$.
+- If $\Bbb{N} =\{0,1,2,3,...\}$ then 0 is included in the set of natural numbers. The authors that include 0 in the set of natural numbers then commonly use the following notation to exclude it $\Bbb{N}^+ =\{1,2,3,...\}$.
+
+<Callout type="example">
+```math
+\begin{align*}
+1 &\in \Bbb{N} \\
+0 &\in \Bbb{N} \\
+-1 &\notin \Bbb{N} \\
+\frac{1}{2} &\notin \Bbb{N} \\
+\sqrt{2} &\notin \Bbb{N} \\
+\pi &\notin \Bbb{N} \\
+3i &\notin \Bbb{N}
+\end{align*}
+```
+</Callout>
+
+### Integers
+
+The integers are the set of positive and negative whole numbers, including zero. The set of integers is denoted by:
+
+```math
+\Bbb{Z} =\{...,-2,-1,0,1,2,...\}
+```
+
+Multiple restrictions can be applied to the set of integers, for example:
+
+- $\Bbb{Z}^+ =\{1,2,3,...\}$
+- $\Bbb{Z}^- =\{...,-3,-2,-1\}$
+- $\Bbb{Z}_0^+ =\{0,1,2,3,...\}$ 
+
+<Callout type="example">
+```math
+\begin{align*}
+1 &\in \Bbb{N} \\
+0 &\in \Bbb{N} \\
+-1 &\in \Bbb{N} \\
+\frac{1}{2} &\notin \Bbb{N} \\
+\sqrt{2} &\notin \Bbb{N} \\
+\pi &\notin \Bbb{N} \\
+3i &\notin \Bbb{N}
+\end{align*}
+```
+</Callout>
+
+
+### Rational and Irrational Numbers
+
+Rational numbers are numbers that can be expressed with a fraction of two integers. Importantly the denominator can not be zero as this is an undefined operation. Another way to remember them is that they can be written as terminating or repeating decimals. The set of rational numbers is denoted by:
+
+```math
+\Bbb{Q}=\Big\{\frac{p}{q} \mid p \in \Bbb{Z} \land p,q \in \Bbb{Z} \land q \neq 0\Big\}
+```
+
+<Callout type="example">
+The number $0.75$ is a rational number because it can be written as a fraction of two integers but also because it is a terminating decimal:
+
+```math
+0.75 = \frac{3}{4} \in \Bbb{Q}
+```
+
+This fraction is also unique to each number, as for example the fraction $\frac{6}{8}$ can be shortened to the above
+solution by dividing the denominator an nominator by the common factor 2.
+
+```math
+\frac{6}{8} = \frac{3}{4} \in \Bbb{Q}
+```
+
+Another example is $0.3333... = 0.\overline{3}$, which is a repeating decimal and can be written as the following fraction:
+
+```math
+0.3333... = 0.\overline{3} = \frac{1}{3} \in \Bbb{Q}
+```
+</Callout>
+
+On the other hand, irrational numbers are numbers that cannot be expressed as a fraction of two integers. They can also not
+be written as terminating or repeating decimals, as their decimal expansions go on infinitely without repeating. Irrational 
+numbers are usually denoted by the symbol $\Bbb{I}$.
+
+<Callout type="example">
+For example, $\pi$, not a rational number but an irrational number:
+
+```math
+\pi = 3.14159265... \in \Bbb{I}
+```
+
+Another example of an irrational number is $\sqrt{2}$:
+
+```math
+\sqrt{2} = 1.41421356... \in \Bbb{I}
+```
+
+This however does not mean that all square roots are irrational numbers!
+
+```math
+\sqrt{9} = 3 \in \Bbb{N}
+```
+</Callout>
+
+<Callout type="proof" title="Proof that sqrt(2) is Irrational by Contradiction">
+How do we know that $\sqrt{2}$ is irrational and therefore doesn't repeat or terminate and can't be expressed as a fraction of two integers?
+
+To prove that the square root of 2 is irrational, we need to assume that it is rational and then derive a contradiction.
+That is, we assume that $\sqrt{2}$ can be expressed as a fraction of two integers, and then show that this assumption is wrong and leads
+to a contradiction. Suppose that $\sqrt{2}$ is rational, and can be expressed as:
+
+```math
+\sqrt{2} = \frac{p}{q}
+```
+
+where $p$ and $q$ are integers with no common factors. We can assume that $p$ and $q$ are in lowest terms, meaning that
+they have been divided by their greatest common factor. After squaring both sides of this equation, we get:
+
+```math
+2 = \frac{p^2}{q^2}
+```
+
+Then multiplying both sides by $q^2$, we get:
+
+```math
+2q^2 = p^2
+```
+
+This means that $p^2$ is even, which implies that $p$ is also even (because the square of an odd number is odd). So we
+can write $p$ as $p = 2k$ for some integer $k$. Substituting $p = 2k$ into the equation $2q^2 = p^2$, we get:
+
+```math
+2q^2 = (2k)^2 = 4k^2
+```
+
+Dividing both sides by 2, we get:
+
+```math
+q^2 = 2k^2
+```
+
+This means that $q^2$ is even, which implies that $q$ is also even (because the square of an odd number is odd). But
+this contradicts our assumption that $p$ and $q$ have no common factors, since they both have a factor of 2. Therefore,
+our initial assumption that $\sqrt{2}$ is rational must be false, and we conclude that $\sqrt{2}$ is irrational.
+</Callout>
+
+### Real Numbers
+
+Real numbers are the combination of rational and irrational numbers, i.e. all numbers from both sets. The set of real numbers is denoted by $\Bbb{R}$.
+
+This can also be thought of as the set of all points on the number line.
+
+<Image 
+    src="/maths/setsRealNumberLine.png"
+    caption="Number line showing the real numbers."
+    width={500}
+/>
+
+<Callout type="example">
+```math
+\begin{align*}
+1 &\in \Bbb{N} \\
+0 &\in \Bbb{N} \\
+-1 &\in \Bbb{N} \\
+\frac{1}{2} &\in \Bbb{N} \\
+\sqrt{2} &\in \Bbb{N} \\
+\pi &\in \Bbb{N} \\
+3i &\notin \Bbb{N}
+\end{align*}
+```
+</Callout>
+
+<Callout type="info">
+Infinity is not a number in the traditional sense, but rather a concept that refers to something, limitless i.e. without
+end. Therefore it is not an element of any set of numbers, including the real numbers.
+</Callout>
+
+#### Heron's Method
+
+Using Heron's method we can approximate a real number by a rational number with any desired accuracy. The idea is that a square with an area of $A$ has a side length of $\sqrt A$.
+
+To approximate $\sqrt a$ we start by creating a rectangle which we know the area of and then slowly adjust the sides to get closer to a square with the area of $A$ and therefore the side length of $\sqrt A$.
+
+We start with a guess $a_1$ and then calculate the next guess $a_2$ by taking the average of the previous guess and the area divided by the previous guess.
+
+```math
+a_2 = \frac{a_1 + \frac{A}{a_1}}{2}
+```
+
+This can be repeated until the desired accuracy is reached:
+
+```math
+a_{n+1} = \frac{a_n + \frac{A}{a_n}}{2}
+```
+
+<Callout type="example">
+To approximate $\sqrt{5}$ we start with a guess of $a_1=5$. We then calculate the next approximation:
+
+```math
+a_2 = \frac{5 + \frac{5}{5}}{2} = \frac{5 + 1}{2} = 3
+```
+
+If we then repeat this process we get for $a_4 = 2.234$ which is a good approximation of $\sqrt{5}=2.236$.
+
+<Image 
+    src="/maths/setsHeronsMethod.gif"
+    caption="Animation showing Heron's method to approximate the square root of 5."
+    width={500}
+/>
+</Callout>
+
+### Complex Numbers
+
+The set of complex numbers is denoted by $\Bbb{C}$. You can see what complex numbers are and how they are used [here](/garden/maths/complexNumbers/explanation).
+
+## Set Operations
+
+There are several operations that can be performed on sets. These operations are similar to the operations that can be performed on numbers such as addition and subtraction.
+
+### Intersection
+
+A new set can also be constructed by determining which elements two sets have "in common", this results in the so called **intersection** of $A$ and $B$. This is written as $A \cap B$. The intersection is the set of all things that are elements of both $A$ and $B$.
+
+```math
+A \cap B = \{x \mid x \in A \land x \in B\}
+```
+
+<Image 
+    src="/maths/setsIntersection.png"
+    caption="Venn diagram showing the intersection of two sets."
+    width={300}
+/>
+
+To remember the difference between the union and intersection symbols, you can think of the union symbol as a "U" for "union".
+
+<Callout type="example">
+```math
+\begin{align*}
+\{1,2\} \cap \{1,2\} &= \{1,2\} \\
+\{1,2\} \cap \{2,3\} &= \{2\} \\
+\{1,2\} \cap \{3,4\} &= \emptyset
+\end{align*}
+```
+</Callout>
+
+We can also observe that the cardinality of the intersection of two sets has to be less than or equal to the cardinality of the set with the least amount of elements:
+
+```math
+|A \cap B| \leq \min(|A|,|B|)
+```
+
+#### Disjoint Sets
+
+If $A \cap B = \emptyset$, then we call $A$ and $B$ **disjoint** sets. This means that the sets have no elements in common. This also means that the cardinality of the intersection of two disjoint sets is 0. 
+Therefore two sets are disjoint if and only if the cardinality of their intersection is 0.
+
+```math
+A \cap B = \emptyset \iff |A \cap B| = 0
+```
+
+<Callout type="example">
+- $\{1,2\} \cap \{3,4\} = \emptyset$ so $\{1,2\}$ and $\{3,4\}$ are disjoint sets.
+- $\{1,2\} \cap \{2,3\} = \{2\}$ so $\{1,2\}$ and $\{2,3\}$ are not disjoint sets.
+- $\{1,2\} \cap \emptyset = \emptyset$ so $\{1,2\}$ and $\emptyset$ are disjoint sets.
+</Callout>
+
+#### Arbitrary Intersections
+
+### Union
+
+Two sets can be joined together, this results in a so-called **union** of $A$ and $B$. This is written as $A \cup B$. The union is the set containing all elements that are in $A$ or $B$ or both.
+
+```math
+A \cup B = \{x \mid x \in A \lor x \in B\}
+```
+
+<Image 
+    src="/maths/setsUnion.png"
+    caption="Venn diagram showing the union of two sets."
+    width={300}
+/>
+
+<Callout type="example">
+```math
+\begin{align*}
+\{1,2\} \cup \{1,2\} &= \{1,2\} \\
+\{1,2\} \cup \{2,3\} &= \{1,2,3\} \\
+\{1,2,3\} \cup \{3,4,5\} &= \{1,2,3,4,5\}
+\end{align*}
+```
+</Callout>
+
+From the definition and image above we can also make some statements regarding the cardinality of the union of two sets. The cardinality of the union of two sets has to be greater than or equal to the cardinality of the set with the most amount of elements:
+
+```math
+|A \cup B| \geq \max(|A|,|B|)
+```
+
+We can also see that the cardinality of the union of two sets can be calculated by adding the cardinalities of the two sets and then subtracting the cardinality of the intersection of the two sets. This is because the intersection is counted twice when adding the cardinalities of the two sets:
+
+```math
+|A \cup B| = |A| + |B| - |A \cap B|
+```
+
+This also means that if the two sets are disjoint, then the cardinality of the union of the two sets is equal to the sum of the cardinalities of the two sets:
+
+```math
+A \cap B = \emptyset \iff |A \cup B| = |A| + |B|
+```
+
+#### Arbitrary Unions
+
+### Difference
+
+If $A$ and $B$ are sets, then the **relative complement** (or short **difference**) of $A$ and $B$, is the set of elements in $A$ without the elements of $B$. This is written as $A \setminus B$.
+
+```math
+A \setminus B = \{x \mid x \in A \land x \notin B\}
+```
+
+<Image 
+    src="/maths/setsDifference.png"
+    caption="Venn diagram showing the difference of two sets, in this case the left set minus the right set."
+    width={300}
+/>
+
+<Callout type="example">
+```math
+\begin{align*}
+\{1,2,3\} \setminus \{2,3,4\} &= \{1\} \\
+\{2,3,4\} \setminus \{1,2,3\} &= \{4\} \\
+\{1,2,3\} \setminus \{1,2,3,4\} &= \emptyset
+\end{align*}
+```
+</Callout>
+
+We can observe that the cardinality of the difference of two sets has to be less than or equal to the cardinality of orginal set we are taking the difference from. 
+
+```math
+|A \setminus B| \leq |A|
+```
+
+If $A$ and $B$ are disjoint sets, then the difference of $A$ and $B$ is just $A$. Therefore the cardinality of the difference of two disjoint sets is equal to the cardinality of the first set:
+
+```math
+A \cap B = \emptyset \iff |A \setminus B| = |A|
+```
+
+We can also see that the cardinality of the difference of two sets can be calculated by subtracting the cardinality of the intersection of the two sets from the cardinality of the first set:
+
+```math
+|A \setminus B| = |A| - |A \cap B|
+```
+
+#### Symmetric Difference
+
+The **symmetric difference** of two sets (also known as the **disjunctive union**), is the set of elements which are in either of the sets, but not in both sets (their intersection).
+This can be written as $A \ominus B$.
+
+```math
+A \ominus B = (A \cup B) \setminus (A \cap B) = (A \setminus B) \cup (B \setminus A)
+```
+
+<Image 
+    src="/maths/setsSymmetricDifference.png"
+    caption="Venn diagram showing the symmetric difference of two sets."
+    width={300}
+/>
+
+<Callout type="example">
+```math
+\begin{align*}
+\{1,2,3,4\} \ominus \{3,4,5,6\} = \{1,2,5,6\} \\
+\{7,8,9,10\} \ominus \{9,10,11,12\} = \{7,8, 11,12\} \\
+\{1,2,3,4\} \ominus \{1,2,3,4\} = \emptyset
+\end{align*}
+```
+</Callout>
+
+To calculate the cardinality of the symmetric difference of two sets we can use the following:
+
+```math
+|A \ominus B| = |A| + |B| - 2|A \cap B|
+```
+
+The intersection of two sets is counted twice when adding the cardinalities of the two sets, so we have to subtract it twice.
+
+### Complements
+
+The so called **absolute complement** of $A$ (or simply the **complement of** $A$) is the set of elements not in $A$. In other words, let $U$ be a set that contains all the elements under study, also called the **universal set**. 
+The universal set is not always explicitly mentioned, but is rather implied or obvious such as one of the defined sets of numbers. The complement of $A$ is the difference between the universal set and $A$ and is denoted by $A^c$.
+
+```math
+A^c = U \setminus A
+```
+
+<Image 
+    src="/maths/setsAbsoluteComplement.png"
+    caption="Venn diagram showing the absolute complement of the left set."
+    width={300}
+/>
+
+<Callout type="example">
+Given the universal set $U=\{1,2,3,4,5,6\}$:
+
+```math
+\begin{align*}
+\{1,2,3\}^c &= \{4,5,6\} \\
+\{4,5,6\}^c &= \{1,2,3\} \\
+\{1,2,3,4,5,6\}^c &= \emptyset
+\end{align*}
+```
+</Callout>
+
+### Cartesian Product
+
+The **cartesian product** of two sets $A$ and $B$, denoted by $A \times B$. The cartesian product is the set of all possible [ordered pairs](/garden/maths/calculus/sequencesAndSeries/sequences#order-pair) $(a,b)$ where $a$ is an element of $A$ and $b$ is an element of $B$.
+This can be thought of as the set of all possible combinations of elements from the two sets i.e. if we start with the first element of the first set and then combine it with all the elements of the second set, 
+then we move to the second element of the first set and combine it with all the elements of the second set and so on.
+
+```math
+A \times B = \{(a,b) \mid a \in A \land b \in B\}
+```
+
+<Callout type="example">
+```math
+\begin{align*}
+\{1,2\} \times \{3,4\} &= \{(1, 3), (1, 4), (2, 3), (2, 4)\} \\
+\{red, green\} \times \{blue, yellow\} &= \{(red, blue), (red, yellow), (green, blue), (green, yellow)\}
+\end{align*}
+```
+
+This could also be used if say we had two dice and we wanted to know all the possible outcomes of rolling them both.
+We could then define the set $A=\{1,2,3,4,5,6\}$ to represent a dice and then calculate the cartesian product $A \times A$.
+All the possible outcomes would then be the elements of the cartesian product.
+</Callout>
+
+From the image we can see that the cardinality of the cartesian product of two sets is as if we were calculating the area of a rectangle. The cardinality of the cartesian product of two sets is the product of the cardinalities of the two sets:
+
+```math
+|A \times B| = |A| \cdot |B|
+```
+
+#### Cartesian Power
+
+The idea of the cartesian product can be extended to a so called **cartesian power** of a set. If we take the cartesian product of a set with itself $A \times A$ we get the cartesian power of $A$ to the power of 2, denoted by $A^2$.
+
+This can then be generalized to the cartesian power of $A$ to the power of $n$, denoted by $A^n$.
+
+```math
+A^n = A \times A \times A \times ... \times A = \{(a_1,a_2,...,a_n) \mid a_1,a_2,...,a_n \in A\}
+```
+
+This is especially useful if for example we wanted to define all the possible points in 2D space. This could be done with the cartesian power of the set of real numbers to the power of 2, $\Bbb{R}^2$. 
+Where the first element of the ordered pair would represent the x-coordinate and the second element the y-coordinate. This could then be extended to 3D space with $\Bbb{R}^3$ and so on hence the name cartesian power and cartesian plane.
+
+<Image 
+    src="/maths/setsCartesianPlane.png"
+    caption="The cartesian plane showing all the possible points in 2D space."
+    width={300}
+/>
+
+### Operation Properties
+
+such as commutative, associative, distributive also for example when are brackets needed.
+
+## Power Set
+
+The power set or also called super set of a set $A$ is the set containing all possible subsets of $A$. Importantly the empty set and $A$ itself are also elements of the power set of $A$, because these are also both subsets of $A$. 
+The power set of the set $A$ is commonly written as: $P(A)$, $\mathscr{P}(A)$, $2^A$ or $S^A$. I will use the notation $\mathscr{P}(A)$.
+
+```math
+\mathscr{P}(A) = \{X \mid X \subseteq A\}
+```
+
+To create the power set of a set, we can use either a tree diagram or a hasse diagram. The tree diagram is the most common way to create a power set, but the hasse diagram is a more compact way to represent the power set.
+
+For the tree diagram, we start with the empty set and then add the elements of the original set one by one. For each element we have two choices, either include it in the subset or not. 
+
+<Image 
+    src="/maths/setsTreeDiagram.png"
+    caption="Tree diagram showing the power set of the set {1,2,3}."
+    width={600}
+/>
+
+This results in a binary tree with $2^n$ leaves, where $n$ is the number of elements in the original set. This also tells us that the cardinality of the power set of a set with $n$ elements is $2^n$.
+
+```math
+|\mathscr{P}(A)| = 2^{|A|}
+```
+
+To create the hasse diagram, we start at the bottom with the empty set and then add the elements of the original set one by one. We then connect the subsets that are related to each other, i.e. if one subset is a subset of another subset. 
+This also results in a diagram where the subsets are ordered by their cardinality from top to bottom.
+
+<Image 
+    src="/maths/setsHasseDiagram.png"
+    caption="Hasse diagram showing the power set of the set {1,2,3}."
+    width={300}
+/>
+
+<Callout type="example">
+```math
+\begin{align*}
+\mathscr{P}(\{1,2\}) &= \{\emptyset, \{1\}, \{2\}, \{1,2\}\} \\
+\mathscr{P}(\{1,2,3\}) &= \{\emptyset, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\} \\
+\mathscr{P}(\emptyset) &= \{\emptyset\}
+\end{align*}
+```
+
+Importantly the power set of the empty set is the set containing only the empty set. This also means that the cardinality of the power set of the empty set is 1 not 0.
+</Callout>
+
+<Callout type="info">
+If we have $\mathscr{P}(\mathbb{R}^2)$, the power set of the cartesian plane, then this would be the set of all possible subsets of the cartesian plane. This would be the set of all possible shapes and areas that can be created in 2D space.
+So an element of this power set could be a point, a line, a circle, a square, a triangle, a function and so on.
+</Callout>
+
+## Partitions
+
+A partition $P$ of a set $A$ is a set of non-empty subsets of $A$ such that every element $a \in A$ is only exactly in one of the subsets in $P$. This means that the subsets in $P$ are disjoint and their union is equal to $A$.
+Therefore the partition of a set can be thought of as a way to divide the set into non-overlapping parts. This can be summarized as the following:
+
+- P does not contain the empty set, so $\emptyset \notin P$.
+- The union of all the sets in $P$ is equal to $A$, so $\bigcup_{X \in P} X = A$.
+- The elements of $P$ don't overlap i.e the sets in $P$ are disjoint, so $X \cap Y = \emptyset$ for all $X,Y \in P$.
+
+<Image 
+    src="/maths/setsPartition.png"
+    caption="Venn diagram showing a partition of a set."
+    width={500}
+/>
+
+<Callout type="example">
+The set $\{1,2,3\}$ has 5 possible partitions:
+
+- $\{\{1\},\{2\},\{3\}\}$
+- $\{\{1,2\},\{3\}\}$
+- $\{\{1,3\},\{2\}\}$
+- $\{\{1\},\{2,3\}\}$
+- $\{\{1,2,3\}\}$
+
+The following are not partitions of \{1,2,3\}:
+
+- $\{\emptyset,\{1,3\},\{2\}\}$ is not a partition because one of its elements is the empty set.
+- $\{\{1,2\},\{2,3\}\}$ is not a partition because the element 2 is contained in more than one block.
+- $\{\{1\},\{2\}\}$ is not a partition of $\{1,2,3\}$ because none of its blocks contains the element 3.
+</Callout>
+
+## De Morgan's Laws in Sets
+
+## Indexed Sets
+
+https://faculty.etsu.edu/gardnerr/3000/notes-MR/Gerstein-2-6.pdf
+
+## Multisets or Bags
+
+A multiset in maths or [bag in computer science](/garden/cs/algd/bags) is a set that allows for multiple instances of the same element. This means that the elements of a multiset are not unique and can be repeated.
+Think of it is a big bag where you can throw in pretty much anything and the order doesn't matter.
+
+In maths multisets are rarely seen or used, but in computer science they are used to represent collections of objects where the order doesn't matter and the same object can appear multiple times.
+
+
+<Image 
+    src="/maths/setsMultiset.png"
+    caption="Comparison of a set and a multiset."
+    width={600}
+/>
+
+
+## Cardinality of Infinite Sets
