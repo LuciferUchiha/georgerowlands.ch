@@ -70,13 +70,13 @@ Using pigeonhole principle can show that a state must be visited more then once,
 
 So it can be split into three parts, $x$, $y$ and $z$ where $y$ is the substring that can be pumped. $x$ and $z$ are the substrings before and after $y$. Formal definition of the pumping lemma.
 
-$$
+```math
 \begin{align*}
 \forall i \geq 0: xy^iz \in L \\
 \mid y \mid > 0 \\
 \mid xy \mid \leq p \\
 \end{align*}
-$$
+```
 
 The first condition defines that if a string is in the language then all pumped strings must also be in the language. The second condition defines that the substring $y$ must be longer then 0, i.e an empty string can not be pumped, $x$ and $z$ can be empty. 
 The third condition defines that the prefix $x$ and $y$ must be shorter then the pumping length $p$ because of the pigeonhole principle, dont quiet get this condition.

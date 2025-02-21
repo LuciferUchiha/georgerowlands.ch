@@ -51,24 +51,24 @@ This is often denoted by $|w|_a$ where $a$ is the symbol and $w$ is the word.
 
 Using this we can also define the length of a word as the sum of the number of occurrences of each symbol in the word:
 
-$$
+```math
 |w| = \sum_{a \in \Sigma} |w|_a
-$$
+```
 
 ### Concatenating Words
 
 Concatenating two words is the operation of joining the two words together to form a new word. This is often denoted by the symbol $\cdot$.
 So we define the concatenation of two words $u$ and $v$ as follows:
 
-$$
+```math
 u \cdot v = uv
-$$
+```
 
 This is just like in normal arithmetic where we can omit the multiplication sign when multiplying variables. When concatonating words the length of the new word is the sum of the lengths of the two words.
 
-$$
+```math
 |u \cdot v| = |u| + |v|
-$$
+```
 
 This then also gives a logical definition of the concatenation of the empty word with any word. The concatenation of the empty word with any word is just the word itself. 
 This is because the empty word has no symbols and no length, so adding it to any word does not change the word or its length.
@@ -76,15 +76,15 @@ This is because the empty word has no symbols and no length, so adding it to any
 <Callout type="info">
 However unlike normal multiplication, the order of the words matters in concatenation, i.e. the concatenation operation is not commutative.
 
-$$
+```math
 u \cdot v \neq v \cdot u
-$$
+```
 
 However, the concatenation operation is associative:
 
-$$
+```math
 (u \cdot v) \cdot w = u \cdot (v \cdot w)
-$$
+```
 </Callout>
 
 <Callout type="example">
@@ -98,24 +98,24 @@ $$
 The power of a word is the concatenation of the word with itself a certain number of times. This is denoted by a superscript and also often called iteration or repetition of a word.
 The power $n$ of a word has to be a non-negative integer, $n \in \Bbb{N}_0$. Just like with powers of numbers where $1$ is the identity element for the power of $0$, the empty word is the identity element for the power of $0$ for words.
 
-$$
+```math
 w^n = \prod_{i=1}^{n} w
-$$
+```
 
 Using the definition of concatenation, we can also write this as:
 
-$$
+```math
 w^n = \underbrace{w \cdot w \cdot \ldots \cdot w}_{n \text{ times}}
-$$
+```
 
 Which also leads to a recursive definition of the power of a word:
 
-$$
+```math
 w^n = \begin{cases}
     \varepsilon & \text{if } n = 0 \\
     w \cdot w^{n-1} & \text{if } n > 0
 \end{cases}
-$$
+```
 
 <Callout type="example">
 - $w = 101$, $w^3 = 101101101$.
@@ -125,21 +125,21 @@ $$
 
 Using the power of words we can write long sequences of the same symbol in a more compact way, this can however lead to ambigous words:
 
-$$
+```math
 w = bbababababbaaaabab = b^2(ab)^4ba^4bab = b(ba)^4b^2a^3(ab)^2
-$$
+```
 </Callout>
 
 ### Reverse of a Word
 
 The reverse of a word is the word with the symbols in the opposite order. This is denoted by the symbol $w^R$. 
 
-$$
+```math
 \begin{align*}
 w & = a_1a_2 \ldots a_n \\
 w^R & = a_na_{n-1} \ldots a_2a_1
 \end{align*}
-$$
+```
 
 <Callout type="example">
 - $w = 101$, $w^R = 101$.
@@ -150,14 +150,14 @@ $$
 
 We can also define the reverse of the concatenation of two words as the concatenation of the reverse of the two words in reverse order:
 
-$$
+```math
 (u \cdot v)^R = v^R \cdot u^R
-$$
+```
 
 <Callout type="example">
 This is best shown by example:
 
-$$
+```math
 \begin{align*}
 u & = ab \\
 v & = cd \\
@@ -165,16 +165,16 @@ u \cdot v & = abcd \\
 (u \cdot v)^R & = dcba \\
 v^R \cdot u^R & = dcba
 \end{align*}
-$$
+```
 </Callout>
 
 ## Sets of Words
 
 If we have an alphabet $\Sigma$, we can define some special sets of words over that alphabet. Specifically we can define the set of all words of a certain length by using the power of the alphabet.
 
-$$
+```math
 \Sigma^n = \text {set of all words of length } n \text{ over the alphabet } \Sigma
-$$
+```
 
 This set is finite because the alphabet is finite and the length of the words is fixed.
 
@@ -188,15 +188,15 @@ This set is finite because the alphabet is finite and the length of the words is
 
 The Kleene star is a special set of words that includes all words of any length that can be made from the alphabet. It is the set of all words over the alphabet.
 
-$$
+```math
 \Sigma^* = \bigcup_{i \geq 0} \Sigma^i = \Sigma^0 \cup \Sigma^1 \cup \Sigma^2 \cup \ldots
-$$
+```
 
 or more formally:
 
-$$
+```math
 \Sigma^* = \{\varepsilon\} \cup \{x_1x_2 \ldots x_n \mid i,n \in \Bbb{N}^+, x_i \in \Sigma\}
-$$
+```
 
 <Callout type="example">
 - $\Sigma = \{a, b\}$, $\Sigma^* = \{\varepsilon, a, b, aa, ab, ba, bb, aaa, aab, aba, abb, baa, bab, bba, bbb, \ldots\}$.
@@ -207,9 +207,9 @@ $$
 
 The Kleene plus is a variation of the Kleene star that does not include the empty word. It is the set of all words of length greater than zero that can be made from the alphabet.
 
-$$
+```math
 \Sigma^+ = \Sigma^* - \{\varepsilon\} = \bigcup_{i \geq 1} \Sigma^i = \Sigma^1 \cup \Sigma^2 \cup \Sigma^3 \cup \ldots
-$$
+```
 
 <Callout type="example">
 - $\Sigma = \{a, b\}$, $\Sigma^+ = \{a, b, aa, ab, ba, bb, aaa, aab, aba, abb, baa, bab, bba, bbb, \ldots\}$.
@@ -221,15 +221,15 @@ $$
 A subword of a word is a word that can be obtained by deleting zero or more symbols from the original word. Subwords are also called substrings or infixes.
 The word $v$ is a subword of the word $w$ if there are words $x$ and $y$ in the same alphabet such that:
 
-$$
+```math
 w = xvy
-$$
+```
 
 or more formally:
 
-$$
+```math
 v \text{ is a subword of } w \iff \exists x, y \in \Sigma^* : w = xvy
-$$
+```
 
 Because $x$ and $y$ can be the empty word, every word is a subword of itself. This also leads to the empty word being a subword of every word as well because
 we can always choose $x$ to be the empty word and $y$ to be the word itself, or vice versa, or some split in between.
@@ -242,14 +242,14 @@ we can always choose $x$ to be the empty word and $y$ to be the word itself, or 
 
 A proper subword is a subword that is not the same as the original word.
 
-$$
+```math
 \begin{align*}
 w & = xvy \\
 v & \neq w \\
 |v| & < |w| \\
 v \text{ is a proper subword of } w & \iff \exists x, y \in \Sigma^*- \{\varepsilon\} : w = xvy
 \end{align*}
-$$
+```
 
 This also means that either $x$ or $y$ or both are not the empty word and that $|v| < |w|$.
 
@@ -265,9 +265,9 @@ This also means that either $x$ or $y$ or both are not the empty word and that $
 
 A prefix of a word is a subword that starts at the beginning of the word. This means that the prefix $v$ of a word $w$ is a subword of $w$ such that there is a word $y$ in the same alphabet such that:
 
-$$
+```math
 w = vy
-$$
+```
 
 Because the prefix is a special case of a subword it follows all the same rules as a subword and also has the differenation between normal and proper prefixes.
 
@@ -289,15 +289,15 @@ Because the prefix is a special case of a subword it follows all the same rules 
 
 A suffix of a word is a subword that is at the end of the word. This means that the suffix $v$ of a word $w$ is a subword of $w$ such that there is a word $x$ in the same alphabet such that:
 
-$$
+```math
 w = xv
-$$
+```
 
 or more formally:
 
-$$
+```math
 v \text{ is a suffix of } w \iff \exists x \in \Sigma^* : w = xv
-$$
+```
 
 Because the suffix is a special case of a subword it follows all the same rules as a subword and also has the differenation between normal and proper suffixes.
 
@@ -319,56 +319,56 @@ Because the suffix is a special case of a subword it follows all the same rules 
 
 A language is a specific set of words over an alphabet commonly denoted by the symbol $L$. More precisly a language is a subset of the set of all words over an alphabet.
 
-$$
+```math
 L \subseteq \Sigma^*
-$$
+```
 
 <Callout type="example">
 We can define the english language as a language over the alphabet including all the letters of the English alphabet and some punctuation marks.
 The language $L_\text{eng}$ would then include all the words that are valid in the English language.
 
-$$
+```math
 L_\text{eng} = \{\text{hello}, \text{world}, \text{cat}, \text{dog}, \ldots\}
-$$
+```
 
 Programming languages (such as C) are languages based on the ASCII character set, where the programs must have a correct syntax.
 
-$$
+```math
 L_\text{C} = \{\text{int}, \text{main}, \text{printf}, \text{scanf}, \ldots\}
-$$
+```
 
 The language of all binary numbers with the same number of 0s and 1s is a language over the alphabet $\{0, 1\}$.
 
-$$
+```math
 L = \{00, 11, 0011, 0101, 0110, 1001, 1010, 1100, \ldots\}
-$$
+```
 </Callout>
 
 ### Sub and Supersets of Languages
 
 If $L$ is a language over an alphabet $\Sigma_1$ and $\Sigma_2$ is a superset of $\Sigma_1$, then $L$ is obviously also a language over $\Sigma_2$:
 
-$$
+```math
 L \subseteq \Sigma_1^* \subseteq \Sigma_2^*
-$$
+```
 
 The empty set is a language over every alphabet because it is a subset of every set of words. It is often denoted by the symbol $L_\emptyset$ or just $\emptyset$.
 
-$$
+```math
 L_\emptyset \subseteq \Sigma^* \text{ for all } \Sigma
-$$
+```
 
 The language that contains only the empty word is also a language over every alphabet. It is often denoted by the symbol $L_\varepsilon$ or just $\{\varepsilon\}$.
 
-$$
+```math
 L_{\varepsilon} \subseteq \Sigma^* \text{ for all } \Sigma
-$$
+```
 
 However, this does not mean that the empty set and the set containing only the empty word are the same.
 
-$$
+```math
 L_\emptyset \neq L_{\varepsilon}
-$$
+```
 
 ### Operations on Languages
 
@@ -388,9 +388,9 @@ In addition to these set operations, we can also apply the operations of concate
 
 When concatenating two languages, we concatenate every word in the first language with every word in the second language.
 
-$$
+```math
 L_1 \cdot L_2 = \{w_1 \cdot w_2 \mid w_1 \in L_1, w_2 \in L_2\}
-$$
+```
 
 This is also called the product of two languages. The concatenation of two languages is very similar to the cartesian product of two sets. This is clearly visible in the example below.
 
@@ -404,26 +404,26 @@ This is also called the product of two languages. The concatenation of two langu
 Using the concatenation operation we can also define the Kleene star of a language. The Kleene star of a language is the set of all words that can be made by concatenating any number of words from the original languages.
 For this we define the following:
 
-$$
+```math
 \begin{align*}
 L^0 & = \{\varepsilon\} \\
 L^1 & = L \\
 L^2 & = L \cdot L \\
 L^{n+1} & = L \cdot L^n
 \end{align*}
-$$
+```
 
 We can then define the Kleene star of a language as:
 
-$$
+```math
 L^* = \bigcup_{i \geq 0} L^i = L^0 \cup L^1 \cup L^2 \cup \ldots
-$$
+```
 
 We can also define the Kleene plus, i.e the set of all words that can be made by concatenating any number of words from the original language except the empty word:
 
-$$
+```math
 L^+ = L^* - \{\varepsilon\} = \bigcup_{i \geq 1} L^i = L^1 \cup L^2 \cup L^3 \cup \ldots
-$$
+```
 
 <Callout type="example">
 - $L = \{a, b\}$, $L^* = \{\varepsilon, a, b, aa, ab, ba, bb, aaa, aab, aba, abb, baa, bab, bba, bbb, \ldots\}$.

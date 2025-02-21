@@ -6,7 +6,7 @@ node_modules/
 npm-debug.log
 
 # Nest.js generated files
-.next/
+.next
 
 # IDE files
 .vscode/
@@ -21,3 +21,25 @@ Thumbs.db
 venv
 */**/__pycache__
 */**/.env
+.next/app-build-manifest.json
+.next/build-manifest.json
+.next/trace
+.next/cache/webpack/client-development/0.pack.gz
+.next/cache/webpack/client-development/1.pack.gz
+.next/cache/webpack/client-development/2.pack.gz
+.next/cache/webpack/client-development/3.pack.gz
+.next/cache/webpack/client-development/index.pack.gz
+.next/cache/webpack/client-development/index.pack.gz.old
+.next/cache/webpack/client-development-fallback/0.pack.gz
+.next/cache/webpack/client-development-fallback/index.pack.gz
+.next/cache/webpack/server-development/0.pack.gz
+.next/cache/webpack/server-development/1.pack.gz
+.next/cache/webpack/server-development/2.pack.gz
+.next/cache/webpack/server-development/3.pack.gz
+.next/cache/webpack/server-development/4.pack.gz
+.next/cache/webpack/server-development/index.pack.gz
+.next/cache/webpack/server-development/index.pack.gz.old
+.next/server/app-paths-manifest.json
+.next/server/middleware-build-manifest.js
+.next/server/pages-manifest.json
+.next/static/development/_buildManifest.js

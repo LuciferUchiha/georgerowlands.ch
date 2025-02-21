@@ -1,0 +1,12 @@
+{
+  "searching": "Searching Algorithms",
+  "bubbleSort": "Bubble Sort",
+  "selectionSort": "Selection Sort",
+  "insertionSort": "Insertion Sort",
+  "mergeSort": "Merge Sort",
+  "quickSort": "Quick Sort",
+  "heapSort": "Heap Sort",
+  "radixSort": "Radix Sort",
+  "countingSort": "Counting Sort",
+  "stableSorting": "Stable Sorting Algorithms"
+}

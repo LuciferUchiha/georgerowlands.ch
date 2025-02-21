@@ -1,0 +1,29 @@
+# UV
+
+You can setup a project using `uv init $project-name`.
+To then add dependencies, you can use `uv add $package-name`.
+To run your project, you can use `uv run $script-name`. This will 
+run the script in the `main.py` file and automatically create a virtual environment 
+matching the correct python version and your dependencies in the toml file.
+To remove a dependency you can use `uv remove $package-name`.
+To list all dependencies you can use `uv list`.
+To make sure the virtual environment is up to date you can use `uv sync`.
+You can generate a lock file using `uv lock`. This will lock the dependencies to the exact version.
+You can try and upgrade the dependencies in the lock file using ùv lock --upgrade package $package-name`.
+You can also upgrade all dependencies using `uv lock --upgrade`.
+
+can see the dependency using `uv tree`.
+
+workspaces for if there are subprojects in a monorepo. the lock file is then for the entire 
+monorepo and the virtual environment is shared between the workspaces. 
+If you dont want this behaviour 
+then you can use `uv init --no-workspace` to create a workspace for each project.
+
+tools? so like pipx to run ruff check? either uv tool run ruff check or just uvx ruff check
+can install and uninstall tools using `uv tool install $tool-name` and `uv tool uninstall $tool-name` 
+or upgrade using `uv tool upgrade $tool-name`
+
+python versioning
+checks if already installed, if not then installs it, uv python list to list all versions
+`uv python install $version` to install a specific version. For the project it will be set 
+in .python-version file.

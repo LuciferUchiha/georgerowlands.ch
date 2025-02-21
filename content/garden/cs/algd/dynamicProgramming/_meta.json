@@ -1,0 +1,11 @@
+{
+  "introduction": "Introduction to DP",
+  "maximumSegmentSum": "Maximum Segment Sum",
+  "jumpGame": "Jump Game",
+  "longestCommonSubsequence": "Longest Common Subsequence",
+  "editDistance": "Levenshtein Edit Distance",
+  "subsetSum": "Subset Sum",
+  "knapsack": "Knapsack ",
+  "longestIncreasingSubsequence": "Longest Increasing Subsequence",
+  "coinsLine": "Coins in a Line"
+}

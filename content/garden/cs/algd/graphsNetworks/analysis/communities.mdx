@@ -1,0 +1,419 @@
+import Callout from "@components/Callout/Callout";
+import {MdxCaption} from "@components/Caption/Caption";
+import Graph from "@components/Graph/Graph";
+import Image from "@components/Image/Image";
+import {Block, SideBySideBlock} from "@components/SideBySideBlock/SideBySideBlock";
+import {Steps, Step, StepCircle} from "@components/Steps/Steps";
+
+# Communities
+
+Communities are subgraphs (subsets or groups of vertices of the original graph), that are better connected to each
+other than to the rest of the graph. Communities are very important when analyzing social networks and networks in
+general as they often form around a context or a topic such as family, friends, work, hobbies, etc.
+
+These communities can then be further analyzed such as to find out who are the most important people in a community,
+what is there impact on the community, and how do they relate to other communities.
+
+We have already seen an example of communities in the form of [(strongly) connected components](/garden/cs/algd/graphsNetworks/graphs) where all vertices are connected to each other.
+These already form a group of vertices that are connected and can be seen as a community. However, there are more subtle communities that can be found in a graph.
+
+<Image 
+    src="/cs/graphsCommunities.png"
+/>
+
+## Neighborhoods
+
+The neighborhood of a vertex $v$ is the set of all vertices that are connected to $v$ by an edge, and is denoted by
+$N(v)$ or $N_G(v)$ if the graph is not ambiguous. The neighborhood of a vertex is also sometimes referred to as the open
+neighborhood when it does not include the vertex itself $v$, and the closed neighborhood when it does include the vertex
+itself. The default is the open neighborhood, whereas the closed neighborhood is denoted by $N[v]$ or $N_G[v]$.
+
+export const neighborhoodGraph = {
+    nodes: [
+        {id: 1, label: "a", x: 0, y: 0, color: "green"},
+        {id: 2, label: "b", x: 0, y: 200, color: "green"},
+        {id: 3, label: "c", x: 200, y: 100, color: "red"},
+        {id: 4, label: "d", x: 400, y: 100, color: "green"},
+        {id: 5, label: "e", x: 600, y: 100},
+        {id: 6, label: "f", x: 800, y: 0},
+        {id: 7, label: "g", x: 800, y: 200}
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 2, to: 3},
+        {from: 3, to: 4},
+        {from: 4, to: 5},
+        {from: 5, to: 6},
+        {from: 5, to: 7},
+        {from: 6, to: 7}
+    ]
+};
+
+<MdxCaption>
+    <Graph
+        graph={neighborhoodGraph}
+        options={
+            {
+                physics: {
+                    enabled: false
+                }
+            }
+        }
+    />
+    For the given Graph $G$ and the vertex $c$, the neighborhood $N[c]$ is the set of vertices $\{a, b, d\}$.
+</MdxCaption>
+
+## Cliques
+
+Cliques focus on undirected graphs. A clique is a complete subgraph of the original graph, i.e a subgraph where all
+vertices are connected to each other. Cliques are very important in social networks as they represent groups of people
+that all know each other, however in a communication network they would represent a group with redundant connections.
+
+Because cliques are complete subgraphs, they are very easy to see but also happen to be very rare and hard to find
+algorithmically. In the graph below the two cliques have been highlighted in red and blue.
+
+<Image 
+    src="/cs/graphsCliques.png"
+/>
+
+<Callout type="todo">
+   Alogrithms seem to be seperated in finding a maximal clique or finding cliques of a certain size.
+</Callout>
+
+### Clustering Coefficient
+
+The clustering coefficient is a metric that measures how close a graph is to being a clique (don't ask me why it isn't
+called Clique Coefficient). There are two different versions of the clustering coefficient, the global clustering
+coefficient and the local clustering coefficient, where the global clustering coefficient is just the average of the
+local clustering coefficients.
+
+The idea behind the local clustering coefficient is to check how many of the neighbors of a vertex are connected to each
+other. If all neighbors are connected to each other, then the local clustering coefficient for that vertex is $1$. More
+formally, the local clustering coefficient for a vertex $v$ is defined as:
+
+```math
+\text{localClusterCoeff}(v) = \frac{2 \cdot \text{numEdgesBetweenNeighbors}(v)}{|N(v)| \cdot (|N(v)| - 1)}
+```
+
+where $N(v)$ denotes the set of neighbors of $v$.
+
+
+export const clusterCoeff1 = {
+    nodes: [
+        {id: 1, label: "a", x: 0, y: 100, color: "red"},
+        {id: 2, label: "b", x: 100, y: 200, color: "green"},
+        {id: 3, label: "c", x: 200, y: 100, color: "green"},
+        {id: 4, label: "d", x: 100, y: 0, color: "green"},
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 1, to: 4},
+        {from: 2, to: 3},
+        {from: 2, to: 4},
+        {from: 3, to: 4},
+    ]
+};
+
+export const clusterCoeff0 = {
+    nodes: [
+        {id: 1, label: "a", x: 0, y: 100, color: "red"},
+        {id: 2, label: "b", x: 100, y: 200, color: "green"},
+        {id: 3, label: "c", x: 200, y: 100, color: "green"},
+        {id: 4, label: "d", x: 100, y: 0, color: "green"},
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 1, to: 4},
+    ]
+};
+
+<SideBySideBlock>
+    <Block>
+        <MdxCaption>
+            <Graph
+                graph={clusterCoeff1}
+                options={
+                    {
+                        physics: {
+                            enabled: false
+                        }
+                    }
+                }
+            />
+            For the given Graph $G$ and the vertex $a$, the cluster coefficient is $1$ because all neighbors are connected.
+        </MdxCaption>
+    </Block>
+    <Block>
+        <MdxCaption>
+            <Graph
+                graph={clusterCoeff0}
+                options={
+                    {
+                        physics: {
+                            enabled: false
+                        }
+                    }
+                }
+            />
+            For the given Graph $G$ and the vertex $a$, the cluster coefficient is $0$ because none of the neighbors are
+            connected.
+        </MdxCaption>
+    </Block>
+</SideBySideBlock>
+
+The global clustering coefficient is then just the average of the local clustering coefficients of all vertices in the
+graph.
+
+```math
+\text{globalClusterCoeff}(G) = \frac{1}{|V|} \sum_{v \in V} \text{localClusterCoeff}(v)
+```
+
+### k-Core
+
+For a k-Core the rules of a clique are slightly relaxed. A k-Core is a subgraph where all vertices are at least connected
+to $k$ other vertices in the subgraph.
+
+<Image
+    src="/cs/graphsKCore.png"
+    caption="Example of differen k-Cores for the same graph."
+/>
+
+Although this is a relaxation of the rules, it is still a very strict rule and
+can lead to vertices that don't fulfill the $k$ connections but are only connected to other vertices in a core to not
+be included in the core.
+
+<Callout type="todo">
+    Degeneracy of a graph and k-degenerate graphs is exactly this
+</Callout>
+
+### p-Clique
+
+The idea of a p-clique is also to relax the rules of a clique whilst also solving the above-mentioned issue of the
+k-core. In a p-clique, the p stands for a percentage in decimal i.e. a ratio. So in a p-clique at least the given
+percentage of edges of a vertices must be connected to other vertices in the subgraph.
+
+So if we have a 0.5-clique, then at least 50% of the edges of a vertex must be connected to other vertices in the subgraph. This
+then allows for the vertices that don't fulfill the rule to be included in the subgraph for a k-core but are only
+connected to other vertices in the subgraph to be included in the subgraph.
+
+### n-Clique
+
+<Callout type="warning">
+    Sometimes cliques are named after the number of vertices they contain. For example a clique with 3 vertices is
+    called a 3-clique, a clique with 4 vertices is called a 4-clique, etc. this can be generalized to a k-clique. Not an
+    n-clique though, that is something else, but when it just says 4-clique it can be ambiguous.
+</Callout>
+
+The idea of an n-clique is that we want a maximal subgraph, i.e. with the most vertices, where each pair of vertices can
+be connected by a path of length at most n. So a 1-clique is just a normal clique, a 2-clique is a clique where each
+pair of vertices can be connected by a path of length at most 2, etc.
+
+<Callout type="warning">
+    The path doesn't have to be the shortest path, just a path of length at most n. And the path can go over any vertex,
+    not just vertices that are part of the clique.
+</Callout>
+
+This can lead to two interesting scenarios:
+
+1. The diameter of the subgraph can actually be longer then n. This is due to the path being able to go over any vertex,
+not just vertices that are part of the clique. So in the example below, the diameter of the subgraph is 3 even though it
+is a 2-clique.
+
+<Image 
+    src="/cs/graphsNCliqueDiameter.png"
+    width={300}
+/>
+
+2. The subgraph can be disconnected. In the example below you can see two possible 2-cliques of many for the given graph.
+Interestingly, they are both disconnected, because if one of the vertices inbetween is included, then a different vertex
+can no longer be included.
+
+<Image 
+    src="/cs/graphsNCliqueDisconnected.png"
+    width={300}
+/>
+
+## Clustering
+
+In general clustering is the process of grouping similar objects together. In graph theory, the clustering process can
+be seen as a way to group vertices together i.e. to find communities that aren't based on specific rules like cliques
+or connected components.
+
+There are two main approaches to clustering graphs:
+
+- bottom-up: start with each vertex in its own cluster and then merge clusters together
+- top-down: start with all vertices in one cluster and then split the cluster into smaller clusters
+
+### Girvan-Newman Clustering
+
+The Girvan-Newman clustering algorithm is a bottom-up approach to clustering which is based on edge betweenness, hence
+it is also called edge betweenness clustering. The idea is to iteratively calculate the edge-betweenness of each edge in
+the graph and then remove the edge with the highest edge-betweenness.
+
+The thought process behind this is that the edges with the highest edge-betweenness are the edges that have the highest
+information flow. So by removing these edges, we are removing the edges that connect two groups/clusters/communities
+together. Eventually this will lead to two components, which are then the clusters.
+
+<SideBySideBlock>
+    <Block>
+        <Image
+            src="/cs/graphsGirvanNewman1.png"
+            caption="Initial state of the graph with its edge-betweenness."
+        />
+    </Block>
+    <Block>
+        <Image
+            src="/cs/graphsGirvanNewman2.png"
+            caption="Graph after removing the edge with the highest edge-betweenness."
+        />
+    </Block>
+</SideBySideBlock>
+
+The issue with this approach is that it is very computationally expensive. The edge-betweenness of each edge has to be
+calculated, which is $O(|V||E|)$ and then that has to be done iteratively multiple times so the overall complexity can
+be summarized to $O(n^3)$ which is not ideal for large graphs.
+
+### LPA - Label Propagation Algorithm
+
+The LPA is a more general algorithm which doesn't have to just be used for clustering graphs it can also be used to
+cluster data in general. However, I will explain it in the context of graph clustering.
+
+<Callout type="todo">
+    Maybe one day this can be done in the context of semi-supervised labeling
+</Callout>
+
+LPA consists of 2 parts, the preparation and the actual algorithm. In the preparation we do the following:
+
+1. We assign each vertex a unique label from $0$ to $|V| - 1$. The labels in the end will be the clusters, which makes
+this a bottom-up approach.
+
+2. We perform graph coloring. I will not go into detail about graph coloring here, but the idea is to color the graph
+such that no two connected/neighboring vertices have the same color whilst using the least amount of colors possible.
+
+<Callout type="todo">
+    Maybe add a link to the graph coloring chapter if it ever gets written.
+</Callout>
+
+Once the preparation is done, we can start the actual algorithm. The algorithm is very simple:
+
+For each color (always in the same order) we go through each vertex (also always in the same order) and check the
+labels of its neighbors and count how many times each one occurs. If there is a label that occurs more often than the
+others, then we assign that label to the vertex. If there are multiple labels that occur the same amount of times, then
+there are two options:
+
+- If the vertexes label is one of the labels that occur the most, then we keep the label.
+- If the vertexes label is not one of the labels that occur the most, then we assign it the label with the highest value.
+Lowest would also work, as long as it is consistent.
+
+This is repeated until the labels don't change anymore. The labels in the end then represent the clusters. The algorithm
+is very simple and fast making it a good choice for large graphs. However, it is not
+deterministic, i.e. it can lead to different results depending on the order of the colors and vertices. This can be
+mitigated by running the algorithm multiple times and then taking the most common result.
+
+<Callout type="example">
+    After the initial setup, we get the graph below:
+
+    <Image
+        src="/cs/graphsLPA1.png"
+        caption="Initial state of the graph."
+        width={300}
+    />
+
+    We will work through the graph in the following order:
+
+    - Blue: $B, F$
+    - Green: $D, A, H, C$
+    - Brown: $E, G$
+
+    <Steps>
+        <Step id={1}>
+        We start with vertex $B$ which has the neighbors $A,C,D,E$ with the labels $0,2,3,4$. The vertex $B$ has the
+        label $1$. Because all the neighboring labels occur once and the vertexes label is not one of the labels we 
+        pick the one with the height value, which is $4$. So we assign the label $4$ to $B$.
+        </Step>
+        <Step id={2}>
+        We have a similar situation for the next vertex $F$ which gets assigned the label $7$.
+            <Image
+                src="/cs/graphsLPA2.png"
+                caption="The state of the graph after the initial iteration of the blue vertices."
+                width={300}
+            />
+        </Step>
+        <Step id={3}>
+        Now we do the same with the green vertices.
+            <Image
+                src="/cs/graphsLPA3.png"
+                caption="The state of the graph after assigning the new labels for the green vertices."
+                width={300}
+            />
+        </Step>
+        <Step id={4}>
+        Lastly, we process the brown vertices in the given order.
+            <Image
+                src="/cs/graphsLPA4.png"
+                caption="The final state of the graph after assigning the new labels for the brown vertices."
+                width={300}
+            />
+        Luckily with this graph, we already have our clusters after the first iteration. We have two clusters, the 
+        vertices with the label 4 and the vertices with the label 7.
+        </Step>
+    </Steps>
+
+</Callout>
+
+<Callout type="todo">
+    Make my own images where the graph is processed alphabetically. And what if we want more then 2 clusters?
+</Callout>
+
+### Louvain Clustering
+
+The Louvain clustering algorithm is a bottom-up greedy approach to clustering which is based on modularity. So we first
+need to understand what modularity is.
+
+#### Modularity
+
+Modularity is a metric that measures the quality of a clustering. The idea is to compare the number of edges within a
+cluster with the number of edges between clusters. A good clustering would then have a lot of edges within a cluster
+and not many edges between clusters.
+
+Modularity is defined as the fraction of edges of a graph within a cluster minus the expected fraction of edges within
+a cluster if the edges were distributed randomly. The value of modularity is between $\frac{-1}{2}$ and $1$, where
+any value above 0 means that the number of edges within a cluster is higher than the expected number of edges within a
+cluster if the edges were distributed randomly. The higher the value, the better the clustering, if the value is above
+0.3 then the clustering is considered to be good.
+
+```math
+\text{modularity}(G) = \frac{1}{2m} \sum_{i,j \in V} \left( A_{ij} - \frac{deg(i) deg(j)}{2m} \right) \delta(c_i, c_j)
+```
+
+with the following definitions:
+
+- $A_{ij}$ is the weight of the edge between vertices $i$ and $j$
+- $m$ is the sum of all edge weights so for an unweighted graph $m = |E|$ and for a weighted graph $m = \sum_{i,j \in V} A_{ij}$.
+- $\delta(c_i, c_j)$ is the Kronecker delta function (1 if $c_i = c_j$ and 0 otherwise), which is used to check if two
+vertices are in the same cluster.
+
+#### The Louvain Algorithm
+
+The Louvain algorithm then tries to maximize the modularity of a graph in an iterative process until the modularity
+cannot be increased anymore, hence it is a greedy approach.
+
+Initially each vertex is in its own cluster. We then iteratively perform the following steps:
+
+- **Modularity Optimization:** For each vertex we check how the modularity would change if we would
+move it to a neighboring cluster. If the modularity would increase, then we move the vertex to the neighboring cluster
+which would increase the modularity the most. If the modularity would not increase, then we leave the vertex in its
+current cluster. Once we have gone through all vertices, we move on to the next step.
+- **Cluster Aggregation:** We then aggregate all vertices in the same cluster into a single vertex. This vertex has a
+self-looping edge with a weight equal to the sum of all the edges of the vertices in the cluster. The vertices resembling
+the clusters are then connected to each other with edges of weight equal to the sum of all the edges between the
+clusters before the aggregation. We then go back to the first step and repeat the process until the modularity cannot be
+increased anymore.
+
+<Image
+    src="/cs/graphsLouvainClustering.png"
+    caption="Example of the Louvain algorithm."
+/>

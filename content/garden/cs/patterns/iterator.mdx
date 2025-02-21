@@ -3,11 +3,11 @@ import Image from "@components/Image/Image";
 
 # Iterators
 
-Often times you find yourself traversing/iterating over a [collection](../algorithmsDataStructures/collections). The iterator pattern encapsulates this functionality without exposing its underlying representation of the collection. In java this pattern is used to implement the enhanced for or also called for-each loop. Under the hood all the for each loop does is get an iterator instance and iterate over it step by step, this is also why you can only use the for-each loop on collections that actually implement the [`Iterable<T>`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html) interface.
+Often times you find yourself traversing/iterating over a [collection](../algd/collections). The iterator pattern encapsulates this functionality without exposing its underlying representation of the collection. In java this pattern is used to implement the enhanced for or also called for-each loop. Under the hood all the for each loop does is get an iterator instance and iterate over it step by step, this is also why you can only use the for-each loop on collections that actually implement the [`Iterable<T>`](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html) interface.
 
 Why is this pattern useful?
 
- - Because depending on the collection there might be different ways to traverse it, for example [binary trees can be traversed in many orders](../algorithmsDataStructures/trees/binaryTrees#traversal-orders) but the methods you call to traverse the collection should be the same. We want a common interface for traversing different collections in different ways.
+ - Because depending on the collection there might be different ways to traverse it, for example [binary trees can be traversed in many orders](../algd/trees/binaryTrees#traversal-orders) but the methods you call to traverse the collection should be the same. We want a common interface for traversing different collections in different ways.
  - Also, because the iterator object holds all the details regarding the traversal of the collection, several iterators can go through the same collection at the same time, independently of each other as long as they don't change the underlying collection, if they do it gets a bit complicated with [mutexes](../concurrentProgramming/locking#locks).
 
 <Image 
@@ -81,7 +81,7 @@ However, when removing elements whilst other iterators are also traversing the c
 
 ## Implementation
 
-A possible implementation for an iterator over a [linked list](../algorithmsDataStructures/linkedLists) could look like this:
+A possible implementation for an iterator over a [linked list](../algd/linkedLists) could look like this:
 
 ```java
 
