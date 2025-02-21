@@ -1,5 +1,5 @@
 export default {
-    
+    algd: "Algorithms & Data Structures",
     concurrentParallel: "Concurrent & Parallel Programming",
     computerArchitecture: "Computer Architecture",
     distributedSystems: "Distributed Systems",

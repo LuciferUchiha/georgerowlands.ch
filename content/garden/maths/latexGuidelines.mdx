@@ -4,36 +4,36 @@ This notation guide is inspired by [Deep Learning by Ian Goodfellow, Yoshua Beng
 
 ## Numbers and Arrays
 
-If we wanted tensors to also be bold we would have to write `\mathsf{\boldsymbol{A}}` which is sadly not nice and short.
+If we wanted tensors to also be bold we would have to write `\mathsf{\mathbf{A}}` which is sadly not nice and short.
 
 | Description                                                                        | Code                          | Example                       |
 | ---------------------------------------------------------------------------------- | ----------------------------- | ----------------------------- |
 | Scalar (integer or real)                                                           | `a=2`                         | $a$                           |
-| Vector, lowercase italic bold                                                      | `\boldsymbol{a}`              | $\boldsymbol{a}$              |
-| Matrix, uppercase italic bold                                                      | `\boldsymbol{A}`              | $\boldsymbol{A}$              |
+| Vector, lowercase bold                                                      | `\mathbf{a}`              | $\mathbf{a}$              |
+| Matrix, uppercase bold                                                      | `\mathbf{A}`              | $\mathbf{A}$              |
 | Tensor, uppercase sans-serif                                                       | `\mathsf{A}`                  | $\mathsf{A}$                  |
-| Identity matrix with $n$ rows and $n$ columns                                      | `\boldsymbol{I}_n`            | $\boldsymbol{I}_n$            |
-| Identity matrix with implied dimensionality                                        | `\boldsymbol{I}`              | $\boldsymbol{I}$              |
-| Square diagonal matrix with elements along main diagonal given by $\boldsymbol{a}$ | `\text{diag}(\boldsymbol{a})` | $\text{diag}(\boldsymbol{a})$ |
+| Identity matrix with $n$ rows and $n$ columns                                      | `\mathbf{I}_n`            | $\mathbf{I}_n$            |
+| Identity matrix with implied dimensionality                                        | `\mathbf{I}`              | $\mathbf{I}$              |
+| Square diagonal matrix with elements along main diagonal given by $\mathbf{a}$ | `\text{diag}(\mathbf{a})` | $\text{diag}(\mathbf{a})$ |
 
 ## Indexing
 | Description                                                                                                | Code                   | Example                  |
 | ---------------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------ |
-| Element $i$ of vector $\boldsymbol{a}$, with indexing starting at 1                                        | `a_i`                  | $a_i$                    |
-| All elements of vector $\boldsymbol{a}$ except for element $i$                                             | `a_{-i}`               | $a_{-i}$                 |
-| Element $i,j$ of matrix $\boldsymbol{A}$, with $i$ corresponding to the row index and $j$ the column index | `A_{i,j}` or `a_{ij}`  | $A_{i,j}$ or $a_{ij}$    |
-| Row $i$ of matrix $\boldsymbol{A}$                                                                         | `\boldsymbol{A}_{i,:}` | $\boldsymbol{A}_{i , :}$ |
-| Column $j$ of matrix $\boldsymbol{A}$                                                                      | `\boldsymbol{A}_{:,j}` | $\boldsymbol{A}_{: , j}$ |
+| Element $i$ of vector $\mathbf{a}$, with indexing starting at 1                                        | `a_i`                  | $a_i$                    |
+| All elements of vector $\mathbf{a}$ except for element $i$                                             | `a_{-i}`               | $a_{-i}$                 |
+| Element $i,j$ of matrix $\mathbf{A}$, with $i$ corresponding to the row index and $j$ the column index | `A_{i,j}` or `a_{ij}`  | $A_{i,j}$ or $a_{ij}$    |
+| Row $i$ of matrix $\mathbf{A}$                                                                         | `\mathbf{A}_{i,:}` | $\mathbf{A}_{i , :}$ |
+| Column $j$ of matrix $\mathbf{A}$                                                                      | `\mathbf{A}_{:,j}` | $\mathbf{A}_{: , j}$ |
 
 ## Linear Algebra Operations
 
 | Description                                                              | Code                                 | Example                               |
 | ------------------------------------------------------------------------ | ------------------------------------ | ------------------------------------- |
-| Tranpose of matrix $\boldsymbol{A}$                                      | `\boldsymbol{A}^T`                   | $\boldsymbol{A}^T$                    |
-| Moore-Penrose pseudoinverse of matrix $\boldsymbol{A}$                   | `\boldsymbol{A}^\dagger`             | $\boldsymbol{A}^\dagger$              |
-| Hadamard (element-wise) product of $\boldsymbol{A}$ and $\boldsymbol{B}$ | `\boldsymbol{A} \odot boldsymbol{B}` | $\boldsymbol{A} \odot \boldsymbol{B}$ |
-| Determinant of matrix $\boldsymbol{A}$                                   | `\text{det}(\boldsymbol{A})`         | $\text{det}(\boldsymbol{A})$          |
-| Trace of matrix $\boldsymbol{A}$                                         | `\text{tr}(\boldsymbol{A})`          | $\text{tr}(\boldsymbol{A})$           |
+| Tranpose of matrix $\mathbf{A}$                                      | `\mathbf{A}^T`                   | $\mathbf{A}^T$                    |
+| Moore-Penrose pseudoinverse of matrix $\mathbf{A}$                   | `\mathbf{A}^\dagger`             | $\mathbf{A}^\dagger$              |
+| Hadamard (element-wise) product of $\mathbf{A}$ and $\mathbf{B}$ | `\mathbf{A} \odot mathbf{B}` | $\mathbf{A} \odot \mathbf{B}$ |
+| Determinant of matrix $\mathbf{A}$                                   | `\text{det}(\mathbf{A})`         | $\text{det}(\mathbf{A})$          |
+| Trace of matrix $\mathbf{A}$                                         | `\text{tr}(\mathbf{A})`          | $\text{tr}(\mathbf{A})$           |
 
 
 ## Sets and Graphs

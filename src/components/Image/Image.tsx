@@ -20,8 +20,10 @@ export default function Image({
   }
 
   return (
-    <Caption caption={caption}>
-      <NextImage src={src} alt={alt} width={width} height={height} />
-    </Caption>
+    <div className="flex flex-col items-center">
+      <Caption caption={caption}>
+        <NextImage src={src} alt={alt} width={width} height={height} />
+      </Caption>
+    </div>
   );
 }

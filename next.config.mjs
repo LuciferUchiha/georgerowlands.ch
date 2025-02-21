@@ -7,7 +7,9 @@ const withNextra = nextra({
     renderer: 'mathjax',
     options: {
       config: {
+        loader: {load: ['[tex]/color']},
         tex: {
+          packages: {'[+]': ['color']},
           macros: {
             RR: '\\mathbb{R}'
           }

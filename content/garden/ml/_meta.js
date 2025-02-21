@@ -29,4 +29,5 @@ export default {
   linkAnalysis: "",
   pageRank: "",
   gnn: "",
+  nodeEmbeddings: "",
 }
