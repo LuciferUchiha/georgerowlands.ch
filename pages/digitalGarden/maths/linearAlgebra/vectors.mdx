@@ -1,0 +1,1032 @@
+import Callout from '~/components/Callout/Callout';
+import Image from "~/components/Image/Image";
+
+# Vectors
+
+It always a tricky to decide if you should first introduce vectors or [matrices](/digitalGarden/maths/linearAlgebra/matrices) when teaching linear 
+algebra. As vectors can be seen as a special case of matrices but matrices can also be seen as a collection of vectors. However, most commonly 
+vectors are introduced first as they can be visualized easier and are more intuitive. 
+
+
+So what is a vector? Depending on the field you are working in, a vector can mean many different things. In computer science, a vector is just a 
+list of numbers, i.e. a 1D array or n-tuple such as `[1,2,4]`.
+
+The elements of a vector are usual reffered to as components in the maths world.
+
+In maths, a vector can be thought of as an arrow in space that has a starting and ending point, also reffered to as the head and the tail of the 
+vector. Most commonly vectors are denoted by a lowercase letter either in bold or with an arrow above it, e.g. $\vec{v}$ or $\boldsymbol{v}$. If 
+the vector is defined by two coordinate points, $A=(2,1)$ and $B=(4,5)$, then the vector is denoted as $\vec{AB}$, this type of vector is called a position 
+vector as it shows how to get to the position of $B$ from the position of $A$.
+
+Usually the starting point of the vector is at the origin, $(0, 0)$ in 2D space or $(0, 0, 0)$ in 3D space etc. making the head of the vector the 
+point $(x, y)$ or $(x, y, z)$ etc. this vector is then in the standard position. However, it is important to note that the vector is independent 
+of the starting point, i.e. the vector is the same no matter where it starts only the direction and length of the vector matter.
+
+<Image
+    src="/maths/vectorPosition.png"
+    caption="We can see that the vectors defined from the origin are equivalent to the point coordinates."
+    width={500}
+    />
+
+Vectors are easily visualized in 2D and 3D space, but can be extended to any number of dimensions. 
+If we define that all vectors have the same starting point, they can be uniquely be defined by their ending point 
+which is the same as the direction and length of the vector. The length of the vector is also called the magnitude. 
+Vectors in math can however, also be seen as movement in space so they do not be in a specific position but can be anywhere in space.
+
+This is also in line with vectors in physics, where vectors are used to represent physical quantities that have both magnitude and direction 
+such as velocity, force, acceleration, etc. For example, a force vector indicates both the magnitude of the force and 
+the direction in which it is applied. Unlike position vectors, these vectors do not necessarily have a fixed starting point at the origin. 
+Instead, they can be applied at any point in space, and their effects are determined by their magnitude and direction. 
+The length of the vector represents the magnitude of the physical quantity, and the direction of the arrow indicates the direction in which the quantity acts.
+
+<Image
+    src="/maths/vectorPhysics.png"
+    caption="Vectors being used to denote force and acceleration of a car."
+    width={500}
+    />
+
+## Vector Addition
+
+To add two vectors together, we simply add the corresponding components of the vectors together i.e. we just add element-wise. This also means that the two vectors 
+must have the same number of components. This is equivalent to matrix addition.
+So we can add two vectors $\boldsymbol{x} \in \mathbb{R}^n$ and $\boldsymbol{y} \in \mathbb{R}^n$ as follows:
+
+$$
+\begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix} + \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_n
+\end{bmatrix} = \begin{bmatrix}
+    x_1 + y_1 \\
+    x_2 + y_2 \\
+    \vdots \\
+    x_n + y_n
+\end{bmatrix}
+$$
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} + \begin{bmatrix}
+    4 \\
+    5 \\
+    6
+\end{bmatrix} = \begin{bmatrix}
+    1 + 4 \\
+    2 + 5 \\
+    3 + 6
+\end{bmatrix} = \begin{bmatrix}
+    5 \\
+    7 \\
+    9
+\end{bmatrix}
+$$
+</Callout>
+
+We can also visualize vector addition nicely in 2D and 3D space with position vectors. Geometrically we can think of vector addition as 
+adding the two movements of the vectors together, i.e. we first move along the first vector and then along the second vector. This results in the
+moving the tail of the second vector to the head of the first vector. The 
+resulting vector is the vector that starts at the tail of the first vector and ends at the head of the second vector. However, we can 
+also change the order of the vectors along which we move, i.e. we can first move along the second vector and then along the first vector. 
+This can be clearly seen in the image below where the two different orders form a parallelogram, showing that the order of vector addition does not matter, 
+i.e. the addition of vectors is commutative, $\boldsymbol{x} + \boldsymbol{y} = \boldsymbol{y} + \boldsymbol{x}$.
+
+<Image
+    src="/maths/vectorAddition.png"
+    caption="Vector addition in 2D."
+    width={400}
+    />
+
+This idea can also be extended to adding multiple vectors together, i.e. we can add more than two vectors together by adding the vectors in any order. 
+Now we get more routes that all lead to the same point, the result. The number of routes is equal to the number of permutations of the vectors, i.e. 
+the number of ways we can order the vectors which for $n$ vectors is $n!$.
+
+## Scalar Multiplication
+
+We can multiply a vector by a scalar, i.e. a number, by multiplying each component of the vector by the scalar. So if we have a vector $\boldsymbol{x}$ and a scalar $s$, 
+then we can multiply them together just like when we multiply a matrix by a scalar:
+
+$$
+s\boldsymbol{x} = s \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix} = \begin{bmatrix}
+    sx_1 \\
+    sx_2 \\
+    \vdots \\
+    sx_n
+\end{bmatrix}
+$$
+
+<Callout type="example">
+$$
+2\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} = \begin{bmatrix}
+    2 \cdot 1 \\
+    2 \cdot 2 \\
+    2 \cdot 3
+\end{bmatrix} = \begin{bmatrix}
+    2 \\
+    4 \\
+    6
+\end{bmatrix}
+$$
+</Callout>
+
+We can also visualize scalar multiplication nicely in 2D and 3D space. Geometrically we can think of scalar multiplication as stretching or shrinking the vector by the scalar. This is 
+why scalar multiplication is also called vector scaling and the number is called the scalar. If the scalar is negative, then the vector will be flipped around, i.e. it will
+point in the opposite direction.
+
+<Image
+    src="/maths/vectorScalarMultiplication.png"
+    caption="Scalar multiplication of a vector in 2D."
+    width={400}
+    />
+
+## Subtraction
+
+Subtracting two vectors is the same as adding the first vector to the negative of the second vector, i.e. multiplying the second vector by $-1$. So if we have two vectors
+we can subtract them as follows:
+
+$$
+\boldsymbol{x} - \boldsymbol{y} = \boldsymbol{x} + (-\boldsymbol{y})
+$$
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} - \begin{bmatrix}
+    4 \\
+    5 \\
+    6
+\end{bmatrix} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} + \begin{bmatrix}
+    -4 \\
+    -5 \\
+    -6
+\end{bmatrix} = \begin{bmatrix}
+    1 + (-4) \\
+    2 + (-5) \\
+    3 + (-6)
+\end{bmatrix} = \begin{bmatrix}
+    -3 \\
+    -3 \\
+    -3
+\end{bmatrix}
+$$
+</Callout>
+
+When visualizing the subtraction of two vectors, we can think of it as adding the negative of the second vector to the first
+vector, i.e. moving the tail of the second vector after flipping it to the head of the first vector.
+
+<Image
+    src="/maths/vectorSubtraction.png"
+    caption="Vector subtraction in 2D."
+    width={400}
+    />
+
+Another geometric interpretation of vector subtraction is that the resulting vector is the vector that points from the head of the second vector to the head of the first vector 
+after moving the tail of the second vector to the tail of the first vector. From this 
+interpretation, we can clearly see that the subtraction of two vectors is not commutative, i.e. the order in which we subtract the vectors matters as the resulting vector 
+will point in the opposite direction just like in normal subtraction, $1 - 2 = -1$ and $2 - 1 = 1$. If you think of $\boldsymbol{b} - \boldsymbol{a}$ as the vector $\boldsymbol{c}$, then 
+you can also see that $\boldsymbol{a} + \boldsymbol{c} = \boldsymbol{b}$ and after rewriting the equation we get $\boldsymbol{c} = \boldsymbol{b} - \boldsymbol{a}$ visually.
+
+<Image
+    src="/maths/vectorSubtractionGeometric.png"
+    caption="The geometric interpretation of vector subtraction."
+    width={500}
+    />
+
+## Linear Combination
+
+If we combine the concepts of vector addition and scalar multiplication, we get the concept of a linear combination. So if we have 
+two vectors $\boldsymbol{x}, \boldsymbol{y} \in \mathbb{R}^m$ and two scalars $s, t \in \mathbb{R}$, then we can define $\boldsymbol{z}$ 
+as the linear combination of the two vectors as follows:
+
+$$
+\boldsymbol{z} = s\boldsymbol{x} + t\boldsymbol{y} = s\begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_m
+\end{bmatrix} + t\begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_m
+\end{bmatrix} = \begin{bmatrix}
+    sx_1 + ty_1 \\
+    sx_2 + ty_2 \\
+    \vdots \\
+    sx_m + ty_m
+\end{bmatrix}
+$$
+
+This idea can be extended to more than two vectors and scalars. So if we have a set of vectors $\boldsymbol{v}_1, \boldsymbol{v}_2, \dots, 
+\boldsymbol{v}_n \in \mathbb{R}^m$ and a set of scalars $s_1, s_2, \dots, s_n \in \mathbb{R}$, then we can combine them as follows:
+
+$$
+\boldsymbol{z} =
+s_1 \begin{bmatrix}
+    v_{11} \\
+    v_{12} \\
+    \vdots \\
+    v_{1m}
+\end{bmatrix} + s_2 \begin{bmatrix}
+    v_{21} \\
+    v_{22} \\
+    \vdots \\
+    v_{2m}
+\end{bmatrix} + \dots + s_n \begin{bmatrix}
+    v_{n1} \\
+    v_{n2} \\
+    \vdots \\
+    v_{nm}
+\end{bmatrix} =
+s_1\boldsymbol{v}_1 + s_2\boldsymbol{v}_2 + \dots + s_n\boldsymbol{v}_n = \sum_{i=1}^n s_i\boldsymbol{v}_i = \boldsymbol{x}
+$$
+
+The scalars $s_1, s_2, \dots, s_n$ are also often called weights as they determine how much each vector contributes to the resulting vector.
+
+<Callout type="example">
+If $\boldsymbol{v}$ and $\boldsymbol{w}$ are defined as:
+
+$$
+\boldsymbol{v} = \begin{bmatrix}
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{w} = \begin{bmatrix}
+    3 \\
+    -1
+\end{bmatrix}
+$$
+
+We can combine them as follows:
+
+$$
+2\boldsymbol{v} + -1\boldsymbol{w} = 2\begin{bmatrix}
+    2 \\
+    3
+\end{bmatrix} + -1\begin{bmatrix}
+    3 \\
+    -1
+\end{bmatrix} = \begin{bmatrix}
+    4 \\
+    6
+\end{bmatrix} + \begin{bmatrix}
+    -3 \\
+    1
+\end{bmatrix} = \begin{bmatrix}
+    1 \\
+    7
+\end{bmatrix}
+$$
+</Callout>
+
+Linear combinations are the basis (you will get this joke later on) of linear algebra and are used to define many more complex concepts such as linear independence, vector spaces, and linear transformations.
+
+<Callout type="example" title="All vectors are Linear Combinations">
+<Callout type="todo">
+This example is a work in progress, for all of this stuff lambda and mu would be better.
+</Callout>
+
+We can show that all vectors are linear combinations of other vectors. For example we can create all vectors with two components $\boldsymbol{u} \in \mathbb{R}^2$ by combining the following two vectors:
+
+$$
+\boldsymbol{e}_1 = \begin{bmatrix}
+    1 \\
+    0
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{e}_2 = \begin{bmatrix}
+    0 \\
+    1
+\end{bmatrix}
+$$
+
+This becomes pretty clear if we think of the two vectors as x and y axis in 2D space. Any point in 2D space can be defined by the x and y coordinates, i.e. the linear combination of the two vectors. 
+These vectors are called the standard basis vectors and we will go into more detail about them later. However, these are not the only vectors that can be used to create all vectors in 2D space,
+we could also use the following two vectors:
+
+$$
+\boldsymbol{v} = \begin{bmatrix}
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{w} = \begin{bmatrix}
+    3 \\
+    -1
+\end{bmatrix}
+$$
+
+We can show that any vector $\boldsymbol{u} \in \mathbb{R}^2$ can be created by combining the two vectors by setting up a system of equations and seeing if we can solve it.
+
+$$
+\begin{align*}
+s_1\boldsymbol{v} + s_2\boldsymbol{w} &= \begin{bmatrix}
+    u_1 \\
+    u_2
+\end{bmatrix} \\
+s_1\begin{bmatrix}
+    2 \\
+    3
+\end{bmatrix} + s_2\begin{bmatrix}
+    3 \\
+    -1
+\end{bmatrix} &= \begin{bmatrix}
+    u_1 \\
+    u_2
+\end{bmatrix} \\
+\begin{vmatrix}
+s_1 \cdot 2 + s_2 \cdot 3 = u_1 \\
+s_1 \cdot 3 + s_2 \cdot -1 = u_2
+\end{vmatrix}
+\end{align*}
+$$
+
+To solve this we can first eliminate $s_2$ from the first equation by multiplying the second equation by 3 and adding it to the first equation. 
+We can then solve for $s_1$ and substitute it back into the second equation to solve for $s_2$. This will give us formulas to calculate the scalars $s_1$ and $s_2$ 
+that create any vector $\boldsymbol{u}$.
+
+However, if we try and do the same for the following two vectors:
+
+$$
+\boldsymbol{v} = \begin{bmatrix}
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{w} = \begin{bmatrix}
+    4 \\
+    6
+\end{bmatrix}
+$$
+
+Show for general vectors v,w and u and where the system of equations is unsolvable.
+
+However, not any two vectors can be used to create all vectors in 2D space, the two vectors must form a basis for the space. In other words they 
+must be linearly independent and span the space. We will go into more detail about this later.
+</Callout>
+
+### Special Combinations
+
+Depending on the scalars we use in the combination, we can create some special types of combinations:
+
+- **Linear**: We have already seen this case where the scalars can be any real number, so $s_1, s_2, \dots, s_n \in \mathbb{R}$.
+- **Affine**: This is a linear combination where the sum of the scalars is equal to one, i.e. $\sum_{i=1}^n s_i = 1$. The affine combination is used to create a point that lies on a line or plane defined by the vectors. This is because the 
+combination can be rewritten as follows: $s_1\boldsymbol{v}_1 + s_2\boldsymbol{v}_2= s_1\boldsymbol{v}_1 + (1 - s_1)\boldsymbol{v}_2= \boldsymbol{v}_1 + (1 - s_1)(\boldsymbol{v}_2 - \boldsymbol{v}_1)$.
+- **Conic**: This is a linear combination where the scalars are non-negative, i.e. $s_1, s_2, \dots, s_n \geq 0$. The conic combination is used to create a point that lies inside the convex hull of the vectors. The convex hull is the smallest convex set that contains all the vectors.    
+- **Convex**: This is a mix between the affine and conic combinations, i.e. the scalars are non-negative and the sum of the scalars is equal to one, i.e. $\sum_{i=1}^n s_i = 1$ and $s_1, s_2, \dots, s_n \geq 0$. The convex combination is used to create a point that lies inside the convex hull of the vectors and on the line or plane defined by the vectors.   
+
+<Image
+    src="/maths/vectorCombinationTypes.png"
+    caption="The yellow are represent the vectors that can be created by the combinations of the two vectors."
+    width={700}
+    />
+    
+## Multiplication between Vectors and Matrices
+
+<Callout type="todo">
+This belongs in the matrix section.
+</Callout>
+
+A vector can be left or right multiplied by a matrix. The multiplication between a vector and a matrix is defined just as the matrix multiplication so the dimensions of the two 
+must be compatible. If we have a matrix $\boldsymbol{A} \in \mathbb{R}^{m \times n}$ and a column vector $\boldsymbol{x} \in \mathbb{R}^{n \times 1}$, then we can multiply them together
+as follows:
+
+$$
+\begin{align*}
+\boldsymbol{A}\boldsymbol{x} &= \begin{bmatrix}
+    a_{11} & a_{12} & \dots & a_{1n} \\
+    a_{21} & a_{22} & \dots & a_{2n} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{m1} & a_{m2} & \dots & a_{mn}
+\end{bmatrix} \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix} \\
+&= \begin{bmatrix}
+    a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n \\
+    a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n \\
+    \vdots \\
+    a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n
+\end{bmatrix} = \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_m
+\end{bmatrix}
+\end{align*}
+$$
+
+As we can see from the definition above, the result is another column vector with $m$ components. We can also see that the resulting vector is a linear combination of the columns of the matrix $\boldsymbol{A}$ where 
+the weights are the components of the vector $\boldsymbol{x}$. This is why when the matrix is square the multiplication is often called a linear transformation, because it transforms the vector into another vector.
+If the vector is on the left side of the matrix, then the vector needs to be transposed for the multiplication to work, i.e. the dimensions of the vector must be compatible with the matrix. 
+So if we have a row vector $\boldsymbol{x}^T \in \mathbb{R}^{1 \times n}$ and a matrix $\boldsymbol{A} \in \mathbb{R}^{n \times m}$, then we can multiply them together as follows:
+
+$$
+\begin{align*}
+\boldsymbol{x}^T\boldsymbol{A} &= \begin{bmatrix}
+    x_1 & x_2 & \dots & x_n
+\end{bmatrix} \begin{bmatrix}
+    a_{11} & a_{12} & \dots & a_{1m} \\
+    a_{21} & a_{22} & \dots & a_{2m} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{n1} & a_{n2} & \dots & a_{nm}
+\end{bmatrix} \\
+&= \begin{bmatrix}
+    x_1a_{11} + x_2a_{21} + \dots + x_na_{n1} & \dots & x_1a_{1m} + x_2a_{2m} + \dots + x_na_{nm}
+\end{bmatrix} = \begin{bmatrix}
+    y_1 & y_2 & \dots & y_m
+\end{bmatrix}
+\end{align*}
+$$
+
+Just like when right multiplying a vector by a matrix, the result is a row vector with $m$ components. We can also see that the resulting vector is a linear combination of the rows of the matrix $\boldsymbol{A}$ where
+the weights are the components of the vector $\boldsymbol{x}$.
+
+<Callout type="example">
+A right multiplication of a matrix and a vector:
+
+$$
+\begin{bmatrix}
+    1 & 2 \\
+    3 & 4
+\end{bmatrix} \begin{bmatrix}
+    5 \\
+    6
+\end{bmatrix} = \begin{bmatrix}
+    1 \cdot 5 + 2 \cdot 6 \\
+    3 \cdot 5 + 4 \cdot 6
+\end{bmatrix} = \begin{bmatrix}
+    17 \\
+    39
+\end{bmatrix}
+$$
+
+A left multiplication of a matrix and a vector:
+
+$$
+\begin{bmatrix}
+    5 & 6
+\end{bmatrix} \begin{bmatrix}
+    1 & 2 \\
+    3 & 4
+\end{bmatrix} = \begin{bmatrix}
+    5 \cdot 1 + 6 \cdot 3 & 5 \cdot 2 + 6 \cdot 4
+\end{bmatrix} = \begin{bmatrix}
+    23 & 34
+\end{bmatrix}
+$$
+</Callout>
+
+## Dot Product
+
+The dot product or also called the inner product is the most common type of vector multiplication. This is defined 
+just like the matrix multiplication. However, so the dimensions of the two vectors must be the same. To achieve this,
+the second vector is transposed. The dot product is often denoted as$\boldsymbol{x} \cdot \boldsymbol{y}$, but sometimes
+also as $\langle \boldsymbol{x}, \boldsymbol{y} \rangle$ rather than $\boldsymbol{x}^T \cdot \boldsymbol{y}$ to
+avoid confusion with the matrix multiplication or scalar multiplication.
+So if we have two vectors $\boldsymbol{x} \in \mathbb{R}^{n \times 1}$ and 
+$\boldsymbol{y} \in \mathbb{R}^{n \times 1}$, then we can multiply them together as follows:
+
+$$
+\langle \boldsymbol{x}, \boldsymbol{y} \rangle = \boldsymbol{x} \cdot \boldsymbol{y} =
+\boldsymbol{x}^T\boldsymbol{y} = \begin{bmatrix}
+    x_1 & x_2 & \dots & x_n
+\end{bmatrix} \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_n
+\end{bmatrix} = x_1y_1 + x_2y_2 + \dots + x_ny_n = \sum_{i=1}^n x_iy_i
+$$
+
+From the dimensions we can also clearly see that the dot product results in a scalar which is 
+why it is also called the scalar product, not to be confused with scalar multiplication!
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \cdot \begin{bmatrix}
+    4 \\
+    5 \\
+    6
+\end{bmatrix} = 1 \cdot 4 + 2 \cdot 5 + 3 \cdot 6 = 4 + 10 + 18 = 32
+$$
+</Callout>
+
+Unlike the matrix multiplication, the dot product is commutative, meaning that the order in which we multiply the vectors together does not matter.
+
+<Callout type="info" title="Why is the dot product commutative?">
+The dot product is also commutative for real numbers, meaning that the order in which we multiply the vectors together does not matter as long
+as the first vector is transposed. This is because the dot product is the sum of the products of the corresponding components of the two vectors 
+and the pairs of components are the same in both cases. 
+
+$$
+\begin{align*}
+\begin{bmatrix}
+    x_1 & x_2 & \dots & x_n
+\end{bmatrix} \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_n
+\end{bmatrix} = x_1y_1 + x_2y_2 + \dots + x_ny_n\\
+\begin{bmatrix}
+    y_1 & y_2 & \dots & y_n
+\end{bmatrix} \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix} = y_1x_1 + y_2x_2 + \dots + y_nx_n
+\end{align*}
+$$
+</Callout>
+
+There are also other properties of the dot product that are important to know:
+scalars can be factored out of the dot product, i.e:
+
+$$
+s\boldsymbol{x} \cdot \boldsymbol{y} = s(\boldsymbol{x} \cdot \boldsymbol{y}) = \boldsymbol{x} \cdot s\boldsymbol{y}
+$$
+
+the dot product is distributive, i.e:
+
+$$
+\boldsymbol{x} \cdot (\boldsymbol{y} + \boldsymbol{z}) = \boldsymbol{x} \cdot \boldsymbol{y} + \boldsymbol{x} \cdot \boldsymbol{z}
+$$
+
+To prove this we can use some rules from the sum operator:
+
+$$
+\begin{align*}
+\boldsymbol{x} \cdot (\boldsymbol{y} + \boldsymbol{z}) &= \sum_{i=1}^m x_i(y_i + z_i) \\
+&= \sum_{i=1}^m (x_iy_i + x_iz_i) \\
+&= \sum_{i=1}^m x_iy_i + \sum_{i=1}^m x_iz_i \\
+&= \boldsymbol{x} \cdot \boldsymbol{y} + \boldsymbol{x} \cdot \boldsymbol{z}
+\end{align*}
+$$
+
+We can also show that the dot product with itself is always positive or zero, i.e:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{x} \geq 0 \quad \text{because} \quad \boldsymbol{x} \cdot \boldsymbol{x} = \sum_{i=1}^n x_i^2
+$$
+
+## Norms
+
+A norm is a function denoted by $\|\cdot\|$ that maps vectors to real values and satisfies the following properties:
+
+- It is positiv definit meaning it assigns a non-negative real numbers, i.e a length or size to each vector. 
+- If the norm of a vector is zero, then the vector is the zero vector, i.e. $\|\boldsymbol{x}\| = 0 \iff \boldsymbol{x} = \boldsymbol{0}$.
+- The norm of a vector scaled by a scalar is equal to the absolute value of the scalar times the norm of the vector, 
+i.e. $\|s\boldsymbol{x}\| = |s|\|\boldsymbol{x}\|$ where $s \in \mathbb{R}$ and $\boldsymbol{x} \in \mathbb{R}^n$.
+- The triangle inequality holds which we will see later.
+
+In simple terms the norm of a vector is the length of the vector. There are many different types of norms, but the most common ones are the $L_1$ and $L_2$ norms, 
+also known as the Manhattan and Euclidean norms respectively. The $L_p$ norm is a generalization of the $L_1$ and $L_2$ norms. We denote a vector's norm by writting it in between 
+two vertical bars, e.g. $\|\boldsymbol{x}\|$, and the subscript denotes the type of norm, e.g. $\|\boldsymbol{x}\|_1$ or $\|\boldsymbol{x}\|_2$ etc. If 
+the subscript is omitted, then the $L_2$ norm is assumed.
+
+### Manhattan Norm
+
+The Manhattan norm or $L_1$ norm is defined as the sum of the [absolute values](/digitalGarden/maths/commonFunctions/absolute) of the vector's components. 
+
+It is called the Manhattan norm because it can be thought of as the distance 
+between two points along the axis of a rectangular grid, like the streets of Manhattan or any other city with a grid-like structure.
+No matter how we move along the roads of Manhattan, the distance between two points is always the same.
+
+$$
+\|\boldsymbol{x}\|_1 = |x_1| + |x_2| + \dots + |x_n| = \sum_{i=1}^n |x_i|
+$$
+
+<Image
+    src="/maths/vectorManhattenNorm.png"
+    caption="No matter how we move along the roads of Manhattan, the distance between two points is always the same."
+    width={400}
+    />
+
+<Callout type="example">
+If $\boldsymbol{x}$ is defined as:
+
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix}
+$$
+
+then the $L_1$ norm of $\boldsymbol{x}$ is:
+
+$$
+\|\boldsymbol{x}\|_1 = |1| + |2| + |3| = 6
+$$
+</Callout>
+
+### Euclidean Norm
+
+As the name suggests, the Euclidean norm or $L_2$ norm is the distance between two points in Euclidean space, i.e. the straight line distance between two points. 
+For the 2D case, the Euclidean norm is just the Pythagorean theorem, i.e the length of the hypotenuse of a right-angled triangle.
+
+$$
+\|\boldsymbol{x}\|_2 = \sqrt{x_1^2 + x_2^2 + \dots + x_n^2} = \sqrt{\sum_{i=1}^n x_i^2}
+$$
+
+From the defintion above we can actually see that the Euclidean norm is the square root of the dot product of the vector with itself.
+
+$$
+\|\boldsymbol{x}\|_2 = \sqrt{\boldsymbol{x} \cdot \boldsymbol{x}} = \sqrt{\langle \boldsymbol{x}, \boldsymbol{x} \rangle}
+$$
+
+<Image
+    src="/maths/vectorEuclideanNorm.png"
+    caption="We can see the 2D case of the Euclidean norm and the 3D case of the Euclidean norm."
+    width={400}
+    />
+
+We say a vector is a unit vector if its norm is one, i.e. $\|\boldsymbol{x}\|_2 = 1$. The set of all unit vectors visualized in 
+2D space therefore forms a circle with a radius of one around the origin, the so called unit circle.
+
+#### Cauchy-Schwarz Inequality
+
+The Cauchy-Schwarz inequality states that the dot product of two vectors is always less than or equal to the product of the two vectors' norms.
+
+$$
+|\boldsymbol{x} \cdot \boldsymbol{y}| \leq \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
+$$
+
+<Callout type="proof">
+We want to prove that for any two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, the inequality holds.
+
+**Case 1**: When one of the vectors is the zero vector
+
+If one of the vectors is the zero vector, then the inequality holds because the dot product is zero and the product of the norms are also zero. 
+So then the inequality becomes:
+
+$$
+0 \leq 0
+$$
+
+**Case 2**: If both vectors are unit vectors
+
+If both vectors are unit vectors, then the inequality becomes the following:
+
+$$
+|\boldsymbol{x} \cdot \boldsymbol{y}| \leq 1
+$$
+
+We can then rewrite the dot product as the cosine of the angle between the two vectors, because the norms are one this also simplifies to:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{y} = \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 \cos(\theta) = \cos(\theta)
+$$
+
+The cosine of the angle between two vectors is always between -1 and 1. The inequality however also takes the absolute value of the dot product, so the inequality holds.
+
+$$
+|\boldsymbol{x} \cdot \boldsymbol{y}| = |\cos(\theta)| \leq 1
+$$
+
+**Case 3**: Any two vectors
+
+If the vectors are not unit vectors, then we can scale the vectors to be unit vectors. We don't need to worry about dividing by zero as we've already shown, if any of the vectors is the zero vector the inequality becomes zero.
+
+$$
+\boldsymbol{u} = \frac{\boldsymbol{x}}{\|\boldsymbol{x}\|_2} \quad \text{and} \quad \boldsymbol{v} = \frac{\boldsymbol{y}}{\|\boldsymbol{y}\|_2}
+$$
+
+From above we know that $|\boldsymbol{u} \cdot \boldsymbol{v}| \leq 1$, so we can write the following:
+
+$$
+\begin{align*}
+\boldsymbol{x} \cdot \boldsymbol{y} &= \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 (\boldsymbol{u} \cdot \boldsymbol{v}) \\
+|\boldsymbol{x} \cdot \boldsymbol{y}| &= \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 |\boldsymbol{u} \cdot \boldsymbol{v}| \\
+|\boldsymbol{x} \cdot \boldsymbol{y}| &\leq \|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
+\end{align*}
+$$
+</Callout>
+
+#### Triangle Inequality
+
+The triangle inequality states that the norm of the sum of two vectors is less than or equal to the sum of the norms of the two vectors.
+
+$$
+\|\boldsymbol{x} + \boldsymbol{y}\|_2 \leq \|\boldsymbol{x}\|_2 + \|\boldsymbol{y}\|_2
+$$
+
+This can also visually be seen in the 2D case, where the direct path from one point to another is always shorter than the path that goes through another point. Or also that 
+the hypotenuse of a triangle is always shorter than the sum of the other two sides.
+
+<Image
+    src="/maths/vectorTriangleInequality.png"
+    width={400}
+    />
+
+<Callout type="proof">
+Because both sides of the inequality are positive, we can look at the squares to make the proof easier.
+
+$$
+\begin{align*}
+\|\boldsymbol{x} + \boldsymbol{y}\|_2^2 &= (\boldsymbol{x} + \boldsymbol{y}) \cdot (\boldsymbol{x} + \boldsymbol{y}) \\
+&= \boldsymbol{x} \cdot \boldsymbol{x} + \boldsymbol{x} \cdot \boldsymbol{y} + \boldsymbol{y} \cdot \boldsymbol{x} + \boldsymbol{y} \cdot \boldsymbol{y} \\
+&= \|\boldsymbol{x}\|_2^2 + 2\boldsymbol{x} \cdot \boldsymbol{y} + \|\boldsymbol{y}\|_2^2
+\end{align*}
+$$
+
+Now we can use the Cauchy-Schwarz inequality on the middle term and get:
+
+$$
+2\boldsymbol{x} \cdot \boldsymbol{y} \leq 2\|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2
+$$
+
+So we can rewrite the norm of the sum of two vectors squared and take the square root to get the triangle inequality.
+
+$$
+\begin{align*}
+\|\boldsymbol{x} + \boldsymbol{y}\|_2^2 &\leq \|\boldsymbol{x}\|_2^2 + 2\|\boldsymbol{x}\|_2 \|\boldsymbol{y}\|_2 + \|\boldsymbol{y}\|_2^2 \\
+&= (\|\boldsymbol{x}\|_2 + \|\boldsymbol{y}\|_2)^2 \\
+\|\boldsymbol{x} + \boldsymbol{y}\|_2 &\leq \|\boldsymbol{x}\|_2 + \|\boldsymbol{y}\|_2
+\end{align*}
+$$
+
+We can also prove the cauchy schwarz inequality using the triangle inequality.
+</Callout>
+
+### P-Norm
+
+The idea of the $L_p$ norm is to generalize the $L_1$ and $L_2$ norms. The $L_p$ norm is defined as:
+
+$$
+\|\boldsymbol{x}\|_p = \left(|x_1|^p + |x_2|^p + \dots + |x_n|^p\right)^{\frac{1}{p}} = \left(\sum_{i=1}^n |x_i|^p\right)^{\frac{1}{p}}
+$$
+
+An arbitrary norm is rarely used in practice, most commonly the $L_1$ and $L_2$ norms are used. For some use-cases the $L_\infty$ norm is used, which is defined as:
+
+$$
+\|\boldsymbol{x}\|_\infty = \max_i |x_i|
+$$
+
+In other words, the $L_\infty$ norm is vector component with the largest absolute value.
+
+<Callout type="example">
+If $\boldsymbol{x}$ is defined as:
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix}
+$$
+
+then the $L_4$ norm of $\boldsymbol{x}$ is:
+
+$$
+\|\boldsymbol{x}\|_4 = \left(|1|^4 + |2|^4 + |3|^4\right)^{\frac{1}{4}} = \left(1 + 16 + 81\right)^{\frac{1}{4}} = 4
+$$
+
+and the $L_\infty$ norm of $\boldsymbol{x}$ is:
+
+$$
+\|\boldsymbol{x}\|_\infty = \max_i |x_i| = \max\{1, 2, 3\} = 3
+$$
+</Callout>
+
+## Angle between Vectors
+
+The question now is what is the dot product actually? 
+
+
+We can also visualize the dot product nicely in 2D and 3D space. The dot product of two vectors is the cosine of the angle between the two vectors multiplied by the length of 
+the two vectors if we place the tails at the same point. So if we have two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, then we can calculate the dot product as follows:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{y} = \|\boldsymbol{x}\| \|\boldsymbol{y}\| \cos(\theta)
+$$
+
+where $\theta$ is the angle between the two vectors. We can also calculate the angle between the two vectors by rewriting the equation above as follows:
+
+$$
+\theta = \cos^{-1}\left(\frac{\boldsymbol{x} \cdot \boldsymbol{y}}{\|\boldsymbol{x}\| \|\boldsymbol{y}\|}\right)
+$$
+
+Where $\cos^{-1}$ is the inverse cosine function, also called the arccosine function.
+
+<Image
+    src="/maths/vectorDotProductAngle.png"
+    caption="Calculating the angle between two vectors using the dot product."
+    width={400}
+    />
+
+<Callout type="example">
+If $\boldsymbol{x}$ and $\boldsymbol{y}$ are defined as:
+
+$$
+\boldsymbol{x} = \begin{bmatrix}
+    3 \\
+    -2
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{y} = \begin{bmatrix}
+    1 \\
+    7
+\end{bmatrix}
+$$
+
+then the angle between $\boldsymbol{x}$ and $\boldsymbol{y}$ is:
+
+$$
+\begin{align*}
+\theta &= \cos^{-1}\left(\frac{\boldsymbol{x} \cdot \boldsymbol{y}}{\|\boldsymbol{x}\| \|\boldsymbol{y}\|}\right) \\
+&= \cos^{-1}\left(\frac{3 \cdot 1 + (-2) \cdot 7}{\sqrt{3^2 + (-2)^2} \sqrt{1^2 + 7^2}}\right) \\
+&= \cos^{-1}\left(\frac{3 - 14}{\sqrt{9 + 4} \sqrt{1 + 49}}\right) \\
+&= \cos^{-1}\left(\frac{-11}{\sqrt{13} \sqrt{50}}\right) \\
+&= 115.6^\circ
+\end{align*}
+$$
+</Callout>
+
+### Orthogonal Vectors
+
+We call two vectors orthogonal if the angle between them is 90 degrees, i.e. they are perpendicular to each other. If two vectors are orthogonal, then their dot product is 
+zero, because $\cos(90) = 0$. So if we have two vectors $\boldsymbol{x}$ and $\boldsymbol{y}$, then we can check if they are orthogonal as follows:
+
+$$
+\boldsymbol{x} \cdot \boldsymbol{y} = 0
+$$
+
+## Outer Product
+
+The outer product of two vectors is the opposite of the dot product. The outer product of two vectors results in a matrix. So if we have two vectors $\boldsymbol{x} \in \mathbb{R}^{m \times 1}$ and $\boldsymbol{y} \in \mathbb{R}^{n \times 1}$, 
+then we can multiply them together as follows to get a matrix $\boldsymbol{A} \in \mathbb{R}^{m \times n}$. The outer product can be denoted as a matrix multiplication or as with the symbol $\otimes$.
+
+$$
+\boldsymbol{A} = \boldsymbol{x}\boldsymbol{y}^T = \boldsymbol{x} \otimes \boldsymbol{y} = \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_m
+\end{bmatrix} \begin{bmatrix}
+    y_1 & y_2 & \dots & y_n
+\end{bmatrix} = \begin{bmatrix}
+    x_1y_1 & x_1y_2 & \dots & x_1y_n \\
+    x_2y_1 & x_2y_2 & \dots & x_2y_n \\
+    \vdots & \vdots & \ddots & \vdots \\
+    x_my_1 & x_my_2 & \dots & x_my_n
+\end{bmatrix}
+$$
+
+Or more formally:
+
+$$
+(\boldsymbol{A})_{ij} = (\boldsymbol{x}\boldsymbol{y}^T)_{ij} = (\boldsymbol{x} \otimes \boldsymbol{y})_{ij} = x_iy_j
+$$
+
+From above we can see that the outer product of two vectors results in a matrix where the columns are the first vector scaled by the components of the second vector and the rows are the second vector scaled by the components of the first vector.
+So the matrix forms a dependent set of vectors, i.e. the columns/rows of the matrix are linearly dependent. Because the size of largest set of linearly independent vectors is 1, the rank of the matrix is 1.
+
+<Callout type="example">
+$$
+\begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \begin{bmatrix}
+    4 & 5 & 6
+\end{bmatrix} = \begin{bmatrix}
+    1 \cdot 4 & 1 \cdot 5 & 1 \cdot 6 \\
+    2 \cdot 4 & 2 \cdot 5 & 2 \cdot 6 \\
+    3 \cdot 4 & 3 \cdot 5 & 3 \cdot 6
+\end{bmatrix} = \begin{bmatrix}
+    4 & 5 & 6 \\
+    8 & 10 & 12 \\
+    12 & 15 & 18
+\end{bmatrix}
+$$
+</Callout>
+
+### Matrix Multiplication as Outer Product
+A fourth view of matrix multiplication is that it is the sum of the outer products of the columns of the first matrix and the rows of the second matrix. 
+So you can interpret each outer product as a layer of the resulting matrix. This in turn shows that any matrix can be written as a sum of rank 1 matrices.
+
+<Image
+    src="/maths/matrixMultiplicationLayer.png"
+    caption="Matrix multiplication as the sum of the outer products of the columns of the first matrix and the rows of the second matrix."
+    width={600}
+    />
+
+<Callout type="example">
+The matrix multiplication of two matrices $\boldsymbol{A}$ and $\boldsymbol{B}$ can be written as the sum of the outer products of the columns of $\boldsymbol{A}$ and the rows of $\boldsymbol{B}$.
+
+$$
+\begin{align*}
+\begin{bmatrix}
+    1 & 2 \\
+    3 & 4
+\end{bmatrix} \begin{bmatrix}
+    a & b \\
+    c & d
+\end{bmatrix} &= \begin{bmatrix}
+    1 \\
+    3
+\end{bmatrix} \begin{bmatrix}
+    a & b
+\end{bmatrix} + \begin{bmatrix}
+    2 \\
+    4
+\end{bmatrix} \begin{bmatrix}
+    c & d
+\end{bmatrix} \\
+&= \begin{bmatrix}
+    1 \cdot a & 1 \cdot b \\
+    3 \cdot a & 3 \cdot b
+\end{bmatrix} + \begin{bmatrix}
+    2 \cdot c & 2 \cdot d \\
+    4 \cdot c & 4 \cdot d
+\end{bmatrix} = \begin{bmatrix}
+    a + 2c & b + 2d \\
+    3a + 4c & 3b + 4d
+\end{bmatrix}
+\end{align*}
+$$
+</Callout>
+
+## Normalization
+
+Normalizing means to bring something into some sort of normal or standard state. In the case of vectors, normalizing means to scale the vector in a way that it's length is 
+equal to one. Often we denote a normalized vector by adding a hat to the vector, e.g. $\hat{\boldsymbol{x}}$ is the normalized vector of $\boldsymbol{x}$. So we can 
+say if $\|\boldsymbol{x}\| = 1$, then $\boldsymbol{x}$ is normalized. From this definition we can see that to normalize a vector, we simply divide the vector by it's length, 
+i.e. we divide the vector by a scalar. So if we have a vector $\boldsymbol{x}$, then we can normalize it as follows:
+
+$$
+\hat{\boldsymbol{x}} = \frac{\boldsymbol{x}}{\|\boldsymbol{x}\|_2}
+$$
+
+This normalized vector will have the same direction as the original vector, but it's length will be equal to one. By eliminating the length of the vector, we can uniquely 
+identify a vector by it's direction. This is useful because we can now compare vectors based on their direction, without having to worry about their length. All these 
+normalized vectors are also called unit vectors and if they are placed at the origin in 2D they span the unit circle.
+
+<Image
+    src="/maths/vectorNormalization.png"
+    caption="We can see that the normalized vectors all have the same length, but different directions."
+    width={400}
+    />
+
+### Orthonormal Vector
+
+We can now combine the idea of orthogonal vectors and normalized vectors to get orthonormal vectors. Orthonormal vectors are vectors that are orthogonal to each other and 
+have a length of one. 
+
+<Image
+    src="/maths/vectorOrthonormal.png"
+    caption="The difference between orthogonal and orthonormal vectors."
+    width={500}
+    />
+
+### Standard Unit Vectors
+
+An example of orthonormal vectors are the standard unit vectors. The standard unit vectors can be thought of as the vectos that correspond to the axes of a coordinate system.
+Later on we will see that these vectors can be used to span any vector space and form the standard basis of the vector space. The standard unit vectors are denoted as 
+$\boldsymbol{e}_i$ where $i$ is the index of the vector. The $i$ also corresponds to the index of the component that is one, while all other components are zero. The 
+dimensionality of the vector is inferred from the index, so $\boldsymbol{e}_1$ is a 1D vector, $\boldsymbol{e}_2$ is a 2D vector, $\boldsymbol{e}_3$ is a 3D vector 
+depending on the context.
+
+$$
+\boldsymbol{e}_i = \begin{bmatrix}
+    0 \\
+    \vdots \\
+    1 \\
+    \vdots \\
+    0
+\end{bmatrix}
+$$
+
+It is quiet easy to see that the standard unit vectors are orthonormal, because they are orthogonal to each other and have a length of one. It also easy to see that 
+any vector can be written as a linear combination of the standard unit vectors, this is why they are so useful and will become an important concept later on when 
+talking about vector spaces and bases.
+
+<Image
+    src="/maths/vectorsStandardUnitVectors.png"
+    caption="The standard unit vectors here in 3D space are i, j, and k. We can see how the vector a can be written as a linear combination of the standard unit vectors." 
+    width={700}
+    />

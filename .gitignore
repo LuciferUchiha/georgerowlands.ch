@@ -22,3 +22,6 @@ Thumbs.db
 venv
 */**/__pycache__
 */**/.env
+
+*/**/.env
+.env

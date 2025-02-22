@@ -1,0 +1,383 @@
+import Callout from "~/components/Callout/Callout";
+
+# Arrays and Iterables
+
+## Arrays
+Arrays exist in JavaScript just as they do in most other programming languages, however I would describe them to be more like ArrayLists in Java as they don't have a fixed length. The precise details of how arrays are implemented are a bit more complex and depend on the EcmaScript implementation, for further details on how arrays work under the hood in JavaScript I can recommend reading [this article](https://ryanpeden.com/how-do-javascript-arrays-work-under-the-hood/).
+
+```javascript
+const cars = ["Saab", "Volvo", "BMW"];
+cars = []; // this would not work because const
+cars[0] = "Mini"; // this however would work
+
+cars.push("Saab", "Mercedes") // push to the end, array is now longer
+console.log(cars.length) // 5
+cars.pop() // removes the last element
+
+const person = ["John", "Doe", 46]; // can have values of different types
+
+const numbers = new Array(1,2,3,4,5) // can create array like this but [] literal is preferred
+numbers[20] = 21 // has made the array sparase, indexes 4-19 now have the value undefined
+```
+
+### Checking for an Array
+
+Checking if a variable holds an array is not as easy as one would expect because the `typeof` operator returns "object". Instead, we have a few solutions:
+
+1. Use the static method `Array.isArray()`.
+2. Use the `instanceof` operator.
+
+```javascript
+const cars = ["Saab", "Volvo", "BMW"];
+console.log(typeof cars); // object
+console.log(Array.isArray(cars)); // true
+console.log(cars instanceof Array); // true
+```
+
+### Sorting
+
+JavaScript arrays can be quietly easily sorted using the `.sort()` method. However, this only really works well for strings as the sort method sorts the array alphabetically using the string representation. But it doesn't work well with other types such as numbers or objects. JavaScript also offers the reverse method which reverses the current order of the array, so if you wanted an array sorted in descending order you could first sort then reverse.
+
+<Callout type="info">
+    Important to know is that the sort/reverse method changes the underlying array, it doesn't return a new sorted
+    array.
+</Callout>
+
+```javascript
+const cars = ["Saab", "Volvo", "BMW"];
+console.log(cars.sort()); // [BMW', 'Saab', 'Volvo']
+console.log(cars); // ['BMW', 'Saab', 'Volvo']
+
+const numbers = [3, 20, 100];
+console.log(numbers.sort()); // [100, 20, 3]
+console.log(numbers.reverse()); // [3, 20, 100]
+```
+
+For objects or numbers or in general if we want more control over how the elements are sorted we can pass an optional function, the so-called compare function. This function takes 2 arguments, `a` and `b`, and compares them ( only if a or b aren't `undefined` as undefined elements are automatically put at the end of the array). If the compare function returns 0 then the 2 elements stay in the same order, if a positive value is returned then `a` is put after `b`, if a negative value is returned then `b` is put after `a`.
+
+```javascript
+const numbers = [3, 20, 100];
+console.log(numbers.sort()); // [100, 20, 3]
+console.log(numbers.sort((a,b) => a - b)); // [3, 20, 100]
+```
+
+### Searching and Filtering
+
+If you already know the element you are looking for but wish to know the index, or if the array even contains a certain element the `indexOf()` or `lastIndexOf()` methods can be used which return either the first or the last index of the passed element or if the element was not found the index -1 is returned. An index can also be specified to start the search from.
+
+```javascript
+const beasts = ["ant", "bison", "camel", "duck", "bison"];
+
+console.log(beasts.indexOf("bison")); //1
+console.log(beasts.indexOf("bison", 2)); // Start from index 2, returns 4
+console.log(beasts.lastIndexOf("bison")); // 4
+```
+
+<Callout type="info">
+    If you only want to know if an array has an element and don't need to know the index you can use the `includes()`
+    method.
+
+    ```javascript
+    const beasts = ["ant", "bison", "camel", "duck", "bison"];
+    console.log(beasts.includes("ant")); // true
+    console.log(beasts.indexOf("ant") !== -1); // true
+    ```
+</Callout>
+
+
+Instead of looking for an index of a certain element we can also use the `findIndex()` or `findLastIndex()` methods which work very similar but instead of looking for an element are given a predicate function and return the index of the element that matches that criteria first or last.
+
+```javascript
+const beasts = ["ant", "bison", "camel", "duck", "bison"];
+const firstBIndex = beasts.findIndex(beast => beast.toLowerCase().startsWith("b"));
+console.log(firstBIndex); // 1
+```
+
+When looking for an element that matches a certain condition you can use the `find()` method which returns the first element that matches it or undefined. If you only want to know if there is an element that matches the condition and don't need the element you can use the `some()` method.
+
+```javascript
+const array = [5, 12, 8, 130, 44];
+const firstEven = array.find(e => e % 2 == 0);
+console.log(firstEven); // 12
+console.log(array.some(e => e % 2 == 0)); // true
+```
+
+Filtering allows to only work with a subset of an array. The `filter()` method iterates over each element of the array and calls the provided predicate function once for each element. If the provided predicate function returns true for the value it is shallow copied into a new array which is then returned at the end, if it is false then it is not added to the filtered array.
+
+```javascript
+const words = ["spray", "limit", "elite", "exuberant", "destruction", "present"];
+
+const longWords = words.filter(word => word.length > 6);
+console.log(longWords); // [ 'exuberant', 'destruction', 'present' ]
+const evenWords = words.filter((word, index) => index % 2 == 0);
+console.log(evenWords); // [ 'spray', 'elite', 'destruction' ]
+```
+
+### Shifting
+
+The `shift()` and `unshift()` array methods almost do the same as the `pop` and `push()` methods but in the opposite way. The shift method removes the first element, whereas the pop method removes the last and the unshift method allows you to add elements to the front of an array whereas the push method lets you add to the back of the array.
+
+```javascript
+const cars = ["Saab", "Volvo", "BMW"];
+console.log(cars.shift()); // ["Volvo", "BMW"]
+console.log(cars.unshift("Saab", "Mini")); // ["Saab", "Mini", "Volvo", "BMW"]
+```
+
+### Combining
+
+Elements of an array can be combined to make a new string with the `join()` method. It concatenates all of the elements string representations and
+separates them with commas or a specified separator. If their is one element, then the seperator is not added.
+
+```javascript
+const elements = ['Fire', 'Air', 'Water'];
+
+console.log(elements.join()); // "Fire,Air,Water"
+console.log(elements.join('-')); // "Fire-Air-Water"
+```
+
+You can combine/merge two arrays into one new array with the `concat()` method.
+
+```javascript
+const array1 = ['a', 'b', 'c'];
+const array2 = ['d', 'e', 'f'];
+
+console.log(array1.concat(array2)); //  ['a', 'b', 'c', 'd', 'e', 'f']
+console.log(array1) // unaffected, ['a', 'b', 'c']
+```
+
+### Slicing and Splicing
+
+Using the `slice(start, end)` method you can create a new array containing a shallow copy of the specified portion of the array.
+If start is omitted then 0 is used, and if it is negative then `start = start + array.length` which has the effect of coming from the back,
+so `start=-1` is the index of the last element. If the end is omitted or larger than `array.length` then it is just set to `array.length`.
+For negative end indexes the same happens as with negative start indexes.
+
+<Callout type="info">
+    The end index is exclusive!
+</Callout>
+
+```javascript
+const animals = ['ant', 'bison', 'camel', 'duck', 'elephant'];
+
+console.log(animals.slice(2)); // ["camel", "duck", "elephant"]
+console.log(animals.slice(2, 4)); // ["camel", "duck"]
+console.log(animals.slice(-2)); // ["duck", "elephant"]
+console.log(animals.slice(2, -1)); // ["camel", "duck"]
+console.log(animals.slice()); // full shallow copy, ["ant", "bison", "camel", "duck", "elephant"]
+```
+
+The `splice()` method is slightly more complex than the `slice()` method but can be very useful.
+The first parameter is the start index which works just like the start index in the slice method. The second parameter is
+the deletion count, so the number of elements you want to delete. The last parameter can be one or multiple elements which
+will then be added to the array beginning at the start index. So by smartly combining these arguments we can have one method
+to insert, update/replace or remove multiple elements at the same time.
+
+<Callout type="warning">
+    Splice modifies the underlying array, so it modifies the array in place!
+</Callout>
+
+```javascript
+const months = ['Jan', 'March', 'April', 'June'];
+
+months.splice(1, 0, 'Feb'); // Inserts at index 1
+console.log(months);// ["Jan", "Feb", "March", "April", "June"]
+
+months.splice(4, 1, 'May'); // Updates/replaces 1 element at index 4
+console.log(months); // ["Jan", "Feb", "March", "April", "May"]
+
+months.splice(2,1);
+console.log(months); // ["Jan", "Feb", "April", "May"]
+```
+
+### Map, Reduce and ForEach
+
+The `map()` method creates a new array containing all the elements after being passed through the provided function.
+
+```javascript
+const arr = [1, 4, 9, 16];
+
+const doubled = arr.map(x => x * 2);
+console.log(doubled); // [ 2, 8, 18, 32 ]
+
+const square = (x) => x*x;
+const squared = arr.map(square);
+console.log(squared); // [ 1, 16, 81, 256 ]
+```
+
+The `reduce()` method is often confusing for people but all it does is reduce an array to a single value by iterating
+over the array from left to right, hence the name. It takes a callback function and can optionally also receive an initial value,
+if no initial value is passed then it is just set to the first element and the first iteration is skipped.
+The core argument of the callback function is the accumulator which holds the intermediate results of the reduction process.
+It also has an argument for the current value and optionally the elements index.
+
+If you don't want the reduction process to go from left to right you can combine it with `reverse()` or just use `reduceRight()`.
+
+```javascript
+const arr = [1, 2, 3, 4];
+
+// 0 + 1 + 2 + 3 + 4
+let iterations = 0;
+const sumWithInitial = arr.reduce(
+  (accumulator, currentValue) => {
+      iterations++
+      return accumulator + currentValue
+  },
+  0
+);
+console.log(sumWithInitial); // 10
+console.log(iterations); // 4
+
+// 1 + 2 + 3 + 4
+iterations = 0;
+const sumWithoutInitial = arr.reduce(
+     (accumulator, currentValue) => {
+      iterations++
+      return accumulator + currentValue
+  },
+)
+console.log(sumWithoutInitial); // 10
+console.log(iterations); // 3
+
+// 1 + 3
+const sumEvenIndexes= arr.reduce(
+     (accumulator, currentValue, currentIndex) => currentIndex % 2 === 0? accumulator +  currentValue : accumulator,
+    0
+)
+console.log(sumEvenIndexes); // 4
+```
+
+Lastly there is the `forEach()` method which executes a function once for each element.
+
+<Callout type="warning">
+    The forEach method does not modify the underlying array, but the callback function can!
+</Callout>
+
+```javascript
+const arr = [1, 2, 3, 4];
+
+arr.forEach((element, index)=>console.log(`${index}: ${element}`)) // return value is discarded and always undefined
+arr.forEach((element)=> element += 1)
+console.log(arr); // [1, 2, 3, 4]
+
+const animals = [{name: 'ant'}, {name: 'bison'}, {name: 'camel'}, {name: 'duck'}, {name: 'elephant'}];
+animals.forEach((animal) => animal.name = animal.name.toUpperCase()) // modifying!
+console.log(animals) // all names are now in CAPS
+```
+
+## Spread Operator
+
+### Rest Parameter
+
+## Destructuring
+
+## Sets and Maps
+
+JavaScript offers a built-in object for [set semantic](../algorithmsDataStructures/sets), i.e a data structure that only holds unique elements. The set in JavaScript
+keeps track of the insertion order so when iterating over it the order is deterministic. The set determines equality using
+the "SameValueZero" Algorithm which basically says elements are equal if `===` says so apart from `NaN`s are equal which they normally are not
+(`NaN === NaN = false`) and negative zero and zero are not the same so.
+
+The EcmaScript specification requires a set to be implemented in a way that, on average, provide access times better than $O(n).
+Therefore, depending on the engine implementation it could be internally as a [hash table](../algorithmsDataStructures/hashTables)
+(with O(1) lookup), a [search tree](../algorithmsDataStructures/trees/binarySearchTrees) (with O(log(N)) lookup), or any other data structure, as long as the complexity is better than O(N).
+
+The methods available on the set are pretty self-explanatory, however it is disappointing that you need to implement your own set operators such
+as intersection, union etc. Also, the methods `values()`, `keys()` and `entries()` are all basically the same except for entries which returns an [iterator](../designPatterns/iterator),
+where each element is an array containing the element twice. These methods seem to just be there for consistency...
+
+```javascript
+const mySet = new Set();
+
+mySet.add(1); // { 1 }
+mySet.add(5); // { 1, 5 }
+mySet.add(5); // already contains 5, { 1, 5 }
+mySet.add("some text"); // can hold multiple types, { 1, 5, 'some text' }
+const obj = { a: 1, b: 2 };
+mySet.add(obj);
+mySet.add(obj) // already contains
+mySet.add({ a: 1, b: 2 }); // same values, but referencing different object so okay
+
+mySet.has(1); // true
+mySet.has(3); // false
+mySet.has(obj); // true
+mySet.has({a:1,b:2}) // false, different reference
+
+mySet.size; // 5
+mySet.delete(5);
+mySet.has(5); // false, 5 has been removed
+mySet.size; // 4
+
+mySet.forEach(e => console.log(e))
+```
+
+There is also the built-in map object that allows for key-value pairs to be stored and quickly looked up. Just like with the set the specification does not say
+how the map is implemented, but it should have a lookup that is faster than $O(n)$ so it could be a [hash table](../algorithmsDataStructures/hashTables)
+(with O(1) lookup), a [search tree](../algorithmsDataStructures/trees/binarySearchTrees) (with O(log(N)) lookup) or any other data structure fast enough.
+
+For the map object the `values()`, `keys()` and `entries()` methods make a lot more sense than for the set object, and behave in a similar self-explanatory way.
+
+Sets and maps can also be created from iterables i.e. an array or some other iterable object.
+
+```javascript
+const myMap = new Map([
+  ["a", 1],
+  ["b", 2],
+  ["c", 3],
+]);
+
+console.log(myMap.get('a')); // 1
+myMap.set('a', 97);
+console.log(myMap.get('a')); // 97
+
+console.log(myMap.size); // 3
+myMap.delete('b');
+console.log(myMap.size); // 2
+
+for ([key,value] of myMap.entries()){
+    console.log(`${key}: ${value}`);
+}
+```
+
+<Callout type="warning">
+
+    Due to the nature of JavaScript you can assign properties to the map object, and they will actually be added and visable.
+    However, they will not be added to the underlying data structure and are therefore useless and you should avoid accidently doing this!
+
+    ```javascript
+    const myMap = new Map();
+    myMap['bla'] = 'blaa';
+    myMap['bla2'] = 'blaaa2';
+
+    console.log(myMap); // {bla: 'blaa', bla2: 'blaaa2'}
+    console.log(myMap.has('bla')); // false
+    console.log(myMap.delete('bla')); // false
+    ```
+
+</Callout>
+
+### Weak Iterables
+
+WeakSets work just like sets however they can only contain objects, not primitive values. Additionally, the WeakSet only hold weak references, meaning if
+the only reference of the object is being held by the WeakSet it can be garbage collected. The same exists for maps, the WeakMap, here however the key
+must be an object, the value can be a primitive value, but when the key is garbage collected so is the value.
+
+A possible use-case is to use a WeakSet in a recursive function to guard against circular data structures by tracking which objects have already been processed.
+This way the object being processed can still be collected if it is no longer referenced anywhere apart from in the WeakSet.
+
+```javascript
+function execRecursively(fn, subject, _refs = new WeakSet()) {
+  // Avoid infinite recursion
+  if (_refs.has(subject)) {
+    return;
+  }
+
+  fn(subject);
+  if (typeof subject === "object") {
+    _refs.add(subject);
+    for (const key in subject) {
+      execRecursively(fn, subject[key], _refs);
+    }
+    _refs.delete(subject);
+  }
+}
+```

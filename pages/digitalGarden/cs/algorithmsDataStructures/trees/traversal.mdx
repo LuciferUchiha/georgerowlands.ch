@@ -1,0 +1,44 @@
+import Image from "~/components/Image/Image";
+
+# Traversing a Binary Tree
+
+There are multiple ways to traverse a tree each one giving a different result.
+
+## Pre-order, NLR
+
+In this order a node visited before its left and right subtree is traversed.
+
+1. Visit the current node.
+2. Recursively traverse the current node's left subtree.
+3. Recursively traverse the current node's right subtree.
+
+<Image
+    src="/cs/treesPreOrder.png"
+    caption="A binary tree."
+/>
+
+## Post-order, LRN
+
+In this order a node is visited after its left and right subtree has been traversed.
+
+1. Recursively traverse the current node's left subtree.
+2. Recursively traverse the current node's right subtree.
+3. Visit the current node.
+
+<Image
+    src="/cs/treesPostOrder.png"
+    caption="A binary tree."
+/>
+
+## In-order, LNR
+
+In this order a node is visited in between the traversal of its left and right subtree.
+
+1. Recursively traverse the current node's left subtree.
+2. Visit the current node.
+3. Recursively traverse the current node's right subtree.
+
+<Image
+    src="/cs/treesInOrder.png"
+    caption="A binary tree."
+/>

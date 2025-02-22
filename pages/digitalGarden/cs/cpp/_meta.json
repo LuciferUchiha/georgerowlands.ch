@@ -1,0 +1,17 @@
+{
+  "variablesDataTypes": "Variables and Data Types",
+  "classes": "Classes",
+  "enums": "Enums and Enum Classes",
+  "pointers": "Pointers",
+  "containers": "Containers",
+  "strings": "Strings",
+  "structures": "Structures",
+  "overloading": "Overloading",
+  "unions": "Unions",
+  "copyMoveSemantic": "Copy and Move Semantic",
+  "inheritance": "Inheritance",
+  "streamIO": "Stream I/O",
+  "templates": "Templates",
+  "stl": "STL - Standard Template Library",
+  "functionalCpp": "Functional Programming in C++"
+}

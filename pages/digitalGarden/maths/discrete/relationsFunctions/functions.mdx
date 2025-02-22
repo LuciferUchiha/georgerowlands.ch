@@ -1,0 +1,210 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+import {SideBySideBlock, Block} from "~/components/SideBySideBlock/SideBySideBlock";
+
+# Functions
+
+You have most likely seen functions before. They are a fundamental concept in mathematics and are also often seen in the real world.
+Functions describe relationships between things. For example, the cost of something might be a function of the number of items bought 
+or the distance you travel might be a function of the time and speed you travel at.
+
+<Image 
+    src="/maths/functionsInputOutput.png"
+    caption="A function takes an input and maps it to an output."
+    width={300}
+/>
+
+To be more formal and precise a function is a relation between two sets. 
+The first set is the input set, also called the domain, and the second set is the output set, also called the codomain.
+We then also provide a rule that assigns each element in the domain to exactly one element in the codomain. 
+
+$$
+f: A \to B, x \mapsto f(x)
+$$
+
+Where $f(x)$ is the rule that assigns each element in the domain to an element in the codomain. 
+For example we can make define the following rule:
+
+$$
+f: \mathbb{R} \to \mathbb{R}, x \mapsto 2x + 1
+$$
+
+Above we have a function $f$ that maps the elements in the set $A$ to the elements in the set $B$. The 
+rule that assigns each element in the domain to an element in the codomain is $x \mapsto 2x + 1$, which means that
+each element $x$ in the domain is mapped to $2x + 1$ in the codomain. The subset of elements in the codomain that are actually mapped to are called the range of the function.
+So the range for the function $f: \mathbb{A} \to \mathbb{B}, x \mapsto 2x + 1$ is $\{f(a) | a \in \mathbb{A}\}$.
+
+<Callout type="warning">
+Not every relation is a function. A relation is a function if each element in the domain is mapped to exactly one element in the codomain.
+
+<SideBySideBlock>
+<Block>
+<Image 
+    src="/maths/functionsRelation.png"
+    caption="A relation that is a function."
+    width={250}
+/>
+</Block>
+<Block>
+<Image 
+    src="/maths/functionsNonRelation.png"
+    caption="A relation that is not a function."
+    width={250}
+/>
+</Block>
+</SideBySideBlock>
+
+The relation on the right is not a function because the element $2$ in the domain is mapped to two elements in the codomain, $B$ and $C$, 
+which would make the function ambiguous. It is also not a function because the elements $3$ and $4$ in the domain are not mapped to any element in the codomain.
+
+Important is also to notice that a function can have multiple input elements 
+map to the same output element, but not the other way around. An example of such a function is $f: \mathbb{R} \to \mathbb{R}, x \mapsto x^2$ where
+both $-2$ and $2$ are mapped to $4$.
+</Callout>
+
+You may however have seen functions written in different ways. The function above could also be written as:
+
+$$
+\begin{align*}
+y = 2x + 1 \\
+f(x) = 2x + 1 \\
+y = f(x) = 2x + 1 \\
+\end{align*}
+$$
+
+In the above example the domain and codomain are not explicitly defined. The domain and codomain is often assumed to be the set of all real numbers, unless otherwise specified.
+
+<Callout type="warning">
+However, depending on the function it is important to remove 0 from the domain. 
+For example, the function $f(x) = \frac{1}{x}$ is not defined for $x = 0$ because of the division by zero.
+
+Therefore the domain of the function $f(x) = \frac{1}{x}$ must be $\mathbb{R} \setminus \{0\}$.
+</Callout>
+
+## Visualising Functions
+
+Like with everything, visualising functions can help us understand them better.
+
+### Value Tables
+
+Show an example with value table
+
+### Graphs
+
+show a plot of a function and explain x and y with desmos iframe. Also show the meaning of y-axis cutoff and slope. and the meaning of a slope and y-axis when drawing 
+ie the steps and where the line crosses the y-axis.
+
+Formally the graph of the function $f: A \to B$ is the set of all points $(x, f(x))$ where $x \in A$:
+
+$$
+G = \{(x, f(x)) | x \in A\}
+$$
+
+Where $G$ is the graph of the function $f$ and each point $(x, f(x))$ is a point on the graph.
+
+The number of elements in the tuple $(x, f(x))$ corresponds to the number of dimensions of the function. For example, a function $f: \mathbb{R} \to \mathbb{R}$ is a 2-dimensional function 
+and can be visualised in a 2-dimensional plane. A function $f: \mathbb{R}^2 \to \mathbb{R}$ is a 3-dimensional function and can be visualised in a 3-dimensional space.
+
+## Linear vs Non-Linear Functions
+
+for example polynomial functions, exponential functions, logarithmic functions, trigonometric functions, etc.
+
+## Functions vs Equations
+
+What is the difference between function and equation.
+
+## Properties of Functions
+
+### Injective
+
+A function $f: A \to B$ is injective or one-to-one if each element in the domain is mapped to a unique element in the codomain, 
+i.e no two elements in the domain are mapped to the same element in the codomain. Because each element in the domain
+is mapped to a unique element in the codomain, the function is one-to-one so i.e each unique element in the domain is mapped to a unique element in the codomain.
+More formally, a function $f: A \to B$ is injective if:
+
+$$
+\forall x, y \in A, f(x) = f(y) \implies x = y
+$$
+
+or equivalently the contrapositive:
+
+$$
+\forall x, y \in A, x \neq y \implies f(x) \neq f(y)
+$$
+
+Visually there are no two points on the graph of the function that have the same y-coordinate. This also means 
+that $|A| \leq |B|$ because each element in the domain is mapped to a unique element in the codomain.
+
+<Image 
+    src="/maths/functionsInjective.png"
+    caption="Example of injective and non-injective functions and their graphs."
+    width={800}
+/>
+
+### Surjective
+
+A function $f: A \to B$ is surjective or onto if each element in the codomain is mapped to by at least one element in the domain, 
+i.e the range of the function is equal to the codomain. More formally, a function $f: A \to B$ is surjective if:
+
+$$
+\forall y \in B, \exists x \in A, f(x) = y
+$$
+
+Visually there are no points on the graph of the function that are not mapped to by an element in the domain.
+This also means that $|A| \geq |B|$ because each element in the codomain is mapped to by at least one element in the domain.
+
+<Image 
+    src="/maths/functionsSurjective.png"
+    caption="Example of surjective and non-surjective functions and their graphs."
+    width={800}
+/>
+
+
+### Bijective
+
+A function $f: A \to B$ is bijective if it is both injective and surjective. This means that 
+an element in the domain is mapped to precisely one element in the codomain and all elements in the codomain are mapped to one element in the domain.
+
+More formally, a function $f: A \to B$ is bijective if:
+
+$$
+\begin{align*}
+\forall x, y \in A, f(x) = f(y) \implies x = y \\
+\forall y \in B, \exists x \in A, f(x) = y
+\end{align*}
+$$
+
+Visually there are no two points on the graph of the function that have the same y-coordinate and there are no points on the graph that are not mapped to by an element in the domain.
+This also means that $|A| = |B|$ because each element in the domain is mapped to a unique element in the codomain and each element in the codomain is mapped to by an element in the domain.
+
+<Image 
+    src="/maths/functionsBijective.png"
+    caption="Example of bijective and non-bijective functions and their graphs."
+    width={800}
+/>
+
+## Composition of Functions
+
+<Image 
+    src="/maths/functionsComposition.png"
+    caption="Composition of two functions."
+    width={400}
+/>
+
+## Inverse Functions
+
+must be bijective
+
+<Image 
+    src="/maths/functionsInverse.png"
+    caption="Visualisation of a function and its inverse."
+    width={600}
+/>
+
+<Image 
+    src="/maths/functionsInverseGraph.png"
+    caption="The graph of a function and its inverse."
+    width={500}
+/>
+
+## Image and Preimage

@@ -1,0 +1,32 @@
+# Autocorrelation
+
+Is Cross Correlation but the two functions are the same so a cross correlation with itself. How is this interpretetd? Same goes here for time series is this interpreted?
+Because it is slid across it is basically the correlation with the lagged version of it self. so each point is correlation of the series with the x lag of itself.
+
+## Partial Auto Correltion
+
+a, b, c. a with b are correlated and b with c, to measure true influence of c on a  need to take out the influence b had on a. Taking out inluence of other timespots on current.
+
+AR model or MA model https://medium.com/@vaibhav1403/ar-model-vs-ma-model-427ee28587a#:~:text=How%20they%20differ%3A,white%20noise%20or%20error%20terms.
+
+1 lag differencing is a way to detrend. subtract lag 1 values.
+
+first order AR model is if lag 1 is used, second order if lag 2 etc. How many points are taken = order, simpler models prefered. Significance threhsold, how to get?
+
+AR model uses partial AC, MA model uses full AC
+https://www.youtube.com/watch?v=5Q5p6eVM7zM
+
+Also known as Conditional correlation. Take out all intermediate effects.
+
+https://machinelearningmastery.com/gentle-introduction-autocorrelation-partial-autocorrelation/
+
+correlogram with Confidence intervals are drawn as a cone. By default, this is set to a 95% confidence interval, suggesting that correlation values outside of this code are very likely a correlation and not a statistical fluke.
+
+
+The partial autocorrelation at lag k is the correlation that results after removing the effect of any correlations due to the terms at shorter lags.
+
+The autocorrelation for an observation and an observation at a prior time step is comprised of both the direct correlation and indirect correlations. These indirect correlations are a linear function of the correlation of the observation, with observations at intervening time steps.
+
+It is these indirect correlations that the partial autocorrelation function seeks to remove. Without going into the math, this is the intuition for the partial autocorrelation
+
+how it is calcualted: https://timeseriesreasoning.com/contents/partial-auto-correlation/

@@ -1,0 +1,11 @@
+{
+    "discrete": "Discrete Maths",
+    "calculus": "Calculus",
+    "linearAlgebra": "Linear Algebra",
+    "probabilityStatistics": "Probability & Statistics",
+    "complexNumbers": "Complex Numbers",
+    "trigonometry": "Trigonometry",
+    "commonFunctions": "Common Functions",
+    "latexGuidelines": "LaTeX Guidelines",
+    "scientificNotation": "Scientific Notation"
+}

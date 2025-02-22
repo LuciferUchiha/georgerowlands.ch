@@ -1,0 +1,9 @@
+{
+    "index": "My Digital Garden",
+    "---": {
+      "type": "separator"
+    },
+    "cs": "Computer Science",
+    "ml": "Machine Learning",
+    "maths": "Maths"
+  }

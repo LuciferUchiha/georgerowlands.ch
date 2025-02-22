@@ -1,0 +1,563 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+
+# Writing Proofs
+
+The idea of a proof is to show that a statement is definetly and unequivocally true. This is done by providing a [logical argument](/digitalGarden/maths/discrete/logicTheory#logical-inference-and-arguments) that shows that the statement is true.
+There are three different types of statements:
+
+1. **Theorem**: A statement that is known to be true and therefore can and has been proven.
+2. **Conjecture**: A statement that is believed to be true or false but has not been proven yet.
+3. **Disproof**: A statement that is known to be false and therefore can and has been disproven.
+
+When writing a proof we are trying to show that a conjecture is actually a theorem. 
+
+## Prooving Conditional Statements
+
+We start with the basic building block of proofs, the [conditional statement](/digitalGarden/maths/discrete/logicTheory#conditional-statements-if-then). The conditional statement is a statement of the form "If P then Q", $P \rightarrow Q$. 
+P is often called the hypothesis and Q is called the conclusion.
+
+So the first step in writing a proof is to write the statement that we want to prove in the form of a conditional statement. This can be done for almost 
+all mathematical statements that we want to prove. 
+
+Why do we use conditional statements? Because they are easy to prove if we know that the hypothesis is true then we can show that the conclusion is true 
+thanks to truth table of the conditional statement $P \rightarrow Q$ and the [logical inference rule of modus ponens](/digitalGarden/maths/discrete/logicTheory#logical-inference-and-arguments). So in other words we must 
+show that the condition of P being true forces Q to be true.
+
+As a reminder, the truth table of the conditional statement is:
+
+| $p$ | $q$ | $p \implies q$ |
+| :-: | :-: | :-: |
+| $0$ | $0$ | $1$ |
+| $0$ | $1$ | $1$ |
+| $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ |
+
+and the logical inference rule of modus ponens is:
+
+$$
+\begin{align*}
+&p \implies q \\
+&p \\
+\hline
+&q
+\end{align*}
+$$
+
+<Callout type="example">
+Some examples of conditional statements that we might want to prove are:
+
+- If $n$ is an integer and $n$ is even, then $n^2$ is even.
+- If $n$ is an integer and $n$ is odd, then $n^2$ is odd.
+</Callout>
+
+### Direct Proof
+
+Direct proof is the most common type of proof. It is a proof that starts with the hypothesis and then uses logical inference rules and known mathematical
+facts, properties, rules and theorems to show that the conclusion is true. 
+
+So the setup is pretty simple, we start with the hypothesis and then we 
+write "Proof" to indicate that we are starting the proof. Then we write the conclusion starting with "therefore" or "thus" or "so" to indicate that we
+are showing that the conclusion is true. To show that the proof is then completed after the conclusion we often write "QED" which stands for "Quod Erat
+Demonstrandum" which is Latin for "that which was to be demonstrated" or we draw a square at the end of the proof $\blacksquare$. Inbeween we write the logical steps that show that the conclusion is true.
+
+<Callout type="proof">
+**If P, then Q**
+
+Proof: Suppose P is true..
+- Some logical steps...
+
+Therefore Q is true... $\blacksquare$
+</Callout>
+
+<Callout type="example">
+**If $n$ is an integer and $n$ is odd, then $n^2$ is odd.**
+
+Proof: Suppose $n$ is an integer and $n$ is odd.
+- Then $n = 2k + 1$ for some integer $k$, by the definition of an odd integer.
+- Thus $n^2 = (2k + 1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$.
+- So $n^2 = 2m + 1$ for some integer $m$ and where $m = 2k^2 + 2k$.
+- Thus $n^2=2m+1$ for some integer $m$.
+
+Therefore $n^2$ is odd, by the definition of an odd integer. $\blacksquare$
+</Callout>
+
+#### Proof by Cases
+
+When proving a statement is true, we sometimes have to examine multiple cases to show that the statement is true for all possible scenarios. By 
+splitting up the proof into multiple cases it can make finding the proof easier but also easier to understand. However, when using proof by cases we
+must make sure that the cases are exhaustive. That is, we must show that all possible cases are covered.
+
+<Callout type="proof">
+**If P, then Q**
+
+Proof: Suppose P is true..
+
+Then we can consider the following cases:
+
+**Case 1:** Suppose something. 
+- Then some logical steps...
+
+**Case 2:** Suppose something else.
+- Then some logical steps...
+
+These cases show that Q is true... $\blacksquare$
+</Callout>
+
+<Callout type="example">
+**If $n$ is an integer then $1 + (-1)^n (2n-1)$ is a multiple of 4.**
+
+Proof: Suppose $n$ is an integer.
+
+Then we can consider the two cases where $n$ is even or $n$ is odd. Let's consider these two cases separately:
+
+**Case 1:** Suppose $n$ is even.
+- Then $n = 2k$ for some integer $k$ and $(-1)^n = 1$.
+- Thus $1 + (-1)^n (2n-1) = 1 + 1(2(2k)-1) = 1 + 1(4k-1) = 1 + 4k - 1 = 4k$, which is a multiple of 4.
+
+**Case 2:** Suppose $n$ is odd.
+- Then $n = 2k + 1$ for some integer $k$ and $(-1)^n = -1$.
+- Thus $1 + (-1)^n (2n-1) = 1 + (-1)(2(2k+1)-1) = 1 + (-1)(4k+2-1) = 1 + (-1)(4k+1) = 1 - 4k - 1 = -4k$, which is a multiple of 4.
+
+These cases show that $1 + (-1)^n (2n-1)$ is always a multiple of 4. $\blacksquare$
+</Callout>
+
+Sometimes two or more cases are almost the same and it can be annyoing to write them out separately. In these cases we can say that the other case is
+the same as the first case and then we can combine the cases into one case. This is called "without loss of generality" or WLOG. 
+
+<Callout type="example">
+**If two integers $a$ and $b$ have opposite parity, then their sum $a+b$ is odd.**
+
+Proof: Suppose $a$ and $b$ are integers with opposite parity.
+
+Without loss of generality, let's consider the case where $a$ is even and $b$ is odd.
+- Then $a = 2k$ and $b = 2m + 1$ for some integers $k$ and $m$.
+- Thus $a + b = 2k + 2m + 1 = 2(k + m) + 1$, which is odd.
+
+Therefore, the sum of two integers with opposite parity is odd. $\blacksquare$
+</Callout>
+
+### Contrapositive Proof
+
+Contrapositive proofs work just like direct proofs by using logical inference rules and known mathematical facts, properties, rules and theorems to show that the conclusion is true. 
+The only difference is that we prove the contrapositive of the original statement. So rather than proving the statement "If P then Q", we prove the statement "If not Q then not P".
+We do this because in some cases it is easier to prove the contrapositive statement than the original statement. 
+However, we must be careful when creating the contrapositive statement to make sure that it is equivalent to the original statement as in some 
+cases you might need to use [De Morgan's Laws](/digitalGarden/maths/discrete/logicTheory#de-morgrans-laws) to show that the contrapositive statement is equivalent to the original statement. As 
+a reminder, here are De Morgan's Laws:
+
+$$
+\begin{align*}
+\lnot (p \land q) &\equiv \lnot p \lor \lnot q \\
+\lnot (p \lor q) &\equiv \lnot p \land \lnot q
+\end{align*}
+$$
+
+If we compare the truth table of the conditional statement and the contrapositive statement we can see that they are equivalent. 
+Which is what allows us to use the contrapositive statement to prove the original statement.
+
+| $p$ | $q$ | $\lnot p$ | $\lnot q$ | $p \implies q$ | $\lnot q \implies \lnot p$ |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $1$ | $1$ | $1$ | $1$ |
+| $0$ | $1$ | $1$ | $0$ | $1$ | $1$ |
+| $1$ | $0$ | $0$ | $1$ | $0$ | $0$ |
+| $1$ | $1$ | $0$ | $0$ | $1$ | $1$ |
+
+The setup for a contrapositive proof is then slightly different from a direct proof. 
+
+<Callout type="proof">
+**If P, then Q**
+
+Proof: Suppose P is not true..
+- Some logical steps...
+
+Therefore Q is not true... $\blacksquare$
+</Callout>
+
+<Callout type="example">
+Lets compare the direct proof and the contrapositive proof of the statement "If $n$ is an integer and $7n + 9$ is even, then $n$ is odd."
+
+**Direct Proof:**
+
+Proof: Suppose $n$ is an integer and $7n + 9$ is even.
+- Then $7n + 9 = 2k$ for some integer $k$.
+- Subtracting $6n + 9$ from both sides gives $n = 2k - 6n - 9$.
+- Thus $n = 2k -6n - 9 = 2k -6n -10 + 1 = 2(k - 3n - 5) + 1$.
+- Consequently, $n = 2m + 1$, where $m = k - 3n - 5$.
+
+Therefore, $n$ is odd by the definition of an odd integer. $\blacksquare$
+
+**Contrapositive Proof:**
+
+Proof: Suppose $n$ is not odd.
+- Then $n$ is even, so $n = 2k$ for some integer $k$.
+- Then $7n + 9 = 7(2k) + 9 = 14k + 9 = 2(7k + 4) + 1$.
+- Consequently, $7n + 9 = 2m + 1$, where $m = 7k + 4$.
+
+Therefore, $7n + 9$ is odd by the definition of an odd integer and therefore not even. $\blacksquare$
+</Callout>
+
+## Proof by Contradiction
+
+Unlike direct and contrapositive proofs, proof by contradiction can be used to prove any statement, not just conditional statements.
+The idea behind proof by contradiction is to assume that the statement we want to prove is false and then show that this assumption leads to 
+non-sense or a [contradiction](/digitalGarden/maths/discrete/logicTheory#tautologies-and-contradictions). This contradiction then shows that the original statement must therefore be true. So for the 
+statement $P$ we assume $\lnot P$ and performing some logical steps and arrive to a contradiction of the form $C \land \lnot C$.
+
+<Callout type="proof">
+**P**
+
+Proof: Suppose for the sake of contradiction that $\lnot P$ is true.
+- Some logical steps...
+
+This leads to the contradiction $C \land \lnot C$. Therefore $P$ is true. $\blacksquare$
+</Callout>
+
+So in other words we prove that $\lnot P$ being true forces a contradiction so $\lnot P \implies C \land \lnot C$. To see that 
+this is the same as prooving $P$ is true let's look at the truth tables of the different statements:
+
+| $P$ | $C$ | $\lnot P$ | $C \land \lnot C$ | $\lnot P \implies C \land \lnot C$ |
+| :-: | :-: | :-: | :-: | :-: | 
+| $1$ | $1$ | $0$ | $0$ | $1$ |
+| $1$ | $0$ | $0$ | $0$ | $1$ |
+| $0$ | $1$ | $1$ | $0$ | $0$ |
+| $0$ | $0$ | $1$ | $0$ | $0$ |
+
+<Callout type="example">
+**The square root of 2 is irrational.**
+
+Proof: Suppose for the sake of contradiction that the square root of 2 is not irrational, so it is rational.
+- Then $\sqrt{2} = \frac{a}{b}$ for some integers $a$ and $b$ and let's assume that $a$ and $b$ have no common factors, so $\frac{a}{b}$ is fully reduced.
+- This means that $a$ and $b$ are not both even, so at least one of them is odd. Because if both were even then they would have a common factor of 2.
+- Squaring both sides gives $2 = \frac{a^2}{b^2}$, so $a^2 = 2b^2$.
+- This means that $a^2$ is even which implies that $a$ is even. Thus as we stated before $a$ and $b$ are not both even, so $b$ is odd.
+- Since $a$ is even, $a = 2k$ for some integer $k$. Plugging this into $a^2 = 2b^2$ gives $4k^2 = 2b^2$ or $2k^2 = b^2$.
+- This means that $b^2$ is even which implies that $b$ is even. But we stated before that $b$ is odd, so we have a contradiction.
+
+This leads to the contradiction that $b$ is both odd and even. Therefore the square root of 2 is irrational. $\blacksquare$
+</Callout>
+
+### Proof by Contradiction of Conditional Statements
+
+Using proof by contradiction we can prove simple statements as seen above but we can also use it to prove conditional statements.
+To prove a conditional statement by contradiction we assume that the statement is false or in other words that $\lnot (P \implies Q)$ is true.
+However, from the truth table of the conditional statement we know that $P \implies Q$ being false means that $P$ can still be true and $Q$ can be false.
+So we assume that $P$ is true and $Q$ is false and then we show that this assumption leads to a contradiction.
+
+<Callout type="proof">
+**If P, then Q**
+
+Proof: Suppose for the sake of contradiction that $P$ is true and $Q$ is false.
+- Some logical steps...
+
+This leads to the contradiction $C \land \lnot C$. Therefore $P \implies Q$ is true. $\blacksquare$
+</Callout>
+
+<Callout type="example">
+**If $n$ is an integer and $n^2$ is even, then $n$ is even.**
+
+Proof: Suppose for the sake of contradiction that $n$ is an integer and $n^2$ is even, then $n$ is not even so $n$ is odd.
+- Then $n = 2k + 1$ for some integer $k$.
+- Thus $n^2 = (2k + 1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$.
+- So $n^2 = 2m + 1$ for some integer $m$ and where $m = 2k^2 + 2k$.
+- Consequently, $n^2 = 2m + 1$ for some integer $m$, so $n^2$ is odd by the definition of an odd integer.
+
+This leads to the contradiction that $n^2$ is both even and odd. Therefore if $n$ is an integer and $n^2$ is even, then $n$ is even. $\blacksquare$
+</Callout>
+
+## Prooving Biconditional Statements
+
+Some statements can not be put into the form of a conditional statement but rather a [biconditional statement](/digitalGarden/maths/discrete/logicTheory#biconditional-statements-if-and-only-if). The biconditional statement is a statement of the form "P if and only if Q", $P \iff Q$.
+However, we know that $P \iff Q$ is equivalent to $(P \implies Q) \land (Q \implies P)$, so we can prove a biconditional statement by proving the two conditional statements that make up the biconditional statement.
+
+<Callout type="proof">
+**P if and only if Q**
+
+Proof: 
+
+**If P, then Q**: Suppose P is true..
+- Some logical steps...
+
+**Conversely, if Q, then P**: Suppose Q is true..
+- Some logical steps...
+
+Therefore P if and only if Q. $\blacksquare$
+</Callout>
+
+<Callout type="example">
+**An integer $n$ is odd if and only if $n^2$ is odd.**
+
+Proof:
+
+**If $n$ is odd, then $n^2$ is odd.**: Suppose $n$ is odd.
+- Then $n = 2k + 1$ for some integer $k$.
+- Thus $n^2 = (2k + 1)^2 = 4k^2 + 4k + 1 = 2(2k^2 + 2k) + 1$.
+- So $n^2 = 2m + 1$ for some integer $m$ and where $m = 2k^2 + 2k$.
+- Consequently, $n^2 = 2m + 1$ for some integer $m$, so $n^2$ is odd by the definition of an odd integer.
+
+**Conversely, if $n^2$ is odd, then $n$ is odd.**: Suppose for the sake of contradiction that $n^2$ is odd and $n$ is not odd.
+- Then $n$ is even, so $n = 2k$ for some integer $k$.
+- Then $n^2 = (2k)^2 = 4k^2 = 2(2k^2)$.
+- So $n^2 = 2m$ for some integer $m$ and where $m = 2k^2$.
+- Consequently, $n^2 = 2m$ for some integer $m$, so $n^2$ is even by the definition of an even integer.
+- This leads to the contradiction that $n^2$ is both odd and even. Therefore if $n^2$ is odd, then $n$ is odd.
+
+Therefore we've shown that an integer $n$ is odd if and only if $n^2$ is odd. $\blacksquare$
+</Callout>
+
+## Universal and Existential Quantifiers
+
+When we are proving conditional statements we are actually proving statements of the form $\forall x, P(x) \implies Q(x)$. 
+So by default we are actually already proving universally quantified statements. However, sometimes we want to prove an 
+existential statement of the form $\exists x, P(x)$. To prove an existential statement we must show that there exists at least one
+element that satisfies the statement. This can be done by providing an example of an element that satisfies the statement.
+
+<Callout type="example">
+**There exists an even prime number.**
+
+Proof: The number 2 is an even prime number.
+</Callout>
+
+However, often a single example is not enough to prove a conditional statement but rather we need to show that an example does exist.
+This is the difference between a constructive proof and a non-constructive proof. In a constructive proof we provide a 
+specific example that satisfies the statement, while in a non-constructive proof we show that an example does exist but we don't provide a specific example.
+
+Below is an example of a non-constructive proof for a conditional statement containing an existential statement.
+
+<Callout type="example">
+**If $a,b \in \mathbb{N}$, then there exist integers $k$ and $l$ for which $gcd(a,b) = ak + bl$, where $gcd(a,b)$ is the greatest common divisor of $a$ and $b$.**
+
+This is a conditional statement with an existential statment embedded in it:
+
+$$
+a,b \in \mathbb{N} \implies \exists k,l \in \mathbb{Z}, gcd(a,b) = ak + bl
+$$
+
+Proof: Suppose $a,b \in \mathbb{N}$.
+- Then the set $S = \{ak + bl \mid k,l \in \mathbb{Z}\}$ is a set of all possible linear combinations of $a$ and $b$.
+- Let $d$ be the smallest positive integer in $S$.
+- Then $d = ak + bl$ for some integers $k$ and $l$.
+- To show that $d$ is the greatest common divisor of $a$ and $b$ we must show that $d$ divides both $a$ and $b$.
+- Let $r$ be the remainder when $a$ is divided by $d$, so $a = dq + r$ for some integers $q$ and $r$ where $0 \leq r < d$.
+- Then $r = a - dq = a - q(ak + bl) = a(1 - qk) + b(-ql)$.
+- Therefore $r$ has the form $ak + bl$ and is in the set $S$. However, $r < d$ so $r = 0$. And thus $d$ divides $a$.
+- Similarly, $d$ divides $b$.
+- Now we must show that $d$ is the greatest common divisor of $a$ and $b$.
+- We know that $a = gcd(a,b)m$ and $b = gcd(a,b)n$ for some integers $m$ and $n$.
+- Then $d = ak + bl = gcd(a,b)km + gcd(a,b)ln = gcd(a,b)(km + ln)$.
+- Thus $d$ is a multiple of $gcd(a,b)$ and therefore $d \geq gcd(a,b)$.
+- However, $d$ can't be greater than $gcd(a,b)$ because $d$ is the smallest positive integer in $S$.
+
+Therefore, there exist integers $k$ and $l$ for which $gcd(a,b) = ak + bl$. $\blacksquare$
+</Callout>
+
+### Uniqueness Proofs
+
+Sometimes we want to show that there is only one element that satisfies a statement. In other words 
+an existenial statement of the form "there exists a unique element $x$ such that $P(x)$". So there 
+is only exactly one element that satisfies the statement. To prove that there is only one element that satisfies the statement we must produce an 
+element that satisfies the statement and then show that no other element satisfies the statement.
+
+<Callout type="example">
+**If $a,b \in \mathbb{R} \land a \neq 0$, then there exists a unique real number $x$ such that $ax + b = 0$.**
+
+Proof: Suppose $a,b \in \mathbb{R}$ and $a \neq 0$.
+- Then $x = -\frac{b}{a}$ is a real number that satisfies $ax + b = 0$.
+- To show that $x$ is unique we must show that no other real number satisfies $ax + b = 0$.
+- Suppose $s$ is another real number that satisfies $as + b = 0$.
+- Then $as + b = ax + b$ so $as = ax$ and thus $s = x$.
+
+Therefore there exists a unique real number $x$ such that $ax + b = 0$. $\blacksquare$
+</Callout>
+
+## Disproving Statements
+
+So far we have only looked at how to prove that a statement is true. However, sometimes we want to show that a statement is false.
+Just because we can't find a proof that a statement is true doesn't mean that the statement is false. So we want a way 
+to show that a statement is always false. This is called a disproof, and the process of showing that a statement is false is called disproving.
+
+The process of disproving is actually pretty simple, rather than proving that the statement is true we prove that the statement is false.
+This is done by showing that the negation of the statement is true. So if the statement is $P$ we show that $\lnot P$ is true.
+
+### Disproof of Universal Statements
+
+We already know that by default a statement is actually a universally quantified statement of the form:
+
+$$
+\forall x, P(x)
+$$
+
+So to disprove a universal statement we must show that there exists at least one element that does not satisfy the statement, in other words:
+
+$$
+\lnot \forall x, P(x) \equiv \exists x, \lnot P(x)
+$$
+
+This is called finding a counterexample to the statement. A counterexample is an element that does not satisfy the statement. 
+Just providing a single counterexample isn't great, you should also show how the counterexample was found and why it is a counterexample.
+
+<Callout type="example">
+**For all integers $n$, $f(n) = n^2 -n + 11$ is a prime number.**
+
+| $n$ | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+| $f(n)$ | 11 | 11 | 13 | 17 | 23 | 31 | 41 | 53 | 67 | 83 | 101 | 121 | 143 |
+
+For $n=11$, $f(11) = 11^2 - 11 + 11 = 11^2$ which is not a prime number. Therefore the statement is false.
+
+Disproof: The statement "For all integers $n$, $f(n) = n^2 -n + 11$ is a prime number" is false. For 
+a counterexample we can use $n=11$ where $f(11) = 11^2 - 11 + 11 = 11^2$ which is not a prime number. $\blacksquare$
+</Callout>
+
+The same goes for a conditional statement, to disprove a conditional statement $P \implies Q$ we must show that there exists an element for which $P$ is true but $Q$ is false 
+as this makes the statement false.
+
+<Callout type="example">
+**If $A, B$ and $C$ are sets, then $A \setminus (B \cap C) = (A \setminus B) \cap (A \setminus C)$.**
+
+To see where the counterexample comes from we can draw two venn diagrams, one for the left hand side and one for the right hand side.
+
+Disproof: The statement "If $A, B$ and $C$ are sets, then $A \setminus (B \cap C) = (A \setminus B) \cap (A \setminus C)$" is false. 
+For a counterexample we can use $A = \{1,2,3\}$, $B = \{1,2\}$ and $C = \{2,3\}$. Then $A \setminus (B \cap C) = \{1,3\}$ and $(A \setminus B) \cap (A \setminus C) = \{\}$.
+Therefore $A \setminus (B \cap C) \neq (A \setminus B) \cap (A \setminus C)$. $\blacksquare$
+</Callout>
+
+### Disproof of Existential Statements
+
+If we want to disprove an existential statement of the form:
+
+$$
+\exists x, P(x)
+$$
+
+We must proove the negation of the statement:
+
+$$
+\lnot \exists x, P(x) \equiv \forall x, \lnot P(x)
+$$
+
+So in other words we must show that for all elements the statement is false. However this is again equivalent to just proving 
+a universal statement. So to disprove an existential statement we do not use a counterexample but rather a proof that the statement is false for all elements.
+
+<Callout type="example">
+**There exists a real number $x$ such that $x^4 < x < x^2$.**
+
+Disproof: Suppose for the sake of contradiction that there exists a real number $x$ such that $x^4 < x < x^2$.
+- Then $x$ must be positive as it is greater than the non-negative number $x^4$.
+- We can then devide the inequality by $x$ to get $x^3 < 1 < x$.
+- And subtract 1 from all sides to get $x^3 - 1 < 0 < x - 1$.
+- We can then extract the factors of the left hand side to get $(x-1)(x^2 + x + 1) < 0 < x - 1$ and devide by $x-1$ to get $x^2 + x + 1 < 0 < 1$.
+- However the left hand side is always positive so we have a contradiction.
+
+This leads to the contradiction that $x^4$ is both positve and negative. Therefore there exists no real number $x$ such that $x^4 < x < x^2$. $\blacksquare$
+</Callout>
+
+<Callout type="info">
+Notice that we used a proof by contradiction to disprove the statement. Because we want to disprove $P$ we show that $\lnot P$ is true. 
+Then to prove that $\lnot P$ is true by contradiction we assume that $\lnot \lnot P$ is true which is equivalent to $P$ being true 
+and then we show that this assumption leads to a contradiction. This is the same as proving that $P$ is false.
+</Callout>
+
+## Proof by Induction
+
+We have all been introduced to one of the problems that gauss solved as a child. The problem was to find the sum of the first $n$ natural numbers. 
+Gauss solved this problem by noticing that the sum of the first $n$ natural numbers can be written as follows:
+
+$$
+\sum_{i=1}^{n} i = 1 + 2 + 3 + \ldots + n = \frac{n(n+1)}{2}
+$$
+
+The question now is how could we actually prove this? I visual proof would be to write out the first $n$ natural numbers in a row and then write them out in reverse order below. 
+Then we can see that the sum of the first and last number is $n+1$, the sum of the second and second to last number is $n+1$ and so on. 
+
+||||||||
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+|$1$| $2$| $3$| $\ldots$| $n-2$| $n-1$| $n$|
+|$n$| $n-1$| $n-2$| $\ldots$| $3$| $2$| $1$|
+|$n + 1$| $n + 1$| $n + 1$| $\ldots$| $n + 1$| $n + 1$| $n + 1$|
+
+So the result of the first $n$ natural numbers is $n(n+1)$. However, we can see that we have counted each number twice so we must divide by 2 to get the result $\frac{n(n+1)}{2}$. 
+The problem with this proof is that it is not a proof but rather an explanation of why the formula is true, we want to prove that the formula is true for all $n$. 
+
+This type of proof is often used in computer sciene where we want to prove that an algorithm has a certain time complexity. In those proofs we often have some recursive relation and using telescoping sums we can find a closed form solution to the sum.
+We can then prove that the closed form solution is the same as the recursive relation by using proof by induction.
+
+This is where proof by induction comes in. We want to prove the statement "For all $n \in \mathbb{N}$ the sum of the first $n$ natural numbers is $\frac{n(n+1)}{2}$". We notice 
+that this statement is a universally quantified statement and could therefore also be written as a list of statements:
+
+$$
+\begin{align*}
+1 &= \frac{1(1+1)}{2} \\
+1 + 2 &= \frac{2(2+1)}{2} \\
+1 + 2 + 3 &= \frac{3(3+1)}{2} \\
+&\vdots \\
+\sum_{i=1}^{n} i &= \frac{n(n+1)}{2}
+\end{align*}
+$$
+
+Proof by induction is exactly for this case where we have an infinite number of statements that we want to prove. 
+The structure of a proof by induction is as follows:
+- **Base Case**: Prove that the statement is true for the first element, $n=1$.
+- **Inductive Hypothesis**: Assume that the statement is true for some $n=k$.
+- **Inductive Step**: Show that if the statement is true for $n=k$ then it is also true for $n=k+1$. Notice that this is an implication, so we are proving a conditional statement.
+
+The analogy for why this works can be seen as a row of dominos. If we can show that the first domino falls (is true) and show that if the $k$'th domino falling causes the $k+1$'th domino to fall then all dominos must fall.
+
+<Image 
+    src="/maths/proofsInduction.png"
+    caption="A visual representation of the principle of mathematical induction."
+    width={600}
+/>
+
+<Callout type="proof">
+**The statements $S_1, S_2, S_3, \ldots$ are all true.**
+
+Proof: 
+
+1. **Base Case**: Show that $S_1$ is true.
+2. **Inductive Hypothesis**: Assume that $S_k$ is true for some $k$.
+3. **Inductive Step**: Show that if $S_k$ is true then $S_{k+1}$ is true, so $S_k \implies S_{k+1}$.
+
+Therefore, the statements $S_1, S_2, S_3, \ldots$ are all true. $\blacksquare$
+</Callout>
+
+Because of the inductive hypothesis we know that the statement is true for $n=k$ so the left hand side of the implication is true.
+Then we must show that the statement is true for $n=k+1$ so the right hand side of the implication is true. This often 
+involves some algebraic manipulation using the inductive hypothesis to show that the statement is true for $n=k+1$.
+
+<Callout type="example">
+**For all $n \in \mathbb{N}$, the sum of the first $n$ natural numbers is $\frac{n(n+1)}{2}$.**
+
+Proof:
+1. **Base Case**: For $n=1$, the sum of the first natural number is $1 = \frac{1(1+1)}{2} = \frac{2}{2} = 1$.
+2. **Inductive Hypothesis**: Assume that the sum of the first $k$ natural numbers is $\frac{k(k+1)}{2}$.
+3. **Inductive Step**: Show that if the sum of the first $k$ natural numbers is $\frac{k(k+1)}{2}$ then the sum of the first $k+1$ natural numbers is $\frac{(k+1)(k+2)}{2}$.
+- Because of the inductive hypothesis we know the sum of the first $k$ natural numbers is $\frac{k(k+1)}{2}$.
+- So we must show that the sum of the first $k+1$ natural numbers is $\frac{(k+1)(k+2)}{2}$.
+- The sum of the first $k+1$ natural numbers is $1 + 2 + 3 + \ldots + k + (k+1)$.
+- By the inductive hypothesis we know that the sum of the first $k$ natural numbers is $\frac{k(k+1)}{2}$.
+- So the sum of the first $k+1$ natural numbers is $\frac{k(k+1)}{2} + (k+1) = \frac{k(k+1) + 2(k+1)}{2} = \frac{(k+1)(k+2)}{2}$.
+
+Therefore, for all $n \in \mathbb{N}$, the sum of the first $n$ natural numbers is $\frac{n(n+1)}{2}$. $\blacksquare$
+</Callout>
+
+### Strong Induction
+
+hard to show that S_k implies S_k+1 but can show that some lower S_m implies S_k+1 for m < k
+
+Assume that all S_k are true for k < n and show that this forces S_k+1 to be true.
+
+Why do I need multiple base cases?
+
+### Smallest Counterexample
+
+hybrid between induction and contradiction
+
+## Proofs Involving Sets
+
+## Combinatorial Proofs
+
+??? annyoing
+
+## Resolution Proofs
+
+????

@@ -1,0 +1,102 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+import {Steps, Step} from "~/components/Steps/Steps";
+
+# Counting Sort
+
+<Callout type="todo">
+Is this the same as the bucket sort?
+</Callout>
+
+The counting sort can be defined in a dumb way or a smart way that can be implemented very efficiently.
+
+The counting algorithm is mainly intended as a sub-routine for the radix sort and unlucky many other sorting algorithms,
+it does not use comparisons to sort the elements. The counting sort is generally defined to sort a list of integers
+in a known range, most commonly 0 to k, i.e. $0 \leq A[i] \leq k$.
+
+## The Naive Approach
+
+The naive way to define the counting sort as follows:
+
+<Callout type="todo">
+The native nextra steps is shit.
+</Callout>
+
+<Steps>
+
+<Step id="1"> 
+**Create the Counting Array**
+
+We create a so-called counting array, an array of size k+1 and then iterate over the input array and increment the value
+at the index of the input array in the counting array.
+
+<Image 
+    src="/cs/algdCountingSort1.png"
+    caption="The input array."
+/>
+
+<Image 
+    src="/cs/algdCountingSort2.png"
+    caption="The resulting counting array."
+/>
+</Step>
+<Step id="2">
+**Generate the Sorted Array**
+
+Thanks to the counting array we then know how many times each value occurs in the input array and can therefore just
+generate the sorted array according to the counting array. Technically this means the dumb counting sort is an in-place
+sorting algorithm, because we don't actually need to allocate a new array to store the sorted array, we can just
+overwrite the input array.
+
+This is a very dumb way to do it, but it works and actually runs in $O(n+k)$ time, where $n$ is the
+length of the input array and $k$ is the range of the input array.
+</Step>
+</Steps>
+
+## The Smart Approach
+
+The smart way to define the counting sort is to use the counting array as a way to store the index of a value in
+the sorted array. This implementation of the counting sort is a bit more complicated but still runs in $O(n+k)$ time.
+
+However, the advantage of this implementation is that it is stable, i.e. it preserves the relative order of equal
+elements. The other advantage is that it is actually faster than the dumb implementation in practice because it
+can be parallelized using the scan and scatter pattern.
+
+<Steps>
+<Step id="1"> 
+**Create the Counting Array**
+
+The first step is the same as in the dumb implementation, we create a counting array.
+
+</Step>
+<Step id="2">
+**Compute the Cumulative Sum**
+
+We then iterate over the counting array and compute the cumulative sum of the counts. The cumulative sum is
+also often called the prefix or scan sum. This part that can be parallelized using the scan pattern.
+
+<Image 
+    src="/cs/algdCountingSort3.png"
+    caption="The cumalaive sum of the counting array."
+/>
+
+</Step>
+<Step id="3">
+**Scatter the Input Array**
+
+The magical thing about the counting sort is that the values in the counting array are actually the indexes of the
+values in the sorted array. So we can just iterate over the input array and use the value at the index of the input
+array as the index in the sorted array and then increment the value at the index of the input array in the counting
+array. This part can be parallelized using the scatter pattern (not sure how you can handle the incrementing if the same
+value occurs multiple times in the input array).
+
+Because of the scatter pattern, the counting sort becomes a stable and in-place sorting algorithm that runs in
+$O(n+k)$.
+
+<Image 
+    src="/cs/algdCountingSort4.png"
+    caption="The scattering of the input array into the sorted array."
+/>
+
+</Step>
+</Steps>

@@ -1,0 +1,11 @@
+{
+  "combinatorics": "Combinatorics",
+  "probability": "Probability",
+  "discreteRandomVariables": "Discrete Random Variables",
+  "continuousRandomVariables": "Continuous Random Variables",
+  "independentRandomVariables": "Independent Random Variables",
+  "markovChains": "Markov Chains",
+  "queueingTheory": "Queueing theory",
+  "stdVarianceCovariance": "Standard Deviation, Variance and Covariance",
+  "randomStuff": "Random Stuff"
+}

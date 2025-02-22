@@ -1,1233 +1,1233 @@
 {
     "links": [
         {
-            "source": "/garden/cs/algd/analysisOfAlgorithms",
-            "target": "/garden/maths/discrete/proofs"
+            "source": "/digitalGarden/cs/algorithmsDataStructures/analysisOfAlgorithms",
+            "target": "/digitalGarden/maths/discrete/proofs"
         },
         {
-            "source": "/garden/cs/algd/np",
-            "target": "/garden/cs/algd/analysisOfAlgorithms"
+            "source": "/digitalGarden/cs/algorithmsDataStructures/np",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/analysisOfAlgorithms"
         },
         {
-            "source": "/garden/cs/algd/graphsNetworks/storingGraphs",
-            "target": "/garden/cs/algd/graphsNetworks/generalDefinition"
+            "source": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/storingGraphs",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/generalDefinition"
         },
         {
-            "source": "/garden/cs/algd/searchingSorting/bubbleSort",
-            "target": "/garden/cs/algd/searchingSorting/searching"
+            "source": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/bubbleSort",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/searching"
         },
         {
-            "source": "/garden/cs/algd/searchingSorting/insertionSort",
-            "target": "/garden/cs/algd/searchingSorting/bubbleSort"
+            "source": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/insertionSort",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/bubbleSort"
         },
         {
-            "source": "/garden/cs/algd/searchingSorting/mergeSort",
-            "target": "/garden/cs/algd/searchingSorting/bubbleSort"
+            "source": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/mergeSort",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/bubbleSort"
         },
         {
-            "source": "/garden/cs/algd/searchingSorting/mergeSort",
-            "target": "/garden/cs/algd/searchingSorting/insertionSort"
+            "source": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/mergeSort",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/insertionSort"
         },
         {
-            "source": "/garden/cs/algd/searchingSorting/mergeSort",
-            "target": "/garden/cs/algd/searchingSorting/searching"
+            "source": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/mergeSort",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/searching"
         },
         {
-            "source": "/garden/cs/c/systemProgramming/sockets",
-            "target": "/garden/cs/distributedSystems/networking"
+            "source": "/digitalGarden/cs/c/systemProgramming/sockets",
+            "target": "/digitalGarden/cs/distributedSystems/networking"
         },
         {
-            "source": "/garden/cs/git/commonProblems",
-            "target": "/garden/cs/git/basics"
+            "source": "/digitalGarden/cs/git/commonProblems",
+            "target": "/digitalGarden/cs/git/basics"
         },
         {
-            "source": "/garden/maths/discrete/infinityCountability",
-            "target": "/garden/maths/discrete/setTheory"
+            "source": "/digitalGarden/maths/discrete/infinityCountability",
+            "target": "/digitalGarden/maths/discrete/setTheory"
         },
         {
-            "source": "/garden/maths/discrete/proofs",
-            "target": "/garden/maths/discrete/logicTheory"
+            "source": "/digitalGarden/maths/discrete/proofs",
+            "target": "/digitalGarden/maths/discrete/logicTheory"
         },
         {
-            "source": "/garden/maths/discrete/setTheory",
-            "target": "/garden/cs/algd/bags"
+            "source": "/digitalGarden/maths/discrete/setTheory",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/bags"
         },
         {
-            "source": "/garden/maths/discrete/setTheory",
-            "target": "/garden/maths/complexNumbers/explanation"
+            "source": "/digitalGarden/maths/discrete/setTheory",
+            "target": "/digitalGarden/maths/complexNumbers/explanation"
         },
         {
-            "source": "/garden/maths/discrete/setTheory",
-            "target": "/garden/maths/calculus/sequencesAndSeries/sequences"
+            "source": "/digitalGarden/maths/discrete/setTheory",
+            "target": "/digitalGarden/maths/calculus/sequencesAndSeries/sequences"
         },
         {
-            "source": "/garden/maths/discrete/intervals",
-            "target": "/garden/maths/discrete/setTheory"
+            "source": "/digitalGarden/maths/discrete/intervals",
+            "target": "/digitalGarden/maths/discrete/setTheory"
         },
         {
-            "source": "/garden/maths/discrete/relationsFunctions/recurrenceRelations",
-            "target": "/garden/cs/algd/dynamicProgramming/introduction"
+            "source": "/digitalGarden/maths/discrete/relationsFunctions/recurrenceRelations",
+            "target": "/digitalGarden/cs/algorithmsDataStructures/dynamicProgramming/introduction"
         },
         {
-            "source": "/garden/maths/commonFunctions/binomialCoefficient",
-            "target": "/garden/maths/commonFunctions/factorial"
+            "source": "/digitalGarden/maths/commonFunctions/binomialCoefficient",
+            "target": "/digitalGarden/maths/commonFunctions/factorial"
         },
         {
-            "source": "/garden/maths/linearAlgebra/matrices",
-            "target": "/garden/maths/linearAlgebra/hadamardProduct"
+            "source": "/digitalGarden/maths/linearAlgebra/matrices",
+            "target": "/digitalGarden/maths/linearAlgebra/hadamardProduct"
         },
         {
-            "source": "/garden/maths/linearAlgebra/matrices",
-            "target": "/garden/maths/calculus/sequencesAndSeries/sequences"
+            "source": "/digitalGarden/maths/linearAlgebra/matrices",
+            "target": "/digitalGarden/maths/calculus/sequencesAndSeries/sequences"
         },
         {
-            "source": "/garden/maths/linearAlgebra/vectors",
-            "target": "/garden/maths/commonFunctions/absolute"
+            "source": "/digitalGarden/maths/linearAlgebra/vectors",
+            "target": "/digitalGarden/maths/commonFunctions/absolute"
         },
         {
-            "source": "/garden/maths/linearAlgebra/vectors",
-            "target": "/garden/maths/linearAlgebra/matrices"
+            "source": "/digitalGarden/maths/linearAlgebra/vectors",
+            "target": "/digitalGarden/maths/linearAlgebra/matrices"
         },
         {
-            "source": "/garden/maths/calculus/sequencesAndSeries/sumOperator",
-            "target": "/garden/maths/calculus/sequencesAndSeries/series"
+            "source": "/digitalGarden/maths/calculus/sequencesAndSeries/sumOperator",
+            "target": "/digitalGarden/maths/calculus/sequencesAndSeries/series"
         },
         {
-            "source": "/garden/maths/calculus/sequencesAndSeries/sequences",
-            "target": "/garden/maths/discrete/setTheory"
+            "source": "/digitalGarden/maths/calculus/sequencesAndSeries/sequences",
+            "target": "/digitalGarden/maths/discrete/setTheory"
         },
         {
-            "source": "/garden/maths/calculus/sequencesAndSeries/sequences",
-            "target": "/garden/maths/discrete/relationsFunctions/recurrenceRelations"
+            "source": "/digitalGarden/maths/calculus/sequencesAndSeries/sequences",
+            "target": "/digitalGarden/maths/discrete/relationsFunctions/recurrenceRelations"
         }
     ],
     "nodes": [
         {
-            "id": "/garden/",
+            "id": "/digitalGarden/",
             "name": "My Digital Garden"
         },
         {
-            "id": "/garden/cs/computerArchitecture/computerSystems",
+            "id": "/digitalGarden/cs/computerArchitecture/computerSystems",
             "name": "Computer Systems"
         },
         {
-            "id": "/garden/cs/computerArchitecture/workingWithNumbers",
+            "id": "/digitalGarden/cs/computerArchitecture/workingWithNumbers",
             "name": "Working with Numbers"
         },
         {
-            "id": "/garden/cs/computerArchitecture/memoryHierarchy",
+            "id": "/digitalGarden/cs/computerArchitecture/memoryHierarchy",
             "name": "Memory Hierarchy"
         },
         {
-            "id": "/garden/cs/computerArchitecture/riscV/riscV",
+            "id": "/digitalGarden/cs/computerArchitecture/riscV/riscV",
             "name": "What is RISC-V?"
         },
         {
-            "id": "/garden/cs/computerArchitecture/riscV/procedureCalls",
+            "id": "/digitalGarden/cs/computerArchitecture/riscV/procedureCalls",
             "name": "Procedure Calls"
         },
         {
-            "id": "/garden/cs/computerArchitecture/riscV/pseudoInstructions",
+            "id": "/digitalGarden/cs/computerArchitecture/riscV/pseudoInstructions",
             "name": "Pseudo Instructions"
         },
         {
-            "id": "/garden/cs/computerArchitecture/riscV/dataTransfer",
+            "id": "/digitalGarden/cs/computerArchitecture/riscV/dataTransfer",
             "name": "Data Transfer Operations"
         },
         {
-            "id": "/garden/cs/computerArchitecture/riscV/controlTransfer",
+            "id": "/digitalGarden/cs/computerArchitecture/riscV/controlTransfer",
             "name": "Control Transfer Operations"
         },
         {
-            "id": "/garden/cs/computerArchitecture/riscV/arithmeticLogical",
+            "id": "/digitalGarden/cs/computerArchitecture/riscV/arithmeticLogical",
             "name": "Arithmetic and Logical Operations"
         },
         {
-            "id": "/garden/cs/patterns/daoRepository",
+            "id": "/digitalGarden/cs/patterns/daoRepository",
             "name": "DAOs and Repositories"
         },
         {
-            "id": "/garden/cs/patterns/templateMethod",
+            "id": "/digitalGarden/cs/patterns/templateMethod",
             "name": "Template method"
         },
         {
-            "id": "/garden/cs/patterns/composite",
+            "id": "/digitalGarden/cs/patterns/composite",
             "name": "Composite"
         },
         {
-            "id": "/garden/cs/patterns/strategy",
+            "id": "/digitalGarden/cs/patterns/strategy",
             "name": "Strategy"
         },
         {
-            "id": "/garden/cs/patterns/prototype",
+            "id": "/digitalGarden/cs/patterns/prototype",
             "name": "Prototype"
         },
         {
-            "id": "/garden/cs/patterns/oopDesignPrinciples",
+            "id": "/digitalGarden/cs/patterns/oopDesignPrinciples",
             "name": "OOP Design Principles"
         },
         {
-            "id": "/garden/cs/patterns/factory",
+            "id": "/digitalGarden/cs/patterns/factory",
             "name": "Factory"
         },
         {
-            "id": "/garden/cs/patterns/iterator",
+            "id": "/digitalGarden/cs/patterns/iterator",
             "name": "Iterators"
         },
         {
-            "id": "/garden/cs/patterns/singleton",
+            "id": "/digitalGarden/cs/patterns/singleton",
             "name": "Singleton"
         },
         {
-            "id": "/garden/cs/patterns/command",
+            "id": "/digitalGarden/cs/patterns/command",
             "name": "Command"
         },
         {
-            "id": "/garden/cs/patterns/decorator",
+            "id": "/digitalGarden/cs/patterns/decorator",
             "name": "Decorator"
         },
         {
-            "id": "/garden/cs/patterns/observer",
+            "id": "/digitalGarden/cs/patterns/observer",
             "name": "Observer"
         },
         {
-            "id": "/garden/cs/patterns/state",
+            "id": "/digitalGarden/cs/patterns/state",
             "name": "State"
         },
         {
-            "id": "/garden/cs/python/fluent",
+            "id": "/digitalGarden/cs/python/fluent",
             "name": "Fluent in Python"
         },
         {
-            "id": "/garden/cs/python/modulesAndPackages",
+            "id": "/digitalGarden/cs/python/modulesAndPackages",
             "name": "Modules & Packages"
         },
         {
-            "id": "/garden/cs/distributedSystems/actorModel",
+            "id": "/digitalGarden/cs/distributedSystems/actorModel",
             "name": "Actor Model"
         },
         {
-            "id": "/garden/cs/distributedSystems/websockets",
+            "id": "/digitalGarden/cs/distributedSystems/websockets",
             "name": "Websockets"
         },
         {
-            "id": "/garden/cs/distributedSystems/networking",
+            "id": "/digitalGarden/cs/distributedSystems/networking",
             "name": "Networking"
         },
         {
-            "id": "/garden/cs/distributedSystems/messaging",
+            "id": "/digitalGarden/cs/distributedSystems/messaging",
             "name": "Messaging"
         },
         {
-            "id": "/garden/cs/distributedSystems/internet",
+            "id": "/digitalGarden/cs/distributedSystems/internet",
             "name": "The Internet"
         },
         {
-            "id": "/garden/cs/distributedSystems/distributedAlgorithms",
+            "id": "/digitalGarden/cs/distributedSystems/distributedAlgorithms",
             "name": "Distributed Algorithms"
         },
         {
-            "id": "/garden/cs/distributedSystems/restfulApis",
+            "id": "/digitalGarden/cs/distributedSystems/restfulApis",
             "name": "RESTful APIs"
         },
         {
-            "id": "/garden/cs/distributedSystems/generalKnowledge",
+            "id": "/digitalGarden/cs/distributedSystems/generalKnowledge",
             "name": "General Knowledge"
         },
         {
-            "id": "/garden/cs/java/records",
+            "id": "/digitalGarden/cs/java/records",
             "name": "Records"
         },
         {
-            "id": "/garden/cs/java/spring/dependencyInjectionBeans",
+            "id": "/digitalGarden/cs/java/spring/dependencyInjectionBeans",
             "name": "Dependency Injection and Beans"
         },
         {
-            "id": "/garden/cs/kotlin/fromJava",
+            "id": "/digitalGarden/cs/kotlin/fromJava",
             "name": "From Java to Kotlin"
         },
         {
-            "id": "/garden/cs/cpp/copyMoveSemantic",
+            "id": "/digitalGarden/cs/cpp/copyMoveSemantic",
             "name": "Copy and Move Semantic"
         },
         {
-            "id": "/garden/cs/cpp/classes",
+            "id": "/digitalGarden/cs/cpp/classes",
             "name": "Classes"
         },
         {
-            "id": "/garden/cs/cpp/enums",
+            "id": "/digitalGarden/cs/cpp/enums",
             "name": "Enums and Enum Classes"
         },
         {
-            "id": "/garden/cs/cpp/overloading",
+            "id": "/digitalGarden/cs/cpp/overloading",
             "name": "Overloading"
         },
         {
-            "id": "/garden/cs/cpp/templates",
+            "id": "/digitalGarden/cs/cpp/templates",
             "name": "Templates"
         },
         {
-            "id": "/garden/cs/cpp/streamIO",
+            "id": "/digitalGarden/cs/cpp/streamIO",
             "name": "Stream I/O"
         },
         {
-            "id": "/garden/cs/cpp/inheritance",
+            "id": "/digitalGarden/cs/cpp/inheritance",
             "name": "Inheritance"
         },
         {
-            "id": "/garden/cs/cpp/unions",
+            "id": "/digitalGarden/cs/cpp/unions",
             "name": "Unions"
         },
         {
-            "id": "/garden/cs/cpp/pointers",
+            "id": "/digitalGarden/cs/cpp/pointers",
             "name": "Pointers"
         },
         {
-            "id": "/garden/cs/cpp/stl",
+            "id": "/digitalGarden/cs/cpp/stl",
             "name": "Standard Template Library - STL"
         },
         {
-            "id": "/garden/cs/cpp/functionalCpp",
+            "id": "/digitalGarden/cs/cpp/functionalCpp",
             "name": "Functional Programming with C++"
         },
         {
-            "id": "/garden/cs/cpp/variablesDataTypes",
+            "id": "/digitalGarden/cs/cpp/variablesDataTypes",
             "name": "Variables and Data Types"
         },
         {
-            "id": "/garden/cs/cpp/structures",
+            "id": "/digitalGarden/cs/cpp/structures",
             "name": "Structures"
         },
         {
-            "id": "/garden/cs/cpp/containers",
+            "id": "/digitalGarden/cs/cpp/containers",
             "name": "Containers"
         },
         {
-            "id": "/garden/cs/cpp/strings",
+            "id": "/digitalGarden/cs/cpp/strings",
             "name": "Strings"
         },
         {
-            "id": "/garden/cs/make/cMake",
+            "id": "/digitalGarden/cs/make/cMake",
             "name": "CMake"
         },
         {
-            "id": "/garden/cs/make/makefiles",
+            "id": "/digitalGarden/cs/make/makefiles",
             "name": "Makefiles"
         },
         {
-            "id": "/garden/cs/theoretical/kolomogorovComplexity",
+            "id": "/digitalGarden/cs/theoretical/kolomogorovComplexity",
             "name": "Kolomogorov Complexity"
         },
         {
-            "id": "/garden/cs/theoretical/nfa",
+            "id": "/digitalGarden/cs/theoretical/nfa",
             "name": "Nondeterministic Finite Automaton"
         },
         {
-            "id": "/garden/cs/theoretical/turingMachine",
+            "id": "/digitalGarden/cs/theoretical/turingMachine",
             "name": "Turing Machine"
         },
         {
-            "id": "/garden/cs/theoretical/pushdown",
+            "id": "/digitalGarden/cs/theoretical/pushdown",
             "name": "Pushdown Automaton"
         },
         {
-            "id": "/garden/cs/theoretical/regularExpressionsLanguages",
+            "id": "/digitalGarden/cs/theoretical/regularExpressionsLanguages",
             "name": "Regular Expressions & Languages"
         },
         {
-            "id": "/garden/cs/theoretical/grammars",
+            "id": "/digitalGarden/cs/theoretical/grammars",
             "name": "Context-Free Grammars & Languages"
         },
         {
-            "id": "/garden/cs/theoretical/problems",
+            "id": "/digitalGarden/cs/theoretical/problems",
             "name": "Computational Problems"
         },
         {
-            "id": "/garden/cs/theoretical/formalLanguages",
+            "id": "/digitalGarden/cs/theoretical/formalLanguages",
             "name": "Formal Languages"
         },
         {
-            "id": "/garden/cs/theoretical/dfa",
+            "id": "/digitalGarden/cs/theoretical/dfa",
             "name": "Deterministic Finite Automaton"
         },
         {
-            "id": "/garden/cs/algd/analysisOfAlgorithms",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/analysisOfAlgorithms",
             "name": "Analysis of Algorithms"
         },
         {
-            "id": "/garden/cs/algd/hashTables",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/hashTables",
             "name": "Hash Tables"
         },
         {
-            "id": "/garden/cs/algd/stacks",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/stacks",
             "name": "Stacks"
         },
         {
-            "id": "/garden/cs/algd/sets",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/sets",
             "name": "Sets"
         },
         {
-            "id": "/garden/cs/algd/linkedLists",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/linkedLists",
             "name": "Linked Lists"
         },
         {
-            "id": "/garden/cs/algd/recursion",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/recursion",
             "name": "Recursion"
         },
         {
-            "id": "/garden/cs/algd/np",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/np",
             "name": "What is NP-Hard?"
         },
         {
-            "id": "/garden/cs/algd/collections",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/collections",
             "name": "Collections"
         },
         {
-            "id": "/garden/cs/algd/bags",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/bags",
             "name": "Bags"
         },
         {
-            "id": "/garden/cs/algd/queues",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/queues",
             "name": "Queues"
         },
         {
-            "id": "/garden/cs/algd/trees/binarySearchTrees",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/trees/binarySearchTrees",
             "name": "Binary Search Trees"
         },
         {
-            "id": "/garden/cs/algd/trees/heaps",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/trees/heaps",
             "name": "Heaps"
         },
         {
-            "id": "/garden/cs/algd/trees/bTrees",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/trees/bTrees",
             "name": "B-Trees"
         },
         {
-            "id": "/garden/cs/algd/trees/binaryTrees",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/trees/binaryTrees",
             "name": "Binary Trees"
         },
         {
-            "id": "/garden/cs/algd/trees/generalDefinition",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/trees/generalDefinition",
             "name": "General Definition "
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/diffusion",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/diffusion",
             "name": "Diffusion"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/graphTraversal",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/graphTraversal",
             "name": "Graph Traversal"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/connectivity",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/connectivity",
             "name": "Connectivity"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/eulerianPath",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/eulerianPath",
             "name": "Eulerian Path"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/linkPrediction",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/linkPrediction",
             "name": "Link Prediction"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/shortestPath",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/shortestPath",
             "name": "Shortest Path"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/centrality",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/centrality",
             "name": "Centrality"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/networkReduction",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/networkReduction",
             "name": "Network Reduction"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/communities",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/communities",
             "name": "Communities"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/topologicalSortOrdering",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/topologicalSortOrdering",
             "name": "Topological Sort/Ordering"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/nodeEmbeddings",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/nodeEmbeddings",
             "name": "Node Embeddings"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/multirelational",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/multirelational",
             "name": "Multirelational Graph"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/storingGraphs",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/storingGraphs",
             "name": "Storing Graphs"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/generalDefinition",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/generalDefinition",
             "name": "General Definition"
         },
         {
-            "id": "/garden/cs/algd/graphsNetworks/statistics",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/graphsNetworks/statistics",
             "name": "Statistics with Graphs"
         },
         {
-            "id": "/garden/cs/algd/searchingSorting/bubbleSort",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/bubbleSort",
             "name": "Bubble Sort"
         },
         {
-            "id": "/garden/cs/algd/searchingSorting/insertionSort",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/insertionSort",
             "name": "Insertion Sort"
         },
         {
-            "id": "/garden/cs/algd/searchingSorting/searching",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/searching",
             "name": "Searching"
         },
         {
-            "id": "/garden/cs/algd/searchingSorting/mergeSort",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/mergeSort",
             "name": "Merge Sort"
         },
         {
-            "id": "/garden/cs/algd/searchingSorting/quickSort",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/quickSort",
             "name": "Quick Sort"
         },
         {
-            "id": "/garden/cs/algd/searchingSorting/stableSorting",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/stableSorting",
             "name": "Stable Sorting Algorithms"
         },
         {
-            "id": "/garden/cs/algd/searchingSorting/heapSort",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/heapSort",
             "name": "Heap Sort"
         },
         {
-            "id": "/garden/cs/algd/searchingSorting/countingSort",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/countingSort",
             "name": "Counting Sort"
         },
         {
-            "id": "/garden/cs/algd/searchingSorting/radixSort",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/radixSort",
             "name": "Radix Sort"
         },
         {
-            "id": "/garden/cs/algd/searchingSorting/selectionSort",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/searchingSorting/selectionSort",
             "name": "Selection Sort"
         },
         {
-            "id": "/garden/cs/algd/dynamicProgramming/longestCommonSubsequence",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/dynamicProgramming/longestCommonSubsequence",
             "name": "Longest Common Subsequence"
         },
         {
-            "id": "/garden/cs/algd/dynamicProgramming/longestIncreasingSubsequence",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/dynamicProgramming/longestIncreasingSubsequence",
             "name": "Longest Increasing Subsequence"
         },
         {
-            "id": "/garden/cs/algd/dynamicProgramming/introduction",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/dynamicProgramming/introduction",
             "name": "Introduction to DP"
         },
         {
-            "id": "/garden/cs/algd/dynamicProgramming/coinsLine",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/dynamicProgramming/coinsLine",
             "name": "Coins in a Line"
         },
         {
-            "id": "/garden/cs/algd/dynamicProgramming/knapsack",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/dynamicProgramming/knapsack",
             "name": "Knapsack Problem"
         },
         {
-            "id": "/garden/cs/algd/dynamicProgramming/subsetSum",
+            "id": "/digitalGarden/cs/algorithmsDataStructures/dynamicProgramming/subsetSum",
             "name": "Subset Sum Problem"
         },
         {
-            "id": "/garden/cs/csharp/collectionsGenerics",
+            "id": "/digitalGarden/cs/csharp/collectionsGenerics",
             "name": "Collections and Generics"
         },
         {
-            "id": "/garden/cs/csharp/reflection",
+            "id": "/digitalGarden/cs/csharp/reflection",
             "name": "Reflection"
         },
         {
-            "id": "/garden/cs/csharp/concurrency",
+            "id": "/digitalGarden/cs/csharp/concurrency",
             "name": "Concurrency"
         },
         {
-            "id": "/garden/cs/csharp/buildingBlocks",
+            "id": "/digitalGarden/cs/csharp/buildingBlocks",
             "name": "Building Blocks of C#"
         },
         {
-            "id": "/garden/cs/csharp/parallelism",
+            "id": "/digitalGarden/cs/csharp/parallelism",
             "name": "Parallelism"
         },
         {
-            "id": "/garden/cs/csharp/lambdasLinq",
+            "id": "/digitalGarden/cs/csharp/lambdasLinq",
             "name": "Lambdas and LINQ"
         },
         {
-            "id": "/garden/cs/csharp/inheritance",
+            "id": "/digitalGarden/cs/csharp/inheritance",
             "name": "Inheritance"
         },
         {
-            "id": "/garden/cs/csharp/resourceManagement",
+            "id": "/digitalGarden/cs/csharp/resourceManagement",
             "name": "Resource Management"
         },
         {
-            "id": "/garden/cs/csharp/essentials",
+            "id": "/digitalGarden/cs/csharp/essentials",
             "name": "The Essentials"
         },
         {
-            "id": "/garden/cs/csharp/delegatesEvents",
+            "id": "/digitalGarden/cs/csharp/delegatesEvents",
             "name": "Delegates and Events"
         },
         {
-            "id": "/garden/cs/csharp/advancedUsage",
+            "id": "/digitalGarden/cs/csharp/advancedUsage",
             "name": "Advanced Usage"
         },
         {
-            "id": "/garden/cs/csharp/fileIO",
+            "id": "/digitalGarden/cs/csharp/fileIO",
             "name": "Filo I/O"
         },
         {
-            "id": "/garden/cs/csharp/interoperability",
+            "id": "/digitalGarden/cs/csharp/interoperability",
             "name": "Interoperability"
         },
         {
-            "id": "/garden/cs/aws/practitioner",
+            "id": "/digitalGarden/cs/aws/practitioner",
             "name": "Cloud Practitioner"
         },
         {
-            "id": "/garden/cs/concurrentParallel/actorModel",
+            "id": "/digitalGarden/cs/concurrentParallel/actorModel",
             "name": "Actor Model"
         },
         {
-            "id": "/garden/cs/concurrentParallel/conditionVariables",
+            "id": "/digitalGarden/cs/concurrentParallel/conditionVariables",
             "name": "Condition Variables"
         },
         {
-            "id": "/garden/cs/concurrentParallel/threads",
+            "id": "/digitalGarden/cs/concurrentParallel/threads",
             "name": "Threads"
         },
         {
-            "id": "/garden/cs/concurrentParallel/javaMemoryModel",
+            "id": "/digitalGarden/cs/concurrentParallel/javaMemoryModel",
             "name": "JMM - Java Memory Model"
         },
         {
-            "id": "/garden/cs/concurrentParallel/synchronizers",
+            "id": "/digitalGarden/cs/concurrentParallel/synchronizers",
             "name": "Synchronizers"
         },
         {
-            "id": "/garden/cs/concurrentParallel/locking",
+            "id": "/digitalGarden/cs/concurrentParallel/locking",
             "name": "Locking"
         },
         {
-            "id": "/garden/cs/concurrentParallel/scalaSTM",
+            "id": "/digitalGarden/cs/concurrentParallel/scalaSTM",
             "name": "STM - Software Transactional Memory"
         },
         {
-            "id": "/garden/cs/concurrentParallel/introduction",
+            "id": "/digitalGarden/cs/concurrentParallel/introduction",
             "name": "Introduction to Concurrent Programming"
         },
         {
-            "id": "/garden/cs/concurrentParallel/lockFreeProgramming",
+            "id": "/digitalGarden/cs/concurrentParallel/lockFreeProgramming",
             "name": "Lock-Free Programming"
         },
         {
-            "id": "/garden/cs/concurrentParallel/executorFramework",
+            "id": "/digitalGarden/cs/concurrentParallel/executorFramework",
             "name": "The Executor Framework"
         },
         {
-            "id": "/garden/cs/concurrentParallel/safeObjectSharing",
+            "id": "/digitalGarden/cs/concurrentParallel/safeObjectSharing",
             "name": "Safe Object Sharing"
         },
         {
-            "id": "/garden/cs/concurrentParallel/scalaConcurrency",
+            "id": "/digitalGarden/cs/concurrentParallel/scalaConcurrency",
             "name": "Concurrent Programming in Scala"
         },
         {
-            "id": "/garden/cs/concurrentParallel/interrupts",
+            "id": "/digitalGarden/cs/concurrentParallel/interrupts",
             "name": "Interrupts"
         },
         {
-            "id": "/garden/cs/javaScript/tools",
+            "id": "/digitalGarden/cs/javaScript/tools",
             "name": "Tools"
         },
         {
-            "id": "/garden/cs/javaScript/metaProgramming",
+            "id": "/digitalGarden/cs/javaScript/metaProgramming",
             "name": "Meta Programming"
         },
         {
-            "id": "/garden/cs/javaScript/arraysIterables",
+            "id": "/digitalGarden/cs/javaScript/arraysIterables",
             "name": "Arrays and Iterables"
         },
         {
-            "id": "/garden/cs/javaScript/basics",
+            "id": "/digitalGarden/cs/javaScript/basics",
             "name": "The Basics"
         },
         {
-            "id": "/garden/cs/javaScript/dom",
+            "id": "/digitalGarden/cs/javaScript/dom",
             "name": "The DOM"
         },
         {
-            "id": "/garden/cs/javaScript/asyncPromises",
+            "id": "/digitalGarden/cs/javaScript/asyncPromises",
             "name": "Async and Promises"
         },
         {
-            "id": "/garden/cs/javaScript/modules",
+            "id": "/digitalGarden/cs/javaScript/modules",
             "name": "Modules"
         },
         {
-            "id": "/garden/cs/javaScript/bindingThis",
+            "id": "/digitalGarden/cs/javaScript/bindingThis",
             "name": "Binding and This"
         },
         {
-            "id": "/garden/cs/javaScript/objectsClassesPrototypes",
+            "id": "/digitalGarden/cs/javaScript/objectsClassesPrototypes",
             "name": "Objects, Classes and Prototypes"
         },
         {
-            "id": "/garden/cs/javaScript/typeScript/functions",
+            "id": "/digitalGarden/cs/javaScript/typeScript/functions",
             "name": "Functions"
         },
         {
-            "id": "/garden/cs/javaScript/typeScript/classesInterfaces",
+            "id": "/digitalGarden/cs/javaScript/typeScript/classesInterfaces",
             "name": "Classes and Interfaces"
         },
         {
-            "id": "/garden/cs/javaScript/typeScript/types",
+            "id": "/digitalGarden/cs/javaScript/typeScript/types",
             "name": "TypeScript and its Types"
         },
         {
-            "id": "/garden/cs/c/arrays",
+            "id": "/digitalGarden/cs/c/arrays",
             "name": "Arrays"
         },
         {
-            "id": "/garden/cs/c/standardFileIO",
+            "id": "/digitalGarden/cs/c/standardFileIO",
             "name": "Standard File I/O"
         },
         {
-            "id": "/garden/cs/c/controlFlow",
+            "id": "/digitalGarden/cs/c/controlFlow",
             "name": "Control Flow"
         },
         {
-            "id": "/garden/cs/c/functions",
+            "id": "/digitalGarden/cs/c/functions",
             "name": "Functions"
         },
         {
-            "id": "/garden/cs/c/pointers",
+            "id": "/digitalGarden/cs/c/pointers",
             "name": "Pointers"
         },
         {
-            "id": "/garden/cs/c/introduction",
+            "id": "/digitalGarden/cs/c/introduction",
             "name": "Introduction to C"
         },
         {
-            "id": "/garden/cs/c/variablesDataTypes",
+            "id": "/digitalGarden/cs/c/variablesDataTypes",
             "name": "Variables and Data Types"
         },
         {
-            "id": "/garden/cs/c/structures",
+            "id": "/digitalGarden/cs/c/structures",
             "name": "Structures"
         },
         {
-            "id": "/garden/cs/c/strings",
+            "id": "/digitalGarden/cs/c/strings",
             "name": "Strings"
         },
         {
-            "id": "/garden/cs/c/systemProgramming/timeMeasuring",
+            "id": "/digitalGarden/cs/c/systemProgramming/timeMeasuring",
             "name": "Time Measuring"
         },
         {
-            "id": "/garden/cs/c/systemProgramming/sockets",
+            "id": "/digitalGarden/cs/c/systemProgramming/sockets",
             "name": "Sockets"
         },
         {
-            "id": "/garden/cs/c/systemProgramming/threads",
+            "id": "/digitalGarden/cs/c/systemProgramming/threads",
             "name": "Threads and Synchronization with C"
         },
         {
-            "id": "/garden/cs/c/systemProgramming/threads",
+            "id": "/digitalGarden/cs/c/systemProgramming/threads",
             "name": "define errno (*__errno_location())"
         },
         {
-            "id": "/garden/cs/c/systemProgramming/introduction",
+            "id": "/digitalGarden/cs/c/systemProgramming/introduction",
             "name": "Introduction to System Programming"
         },
         {
-            "id": "/garden/cs/c/systemProgramming/processesSignals",
+            "id": "/digitalGarden/cs/c/systemProgramming/processesSignals",
             "name": "Processes and Signals"
         },
         {
-            "id": "/garden/cs/c/systemProgramming/posixFileIO",
+            "id": "/digitalGarden/cs/c/systemProgramming/posixFileIO",
             "name": "POSIX File I/O"
         },
         {
-            "id": "/garden/cs/c/systemProgramming/ipcWithPipes",
+            "id": "/digitalGarden/cs/c/systemProgramming/ipcWithPipes",
             "name": "IPC with Pipes"
         },
         {
-            "id": "/garden/cs/c/systemProgramming/posixIPC",
+            "id": "/digitalGarden/cs/c/systemProgramming/posixIPC",
             "name": "POSIX Interprocess Communication"
         },
         {
-            "id": "/garden/cs/git/commonProblems",
+            "id": "/digitalGarden/cs/git/commonProblems",
             "name": "Common Problems"
         },
         {
-            "id": "/garden/cs/git/basics",
+            "id": "/digitalGarden/cs/git/basics",
             "name": "Git Basics"
         },
         {
-            "id": "/garden/ml/lasso",
+            "id": "/digitalGarden/ml/lasso",
             "name": "Lasso Regression"
         },
         {
-            "id": "/garden/ml/ridge",
+            "id": "/digitalGarden/ml/ridge",
             "name": "Ridge Regression"
         },
         {
-            "id": "/garden/ml/backprop",
+            "id": "/digitalGarden/ml/backprop",
             "name": "Backpropagation"
         },
         {
-            "id": "/garden/ml/kMeans",
+            "id": "/digitalGarden/ml/kMeans",
             "name": "K-Means Clustering"
         },
         {
-            "id": "/garden/ml/wordEmbeddings",
+            "id": "/digitalGarden/ml/wordEmbeddings",
             "name": "Word Embeddings"
         },
         {
-            "id": "/garden/ml/mlp",
+            "id": "/digitalGarden/ml/mlp",
             "name": "MLP - Multi Layer Perceptron"
         },
         {
-            "id": "/garden/ml/knn",
+            "id": "/digitalGarden/ml/knn",
             "name": "K-Nearest Neighbors"
         },
         {
-            "id": "/garden/ml/courseraDL",
+            "id": "/digitalGarden/ml/courseraDL",
             "name": "Coursera - Deep Learning Specialization"
         },
         {
-            "id": "/garden/ml/linkAnalysis",
+            "id": "/digitalGarden/ml/linkAnalysis",
             "name": "Link Analysis"
         },
         {
-            "id": "/garden/ml/naiveBayes",
+            "id": "/digitalGarden/ml/naiveBayes",
             "name": "Naive Bayes"
         },
         {
-            "id": "/garden/ml/convolution",
+            "id": "/digitalGarden/ml/convolution",
             "name": "Convolution"
         },
         {
-            "id": "/garden/ml/svm",
+            "id": "/digitalGarden/ml/svm",
             "name": "Support Vector Machines"
         },
         {
-            "id": "/garden/ml/tfidf",
+            "id": "/digitalGarden/ml/tfidf",
             "name": "TF-IDF"
         },
         {
-            "id": "/garden/ml/mainIdeas",
+            "id": "/digitalGarden/ml/mainIdeas",
             "name": "Main Ideas of Machine Learning"
         },
         {
-            "id": "/garden/ml/powerLaw",
+            "id": "/digitalGarden/ml/powerLaw",
             "name": "Power Law"
         },
         {
-            "id": "/garden/ml/logistic",
+            "id": "/digitalGarden/ml/logistic",
             "name": "Logistic Regression"
         },
         {
-            "id": "/garden/ml/decisionTrees",
+            "id": "/digitalGarden/ml/decisionTrees",
             "name": "Decision Trees"
         },
         {
-            "id": "/garden/ml/gradientDescent",
+            "id": "/digitalGarden/ml/gradientDescent",
             "name": "Gradient Descent"
         },
         {
-            "id": "/garden/ml/courseraML",
+            "id": "/digitalGarden/ml/courseraML",
             "name": "Coursera Machine Learning"
         },
         {
-            "id": "/garden/ml/linear",
+            "id": "/digitalGarden/ml/linear",
             "name": "Linear Classification & Regression"
         },
         {
-            "id": "/garden/ml/gnn",
+            "id": "/digitalGarden/ml/gnn",
             "name": "Graph Neural Networks"
         },
         {
-            "id": "/garden/ml/correlationAuto",
+            "id": "/digitalGarden/ml/correlationAuto",
             "name": "Autocorrelation"
         },
         {
-            "id": "/garden/ml/crossValidation",
+            "id": "/digitalGarden/ml/crossValidation",
             "name": "Cross-Validation"
         },
         {
-            "id": "/garden/ml/miningDataStreams",
+            "id": "/digitalGarden/ml/miningDataStreams",
             "name": "Mining Data Streams"
         },
         {
-            "id": "/garden/ml/correlationCross",
+            "id": "/digitalGarden/ml/correlationCross",
             "name": "Cross-Correlation"
         },
         {
-            "id": "/garden/ml/randomForests",
+            "id": "/digitalGarden/ml/randomForests",
             "name": "Random Forests"
         },
         {
-            "id": "/garden/ml/pageRank",
+            "id": "/digitalGarden/ml/pageRank",
             "name": "PageRank"
         },
         {
-            "id": "/garden/ml/correlation",
+            "id": "/digitalGarden/ml/correlation",
             "name": "Correlation"
         },
         {
-            "id": "/garden/ml/findingSimilarItems",
+            "id": "/digitalGarden/ml/findingSimilarItems",
             "name": "Finding Similar Items"
         },
         {
-            "id": "/garden/ml/llms/lora",
+            "id": "/digitalGarden/ml/llms/lora",
             "name": "LoRA"
         },
         {
-            "id": "/garden/ml/llms/mamba",
+            "id": "/digitalGarden/ml/llms/mamba",
             "name": "Mamba"
         },
         {
-            "id": "/garden/ml/llms/rnn",
+            "id": "/digitalGarden/ml/llms/rnn",
             "name": "Recurrent Neural Networks"
         },
         {
-            "id": "/garden/ml/llms/gpt",
+            "id": "/digitalGarden/ml/llms/gpt",
             "name": "GPT"
         },
         {
-            "id": "/garden/ml/llms/attention",
+            "id": "/digitalGarden/ml/llms/attention",
             "name": "The Attention Mechanism"
         },
         {
-            "id": "/garden/ml/llms/gpt2",
+            "id": "/digitalGarden/ml/llms/gpt2",
             "name": "GPT-2"
         },
         {
-            "id": "/garden/ml/llms/roberta",
+            "id": "/digitalGarden/ml/llms/roberta",
             "name": "RoBERTa"
         },
         {
-            "id": "/garden/ml/llms/transformers",
+            "id": "/digitalGarden/ml/llms/transformers",
             "name": "Transformers"
         },
         {
-            "id": "/garden/ml/llms/lstm",
+            "id": "/digitalGarden/ml/llms/lstm",
             "name": "Long Short-Term Memory"
         },
         {
-            "id": "/garden/ml/llms/xlstm",
+            "id": "/digitalGarden/ml/llms/xlstm",
             "name": "xLSTM"
         },
         {
-            "id": "/garden/ml/llms/bert",
+            "id": "/digitalGarden/ml/llms/bert",
             "name": "BERT"
         },
         {
-            "id": "/garden/maths/latexGuidelines",
+            "id": "/digitalGarden/maths/latexGuidelines",
             "name": "LaTeX Guidelines"
         },
         {
-            "id": "/garden/maths/scientificNotation",
+            "id": "/digitalGarden/maths/scientificNotation",
             "name": "Scientific Notation"
         },
         {
-            "id": "/garden/maths/trigonometry",
+            "id": "/digitalGarden/maths/trigonometry",
             "name": "Trigonometry"
         },
         {
-            "id": "/garden/maths/discrete/logicTheory",
+            "id": "/digitalGarden/maths/discrete/logicTheory",
             "name": "Logic Theory"
         },
         {
-            "id": "/garden/maths/discrete/combinatorics",
+            "id": "/digitalGarden/maths/discrete/combinatorics",
             "name": "Combinatorics "
         },
         {
-            "id": "/garden/maths/discrete/infinityCountability",
+            "id": "/digitalGarden/maths/discrete/infinityCountability",
             "name": "Infinity & Countability"
         },
         {
-            "id": "/garden/maths/discrete/proofs",
+            "id": "/digitalGarden/maths/discrete/proofs",
             "name": "Writing Proofs"
         },
         {
-            "id": "/garden/maths/discrete/setTheory",
+            "id": "/digitalGarden/maths/discrete/setTheory",
             "name": "Set Theory"
         },
         {
-            "id": "/garden/maths/discrete/intervals",
+            "id": "/digitalGarden/maths/discrete/intervals",
             "name": "Intervals"
         },
         {
-            "id": "/garden/maths/discrete/algebraicStructures",
+            "id": "/digitalGarden/maths/discrete/algebraicStructures",
             "name": "Algebraic Structures"
         },
         {
-            "id": "/garden/maths/discrete/homomorphisms",
+            "id": "/digitalGarden/maths/discrete/homomorphisms",
             "name": "Homomorphisms"
         },
         {
-            "id": "/garden/maths/discrete/relationsFunctions/partialOrders",
+            "id": "/digitalGarden/maths/discrete/relationsFunctions/partialOrders",
             "name": "Partial & Total Orders"
         },
         {
-            "id": "/garden/maths/discrete/relationsFunctions/recurrenceRelations",
+            "id": "/digitalGarden/maths/discrete/relationsFunctions/recurrenceRelations",
             "name": "Recurrence Relations"
         },
         {
-            "id": "/garden/maths/discrete/relationsFunctions/relations",
+            "id": "/digitalGarden/maths/discrete/relationsFunctions/relations",
             "name": "Relations"
         },
         {
-            "id": "/garden/maths/discrete/relationsFunctions/functions",
+            "id": "/digitalGarden/maths/discrete/relationsFunctions/functions",
             "name": "Functions"
         },
         {
-            "id": "/garden/maths/discrete/relationsFunctions/equivalenceRelations",
+            "id": "/digitalGarden/maths/discrete/relationsFunctions/equivalenceRelations",
             "name": "Equivalence Relations"
         },
         {
-            "id": "/garden/maths/commonFunctions/factorial",
+            "id": "/digitalGarden/maths/commonFunctions/factorial",
             "name": "Factorial"
         },
         {
-            "id": "/garden/maths/commonFunctions/binomialCoefficient",
+            "id": "/digitalGarden/maths/commonFunctions/binomialCoefficient",
             "name": "Binomial Coefficient"
         },
         {
-            "id": "/garden/maths/commonFunctions/absolute",
+            "id": "/digitalGarden/maths/commonFunctions/absolute",
             "name": "Absolute Value"
         },
         {
-            "id": "/garden/maths/complexNumbers/explanation",
+            "id": "/digitalGarden/maths/complexNumbers/explanation",
             "name": "Complex Numbers"
         },
         {
-            "id": "/garden/maths/complexNumbers/cheatsheet",
+            "id": "/digitalGarden/maths/complexNumbers/cheatsheet",
             "name": "Cheatsheet"
         },
         {
-            "id": "/garden/maths/linearAlgebra/qrDecomposition",
+            "id": "/digitalGarden/maths/linearAlgebra/qrDecomposition",
             "name": "QR Decomposition"
         },
         {
-            "id": "/garden/maths/linearAlgebra/inverse",
+            "id": "/digitalGarden/maths/linearAlgebra/inverse",
             "name": "Matrix inverse"
         },
         {
-            "id": "/garden/maths/linearAlgebra/definiteness",
+            "id": "/digitalGarden/maths/linearAlgebra/definiteness",
             "name": "Definiteness of a Matrix"
         },
         {
-            "id": "/garden/maths/linearAlgebra/determinants",
+            "id": "/digitalGarden/maths/linearAlgebra/determinants",
             "name": "Determinants"
         },
         {
-            "id": "/garden/maths/linearAlgebra/matrices",
+            "id": "/digitalGarden/maths/linearAlgebra/matrices",
             "name": "Matrices"
         },
         {
-            "id": "/garden/maths/linearAlgebra/gaussianElimination",
+            "id": "/digitalGarden/maths/linearAlgebra/gaussianElimination",
             "name": "Gaussian Elimination"
         },
         {
-            "id": "/garden/maths/linearAlgebra/hadamardProduct",
+            "id": "/digitalGarden/maths/linearAlgebra/hadamardProduct",
             "name": "Hadamard Product"
         },
         {
-            "id": "/garden/maths/linearAlgebra/vectorMatrixSpaces",
+            "id": "/digitalGarden/maths/linearAlgebra/vectorMatrixSpaces",
             "name": "Vector and Matrix Spaces"
         },
         {
-            "id": "/garden/maths/linearAlgebra/luDecomposition",
+            "id": "/digitalGarden/maths/linearAlgebra/luDecomposition",
             "name": "LU Decomposotion"
         },
         {
-            "id": "/garden/maths/linearAlgebra/svd",
+            "id": "/digitalGarden/maths/linearAlgebra/svd",
             "name": "SVD - Singular Value Decomposition"
         },
         {
-            "id": "/garden/maths/linearAlgebra/vectors",
+            "id": "/digitalGarden/maths/linearAlgebra/vectors",
             "name": "Vectors"
         },
         {
-            "id": "/garden/maths/linearAlgebra/eigenvaluesEigenvectors",
+            "id": "/digitalGarden/maths/linearAlgebra/eigenvaluesEigenvectors",
             "name": "Eigenvalues and Eigenvectors"
         },
         {
-            "id": "/garden/maths/linearAlgebra/transformations",
+            "id": "/digitalGarden/maths/linearAlgebra/transformations",
             "name": "Linear Transformations"
         },
         {
-            "id": "/garden/maths/linearAlgebra/crossProduct",
+            "id": "/digitalGarden/maths/linearAlgebra/crossProduct",
             "name": "Cross Product"
         },
         {
-            "id": "/garden/maths/linearAlgebra/rank",
+            "id": "/digitalGarden/maths/linearAlgebra/rank",
             "name": "Matrix Rank"
         },
         {
-            "id": "/garden/maths/linearAlgebra/broadcasting",
+            "id": "/digitalGarden/maths/linearAlgebra/broadcasting",
             "name": "Broadcasting"
         },
         {
-            "id": "/garden/maths/linearAlgebra/cramerRule",
+            "id": "/digitalGarden/maths/linearAlgebra/cramerRule",
             "name": "Cramer's Rule"
         },
         {
-            "id": "/garden/maths/linearAlgebra/equations",
+            "id": "/digitalGarden/maths/linearAlgebra/equations",
             "name": "Linear Equations"
         },
         {
-            "id": "/garden/maths/linearAlgebra/moorePenrose",
+            "id": "/digitalGarden/maths/linearAlgebra/moorePenrose",
             "name": "Moore-Penrose Pseudoinverse"
         },
         {
-            "id": "/garden/maths/linearAlgebra/quadraticForms",
+            "id": "/digitalGarden/maths/linearAlgebra/quadraticForms",
             "name": "Quadratic Forms"
         },
         {
-            "id": "/garden/maths/linearAlgebra/pca",
+            "id": "/digitalGarden/maths/linearAlgebra/pca",
             "name": "PCA - Principal Component Analysis"
         },
         {
-            "id": "/garden/maths/probabilityStatistics/independentRandomVariables",
+            "id": "/digitalGarden/maths/probabilityStatistics/independentRandomVariables",
             "name": "Independent Random Variables"
         },
         {
-            "id": "/garden/maths/probabilityStatistics/queueingTheory",
+            "id": "/digitalGarden/maths/probabilityStatistics/queueingTheory",
             "name": "Queueing theory"
         },
         {
-            "id": "/garden/maths/probabilityStatistics/combinatorics",
+            "id": "/digitalGarden/maths/probabilityStatistics/combinatorics",
             "name": "Combinatorics"
         },
         {
-            "id": "/garden/maths/probabilityStatistics/probability",
+            "id": "/digitalGarden/maths/probabilityStatistics/probability",
             "name": "Probability"
         },
         {
-            "id": "/garden/maths/probabilityStatistics/discreteRandomVariables",
+            "id": "/digitalGarden/maths/probabilityStatistics/discreteRandomVariables",
             "name": "Discrete Random Variables"
         },
         {
-            "id": "/garden/maths/probabilityStatistics/stdVarianceCovariance",
+            "id": "/digitalGarden/maths/probabilityStatistics/stdVarianceCovariance",
             "name": "Standard Deviation, Variance and Covariance"
         },
         {
-            "id": "/garden/maths/probabilityStatistics/markovChains",
+            "id": "/digitalGarden/maths/probabilityStatistics/markovChains",
             "name": "Markov Chains"
         },
         {
-            "id": "/garden/maths/probabilityStatistics/continuousRandomVariables",
+            "id": "/digitalGarden/maths/probabilityStatistics/continuousRandomVariables",
             "name": "Continuous Random Variables"
         },
         {
-            "id": "/garden/maths/probabilityStatistics/randomStuff",
+            "id": "/digitalGarden/maths/probabilityStatistics/randomStuff",
             "name": "Grenzwerts\u00e4tze"
         },
         {
-            "id": "/garden/maths/calculus/polynomials",
+            "id": "/digitalGarden/maths/calculus/polynomials",
             "name": "Polynomials"
         },
         {
-            "id": "/garden/maths/calculus/functions",
+            "id": "/digitalGarden/maths/calculus/functions",
             "name": "Function Analysis"
         },
         {
-            "id": "/garden/maths/calculus/differentiation",
+            "id": "/digitalGarden/maths/calculus/differentiation",
             "name": "Differentiation"
         },
         {
-            "id": "/garden/maths/calculus/analysis",
+            "id": "/digitalGarden/maths/calculus/analysis",
             "name": "Analysis"
         },
         {
-            "id": "/garden/maths/calculus/newtonsMethod",
+            "id": "/digitalGarden/maths/calculus/newtonsMethod",
             "name": "Newton's Methods"
         },
         {
-            "id": "/garden/maths/calculus/sequencesAndSeries/productOperator",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/productOperator",
             "name": "Product Operator"
         },
         {
-            "id": "/garden/maths/calculus/sequencesAndSeries/taylor",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/taylor",
             "name": "Taylor Series"
         },
         {
-            "id": "/garden/maths/calculus/sequencesAndSeries/power",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/power",
             "name": "Power Series"
         },
         {
-            "id": "/garden/maths/calculus/sequencesAndSeries/series",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/series",
             "name": "What is a Series?"
         },
         {
-            "id": "/garden/maths/calculus/sequencesAndSeries/sumOperator",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/sumOperator",
             "name": "Sum Operator"
         },
         {
-            "id": "/garden/maths/calculus/sequencesAndSeries/fourier",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/fourier",
             "name": "Fourier Series"
         },
         {
-            "id": "/garden/maths/calculus/sequencesAndSeries/sequences",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/sequences",
             "name": "Sequences "
         },
         {
-            "id": "/garden/maths/calculus/sequencesAndSeries/convergence",
+            "id": "/digitalGarden/maths/calculus/sequencesAndSeries/convergence",
             "name": "Convergence of Series"
         },
         {
-            "id": "/garden/maths/calculus/integrals/integrationByPartialFractions",
+            "id": "/digitalGarden/maths/calculus/integrals/integrationByPartialFractions",
             "name": "Integration by Partial Fraction Decomposition"
         },
         {
-            "id": "/garden/maths/calculus/integrals/integrationBySubstitution",
+            "id": "/digitalGarden/maths/calculus/integrals/integrationBySubstitution",
             "name": "Integration by Substitution"
         },
         {
-            "id": "/garden/maths/calculus/integrals/definiteIntegrals",
+            "id": "/digitalGarden/maths/calculus/integrals/definiteIntegrals",
             "name": "Definite Integrals"
         },
         {
-            "id": "/garden/maths/calculus/integrals/integrationRules",
+            "id": "/digitalGarden/maths/calculus/integrals/integrationRules",
             "name": "Integration Rules"
         },
         {
-            "id": "/garden/maths/calculus/integrals/improperIntegrals",
+            "id": "/digitalGarden/maths/calculus/integrals/improperIntegrals",
             "name": "Improper Integrals"
         },
         {
-            "id": "/garden/maths/calculus/integrals/antiderivatives",
+            "id": "/digitalGarden/maths/calculus/integrals/antiderivatives",
             "name": "Antiderivatives"
         },
         {
-            "id": "/garden/maths/calculus/integrals/doubleIntegrals",
+            "id": "/digitalGarden/maths/calculus/integrals/doubleIntegrals",
             "name": "Double Integrals"
         },
         {
-            "id": "/garden/maths/calculus/integrals/numericalIntegration",
+            "id": "/digitalGarden/maths/calculus/integrals/numericalIntegration",
             "name": "Numerical Integration"
         },
         {
-            "id": "/garden/maths/calculus/integrals/explained",
+            "id": "/digitalGarden/maths/calculus/integrals/explained",
             "name": "Integrals Explained"
         },
         {
-            "id": "/garden/maths/calculus/integrals/integrationByParts",
+            "id": "/digitalGarden/maths/calculus/integrals/integrationByParts",
             "name": "Integration by Parts"
         },
         {
-            "id": "/garden/maths/calculus/integrals/listOfIntegrals",
+            "id": "/digitalGarden/maths/calculus/integrals/listOfIntegrals",
             "name": "List of Integrals"
         }
     ]

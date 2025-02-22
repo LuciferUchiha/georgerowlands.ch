@@ -1,0 +1,273 @@
+import Callout from "~/components/Callout/Callout";
+import Image from "~/components/Image/Image";
+
+# Relations
+
+In mathematics we use many symbols such as $\leq$, $\geq$, $<$, $>$, $=$, $\neq$ to represent the relationship between two objects. These symbols are called relations or relational operators because they convey the relationship between two objects.
+These realtions are defined on a specific set. For example, the relation $\leq$ is defined on the set of real numbers $\mathbb{R}$. To define a relation, we need to specify a set of order pairs that relates a set $A$'s elements to each other i.e. is a subset of $A \times A$:
+These order pairs are special as $(a, b)$ is used to define the relationship between $a$ and $b$, so we can say that "$a$ relates to $b$". 
+
+$$
+R \subseteq \{(a, b) \in A \times A\}
+$$
+
+Because the relations is defined on the same set twice it is called a homogeneous relation, from the Greek word "homo" meaning "same" or "identical".
+
+Lets now put this all together and define a relation on the set $A = \{1, 2, 3, 4\}$:
+
+$$
+R = \{(1, 1), (1, 3), (3, 1), (3, 3), (2, 2), (2, 4), (4, 2), (4, 4)\} \subseteq A \times A
+$$
+
+If we then take an element of the realtion such as $(1, 1)$ it means that $1$ relates to $1$ and $(1, 3)$ means that $1$ relates to $3$. The relation shown above can be thought of as "has the same parity" as $1$ and $3$ are both odd and $2$ and $4$ are both even.
+This relationship can also be denoted as followed:
+
+$$
+(a, b) \in R \iff aRb
+$$
+
+This means that if the order pair $(a, b)$ is in the relation $R$, then $a$ relates to $b$, so $aRb$. If they are not in the relation, then $a$ does not relate to $b$ and we can denote this as $a \cancel{R} b$.
+
+There are many ways to show relations such as a table or a directed graph, sometimes also called a digraph, arrow diagram or mapping diagram. The table below shows the relation $R$ defined above:
+
+| $R$ | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+|1|1|0|1|0|
+|2|0|1|0|1|
+|3|1|0|1|0|
+|4|0|1|0|1|
+
+The directed graph of the relation $R$:
+
+<Image 
+    src="/maths/relationsDiagram.png"
+    caption="A directed graph of the relation above."
+    width={500}
+/>
+
+## Empty Relation
+
+The empty relation is a relation that has no elements in it. This means that no elements in the set relate to each other. The empty relation is denoted by $\emptyset$ or $\{\}$.
+In other words if:
+
+$$
+R = \emptyset
+$$
+
+Then for all elements $a, b \in A$:
+
+$$
+(a, b) \notin R \text{ or } a \cancel{R} b
+$$
+
+## Universal Relation
+
+The universal relation is a homogeneous relation that contains all possible order pairs of the set $A$. This means that every element in the set relates to every other element. The universal relation is denoted by $A \times A$.
+
+$$
+R = A \times A
+$$
+
+This means that for all elements $a, b \in A$:
+
+$$
+(a, b) \in R \text{ or } aRb
+$$
+
+## Properties of Relations
+
+Depending on the relationship between the elements of a set, a relation can have different properties.
+
+### Reflexive 
+
+A relation $R$ is reflexive if every element in the set $A$ relates to itself. 
+
+$$
+\forall a \in A, (a, a) \in R
+$$
+
+An example of a reflexive relation is the relation $\leq$ on the set of real numbers $\mathbb{R}$ as every number is less than or equal to itself.
+
+We can see in the table below that every element has a "1" in the diagonal and therefore the relation is reflexive.
+The same can be seen in the diagram where every element has a loop to itself.
+
+<Image 
+    src="/maths/relationsReflexive.png"
+    caption="An example of a reflexive relation."
+    width={500}
+/>
+
+### Irreflexive
+
+A relation $R$ is irreflexive if no element in the set $A$ relates to itself.
+
+$$
+\forall a \in A, (a, a) \notin R
+$$
+
+An example of an irreflexive relation is the relation $<$ on the set of real numbers $\mathbb{R}$ as no number is less than itself.
+
+We can see in the table below that every element has a "0" in the diagonal and therefore the relation is irreflexive.
+The same can be seen in the diagram where no element has a loop to itself.
+
+<Image 
+    src="/maths/relationsIrreflexive.png"
+    caption="An example of an irreflexive relation."
+    width={500}
+/>
+
+### Symmetric
+
+A relation $R$ is symmetric if for every element $(a, b)$ in the relation, $(b, a)$ is also in the relation.
+
+$$
+\forall a, b \in A, (a, b) \in R \implies (b, a) \in R
+$$
+
+An example of a symmetric relation is the relation $=$ on the set of real numbers $\mathbb{R}$ as if $a = b$ then $b = a$.
+
+We can see in the table below that if $(a, b)$ is in the relation then $(b, a)$ is also in the relation and therefore the relation is symmetric.
+This means that the table is symmetrical or mirrored along the diagonal. 
+The same can be seen in the diagram where if there is an arrow from $a$ to $b$ then there is an arrow from $b$ to $a$.
+
+<Image 
+    src="/maths/relationsSymmetric.png"
+    caption="An example of a symmetric relation."
+    width={500}
+/>
+
+### Antisymmetric
+
+A relation $R$ is antisymmetric if for every element $(a, b)$ in the relation, $(b, a)$ is not in the relation unless $a = b$.
+
+$$
+\forall a, b \in A, \big[(a, b) \in R \land (b, a) \in R\big] \implies a = b
+$$
+
+An example of an antisymmetric relation is the relation $\geq$ on the set of real numbers $\mathbb{R}$ as if $a \geq b$ and $b \geq a$ then $a = b$.
+
+We can see in the table below that if $(a, b)$ is in the relation and $(b, a)$ is also in the relation then the corresponding diagonal element is a "1" and therefore the relation is antisymmetric.
+The same can be seen in the diagram that there are no arrows from $a$ to $b$ and $b$ to $a$ only one way arrows and loops.
+
+<Image 
+    src="/maths/relationsAntisymmetric.png"
+    caption="An example of an antisymmetric relation."
+    width={500}
+/>
+
+### Asymmetric
+
+A relation $R$ is asymmetric if for every element $(a, b)$ in the relation, $(b, a)$ is not in the relation, even if $a = b$. So it can be thought of as a stricter version of antisymmetric or a combination of antisymmetric and irreflexive.
+
+$$
+\forall a, b \in A, (a, b) \in R \implies (b, a) \notin R
+$$
+
+An example of an asymmetric relation is the relation $<$ on the set of real numbers $\mathbb{R}$ as if $a < b$ then $b \nless a$.
+
+We can see in the table below that if $(a, b)$ is in the relation then $(b, a)$ is not in the relation and all the diagonal elements are "0" and therefore the relation is asymmetric.
+The same can be seen in the diagram that there are no arrows from $a$ to $b$ and $b$ to $a$ and no loops.
+
+<Image 
+    src="/maths/relationsAsymmetric.png"
+    caption="An example of an asymmetric relation."
+    width={500}
+/>
+
+### Transitive
+
+A relation $R$ is transitive if for every element $(a, b)$ and $(b, c)$ in the relation, $(a, c)$ is also in the relation.
+
+$$
+\forall a, b, c \in A, \big[(a, b) \in R \land (b, c) \in R\big] \implies (a, c) \in R
+$$
+
+An example of a transitive relation is the relation $\leq$ on the set of real numbers $\mathbb{R}$ as if $a \leq b$ and $b \leq c$ then $a \leq c$.
+
+We can see in the table below that if $(a, b)$ and $(b, c)$ are in the relation then $(a, c)$ is also in the relation and therefore the relation is transitive.
+The same can be seen in the diagram that if there is an arrow from $a$ to $b$ and $b$ to $c$ then there is an arrow from $a$ to $c$.
+
+<Image 
+    src="/maths/relationsTransitive.png"
+    caption="An example of a transitive relation."
+    width={500}
+/>
+
+<Callout type="info">
+    Importantly note if for example $(a,b) \in R$ and $(b,a) \in R$ then $(a,a)$ and $(b,b)$ must also be in the relation for it to be transitive.
+</Callout>
+
+## Relations between Sets
+
+Relations can also be defined between two different sets, this is called a heterogeneous relation, from the Greek word "hetero" meaning "different". This means that the relation $R$ is a subset of the Cartesian product of the two sets $A$ and $B$, rather than between the cartesian product of the same set $A$.
+
+$$
+R \subseteq A \times B
+$$
+
+The first set $A$ is called the domain and the second set $B$ is called the codomain. This means that the relation assigns elements of the domain to elements of the codomain.
+This can be shown in a directed graph where the elements of the domain are on the left and the elements of the codomain are on the right.
+
+<Image 
+    src="/maths/relationsHeteregenous.png"
+    caption="An example of a relation between two different sets."
+    width={500}
+/>
+
+Depending on the relationship between the elements of the two sets not all elements of the codomain are assigned to an element of the domain. The elements of the codomain that are assigned to an element of the domain are called the range of the relation.
+So in the above diagram the domain is $\{1,2,5,7\}$ and the codomain is $\{a,c,m,n\}$ and the range of the relation is $\{a,c,n\}$.
+
+<Callout type="info">
+When defining a relation between two differenet sets the order matters. This is obvious as if we have a relation between two sets $A$ and $B$ then the order pair $(a, b)$ is not the same as $(b, a)$. 
+</Callout>
+
+## Identity Relations
+
+The identity relation is a special type of relation that is only defined for homogenous relations. The identity relation is a relation where every element in the set relates to itself and no other elements.
+It is a reflexive, symmetric and transitive relation and is denoted by $I_A$ where $A$ is the set that the relation is defined on. 
+
+$$
+I_A = \{(a, a) \in A \times A\}
+$$
+
+## Inverse Relations
+
+The inverse of a relation $R$ is a relation that is the opposite of $R$ i.e. it "undo's" the relationship between the elements of the set. The inverse of a relation $R$ is denoted by $R^{-1}$. 
+
+$$
+R^{-1} = \{(b, a) \in A \times A | (a, b) \in R\}
+$$
+
+This means that if $(a, b)$ is in the relation $R$ then $(b, a)$ is in the inverse relation $R^{-1}$. In other words the domain and codomain of the realtion $R$ is swapped in the inverse relation $R^{-1}$ and become the codomain and domain respectively.
+
+When visualising the inverse relation in a directed graph the arrows are simply reversed.
+
+<Image 
+    src="/maths/relationsInverse.png"
+    caption="On the left is the original relation p and on the right is its inverse relation q."
+    width={700}
+/>
+
+## Composition of Relations
+
+Relations can also be combined or chained together to form a new relation. This is called the composition of relations. The composition of two relations $R$ and $S$ is denoted by $R \circ S$ and is defined as:
+
+$$
+R \circ S = \{(a, c) \in A \times C | \exists b \in B, (a, b) \in R \land (b, c) \in S\}
+$$
+
+This means that if there is an element $(a, b)$ in the relation $R$ and an element $(b, c)$ in the relation $S$ then there is an element $(a, c)$ in the composition of the two relations $R \circ S$.
+
+When visualising the composition of relations in a directed graph the arrows are simply chained together.
+
+<Image 
+    src="/maths/relationsComposition.png"
+    caption="An example of the composition of two relations."
+    width={600}
+/>
+
+<Callout type="info">
+    Importantly note that the composition of relations is not commutative i.e. $R \circ S \neq S \circ R$.
+
+    Also note that the relations are denoted from left to right i.e. $R \circ S$ means that $R$ is applied first and then $S$ is applied. Unlike functions where $f \circ g$ means that $g$ is applied first and then $f$ is applied.
+</Callout>

@@ -1,0 +1,553 @@
+import Callout from "~/components/Callout/Callout";
+
+# Logic Theory
+
+Logic theory is a branch of maths that deals with formal systems of logic. Logic theory is also commonly reffered to as boolean algebra 
+as it primarly deals with the boolean values of true and false.
+
+## Statements
+
+A statement is something such as a sentence that is either true or false. For example, the sentence "Zürich is in Switzerland" is a statement because it is either true or false, but not both. 
+A true/truthy value is represented by the symbol $T$ or $1$ and a false/falsy value is represented by the symbol $F$ or $0$.
+
+<Callout type="example">
+- "There are more wheels then doors in the world" is a statement because it is either true or false. However, I don't know the answer to this question.
+- "My name is George" is a statement (True).
+- "The sky is green" is a statement (False).
+- "What time is it?" is not a statement because it is a question.
+- "This statement is false" is not a statement because it is a paradox. If it is a statement then it must be false which would make it true, but if it is true then it must be false.
+</Callout>
+
+### Compound Statements
+
+Statements can be combined to form compound statements. Just like in natural language, we can use words such as "and", "or" and "not" to combine statements, later 
+we will see that these are also the names of logical operators that are used to combine statements. 
+
+The smallest unit of a compound statement is a simple statement or sometimes called an atomic statement. 
+This is a statement that cannot be broken down any further. 
+
+<Callout type="example">
+If we have the statement $p$ = "Zürich is in Switzerland" (True) and the statement $q$ = "Zürich is the capital of Switzerland" (False, it is Bern), we can combine them to form the compound statement:
+
+"Zürich is in Switzerland AND Zürich is the capital of Switzerland" which is false.
+
+We can also combine them to form the compound statement:
+
+"Zürich is in Switzerland OR Zürich is the capital of Switzerland" which is true.
+
+We can also combine them to form the compound statement:
+
+"Zürich is in Switzerland AND Zürich is NOT the capital of Switzerland" which is true.
+</Callout>
+
+### Open Sentences
+
+An open sentence is a sentence that contains a variable. The sentence is not a statement because it is not true or false until the variable is assigned a value.
+When the variable is assigned a value the open sentence becomes a statement. Unlike a closed/simple/definite statement that we have seen so far, 
+an open sentence can be true for some values of the variable and false for other values of the variable, it only has a definite 
+truth value when the variable is assigned a value. 
+
+<Callout type="example">
+The sentence "x is greater then 5" is an open sentence because it is not true or false until we assign a value to the variable $x$.
+If we assign the value $x = 6$ then the sentence is true, but if we assign the value $x = 4$ then the sentence is false.
+</Callout>
+
+#### Predicates
+
+Open sentences are also often called predicates. A predicate is a function that takes in values for the variables and returns a statement.
+So if we have the open sentence "x is greater then 5" we can write it as a predicate $p(x)$ that takes in a value for $x$ and returns a statement.
+More generally we can write a predicate as:
+
+$$
+p(x_1, x_2, \ldots, x_n)
+$$
+
+where $p$ is a predicate and $x_1, x_2, \ldots, x_n$ are the values for the variables.
+
+<Callout type="example">
+If we have the predicate $p(x, y) = x + y > 5$ then we can evaluate the predicate for the values $x = 2$ and $y = 4$ to get the statement $2 + 4 > 5$ which is true.
+If we evaluate the predicate for the values $x = 1$ and $y = 4$ we get the statement $1 + 4 > 5$ which is false.
+</Callout>
+
+## Logical Operators
+
+Rather then using words to express statements and combinations we can use symbols and operators. Each logical operator has a truth table that defines the output of the operator based on the input statements.
+
+These operators are not just used in logic theory but also in programming languages and circuits in the form of logical gates.
+
+### Conjunction (AND)
+
+The conjunction operator is represented by the symbol $\land$ and is true only if both the input statements $p$ **and** $q$ are true. Hence the name "AND". To remember the symbol $\land$ think of it as a capital letter "A" for "AND".
+
+The truth table for the conjunction operator is as follows for the input statements $p$ and $q$:
+
+| $p$ | $q$ | $p \land q$ |
+| :-: | :-: | :-: |
+| $0$ | $0$ | $0$ |
+| $0$ | $1$ | $0$ |
+| $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ |
+
+<Callout type="example">
+- $1 \land 1 = 1$
+- $1 \land 0 = 0$
+- $(0 \land 1 \land 1) \land 1 = 0$ Notice that we can chain multiple conjunction operators together by going from left to right and using brackets to group the statements.
+- $(1 \land 1 \land 1) \land (1 \land 1) = 1$
+
+We can see a pattern here, the conjunction operator is only true if all the input statements are true, as soon as one of the input statements is false the output is false.
+
+Let's look at the truth table for a composition of conjunction operators:
+
+| $p$ | $q$ | $r$ | $p \land q \land r$ |
+| :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $0$ | $0$ |
+| $0$ | $0$ | $1$ | $0$ |
+| $0$ | $1$ | $0$ | $0$ |
+| $0$ | $1$ | $1$ | $0$ |
+| $1$ | $0$ | $0$ | $0$ |
+| $1$ | $0$ | $1$ | $0$ |
+| $1$ | $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ | $1$ |
+
+</Callout>
+
+
+### Disjunction (OR)
+
+The disjunction operator is represented by the symbol $\lor$ and is true if at least one of the input statements $p$ **or** $q$ is true. Hence the name "OR". 
+To not get $\land$ and $\lor$ confused just remember that $\land$ looks like a capital letter "A" for "AND" and therefore $\lor$ is the other one, "OR".
+
+The truth table for the disjunction operator is as follows for the input statements $p$ and $q$:
+
+| $p$ | $q$ | $p \lor q$ |
+| :-: | :-: | :-: |
+| $0$ | $0$ | $0$ |
+| $0$ | $1$ | $1$ |
+| $1$ | $0$ | $1$ |
+| $1$ | $1$ | $1$ |
+
+<Callout type="example">
+- $1 \lor 1 = 1$
+- $1 \lor 0 = 1$
+- $(0 \lor 1 \lor 1) \lor 1 = 1$
+- $(1 \lor 1 \lor 1) \lor (0 \lor 0) = 1$
+
+We can see a pattern here, the disjunction operator is true if at least one of the input statements is true, if all the input statements are false then the output is false.
+
+Let's look at the truth table for a composition of disjunction operators:
+
+| $p$ | $q$ | $r$ | $p \lor q \lor r$ |
+| :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $0$ | $0$ |
+| $0$ | $0$ | $1$ | $1$ |
+| $0$ | $1$ | $0$ | $1$ |
+| $0$ | $1$ | $1$ | $1$ |
+| $1$ | $0$ | $0$ | $1$ |
+| $1$ | $0$ | $1$ | $1$ |
+| $1$ | $1$ | $0$ | $1$ |
+| $1$ | $1$ | $1$ | $1$ |
+
+Let's also look at the conjunction and disjunction operators together:
+
+- $(1 \land 1) \lor (1 \land 0) = 1$
+- $(1 \land 1) \land (1 \land 0) = 0$
+- $(1 \land 0) \lor (0 \land 1) = 0$
+</Callout>
+
+### Negation (NOT)
+
+The negation operator is a unary operator, meaning it only takes one input statement $p$ rather then two, like the previous operators. The negation operator is represented by the symbol $\lnot$ and is true if the input proposition $p$ is false and false if the input proposition $p$ is true. 
+Hence the name "NOT", as it negates, inverts or flips the input statement. Sometimes the negation operator is represented by an exclamation mark $!$, as this is often the symbol used in programming languages.
+
+The truth table for the negation operator is as follows for the input statement $p$:
+
+| $p$ | $\lnot p$ |
+| :-: | :-: |
+| $0$ | $1$ |
+| $1$ | $0$ |
+
+<Callout type="warning">
+The precdence of the not operator is higher then the other operators, meaning that it is evaluated first. This is similar to how in maths the brackets are evaluated first.
+
+For example, the statement $\lnot 1 \land 0$ is evaluated as $(\lnot 1) \land 0$ which is $0$. If the precedence was the other way around then the statement would be evaluated as $\lnot (1 \land 0)$ which is $1$.
+So remember that the negation operator is evaluated first and depending on the desired outcome you might need to use brackets to group the statements.
+</Callout>
+
+## Conditional Statements (IF THEN)
+
+A conditional statement is often reffered to as an "if-then" statement or implication. The conditional operator is represented by the symbol $\implies$ and is true if the input statement $p$ is false **or** the output statement $q$ is true.
+So we can say that the following statements are equivalent:
+
+$$
+p \implies q = \lnot p \lor q
+$$
+
+The conditional operator is also called the implication operator because it implies that if the input statement is true then the output statement is also true.
+The statement "If it is raining, then the ground is wet" can be written using the implication operator as $r \implies w$.
+If $r$ is true then $w$ must also be true, but if $r$ is false then $w$ can be either true or false, i.e the ground can be wet even if it is not raining.
+
+The truth table for the Conditional operator is as follows for the input statements $p$ and $q$:
+
+| $p$ | $q$ | $p \implies q$ |
+| :-: | :-: | :-: |
+| $0$ | $0$ | $1$ |
+| $0$ | $1$ | $1$ |
+| $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ |
+
+To remember the truth table you can either remember that the conditional operator is only false if the input statement is true and the output statement is false, otherwise it is true.
+
+The operator's direction is from left to right, meaning that the input statement is on the left and the output statement is on the right. 
+However, we can also write the conditional operator in the other direction, i.e $q \impliedby p$ which is equivalent to $p \implies q$.
+
+$$
+p \implies q = q \impliedby p
+$$
+
+If we have the statement $p \implies q$ as we know flipping $p$ and $q$ does not have the same meaning. This flipping of the operands is called the converse of the conditional statement.
+
+$$
+p \implies q \neq q \implies p
+$$
+
+<Callout type="example">
+Let's look at the truth table for a composition including the conditional operator:
+
+| $p$ | $q$ | $r$ | $(p \implies q) \land r$ |
+| :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $0$ | $0$ |
+| $0$ | $0$ | $1$ | $1$ |
+| $0$ | $1$ | $0$ | $0$ |
+| $0$ | $1$ | $1$ | $1$ |
+| $1$ | $0$ | $0$ | $0$ |
+| $1$ | $0$ | $1$ | $0$ |
+| $1$ | $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ | $1$ |
+</Callout>
+
+## Biconditional Statements (IF AND ONLY IF)
+
+A biconditional statement is often reffered to as an "if and only if" statement. The biconditional operator is represented by the symbol $\iff$ and is true if both the input statement $p$ **and** the output statement $q$ are true **or** both the input statement $p$ **and** the output statement $q$ are false.
+The biconditional operator is also called the equivalence operator because it states that the input statement is equivalent to the output statement.
+
+The truth table for the Biconditional operator is as follows for the input statements $p$ and $q$:
+
+| $p$ | $q$ | $p \iff q$ |
+| :-: | :-: | :-: |
+| $0$ | $0$ | $1$ |
+| $0$ | $1$ | $0$ |
+| $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ | 
+
+The "bi" in biconditional means two, so we can think of the biconditional operator as two conditional operators combined together. We can 
+actually show that this is the case, i.e that the biconditional operator is equivalent to two conditional operators:
+
+$$
+p \iff q = (p \implies q) \land (q \implies p)
+$$
+
+<Callout type="proof">
+Let's prove that the biconditional operator is equivalent to two conditional operators:
+
+| $p$ | $q$ | $p \implies q$ | $q \implies p$ | $(p \implies q) \land (q \implies p)$ | $p \iff q$ |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $1$ | $1$ | $1$ | $1$ |
+| $0$ | $1$ | $1$ | $0$ | $0$ | $0$ |
+| $1$ | $0$ | $0$ | $1$ | $0$ | $0$ |
+| $1$ | $1$ | $1$ | $1$ | $1$ | $1$ |
+
+As we can see the two statements are equivalent, the biconditional operator is equivalent to two conditional operators. This 
+is very important when we want to prove that two statements are logically equivalent as most proofs are done using the conditional operator.
+</Callout>
+
+### Logical Equivalence
+
+In logic theory we also sometimes want to express that two statements are logically equivalent, meaning that have the same truth value.
+This could be done by using the biconditional operator $\iff$ which is true if both the input statements $p$ and $q$ are true **or** both the input statements $p$ and $q$ are false.
+
+However, most often we prefer to write this using the equivalence symbol $\equiv$ which is true if both the input statements $p$ and $q$ have the same truth value.
+So we could change our statement from above of the conditional operator to be:
+
+$$
+p \implies q \equiv \lnot p \lor q
+$$
+
+and the biconditional operator to be:
+
+$$
+p \iff q \equiv (p \implies q) \land (q \implies p)
+$$
+
+There is no real difference between the two from my understanding. The biconditional operator used to combine two statements into one, 
+while the equivalence operator is used to state that two statements are equivalent.
+
+## Tautologies and Contradictions
+
+A tautology is a statement that is always true, no matter what the input is for the statement. A fun tautology is 
+Shakespeare's "To be or not to be" because it is always true, it is a tautology. Or the statement "It will rain or 
+it will not rain" is also a tautology because it is always true, it cannot be both raining and not raining at the same time.
+
+$$
+p \lor \lnot p
+$$
+
+To check if a statement is a tautology we can use a truth table and check if the output is always true.
+
+| $p$ | $\lnot p$ | $p \lor \lnot p$ |
+| :-: | :-: | :-: |
+| $0$ | $1$ | $1$ |
+| $1$ | $0$ | $1$ |
+
+On the other hand, a contradiction is a statement that is always false, no matter what the input is for the statement. 
+The most obvious contradiction is the "The world is round and the world is not round", it is always false because either 
+the world is round or it is not round, it cannot be both, hence it is a contradiction.
+
+$$
+p \land \lnot p
+$$
+
+| $p$ | $\lnot p$ | $p \land \lnot p$ |
+| :-: | :-: | :-: |
+| $0$ | $1$ | $0$ |
+| $1$ | $0$ | $0$ |
+
+<Callout type="example">
+Let's find out if the statement is a tautology or a contradiction:
+
+| $p$ | $q$ | $\lnot p$ | $\lnot q$ | $p \lor q$ | $\lnot p \land \lnot q$ | $(p \lor q) \lor (\lnot p \land \lnot q)$ |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| $0$ | $0$ | $1$ | $1$ | $0$ | $1$ | $1$ |
+| $0$ | $1$ | $1$ | $0$ | $1$ | $0$ | $1$ |
+| $1$ | $0$ | $0$ | $1$ | $1$ | $0$ | $1$ |
+| $1$ | $1$ | $0$ | $0$ | $1$ | $0$ | $1$ |
+
+As we can see the statement is a tautology because the output is always true.
+</Callout>
+
+## Quantifiers
+
+With statements we can express that something is true or false, but sometimes we want to express that something is true for all values or that something is true for some values.
+We can achieve this using quantifiers.
+
+### Universal Quantifier
+
+If we wanted to say that an open sentence or predicate is true for all elements in the set $X = \{x_1, x_2, \ldots, x_n\}$ we would have to write out all the elements and the predicate for each element:
+
+$$
+P(x_1) \land P(x_2) \land \ldots \land P(x_n)
+$$
+
+Instead of writing out all the elements we can use the universal quantifier represented by the symbol $\forall$ and stands for "for all" or "for every" 
+to express that the predicate is true for all elements in some set $X$. The name "universal quantifier" comes from the fact that 
+the predicate holds universally. Therefore the statement "For all $x$ in $X$, $P(x)$" can be written as:
+
+$$
+\forall x \in X, P(x)
+$$
+
+We can also think of this in code terms where the for loop is the predicate and we loop over the elements in the set $X$ to check if the predicate is true for all elements.
+
+```java
+int[] X = {1, 2, 3, 4, 5, ...};
+
+for (int x : X) {
+    if (!P(x)) {
+        return false;
+    }
+}
+return true;
+```
+
+<Callout type="example">
+We can write the predicate "for every positive number $x$, $2x$ is even" as:
+
+$$
+\forall x \in \mathbb{Z}, 2x \text{ is even}
+$$
+</Callout>
+
+### Existential Quantifier
+
+If we wanted to say that an open sentence or predicate is true for some elements or at least one element in the set $X = \{x_1, x_2, \ldots, x_n\}$ we would have to write out all the elements and the predicate for each element:
+
+$$
+P(x_1) \lor P(x_2) \lor \ldots \lor P(x_n)
+$$
+
+Instead of writing out all the elements we can use the existential quantifier represented by the symbol $\exists$ and stands for "there exists" or "for some"
+to express that the predicate is true for some elements in some set $X$. The name "existential quantifier" comes from the fact that it is used to express that 
+the existence of some element that satisfies the predicate is required for the statement to be true. Therefore the statement "There exists an $x$ in $X$ such that $P(x)$" can be written as:
+
+$$
+\exists x \in X, P(x)
+$$
+
+We can also think of this in code terms where the if condition is the predicate and the we loop over the elements in the set $X$ to check if the predicate is true for at least one element.
+
+```java
+int[] X = {1, 2, 3, 4, 5, ...};
+
+for (int x : X) {
+    if (P(x)) {
+        return true;
+    }
+}
+return false;
+```
+
+<Callout type="example">
+We can write the predicate "there exists a positive number $x$ such that $x > 5$" as:
+
+$$
+\exists x \in \mathbb{Z}, x > 5
+$$
+</Callout>
+
+### Negating Quantifiers
+
+Quantiefied statements can be negated just like any other statement. Let's look at what the negations actually mean.
+
+Consider $\lnot (\forall x \in X, P(x))$ which is equivalent to the statement "It is not the case that $P(x)$ is true for all $x$ in $X$". In other words for at least 
+one element in the set $X$ the predicate $P(x)$ is false. This can be written as $\exists x \in X, \lnot P(x)$.
+
+We can also consider $\lnot (\exists x \in X, P(x))$ which is equivalent to the statement "It is not the case that there exists an $x$ in $X$ such that $P(x)$ is true". In other words
+the predicate $P(x)$ is false for all elements in the set $X$. This can be written as $\forall x \in X, \lnot P(x)$.
+
+More generally we can define the negation of a quantified statement as:
+
+$$
+\begin{align*}
+\lnot (\forall x \in X, P(x)) &\equiv \exists x \in X, \lnot P(x) \\
+\lnot (\exists x \in X, P(x)) &\equiv \forall x \in X, \lnot P(x)
+\end{align*}
+$$
+
+### Nested Quantifiers
+
+Quantifiers can be nested for example we can write the statement "For all $x$ in $X$ there exists a $y$ in $Y$ such that $P(x, y)$ is true" as:
+
+$$
+\forall x \in X, \exists y \in Y, P(x, y)
+$$
+
+When evaluating this statement we take the first element $x$ in the set $X$ and then we check if there exists an element $y$ in the set $Y$ such that $P(x, y)$ is true.
+If there is such an element $y$ then we move on to the next element $x$ in the set $X$ and repeat the process. If there is such an element $y$ for all elements $x$ in the set $X$ then the statement is true.
+If for at least one element $x$ in the set $X$ there is no element $y$ in the set $Y$ such that $P(x, y)$ is true then the statement is false.
+
+Importantly the order of nested quantifiers is important as if we write the statement "There exists a $y$ in $Y$ such that for all $x$ in $X$ $P(x, y)$ is true" as:
+
+$$
+\exists y \in Y, \forall x \in X, P(x, y)
+$$
+
+The process is different, we first take an element $y$ in the set $Y$ and then we check if for all elements $x$ in the set $X$ the predicate $P(x, y)$ is true.
+If it isn't true for all elements $x$ in the set $X$ then we move on to the next element $y$ in the set $Y$ and repeat the process. If for at least one element $y$ in the set $Y$ the predicate $P(x, y)$ is true for all elements $x$ in the set $X$ then the statement is true
+otherwise the statement is false.
+
+We can again think of this in code terms where the nested for loop is the predicate and we loop over the elements in the set $X$ and $Y$ to check if the predicate is true for all elements.
+
+```java
+int[] X = {1, 2, 3, 4, 5, ...};
+int[] Y = {1, 2, 3, 4, 5, ...};
+
+public boolean universalExistential() {
+    for (int x : X) {
+        boolean found = false;
+        for (int y : Y) {
+            if (P(x, y)) {
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            return false;
+        }
+    }
+    return true;
+}
+
+public boolean existentialUniversal() {
+    for (int y : Y) {
+        for (int x : X) {
+            if (!P(x, y)) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+```
+
+## Logical Inference and Arguments
+
+Suppose we know that the statment $p \implies q$ is true. This tells us that if $p$ is true then $q$ must also be true.
+However by itself this does not tell us if $p$ or $q$ are true or false, it only tells us that if $p$ is true then $q$ must also be true.
+
+Suppose we also in addition know that the statement $p$ is true. We therefore know that $q$ must also be true because $p \implies q$ is true and $p$ is true.
+This is called a logical inference. Because we know the two statements $p \implies q$ and $p$ are true and how implications work we can infer that $q$ is also true.
+This can be written as:
+
+$$
+\begin{align*}
+&p \implies q \\
+&p \\
+\hline
+&q
+\end{align*}
+$$
+
+This is also called a logical argument because we are using logic to argue that something else must be true. More formally a 
+logical argument is a set of statements where the last statement under the line is the so-called conclusion and the statements above the line are the so-called premises.
+So we can then say that the conclusion is true if the premises are true. Before the conclusion it is also common to write the symbol $\therefore$ which means "therefore".
+So the logical argument can be read as the list of premises and then "therefore" the conclusion is true.
+
+The argument above is a very commonly used pattern used in proofs which is called modus ponens. We can also use a very similar pattern called modus tollens which is used to prove 
+that if something is false then the other statement must also be false.
+
+$$
+\begin{align*}
+&p \implies q \\
+&\lnot q \\
+\hline
+&\therefore \lnot p
+\end{align*}
+$$
+
+We can also use the elimination rule to prove that if something is false then the other statement must be true.
+
+$$
+\begin{align*}
+&p \lor q \\
+&\lnot p \\
+\hline
+&\therefore q
+\end{align*}
+$$
+
+
+## Laws of Logic
+
+### Contrapositive Law
+
+### De Morgran's Laws
+
+also a generalized form with quantifiers???
+
+$$
+\begin{align*}
+\lnot (p \land q) &\equiv \lnot p \lor \lnot q \\
+\lnot (p \lor q) &\equiv \lnot p \land \lnot q
+\end{align*}
+$$
+
+### Commutative Laws
+
+with regards to and and or
+
+### Distributive Laws
+
+with regards to and and or
+
+### Associative Laws
+
+with regards to and and or

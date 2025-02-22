@@ -1,0 +1,139 @@
+# Structures
+
+In C structures defined using the `struct` keyword are a very important concept as they allow for grouping of elements very similarly to classes in other languages they just don't include functions. For example a date, month, day, year. can then create variables as type struct date. memory is allocated 3 variables inside. can access member variables with. so `today.year` for example can also assign initialcompound literal can assign values after initilation like (struct date) `{1,2,3}` or specify the specific values with .month=9for only one time thing. can initialize structs like arrays with `{7,2,2015}`. or just the frist 2 or can do `{.month=12}`
+
+## Unnamed structs
+
+Unnamed structures can be used if you know that you only need one instance of it at all times which can be useful for constants.
+
+```c
+    struct /* No name */ {
+        float x;
+        float y;
+    } point;
+
+    point.x = 42;
+```
+
+## Array of structs
+
+Can then do all the normal things you would expect to be able to do with an array.
+
+```c
+struct Student
+{
+    int rollNumber;
+    char studentName[10];
+    float percentage;
+};
+struct Student studentRecord[5];
+```
+
+## Nested structs
+
+A nested structure in C is a structure within structure. One structure can be declared inside another structure in the same way structure members are declared inside a structure.
+
+```c
+struct Date
+{
+    int day;
+    int month;
+    int year;
+};
+struct Time
+{
+    int hours;
+    int minutes;
+    int seconds;
+};
+struct DateTime
+{
+    struct Date date;
+    struct Time time;
+}
+```
+
+## Pointers to structs
+
+You can have pointers to struct variables. The important thing to know here is that there is a shorthand for accessing the data by usign the `-\>` operator.
+
+```c
+#include<stdio.h>
+
+struct dog
+{
+    char name[10];
+    char breed[10];
+    int age;
+    char color[10];
+};
+
+int main()
+{
+    struct dog my_dog = {"tyke", "Bulldog", 5, "white"};
+    struct dog *ptr_dog;
+    ptr_dog = &my_dog;
+
+    printf("Dog's name: %s\n", (*ptr_dog).name); // instead of having to do this
+    printf("Dog's breed: %s\n", ptr_dog->breed); // you can do this
+    printf("Dog's age: %d\n", ptr_dog->age);
+    printf("Dog's color: %s\n", ptr_dog->color);
+
+    // changing the name of dog from tyke to jack
+    strcpy(ptr_dog->name, "jack");
+
+    // increasing age of dog by 1 year
+    ptr_dog->age++;
+
+    printf("Dog's new name is: %s\n", ptr_dog->name);
+    printf("Dog's age is: %d\n", ptr_dog->age);
+
+    return 0;
+}
+```
+
+## typdef
+
+The `typedef` keyword is used in C to assign alternative names to existing datatypes. This can be especially powerfull when combined with structs.can be used to give a type a new name. so typedef unsigned char BYTE; BYTE can then be used as an allias. this can become very powerful with structs.
+
+```c
+#include <stdio.h>
+
+typedef struct Point
+{
+    double x;
+    double y;
+} Point; // can have the same name
+
+struct date
+{
+    unsigned short day;
+    unsigned short month;
+    unsigned int year;
+};
+typedef struct date Date;
+
+typedef unsigned char byte;
+
+int main(void)
+{
+    Point origin = {0, 0};
+    struct date today = {1, 4, 2022};
+    Date tomorrow = {2, 4, 2022};
+    byte intSize = sizeof(int);
+
+    printf("The origin is: (%f/%f)\n", origin.x, origin.y);
+    printf("Today is %d/%d/%d\n", today.day, today.month, today.year);
+    printf("Tommorrow is %d/%d/%d\n", tomorrow.day, tomorrow.month, tomorrow.year);
+    printf("On my computer an int takes up %d bytes.\n", intSize);
+
+    return 0;
+}
+```
+
+```bash filename="output"
+The origin is: (0.000000/0.000000)
+Today is 1/4/2022
+Tommorrow is 2/4/2022
+On my computer an int takes up 4 bytes.
+```

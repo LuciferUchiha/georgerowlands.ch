@@ -1,0 +1,59 @@
+# Resource Management
+
+## Garbage collection
+
+C# programmers don’t have to release allocated memory, the CLR takes care of it with the so called Garbage Collector.
+
+Garbage collection has 2 Phases, Mark and sweep/Detection and Reclamation.
+Detection: The garbage collector searches for managed objects that are referenced in managed code.
+Reclamation: The garbage collector attempts to finalize
+objects that are unreachable. The garbage collector frees objects that are
+unmarked and reclaims their memory.
+
+This example is a tracing, compacting ,stop the world , mark & sweep garbage collector.
+tracing = Follow references to decide reachability
+compacting = Free memory by compacting heap
+stop the world = Stop all threads during GC
+mark & sweep = GC in two phases
+
+Runtime performs GC whenever it “feels like it”
+
+## Finalization/destructors
+
+Prior to an object being released, the GC calls its finalizer/destructor. Collection can be forced with GC.Collect().
+Runs on the finalizer thread (concurrent to the rest of the application)
+.NET provides the IDisposable interface then users can call Dispose() Objects also call Dispose on their child objects
+
+```csharp
+public sealed class OSHandle : IDisposable
+{
+ private bool disposed;
+ public OSHandle(IntPtr h) { handle = h; disposed = false ;}
+ public void Dispose(){
+  Dispose(true);
+  GC.SuppressFinalize(this);
+ }
+
+ ~OSHandle(){
+  Dispose(false);
+ }
+
+ protected void Dispose(bool disposing)
+ {
+  if(!disposed){
+   if(disposing){
+    /* safe to access references here */
+   }
+   disposed = true;
+   // dispose unmanaged resources here
+  }
+  base.Dispose(disposing);
+ }
+}
+```
+
+Dispose() = Deterministic, Explicitly called by user, Free resources File handlers, locks, OS resources, ...)
+
+Finalizers destructors = Non deterministic, Automatically called by GC, Free memory or as safety net
+
+Dispose pattern combines best of both worlds
