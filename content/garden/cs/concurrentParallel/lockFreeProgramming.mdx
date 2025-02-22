@@ -1,0 +1,311 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
+# Lock-Free Programming
+
+## Disadvantages of Locks
+
+Locks are very useful and do their job well however they do have some disadvantages. Because of the context switching between threads, there can be an overhead and performance can suffer. However, probably the biggest disadvantage is contention. When a thread is waiting for a lock it cannot do anything else. If a thread that holds a lock is delayed or even ends up in a deadlock then no other thread that needs the lock can progress. This can then lead to **priority inversion** which is when a high priority thread is waiting for a lock held by a low priority thread and therefore its priority is effectively downgraded.
+
+The example below works perfectly fine but we want to remove the locks because of the previously mentioned issues. The lock for reading the value can be removed by making the value volatile so that there is a visibility guarantee. However, volatile variables do not support read-modify-write sequences which is what we are doing when incrementing the value. So we are still stuck with a lock for incrementing and we still don't have optimal performance due to the overhead of volatile variables.
+
+```java
+public final class Counter1 {
+    private int value = 0;
+    public synchronized int getValue() { return value; }
+    public synchronized int increment() { return ++value; }
+}
+public final class Counter2 {
+    private volatile int value = 0;
+    public int getValue() { return value; }
+    public synchronized int increment() { return ++value; }
+}
+```
+
+## CAS - Compare and Swap
+
+CPUs have an atomic instruction called compare and swap/set, `CAS(memory_location, expected_old_value, new_value)`. This operation atomically compares the content of a memory location to a given value and if they are the same modifies the content of that memory location to a given new value and returns a boolean corresponding to if the swap was done, i.e the value at the memory location was still the same as the given old value. With this operation, we can remove all of the locks in the Counter class:
+
+```java
+public final class CASCounter {
+    private volatile int value = 0;
+
+    public int getValue() {
+        return value;
+    }
+    public int increment() {
+        while(true) {
+            int current = getValue();
+            int next = current + 1;
+            if (compareAndSwap(current, next)) return next;
+        }
+    }
+
+    // Wrapper for old sun microsystems implementation
+    private static final Unsafe unsafe = Unsafe.getUnsafe();
+    private static final int valueOffset;
+    static {
+        try {
+            valueOffset = unsafe.objectFieldOffset(CASCounter.class.getDeclaredField("value"));
+        } catch (Exception ex) { throw new Error(ex); }
+    }
+    private boolean compareAndSwap(int expectedVal, int newVal) {
+        return unsafe.compareAndSwap(this, valueOffset, expectedVal, newVal);
+    }
+}
+```
+
+This pattern is also commonly referred to as optimistic locking. It is optimistic because the code gets the old value, modifies it and optimistically hopes that in the meantime the value hasn't changed and then tries to swap the old and new value if the old value is still the same. If the value has changed in the meantime by maybe another thread then it just tries again and again until it works.
+
+## Atomics
+
+Java added Atomic Scalars which support CAS and atomic arithmetic operations for int/long. For doubles or floats etc you can use `Double.doubleToRawLongBits()` and then convert back with `Double.longBitsToDouble()`.
+
+<Image 
+    src="/cs/concurrentJavaAtomic.png"
+/>
+
+```java
+class AtomicInteger extends Number {
+    AtomicInteger()
+    AtomicInteger(int initialValue)
+    boolean compareAndSet(int expect, int update)
+    int incrementAndGet() int decrementAndGet()
+    int getAndIncrement() int getAndDecrement()
+    int addAndGet(int delta) int getAndAdd(int delta)
+    int getAndSet(int newValue)
+    int intValue() double doubleValue()
+    long longValue() float floatValue()
+    int get() void set(int newValue)
+}
+```
+
+The Counter example would then look something like this:
+
+```java
+public final class AtomicCounter {
+    private final AtomicInteger value = new AtomicInteger(0);
+    public int getValue() {
+        return value.get();
+    }
+    public int increment() {
+        while (true) {
+            int oldValue = value.get();
+            int newValue = oldValue + 1;
+            if (value.compareAndSet(oldValue, newValue)) return newValue;
+        }
+    }
+}
+```
+
+Or even shorter:
+
+```java
+public final class AtomicCounter {
+    private final AtomicInteger value = new AtomicInteger(0);
+    public int getValue() {
+        return value.get();
+    }
+    public int increment() {
+        return value.incrementAndGet();
+    }
+}
+```
+
+### Atomic References
+
+We might not just want to work with integers, we want to be able to work with any object. For this reason, there is the AtomicReference class. For example, it can get a bit tricky when there are multiple integer values if we wanted to implement a range:
+
+```java
+public class NumberRange {
+    private final AtomicInteger lower = new AtomicInteger(0);
+    private final AtomicInteger upper = new AtomicInteger(0);
+
+    public int getLower() { return lower.get(); }
+    public void setLower(int newLower) {
+        while (true) {
+            int l = lower.get(), u = upper.get(); // get current values
+            if (newLower > u) throw new IllegalArgumentException(); // check preconditions
+            if (lower.compareAndSet(l, newLower)) return;
+        }
+    }
+    // same for getUpper/setUpper
+    public boolean contains(int x) {
+        return lower.get() <= x && x <= upper.get();
+    }
+}
+```
+
+So instead we can work with AtomicReferences:
+
+```java
+public class NumberRange {
+    private static class Pair {
+        final int lower, upper; // lower <= upper
+        Pair(int l, int u) { lower = l; upper = u; }
+    }
+
+    private final AtomicReference<Pair> values = new AtomicReference<>(new Pair(0,0));
+
+    public int getLower(){ return values.get().lower; }
+    public void setLower(int newLower){
+        while(true) {
+            Pair oldp = values.get();
+            if(newLower > oldp.upper) throw new IllegalArgumentException(); // could also check preconditions in constructor
+            Pair newp = new Pair(newLower, oldp.upper);
+            if(values.compareAndSet(oldp, newp)) return; // uses == comparison, which is why should work with immutable
+        }
+    }
+}
+```
+
+
+<Callout type="warning">
+Be careful when using integer literals because the JVM does some special things, like caching small integer literals which leads to the following program having unexpected behavior.
+
+```java
+static AtomicReference<Integer> as;
+public static void main(String[] args) throws Exception {
+    new Thread(() -> {
+        as = new AtomicReference<>(1);
+        as.compareAndSet(1,2);
+    }).start();
+
+    new Thread(() -> System.out.println(as.get())).start();
+}
+```
+
+We would expect to get a NullPointerException or the value 1 but not the value 2. Because the value 1 gets auto-boxed twice with Integer.valueOf() to different objects the compareAndSet should fail. But it doesn't 2 is also a possible output because the JVM caches small integer values.
+</Callout>
+
+### ABA Problem
+
+The ABA problem occurs in lock-free programming when a variable that was read has been changed by another thread in the following order:
+
+`A -> B -> A`
+
+The CAS operation will compare its A with A and think that "nothing has changed" even though the second thread did work which violates that assumption. For example
+
+1. Thread T1 reads value A from shared memory.
+2. T1 is put to sleep, allowing thread T2 to run.
+3. T2 modifies the shared memory value A to value B and back to A before going to sleep.
+4. T1 begins execution again, sees that the shared memory value has not changed and continues.
+
+For this reason, Java provides the AtomicStampedReference Class which holds an object reference and a stamp internally. The reference and stamp can be swapped using a single atomic compare-and-swap operation, via the compareAndSet() method.
+
+```java
+public class AtomicStampedReference<V> {
+    public AtomicStampedReference(V ref, int stamp) { ... }
+    public V getReference() { ... } // returns reference
+    public int getStamp() { ... } // returns stamp
+    public V get(int[] stampHolder) { ... } // returns both
+    public void set(V newReference, int newStamp) { ... }
+    public boolean compareAndSet(V expectedReference, V newReference, int expectedStamp, int newStamp) { ... }
+    public boolean attemptStamp(V expectedReference, int newStamp) { ... }
+}
+```
+
+```java
+private final AtomicStampedReference<Integer> account = new AtomicStampedReference<>(100, 0); // initial value=100 stamp=0
+
+public int deposit(int funds) {
+        int[] stamp = new int[1];
+        while(true){
+            int oldValue = account.get(stamp);
+            int newValue = oldValue + funds;
+            int newStamp = stamp[0] + 1;
+            if(account.compareAndSet(oldValue, newValue, stamp[0], newStamp);)
+        }
+    }
+```
+
+## Non-blocking Data structures
+
+With the Atomic Scalars in Java, you can then also implement some simple data structures.
+
+### Stack
+
+```java
+public class ConcurrentStack<E> {
+    private static class Node<E> {
+        public final E item;
+        public Node<E> next;
+        public Node(E item) { this.item = item; }
+    }
+
+    final AtomicReference<Node<E>> head = new AtomicReference<>();
+
+    public void push(E item) {
+        Node<E> newHead = new Node<E>(item);
+        while(true) {
+            Node<E> oldHead = head.get();
+            newHead.next = oldHead;
+            if (head.compareAndSet(oldHead, newHead)) return;
+        }
+    }
+    public E pop() {
+        while(true) {
+            Node<E> oldHead = head.get();
+            if (oldHead == null) throw new EmptyStackException();
+            Node<E> newHead = oldHead.next;
+            if(head.compareAndSet(oldHead, newHead)) {
+                return oldHead.item;
+            }
+        }
+    }
+}
+```
+
+### Queue
+
+The tricky part of implementing a non-blocking queue is that two things need to be watched, the head and the tail. In the implementation below a dummy node is used. This then leads to there being 3 states that the tail can be in:
+
+- The tail refers to the dummy i.e. to the same node as the head then the queue is empty.
+- The tail refers to the last element.
+- The tail refers to the second last element, which can only happen in the middle of an update.
+
+```java
+public class ConcurrentQueue <E> {
+    private static class Node<E> {
+        final E item;
+        final AtomicReference<Node<E>> next;
+        public Node(E item, Node<E> next) {
+            this.item = item;
+            this.next = new AtomicReference<Node<E>>(next);
+        }
+    }
+
+    private final Node<E> dummy = new Node<E>(null, null);
+    private final AtomicReference<Node<E>> head = new AtomicReference<Node<E>>(dummy);
+    private final AtomicReference<Node<E>> tail = new AtomicReference<Node<E>>(dummy);
+
+    public boolean put(E item) {
+        Node<E> newNode = new Node<E>(item, null);
+        while (true) {
+            Node<E> curTail = tail.get();
+            Node<E> tailNext = curTail.next.get();
+            if (tailNext != null) {
+                // Queue in intermediate state, advance tail
+                tail.compareAndSet(curTail, tailNext);
+            } else {
+                // In consistent state, try inserting new node
+                if (curTail.next.compareAndSet(null, newNode)) {
+                    // Insertion succeeded, try advancing tail
+                    tail.compareAndSet(curTail, newNode);
+                    return true;
+            }
+        }
+    }
+
+    public E pop() {
+        while(true) {
+            Node<E> oldHead = head.get();
+            if (oldHead == null) throw new EmptyQueueException();
+            Node<E> newHead = oldHead.next.get();
+            if(head.compareAndSet(oldHead, newHead)) {
+                return oldHead.item;
+            }
+        }
+    }
+}
+```

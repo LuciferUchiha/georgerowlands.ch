@@ -1,0 +1,102 @@
+# Regular Expressions & Languages
+
+## Regular Expressions
+
+use cases
+
+can also easily create epsilon-NFAs therefore also DFAs and regular languages
+Follow certain building rules/components such as how to handle multiplication of two regular expressions in the states, star and alternative operations.
+
+can also go the other way around and create regular expressions from DFAs, NFAs and epislon-NFAs.
+
+### Syntax
+
+Reguläre Ausdrücke sind “Wörter” über dem Alphabet alphabet union mit den Operatoren `+`, `*`, `.` und `()` etc
+
+#### Order of Precedence
+
+#### UNIX Regular Expressions
+
+slightly different and expanded for easier use
+
+### Semantik
+
+Regular expressions seen as languages
+
+## Regular Languages
+
+Operations on regular languages (union, concatenation, Kleene star) 
+They equal a regular language
+
+A DFA is a regular language therefore a regular expression same things
+
+## From Regular Expressions to Automata
+
+## From Automata to Regular Expressions
+
+## Closure Properties
+
+Performing certain operations on regular languages will result in a regular language.
+
+### Closure under Union 
+
+### Closure under Complement
+
+### Closure under Intersection
+
+### Closure under Difference
+
+### Closure under Reversal
+
+### Closure under Homomorphism
+
+### Closure under Inverse Homomorphism
+
+### Closure under Kleene Star
+
+### Closure under Concatenation
+
+## Pumping Lemma
+
+Prove that a language is not regular.
+
+The idea is that if a language is regular it can be pumped, i.e. a substring can be repeated an arbitrary number of times and the resulting string will still be in the language.
+
+Example for intution.
+
+All strings in a regular language can be pumped if they are longer then a certain length, the pumping length, $p$. for example can set $p$ to be the number of states in the DFA.
+
+Using pigeonhole principle can show that a state must be visited more then once, therefore a loop must exist. The substring that creates the loop can then be pumped and the resulting string will still be in the language.
+
+So it can be split into three parts, $x$, $y$ and $z$ where $y$ is the substring that can be pumped. $x$ and $z$ are the substrings before and after $y$. Formal definition of the pumping lemma.
+
+```math
+\begin{align*}
+\forall i \geq 0: xy^iz \in L \\
+\mid y \mid > 0 \\
+\mid xy \mid \leq p \\
+\end{align*}
+```
+
+The first condition defines that if a string is in the language then all pumped strings must also be in the language. The second condition defines that the substring $y$ must be longer then 0, i.e an empty string can not be pumped, $x$ and $z$ can be empty. 
+The third condition defines that the prefix $x$ and $y$ must be shorter then the pumping length $p$ because of the pigeonhole principle, dont quiet get this condition.
+
+How do you find the pumping length is it the number of states in the DFA, but what if there are multiple DFAs that can represent the language, need to find the smallest DFA that can represent the language.
+
+## Converting among Representations
+
+Between all the different representations of regular languages what are the time complexities of converting between them.
+
+## Decision Properties
+
+### Emptiness
+
+### Membership
+
+### Equivalence
+
+## Myhill-Nerode Theorem
+
+Minimimum size of a DFA for a language
+
+## Non-regular Languages

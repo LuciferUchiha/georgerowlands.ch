@@ -1,12 +1,27 @@
+# search index data
+_pagefind/
+
+# Node.js dependencies
+node_modules/
+npm-debug.log
+
+# Nest.js generated files
 .next
-node_modules
-# mac specific
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
 .DS_Store
-.idea
+*/**/.DS_Store
+Thumbs.db
+
+# python
 .venv
 venv
-
 */**/__pycache__
+*/**/.env
 
 */**/.env
 .env

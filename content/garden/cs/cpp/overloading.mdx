@@ -1,0 +1,289 @@
+import Image from "@components/Image/Image";
+import Callout from "@components/Callout/Callout";
+
+# Overloading
+
+C++ allows you to specify more than one definition for a function name or an operator in the same scope, which is called function overloading and operator overloading.
+
+## Function Overloading in C++
+
+You can have multiple definitions for the same function name in the same scope. The definition of the function must differ from each other by the types and/or the number of arguments in the argument list. You cannot overload function declarations that differ only by return type.
+
+```cpp
+class PrintData {
+   public:
+      void print(int i) {
+        cout << "Printing int: " << i << endl;
+      }
+      void print(double  f) {
+        cout << "Printing float: " << f << endl;
+      }
+      void print(char* c) {
+        cout << "Printing character: " << c << endl;
+      }
+};
+```
+
+## Operator Overloading
+
+You can redefine or overload most of the built-in operators available in C++. Thus, a programmer can use operators with user-defined types as well.
+
+Overloaded operators are functions with special names: the keyword "operator" followed by the symbol for the operator being defined. Like any other function, an overloaded operator has a return type and a parameter list.
+
+There are two types of operator overloading either the operator is an instance method or it is not. So x+y could be `operator+(x,y)` or `x.operator(y)` if you use the instance version then you can refer to x using the special `this`. By using the friend keyword you make the function no longer an instance method meaning you can not access the special `this`, but you can access the private attributes, even if you define the function in the class and implement it outside the class.
+
+```cpp filename="Box.h"
+#pragma once
+class Box {
+    double m_length;
+    double m_breadth;
+    double m_height;
+
+public:
+    Box(const double length = 0, const double breadth = 0, const double height = 0)
+        : m_length(length)
+        , m_breadth(breadth)
+        , m_height(height)
+    {}
+
+    double getVolume(void) {
+        return m_length * m_breadth * m_height;
+    }
+    void setLength(double length) {
+        m_length = length;
+    }
+    void setBreadth(double breadth) {
+        m_breadth = breadth;
+    }
+    void setHeight(double height) {
+        m_height = height;
+    }
+
+    Box operator+(const Box& b) {
+        Box box;
+        box.m_length = this->m_length + b.m_length;
+        box.m_breadth = this->m_breadth + b.m_breadth;
+        box.m_height = this->m_height + b.m_height;
+        return box;
+    }
+};
+```
+
+```cpp filename="main.cpp"
+#include <iostream>
+#include "Box.h"
+
+using namespace std;
+
+int main()
+{
+    Box box1(6, 7, 5);
+    Box box2(12, 13, 10);
+    double volume;
+
+
+    cout << "Volume of Box1 : " << box1.getVolume() << endl;
+    cout << "Volume of Box2 : " << box2.getVolume() << endl;
+
+    Box box3 = box1 + box2;
+
+    cout << "Volume of Box3 : " << box3.getVolume() << endl;
+    return 0;
+}
+```
+
+```bash filename="Output"
+Volume of Box1 : 180
+Volume of Box2 : 1440
+Volume of Box3 : 4860
+```
+
+### Not overloadable Operators
+
+- ::
+- .*
+- .
+- ?:
+
+<Callout type="warning">
+If you overload && or || you deactivate the Short-circuit evaluation.
+</Callout>
+
+### Index operator
+
+When overloading the index operator it is good practice to first implement an `T at(size_t)` function which makes the range check and then use that in your implementation. You also need to be aware of whether you return by value or by reference which can lead to different results down the road.
+
+<Image 
+    src="/cs/cppIndexOperator.png"
+    caption="The difference between returning by value and by reference in the index operator."
+    width={700}
+/>
+
+### Assignment operator
+
+### Increment/Decrement operator
+
+```cpp
+class Point
+{
+    int m_x, m_y;
+public:
+    Point& operator++();       // Prefix increment operator.
+    Point operator++(int);     // Postfix increment operator.
+    Point& operator--();       // Prefix decrement operator.
+    Point operator--(int);     // Postfix decrement operator.
+
+    Point(const int x = 0, const int y = 0)
+        : m_x(x)
+        , m_y(y)
+    {}
+
+    int x() { return m_x; }
+    int y() { return m_y; }
+};
+
+Point& Point::operator++()
+{
+    m_x++;
+    m_y++;
+    return *this;
+}
+
+Point Point::operator++(int)
+{
+    Point temp = *this;
+    ++(* this);
+    return temp;
+}
+
+Point& Point::operator--()
+{
+    m_x--;
+    m_y--;
+    return *this;
+}
+
+Point Point::operator--(int)
+{
+    Point temp = *this;
+    --(*this);
+    return temp;
+}
+```
+
+### Type conversion operator
+
+When overloading type conversions you don't need to add any parameters or a return type as this can be implicitly done. If you want the type conversion to be explicit you can add explicit before the function definition.
+
+```cpp
+#include <cmath>
+#include <iostream>
+
+class Complex {
+    double m_real;
+    double m_imag;
+
+public:
+    // Default constructor
+    Complex(double r = 0.0, double i = 0.0)
+        : m_real(r)
+        , m_imag(i)
+    {
+    }
+
+    // function style
+    double mag() { return getMag(); }
+
+    // conversion operator
+    operator double() { return getMag(); }
+
+private:
+    double getMag() { return sqrt(m_real * m_real + m_imag * m_imag); }
+};
+
+int main()
+{
+    Complex com1(3.0, 4.0);
+    std::cout << com1.mag() << std::endl;
+    // Converts to double implicitly because double already has output operator
+    Complex com2(4.0, 5.0);
+    std::cout << com2 << std::endl;
+}
+```
+
+### Literal operator
+
+```cpp
+#include <iostream>
+#include <string>
+
+struct Distance
+{
+private:
+    long double kilometers;
+    explicit Distance(long double val)
+        : kilometers(val)
+    {}
+
+    friend Distance operator"" _km(long double val);
+    friend Distance operator"" _mi(long double val);
+
+public:
+    const static long double km_per_mile;
+    long double get_kilometers() { return kilometers; }
+
+    Distance operator+(Distance other) { return Distance(get_kilometers() + other.get_kilometers()); }
+};
+
+const long double Distance::km_per_mile = 1.609344L;
+
+Distance operator"" _km(long double val) { return Distance(val); }
+
+Distance operator"" _mi(long double val) { return Distance(val * Distance::km_per_mile); }
+
+int main()
+{
+    // Must have a decimal point to bind to the operator we defined!
+    Distance d(402.0_km); // construct using kilometers
+    std::cout << "Kilometers in d: " << d.get_kilometers() << std::endl; // 402
+
+    Distance d2{ 402.0_mi }; // construct using miles
+    std::cout << "Kilometers in d2: " << d2.get_kilometers() << std::endl;  //646.956
+
+    // add distances constructed with different units
+    Distance d3 = 36.0_mi + 42.0_km;
+    std::cout << "d3 value = " << d3.get_kilometers() << std::endl; // 99.9364
+
+    return 0;
+}
+```
+
+### Output operator
+
+To output objects on the console you can override the so called output operator which works with Operating system streams.
+
+```cpp
+#include <iostream>
+
+class Date
+{
+    int m_month, m_day, m_year;
+public:
+    Date(int m, int d, int y)
+        : m_month(m)
+        , m_day(d)
+        , m_year(y)
+    {
+    }
+    friend std::ostream& operator<<(std::ostream& os, const Date& dt) {
+        os << dt.m_month << '/' << dt.m_day << '/' << dt.m_year;
+        return os;
+    }
+};
+
+int main()
+{
+    Date dt(5, 6, 92);
+    std::cout << dt << std::endl;
+}
+```

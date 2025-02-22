@@ -1,0 +1,118 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
+# TF-IDF
+
+There are lots of use cases where we want to be able to find out which words are the most important to a document in a collection or corpus of documents. Or in other words, which words add the most value to the document. Some possible applications for these measurements are search engines like Google or DuckDuckGo.
+
+The most famous and widely used measurement for finding the importance of a word in a document is called TF-IDF. TF-IDF has two components the TF (term frequency) and IDF (inverse document frequency).
+
+## Term Frequency
+
+The main idea of TF is that a word is important to a document if the word occurs frequently. So if we for example have a set of documents and want to find out which documents are the most relevant to the search query, "the offside rule" (i.e documents relating to football rules). A simple way to start would be to eliminate all documents that do not contain all three words "the", "offside" and "rule", however this still leaves many documents that might not be relevant. To further distinguish between relative and non-relative documents, we can count the number of times each word occurs in each document, this is the so-called term frequency. However, longer documents could then have a greater term frequency then other documents although that word/term might not be as relevant for the document as for others.
+
+To solve this the relative frequency is taken instead of the absolute frequency i.e the nominator is the raw count of the term $t$ in the document $d$ and the denominator is simply the total number of terms in document $d$.
+
+```math
+\mathrm{tf}(t,d) = \frac{f_{t,d}}{\sum_{t'\in d}{f_{t',d}}}
+```
+
+There are also some common alternatives for example using the highest frequency as the denominator.
+
+```math
+\mathrm{tf}(t,d) = \frac{f_{t,d}}{\mathrm{max}(f_{t',d}: t'd \in d)}
+```
+
+With the introduction of a hyperparameter $k$ you have the so-called augmented term frequency which is also commonly seen with $k=0.5$ for shorter documents.
+
+```math
+\mathrm{tf}(t,d) = k + (1-k) \frac{f_{t,d}}{\mathrm{max}(f_{t',d}: t'd \in d)}
+```
+
+<Callout type="example">
+    Let's say we have a document with the text "the offside rule is a rule in football". We then want to calculate the term frequency of the word "rule". The document has a total of 8 words and the word "rule" occurs 2 times. The term frequency of the word "rule" in the document is then $\frac{2}{8} = 0.25$. So the word "rule" is 25% of the document.
+
+    If we use the highest frequency as the denominator the term frequency would be $\frac{2}{2} = 1$. So the word "rule" is very important to the document, in fact, it is the most important word in the document.
+
+    If we use the augmented term frequency with $k=0.5$ the term frequency would be $0.5 + (1-0.5) \cdot \frac{2}{2} = 0.75$. So the word "rule" is 75% of the document. Which is a good balance between the two other term frequencies. As the word "rule" is important but not the only word in the document that is key. The words "offside" and "football" are also important.
+</Callout>
+
+## Inverse Document Frequency
+
+The IDF measures how much information a word provides i.e. if it is common or rare across all documents. For example the word "the" is very common so TF alone might incorrectly rank documents which have the word "the" more frequently higher then other documents. So the word "the" is not a good keyword to distinguish relevant and non-relevant documents and words compared to "offside" and "rules". To avoid this an inverse document frequency factor is used which adds a higher weight to the words that occur rarely.
+
+So for the corpus of documents $D$ with $|D|=N$ being the number of documents in the corpus and $n_t$ being the number of documents the term $t$ occurs in the inverse document frequency can be defined as:
+
+```math
+\mathrm{idf}(t, D) = \log{\frac{N}{n_t}}
+```
+
+To avoid division by zero also commonly changed to:
+
+```math
+\mathrm{idf}(t, D) = \log{\frac{N}{1 + n_t}}
+```
+
+We can then finally combine the two components to form the TF-IDF score of a term $t$ in the document $d$ of corpus $D$ :
+
+```math
+\mathrm{tfidf}(t,d,D)=\mathrm{tf}(t,d) \cdot \mathrm{idf}(t,D)
+```
+
+<Callout type="example">
+    Let's say we have the following corpus of documents:
+    - Document 1: "the offside rule is a rule in football"
+    - Document 2: "the offside rule is a rule in soccer"
+    - Document 3: "In hockey there is no such thing as the offside rule"
+
+    If we want to calculate the TF-IDF score for the word "rule" in document 1 we can calculate the term frequency as we did in the previous example. To calculate the inverse document frequency we can see that the word "rule" occurs in all documents so the IDF is $\log{\frac{3}{3}} = 0$. 
+    
+    So then depending on the term frequency the TF-IDF we can get the following scores:
+    - TF-IDF with term frequency: $0.25 \cdot 0 = 0$
+    - TF-IDF with highest frequency as denominator: $1 \cdot 0 = 0$
+    - TF-IDF with augmented term frequency: $0.75 \cdot 0 = 0$
+
+    So unfortunatly the word "rule" is not important to document 1 in this case. The reason is because the word "rule" is not rare enough across the documents to be considered important. This is a common problem with TF-IDF and can be solved by using other methods like BM25.
+</Callout>
+
+## Searching with TF-IDF
+
+TF-IDF can also be used to rank documents based on a search query. The idea is to calculate the TF-IDF score for each term in the search query and then sum the scores for each term in the document. The documents can then be ranked based on the sum of the scores. 
+
+The process of ranking the documents can be efficiently done with an inverted index. An inverted index is a data structure that maps terms to the documents they occur in. This allows for fast retrieval of documents that contain a specific term it can then be used to efficiently calculate all the components of the TF-IDF score.
+
+<Callout type="example">
+    If we have the following documents:
+    - Document 1: "The sky is blue."
+    - Document 2: "The sun is bright today."
+    - Document 3: "The sun in the sky is bright."
+    - Document 4: "We can see the shining sun, the bright sun."
+
+    After removing stop words and stemming the documents we could get the following documents:
+    - Document 1: "sky blue"
+    - Document 2: "sun bright today"
+    - Document 3: "sun sky bright"
+    - Document 4: "can see shining sun bright sun"
+
+    We can then create an inverted index and calculate the Term Frequencies.
+    
+    <Image 
+        src="/ml/tfidfSearch1.png" 
+        width="700"
+    />
+
+    Using the index we can also calculate the Inverse Document Frequencies.
+    <Image 
+        src="/ml/tfidfSearch2.png" 
+        width="700"
+    />
+
+    Lastly we can perform a matrix multiplication to get the TF-IDF scores.
+
+    <Image 
+        src="/ml/tfidfSearch3.png" 
+        width="700"
+    />
+</Callout>
+
+## BM25

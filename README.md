@@ -1,5 +1,6 @@
 # georgerowlands.ch
 
-## Installation
+## Run Scripts
 
-## Usage
+### Convert .ipynb to .md
+

@@ -1,0 +1,97 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
+# Infinity & Countability
+
+## Infinity
+
+Infinity is an important part of mathematics. Unlike what most people think, infinity, written as $\infty$, is not a number, so it is also not a real number $\inf \notin \mathbb{R}$. Instead it is a concept that represents a quantity that is larger than any number. It is used to represent a quantity that can
+grow indefinitely large or extend without bounds. Depending on the context, infinity might however frustratively be used differently. 
+
+For example, in calculus, infinity is used in limits to represent a quantity that grows indefinitely large. So $\lim_{x \to \infty} f(x) = \infty$ means that as $x$ grows indefinitely large, $f(x)$ also grows indefinitely large. This can also be done 
+for negative infinity, $\lim_{x \to -\infty} f(x) = -\infty$, which means that as $x$ grows indefinitely small, $f(x)$ also grows indefinitely small.
+
+In set theory, infinity is used to represent the size of a set. A set is said to be infinite if it has more elements than any finite set. For example, the set of natural numbers $\mathbb{N}$ is infinite.
+
+### Operations with Infinity
+
+Infinity is not a number, so it does not follow the same rules as numbers. However, there are some operations that can be performed with infinity. These can be summarized as follows:
+
+- **Addition**: $\infty + a = \infty$ for any real number $a$. This is because no matter how large $a$ is, adding it to infinity will still result in infinity, there is no number larger than infinity. This also applies to adding two infinities together, $\infty + \infty = \infty$ and also applies to 
+adding negative infinity to a number, $-\infty + a = -\infty$ for any real number $a$. The only exception is adding positive and negative infinity, $-\infty + \infty = \text{undefined}$.
+- **Subtraction**: $\infty - a = \infty$ for any real number $a$. This also applies to negative infinity, $-\infty - a = -\infty$ for any real number $a$. Subtracting 
+two infinities is also undefined, $\infty - \infty = \text{undefined}$ as it is just a different way of adding positive and negative infinity.
+- **Multiplication**: $\infty \cdot a = \infty$ for any positive real number $a$. If $a$ is negative, then $\infty \cdot a = -\infty$. This also applies to negative infinity, $-\infty \cdot a = -\infty$ for any positive real number $a$ and $-\infty \cdot a = \infty$ for any negative real number $a$. If 
+$a = 0$, then the result is undefined, $\infty \cdot 0 = \text{undefined}$. Multiplying two infinities works as you would expect, $\infty \cdot \infty = \infty$ and $-\infty \cdot -\infty = \infty$ and $-\infty \cdot \infty = -\infty$.
+- **Division**: $\frac{\infty}{a} = \infty$ for any positive real number $a$. If $a$ is negative, then $\frac{\infty}{a} = -\infty$. The idea here is that dividing a large number by a small number results in a large number. This also applies to negative infinity, $\frac{-\infty}{a} = -\infty$ for any positive real number $a$ 
+and $\frac{-\infty}{a} = \infty$ for any negative real number $a$. If $a = 0$, then the result is undefined, $\frac{\infty}{0} = \text{undefined}$. If infinity is in the denominator, then the result is $0$, $\frac{a}{\infty} = 0$ for any real number $a$. The idea here is very similar to the idea of dividing a large number 
+by an even larger number, the result is very small. Dividing two infinities is always undefined. Something l'hopital's rule can be used to evaluate the limit of a fraction with infinities in the numerator and denominator?
+
+## Finite Sets
+
+A set is finite if it has a definite number of elements. In other words we count the number of elements in the set and if the number is a natural number, then the set is finite. For example, the set of natural numbers $\{1, 2, 3, 4, 5\}$ is finite because we can count the number of elements in the set and it is 5. 
+The number of elements of a set is called the cardinality of the set and is denoted by $|A|$ as seen in the section on [sets](/garden/maths/discrete/setTheory#cardinality). 
+
+More formally, a set $A$ is finite if there exists a bijective function, a one-to-one matching, between $A$ and the set $\{1, 2, 3, \ldots, n\}$ for some natural number $n$. This means that we can count the number of elements in the set $A$ and it is a natural number. If $n=0$, then the set on the right is the empty set 
+$\emptyset$ and the set $A$ is also the empty set. So the empty set is also finite.
+
+<Callout type="example">
+    Examples of finite sets:
+    - The set of natural numbers $\{1, 2, 3, 4, 5\}$ is finite.
+    - The set of even numbers $\{2, 4, 6, 8, 10\}$ is finite.
+    - The set of letters in the latin alphabet $\{a, b, c, \ldots, z\}$ is finite.
+    - The empty set $\emptyset$ is finite.
+
+    Examples of non-finite sets:
+    - The set of natural numbers $\mathbb{N}$ is infinite.
+    - The set of integers $\mathbb{Z}$ is infinite.
+    - The set of real numbers $\mathbb{R}$ is infinite.
+</Callout>
+
+## Infinite Sets
+
+A set is infinite if it has more elements than any finite set. This means that the set cannot be counted. The set of natural numbers $\mathbb{N}$ is an example of an infinite set. Intuitively, we can think of this as any set where we end up writing ...
+The cardinality of such a set is then $\infty$.
+
+<Callout type="example">
+    Examples of infinite sets:
+    - The set of natural numbers $\mathbb{N}$ is infinite.
+    - The set of integers $\mathbb{Z}$ is infinite.
+    - The set of real numbers $\mathbb{R}$ is infinite.
+    - The set of all even numbers $\{2, 4, 6, 8, \ldots\}$ is infinite.
+    - The set of all possible words using the latin alphabet is infinite.
+</Callout>
+
+## Countable Sets
+
+We have already seen that for a set to be finite, you need to be able to define some number $n$ such that there is a one-to-one matching between the set and the set $\{1, 2, 3, \ldots, n\}$. These finite sets of course can be counted. 
+However, there are also infinite sets that can be counted. These sets are called countable sets. A set is countable if there exists a bijective function between the set and the set of natural numbers $\mathbb{N}$. These is the key difference between countable and finite sets. 
+
+<Callout type="example">
+    Examples of countable sets:
+    - The set of natural numbers $\mathbb{N}$ is countable.
+    - The set of integers $\mathbb{Z}$ is suprisingly countable. This is because we can define a bijective function between the set of natural numbers and the set of integers. 
+    For example, we can define the function $f: \mathbb{Z} \to \mathbb{N}$ such that $f(0) = 1$, $f(1) = 2$, $f(-1) = 3$, $f(2) = 4$, $f(-2) = 5$, and so on. This function is a bijection between the set of natural numbers and the set of integers.
+    - The set of all even numbers $\{2, 4, 6, 8, \ldots\}$ is countable.
+    - The set of odd numbers $\{1, 3, 5, 7, \ldots\}$ is countable.
+    - The set of prime numbers $\{2, 3, 5, 7, 11, \ldots\}$ is countable. Because it is a subset of the natural numbers.
+
+    Examples of uncountable sets:
+    - The set of real numbers $\mathbb{R}$ is uncountable. 
+    - The set of irrational numbers $\mathbb{R} \setminus \mathbb{Q}$ is uncountable. This is because the set of irrational numbers is a subset of the real numbers and the real numbers are uncountable.
+</Callout>
+
+## Uncountable Sets
+
+There are sets that are so large that they cannot be counted. These sets are called uncountable sets. The set of real numbers $\mathbb{R}$ is an example of an uncountable set. This means that there is no way to define a bijective function between the set of real numbers and the set of natural numbers. 
+Intuitively, we can understand why the real numbers might be uncountable. The real numbers are continuous so for any two real numbers, there are infinitely many real numbers between them. This makes it impossible to define a bijective function between the set of real numbers and the set of natural numbers.
+
+<Image 
+    src="/maths/infiniteRealNumbers.png"
+    caption="No matter how far you zoom in on the real number line, there are always more real numbers."
+    width={600}
+/>
+
+### Cantor's Diagonal Argument
+
+Cantor's diagonal argument is a proof for uncountable sets. It shows that the set of real numbers $\mathbb{R}$ is uncountable. 

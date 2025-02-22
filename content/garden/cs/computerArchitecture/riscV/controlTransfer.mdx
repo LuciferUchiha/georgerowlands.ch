@@ -1,0 +1,130 @@
+import Callout from "@components/Callout/Callout";
+
+# Control Transfer Operations
+
+When programming we often find ourselves using control structures like if and else this creates branches in our program where we either go down one or the other branch. RISC-V offers so-called branch instructions which in most cases take 2 operands and a Label to jump to after checking the condition. Labels are not some magic keywords, they are just an offset off the program counter, PC that is automatically handled by the assembler.
+
+| Instruction                           | Type | Example                | Meaning                                                 |
+| ------------------------------------- | ---- | ---------------------- | ------------------------------------------------------- |
+| Branch equal                          | SB   | `beq rs1, rs2, imm12`  | `if (R[rs1] == R[rs2]) pc = pc + SignExt(imm12 << 1)`   |
+| Branch not equal                      | SB   | `bne rs1, rs2, imm12`  | `if (R[rs1] != R[rs2]) pc = pc + SignExt(imm12 << 1)`   |
+| Branch greater than or equal          | SB   | `bge rs1, rs2, imm12`  | `if (R[rs1] >= R[rs2]) pc = pc + SignExt(imm12 << 1)`   |
+| Branch greater than or equal unsigned | SB   | `bgeu rs1, rs2, imm12` | `if (R[rs1] >=u R[rs2]) pc = pc + SignExt(imm12 << 1)`  |
+| Branch less than                      | SB   | `blt rs1, rs2, imm12`  | `if (R[rs1] < R[rs2]) pc = pc + SignExt(imm12 << 1)`    |
+| Branch less than unsigned             | SB   | `bltu rs1, rs2, imm12` | `if (R[rs1] < u R[rs2]) pc = pc + SignExt(imm12 << 1)`  |
+
+In RISC-V you might notice that there is no greater then or less than or equal. This is because we can emulate these by just switching the operands, however, most CPUs have pseudo instructions to make the assembly code more readable.
+
+<Callout type="example">
+```c
+// i in x22, j in x23, f in x19, g in x20, h in x21
+if (i == j)
+    f = g + h;
+else
+    f = g – h;
+```
+
+In the code below we can also see a so-called unconditional branch meaning we always jump to the given Label. This unconditional branch makes us of the register `x0` always holding the value 0.
+
+```assembly
+bne x22, x23, L1
+add x19, x20, x21
+beq x0, x0, Exit            # unconditional
+
+L1:
+    sub x19, x20, x21
+Exit:
+```
+</Callout>
+
+## Basic Blocks
+
+A basic block is a small building block for a program. It is a sequence of instructions that has no branch calls except for at the end and no has no branch target apart from at the beginning. A goal of the compiler to make as many big basic blocks as it can as this is better for optimization and reusability.
+
+<Callout type="example">
+Let us compare to different assembler outputs for the same code and look at their basic blocks. Our code does the following:
+
+```c
+int fact_while (int x) {
+    int result = 1;
+    while (x > 1) {
+        result *= x;
+        x = x – 1;
+    }
+    return result;
+}
+```
+
+It is common to rewrite loops as goto commands when trying to convert high-level code to assembler code.
+
+```c
+int fact_while (int x) {
+    int result = 1;
+Loop:
+    if (x <= 1) goto Exit;
+    result = result * x;
+    x = x – 1;
+    goto Loop;
+Exit:
+    return result;
+}
+```
+
+```assembly
+fact_while:
+    addi a5, a0, 0          # a5 = x (x)
+    addi a0, zero, 1        # a0 = 1 (result)
+Loop:
+    addi a4, zero, 1        # a4 = 1
+    ble a5, a4, Exit        # if (x <= 1) goto Exit
+    mul a0, a0, a5          # result *= x
+    addi a5, a5, -1         # x = x – 1
+    beq zero, zero, Loop    # goto Loop
+Exit:
+```
+
+The assembly code above has 3 small basic blocks but if we convert the C code to this structure we can decrease the amount of basic blocks and increase their size.
+
+```c
+int fact_while2 (int x) {
+    int result = 1;
+    if (x <= 1) goto Exit;
+Loop:
+    result = result * x;
+    x = x – 1;
+    if (x != 1) goto Loop;
+Exit:
+    return result;
+}
+```
+
+```assembly
+fact_while2:
+    addi a5, a0, 0          # a5 = x (x)
+    addi a4, zero, 1        # a4 = 1
+    addi a0, zero, 1        # a0 = 1 (result)
+    ble a5, a4, Exit        # if (x <= 1) goto Exit
+Loop:
+    mul a0, a0, a5          # result *= x
+    addi a5, a5, -1         # x = x – 1
+    bne a5, a4, Loop        # if (x != 1) goto Loop
+Exit:
+```
+</Callout>
+
+## Target Adressing
+
+When jumping using the branch instructions most jumps are not very far. As mentioned before the label is like an immediate offset meaning it can be up to 12 bits long. If we want to jump further we can use one of the commands below. The `jal` instruction stands for jump and link, we jump using the passed offset which can now be 20 bits long. We also store the current PC i.e the return address into the corresponding `rd` register. If we want to jump even further then we can load a large immediate into a temporary register using the `lui` instruction and then add the remaining 12 bits and jump at the same time using the `jalr` instructions which also lets us read the offset from a register.
+
+| Instruction                           | Type | Example                | Meaning                                                 |
+| ------------------------------------- | ---- | ---------------------- | ------------------------------------------------------- |
+| Jump and link                         | UJ   | `jal rd, imm20`        | `R[rd] = pc + 4; pc = pc + SignExt(imm20 << 1)`         |
+| Jump and link register                | I    | `jalr rd, imm12(rs1)`  | `R[rd] = pc + 4; pc = (R[rs1] + SignExt(imm12)) & (~1)` |
+
+<Callout type="info">
+We can also use the `jal` instruction as an unconditional branch by using the zero register as the return address, which is the same as discarding it:
+
+```assembly
+jal x0, Label
+```
+</Callout>

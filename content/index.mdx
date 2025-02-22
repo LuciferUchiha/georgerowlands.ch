@@ -1,0 +1,27 @@
+import TypeWriter from "@components/TypeWriter/TypeWriter";
+import GardenGraph from "@components/GardenGraph/GardenGraph";
+
+<div className="h-screen flex flex-row w-full mt-[-2rem]">
+  <div className="self-center border border-[#ECECEC] dark:border-[#2A2A2A]">
+    <GardenGraph className="hidden"/>
+  </div>
+  <div className="mt-96 ml-8">
+      <TypeWriter 
+          strings={["Hello there, my name is"]}
+          className="text-3xl"
+          typeSpeed={40}
+          showCursor={false}
+          startDelay={500}
+      />
+
+      <br />
+
+      <TypeWriter
+          strings={["George Rowlands"]}
+          className="font-bold text-primary-500 dark:text-primary-600 text-6xl"
+          typeSpeed={40}
+          startDelay={2200}
+          showCursor={false}
+      />
+  </div>
+</div>

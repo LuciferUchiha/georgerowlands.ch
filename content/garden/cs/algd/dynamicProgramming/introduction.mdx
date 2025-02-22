@@ -1,0 +1,199 @@
+import Image from "@components/Image/Image";
+import Callout from "@components/Callout/Callout";
+
+# Introduction to DP
+
+Dynamic programming, short DP, is a problem-solving technique or more formally an algorithmic design paradigm just like "divide
+and conquer" or a "greedy algorithm". It is used to solve problems that can be broken down into sub-problems (just like
+divide and conquer) which are then solved recursively. For a problem to be solved using dynamic programming, it must
+have two properties:
+
+- **Overlapping Sub-problems**: The original problem can be broken down into sub-problems and when solving the original 
+problem, the same sub-problems are solved multiple times, i.e. there is an overlap.
+- **Optimal Substructure**:The most optimal solution for the original problem can be constructed using the
+optimal solutions of the sub-problems.
+
+So when given a problem that has the form such as "Calculate some sort of value for the input $n$", it is a good idea to 
+think about solving the problem using some sort of subproblem that solves the same problem for a smaller input so, 
+"Calculate some sort of value for the input $i$ where $i < n$". This is the key to dynamic programming. Once you have 
+identified the sub-problem, you can then think about how to solve the original problem using the optimal solutions of 
+the sub-problems. This often requires some trial and error and is the hardest part of dynamic programming.
+
+A common example of a problem that can be solved using dynamic programming is the Fibonacci sequence as it fullfills 
+both properties. Formally the Fibonacci sequence is defined as: 
+
+```math
+\begin{align*}
+fib(0) &= 0 \\
+fib(1) &= 1 \\
+fib(n) &= fib(n - 1) + fib(n - 2) \text{ for } n > 1
+\end{align*}
+```
+
+The recursive implementation of the Fibonacci sequence is as follows:
+
+```java
+public int fib(int n) {
+    if (n <= 1)
+        return n;
+    return fib(n - 1) + fib(n - 2);
+}
+```
+
+When we illustrate the recursive calls of the $fib$ function as a tree (always a good idea when working with dynamic
+programming problems), we can see that the same sub-problems are solved multiple times. For example for $fib(6)$ we can
+see that $fib(3)$ is solved three times, so there is an overlap.
+The other property, optimal substructure, is also satisfied. The optimal solution for $fib(6)$ is constructed using the
+optimal solutions of $fib(5)$ and $fib(4)$.
+
+<Image
+    src="/cs/dpFibTree.png"
+    caption="The recursive calls of the fibonnaci function as a tree."
+/>
+
+From the tree above we can also see that the time complexity of the $fib$ function is exponential, i.e. $O(2^n)$. This
+is because the same sub-problems are solved multiple times. We will see later, dynamic programming can be used to
+improve the time complexity of the $fib$ function to $O(n)$. This is a huge improvement and is most often the reason why
+dynamic programming is used because it can drastically improve the time complexity of a function.
+
+<Callout type="todo">
+    Show using eth exercise that fibonacci is c * 1/3 * 1.5^n
+</Callout>
+
+## Top-Down Approach (Memoization)
+
+When solving dynamic programming problems, there are two main ways to solve them: the top-down approach and the bottom-up 
+approach. We will first look at the top-down approach as it the most common way to solve dynamic programming problems 
+initially. The bottom-up approach will be covered in the next section. The top-down approach is also called **memoization** for 
+reasons that will become clear later.
+
+The idea is to store the results of the sub-problems so that we do not have to re-compute them when they are needed
+again later due to the overlapping sub-problems property. This technique is called memoization because we store the
+results of the sub-problems in a lookup table (memo short for memory) and look them up when needed. 
+
+The name top-down comes from the fact that in the recursion tree we start at the top with the original problem and then 
+move down the tree by breaking it down into sub-problems and solving them recursively.
+
+When implementing memoization it is important to think about the data structure that will be used to store the results
+as we want quick lookups. This leads to most implementations using either just a simple array where the index is the
+input to the function or a hash map where the key is the input to the function.
+
+```java
+public int fib(int n) {
+    if (n < 0)
+            throw new IllegalArgumentException("n must be greater than or equal to 0");
+    if (n <= 1)
+        return n;
+
+    Integer[] memo = new Integer[n + 1]; // This uses more memory than a simple array but is more convenient
+
+    // base cases
+    memo[0] = 0;
+    memo[1] = 1;
+    return fibMemo(n, memo);
+}
+
+public int fibMemo(int n, int[] memo) {
+    if (memo[n] != null)
+        return memo[n];
+    memo[n] = fibMemo(n - 1, memo) + fibMemo(n - 2, memo);
+    return memo[n];
+}
+```
+
+After implementing the memoization technique, we can see in the tree below that the time complexity of the $fib$
+function is now $O(n)$ as each sub-problem is only solved once.
+
+<Image
+    src="/cs/dpFibTreeMemo.png"
+    caption="The recursive calls of the fibonnaci function as a tree using memoization."
+    width={400}
+/>
+
+## Bottom-Up Approach (Tabulation)
+
+The bottom-up approach is the other way to solve dynamic programming problems. It is also called **tabulation**. The
+idea is to solve the sub-problems first, i.e. some of the base cases, and then use the results of those sub-problems to
+solve the original problem, hence the name bottom-up. As we start with the base cases, the leaves of the tree, and work 
+our way up to the original problem at the root.
+
+The name tabulation comes from the fact that we store the results of the sub-problems in a table 
+(depending on the problem, this can be a 1D, 2D, 3D, etc. table) and then use those results to solve the original problem.
+
+When implementing memoization it helped to visualize the recursive calls as a tree. When implementing tabulation it
+is also additionally helpful to visualize the results as a table or list (depending on the problem) to find a pattern.
+
+For a visualization of the tabulation technique I can recommend watching [this video](https://youtu.be/oBt53YbR9Kk?t=11513)
+at the 3:11:50 mark. The whole video is great and I can recommend watching it all and also the 4 part [video series by
+MIT on dynamic programming from 2020](https://www.youtube.com/watch?v=r4-cftqTcdI&t=7s).
+
+additionally it can help to think about these specific questions when coming up with a bottom-up solution:
+- **Dimensions of the table**: How many dimensions does the table need? For example, for the Fibonacci sequence, we only need $1\times n$.
+- **Subproblems**: What is the meaning of an entry in the table, i.e. what is the subproblem that we are solving? For the Fibonacci sequence, it is the $i$-th Fibonacci number.
+- **Base cases**: What are the base cases of the problem?
+- **Recursion**: How can an entry in the table be calculated using the previous entries, i.e. how can we solve the original problem using the subproblems? 
+- **Order of computation**: In what order should the table be filled? For the Fibonacci sequence, we can start with the base cases and then fill the table from left to right.
+- **Extraction of the result**: How can we extract the result from the table? For the Fibonacci sequence, we can just return the last entry in the table.
+
+For the Fibonacci sequence, we can see that the base cases are $fib(0)$ and $fib(1)$. We can then use those results to
+then iteratively solve the rest of the sub-problems until we reach the original problem.
+
+```java
+public int fib(int n) {
+    if (n < 0)
+        throw new IllegalArgumentException("n must be greater than or equal to 0");
+    if (n <= 1)
+        return n;
+
+    int[] memo = new int[n + 1];
+
+    // base cases
+    memo[0] = 0;
+    memo[1] = 1;
+
+    for (int i = 2; i <= n; i++) {
+        memo[i] = memo[i - 1] + memo[i - 2];
+    }
+    return memo[n];
+}
+```
+
+The above code then again results in a time complexity of $O(n)$, much better than the original $O(2^n)$. The space 
+used is currently $O(n)$ but can be improved to $O(1)$ as we only need the last two results to calculate the next one. When 
+implementing a bottom-up approach you can often improve the space complexity by finding such shortcuts. For example if the DP table is 
+2D you can often improve the space complexity to $O(n)$ by remembering the current and previous row.
+
+```java	
+public int fib(int n) {
+    if (n < 0)
+        throw new IllegalArgumentException("n must be greater than or equal to 0");
+    if (n <= 1)
+        return n;
+
+    int a = 0;
+    int b = 1;
+    for (int i = 2; i <= n; i++) {
+        int c = a + b;
+        a = b;
+        b = c;
+    }
+    return b;
+}
+```
+
+## Top-Down vs Bottom-Up
+
+As always there are pros and cons to both approaches. Usually the bottom-up approach is preferred due to the following pros:
+- **Simplicity**: The code for the bottom-up approach is usually simpler and easier to understand.
+- **No Overhead**: There is no overhead of the recursive calls and the call stack. In the worst case, the top-down approach can lead to a stack overflow.
+- **Explicit Order**: The order of computation is explicit and can be controlled.
+- **Space Complexity**: The space complexity can be better as we only need to store the results of the sub-problems. This can often be improved to $O(1)$ as we 
+very rarely need the entire table.
+
+However, it does come with some cons:
+- **Difficulty**: It can be harder to come up with a bottom-up solution as you need to think about the order of computation and the dimensions of the table. 
+For most people the top-down approach is easier to understand and implement.
+- **Unnecessary Computation**: The bottom-up approach can lead to unnecessary computation as we solve all sub-problems even if they are not needed. 
+In the top-down approach we can make use of the memoization to only solve the sub-problems that are needed or skip branches of the tree that we know will 
+not lead to the optimal solution.
+

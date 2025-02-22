@@ -1,0 +1,26 @@
+import Callout from "@components/Callout/Callout";
+
+# Objects, Classes and Prototypes
+
+<Callout type="info">
+    Todo on objects and classes and the differences. Also clearly explain how prototypes work because atm i dont know.
+</Callout>
+
+## Classes
+
+Classes allow you to define blueprints for JavaScript objects. With classes you can also add inheritance to JavaScript objects.
+
+```jsx
+class Human {
+  species = "human";
+}
+class Person extends Human {
+  name = "Max";
+  printMyName = () => {
+    console.log(this.name);
+  }
+}
+const person = new Person();
+person.printMyName(); // prints "Max"
+console.log(person.species); // prints "human"
+```

@@ -1,0 +1,85 @@
+import Callout from '@components/Callout/Callout';
+import Image from '@components/Image/Image';
+
+# Linear Independence and Rank
+
+## Linear Independence
+
+Two vectors are linearly independent if neither of them can be written as a linear combination of the other. In other words, two vectors are linearly independent if 
+they are not scalar multiples of each other. It is however easier to find to define and check for linear dependence. The vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ 
+are linearly dependent if:
+
+```math
+\boldsymbol{a} = c\boldsymbol{b} \quad \text{for some } c \in \mathbb{R}
+```
+
+this can also be written as:
+
+```math
+\boldsymbol{a} - c\boldsymbol{b} = \boldsymbol{0}
+```
+
+where $\boldsymbol{0}$ is the zero vector. This means that the vectors $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent 
+if they are collinear, i.e. they lie on the same line. The two equations above can also be used to define linear independence, we just replace the equal sign with a 
+not equal sign.
+
+<Image
+    src="/maths/vectorLinearDependence2D.png"
+    caption="The left two vectors are linearly independent, while the right two vectors are linearly dependent."
+    width={400}
+    />
+
+<Callout type="example">
+If $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
+
+```math
+\boldsymbol{a} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
+    2 \\
+    4 \\
+    6
+\end{bmatrix}
+```
+
+then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly dependent because:
+
+```math
+\boldsymbol{a} = 2\boldsymbol{b}
+```
+
+However, if $\boldsymbol{a}$ and $\boldsymbol{b}$ are defined as:
+
+```math
+\boldsymbol{a} = \begin{bmatrix}
+    1 \\
+    2 \\
+    3
+\end{bmatrix} \quad \text{and} \quad \boldsymbol{b} = \begin{bmatrix}
+    2 \\
+    3 \\
+    4
+\end{bmatrix}
+```
+
+then $\boldsymbol{a}$ and $\boldsymbol{b}$ are linearly independent because no scalar multiple of $\boldsymbol{b}$ can be equal to $\boldsymbol{a}$.
+</Callout>
+
+This idea can then be extended to more a set of vectors, looking at a sequence of vectors doesnt make a lot of sense as 
+the same vector is obviously linearly dependent on itself. 
+
+a set is linearly dependent:
+- if one of the vectors in the set can be written as a linear combination of the others
+- there is a non-trivial solution to make the linear combination equal to the zero vector 
+- at least one of the vectors in the set can be written as a linear combination of the previous vectors.
+
+## Rank of a Matrix
+
+The rank of a matrix is the number of linearly independent rows or columns in the matrix, we can actually show that this is 
+the same using transposition.
+
+<Callout type="todo">
+TODO in reduced row echelon form, the number of pivots is the rank of the matrix, i.e. number of non-zero rows. Proof column rank = row rank 
+</Callout>
