@@ -2,9 +2,9 @@ import os
 import json
 import re
 
-
 if __name__ == "__main__":
-    print("Starting graph-builder")
+    # checks that all links in the digital garden are valid
+    # and creates a graph of the digital garden
 
     pages_path = "../../content/"
 
