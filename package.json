@@ -9,6 +9,7 @@
     "@akebifiky/remark-simple-plantuml": "^1.0.2",
     "@giscus/react": "^3.1.0",
     "@tailwindcss/postcss": "^4.0.6",
+    "@vercel/analytics": "^1.5.0",
     "ignore-loader": "^0.1.2",
     "next": "^15.1.7",
     "nextra": "^4.2.11",
