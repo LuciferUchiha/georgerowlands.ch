@@ -1,41 +1,162 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
 import Graph from "@components/Graph/Graph";
 
 # Connectivity
 
-Graph connectivity is also known as graph resilience and is a measure of how well a graph can maintain its connectivity
-when vertices or edges are removed, i.e. how many vertices or edges can be removed before the graph becomes disconnected
-(from one connected component to multiple connected components) or has a higher number of connected components.
+We have already seen that [a graph can be connected](/garden/cs/algd/graphsNetworks/graphs#connected-components) or 
+disconnected. But some graphs are more connected than others. For example we can say that a complete graph is as 
+connected as possible because every vertex is connected to every other vertex. But how can we measure the connectivity 
+of a graph, that is what we will analyze in this section.
 
-With this analysis technique we can find out how robust a graph is, i.e. how well it can handle failures which can be
-very useful in real world applications such as communication, transportation, etc.
+<Image 
+    src="/cs/graphsInduced.svg"
+    width={600}
+    caption="Which graph is more connected?"
+/>
 
-## Bridges
+We have already seen an idea of how to measure the connectivity of a graph with the concept of [graph density](/garden/cs/algd/graphsNetworks/graphs#graph-density). 
+There the idea is to compare the number of edges in the graph with the maximum number of edges that the graph could have, 
+i.e. the number of edges in a complete graph. But this is not a very good measure of connectivity because it does not 
+take into account the structure of the graph. 
 
-A Bridge is an edge that if removed would increase the number of connected components in the graph. In the graph below
-you can quiet clearly see that the edge between vertices $3$ and $4$ marked in red is a bridge.
+Instead a different approach is to analyze the connectivity of a graph by looking at how many vertices or edges have to be 
+removed to disconnect the graph. This measure directly looks at the structure of the graph. This technique also tells us 
+how robust a graph is, i.e. how well it can handle failures. For example in a communication network we want to know how 
+many communication lines can fail before the network becomes disconnected. This is also why graph connectivity is also 
+commonly referred to as graph resilience as it measures how resilient a graph is to failures. 
 
-export const bridgeGraph = {
+## K-Connected Graphs
+
+Let's first look at the case where we want to measure the connectivity of a graph by looking at how many vertices have to 
+be removed to disconnect the graph, often referred to as vertex connectivity.
+We say that a graph is $k$-connected or $k$-vertex-connected if it has at least $k+1$ 
+vertices and at least $k$ vertices have to be removed to disconnect the graph. We require at least $k+1$ vertices because 
+otherwise we would be removing all vertices and the graph would be disconnected by definition. The above definition is 
+a bit unclear for example does it mean that if a graph is 2-connected? To clarify this we define the connectivity of a graph 
+more formally as follows:
+
+> A graph $G = (V, E)$ is $k$-connected if $|V| \geq k+1$ and for every set $X \subseteq V$ with $|X| < k$ the graph 
+$G[V \setminus X]$ is connected.
+
+This definition is a bit more strict than the previous one because it requires that for every set of vertices of size less 
+than $k$ the graph is connected. It can be a bit hard to understand at first because we are coming from "the other side" 
+where we are looking at how many vertices can we remove without disconnecting the graph. But it is the same idea.
+
+<Callout type="info">
+In some literature if a graph is 2-connected then it is also 3-connected and 4-connected and so on. This can be a bit confusing 
+because it is not clear what the smallest number of vertices that have to be removed to disconnect the graph is. This comes from 
+the fact of saying that at least $k$ vertices have to be removed to disconnect the graph. So if we then know that a graph with 5 
+vertices is at least 2-connected then we can also say that it is 3-connected because if we remove even more vertices then the graph will just become even more 
+disconnected. The same applies to 4-connected, however not 5-connected because then we would be removing all vertices and we 
+require at least one vertex to remain in the graph. Our formal definition is more strict and does not allow for this kind of 
+confusion.
+</Callout>
+
+So for example the graph below is 2-connected because if we remove the vertices $4$ and $2$ the graph
+becomes disconnected but if we only remove any one vertex the graph stays connected.
+
+export const vertexConnectedGraph = {
     nodes: [
-        {id: 1, label: "1", x: 0, y: 0},
-        {id: 2, label: "2", x: 0, y: 200},
-        {id: 3, label: "3", x: 200, y: 100},
-        {id: 4, label: "4", x: 400, y: 100},
-        {id: 5, label: "5", x: 600, y: 0},
-        {id: 6, label: "6", x: 600, y: 200}
+        {id: 1, label: "1", x: 0, y: 100},
+        {id: 2, label: "2", value: 5, x: 200, y: 0, color: "red"},
+        {id: 3, label: "3", x: 200, y: 200},
+        {id: 4, label: "4", value: 5, x: 400, y: 100, color: "red"},
+        {id: 5, label: "5", x: 600, y: 100},
+        {id: 6, label: "6", x: 800, y: 200},
+        {id: 7, label: "7", x: 800, y: 0},
+        {id: 8, label: "8", x: 1000, y: 100}
     ],
     edges: [
         {from: 1, to: 2},
         {from: 1, to: 3},
-        {from: 2, to: 3},
-        {from: 3, to: 4, color: "red", width: 5},
+        {from: 2, to: 4},
+        {from: 3, to: 4},
         {from: 4, to: 5},
-        {from: 4, to: 6},
-        {from: 5, to: 6}
+        {from: 5, to: 6},
+        {from: 5, to: 7},
+        {from: 6, to: 8},
+        {from: 7, to: 8},
+        {from: 2, to: 7},
     ]
 };
 
 <Graph
-    graph={bridgeGraph}
+    graph={vertexConnectedGraph}
+    options={
+        {
+            physics: {
+                enabled: false
+            }
+        }
+    }
+    zoomable={false}
+/>
+
+If we find a set $X \subseteq V$ from the definition of $k$-connectedness that disconnects the graph then we call this set 
+a separator. So as the name suggests a separator is a set of vertices that separates the graph into two or more connected 
+components. This also gives us a different way of defining $k$-connectedness, where we say that a graph is $k$-connected if 
+the size of the smallest separator is $k$. This is a bit more intuitive because it directly tells us how many vertices we 
+have to remove to disconnect the graph. 
+
+If we fix two vertices $u$ and $v$ in a graph where $u \neq v$ then the separator that disconnects $u$ and $v$ is called a $u-v$ separator. 
+
+But how do we actually find $k$? The idea is that we need to find the number of paths between $u$ and $v$ that do not share any 
+vertices. If we then remove one vertex from each of these paths we will disconnect $u$ and $v$.
+This is also called **internally disjoint paths**. If we can find $k$ internally disjoint paths between $u$ and $v$ then 
+the smallest $u-v$ separator is $k$. 
+
+<Image 
+    src="/cs/graphsInternallyDisjointPaths.png"
+    caption="We can see that there are 3 internally disjoint paths between $u$ and $v$ in the graph above. 
+    If we remove one vertex from each of these paths we form a u-v separator of size 3 and disconnect the graph."
+/>
+
+To then find this for the whole graph we need to find the smallest $u-v$ separator for all 
+pairs of vertices $u$ and $v$ in the graph. This leads us **Menger's Theorem** which states the following:
+
+> Let $u$ and $v$ be two vertices in a graph $G$ and $u \neq v$. Then it holds that:
+"Every $u-v$ separator has size at least $k$ $\iff$ there are at least $k$ internally disjoint paths between $u$ and $v$."
+
+### K-Edge-Connected Graphs
+
+The same idea as for vertex connectivity also applies to edge connectivity. A graph is $k$-edge-connected if at least $k$ edges have 
+to be removed to disconnect the graph. Notice that we don't require that the graph has at least 
+$k+1$ edges because we can remove all edges and still have vertices in the graph. The formal definition of edge connectivity
+is as follows:
+
+> A graph $G = (V, E)$ is $k$-edge-connected if $|E| \geq k$ and for every set $X \subseteq E$ with $|X| < k$ the graph
+$G[E \setminus X]$ is connected.
+
+So the graph below is 2-edge-connected because if we remove the edges $(2,5)$ and $(4,5)$ the graph becomes disconnected.
+
+export const edgeConnectedGraph = {
+    nodes: [
+        {id: 1, label: "1", x: 0, y: 100},
+        {id: 2, label: "2", x: 200, y: 0},
+        {id: 3, label: "3", x: 200, y: 200},
+        {id: 4, label: "4",  x: 400, y: 100},
+        {id: 5, label: "5", x: 600, y: 100},
+        {id: 6, label: "6", x: 800, y: 200},
+        {id: 7, label: "7", x: 800, y: 0},
+        {id: 8, label: "8", x: 1000, y: 100}
+    ],
+    edges: [
+        {from: 1, to: 2},
+        {from: 1, to: 3},
+        {from: 2, to: 4},
+        {from: 3, to: 4},
+        {from: 4, to: 5, color: "red", width: 5},
+        {from: 5, to: 6},
+        {from: 5, to: 7},
+        {from: 6, to: 8},
+        {from: 7, to: 8},
+        {from: 2, to: 5, color: "red", width: 5},
+    ]
+};
+
+<Graph
+    graph={edgeConnectedGraph}
     options={
         {
             physics: {
@@ -44,6 +165,18 @@ export const bridgeGraph = {
         }
     }
 />
+
+Just like for vertex connectivity we can also define edge connectivity in terms of separators. An edge separator is a set of 
+edges that separates the graph into two or more connected components. The size of the smallest edge separator is then the
+edge connectivity of the graph. We can also define a $u-v$ edge separator in the same way as for vertices, i.e. the set of 
+edges that separates the vertices $u$ and $v$. 
+
+So to then find the edge connectivity of a graph we need to find the smallest $u-v$ edge separator for all pairs of vertices. 
+This is equivalent to finding the smallest number of edge disjoint paths between some pair of vertices $u$ and $v$. Again 
+this leads us to an adaptation of Menger's Theorem for edge connectivity:
+
+> Let $u$ and $v$ be two vertices in a graph $G$ and $u \neq v$. Then it holds that:
+"Every $u-v$ edge separator has size at least $k$ $\iff$ there are at least $k$ edge disjoint paths between $u$ and $v$."
 
 ## Cut Vertices
 
@@ -82,44 +215,33 @@ export const cutVerticesGraph = {
     }
 />
 
-## k-Connected Graphs
+## Bridges
 
-### k-Vertex-Connected Graphs
+A Bridge is an edge that if removed would increase the number of connected components in the graph. In the graph below
+you can quiet clearly see that the edge between vertices $3$ and $4$ marked in red is a bridge.
 
-A graph is $k$-vertex-connected if it has at least $k+1$ vertices and at least $k$ vertices have to be removed to disconnect
-the graph.
-
-The vertex connectivity of a graph $G$ is the largest $k$ such that $G$ is $k$-vertex-connected. So for example the graph
-below has a vertex connectivity of 2, because it is 2-vertex-connected. If we remove the vertices $4$ and $2$ the graph
-becomes disconnected but if we only remove one vertex the graph stays connected.
-
-export const vertexConnectedGraph = {
+export const bridgeGraph = {
     nodes: [
-        {id: 1, label: "1", x: 0, y: 100},
-        {id: 2, label: "2", value: 5, x: 200, y: 0, color: "red"},
-        {id: 3, label: "3", x: 200, y: 200},
-        {id: 4, label: "4", value: 5, x: 400, y: 100, color: "red"},
-        {id: 5, label: "5", x: 600, y: 100},
-        {id: 6, label: "6", x: 800, y: 200},
-        {id: 7, label: "7", x: 800, y: 0},
-        {id: 8, label: "8", x: 1000, y: 100}
+        {id: 1, label: "1", x: 0, y: 0},
+        {id: 2, label: "2", x: 0, y: 200},
+        {id: 3, label: "3", x: 200, y: 100},
+        {id: 4, label: "4", x: 400, y: 100},
+        {id: 5, label: "5", x: 600, y: 0},
+        {id: 6, label: "6", x: 600, y: 200}
     ],
     edges: [
         {from: 1, to: 2},
         {from: 1, to: 3},
-        {from: 2, to: 4},
-        {from: 3, to: 4},
+        {from: 2, to: 3},
+        {from: 3, to: 4, color: "red", width: 5},
         {from: 4, to: 5},
-        {from: 5, to: 6},
-        {from: 5, to: 7},
-        {from: 6, to: 8},
-        {from: 7, to: 8},
-        {from: 2, to: 7},
+        {from: 4, to: 6},
+        {from: 5, to: 6}
     ]
 };
 
 <Graph
-    graph={vertexConnectedGraph}
+    graph={bridgeGraph}
     options={
         {
             physics: {
@@ -129,46 +251,4 @@ export const vertexConnectedGraph = {
     }
 />
 
-### k-Edge-Connected Graphs
-
-The same idea as for vertex connectivity also applies to edge connectivity. A graph is $k$-edge-connected if it has at
-least $k+1$ vertices and at least $k$ edges have to be removed to disconnect the graph. So the graph below is 2-edge-connected
-and also has an edge connectivity of 2. If we remove the edges $(2,5)$ and $(4,5)$ the graph becomes disconnected.
-
-export const edgeConnectedGraph = {
-    nodes: [
-        {id: 1, label: "1", x: 0, y: 100},
-        {id: 2, label: "2", x: 200, y: 0},
-        {id: 3, label: "3", x: 200, y: 200},
-        {id: 4, label: "4",  x: 400, y: 100},
-        {id: 5, label: "5", x: 600, y: 100},
-        {id: 6, label: "6", x: 800, y: 200},
-        {id: 7, label: "7", x: 800, y: 0},
-        {id: 8, label: "8", x: 1000, y: 100}
-    ],
-    edges: [
-        {from: 1, to: 2},
-        {from: 1, to: 3},
-        {from: 2, to: 4},
-        {from: 3, to: 4},
-        {from: 4, to: 5, color: "red", width: 5},
-        {from: 5, to: 6},
-        {from: 5, to: 7},
-        {from: 6, to: 8},
-        {from: 7, to: 8},
-        {from: 2, to: 5, color: "red", width: 5},
-    ]
-};
-
-<Graph
-    graph={edgeConnectedGraph}
-    options={
-        {
-            physics: {
-                enabled: false
-            }
-        }
-    }
-/>
-
-
+## Blocks
