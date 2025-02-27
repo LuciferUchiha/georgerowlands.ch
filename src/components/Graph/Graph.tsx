@@ -4,7 +4,7 @@ import VisGraph from "react-graph-vis";
 
 import 'vis-network/styles/vis-network.css';
 
-export default function Graph({graph, options, events, directed = false, nodeSize = 25, edgeWidth = 2}) {
+export default function Graph({graph, options, events, directed = false, nodeSize = 25, edgeWidth = 2, zoomable = true}) {
     const [showChild, setShowChild] = useState(false);
     useEffect(() => {
         setShowChild(true);
@@ -54,7 +54,10 @@ export default function Graph({graph, options, events, directed = false, nodeSiz
                 },
                 shape: "circle",
             },
-            height: "500px"
+            height: "500px",
+            interaction: {
+                zoomView: zoomable
+            }
         };
         // merge the default options with incoming options
         options = {...defaultOptions, ...options};
