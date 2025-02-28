@@ -98,10 +98,29 @@ A_1,A_2,... \in \F \Rightarrow \bigcup_{i=1}^{\infty} A_i \in \F
 These properties ensure that the sigma algebra is closed under the operations of complement and union. This is important because we want to be able to calculate the probability of complex events by breaking them down into their elementary parts which we will see later. 
 
 <Callout type="example">
+If we take our running example of rolling a six-sided die we can define different sigma algebras. The following are some valid sigma algebras:
 
+- $\F = \{\emptyset, \{1,2,3,4,5,6\}\}$, the smallest sigma algebra
+- $\F = \mathscr{P}(\Omega)$, i.e the power set of the sample space with $|\F|=2^6=64$ the largest sigma algebra
+- $\F = \{\emptyset, \{1,2\}, \{3,4,5,6\}, \{1,2,3,4,5,6\}\}$
+- $\F = \{\emptyset, \{1,2\}, \{3,4\}, \{5,6\}, \{1,2,3,4\}, \{1,2,5,6\}, \{3,4,5,6\}, \{1,2,3,4,5,6\}\}$
+
+The above sigma algebras are all valid because they satisfy the properties of a sigma algebra. The following are some invalid sigma algebras:
+
+- $\F = \{\emptyset, \{1,2\}, \{3,4,5,6\}\}$, the certain event is not in the sigma algebra
+- $\F = \{\emptyset, \{1,2\}, \{3,4\}, \{5,6\}\}$, the union of the events $\{3,4\}$ and $\{5,6\}$ is not in the sigma algebra
+- $\F = \{\{1,2,4,5,6\}\}$, the complement of the event $\{1,2,4,5,6\}$ is not in the sigma algebra
 </Callout>
 
-The above properties also have some consequences.
+### Properties and Interpretations of Events
+
+The above definition of a sigma algebra also has some consequences for events and the power set of the sample space as it is also a sigma algebra. 
+
+Because the certain event has to be in the sigma algebra and the complement of an event has to be in the sigma algebra we can see that the sigma algebra must therefore also contain the impossible event. 
+
+```math	
+\Omega \in \F \Rightarrow \emptyset \in \F \text{ because } \Omega^c = \emptyset
+```
 
 vennAllPossibilities.png
 
@@ -116,15 +135,16 @@ So far we actually haven't seen any probabilities. We have only defined what exp
 \end{align*}
 ```
 
-And that satisfies some properties. We can see that each event $A$ is assigned a probability $\P(A)$ which is a number between 0 and 1. 1 means that the event is certain to happen and 0 means that the event is impossible. This leads to the first property that the probability measure must satisfy. 
+And that satisfies some properties. These properties are called the **Kolmogorov axioms** and were introduced by the Russian mathematician Andrey Kolmogorov in 1933. We can see that each event $A$ is assigned a probability $\P(A)$ which is a number between 0 and 1. 1 means that the event is certain to happen and 0 means that the event is impossible. This leads to the first property that the probability measure must satisfy. 
 
 ```math
-\P[\Omega] = 1
+\P(\Omega) = 1
 ```
-so the probability of the certain event is 1 as it will always occur. The next property is called **countable additivity** or sometimes also **sigma additivity**. This property states that the probability of the union of mutually exclusive events is equal to the sum of the probabilities of the individual events. 
+
+so the probability of the certain event is 1 as it will always occur. The next property is called **countable-additivity** or sometimes also **$\sigma$-additivity**. This property states that the probability of the union of mutually exclusive events is equal to the sum of the probabilities of the individual events. 
 
 ```math
-\P[A] = \sum_{i=1}^{\infty} \P[A_i] \text{ where } A = \bigcup_{i=1}^{\infty} A_i \text{ and } A_i \cap A_j = \emptyset \text{ for } i \neq j \text{so a disjoint union}
+\P(A) = \sum_{i=1}^{\infty} \P(A_i) \text{ where } A = \bigcup_{i=1}^{\infty} A_i \text{ and } A_i \cap A_j = \emptyset \text{ for } i \neq j \text{ so a disjoint union}
 ```
 
 This property is very important because it allows us to calculate the probability of complex events by breaking them down into its disjoint parts which at the lowest level are the probabilities of the elementary events or outcomes.
