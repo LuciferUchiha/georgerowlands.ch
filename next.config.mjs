@@ -11,7 +11,17 @@ const withNextra = nextra({
         tex: {
           packages: {'[+]': ['color']},
           macros: {
-            RR: '\\mathbb{R}'
+            // natural, integer, rational, real, complex numbers
+            NN: '\\mathbb{N}',
+            ZZ: '\\mathbb{Z}',
+            QQ: '\\mathbb{Q}',
+            RR: '\\mathbb{R}',
+            CC: '\\mathbb{C}',
+            // probability
+            P: '\\mathbb{P}',
+            F: '\\mathcal{F}', // sigma-algebra
+            E: '\\mathbb{E}', // expectation
+            V: '\\mathbb{V}', // variance
           }
         }
       }

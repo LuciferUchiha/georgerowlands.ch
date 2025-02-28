@@ -1,6 +1,7 @@
 export default {
   combinatorics: "",
   probability: "",
+  probabilitySpaces: "",
   discreteRandomVariables: "",
   continuousRandomVariables: "",
   independentRandomVariables: "",
