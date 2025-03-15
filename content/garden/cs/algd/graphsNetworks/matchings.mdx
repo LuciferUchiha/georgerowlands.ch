@@ -1,0 +1,57 @@
+# Matchings
+
+example with jobs being distributed to workers or a dating app matching people 
+
+A matching in a graph is a set of edges such that no two edges are incident to the same vertex. A matching is also called an independent edge set. More formally:
+
+```math
+M \subseteq E \text{ is a matching if } \forall e,f \in M, e \cap f = \emptyset \text{ and } e \neq f
+```
+
+We say a vertex is matched/covered if it is incident to an edge in the matching. 
+
+A matching is perfect if all vertices are matched, so $|M| = |V|/2$.
+
+The size of a matching can very easily and heavily depends on the strucuture of a graph. For example a graph with an uneven number of vertices will never have a perfect matching. A further example is a star graph, no matter how many vertices it has it will always have a matching of size 1. 
+
+This leads to the question of finding the "largest" possible matching in a graph. 
+
+A matching is maximal if no more edges can be added to it without violating the definition of a matching. Is this also an edge dominating set?
+
+A matching is maximum or to avoid confusion a maximum-cardinality matching if it has the largest possible size. So no other matching can have a larger size. A maximum-cardinality matching is always maximal but a maximal matching is not always maximum-cardinality. For example a path with 3 edges can have a maximal matching of size 1 but the maximum-cardinality matching is of size 2.
+
+We can find a maximal matching using a greedy algorithm in $O(E)$ time. We start with an empty matching and then iterate over all edges. If an edge can be added to the matching without violating the definition of a matching we add it. So we add an edge and then remove all edges incident to the vertices of the added edge. 
+It can be shown that this matching is at least half the size of the maximum-cardinality matching.
+
+## Hall's Theorem
+
+Hall's theorem is a necessary and sufficient condition for a bipartite graph to have a perfect matching.
+
+```math
+\text{Let } G = (A \uplus B, E) \text{ be a bipartite graph. Then G has a matching } M \text{ that covers all of A so } |M| = |A| \text{ if and only if } \forall S \subseteq A: |S| \leq |N(S)|
+```
+
+One way is pretty clear the other way needs to shown using induction.
+
+From this follows by frobenius that any k-regular bipartite graph has a perfect matching. That it is bipartite is important as it is not true for general graphs and can be easily shown with a counter example. This can be done in 
+$O(E)$ time. If k is a power of 2 then it uses Eulerian tours if not then i dont know.
+
+From the exercise sheet we can also see that a (k,l)-regular bipartite graph so where the vertices in A have degree k and the vertices in B have degree l has a matching of size |A| if k>=l. Card trick example
+
+We can also say a graph is a union of perfect matchings?
+
+## Hopcroft-Karp Algorithm
+
+For a bipratite graph without weights we can find the maximum-cardinality matching in $O(\sqrt{V}E)$ time. The algorithm is based on the idea of augmenting paths. 
+
+If there is an augmenting path then we can increase the size of the matching by one. An augmenting path is a path that starts and ends at an unmatched vertex and alternates between edges in the matching and edges not in the matching. By then flipping the edges in the augmenting path we can increase the size of the matching by one.
+
+To find an augmenting path we can use a breadth-first search. 
+
+The proofs regarding this are all rather lengthy and not very intuitive.
+
+## Edmonds Blossom Algorithm
+
+For general unweighted graphs we can find the maximum-cardinality matching in $O(V^2E)$ time. The algorithm is again based on the idea of augmenting paths. This can be improved to $O(\sqrt{V}E)$ time by micali-vazirani or gabow-tarjan.
+
+There is also an approach using matrix multiplication by mucha, sankowski and zych. This is the fastest known algorithm for dense graphs and runs in $O(V^2.376)$ time.

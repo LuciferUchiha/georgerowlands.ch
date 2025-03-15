@@ -1,0 +1,39 @@
+# Graph Coloring
+
+A coloring of a graph is an assignment of colors to the vertices of the graph such that no two adjacent vertices have the same color. The chromatic number of a graph is the smallest number of colors needed to color the graph. The chromatic number of a graph is denoted by $\chi(G)$. 
+
+In a way graph coloring is the opposite of matching.
+
+applications of coloring could be for example planning an exam session or stundenplan problem.
+
+If a graph is k-partite, then $\chi(G) \leq k$. From this it then follows that if a graph is bipartite, then $\chi(G) \leq 2$. This can be shown visually where all groupings of vertices i.e independent/stable sets are colored differently.
+
+Given a graph G asking if the chromatic number is larger than 2 is NP-complete. This is known as the graph coloring problem. If it is 2 then it is equivalent to checking if the graph is bipartite.
+
+We can get a exponential algorithm using inclusion-exclusion principle to calculate the chromatic number of a graph in $O(2.3^n)$ time. It is impossible to find an $n^{1-\epsilon}$ approximation algorithm. This is still np-hard. So we can only focus on special cases of graphs.
+
+We can show why this problem is so hard. It is because it is a global problem, not a local problem. There exists a graph without a cycle of length less or equal than k but with the chromatic number larger than r. the relation of r to k is not known???
+
+Greedy algorithm is simple and efficient in $O(V)$. The algorithm always picks the first available color. It is not optimal but in the worst case uses $\Delta(G)+1$ colors where $\Delta(G)$ is the maximum degree of the graph.
+The number of colors used depends on the order of the vertices. Intuitivly there is of course also some ordering that will give the optimal solution. 
+There are however also orderings where the greedy algorithm will even use $|V|/2$ colors for a bipartite graph. for example a complete bipartite graph without the horizontal edges for a perfect matching.
+
+We can use a heuristic to improve the greedy algorithm. We notice that if $|N(v_i) \cup \{v_1, v_2, \ldots, v_{i-1}\}| \leq k$ then we only need at most k+1 colors. This is because we can always find a color that is not used by the neighbors of $v_i$. So the idea is then to define a ordering where the last node has the smallest degree. We then delete this node and repeat the process. This is called the DSATUR algorithm. It is still not optimal but it is better than the greedy algorithm. IF for each subgraph we can find a node with degree less or equal to k then we can color the graph with k+1 colors.
+
+For example for trees we always find a node with degree 1. So we can color a tree with 2 colors. 
+
+If a graph is planar i.e can be drawn in the plane without edges crossing then there is always a node with degree less or equal to 5. So we can color a planar graph with 6 colors. Using the DSATUR algorithm we can color a planar graph with less or equal to 6 colors. It has been shown that the chromatic number of a planar graph is 4. The algorightm is in the slides
+
+If there is a node with degree less then the maximum degree of the graph then we can color the graph with $\Delta(G)$ colors rather than $\Delta(G)+1$. The bottom up approach of the dfs tree?
+
+If we know a graph can be colored with 3 colors then we can do this in O(V+E) time with at most $\sqrt{V}$ colors. This is because we can always find a node with degree less or equal to $\sqrt{V}$. Dont quiet get this. What is the algo name? Degeneracy Ordering? Welsh-Powell algorithm or Matula, Marble, and Isaacson’s coloring method. 
+
+If G is a graph where each block can be colored with k colors then G can be colored with k colors. Can internally swap colors of the blocks?
+
+## Brooks' Theorem
+
+IF a graph is connected and not complete or an odd cycle then we can color it using $\Delta(G)$ colors in $O(E)$ time. 
+1. IF max degree is less than 3 then we can color it with 2 colors. Either path or even cycle.
+2. IF there is a node with degree less than $\Delta(G)$ then we can color it with $\Delta(G)$ colors using greedy with heuristic.
+3. If there is an articulation point then we can color it with $\Delta(G)$ colors using the blocks. As in the blocks the maximum degree is less than $\Delta(G)$.
+4. A bit confusing

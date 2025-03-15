@@ -9,5 +9,7 @@ export default {
   allPairsShortestPath: "",
   eulerHamilton: "",
   mst: "",
+  matchings: "",
+  coloring: "",
   analysis: "Analyzing Graphs",
 }

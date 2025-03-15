@@ -16,7 +16,9 @@ Because each node only has one parent, **there is always exactly one path from o
 trees are acyclic, meaning there are **no cycles in the tree**. If there were two different paths from one node to another
 there would be a cycle in the graph and the hierarchical structure would be lost. 
 
-Therefore any graph that is connected and acyclic is a tree. A forest is a collection of trees so any graph that is acyclic as each connected component is a tree. 
+If the tree has 2 or more nodes then we can say the graph always has at least 2 leaves. and that if we remove a leaf from the tree it remains a tree. We can also say that if a tree has $n$ nodes then it has $n-1$ edges. if we add an edge to a tree it will create a cycle and the tree will no longer be a tree. if we remove an edge from a tree it becomes disconnected and is no longer a tree.
+
+Therefore any graph that is connected and acyclic is a tree. A forest is a collection of trees so any graph that is acyclic as each connected component is a tree. We can actually say that there are $|V|-|E|$ connected components i.e trees in a graph with $|V|$ vertices and $|E|$ edges.
 
 <Image
     src="/cs/treesSubtree.png"

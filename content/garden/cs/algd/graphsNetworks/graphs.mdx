@@ -63,6 +63,22 @@ can also imagine it as a handshake, hence the name. So each vertex is a person a
 arm to the middle and the other person (vertex) doing the same and then they shake hands. So for each handshake (edge) two people 
 need to strech out their arm (degree).
 
+### Average Degree
+
+average degree is always $2|E|/|V|$. This is because the sum of the degrees of all the vertices is equal to $2|E|$ from the Handshaking Lemma. This also means that there are vertices $x,y \in V$ such that $\text{deg}(x) \geq 2|E|/|V|$ and $\text{deg}(y) \leq 2|E|/|V|$.
+
+### Number of Uneven Degrees
+
+The number of vertices with an uneven degree is always even. This is because the sum of the degrees of all the vertices is even from the Handshaking Lemma.
+
+```math
+\sum_{v \in V} \text{deg}(v) = 2|E| = \sum_{v \in V_{\text{even}}} \text{deg}(v) + \sum_{v \in V_{\text{odd}}} \text{deg}(v)
+```
+
+## k-Regular Graphs
+
+A k-regular graph is a graph where each vertex has the same degree $k$. So all vertices have the same number of edges connected to them.
+
 ## Networks vs Graphs
 
 The title of this section is "Graphs and Networks" and commonly these two terms are used interchangeably so what is a Network and what is 
@@ -208,6 +224,14 @@ export const cityGraph = {
     }
 />
 
+## Subgraphs
+
+define what is a subgraph. then also use this below to define connected components, paths and cycles etc.
+
+### Induced Subgraphs
+
+An induced subgraph is a subgraph that is formed by taking a subset of the vertices and all the edges that are incident to those vertices in the original graph.
+
 ## Walks, Paths and Cycles
 
 Graphs have many different use cases but a common one is to represent a network for transportation. So if we imagine a vertex 
@@ -269,6 +293,8 @@ directed graphs.
 If a graph has only one connected component, so itself, then we say that it is connected. If it has more than one connected component, 
 then it is disconnected.
 
+Forms an equivalence relation on the vertices of the graph where the equivalence classes are the connected components. Two vertices s,t are related if there is an s-t path between them.
+
 ### Undirected Graphs
 
 In an undirected graph, a connected component is a subset of vertices such that there is a path between every pair of
@@ -312,6 +338,8 @@ connected components and strongly connected components.
 
 Weakly connected components are the same as connected components in an undirected graphs. So you just ignore the
 directions of the edges.
+
+In other words we look at the so called underlying graph of the directed graph. The underlying graph is the undirected graph that is formed by ignoring the directions of the edges in the directed graph. So if there is a directed edge from $u$ to $v$ then there is an edge between $u$ and $v$ in the underlying graph.
 
 <Image 
     src="/cs/graphsWeaklyConnectedComponents.png"

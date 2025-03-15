@@ -74,9 +74,35 @@ The idea of a Hamiltonian path or Hamiltonian cycle Have the same idea as the Eu
 we visit every vertex once. Unfortunatly finding a Hamiltonian path or cycle is NP-complete and can only be solved by brute force. 
 So we would have to try all possible paths or cycles which would result in a time complexity of $O(n!)$ which is obviously not feasible. 
 
-However, there are some properties that can help us determine if a graph has a Hamiltonian path or cycle. 
+This problem is NP-complete. Another popular version of this problem is the Traveling Salesman Problem (TSP) which is very similar and can be easily reduced to each other. Proper definition of the TSP problem with it being a complete graph and the goal is to find the shortest Hamiltonian cycle. The complete graph is okay as all edges that do not exist can be given a weight of infinity or the maximum weight of the graph plus one.
 
-- For a graph to have a Hamiltonian path it must be connected.
-- Diracs theorem states that if a graph has $n$ vertices and every vertex has a degree of at least $n/2$ then the graph has a Hamiltonian cycle.
+To check if a graph has a Hamiltonian cycle we can generate all possible hamiltonian cycles which for n vertices is 
+$\frac{1}{2}(n-1)!$ and then check if all the edges also exist in the graph. This is obviously not feasible for large graphs as it would result in a time complexity of $O(n!)$. 
 
-Diracs theorem, Ghouila-Houri theorem, Bondy-Chvatal theorem
+Can show that for n=20 is more time then the age of the universe?
+
+Using bellman-held-karp algorithm we can solve the problem in $O(n^2*2^n)$ which is still exponential but much better than $O(n!)$. This difference can also be shown. And uses dynamic programming and $O(n * 2^n)$ space.
+
+We can improve this algorithm by using the inclusion-exclusion principle. We basically count all the walks of length n that start and end at a specific vertex. We then sum all these walks and subtract the walks that visit a specific vertex twice. This reuqires only $O(n^2)$ memory but $O(n^{2.81} \log n \cdot 2^n)$ time. If we use strassens matrix 
+multiplication to find the walks of length n and iterative squaring. counting the number of Hamiltonian cycles 
+maybe monte carlo algorithm? Is probably not very relevant.
+
+### Grid and Bipartite Graphs
+
+for grid graphs there is a hamiltonian cycle if and only if the grid is at least 2x2 and m*n is even. This then also leads to the conclusion that bipartite graphs where the disjoint sets have different sizes can't have a Hamiltonian cycle.
+
+### Hypercubes
+
+Hypercubes have a Hamiltonian cycle.
+
+### Diracs Theorem
+
+If a graph has at least 3 vertices and every vertex has a degree of at least n/2 then the graph has a Hamiltonian cycle. The proof of this is rather lengthy but intuitive.
+
+### Metric TSP
+
+Is TSP with the additional constraint that the distances between the vertices are a metric. This means that the distance between two vertices is the same in both directions and the triangle inequality holds. 
+
+For this problem there exists a 2-approximation algorithm in $O(n^2)$. A 2-approximation means that the solution is at most twice the optimal solution. So if the optimal solution is a cycle of cost 100 then the algorithm will return a cycle of cost at most 200. The algorithm uses the minimum spanning tree. Double-Tree Algorithm.
+
+There is also a 1.5-approximation algorithm that uses the minimum spanning tree and matchings. Christofides algorithm.

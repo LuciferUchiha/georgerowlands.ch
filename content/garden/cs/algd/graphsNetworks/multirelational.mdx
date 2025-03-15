@@ -198,10 +198,15 @@ export const movieReviewGraph = {
 
 ### Bipartite Graphs
 
-A graph $G$ is bipartite if its vertices can be split into two disjoint sets $V_1$ and $V_2$ such that every edge in
-$G$ connects a vertex in $V_1$ to a vertex in $V_2$. So there are no edges between vertices in the same set!
+A graph $G$ is bipartite if its vertices can be split into two disjoint sets $A$ and $B$ such that every edge in
+$G$ connects a vertex in $A$ to a vertex in $B$. So there are no edges between vertices in the same set! More formally 
+we can write this as:
 
-This makes a 2-mode network a bipartite graph.
+```math
+V = A \uplus B \quad \text{and} \quad E \subseteq \{ (a, b) \mid a \in A, b \in B \}
+```
+
+This makes a 2-mode network a bipartite graph. Some other examples of graphs that are always bipartite are paths, cycles of even length, trees and hypercubes. 
 
 <Image
     src="/cs/graphsBipartite.png"
