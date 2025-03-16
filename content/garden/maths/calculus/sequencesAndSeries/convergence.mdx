@@ -1,12 +1,156 @@
-# Convergence of Series
+# Convergence of Sequences and Series
 
-## Reihe einer Folge
+## Convergence of Sequences
 
- Bei einer reellen Folge $a_1, a_2, a_3,...$ wird die zugehoörige Folge der Teilsummen $s_n$ eine Reihe der Folge $a_n$ genannt:
-```maths_n = a_1+a_2+a_3+... +a_n = \sum^{\infty}_{k=1}{a_k}```
- $s_n$ wird auch $n$−te Teilsumme der Folge $a_n$ genannt.
+:::note
 
-**Unendliche Reihe** besitzt unendlich viele Glieder. Also wenn $\sum^{\infty}$
+Für $a_n={2n+3 \over n}$
+
+| $a_1$ | $a_2$ | $a_3$ | $a_{10}$ | $a_{1000}$ | $a_{100000}$ |
+| ----- | ----- | ----- | -------- | ---------- | ------------ |
+| 5     | 3.5   | 3     | 2.3      | 2.003      | 2.00003      |
+
+**Sprechweise**:
+Die Folge $a_n$ strebt mit wachsendem $n$ gegen den Grenzwert 2.
+
+**Schreibweise**:
+```math\lim_{x \to \infty} {2n+3 \over n} = 2```
+Wird gelesen als "Limes von ${2n+3 \over n}$ für n gegen unendlich ist 2."
+
+:::
+
+**$\varepsilon$-Umgebung oder $\varepsilon$-Streifen** ist ein Streifen mit einem Radius $\varepsilon$ um den vermuteten Grenzwert. Der Index des Folgengliedes, welches als erstes im Streifen liegt, nennt man **Eintauchzahl**, $N_{\varepsilon}$.
+
+:::note
+
+$a_n={2n+3 \over n}$ mit Streifen $\varepsilon = {1\over 2}$
+![[Pasted image 20211016100108.png]]
+Ist die Eintauchszahl $N_{1\over 2} = 7$, weil $a_6$ liegt auf dem Streifenrand, $a_7$ jedoch darin.
+
+:::
+
+Eine Folge $a_n$ konvergiert gegen einen **Grenzwert** $g \in R$ wenn es zu jeder noch so kleinen Zahl $\varepsilon >0$ eine Zahl $N_{\varepsilon}$ gibt, so dass $|a_n -g| < \varepsilon$ für alle $n \geq N_{\varepsilon}$.
+
+Eine Folge die einen Grenzwert $g \in R$ besitzt, heisst **konvergent**. **Achtung** $\infty \notin R$!!!!!
+Eine Folge die keinen Grenzwert besitzt, heisst **divergent**.
+
+- Jede monoton wachsende (bzw. fallende) Folge, die beschränkt ist, ist immer konvergent.
+- Das Produkt einer beschränkten Folge und einer Nullfolge ist immer eine Nullfolge.
+
+:::note
+
+$a_n={n-1 \over n+2}$ vermuteter Grenzwert $g=1$
+$|a_n-g|=|{n-1\over n+2}-1| < \varepsilon$
+$\Rightarrow |{n-1\over n+2}-{n+2\over n+2}| < \varepsilon$
+$\Rightarrow |{-3\over n+2}|={|-3|\over|n+2|} < \varepsilon$
+$\Rightarrow {3\over n+2} < \varepsilon$
+$\Rightarrow {3\over \varepsilon} -2< n$
+
+Für $\varepsilon = 0.2$ erhält man $n>{3\over 0.2} -2 = 13$ daher ab $a_14$ beträgt Differenz von Folgenglied und Grenzwert weniger als $\varepsilon$
+$N_{0.2}=14$
+
+:::
+
+Sind $a_n$ und $b_n$ konvergente Folgen mit den Grenzwerten $a$ bzw. $b$, so ist auch die Folge:
+
+- $c*a_n$ konvergent mit $\lim_{n \to \infty} {c*a_n} = c*\lim_{n \to \infty} {a_n} = c*a$ für $c \in R$
+- $a_n \pm b_n$ konvergent mit $\lim_{n \to \infty}{a_n \pm b_n}={{\lim_{n \to \infty}{a_n}} \pm {\lim_{n \to \infty}{b_n}}}={a \pm b}$
+- $a_n *b_n$ konvergent mit $\lim_{n \to \infty}{a_n* b_n}={{\lim_{n \to \infty}{a_n}} * {\lim_{n \to \infty}{b_n}}}={a * b}$
+- $a_n \over b_n$ konvergent mit $\lim_{n \to \infty}{a_n \over b_n}={{\lim_{n \to \infty}{a_n}} \over {\lim_{n \to \infty}{b_n}}}={a \over b}$ falls $b \neq 0$
+- If there exists a $K \geq 1$ and $a_n \leq b_n$ for all $n \geq K$ then $\lim_{n \to \infty}{a_n} \leq \lim_{n \to \infty}{b_n}$ in other words $a \leq b$.
+
+There are some important examples to look at. There is also a difference between proving a limit by definition and just calcualting it. 
+
+$n^bq^n = 0$ Shows that any power of $n$ is smaller than any exponential function important for algorithms.
+
+$n^{1\over n} = 1$
+
+recursive defined sequences $a_{n+1} = 1 \over 2 (a_n + 2 \over a_n)$ goes to $\sqrt{2}$
+
+$a_n = 1 \over 2 (a_{n-1} + c \over a_{n-1})$ and $a_1 = c$ using Weierstrass $c > 1$.
+
+### Monotone Convergence Theorem
+
+Theorem by Karl Weierstrass:
+
+If the sequence $(a_n)_{n\geq 1}$ is monotonically increasing and bounded above, then it converges. More precisely we can determine the limit as:
+
+```math	
+\lim_{n \to \infty} a_n = \sup\{a_n | n \geq 1\}
+```
+
+The same holds for monotonically decreasing sequences that are bounded below. Here the limit uses the infimum instead of the supremum obviously.
+
+```math
+\lim_{n \to \infty} a_n = \inf\{a_n | n \geq 1\}
+```
+
+### Squeeze Theorem
+
+The squeeze theorem or sometimes also called the sandwich theorem states that if we have three sequences $(a_n)_{n\geq 1}$, $(b_n)_{n\geq 1}$, and $(c_n)_{n\geq 1}$ such that:
+
+```math	
+a_n \leq b_n \leq c_n \text{ for all } n \geq 1 \text{ and } \lim_{n \to \infty} a_n = \lim_{n \to \infty} c_n = L
+```
+
+Then the sequence $(b_n)_{n\geq 1}$ also converges to $L$ so:
+
+```math
+\lim_{n \to \infty} b_n = L
+```
+
+### Bernoulli's Inequality
+
+Does this come from probability theory?
+
+```math
+(1+x)^n \geq 1+nx \text{ for all } x \geq -1 \text{ and } n \in N
+```	
+
+### Euler's Number
+
+Lots of possible origins but one is analyzing the compound interest formula.
+
+```math
+\lim_{n \to \infty} (1+{1\over n})^n = e
+```
+
+### Limes Superior and Inferior
+
+### Artihmetic Sequences
+
+### Zero Sequences
+
+### Harmonic Sequences
+
+**Nullfolge** eine Folge die den Grenzwert 0 besitzt.
+**Harmonische Folge** $a_n={1\over n}$ ist eine Nullfolge
+
+### Geometric Sequences
+
+Folgen der Form: $a_n= a_1 *q^{n-1}$ sind geometrische Folgen.
+ Jedes Glied ist das geometrische Mittel seiner beiden Nachbarglieder $a_n=\sqrt {a_{n-1}+a_{n+1}}$
+
+Eine geometrische Folge $a_n= a_1* q^{n-1}$
+
+- mit $|q|>1$ ist divergent
+- mit $|q|<1$ ist konvergent mit Grenzwert 0
+- mit $q=1$ ist eine konstante Folge $a_1$
+- mit $q=-1$ ist divergent, da alternierend.
+
+### Rational Sequences
+
+Für eine rationale Folge, die im Zähler aus einem Polynom k-ten Grades
+und im Nenner aus einem Polynom l-ten Grades besteht, gilt:
+```math
+ \lim_{n \to \infty}{{a_kn^k+a_{k-1}n^{k-1}+...+a_0}\over{b_ln^l+b_{l-1}n^{l-1}+...+b_0}} = \begin{dcases}
+        {a_k\over b_k} *\infty, falls\space k >l \\
+        {a_k\over b_k} , falls\space k=l \\
+        0 , falls\space k<l
+\end{dcases}
+```
+
+## Convergence of Series
 
 ## Konvergenz
 

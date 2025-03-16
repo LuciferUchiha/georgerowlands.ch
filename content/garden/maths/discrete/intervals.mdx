@@ -1,7 +1,82 @@
 import Callout from "@components/Callout/Callout";
 import Image from "@components/Image/Image";
 
-# Intervals
+# Intervals and Bounds
+
+## Ordering of Real Numbers
+
+We can define an ordering on the set of real numbers $\mathbb{R}$ by defining the relation $\leq$ between two real numbers $a$ and $b$.
+
+```math
+\begin{align*}
+\text{Reflexivity: } & a \leq a \text{ for all } a \in \mathbb{R} \\
+\text{Tansitivity: } & a \leq b \text{ and } b \leq c \implies a \leq c \text{ for all } a, b, c \in \mathbb{R} \\
+\text{Antisymmetry: } & a \leq b \text{ and } b \leq a \implies a = b \text{ for all } a, b \in \mathbb{R} \\
+\text{Totality: } & a \leq b \text{ or } b \leq a \text{ for all } a, b \in \mathbb{R}
+\end{align*}
+```
+
+We can show that the ordering relation is compatible with the arithmetic operations on real numbers.
+
+```math
+\begin{align*}
+\text{Addition: } \forall a, b, c \in \mathbb{R}, & a \leq b \implies a + c \leq b + c \\
+\text{Multiplication: } \forall a \geq 0, b \geq 0: a \cdot b \geq 0
+\end{align*}
+```
+
+However, the key difference between the real numbers and the rational numbers is the Ordering Completeness Property. 
+
+```math	
+\text{Let } A, B \subseteq \mathbb{R} \text{ be non-empty sets so } A \neq \emptyset \text{ and } B \neq \emptyset. \text{ If } A \leq B \text{ for all } a \in A \text{ and } b \in B, \text{ then there exists at least one real number } c \text{ such that } a \leq c \leq b \text{ for all } a \in A \text{ and } b \in B.
+```
+
+In other words, we can always find a real number that lies between two sets of real numbers if one set is less than or equal to the other. This can't be done with the rational numbers for example if the two sets are construct in such a way that the only inbetween number is irrational such as $\sqrt{2}$.
+
+Using these properties we can show a multitude of things including that the additive and multiplicative identities and inverses are unique.
+
+```math	
+\begin{align*}
+0 \cdot a & = 0 \text{ for all } a \in \mathbb{R} \\
+(-1) \cdot a & = -a \text{ for all } a \in \mathbb{R} \text{ and } (-1)^2 = 1 \\
+a \geq 0 \iff -a \leq 0 & \\
+a^2 \geq 0 & \text{ for all } a \in \mathbb{R} \text{ and } 1 = 1 \cdot 1 \geq 0 \\
+a \leq b \text{ and } c \leq d \implies a + c \leq b + d & \text{ for all } a, b, c, d \in \mathbb{R} \\
+0 \leq a \leq b \text{ and } 0 \leq c \leq d \implies a \cdot c \leq b \cdot d & 
+\end{align*}
+```
+
+There are probably many more properties that can be derived and proven from the ordering of real numbers.
+
+### Archimedean Property
+
+```math	
+\text{Let } x \in \mathbb{R}, x > 0 \text{ and } y \in \mathbb{R}. \text{ Then there exists an } n \in \mathbb{}n\ text{ such that } y \leq nx \text{ and } y \geq nx.
+```
+
+This can also be stated as:
+    
+```math
+\text{Let } x \in \mathbb{R} \text{ then there exists exactly one } n \in \mathbb{Z} \text{ such that } n \leq x < n + 1.
+```
+
+The interpretation is twofold. Firstly it states that we can always find an integer that is smaller than a real number and when we add 1 to that integer we get a real number that is larger than the original real number. So in other words, we can always bound a real number between two integers. 
+
+Secondly, it states that if we have a real number that is larger than 0 then we can always create a multiple of another real number with a natural number that is larger. The same goes for smaller creating a smaller multiple.
+
+### Roots of Real Numbers
+
+Using these properties we can now show that we can always find a solution to the equation $x^2 = t$ for any real number $t \geq 0$. In other words, we can always find the square root of a real number that is greater or equal to 0.
+
+### Young's Inequality
+
+No idea why this is useful but it is a thing.
+
+```math
+\text{Let } a, b \in \mathbb{R} \text{ then } \forall \epsilon > 0: 2ab \leq \epsilon a^2 + \frac{1}{\epsilon}b^2
+```
+
+## Intervals
 
 If we have a [set of real numbers](/garden/maths/discrete/setTheory#real-numbers), we can define a [subset](/garden/maths/discrete/setTheory#sub-and-superset) of this set by specifying a range of values. This subset is called an interval.
 To define an interval, we need two real numbers, $a$ and $b$, with $a < b$.
@@ -19,7 +94,7 @@ We can also have intervals that are unbounded on both sides, such as $(-\infty, 
 
     For example, $[a, b)$ includes $a$ but not $b$, while $(a, b]$ includes $b$ but not $a$.
 
-    Also, note that the unbounded side with $\infty$ is always excluded i.e. uses the round bracket.
+    Also, note that the unbounded side with $\infty$ is always excluded i.e. uses the round bracket. This is because infinity is not a real number and the interval is a set of real numbers so it can't include infinity. This also means that the interval $(-\infty, \infty)$ is the set of all real numbers and that $\forall x \in \mathbb{R}$ we have $-\infty < x < \infty$.
 </Callout>
 
 <Image 
@@ -35,3 +110,61 @@ We can also have intervals that are unbounded on both sides, such as $(-\infty, 
     - $(-\infty, 4]$ is the set of all real numbers less than or equal to 4.
     - $(6, \infty)$ is the set of all real numbers greater than 6.
 </Callout>
+
+## Bounds
+
+If we have a set of real numbers $A \subseteq \mathbb{R}$, we can define the following terms:
+
+- **Upper bound**: A real number $c$ is an upper bound of $A$ if $\forall a \in A: a \leq c$. In other words, $c$ is greater than or equal to all elements of $A$. We then say that $A$ is bounded above.
+- **Lower bound**: A real number $c$ is a lower bound of $A$ if $\forall a \in A: a \geq c$. In other words, $c$ is less than or equal to all elements of $A$. We then say that $A$ is bounded below.
+
+Important to note is that the upper and lower bounds can be elements of the set $A$ itself but they can also be real numbers that are not in the set. If a set has both an upper and lower bound it is called bounded. If it only has one of the two it is called half-bounded, i.e bounded above or bounded below where the other bound is either $-\infty$ or $\infty$. 
+
+We can define the operations of maximum and minimum for two numbers $a, b \in \mathbb{R}$ as:
+
+```math
+\begin{align*}
+\text{max}(a, b) & = \begin{cases} a & \text{if } a \geq b \\ b & \text{if } b \geq a \end{cases} \\
+\text{min}(a, b) & = \begin{cases} a & \text{if } a \leq b \\ b & \text{if } b \leq a \end{cases}
+\end{align*}
+```
+
+This then also leads to another definition of the [absolute value](/garden/maths/commonFunctions/absolute) of a real number $x$ as:
+
+```math
+|x| = \text{max}(x, -x) = \begin{cases} x & \text{if } x \geq 0 \\ -x & \text{if } x < 0 \end{cases}
+```
+
+### Maximum and Minimum of a Set
+
+With our knowledge of intervals and bounds, we can now also extend the definition of the maximum and minimum to sets of real numbers. We can define the maximum and minimum of a set $A \subseteq \mathbb{R}$ as:
+
+- **Maximum**: A real number $c$ is the maximum of $A$ if it is an upper bound of $A$ so $\forall a \in A: a \leq c$ and $c \in A$. We then write $\text{max}(A) = c$.
+- **Minimum**: A real number $c$ is the minimum of $A$ if it is a lower bound of $A$ so $\forall a \in A: a \geq c$ and $c \in A$. We then write $\text{min}(A) = c$.
+
+Not all sets have a maximum or minimum also if the set is upper or lower bounded. 
+
+### Supremum and Infimum
+
+If we know an upper or lower bound of a set then all values that are greater or equal to the upper bound or smaller or equal to the lower bound are also bounds. But what if we wanted to find the closest bound to the set that is still a bound? This is where the supremum and infimum come in. We can define the supremum and infimum of a set $A \subseteq \mathbb{R}$ and $A \neq \emptyset$ as:
+
+- **Supremum**: A real number $c$ is the supremum of $A$ if it is the smallest upper bound of $A$. In other words, $c$ is an upper bound of $A$ and if $d$ is another upper bound of $A$ then $c \leq d$. We then write $\sup A = c$.
+- **Infimum**: A real number $c$ is the infimum of $A$ if it is the largest lower bound of $A$. In other words, $c$ is a lower bound of $A$ and if $d$ is another lower bound of $A$ then $c \geq d$. We then write $\inf A = c$.
+
+So if a set has a maximum then the supremum is the same as the maximum and if a set has a minimum then the infimum is the same as the minimum. We can probaly also say many other things. 
+
+We can also describe the set of all upper or lower bounds of a set $A$ as:
+
+```math
+\begin{align*}
+\text{Upper bounds of } A & = \{c \in \mathbb{R} \mid \forall a \in A: a \leq c\} = [\sup(A), \infty\} \\
+\text{Lower bounds of } A & = \{c \in \mathbb{R} \mid \forall a \in A: a \geq c\} = [\inf(A), -\infty\}
+\end{align*}
+```
+
+If $A \subseteq B \subseteq \mathbb{R}$ then:
+
+- If $B$ is bounded above then $\sup A \leq \sup B$.
+- If $B$ is bounded below then $\inf A \geq \inf B$.
+
+
