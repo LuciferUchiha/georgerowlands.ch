@@ -143,23 +143,65 @@ Let's look at some intuitive examples:
 
 To actually prove that a sequence is monotonically increasing or decreasing we actually need to do a bit more work. For example, we can show that a sequence is monotonically increasing by showing that the difference between consecutive terms is always positive.
 
-Für die Untersuchung der Monotonie werden oft Ausdrücke der Form $a_{n+1}-a_n$ oder ${a_{n+1} \over a_n} > 1$ betrachtet.
+So if $a_{n+1} - a_n \geq 0$ for all $n \in N$ then the sequence is monotonically increasing. Similarly, if $a_{n+1} - a_n \leq 0$ for all $n \in N$ then the sequence is monotonically decreasing. If we have strict inequality then the sequence is strictly monotonically increasing or decreasing. 
 
-Z.b wenn $a_{n+1} - a_n < 0$ (eigentlich $a_{n+1}<a_n$) gilt, ist die Folge streng monoton fallend. $a_{n+1} - a_n \leq 0$ wäre nur monoton fallend.
+<Callout type="example">
+Let's show that the sequence $a_n=\frac{1}{n}$ is strictly monotonically decreasing. So in other words 
+we want to show that $a_{n+1} - a_n < 0$ for all $n \in N$.
 
-:::note
+```math	
+\begin{align*}
+a_{n+1} - a_n & = \frac{1}{n+1} - \frac{1}{n} \\
+& = \frac{n - (n+1)}{n(n+1)} \\
+& = \frac{-1}{n(n+1)} < 0
+\end{align*}
+```
 
-Zeig das die Folge $a_n={2^{n+1}\over 3^n}$ streng monoton fallend ist.
+Because the nominator is negative and the denominator is positive for all $n \in N$ the fraction is negative and the sequence is strictly monotonically decreasing.
+</Callout>
 
-1. Es muss gelten: $a_{n+1} - a_n < 0 \iff a_{n+1}<a_n$
-   1. Gleichnamig machen: ${2^{n+1}\over 3^n} - {2^{n+2} \over 3^{n+1}} = {3*2^{n+1}\over 3*3^n}  - {2*2^{n+1} \over 3^{n+1}}$
-   2. Vereinfachen: $(3-2)*2^{n+1} \over 3^{n+1}$
-   3. $({2\over 3})^{n+1}>0$
-2. Oder es muss gelten: ${a_{n+1} \over a_n} > 1$
-   1. ${{2^{n+1}\over 3^n}\over {2^{n+2} \over 3^{n+1}}} = {{2^{n+1}\over 3^n} *{3^{n+1} \over 2^{n+2}}}$
-   2. Kürzen: ${{2^{n+1}\over 3^n} *{3*3^{n} \over 2*2^{n+1}}}={3\over 2} > 1$
+Another idea is if all the values of the sequence are positive then we can take the ratio of consecutive terms and if this ratio is greater or than 1 or less than 1 then the sequence is monotonically strictly increasing or decreasing.
 
-:::
+<Callout type="example">
+Let's now show that the sequence $a_n=\frac{2^n}{3^n}$ is strictly monotonically decreasing. First we will use the difference of consecutive terms and then the ratio of consecutive terms.
+
+```math
+\begin{align*}
+a_{n+1} - a_n & = \frac{2^{n+1}}{3^{n+1}} - \frac{2^n}{3^n} \\
+& = \frac{2 \cdot 2^n \cdot 3^n - 2^n \cdot 3^{n+1}}{3^{n+1}} \\
+& = \frac{2^n \cdot 3^n \cdot (2 - 3)}{3^{n+1}} \\
+& = \frac{-2^n \cdot 3^n}{3^{n+1}} \\
+& = -\frac{2^n}{3^{n+1}} < 0
+\end{align*}
+```
+
+So the sequence is strictly monotonically decreasing. Now let's show this with the ratio of consecutive terms.
+
+```math
+\begin{align*}
+\frac{a_{n+1}}{a_n} & = \frac{\frac{2^{n+1}}{3^{n+1}}}{\frac{2^n}{3^n}} \\
+& = \frac{2^{n+1} \cdot 3^n}{3^{n+1} \cdot 2^n} \\
+& = \frac{2 \cdot 2^n \cdot 3^n}{3 \cdot 3^n \cdot 2^n} \\
+& = \frac{2}{3} < 1
+\end{align*}
+```
+
+Again we have that the ratio is less than 1 and that therefore the sequence is strictly monotonically decreasing.
+</Callout>
+
+The last technique apart is to show that the derivative of the sequence is always positive or negative. This is a bit more advanced and requires some knowledge of calculus. We know that the derivative of a function is positive if the function is increasing and negative if the function is decreasing. So if we can show that the derivative of the sequence is always positive or negative for all $n \in N$ then we can conclude that the sequence is monotonically increasing or decreasing.
+
+<Callout type="example">
+Let's show that the sequence $a_n=n^2$ is strictly monotonically increasing by showing that the derivative of the sequence is always positive.
+
+```math
+\begin{align*}
+f(n) & = n^2 \\
+f'(n) & = 2n \\ 
+2n & > 0 \text{ for all } n \in N
+\end{align*}
+```
+</Callout>
 
 ## Bounded Sequences
 
@@ -177,6 +219,9 @@ Just like the concept of monotonicity, the concept of boundedness can be visuall
     caption="The sequence on the left is bounded above as all values are below the line. The sequence on the right is bounded as all values are between the lines."
     width={500}
 />
+
+To determine whether a sequence is bounded it is best to first write out some values of the sequence and notice a pattern. For example if the values of the sequence are always positive then the sequence is bounded below by 0. If the values of the sequence are always negative then the sequence is bounded above by 0. If the values of the sequence are oscillating between two values then the sequence is bounded between these two values. Later on when looking at 
+[convergence of sequences](/garden/maths/calculus/sequencesAndSeries/convergence) we will see that boundedness is an important property for a sequence to converge.
 
 <Callout type="example">
 Let's look at some intuitive examples. An important thing to not forget is that a sequence starts at a certain index such as 0 or 1. This can influence whether a sequence is bounded or not.
