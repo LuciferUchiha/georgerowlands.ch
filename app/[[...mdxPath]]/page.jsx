@@ -1,5 +1,5 @@
 import { generateStaticParamsFor, importPage } from 'nextra/pages'
-import { useMDXComponents } from '../../src/mdx-components'
+import { useMDXComponents } from '~/src/mdx-components'
 import GiscusComments from '@components/GiscusComments/GiscusComments'
 
 export const generateStaticParams = generateStaticParamsFor('mdxPath')

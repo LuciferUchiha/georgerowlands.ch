@@ -1,35 +1,80 @@
-# What is a Series?
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
 
-A series is the sum of the terms of a sequence. 
+# Series
 
-If the sequence is finite then the series is finite. If the sequence is infinite then the series is infinite.
+Series are a key concept in calculus that also finds many practical applications in physics, engineering, computer science and many other fields. 
 
-## Infinite Series
-
-An infinite series is the sum of the terms of an infinite sequence. If the sequence has the form:
+Before we define a series we will define a partial sum of a [sequence](/garden/maths/calculus/sequencesAndSeries/sequences). The $n$th partial sum of a sequence is the sum of the first $n$ terms of the sequence. So if we have the sequence $a_1, a_2, a_3, \ldots$ then the $n$th partial sum is:
 
 ```math
-a_1, a_2, a_3, a_4, \ldots
+\begin{align*}
+S_1 &= a_1 \\
+S_2 &= a_1 + a_2 \\
+\ldots \\
+s_n = a_1 + a_2 + a_3 + \ldots + a_n = \sum_{i=1}^{n} a_i
 ```
 
-then the series of the sequence is:
+If a sequence has $n$ terms then there are $n$ partial sums. Now we can define a series. A series is the sum of the terms of a sequence. So if we have the sequence $a_1, a_2, a_3, \ldots a_n$ then the series of the sequence is:
+
+```math
+S = a_1 + a_2 + a_3 + \ldots + a_n = \sum_{i=1}^{n} a_i
+```
+
+This means that if the sequence is finite then the series is finite. If the sequence is infinite then the series is infinite. So the infinite series is the sum of an infinite number of terms. We can write this as:
 
 ```math
 S = a_1 + a_2 + a_3 + a_4 + \ldots = \sum_{n=1}^{\infty} a_n
 ```
 
-## Partial Sums
+## Arithmetic Series
 
-The sum of the first $n$ terms of a sequence is called the $n$th partial sum. The $n$th partial sum of a sequence is denoted by $s_n$.
+A well known example of a series is the arithmetic series. However, most people only know a special case of the arithmetic series, the gaussian sum. [To find out more about the gaussian sum and the proof of the formula, you can see it as [the introductory example of proof by induction](/garden/maths/discrete/proofs#proof-by-induction). 
 
-```math
-s_n = a_1 + a_2 + a_3 + \ldots + a_n = \sum_{i=1}^{n} a_i
+```math	
+\sum_{k=1}^{n} k = 1 + 2 + 3 + \ldots + n = \frac{n(n+1)}{2}
 ```
 
-## Series of a Sequence
+The arithmetic series is a more general form of the gaussian sum. First we start with the definition of the arithmetic sequence or arithmetic progression. The sequence is defined by the first term $a_1$, the common difference $d$ and the number of terms $n$. This makes it a finite sequence. Infinite arithmetic sequences are a bit more complex. All the terms in the sequence are then obtained by adding the common difference to the previous term.
 
- Bei einer reellen Folge $a_1, a_2, a_3,...$ wird die zugehoörige Folge der Teilsummen $s_n$ eine Reihe der Folge $a_n$ genannt:
-```maths_n = a_1+a_2+a_3+... +a_n = \sum^{\infty}_{k=1}{a_k}```
- $s_n$ wird auch $n$−te Teilsumme der Folge $a_n$ genannt.
+```math
+a_1, a_1 + d, a_1 + 2d, a_1 + 3d, \ldots \text{ or simply } a_n = a_1 + (n-1)d
+```
 
-**Unendliche Reihe** besitzt unendlich viele Glieder. Also wenn $\sum^{\infty}$
+So for example the sequence of all odd number or all even numbers are arithmetic sequences. 
+
+```math
+1, 3, 5, 7, 9, \ldots \text{ or } 2, 4, 6, 8, 10, \ldots \text{ with } d=2
+```
+
+We have seen that a series is the sum of the terms of a sequence. So the arithmetic series is the sum of the terms of an arithmetic sequence. By observing the values and also if we look at the proof of the gaussian sum, we can see that we can actually come up with a formula for the arithmetic series as well. If we denote the sum of the first $n$ terms of an arithmetic sequence as $S_n$, then we can write:
+
+```math
+\begin{align*}
+S_n &= a_1 + (a_1 + d) + (a_1 + 2d) + \ldots + (a_1 + (n-1)d) \\
+&= \frac{n}{2} \left(2a_1 + (n-1)d\right) \\
+&= \frac{n}{2} \left(a_1 + a_n\right) \\
+&= \frac{n}{2} \left(\text{first term} + \text{last term}\right)
+\end{align*}
+```
+
+<Image 
+    src="/maths/arithmeticSeries.svg"
+    caption="Visual derivation of the formula for the arithmetic series"
+    width={500}
+/>
+
+For the gaussian sum we have $a_1=1$, $d=1$ and $a_n=n$. So we get:
+
+```math
+S_n = \frac{n}{2} \left(1 + n\right) = \frac{n(n+1)}{2} = \sum_{k=1}^{n} k
+```
+
+## Other Types of Series
+
+- [Geometric Series](/garden/maths/calculus/sequencesAndSeries/convergence#geometric-series)
+- [Harmonic Series](/garden/maths/calculus/sequencesAndSeries/convergence#harmonic-series)
+- [Telescope Series](/garden/maths/calculus/sequencesAndSeries/convergence#telescope-series)
+- [Power Series](/garden/maths/calculus/sequencesAndSeries/power)
+- [Taylor Series](/garden/maths/calculus/sequencesAndSeries/taylor)
+- [Fourier Series](/garden/maths/calculus/sequencesAndSeries/fourier)
