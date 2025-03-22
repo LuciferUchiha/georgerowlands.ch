@@ -48,10 +48,10 @@ a \leq b \text{ and } c \leq d \implies a + c \leq b + d & \text{ for all } a, b
 
 There are probably many more properties that can be derived and proven from the ordering of real numbers.
 
-### Archimedean Property
+### Archimedes Principle
 
 ```math	
-\text{Let } x \in \mathbb{R}, x > 0 \text{ and } y \in \mathbb{R}. \text{ Then there exists an } n \in \mathbb{}n\ text{ such that } y \leq nx \text{ and } y \geq nx.
+\text{Let } x \in \mathbb{R}, x > 0 \text{ and } y \in \mathbb{R}. \text{ Then there exists an } n \in \mathbb{N} \text{ such that } y \leq nx \text{ and } y \geq nx.
 ```
 
 This can also be stated as:
@@ -63,6 +63,11 @@ This can also be stated as:
 The interpretation is twofold. Firstly it states that we can always find an integer that is smaller than a real number and when we add 1 to that integer we get a real number that is larger than the original real number. So in other words, we can always bound a real number between two integers. 
 
 Secondly, it states that if we have a real number that is larger than 0 then we can always create a multiple of another real number with a natural number that is larger. The same goes for smaller creating a smaller multiple.
+
+<Image 
+    src="/maths/archimedianProperty.svg"
+    width={600}
+/>
 
 ### Roots of Real Numbers
 
@@ -118,9 +123,13 @@ If we have a set of real numbers $A \subseteq \mathbb{R}$, we can define the fol
 - **Upper bound**: A real number $c$ is an upper bound of $A$ if $\forall a \in A: a \leq c$. In other words, $c$ is greater than or equal to all elements of $A$. We then say that $A$ is bounded above.
 - **Lower bound**: A real number $c$ is a lower bound of $A$ if $\forall a \in A: a \geq c$. In other words, $c$ is less than or equal to all elements of $A$. We then say that $A$ is bounded below.
 
-Important to note is that the upper and lower bounds can be elements of the set $A$ itself but they can also be real numbers that are not in the set. If a set has both an upper and lower bound it is called bounded. If it only has one of the two it is called half-bounded, i.e bounded above or bounded below where the other bound is either $-\infty$ or $\infty$. 
+Important to note is that the upper and lower bounds can be elements of the set $A$ itself but they can also be real numbers that are not in the set. If a set has both an upper and lower bound it is called bounded. If it only has one of the two it is called half-bounded, i.e bounded above or bounded below where the other bound is either $-\infty$ or $\infty$. An alternative definition is to say that the set $A$ is bounded if there exists a real number $c > 0$ such that;
 
-We can define the operations of maximum and minimum for two numbers $a, b \in \mathbb{R}$ as:
+```math
+\forall a \in A: |a| \leq c
+```
+
+We can now also define the operations of maximum and minimum for two numbers $a, b \in \mathbb{R}$ as:
 
 ```math
 \begin{align*}

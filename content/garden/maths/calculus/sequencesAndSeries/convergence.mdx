@@ -33,10 +33,10 @@ To formally define the limit of a sequence, we first introduce the concept of an
     width={500}
 />
 
-The index of the term that first enters this neighbourhood is called the **dipping number** or **entry index**, and is denoted as $N_{\epsilon}$ or $N_0$. So for example if we have a sequence $a_n$ that converges to a limit $L$, then for every $\epsilon > 0$ we can define the neighborhood around $L$ as:
+The index of the term that first enters this neighborhood is called the **dipping number** or **entry index**, and is denoted as $N_{\epsilon}$ or $N_0$. So for example if we have a sequence $a_n$ that converges to a limit $L$, then for every $\epsilon > 0$ we can define the neighborhood around $L$ as:
 
 ```math
-\{n \in \mathbb{N} | |a_n - L| < \epsilon\} \text{or} \{n \in \mathbb{N} | a_n \in (L-\epsilon, L+\epsilon)\}
+\{n \in \mathbb{N} | \quad |a_n - L| < \epsilon\} \text{ or } \{n \in \mathbb{N} | a_n \in (L-\epsilon, L+\epsilon)\}
 ```
 
 The entry index $N_{\epsilon}$ is the index of the term that first enters this neighborhood. This means that for all $n \geq N_{\epsilon}$, the terms $a_i$ are in the neighborhood around $L$, i.e. $a_i \in (L-\epsilon, L+\epsilon) \forall i \geq N_{\epsilon}$. 
@@ -49,8 +49,8 @@ For a given sequence $a_n = \frac{2n+3}{n}$ and $\epsilon = 0.1$, we can calcula
 \left|\frac{2n+3}{n} - 2\right| < 0.1 \\
 \left|\frac{3}{n}\right| < 0.1 \\
 \frac{3}{n} < 0.1 \\
-3 = 0.1n \\
-n = 30
+3 < 0.1n \\
+30 < n
 \end{align*}
 ```
 
@@ -63,51 +63,227 @@ So for $\epsilon = 0.1$, the entry index $N_{0.1} = 31$. We can check this by ca
 The entry index is 31 not 30 as the terms must be less than 0.1 away from the limit.
 </Callout>
 
-This is what D'Alembert and cauchy used to make the first definition of a limit. A sequence $a_n$ converges to a limit $L$ if for every $\epsilon > 0$ there exists an entry index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the terms $a_n$ are in the $\epsilon$-neighborhood around $L$. In other words, after a certain point in the sequence, all terms are within $\epsilon$ of the limit.
+This is what D'Alembert and cauchy used to make the first definition of a limit. A sequence $a_n$ converges to a limit $L$ if for every $\epsilon > 0$ there exists an entry index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the terms $a_n$ are in the $\epsilon$-neighborhood around $L$. In other words, after a certain point in the sequence, all terms are within $\epsilon$ of the limit. More formally:
+
+```math
+L \text{ is the limit of } a_n \text{ if } \forall \epsilon > 0, \exists N_{\epsilon} \in \mathbb{N} \text{ such that } \forall n \geq N_{\epsilon}, |a_n - L| < \epsilon
+```
 
 Another way to define the limit is to say that a sequence $a_n$ converges to a limit $L$ if for every $\epsilon > 0$ there exists a finite number of terms in the sequence that are outside the $\epsilon$-neighborhood. These two definitions are equivalent. As in the first definition, there are a finite many terms outside the neighborhood, all 
-terms where $n \leq N_{\epsilon}$ and which then means there are an infinite number of terms inside the neighborhood.
+terms where $n \leq N_{\epsilon}$ and which then means there are an infinite number of terms inside the neighborhood. We can define the elements outside the neighborhood just like we did with the elements inside the neighborhood:
 
-<Callout type="warning">
-An important note is that the limit needs to be a real number if it is a real valued sequence. The limit can not be infinity as infinity is not a real number. So if a sequence converges to infinity, it is divergent.
+```math
+\{n \in \mathbb{N} | \quad |a_n - L| \geq \epsilon\} \text{ or } \{n \in \mathbb{N} | a_n \notin (L-\epsilon, L+\epsilon)\}
+```
+
+<Callout type="note">
+An important note is that the limit needs to be a real number if it is a real valued sequence. The limit can not be infinity as infinity is not a real number. So if a sequence converges to infinity, it is divergent. We can also define this more formally. A sequence $a_n$ converges/diverges to $+\infty$ if for every $T > 0$ there exists an entry index $N_T$ such that for all $n \geq N_T$ the terms are:
+
+```math
+\lim_{n \to \infty} a_n = +\infty \text{ if } \forall T > 0, \exists N_T \in \mathbb{N} \text{ such that } \forall n \geq N_T, a_n > T
+```
+
+The same holds for $-\infty$ if $(-a_n)$ converges to $+\infty$.
+
+If a sequence converges to the limit 0 then we say that the sequence is a null sequence. These are important sequences to look at as they are the building blocks for many other sequences and also later for series.
 </Callout>
 
-We can show that the limit is unique, for this we assume there are two limits. Is rather intuitive proof and can also be shown visually.
-limitUniqueness.png
+For each sequence the limit is unique. So if a sequence converges to a limit, then this limit is unique. The proof of this is rather intuitive. Let's assume that a sequence converges to two different limits $L$ and $M$. Then if we define an epsilon so that the neighborhood around $L$ and $M$ do not overlap. For example if $\epsilon = \frac{|L-M|}{2}$ then the neighborhoods around $L$ and $M$ do not overlap. 
 
-We can show that all convergent sequences are bounded.
+```math
+]L-\epsilon, L+\epsilon[ \cap ]M-\epsilon, M+\epsilon[ = \emptyset
+```
+
+<Image 
+    src="/maths/limitUniqueness.png"
+    caption="Epsilon neighborhood around two limits L and M"
+    width={400}
+/>
+
+We know that by definition that all terms outside of an epsilon neighborhood are finite and the terms inside the neighborhood are infinite. However, if the neighborhoods do not overlap then the infinite epsilon neighborhood around $L$ is part of the finite elements outside the neighborhood around $M$ and vice versa. This is a contradiction and therefore the limit must be unique.
+
+We can also show that all sequences that converge are bounded. intuitively this might make sense to some but we can also prove this. If a sequence converges to a limit $L$ then we can choose $\epsilon = 1$. We then know that there are infinite many terms in the neighborhood around $L$. So these values are bounded by $L+1$ and $L-1$. We then also know that there are only a finite number of terms outside of this neighborhood and that these together cover the whole sequence. To find the bounds we then need to find the maximum and minimum of the finite terms. We know that these values are larger than $L+1$ and smaller than $L-1$ as otherwise they would be in the neighborhood. So the sequence is bounded (For real valued sequences, otherwise if one of the bounds is infinity then the sequence is not bounded).
+
+<Image 
+    src="/maths/convergentBoundedness.png"
+    caption="Illustration of the idea that convergent sequences are bounded"
+    width={500}
+/>
+
+However, the other way around is not true. Not all bounded sequences converge. For example the sequence $a_n = (-1)^n$ is bounded between -1 and 1 but does not converge. This is because the terms keep switching between -1 and 1 and do not get closer to a certain value.
+
+```math	
+a_n \text{ converges} \implies a_n \text{ is bounded}
+```
 
 <Callout type="example">
-an = a
+For the constant sequence such as $a_n = 5$ the limit is the constant itself, so in this case 5. This is rather obvious but we can also prove it. By definition we know that after some specific index $N_{\epsilon}$ all terms have to be within the epsilon neighborhood around the limit and because epsilon is larger than 0 so get the following that needs to be satisfied for all $n \geq N_{\epsilon}$:
 
-an=n
+```math
+|a_n - L | < \epsilon \implies |a_n - L| = 0 < \epsilon
+```
 
-an=1/n
+In this case $L$ is simply 5. This can also be generalized to any constant sequence:
 
-an=(-1)^n
+```math
+(a_n)_{n \geq 1} = c \implies \lim_{n \to \infty} a_n = c
+```
 
+Because the following always holds:
+
+```math
+\begin{align*}
+|a_n - c| = |c - c| = 0 \forall n \geq 1 \\
+|a_n - c| < \epsilon \forall n \geq 1 \text{ for any } \epsilon > 0
+\end{align*}
+```
+</Callout>
+<Callout type="example">
+The next sequence we can look at is the following:
+
+```math
+(a_n)_{n \geq 1} = \frac{1}{n} = 1, \frac{1}{2}, \frac{1}{3}, \ldots
+```
+
+For this sequence again we can get $|a_n - L| < \epsilon$ for all $n \geq N_{\epsilon}$. Because of [Archimedes principle](/garden/maths/discrete/intervals#archimedes-principle) we know that for any $x > 0$ there exists a $n \in \mathbb{N}$ such that $y \leq nx$ or $y \geq nx$ for all $y \in \mathbb{R}$. In this case the first inequality is important. If we set $x = \epsilon$ and $y = 1$ then we know the following:
+
+```math
+\begin{align*}
+y \leq nx \\
+1 \leq N_{\epsilon} \epsilon \\
+\frac{1}{N_{\epsilon}} \leq \epsilon
+\end{align*}
+```
+
+So we know that some index $N_{\epsilon} \in \mathbb{N}$ exists such that:
+
+```math
+\frac{1}{N_{\epsilon}} < \epsilon
+```
+
+Which then means that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|a_n - 0| = \frac{1}{n} \leq \frac{1}{N_{\epsilon}} < \epsilon
+```
+
+So if we had $\epsilon = 0.8$ then we can calculate $N_{0.8} by doing the following:
+
+```math
+\begin{align*}
+\frac{1}{N_{0.8}} < 0.8 \\
+\frac{1}{N_{0.8}} < \frac{8}{10} \\
+\frac{5}{10} < \frac{1}{N_{0.8}} \\
+\frac{1}{2} < \frac{1}{N_{0.8}}
+\end{align*}
+```
+
+So $N_{0.8} = 2$ which means that for $\epsilon = 0.8$ all terms after $n=2$ are within the epsilon neighborhood around 0. So the limit of the sequence is 0. 
+</Callout>
+<Callout type="example">
+From the script:
 using archimedes principle to show that the limit of $a_n = \frac{n}{n+1} = 1$
 </Callout>
+<Callout type="example">
+We have seen lots of examples of sequences that converge to a limit. But what about sequences that do not converge? Let's look at the following sequence:
+
+```math
+(a_n)_{n \geq 1} = (-1)^n = -1, 1, -1, 1, \ldots
+```
+
+Intuitively it is clear that this sequence does not converge as the terms keep switching between -1 and 1. We can also prove this by contradiction. Let's assume that the sequence converges to a limit $L$. We know that $|a_n - a_{n+1}| = 2$ for all $n \in \mathbb{N}$. The the following must hold for $\epsilon > 0$ and $\forall n \geq N_{\epsilon}$:
+
+```math
+|a_n - L| < \epsilon
+```
+
+Let's assume by contradiction that a limit exists and that $\epsilon = \frac{1}{2}$. Then we know that there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+\begin{align*}
+2 &= |a_n - a_{n+1}| \\
+&= |a_n - L + L - a_{n+1}| \\
+&\leq |a_n - L| + |L - a_{n+1}| \\
+&\leq \epsilon + \epsilon = 1 \\
+2 &\leq 1
+```
+
+This is a contradiction and therefore the sequence does not converge. Note that we just added 0 by adding and subtracting $L$ and then used the triangle inequality.
+</Callout>
+<Callout type="example">
+Lastly let's look at the sequence $(a_n)_{n \geq 1} = n$. This sequence does not converge as the terms keep getting larger and larger. We can prove this by contradiction. Let's assume that the sequence converges to a limit $L$. Then for $\epsilon = 1$ we know that there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|a_n - L| < 1
+```
+
+However, this already does not hold for the first term as $|a_1 - L| = |1 - L| \geq 1$ is not possible. So the sequence does not converge.
+</Callout>
+
+## Properties of Convergent Sequences
 
 Sind $a_n$ und $b_n$ konvergente Folgen mit den Grenzwerten $a$ bzw. $b$, so ist auch die Folge:
 
 - $c*a_n$ konvergent mit $\lim_{n \to \infty} {c*a_n} = c*\lim_{n \to \infty} {a_n} = c*a$ für $c \in R$
+
+
 - $a_n \pm b_n$ konvergent mit $\lim_{n \to \infty}{a_n \pm b_n}={{\lim_{n \to \infty}{a_n}} \pm {\lim_{n \to \infty}{b_n}}}={a \pm b}$
+
+Example from her notes with $a_n = n \over n+1$ and splits it into $1 \over n$ and $1 \over n+1$ and then shows that the limit is the sum of the limits.
+
 - $a_n *b_n$ konvergent mit $\lim_{n \to \infty}{a_n* b_n}={{\lim_{n \to \infty}{a_n}} * {\lim_{n \to \infty}{b_n}}}={a * b}$
+
+Example from her notes with $a_n = (1 + \frac{1}{n})^b$ 
+
 - $a_n \over b_n$ konvergent mit $\lim_{n \to \infty}{a_n \over b_n}={{\lim_{n \to \infty}{a_n}} \over {\lim_{n \to \infty}{b_n}}}={a \over b}$ falls $b \neq 0$
+
+Comes from the above. example could be $a_n = \frac{n^2 - 2n}{n^2 + n + 1}$
+
 - If there exists a $K \geq 1$ and $a_n \leq b_n$ for all $n \geq K$ then $\lim_{n \to \infty}{a_n} \leq \lim_{n \to \infty}{b_n}$ in other words $a \leq b$.
 
 - Das Produkt einer beschränkten Folge und einer Nullfolge ist immer eine Nullfolge.
 
-There are some important examples to look at. There is also a difference between proving a limit by definition and just calcualting it. 
+## Squeeze Theorem
 
-$n^bq^n = 0$ Shows that any power of $n$ is smaller than any exponential function important for algorithms.
+The squeeze theorem or sometimes also called the sandwich theorem states that if we have two sequences $(a_n)_{n\geq 1}$ and $(c_n)_{n\geq 1}$ that have the same limit $L$ so:
 
-$n^{1\over n} = 1$
+```math	
+\lim_{n \to \infty} a_n = \lim_{n \to \infty} c_n = L
+```
 
-recursive defined sequences $a_{n+1} = 1 \over 2 (a_n + 2 \over a_n)$ goes to $\sqrt{2}$
+and a third sequence $(b_n)_{n\geq 1}$ for which after a certain index $K$ the following holds:
 
-$a_n = 1 \over 2 (a_{n-1} + c \over a_{n-1})$ and $a_1 = c$ using Weierstrass $c > 1$.
+```math	
+a_n \leq b_n \leq c_n \text{ for all } n \geq K
+```
+
+Then the sequence $(b_n)_{n\geq 1}$ also converges to $L$ so:
+
+```math
+\lim_{n \to \infty} b_n = \lim_{n \to \infty} a_n = \lim_{n \to \infty} b_n = L
+```
+
+This is a very simple but powerful theorem that can be used to show that many sequences converge to a certain limit. The idea is that if we can find two sequences that are always above and below the sequence we are interested in and these two sequences converge to the same limit, so they slowly get closer and closer to each other and squeeze the sequence we are interested in, then the sequence we are interested in also converges to the same limit.
+
+<Image 
+    src="/maths/squeezeTheorem.png"
+    caption="Illustration of the idea behind the squeeze theorem"
+    width={500}
+/>
+
+<Callout type="example">
+Let's look at the sequence $a_n = \frac{sin(n)}{n}$. We know that the sine function is bounded between -1 and 1 and then that the following inequalities hold:
+
+```math
+\frac{-1}{n} \leq \frac{sin(n)}{n} \leq \frac{1}{n}
+```
+
+As $n$ goes to infinity the terms on the left and right side go to 0. So by the squeeze theorem the sequence $a_n = \frac{sin(n)}{n}$ also converges to 0.
+
+```math
+\lim_{n \to \infty} \frac{sin(n)}{n} = 0
+```
+</Callout>
 
 ## Monotone Convergence Theorem
 
@@ -125,37 +301,52 @@ The same holds for monotonically decreasing sequences that are bounded below. He
 \lim_{n \to \infty} a_n = \inf\{a_n | n \geq 1\}
 ```
 
-## Squeeze Theorem
-
-The squeeze theorem or sometimes also called the sandwich theorem states that if we have three sequences $(a_n)_{n\geq 1}$, $(b_n)_{n\geq 1}$, and $(c_n)_{n\geq 1}$ such that:
-
-```math	
-a_n \leq b_n \leq c_n \text{ for all } n \geq 1 \text{ and } \lim_{n \to \infty} a_n = \lim_{n \to \infty} c_n = L
-```
-
-Then the sequence $(b_n)_{n\geq 1}$ also converges to $L$ so:
-
 ```math
-\lim_{n \to \infty} b_n = L
+a_n \text{ is monotone} \land a_n \text{ is bounded} \implies a_n \text{ converges}
 ```
 
-## Bernoulli's Inequality
+The other direction does not hold. For example the sequence $a_n = (-1)^n \frac{1}{n}$ converges to 0 but it is only bounded by 1 and -1 and not monotonically increasing or decreasing as it oscillates between -1 and 1.
 
-Does this come from probability theory?
+<Image 
+    src="/maths/monotonConvergence.jpg"
+    caption="Illustration of the idea behind the monotone convergence theorem"
+    width={500}
+/>
+
+## Polynomial vs Exponential
+
+$n^bq^n = 0$ Shows that any power of $n$ is smaller than any exponential function important for algorithms.
+
+$n^{1\over n} = 1$
+
+## Limits of Recursive Sequences
+
+From notes more generally $a_n = 1 \over 2 (a_{n-1} + c \over a_{n-1})$ and $a_1 = c$ using Weierstrass $c > 1$.
+
+recursive defined sequences $a_{n+1} = 1 \over 2 (a_n + 2 \over a_n)$ goes to $\sqrt{2}$
+
+## Euler's Number
+
+Lots of possible origins but one is analyzing the compound interest formula.
+
+First comes Bernoulli's Inequality.Does this come from probability theory?
 
 ```math
 (1+x)^n \geq 1+nx \text{ for all } x \geq -1 \text{ and } n \in N
 ```	
 
-## Euler's Number
-
-Lots of possible origins but one is analyzing the compound interest formula.
 
 ```math
 \lim_{n \to \infty} (1+{1\over n})^n = e
 ```
 
 ## Limes Superior and Inferior
+
+## Cauchy Criterion
+
+## Balzano-Weierstrass Theorem
+
+## Sequences of Vectors and Complex Numbers
 
 ## Important Sequences
 
