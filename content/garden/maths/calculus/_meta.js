@@ -4,6 +4,7 @@ export default {
     newtonsMethod: "",
     analysis: "",
     sequencesAndSeries: "Sequences & Series",
+    continuousFunctions: "",
     limits: "",
     integrals: "Integrals"
 }

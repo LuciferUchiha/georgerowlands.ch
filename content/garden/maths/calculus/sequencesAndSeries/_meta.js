@@ -2,8 +2,9 @@ export default {
     sequences: "",
     sumOperator: "",
     productOperator: "",
+    convergentSequences: "",
     series: "",
-    convergence: "",
+    convergentSeries: "",
     power: "",
     taylor: "",
     fourier: ""

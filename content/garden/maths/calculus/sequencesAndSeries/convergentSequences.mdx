@@ -1,7 +1,7 @@
 import Callout from "@components/Callout/Callout";
 import Image from "@components/Image/Image";
 
-# Convergence of Sequences and Series
+# Convergent Sequences
 
 If we analyze the values of a [sequence](/garden/maths/calculus/sequencesAndSeries/sequences) we can see that certain behaviors or patterns can occur such as the sequence becoming [monotonically increasing or decreasing](/garden/maths/calculus/sequencesAndSeries/sequences#monotonic-sequences) or the sequence staying within a certain range, i.e. being [bounded between two values](/garden/maths/calculus/sequencesAndSeries/sequences#bounded-sequences).
 
@@ -295,7 +295,7 @@ If the sequence $(a_n)_{n\geq 1}$ is monotonically increasing and bounded above,
 \lim_{n \to \infty} a_n = \sup\{a_n | n \geq 1\}
 ```
 
-The same holds for monotonically decreasing sequences that are bounded below. Here the limit uses the infimum instead of the supremum obviously.
+The same holds for monotonically decreasing sequences that are bounded below. Here the limit uses the infimum instead of the supremum.
 
 ```math
 \lim_{n \to \infty} a_n = \inf\{a_n | n \geq 1\}
@@ -342,13 +342,166 @@ First comes Bernoulli's Inequality.Does this come from probability theory?
 
 ## Limes Superior and Inferior
 
+
+
 ## Cauchy Criterion
+
+We have seen a few ways now how to calculate the limit of a sequence or determine if a sequence converges based on certain properties that the sequence has, such as being bounded and monotonic. However, there is another way to determine if a sequence converges or diverges. This is called the Cauchy criterion. 
+
+First let's just look at a bounded sequence. We have already seen that we can create two sequences $b_n$ and $c_n$ that are monotonic and bounded and therefore converge to a limit. We defined these sequences as:
+
+```math
+b_n = \inf\{a_k | k \geq n\} \text{ and } c_n = \sup\{a_k | k \geq n\}
+```
+
+Now it turns out that if these two sequences converge to the same limit, then the original sequence also converges. 
+
+```math
+\forall \epsilon > 0 \exists N_{\epsilon} \in \mathbb{N} \text{ such that } \forall n, m \geq N_{\epsilon} \text{ we have } |a_n - a_m| < \epsilon
+```
 
 ## Balzano-Weierstrass Theorem
 
-## Sequences of Vectors and Complex Numbers
+## Vector Sequences
+
+So far we have looked at sequences of real numbers, often called **real sequences**. However, we can also look at sequences where the elements are vectors, these are called **vector sequences**. More formally we can define a vector sequence in $\mathbb{R}^d$ as:
+
+```math
+a: N \to R^d, n \mapsto a_n = (a_{n1}, a_{n2}, \ldots, a_{nd}) \text{ with } a_{ni} \in R
+```
+
+We can define the limit of a vector sequence in a similar way as we did for real sequences, we just need to replace the absolute value with the norm of the vector. So we can say that a vector sequence converges if there exists a vector $L \in \mathbb{R}^d$ such that:
+
+```math
+\forall \epsilon > 0 \exists N_{\epsilon} \in \mathbb{N} \text{ such that } \forall n \geq N_{\epsilon} \text{ we have } ||a_n - L|| < \epsilon
+```
+
+Just like with real sequences, this limit is unique and is written as:
+
+```math
+\lim_{n \to \infty} a_n = L
+```
+
+At first you might think that limits of vectors could be rather complicated as we are now working with multiple dimensions. However, it turns out that the limit of a vector sequence is rather simple. The limit of a vector sequence is simply the limit along each dimension or coordinate/component. 
+
+If we have the vector $L=(l_1, l_2, \ldots, l_d)$ and a vector sequence $a_n$, think of the vector sequence as a matrix with $d$ rows and $n$ columns, then if each row $i$ is a sequence itself, it'll converge to the limit $l_i$ of that sequence. So the following two statements are equivalent:
+
+1. The vector sequence $a_n$ converges to the vector $L$, $\lim_{n \to \infty} a_n = L$.
+2. $\lim_{n \to \infty} a_{n,i} = l_i$ for all $i=1,2,\ldots,d$.
+
+<Callout type="example">
+Let's define a vector sequence as follows:
+
+```math
+a_n = (\frac{1}{n}, 1 + \frac{1}{n}, (1 + \frac{1}{n})^2) \text{ with } n \geq 1
+```
+
+If we now look at the first component of each term of the sequence we get:
+
+```math
+(a_{n,1})_{n \geq 1} = (\frac{1}{n})_{n \geq 1} = (1, \frac{1}{2}, \frac{1}{3}, \ldots)
+```
+
+We already know this sequence as the harmonic sequence and we know that it converges to 0. The same holds for the sequence of the second components and the third component. So we can say that the vector sequence converges to the 
+vector $L=(0, 1, 1)$ as the limit of the vector sequence is simply the limit of each component. So we can write:
+
+```math
+\lim_{n \to \infty} a_n = (\lim_{n \to \infty} a_{n,1}, \lim_{n \to \infty} a_{n,2}, \lim_{n \to \infty} a_{n,3}) = (0, 1, e)
+```
+
+We can also look at a vector sequence that does not converge. For example let's look at the following sequence:
+
+```math
+a_n = (\frac{1}{n}, (-1)^n, n) \text{ with } n \geq 1
+```
+
+This sequence does not converge as the second component oscillates between -1 and 1 and the third component diverges to infinity.
+</Callout>
+
+We already know that for real convergent sequences we can perform certain operations on the sequences and the limits of these sequences. The same holds for vector sequences. We can perform the same operations on vector sequences as we did for real sequences. So for the convergent vector sequences $a_n$ and $b_n$ we can say that:
+
+```math
+\begin{align*}
+\lim_{n \to \infty} (a_n \pm b_n) &= \lim_{n \to \infty} a_n \pm \lim_{n \to \infty} b_n \\
+\lim_{n \to \infty} (c a_n) &= c \lim_{n \to \infty} a_n 
+\end{align*}
+```
+
+Where $c$ is a constant. This is rather intuitive as if each of the components of the vector converges to a limit, then the sum of the vector sequences is as if we would shift the limit of the vector sequence by the limit of the other vector sequence. The same holds for the product of a constant and a vector sequence. 
+
+### Bounded Vector Sequences
+
+For real sequences we were able to say that a sequence is bounded if it is bounded above and below. So for some upper bound $u$ and lower bound $l$ we had for a bounded real sequence:
+
+```math
+a_n \in [l, u] \text{ for all } n \in \mathbb{N}
+```
+
+In other words, no term ever became infinitely large or small. For vector sequences we can define the same concept. A vector sequence is bounded if there exists a vector $R \in \mathbb{R}^d$ such that:
+
+```math
+||a_n|| \leq R \text{ for all } n \in \mathbb{N}
+```
+
+<Callout type="todo">
+If the sequences of the components are bounded is the vector sequence also bounded?
+</Callout>
+
+<Callout type="example">
+An example of a bounded vector sequence is the following:
+
+```math
+a_n = (\frac{1}{n}, \sin(n)) \text{ with } n \geq 1
+```
+
+Intuitively As $n$ goes to infinity the first component converges to 0 and the second component oscillates between -1 and 1. So we can say that the vector sequence is bounded. We can also show this by calculating the norm of the vector sequence:
+
+```math
+||a_n|| = \sqrt{(\frac{1}{n})^2 + (\sin(n))^2} \leq \sqrt{(\frac{1}{n})^2 + 1} \leq \sqrt{2} \text{ for all } n \geq 1
+```
+
+An example of an unbounded vector sequence is the following:
+
+```math
+a_n = (n, (-1)^n) \text{ with } n \geq 1
+```
+
+Again intuitively we can see that the first component diverges to infinity and the second component oscillates between -1 and 1. So we would say that the vector sequence is unbounded. We can also show this by calculating the norm of the vector sequence:
+
+```math
+||a_n|| = \sqrt{n^2 + (-1)^2} = \sqrt{n^2 + 1} \geq n \mapsto \infty \text{ as } n \to \infty
+```
+</Callout>
+
+Because we know that vector sequences can be bounded it mean can also use the Cauchy criterion and the Bolzano-Weierstrass theorem to show that a vector sequence converges. However, we can not use the monotone convergence theorem as we can not just simply define an order on the vector space. So we can not say that a vector sequence is monotonic. 
+
+<Callout type="todo">
+Examples of using the theorems for vector sequences.
+</Callout>
+
+## Complex Sequences
+
+<Callout type="todo">
+Complex sequences are similar to vector sequences but with complex numbers. What are the rules?
+
+She showed:
+
+1. $\lim_{n \to \infty} z_n = z$ then $\lim_{n \to \infty} \overline{z_n} = \overline{z}$
+2. $\lim_{n \to \infty} z_n = z$ then $\lim_{n \to \infty} |z_n| = |z|$
+3. $\lim_{n \to \infty} (z_n + w_n) = z + w$ if $z_n \to z$ and $w_n \to w$
+4. $\lim_{n \to \infty} (z_n * w_n) = z * w$ if $z_n \to z$ and $w_n \to w$
+5. $\lim_{n \to \infty} (z_n / w_n) = z / w$ if $z_n \to z$ and $w_n \to w$ and $w \neq 0$ and $w_n \neq 0$ for all $n \geq N_{\epsilon}$
+
+Example: 
+
+```math
+\lim_{n \to \infty} (\frac{n^2 + 2}{n^3 + 1} + i \frac{n^3 + 2n + 1}{n^3 + n + 1}) = 0 + i = i
+```
+</Callout>
 
 ## Important Sequences
+
+These are probably better integrated as examples above
 
 ### Artihmetic Sequences
 
@@ -382,119 +535,3 @@ und im Nenner aus einem Polynom l-ten Grades besteht, gilt:
         0 , falls\space k<l
 \end{dcases}
 ```
-
-## Convergence of Series
-
-We have seen that a [series](/garden/maths/calculus/sequencesAndSeries/series) is the sum of the terms of a [sequence](
-/garden/maths/calculus/sequencesAndSeries/sequences). 
-
-Just like sequences, series can also converge or diverge. A series converges if the sequence of partial sums converges. So in other words using the original sequence we calculate a new sequence, where each term is the sum of all terms up to that point. 
-
-```math
-\begin{align*}
-\text{Sequence} & : (a_1, a_2, a_3, \ldots, a_n) \\
-\text{Series} & : S_n = \sum^{n}_{k=1}{a_k} = a_1 + a_2 + a_3 + \ldots + a_n \\
-\text{Sequence of partial sums} & : S_1, S_2, S_3, \ldots, S_n
-\end{align*}
-```
-
-If the sequence of partial sums converges then the series converges. The limit of the sequence of partial sums is called the sum or value of the series. If the sequence of partial sums diverges then the series diverges.
-
-For a series to converge the underlying sequence must be a null sequence, in other words the limit of the original sequence must be zero. This is a necessary but not sufficient condition. There are series that diverge even though the sequence of terms converges to zero.
-
-```math
-\sum_{n=1}^{\infty} a_n \text{ converges} \implies \lim_{n \to \infty} a_n = 0
-```
-
-There is an intuitive interpretation behind this condition. Imagine you're summing up the terms of a series. For the series to converge, the partial sums need to settle on a finite value as you keep adding more and more terms. If the terms of the sequence do not approach zero, it becomes impossible for the partial sums to settle, and the series will diverge. In short, if the terms are not getting smaller and smaller, the series will keep getting larger and larger and will not converge.
-
-### Geometric Series
-
-<Callout type="todo">
-Shouldn't this be ar^k instead of just r^k?
-</Callout>
-
-Let's look at some example of series and analyze their convergence. The geometric series is a good example to start with. We define the geometric series for a value $q \in \mathbb{C}$ where $|q| < 1$ as:
-
-```math
-\sum^{\infty}_{k=0}{q^k}
-```
-
-For the series to converge we need to check if the sequence of partial sums converges. The sequence of partial sums is:
-
-```math
-\begin{align*}
-S_n &= \sum^{n}_{k=0}{q^k} = 1 + q + q^2 + \ldots + q^n \\ 
-q * S_n &= q + q^2 + q^3 + \ldots + q^{n+1} \\
-S_n - q * S_n &= 1 - q^{n+1} \\
-(1-q) * S_n &= 1 - q^{n+1} \\
-S_n &= \frac{1 - q^{n+1}}{1-q}
-\end{align*}
-```
-
-Now we have a closed form for the sequence of partial sums. We can now take the limit of the sequence of partial sums to see if the series converges. As $n \to \infty$ the term $q^{n+1}$ goes to zero as $|q| < 1$. So we can assume the limit exists and that it is $\frac{1}{1-q}$. Let's prove it is indeed the limit:
-
-```math
-\lim_{n \to \infty}\left|\frac{1 - q^{n+1}}{1-q} - \frac{1}{1-q}\right| = \lim_{n \to \infty}\left|\frac{1 - q^{n+1} - 1}{1-q}\right| = \lim_{n \to \infty}\left|\frac{- q^{n+1}}{1-q}\right| = \lim_{n \to \infty}\left|\frac{q^{n+1}}{1-q}\right| = 0
-```
-
-So sequence of partial sums converges to $\frac{1}{1-q}$ with $|q| < 1$, which means the geometric series converges to $\frac{1}{1-q}$.
-
-<Callout type="example">
-Let's look at the geometric series for $q = \frac{1}{2}$:
-
-```math
-\begin{align*}
-\sum^{\infty}_{k=0}{\left(\frac{1}{2}\right)^k} &= 1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \ldots \\
-&= \frac{1}{1-\frac{1}{2}} = \frac{1}{\frac{1}{2}} = 2
-\end{align*}
-```
-
-But what if the index starts at 1 rather than 0? Let's revist the closed form for the sequence of partial sums:
-
-```math
-\begin{align*}
-\sum^{\infty}_{k=1}{q^k} &= q + q^2 + q^3 + \ldots \\
-&= \sum^{\infty}_{k=0}{q^k} - q^0 = \frac{1}{1-q} - 1 = \frac{q}{1-q}
-\end{align*}
-```
-
-We know that this sequence still converges. So we can say that what we do in the first steps does not have an effect on the convergence of the series. However, it does have an effect on the value of the series. So the geometric series for $q = \frac{1}{2}$ starting at 1 converges to $\frac{\frac{1}{2}}{1-\frac{1}{2}} = 1$ instead of 2.
-</Callout>
-
-### Harmonic Series
-
-<Callout type="todo">
-Add the proof for the harmonic series. Probably with Cauchy criterion.
-</Callout>
-
-```math	
-\sum^{\infty}_{n=1}{\frac{1}{n}}
-```
-
-diverges. Despite the sequence of terms converging to zero, the series diverges. This is a good example to show that the terms of the sequence converging to zero is a necessary but not sufficient condition for the series to converge.
-
-### Telescope Series
-
-<Callout type="todo">
-Add the proof for the telescope series, show visually why it is called a telescope series.
-</Callout>
-
-```math
-\sum^{\infty}_{n=1}{\frac{1}{n(n+1)}}
-```
-
-converges to 1.
-
-### Beware of Infinite Sums
-
-An important note:
-In the case of series we can not just use our usual rules for the [sum operator](/garden/maths/calculus/sequencesAndSeries/sumOperator). The reason is because the sums go to infinity and we can not just use the normal rules of arithmetic.
-
-So if we have a series $\sum^{\infty}_{k=1}{a_k}$ und $\sum^{\infty}_{j=1}{b_j}$ and they converge then the following rules apply:
-1. $\sum^{\infty}_{k=1}{c*a_k}=c* \sum^{\infty}_{k=1}{a_k}$ für $c \in C$
-2. $\sum^{\infty}_{k=1}{a_k\pm b_k}=\sum^{\infty}_{k=1}{a_k}\pm \sum^{\infty}_{k=1}{b_k}$
-
-For this lets compare two example $\sum^{\infty}_{n=1}{\frac{1}{n(n+1)}$ into $\sum^{\infty}_{n=1}{\frac{1}{n}} - \sum^{\infty}_{n=1}{\frac{1}{n+1}}$ We already know this is the telescoping series that converges to 1. So in this infinity minus infinity case we get 1.
-
-But if we try to do the same for the value of 0 and the sum over 0. We can split it into $\sum^{\infty}_{n=1}{1} - \sum^{\infty}_{n=1}{1}$ which is not correct as these then diverge and we suddenly get a value of 1 (infinity minus infinity).

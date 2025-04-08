@@ -88,25 +88,36 @@ To define an interval, we need two real numbers, $a$ and $b$, with $a < b$.
 
 We can then define the following types of intervals:
 
-- **Open interval**: We include all the numbers between $a$ and $b$, but not $a$ and $b$ themselves. This is denoted as $(a, b) = \{x \in \mathbb{R} \mid a < x < b\}$.
-- **Closed interval**: We include all the numbers between $a$ and $b$, as well as $a$ and $b$ themselves. This is denoted as $[a, b] = \{x \in \mathbb{R} \mid a \leq x \leq b\}$.
-- **Half-open interval**: We include one of the bounds but not the other. This is denoted as $[a, b) = \{x \in \mathbb{R} \mid a \leq x < b\}$ or $(a, b] = \{x \in \mathbb{R} \mid a < x \leq b\}$.
-- **Unbounded/Infinite interval**: On one or both sides, the interval extends indefinitely. This is denoted as $(-\infty, b] = \{x \in \mathbb{R} \mid x \leq b\}$ if we want all numbers less or equal than $b$, or $(a, \infty) = \{x \in \mathbb{R} \mid x > a\}$ if we want all numbers greater than $a$.
-We can also have intervals that are unbounded on both sides, such as $(-\infty, \infty) = \mathbb{R}$.
-
-<Callout type="info">
-    Note that the bound of the interval that is included is always the one with the square bracket if it is excluded it is the one with the round bracket.
-
-    For example, $[a, b)$ includes $a$ but not $b$, while $(a, b]$ includes $b$ but not $a$.
-
-    Also, note that the unbounded side with $\infty$ is always excluded i.e. uses the round bracket. This is because infinity is not a real number and the interval is a set of real numbers so it can't include infinity. This also means that the interval $(-\infty, \infty)$ is the set of all real numbers and that $\forall x \in \mathbb{R}$ we have $-\infty < x < \infty$.
-</Callout>
+- **Open interval**: We include all the numbers between $a$ and $b$, but not $a$ and $b$ themselves. This is denoted as $(a, b) = \{x \in \mathbb{R} \mid a < x < b\}$. More precisely, an open interval does not include it's two endpoints.
+- **Closed interval**: We include all the numbers between $a$ and $b$, as well as $a$ and $b$ themselves. This is denoted as $[a, b] = \{x \in \mathbb{R} \mid a \leq x \leq b\}$. A closed interval includes both endpoints and all the numbers in between.
+- **Half-open interval**: We include one of the endpoints but not the other. This is denoted as $[a, b) = \{x \in \mathbb{R} \mid a \leq x < b\}$ or $(a, b] = \{x \in \mathbb{R} \mid a < x \leq b\}$. As you might have guessed, a half-open interval only includes one of the two endpoints.
+- **Unbounded/Infinite interval**: On one or both sides, the interval extends indefinitely. This is denoted as $(-\infty, b] = \{x \in \mathbb{R} \mid x \leq b\}$ if we want all numbers less or equal than $b$, or $(a, \infty) = \{x \in \mathbb{R} \mid x > a\}$ if we want all numbers greater than $a$. We can also have intervals that are unbounded on both sides, such as $(-\infty, \infty) = \mathbb{R}$.
 
 <Image 
     src="/maths/intervalsLines.png"
     caption="All types of intervals visualized on the number line."
     width={600}
 />
+
+<Callout type="info">
+    Note that the endpoints of the interval that is included is always the one with the square bracket if it is excluded it is the one with the round bracket. In some literature you might also see square brackets facing outwards for the open interval rather than round brackets. This is just a different notation and means the same thing.
+
+    For example, $[a, b)$ includes $a$ but not $b$, while $(a, b]$ includes $b$ but not $a$ and $]a, b[$  is the equivalent of $(a, b)$ in some literature. 
+
+    Also, note that the unbounded side with $\infty$ is always excluded i.e. uses the round bracket. This is because infinity is not a real number and the interval is a set of real numbers so it can't include infinity. This also means that the interval $(-\infty, \infty)$ is the set of all real numbers so $\mathbb{R} = (-\infty, \infty)$ and that $\forall x \in \mathbb{R}$ we have $-\infty < x < \infty$.
+
+    This also has one small consequence which I personally do not like. We said that a closed interval includes both endpoints. But if we have an unbounded interval such as $(-\infty, b]$ then it only includes one endpoint as infinity is not a real number and can not be included. However, we say that the following forms of intervals are closed intervals: 
+
+    1. $[a, b], a \leq b \in \mathbb{R}$
+    2. $[a, +\infty), a \in \mathbb{R}$
+    3. $(-\infty, b], b \in \mathbb{R}$
+    4. $(-\infty, +\infty)$
+
+    My personal interpretation of this is that the "closed" intervals with infinity are closed in the sense that they are as closed as they can be, except for the infinity part. So no matter which real number you would then pick as an endpoint, it would be included in the interval. But this is just my personal interpretation and not a formal definition and as noted I find this not very intuitive.
+
+    There is a more logical explanation to this when talking about the [Balzano-Weierstrass theorem](/garden/maths/calculus/sequencesAndSeries/convergentSequences#bolzano-weierstrass-theorem) which states that an Interval is closed if for any sequence containing elements of the interval, the limit of that sequence is also in the interval. So if we have an unbounded interval such as $(-\infty, b]$ then we can always find a sequence such as the constant 
+    sequence $a_n = b$ that converges to $b$ and is in the interval. The same goes for the interval $(-\infty, +\infty)$ which is the set of all real numbers. So we can always find a sequence that converges to some real number in the interval.
+</Callout>
 
 <Callout type="example">
     Examples of intervals:
@@ -176,4 +187,5 @@ If $A \subseteq B \subseteq \mathbb{R}$ then:
 - If $B$ is bounded above then $\sup A \leq \sup B$.
 - If $B$ is bounded below then $\inf A \geq \inf B$.
 
+### Compact Intervals
 

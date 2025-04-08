@@ -1,0 +1,137 @@
+# Convergent Series
+
+We have seen that a [series](/garden/maths/calculus/sequencesAndSeries/series) is the sum of the terms of a [sequence](
+/garden/maths/calculus/sequencesAndSeries/sequences). 
+
+Just like sequences, series can also [converge or diverge](/garden/maths/calculus/sequencesAndSeries/convergentSequences). A series converges if the sequence of partial sums converges. So in other words using the original sequence we calculate a new sequence, where each term is the sum of all terms up to that point. 
+
+```math
+\begin{align*}
+\text{Sequence} & : (a_1, a_2, a_3, \ldots, a_n) \\
+\text{Series} & : S_n = \sum^{n}_{k=1}{a_k} = a_1 + a_2 + a_3 + \ldots + a_n \\
+\text{Sequence of partial sums} & : S_1, S_2, S_3, \ldots, S_n
+\end{align*}
+```
+
+If the sequence of partial sums converges then the series converges. The limit of the sequence of partial sums is called the sum or value of the series. If the sequence of partial sums diverges then the series diverges.
+
+For a series to converge the underlying sequence must be a null sequence, in other words the limit of the original sequence must be zero. This is a necessary but not sufficient condition. There are series that diverge even though the sequence of terms converges to zero.
+
+```math
+\sum_{n=1}^{\infty} a_n \text{ converges} \implies \lim_{n \to \infty} a_n = 0
+```
+
+There is an intuitive interpretation behind this condition. Imagine you're summing up the terms of a series. For the series to converge, the partial sums need to settle on a finite value as you keep adding more and more terms. If the terms of the sequence do not approach zero, it becomes impossible for the partial sums to settle, and the series will diverge. In short, if the terms are not getting smaller and smaller, the series will keep getting larger and larger and will not converge.
+
+## Geometric Series
+
+<Callout type="todo">
+Shouldn't this be ar^k instead of just r^k?
+</Callout>
+
+Let's look at some example of series and analyze their convergence. The geometric series is a good example to start with. We define the geometric series for a value $q \in \mathbb{C}$ where $|q| < 1$ as:
+
+```math
+\sum^{\infty}_{k=0}{q^k}
+```
+
+For the series to converge we need to check if the sequence of partial sums converges. The sequence of partial sums is:
+
+```math
+\begin{align*}
+S_n &= \sum^{n}_{k=0}{q^k} = 1 + q + q^2 + \ldots + q^n \\ 
+q * S_n &= q + q^2 + q^3 + \ldots + q^{n+1} \\
+S_n - q * S_n &= 1 - q^{n+1} \\
+(1-q) * S_n &= 1 - q^{n+1} \\
+S_n &= \frac{1 - q^{n+1}}{1-q}
+\end{align*}
+```
+
+Now we have a closed form for the sequence of partial sums. We can now take the limit of the sequence of partial sums to see if the series converges. As $n \to \infty$ the term $q^{n+1}$ goes to zero as $|q| < 1$. So we can assume the limit exists and that it is $\frac{1}{1-q}$. Let's prove it is indeed the limit:
+
+```math
+\lim_{n \to \infty}\left|\frac{1 - q^{n+1}}{1-q} - \frac{1}{1-q}\right| = \lim_{n \to \infty}\left|\frac{1 - q^{n+1} - 1}{1-q}\right| = \lim_{n \to \infty}\left|\frac{- q^{n+1}}{1-q}\right| = \lim_{n \to \infty}\left|\frac{q^{n+1}}{1-q}\right| = 0
+```
+
+So sequence of partial sums converges to $\frac{1}{1-q}$ with $|q| < 1$, which means the geometric series converges to $\frac{1}{1-q}$.
+
+<Callout type="example">
+Let's look at the geometric series for $q = \frac{1}{2}$:
+
+```math
+\begin{align*}
+\sum^{\infty}_{k=0}{\left(\frac{1}{2}\right)^k} &= 1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \ldots \\
+&= \frac{1}{1-\frac{1}{2}} = \frac{1}{\frac{1}{2}} = 2
+\end{align*}
+```
+
+But what if the index starts at 1 rather than 0? Let's revist the closed form for the sequence of partial sums:
+
+```math
+\begin{align*}
+\sum^{\infty}_{k=1}{q^k} &= q + q^2 + q^3 + \ldots \\
+&= \sum^{\infty}_{k=0}{q^k} - q^0 = \frac{1}{1-q} - 1 = \frac{q}{1-q}
+\end{align*}
+```
+
+We know that this sequence still converges. So we can say that what we do in the first steps does not have an effect on the convergence of the series. However, it does have an effect on the value of the series. So the geometric series for $q = \frac{1}{2}$ starting at 1 converges to $\frac{\frac{1}{2}}{1-\frac{1}{2}} = 1$ instead of 2.
+</Callout>
+
+## Harmonic Series
+
+<Callout type="todo">
+Add the proof for the harmonic series. Probably with Cauchy criterion.
+</Callout>
+
+```math	
+\sum^{\infty}_{n=1}{\frac{1}{n}}
+```
+
+diverges. Despite the sequence of terms converging to zero, the series diverges. This is a good example to show that the terms of the sequence converging to zero is a necessary but not sufficient condition for the series to converge.
+
+## Telescope Series
+
+<Callout type="todo">
+Add the proof for the telescope series, show visually why it is called a telescope series.
+</Callout>
+
+```math
+\sum^{\infty}_{n=1}{\frac{1}{n(n+1)}}
+```
+
+converges to 1.
+
+## Beware of Infinite Sums
+
+An important note:
+In the case of series we can not just use our usual rules for the [sum operator](/garden/maths/calculus/sequencesAndSeries/sumOperator). The reason is because the sums go to infinity and we can not just use the normal rules of arithmetic.
+
+So if we have a series $\sum^{\infty}_{k=1}{a_k}$ und $\sum^{\infty}_{j=1}{b_j}$ and they converge then the following rules apply:
+1. $\sum^{\infty}_{k=1}{c*a_k}=c* \sum^{\infty}_{k=1}{a_k}$ für $c \in C$
+2. $\sum^{\infty}_{k=1}{a_k\pm b_k}=\sum^{\infty}_{k=1}{a_k}\pm \sum^{\infty}_{k=1}{b_k}$
+
+For this lets compare two example $\sum^{\infty}_{n=1}{\frac{1}{n(n+1)}$ into $\sum^{\infty}_{n=1}{\frac{1}{n}} - \sum^{\infty}_{n=1}{\frac{1}{n+1}}$ We already know this is the telescoping series that converges to 1. So in this infinity minus infinity case we get 1.
+
+But if we try to do the same for the value of 0 and the sum over 0. We can split it into $\sum^{\infty}_{n=1}{1} - \sum^{\infty}_{n=1}{1}$ which is not correct as these then diverge and we suddenly get a value of 1 (infinity minus infinity).
+
+## Cauchy Criterion
+
+## Direct Comparison Test
+
+## Absolute Convergence
+
+## Alternating Series Test
+
+Also known as Leibniz test. 
+
+### Alternating Series Estimation Theorem
+
+## Riemann Rearrangement Theorem
+
+### Dirchlet's Rearrangement Theorem
+
+## Ratio Test
+
+## Root Test
+
+## Cauchy Product
