@@ -119,9 +119,81 @@ But if we try to do the same for the value of 0 and the sum over 0. We can split
 
 ## Cauchy Criterion
 
+<Callout type="todo">
+Add the proof for the Cauchy criterion. Show that it also works for the sequence of partial sums.
+</Callout>
+
 ## Direct Comparison Test
 
+The direct comparison test is another method like the Cauchy criterion to check if a series converges. The idea is in my opinion a lot more intuitive tho. The direct comparison is as follows. If we have two series $\sum^{\infty}_{n=1}{a_n}$ and $\sum^{\infty}_{n=1}{b_n}$ and we know that the following holds for all $k \geq 1$:
+
+```math
+0 \leq a_k \leq b_k
+```
+
+So the terms of both series are always positive and the terms of the first series are always less than or equal to the terms of the second series. Then we can say that if the second series converges, then the first series also converges. 
+
+```math
+\sum^{\infty}_{n=1}{b_n} \text{ converges} \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
+```
+
+THe intuition behind this is rather simple. If $b_n$ converges, then the sum of all terms of $b_n$ is finite. If $a_n$ is always less than or equal to $b_n$, then the sum of all terms of $a_n$ must also be finite. Because we are only allowing for positve terms, we also do not have to worry about convergence against negative infinity. In a similar way we can also show that if the first series diverges, then the second series also diverges. 
+
+```math
+\sum^{\infty}_{n=1}{a_n} \text{ diverges} \implies \sum^{\infty}_{n=1}{b_n} \text{ diverges}
+```
+
+The idee is again the same, if $a_n$ diverges, then the sum of all terms of $a_n$ is infinite. If $b_n$ is always greater than or equal to $a_n$, then the sum of all terms of $b_n$ must also be infinite and therefore diverges.
+
+<Callout type="example">
+Let's look at the sequence $\sum^{\infty}_{n=1}{\frac{1}{n^2}}$ and compare it to the telescope series $\sum^{\infty}_{n=1}{\frac{1}{n(n-1)}}$. We know that the telescope series converges to 1. So we want to show that the other series converges as well. We can do this by showing that the terms of the first series are always less than or equal to the terms of the second series and that they are always positive. The telescope series is not defined for $n=1$ but if we start at $n=2$ we can see that the terms of the first series are always less than or equal to the terms of the second series. 
+
+| $k$ | $\frac{1}{k^2}$  | $\frac{1}{k(k-1)}$ |
+|------|-----------------|--------------------|
+| 1    | 1               | Undefined          |
+| 2    | $\frac{1}{4}$   | $\frac{1}{2}$      |
+| 3    | $\frac{1}{9}$   | $\frac{1}{6}$      |
+| 4    | $\frac{1}{16}$  | $\frac{1}{12}$     |
+| 5    | $\frac{1}{25}$  | $\frac{1}{20}$     |
+| 6    | $\frac{1}{36}$  | $\frac{1}{30}$     |
+
+Therefore by the direct comparison test we can say that the series $\sum^{\infty}_{n=1}{\frac{1}{n^2}}$ converges as well. 
+</Callout>
+
+We can actually make this test even more powerful. Above we defined that the terms of $b_k$ always had to be greater than or equal to the terms of $a_k$ and that the terms of $a_k$ always had to be positive. It turns out that the test also works if we can show that the conditions are met for all $k \geq m$ for some $m \in \mathbb{N}$. So we can have a finite number of terms that do not meet the conditions. The intuition behind this is that the first $m$ terms of the series do not have an influence on the convergence of the series only on the value of the series. So the test works as long as the following holds:
+
+```math
+0 \leq a_k \leq b_k \text{ for all } k \geq m \text{ where } m \geq 1
+```
+
+<Callout type="example">
+Some example where the condition does not hold for the first few terms.
+
+</Callout>
+
 ## Absolute Convergence
+
+We have seen that series can converge to some limit or diverge. But there is also something called absolute convergence. A series is said to be absolutely convergent if the absolute values of the terms of the series converge. In other words, if we take the absolute value of each term in the series and then check if that series converges, then we can say that the original series is absolutely convergent. More formally we define absolute convergence as:
+
+```math
+\sum^{\infty}_{n=1}{|a_n|} \text{ converges}
+```
+
+If a series is absolutely convergent, then it is also convergent. However, the converse is not true. A series can be convergent without being absolutely convergent. 
+
+```
+\sum^{\infty}_{n=1}{a_n} \text{ converges} \implies \sum^{\infty}_{n=1}{|a_n|} \text{ converges}
+```
+
+This is easily proven by the cauchy criterion. If the series converges, then by the cauchy criterion the following holds:
+
+```math
+|\sum^{m}_{k=n} a_k| \leq \sum^{m}_{k=n} |a_k| < \epsilon \text{ for all } m \leq n \text{ and } n \leq N_{\epsilon}
+```
+
+<Callout type="todo">
+Missing stuff
+</Callout>
 
 ## Alternating Series Test
 
@@ -135,6 +207,24 @@ Also known as Leibniz test.
 
 ## Ratio Test
 
+```math
+\limsup_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
+```
+
+```math
+\liminf_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| > 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ diverges}
+```
+
 ## Root Test
+
+Stronger version of the ratio test. Can do everything the ratio test can do and more. 
+
+```math
+\limsup_{n \to \infty} \sqrt[n]{|a_n|} < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
+```
+
+```math
+\limsup_{n \to \infty} \sqrt[n]{|a_n|} > 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ and } \sum^{\infty}_{n=1}{|a_n|} \text{ diverges}
+```
 
 ## Cauchy Product

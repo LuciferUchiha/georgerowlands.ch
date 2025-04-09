@@ -342,7 +342,65 @@ First comes Bernoulli's Inequality.Does this come from probability theory?
 
 ## Limes Superior and Inferior
 
+Using the monoton-convergence theorem we can perform a very important operation. If we are given a bounded sequence $a_n$ we can define two new sequences $b_n$ and $c_n$ as follows for all $n \geq 1$:
 
+```math
+b_n = \inf\{a_k | k \geq n\} \text{ and } c_n = \sup\{a_k | k \geq n\}
+```
+
+Because a_n is bounded we know that $b_n$ and $c_n$ are also bounded as the infimum and supremum are always the largest lower bound and smallest upper bound of the subsequence. 
+
+<Callout type="example">
+Let's look at the sequence $a_n = (-1)^n (1 + \frac{1}{n})$. This sequence is bounded between -2 and 2 and does not converge as it oscillates between positive and negative values. However, we can define the two sequences $b_n$ and $c_n$ as follows:
+
+```math
+\begin{align*}
+b_1 &= \inf\{a_k | k \geq 1\} = \inf\{-2} = -2 \\
+b_2 &= \inf\{a_k | k \geq 2\} = \inf\{-2, 1.5\} = -2 \\
+b_3 &= \inf\{a_k | k \geq 3\} = \inf\{-2, 1.5, -1.333\} = -2 \\
+b_4 &= \inf\{a_k | k \geq 4\} = \inf\{-2, 1.5, -1.333, 1.25\} = -2 \\
+\vdots \\
+c_1 &= \sup\{a_k | k \geq 1\} = \sup\{-2\} = -2 \\
+c_2 &= \sup\{a_k | k \geq 2\} = \sup\{-2, 1.5\} = 1.5 \\
+c_3 &= \sup\{a_k | k \geq 3\} = \sup\{-2, 1.5, -1.333\} = 1.5 \\
+c_4 &= \sup\{a_k | k \geq 4\} = \sup\{-2, 1.5, -1.333, 1.25\} = 1.5 \\
+\vdots
+\end{align*}
+```
+</Callout>
+
+From the example we can see that the sequence $b_n$ and $c_n$ are monotonic. This makes sense because as knew values are added to the set the infimum will only get smaller and the supremum will only get larger. So we can actually be more precise and say that $b_n$ is monotonically increasing and $c_n$ is monotonically decreasing and that they are both bounded. The fact that they are monotonic also follows from the following properties of the supremum and infimum where $A \subseteq B$:
+
+```math
+\begin{align*}
+\text{If B is bounded from above then } \sup(A) &\leq \sup(B) \\
+\text{If B is bounded from below then } \inf(A) &\geq \inf(B) 
+\end{align*}
+```
+
+In this case the set $A$ corresponds to the sequence at time $k$ and the set $B$ corresponds to the sequence at time $k+1$. So we can see that the infimum of the set at time $k$ is always less than or equal to the infimum of the set at time $k+1$ and the supremum of the set at time $k$ is always greater than or equal to the supremum of the set at time $k+1$. This means that the sequence $b_n$ is monotonically increasing and the sequence $c_n$ is monotonically decreasing. 
+
+```math
+\begin{align*}
+b_n &\leq b_{n+1} \\
+c_n &\geq c_{n+1}
+\end{align*}
+```
+
+Because they are both monotonic and bounded we can apply the monotone convergence theorem and say that they converge to a limit. We call these limits of these specially created sequences the **Limes Superior** and **Limes Inferior** of the original sequence. The Limes Superior is the limit of the sequence $c_n$ and the Limes Inferior is the limit of the sequence $b_n$. We can write this as:
+
+```math
+\begin{align*}
+\limsup_{n \to \infty} a_n &= \lim_{n \to \infty} c_n \text{ Limes Superior} \\
+\liminf_{n \to \infty} a_n &= \lim_{n \to \infty} b_n \text{ Limes Inferior}
+\end{align*}
+```
+
+Because we also know that the infimum is always less than or equal to the supremum we can also say that all terms of the $b_n \leq c_n$ and therefore the limit of the sequence $b_n$ is less than or equal to the limit of the sequence $c_n$:
+
+```math
+\liminf_{n \to \infty} a_n \leq \limsup_{n \to \infty} a_n
+```
 
 ## Cauchy Criterion
 
@@ -354,13 +412,27 @@ First let's just look at a bounded sequence. We have already seen that we can cr
 b_n = \inf\{a_k | k \geq n\} \text{ and } c_n = \sup\{a_k | k \geq n\}
 ```
 
+<Callout type="todo">
+Missing proof of the Cauchy criterion.
+</Callout>
+
 Now it turns out that if these two sequences converge to the same limit, then the original sequence also converges. 
 
 ```math
 \forall \epsilon > 0 \exists N_{\epsilon} \in \mathbb{N} \text{ such that } \forall n, m \geq N_{\epsilon} \text{ we have } |a_n - a_m| < \epsilon
 ```
 
+<Callout type="todo">
+What is the interpetation and meaning of the Cauchy criterion? 
+
+Show examples
+</Callout>
+
 ## Balzano-Weierstrass Theorem
+
+<Callout type="todo">
+Every bounded sequence has a convergent subsequence. 
+</Callout>
 
 ## Vector Sequences
 
