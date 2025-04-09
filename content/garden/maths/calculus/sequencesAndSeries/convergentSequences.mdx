@@ -396,36 +396,70 @@ Because they are both monotonic and bounded we can apply the monotone convergenc
 \end{align*}
 ```
 
+We can interpret the Limes Superior and Limes Inferior as the largest and smallest limit points of the sequence. So in a way as $n$ goes to infinity the Limes Superior is like an upper bound that the sequence approaches and the Limes Inferior is like a lower bound that the sequence approaches.
+
 Because we also know that the infimum is always less than or equal to the supremum we can also say that all terms of the $b_n \leq c_n$ and therefore the limit of the sequence $b_n$ is less than or equal to the limit of the sequence $c_n$:
 
 ```math
 \liminf_{n \to \infty} a_n \leq \limsup_{n \to \infty} a_n
 ```
 
+We can also use the Limes Superior and Limes Inferior to determine if a sequence converges or diverges. First let's just look at a bounded sequence. We have already seen that we can create two sequences $b_n$ and $c_n$ that are monotonic and bounded and therefore converge to a limit. Using these two sequences we can define the Limes Superior and Limes Inferior of the original sequence which are like upper and lower bounds of the sequence but as $n$ goes to infinity. So if the Limes Superior and Limes Inferior converge to the same limit, then it is as if these bounds are slowly squeezing the sequence together. I.e they are both getting closer to a value, sounds like a limit.
+
+So we can say that if the Limes Superior and Limes Inferior of a bounded sequence converge to the same limit, then the original sequence also converges. That the sequence is bounded is important as otherwise the Limes Superior and Limes Inferior could diverge to infinity and would be the same but the original sequence would not converge. So we can say that:
+
+```math
+\text{If } \limsup_{n \to \infty} a_n = \liminf_{n \to \infty} a_n \text{ and } a_n \text{ is bounded then } a_n \text{ converges}
+```
+
+<Callout type="proof">
+We can also prove this. Let's assume that the Limes Superior and Limes Inferior converge to the same limit $L$. Then we know that $b_n$ is monotonically increasing and converges to $L$ and $c_n$ is monotonically decreasing and converges to $L$. So we can say that:
+
+```math
+L - \epsilon < b_n \leq a_n \leq c_n < L + \epsilon \text{ for all } n \geq N_{\epsilon}
+```
+
+This would then imply that:
+
+```math
+L - \epsilon < a_n < L + \epsilon \equiv |a_n - L| < \epsilon \text{ for all } n \geq N_{\epsilon}
+```
+
+We can also show the other way around. If the sequence converges to a limit $L$ then we know that for all $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|a_n - L| < \epsilon
+```
+
+So eventually all terms are within the epsilon neighborhood around $L$, $(L - \epsilon, L + \epsilon)$. This means that the terms of the sequence are also within the epsilon neighborhood around the supremum and infimum. 
+</Callout>
+
 ## Cauchy Criterion
 
 We have seen a few ways now how to calculate the limit of a sequence or determine if a sequence converges based on certain properties that the sequence has, such as being bounded and monotonic. However, there is another way to determine if a sequence converges or diverges. This is called the Cauchy criterion. 
 
-First let's just look at a bounded sequence. We have already seen that we can create two sequences $b_n$ and $c_n$ that are monotonic and bounded and therefore converge to a limit. We defined these sequences as:
+Previously we looked to see if the Limes Superior and Limes Inferior of a sequence converge to the same limit. Cauchy's idea is similar to this but instead of looking at the Limes Superior and Limes Inferior we look at the distance between two terms of the sequence. The idea is that if the terms of the sequence get closer and closer together, then they must converge to a limit. 
 
-```math
-b_n = \inf\{a_k | k \geq n\} \text{ and } c_n = \sup\{a_k | k \geq n\}
-```
-
-<Callout type="todo">
-Missing proof of the Cauchy criterion.
-</Callout>
-
-Now it turns out that if these two sequences converge to the same limit, then the original sequence also converges. 
+This is what the Cauchy criterion states. A sequence is convergent if it is a so called **Cauchy sequence** or the sequence is **Cauchy**. A sequence is Cauchy if the following holds:
 
 ```math
 \forall \epsilon > 0 \exists N_{\epsilon} \in \mathbb{N} \text{ such that } \forall n, m \geq N_{\epsilon} \text{ we have } |a_n - a_m| < \epsilon
 ```
 
-<Callout type="todo">
-What is the interpetation and meaning of the Cauchy criterion? 
+So if we can find an index $N_{\epsilon}$ such that for all terms after this index the distance between any two terms is less than $\epsilon$, then the sequence converges. 
 
-Show examples
+<Callout type="todo">
+As an example let's look at the harmonic sequence $a_n = \frac{1}{n}$. We know that this sequence converges to 0. But we can also use the Cauchy criterion to show that it converges. Let's assume that we have a sequence $a_n$ and we want to show that it is Cauchy. We can do this by showing that the distance between two terms of the sequence is less than $\epsilon$. 
+
+```math
+\begin{align*}
+|a_n - a_m| < \epsilon \\
+\frac{1}{n} - \frac{1}{m} < \epsilon \\
+\frac{1}{k} < \epsilon 
+\end{align*}
+```
+
+So depending on how we set the epsilon we can find an index $N_{\epsilon}$ such that for all terms after this index the distance between any two terms is less than $\epsilon$.
 </Callout>
 
 ## Balzano-Weierstrass Theorem
