@@ -3,6 +3,7 @@ export default {
     concurrentParallel: "Concurrent & Parallel Programming",
     computerArchitecture: "Computer Architecture",
     distributedSystems: "Distributed Systems",
+    databases: "Databases",
     patterns: "Design Patterns",
     theoretical: "Theoretical CS",
     '###': {

@@ -1,0 +1,1266 @@
+# SQL
+
+
+## Creating new database
+
+It is time to create our own database (and run our first DDL (Data Definition Language) statement):
+
+``` sql
+CREATE DATABASE mydb; -- You can pick any name you want.
+```
+
+Let's check that we have create a new database successfully:
+
+`\l`
+
+You should now see your database in the list. To make sure that we perform all further operations in our new database let's switch to it:
+
+`\connect mydb;`
+
+Now we are ready to practice our first SQL commands.
+
+## Basic SQL commands
+
+Our new database is completely empty. We can check that by listing all tables:
+
+`\dt` -- You should see 'Did not find any relations.' confirming that no relations (tables) exist in your database.
+
+Let's start by creating our first table:
+
+``` sql
+CREATE TABLE firsttable (
+    id   INT,
+    text VARCHAR(14)
+);
+```
+
+Let's confirm that new table was added:
+
+`\dt` -- Now you should see your table in the list.
+
+Schema |    Name    | Type  |  Owner
+---|---|---|---|
+| public | firsttable | table | postgres
+
+We can see what data is in our relation:
+
+``` sql
+SELECT * FROM firsttable;
+```
+
+You can view general information about the tables using this command:
+
+``` sql
+SELECT
+    table_schema,
+    table_name,
+    column_name,
+    data_type,
+    character_maximum_length,
+    numeric_precision,
+    numeric_scale,
+    is_nullable
+FROM information_schema.columns
+WHERE table_name = 'firsttable'
+ORDER BY ordinal_position;
+```
+
+This query will return information about each column in the firsttable table, such as the column's name, its data type, maximum length for character-based types, numeric precision and scale for numeric types, and whether the column can contain NULL values. We can put some data into our table using INSERT INTO statement:
+
+``` sql
+INSERT INTO firsttable (id, text) VALUES (1, 'anything');
+```
+Postgres gives INSERT 0 1 to tell you that 1 row has been inserted. The 0 is because of a deprecated behavior with OID. You can see more details about this [here](https://stackoverflow.com/a/74698904). You can check that the data was added by running the SELECT statement again. Another DML (Data Manipulation Language) statement is UPDATE which allows us to modify data:
+
+``` sql
+UPDATE firsttable
+SET text = 'somethingelse'
+WHERE id = 1;
+```
+
+Run the SELECT statement again to ensure that update was performed successfully. Finally, last DML statement we will learn about today is DELETE:
+
+``` sql
+DELETE FROM firsttable;
+```
+
+Now our table should be empty. Note, that DELETE only deleted all data from our relation, but not the relation itself. To remove our relation we need to run the DDL DROP command:
+
+``` sql
+DROP TABLE firsttable;
+```
+
+You can practise more by creating more relations, inseting, modyfing, and deleting data from them.
+
+## Data types
+
+PostgreSQL support multiple data types. Let's try to create the following relation:
+
+``` sql
+CREATE TABLE employees (
+    emp_no     INT,
+    birth_date DATE,
+    name       VARCHAR(14),
+    salary     NUMERIC(10,2),
+    permanent  BOOLEAN,
+    PRIMARY KEY (emp_no)
+);
+```
+
+Now let's put some data into this relation:
+
+``` sql
+INSERT INTO employees VALUES (1, '1984-11-02', 'Max Maxim', 10000.00 , true);
+
+-- Invalid type for column emp_no
+INSERT INTO employees VALUES ('A', '1983-02-21', 'Artem Nik', 2000.00 , false);
+
+-- Implicit type conversion conversion
+INSERT INTO employees VALUES ('2', '1983-02-21', 'Artem Nik', 2000.00 , false);
+
+-- Value for first_name is too long
+INSERT INTO employees 
+VALUES (3, '1983-02-21', 'QWERTYUIOPASDFGHJKLL', 3000.00 , false);
+```
+
+There are many datatypes that are supported by PostgreSQL. You can find the full list here: https://www.postgresql.org/docs/current/datatype.html
+
+## NULL vs NOT NULL, DEFAULT
+
+Now let's try to create some more realistic relations:
+
+``` sql
+CREATE TABLE professor (
+    pers_nr    INT,
+    name       VARCHAR(30) NOT NULL,
+    level      CHAR(2) default 'AP',
+    department CHAR(2) NULL,
+    PRIMARY KEY (pers_nr)
+);
+```
+There are several new concepts used in our new relation. Let's see what they mean. First let's see how DEFAULT works:
+
+``` sql
+-- Adds professor tuple
+INSERT INTO professor VALUES (1, 'Artem', 'AP', 'CS');
+
+-- Adds other tuple. Since value for level is not provided - DEFAULT value would be used
+INSERT INTO professor (pers_nr, name, department)
+VALUES (2, 'Olena', 'CS');
+
+-- In this case value for department is not provided. 
+-- Since there is no default value - value would be set to NULL
+INSERT INTO professor VALUES (3, 'Olaf');
+
+SELECT * FROM professor;
+```
+
+Now let's play with NULL vs NOT NULL columns:
+
+``` sql
+-- Level is set to NULL (not default value)
+INSERT INTO professor VALUES (4, 'Ge', NULL, 'CS');
+
+-- Would return an error, since name is set to NOT NULL and no value is provided
+INSERT INTO professor (pers_nr, level, department)
+VALUES (5, 'AP', 'CS');
+
+SELECT * FROM professor;
+```
+
+## PRIMARY KEY
+
+You have probably noticed that our relation 'professor' has a PRIMARY KEY. Let's work with it:
+
+``` sql
+-- Adds new tuple
+INSERT INTO professor VALUES (7, 'Martin', NULL, 'CM');
+
+-- Returns error cause of duplicate key
+INSERT INTO professor VALUES (7, 'Sam', NULL, 'CM');
+
+-- Returns error cause PRIMARY KEY can't be null
+INSERT INTO professor VALUES (NULL, 'Sam', NULL, 'CM');
+
+-- Returns error cause PRIMARY KEY can't be null
+INSERT INTO professor (name, level, department)
+VALUES ('Sam', NULL, 'CM');
+
+SELECT * FROM professor;
+```
+
+Sometimes you may want the PRIMARY KEY to be automatically generated by DBMS:
+
+``` sql
+-- Let's remove our relation
+DROP TABLE professor;
+
+-- Create new table
+CREATE TABLE professor (
+    pers_nr    SERIAL, -- Notice change in this column
+    name       VARCHAR(30) NOT NULL,
+    level      CHAR(2) DEFAULT 'AP',
+    department CHAR(2) NULL,
+    PRIMARY KEY (pers_nr)
+);
+
+-- Adding data to our table
+INSERT INTO professor VALUES ('Artem', 'AP', 'CS');
+INSERT INTO professor (name, department) VALUES ('Olena', 'CS');
+INSERT INTO professor VALUES ('Olaf');
+INSERT INTO professor VALUES ('Ge', NULL, 'CS');
+INSERT INTO professor VALUES ('Martin', NULL, 'CM');
+
+-- As you can see, pers_nr was automatically generated
+SELECT * FROM professor;
+```
+
+In some cases, PRIMARY KEY can contain several columns:
+
+``` sql
+CREATE TABLE phone_book (
+    country_code CHAR(3),
+    phone        CHAR(10),
+    name         VARCHAR(20),
+    PRIMARY KEY (country_code, phone)
+);
+
+-- Adding first record
+INSERT INTO phone_book (country_code, phone, name)
+VALUES ('41', '0791111111', 'A');
+
+-- Added without error, cause country_code is different
+INSERT INTO phone_book (country_code, phone, name)
+VALUES ('42', '0791111111', 'B');
+
+-- Error, cause combination (country_code, phone) is same as in already existing record
+INSERT INTO phone_book (country_code, phone, name)
+VALUES ('41', '0791111111', 'D');
+
+SELECT * FROM phone_book;
+```
+
+Note: Another syntax to define one-column PRIMARY KEY:
+
+``` sql
+CREATE TABLE professor (
+    pers_nr    INT PRIMARY KEY,
+    name       VARCHAR(30) NOT NULL,
+    level      CHAR(2) default 'AP',
+    department CHAR(2) NULL
+);
+```
+
+## ALTER TABLE
+
+You may want to modify an existing relation without re-creating it (without losing existing data):
+
+``` sql
+-- Adding new column to existing table
+ALTER TABLE professor ADD COLUMN age INT;
+
+-- Removing column
+ALTER TABLE professor DROP COLUMN age;
+
+-- Won't work, cause there would be no values for new NOT NULL column
+ALTER TABLE professor ADD COLUMN age INT NOT NULL;
+
+-- But this would work, since we now provided default value
+ALTER TABLE professor ADD COLUMN age INT NOT NULL DEFAULT 0;
+
+-- Chaning lenght of the column
+ALTER TABLE professor ALTER COLUMN name TYPE VARCHAR(25);
+```
+
+## WHERE in UPDATE and DELETE statements
+
+You already know how to delete all records in the table. While this may be useful sometimes, most of the time you would want to delete only particular records:
+
+``` sql
+-- Delete record with pers_nr = 7
+DELETE FROM professor
+WHERE pers_nr = 7;
+
+-- Delete all records from 'CM' department with level 'AP'
+DELETE FROM professor
+WHERE department = 'CM' AND level = 'AP';
+```
+
+The same is true for the UPDATE statement:
+
+``` sql
+-- Update all records with level = 'AP'
+UPDATE professor
+SET department = 'CS'
+WHERE level = 'AP';
+
+-- Set level to 'AP' for all records where level is NULL now
+UPDATE professor
+SET level = 'AP'
+WHERE level is NULL;
+```
+
+To practice writting queries we will need some tables:
+
+``` sql
+DROP TABLE IF EXISTS professor;
+CREATE TABLE professor (
+    prof_nr INT,
+    name    VARCHAR(30),
+    level   CHAR(2) default 'AP',
+    room    INT,
+    PRIMARY KEY (prof_nr)
+);
+
+DROP TABLE IF EXISTS student;
+CREATE TABLE student (
+    pers_nr  INT,
+    name     VARCHAR(100),
+    semester INT,
+    PRIMARY KEY (pers_nr)
+);
+
+DROP TABLE IF EXISTS lecture;
+CREATE TABLE lecture (
+    lecture_id INT,
+    title      VARCHAR(100),
+    cp         INT,
+    prof_nr    INT,
+    PRIMARY KEY (lecture_id)
+);
+
+DROP TABLE IF EXISTS requires;
+CREATE TABLE requires (
+    prerequisite INT,
+    followup     INT,
+    PRIMARY KEY (prerequisite, followup)
+);
+
+DROP TABLE IF EXISTS attends;
+CREATE TABLE attends (
+    pers_nr    INT,
+    lecture_id INT,
+    PRIMARY KEY (pers_nr, lecture_id)
+);
+
+DROP TABLE IF EXISTS tests;
+CREATE TABLE tests (
+    pers_nr    INT,
+    lecture_id INT,
+    grade      INT,
+    PRIMARY KEY (pers_nr, lecture_id)
+);
+
+-- Add some data
+INSERT INTO professor (prof_nr, name, level, room)
+VALUES (2125, 'John', 'AP', 226),
+       (2126, 'David', 'FP', 232),
+       (2127, 'Anna', 'FP', 310);
+```
+
+## SELECT
+
+The SQL SELECT statement is used to retrieve records from one or more tables in your SQL database. The records retrieved are known as a result set. You are already familiar with the simplest select:
+
+``` sql
+-- Simplest SELECT statement
+SELECT * FROM professor;
+```
+
+It is actually not recommended to use * in SELECT statements in application development cause of potential issues if new columns are later added to the table. Instead, you can specify the exact list of columns that you want to get (this is also called projection):
+
+``` sql
+SELECT prof_nr, name
+FROM professor;
+```
+## WHERE
+
+You may want to filter (this is also called selection) the data you want to see. The SQL WHERE clause is used to filter the results and apply conditions in a SELECT, INSERT, UPDATE, or DELETE statement:
+
+``` sql
+SELECT prof_nr, name
+FROM professor
+WHERE level = 'FP';
+
+SELECT prof_nr, name
+FROM professor
+WHERE level = 'FP' AND room = 310; -- Any logical expression is supported
+```
+
+## Aliases
+
+Inside SELECT statement you can not only use the columns of a table, but also any arithmetic expression that you want:
+
+``` sql
+SELECT prof_nr, level || ' ' || name, room + 100, 'fixed text'
+FROM professor
+WHERE level = 'FP';
+```
+
+You may want to give names to new columns by using aliases:
+
+``` sql
+SELECT prof_nr, level || ' ' || name AS new_name, 
+    room + 100 AS changed_room, 'fixed text' AS useless_column
+FROM professor
+WHERE level = 'FP';
+```
+
+You also can give table an alias. Would be useful when we would use several tables in one query:
+
+``` sql
+SELECT p.prof_nr, p.level
+FROM professor p
+WHERE level = 'FP';
+```
+
+## Operations with NULL
+
+NULL has a special place in DBMS logic. Remember that:
+
+<strong>Arithmetic</strong>
+
+    (NULL + 1) -> NULL
+    (NULL * 0) -> NULL
+
+<strong>Comparisons</strong>
+
+    (NULL = NULL) -> Unknown
+    (NULL < 13) -> Unknown
+    (NULL > NULL) -> Unknown
+
+<strong>3-value Logic</strong>
+
+<strong>NOT</strong>
+
+    NOT True -> False
+    NOT Unknown -> Unknown
+    NOT False -> True
+
+<strong>AND</strong>
+
+    True AND True -> True
+    True AND Unknown -> Unknown
+    True AND FALSE -> FALSE
+    Unknown AND Unknown -> Unknown
+    Unknown AND FALSE -> FALSE
+
+<strong>OR</strong>
+
+    True OR True -> True
+    True OR Unknown -> True
+    True OR FALSE -> True
+    Unknown OR Unknown -> Unknown
+    Unknown OR FALSE -> Unknown
+
+Let's see it in practice:
+
+``` sql
+INSERT INTO lecture (lecture_id, title, cp, prof_nr)
+VALUES (1, 'Databases', 4, NULL),
+       (2, 'Networks', 4, 2126),
+       (3, 'Algebra', NULL, 2127);
+
+-- We would not get Algebra, bacause result of cp >= 4 OR cp < 4 is Unknown
+SELECT *
+FROM lecture
+WHERE cp >= 4 OR cp < 4;
+
+-- Notice the new_cp value for Algebra
+SELECT title, cp + 100 AS new_cp
+FROM lecture;
+
+-- You can check if some value is NULL or NOT NULL
+SELECT *
+FROM lecture
+WHERE cp IS NULL and prof_nr IS NOT NULL;
+```
+
+## Type conversion
+
+Type coversion can be implicit and explicit. Implicit means that the database engine will convert the data type automatically, a process invisible to the user. Explicit means that you must specify how the data type should be converted:
+
+``` sql
+SELECT prof_nr, name,
+room + '100' AS room1, -- converted to int
+room || '100' AS room2, -- converted to string
+CAST (room AS VARCHAR(3)) AS room3 -- explicit conversion
+FROM professor;
+```
+
+## UNION, INTERSECT, EXCEPT
+
+Add some data first:
+
+``` sql
+INSERT INTO student (pers_nr, name, semester)
+VALUES (24002, 'Peter', 8),
+       (25403, 'Mary', 8),
+       (26120, 'Anna', 8);
+```
+
+Now we can see how the different operations work. The UNION operator is used to combine the result-set of two or more SELECT statements. The UNION operator selects only distinct values by default:
+
+``` sql
+-- Returns 5 names (no duplicate Anna)
+(SELECT name FROM student)
+UNION
+(SELECT name FROM professor);
+```
+
+To allow duplicate values, use UNION ALL:
+
+``` sql
+-- Returns 6 names (two Anna)
+(SELECT name FROM student)
+UNION ALL
+(SELECT name FROM professor);
+```
+
+The SQL INTERSECT operator is used to return the results of 2 or more SELECT statements. However, it only returns the rows selected by all queries or data sets. If a record exists in one query and not in the other, it will be omitted from the INTERSECT results:
+
+``` sql
+-- Only returns Anna
+(SELECT name FROM student)
+INTERSECT
+(SELECT name FROM professor);
+```
+
+The SQL EXCEPT operator is used to return all rows in the first SELECT statement that are not returned by the second SELECT statement. Each SELECT statement will define a dataset. The EXCEPT operator will retrieve all records from the first dataset and then remove from the results all records from the second dataset:
+
+``` sql
+-- And now we got Mary and Peter
+(SELECT name FROM student)
+EXCEPT
+(SELECT name FROM professor);
+```
+
+## DISTINCT
+
+The SELECT DISTINCT statement is used to return only distinct (different) values. Inside a table, a column often contains many duplicate values; and sometimes you only want to list the different (distinct) values:
+
+``` sql
+-- Returns 3 records. Two are the same.
+SELECT level
+FROM professor;
+
+-- Now duplicates are removed
+SELECT DISTINCT level
+FROM professor;
+
+-- Again 3 records, cause there are no full duplicated anymore
+SELECT DISTINCT level, name
+FROM professor;
+```
+
+## ORDER BY
+
+Tables are not sorted by default; if the result needs to be sorted, the query needs to specify it explicitly. The ORDER BY keyword is used to sort the result-set in ascending or descending order. The ORDER BY keyword sorts the records in ascending order by default. To sort the records in descending order, use the DESC keyword:
+
+``` sql
+SELECT prof_nr, name, level, room
+FROM professor
+ORDER BY level ASC, name DESC;
+```
+
+## LIMIT
+
+The SELECT LIMIT statement is used to retrieve records from one or more tables in PostgreSQL and limit the number of records returned based on a limit value:
+
+``` sql
+SELECT prof_nr, name, level, room
+FROM professor
+ORDER BY level ASC, name DESC
+LIMIT 2;
+```
+
+Limit without sorting can be used to sample the data, but since order of records is not guaranteed (unless specified by ORDER BY), you should never rely on particular order or that same query would return same results.
+
+## GROUP BY
+
+The GROUP BY statement groups rows that have the same values into summary rows, like "find the number of customers in each country". The GROUP BY statement is often used with aggregate functions (COUNT(), MAX(), MIN(), SUM(), AVG()) to group the result-set by one or more columns:
+
+``` sql
+-- Returns level and count of records per each level
+SELECT level, COUNT(*) as count
+FROM professor
+GROUP BY level;
+
+-- Returns total count of records
+SELECT COUNT(*)
+FROM professor;
+```
+
+### NULL in aggregations
+
+``` sql
+CREATE TABLE employee (
+    empl_id    SERIAL PRIMARY KEY,
+    name       VARCHAR(20),
+    department VARCHAR(10),
+    salary     INT
+);
+
+INSERT INTO employee (name, department, salary)
+VALUES ('John Smith', 'IT', 2000),
+       ('Mary Popins', 'FINANCES', 2000),
+       ('Joan Piquet', 'IT', 2500),
+       ('Jose Gomez', 'IT', NULL);
+
+-- Shows 3 records in IT, cause count(*) counts all records
+SELECT department, count(*)
+FROM employee
+GROUP BY department;
+
+-- Shows only 2 records in IT, cause count(field) only counts records 
+-- where value is not NULL
+SELECT department, count(salary)
+FROM employee
+GROUP BY department;
+
+-- NULL value is ignored during sum
+SELECT department, sum(salary)
+FROM employee
+GROUP BY department;
+```
+
+## HAVING
+
+The HAVING clause was added to SQL because the WHERE keyword cannot be used with aggregate functions:
+
+``` sql
+SELECT department, count(*)
+FROM employee
+GROUP BY department
+HAVING COUNT(*) > 1; -- would return only IT
+```
+
+## More advanced aggregations
+
+We'll create a table called sales with columns for the date of the sale, the item sold, the quantity sold, and the price per unit:
+
+``` sql
+CREATE TABLE sales (
+    sale_date DATE,
+    item_name TEXT,
+    quantity INT,
+    price NUMERIC(10, 2)
+);
+```
+
+Now let's insert some data into the table:
+
+``` sql
+INSERT INTO sales (sale_date, item_name, quantity, price)
+VALUES
+    ('2022-02-01', 'Apple', 5, 1.25),
+    ('2022-02-01', 'Orange', 3, 0.75),
+    ('2022-02-01', 'Banana', 2, 0.50),
+    ('2022-02-02', 'Apple', 10, 1.25),
+    ('2022-02-02', 'Orange', 6, 0.75),
+    ('2022-02-02', 'Banana', 4, 0.50),
+    ('2022-02-03', 'Apple', 3, 1.25),
+    ('2022-02-03', 'Orange', 2, 0.75),
+    ('2022-02-03', 'Banana', 1, 0.50);
+```
+
+To get the total revenue for each item, we can use the GROUP BY clause along with the SUM function and some basic arithmetic:
+
+``` sql
+SELECT item_name, SUM(quantity * price) AS total_revenue
+FROM sales
+GROUP BY item_name;
+```
+
+To get the total number of sales for each day of the week (assuming sale_date is a DATE column):
+
+``` sql
+SELECT DATE_TRUNC('week', sale_date) AS week_start_date,
+       DATE_TRUNC('day', sale_date) AS sale_date,
+       COUNT(1) AS total_sales
+FROM sales
+GROUP BY 1, 2
+ORDER BY 1, 2;
+```
+
+This query uses the DATE_TRUNC function to group sales by the start of the week and the sale date. The COUNT(1) function is used to count the number of sales in each group (including NULLS). COUNT(1) and COUNT(\*) are semantically equivalent, the only difference is that COUNT(\*) also counts the NULL values. You can read more information about the differences
+[here](https://learnsql.com/blog/difference-between-count-distinct/).
+
+Get the average price and quantity sold for each item, and the total number of sales:
+
+``` sql
+SELECT item_name, AVG(price) AS avg_price, 
+    AVG(quantity) AS avg_quantity, COUNT(*) AS num_sales
+FROM sales
+GROUP BY item_name
+ORDER BY num_sales DESC;
+```
+
+This query groups the sales by item using the GROUP BY clause. The AVG() function is used to calculate the average price and quantity sold for each item, and the COUNT() function is used to count the total number of sales for each item. The ORDER BY clause sorts the results by total number of sales in descending order.
+
+## JOINs
+
+Let us first populate the tables with the following data:
+``` sql
+DROP TABLE IF EXISTS professor;
+CREATE TABLE professor (
+    prof_nr INT,
+    name    VARCHAR(30),
+    level   CHAR(2) default 'AP',
+    room    INT,
+    PRIMARY KEY (prof_nr)
+);
+
+DROP TABLE IF EXISTS student;
+CREATE TABLE student (
+    pers_nr  INT,
+    name     VARCHAR(100),
+    semester INT,
+    PRIMARY KEY (pers_nr)
+);
+
+DROP TABLE IF EXISTS lecture;
+CREATE TABLE lecture (
+    lecture_id INT,
+    title      VARCHAR(100),
+    cp         INT,
+    prof_nr    INT,
+    PRIMARY KEY (lecture_id)
+);
+
+DROP TABLE IF EXISTS requires;
+CREATE TABLE requires (
+    prerequisite INT,
+    followup     INT,
+    PRIMARY KEY (prerequisite, followup)
+);
+
+DROP TABLE IF EXISTS attends;
+CREATE TABLE attends (
+    pers_nr    INT,
+    lecture_id INT,
+    PRIMARY KEY (pers_nr, lecture_id)
+);
+
+DROP TABLE IF EXISTS tests;
+CREATE TABLE tests (
+    pers_nr    INT,
+    lecture_id INT,
+    grade      FLOAT,
+    PRIMARY KEY (pers_nr, lecture_id)
+);
+
+-- Add some data
+INSERT INTO professor (prof_nr, name, level, room)
+VALUES (2125, 'John', 'AP', 226),
+       (2126, 'David', 'FP', 232),
+       (2127, 'Anna', 'FP', 310);
+
+INSERT INTO student (pers_nr, name, semester)
+VALUES (24002, 'Peter', 8),
+       (25403, 'Mary', 8),
+       (26120, 'Anna', 8);
+
+INSERT INTO lecture (lecture_id, title, cp, prof_nr)
+VALUES (1, 'Databases', 4, NULL),
+       (2, 'Networks', 4, 2126),
+       (3, 'Algebra', NULL, 2127),
+       (4, 'Cloud', 4, 2126),
+       (5, 'Art', 4, 2126),
+       (6, 'History', 5, 2127);
+
+
+INSERT INTO attends (pers_nr, lecture_id)
+VALUES (24002, 1), (24002, 2), (24002, 3),
+       (25403, 1), (25403, 2),
+       (26120, 2), (26120, 3);
+
+INSERT INTO tests (pers_nr, lecture_id, grade)
+VALUES (24002, 1, 5.0), (24002, 2, 4.75), (24002, 3, 5.5),
+       (25403, 1, 5.25), (25403, 2, 6.0),
+       (26120, 2, 4.5), (26120, 3, 4.0);
+
+INSERT INTO requires (prerequisite, followup)
+VALUES (2, 1), (2, 4), (5, 6);
+```
+
+A JOIN clause is used to combine rows from two or more tables, based on a related column between them. Here are the different types of the JOINs in SQL:
+
+- CROSS JOIN: A cartesian product of the two tables.
+- (INNER) JOIN: Returns records that have matching values in both tables
+- LEFT (OUTER) JOIN: Returns all records from the left table, and the matched records from the right table
+- RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
+- FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
+
+## Cross product
+
+``` sql
+-- Cross product (or CROSS JOIN)
+-- We get all combinations of professor-lecture pairs.
+SELECT name, title
+FROM professor p,
+     lecture l;
+
+-- It is also called CROSS JOIN, and following SQL would produce same result
+SELECT name, title
+FROM professor p
+CROSS JOIN lecture l;
+
+-- By itself is used rare, only in cases all combinations are required.
+-- By becomes much more usefull is used with WHERE.
+-- Now we get names of professors and lecture that they are responsible for.
+SELECT name, title
+FROM professor p,
+     lecture l
+WHERE p.prof_nr = l.prof_nr;
+```
+
+### INNER JOIN
+
+Inner Join (keep only matched tuples):
+
+``` sql
+-- Returns 2 rows
+-- Note, that join condition is moved to ON (instead of WHERE)
+SELECT name, title
+FROM professor p
+INNER JOIN lecture l ON p.prof_nr = l.prof_nr;  
+```
+
+``` sql
+-- Find the average grade for each lecture
+SELECT l.title AS lecture_title, AVG(t.grade) AS average_grade
+FROM lecture l
+INNER JOIN tests t ON l.lecture_id = t.lecture_id
+GROUP BY l.title;
+
+-- Find the average grade for each student
+SELECT s.name, AVG(t.grade) AS average_grade
+FROM student s
+INNER JOIN tests t ON s.pers_nr = t.pers_nr
+GROUP BY s.pers_nr, s.name;
+-- observe that each non-aggregated column from select (such as s.name in this case) should appear in GROUP BY.
+```
+
+### LEFT OUTER JOIN
+
+Another type of join is called a LEFT OUTER JOIN. This type of join returns all rows from the LEFT-hand table specified in the ON condition and only those rows from the other table where the joined fields are equal (join condition is met):
+
+``` sql
+-- Returns 3 rows, because now we also have John who has no lectures.
+-- Keyword OUTER can be skipped. Would return same result
+SELECT name, title
+FROM professor p
+LEFT JOIN lecture l ON p.prof_nr = l.prof_nr;
+```
+
+### RIGHT OUTER JOIN
+
+Another type of join is called a RIGHT OUTER JOIN. This type of join returns all rows from the RIGHT-hand table specified in the ON condition and only those rows from the other table where the joined fields are equal (join condition is met). It is basically symmetrical to LEFT OUTER JOIN:
+
+``` sql
+-- Returns 3 rows. Now we do not have John (as with LEFT JOIN), 
+-- but have Databases (which do not have any professor attached to it).
+-- Keyword OUTER can be skipped. Would return same result
+SELECT name, title
+FROM professor p
+RIGHT JOIN lecture l ON p.prof_nr = l.prof_nr;
+```
+
+### FULL OUTER JOIN
+
+Another type of join is called a PostgreSQL FULL OUTER JOIN. This type of join returns all rows from the LEFT-hand table and RIGHT-hand table with nulls in place where the join condition is not met:
+
+``` sql
+-- Returns 4 rows. Now we have both John (with no lecture attached)
+-- and Databases (with no professor attached)
+-- Keyword OUTER can be skipped. Would return same result
+SELECT name, title
+FROM professor p
+FULL JOIN lecture l ON p.prof_nr = l.prof_nr;
+```
+
+### NATURAL JOIN, USING
+
+NATURAL JOIN automatically detects JOIN condition (by assuming that all fields with same names in tables we join should be a match). Natural Joins are supported by some DBMS systems, but not all of them and are usually not used in practise. Natural Joins can be INNER, LEFT or RIGHT (more on that later):
+
+``` sql
+-- No ON condition is specified since it is built automatically.
+SELECT name, title
+FROM professor p
+NATURAL INNER JOIN lecture l; 
+```
+
+Another syntax to write JOIN is using the USING statement. While NATURAL JOIN automatically selects columns to JOIN, it is possible to specify the column (by not the full condition). All 3 SELECTs would return the same result (difference is in syntax only.):
+
+``` sql
+-- No ON condition is specified since it is built automatically.
+SELECT name, title
+FROM professor p
+NATURAL INNER JOIN lecture l; 
+
+-- Columns are listed, but equality condition is assumed.
+SELECT name, title
+FROM professor p
+INNER JOIN lecture l USING (prof_nr); 
+
+SELECT name, title
+FROM professor p
+INNER JOIN lecture l ON p.prof_nr = l.prof_nr; -- Fully specifing ON condition
+```
+
+However, you need to be careful with NATURAL JOINS:
+
+``` sql
+DROP TABLE IF EXISTS company;
+DROP TABLE IF EXISTS employee;
+
+CREATE TABLE company(
+    company_id INT PRIMARY KEY,
+    name       VARCHAR(30),
+    tax_code   VARCHAR(10)
+);
+
+CREATE TABLE employee(
+    employee_id INT PRIMARY KEY,
+    name        VARCHAR(30),
+    tax_code    VARCHAR(30),
+    permanent   INT, -- 0 - temporary, 1 - permanent
+    company_id INT
+);
+
+INSERT INTO company(company_id, name, tax_code)
+VALUES (1, '2 Permanent', '100'),
+       (2, '1 Permanent, 1 Temp', '200'),
+       (3, '2 Temp', '300');
+
+INSERT INTO employee (employee_id, name, tax_code, permanent, company_id)
+VALUES (1, 'E1', '001', 1, 1),
+       (2, 'E2', '002', 1, 1),
+       (3, 'E3', '003', 1, 2),
+       (4, 'E4', '004', 0, 2),
+       (5, 'E5', '005', 0, 3),
+       (6, 'E6', '006', 0, 3);
+
+-- Assume that we want to return all company names and number of permanent employees
+
+-- This won't work, because NATURAL JOIN will try to 
+-- join tables on company_id, name and tax_code.
+SELECT c.name, count(e.employee_id)
+FROM company c
+NATURAL LEFT JOIN employee e
+WHERE e.permanent = 1
+GROUP BY c.name;
+
+-- Now JOIN is made using correct column, but in the result, 
+-- we are missing the companies with only Temporary employees.
+-- This works because column name is the same. 
+-- If name of column on Company table was just "id" - this wont' work.
+SELECT c.name, count(e.employee_id)
+FROM company c
+LEFT JOIN employee e USING (company_id)
+WHERE e.permanent = 1
+GROUP BY c.name;
+
+-- In the previous example, the result of the left join will contain all companies,
+-- but the where clause would filter out the companies without permanent employees
+-- The order of execution:
+--   FROM and/or JOIN clause.
+--   WHERE clause.
+--   GROUP BY clause.
+--   HAVING clause.
+--   SELECT clause.
+--   DISTINCT clause.
+--   ORDER BY clause.
+--   LIMIT and/or OFFSET clause.
+
+-- We can fix last query by extending ON condition.
+SELECT c.name, count(e.employee_id)
+FROM company c
+LEFT JOIN employee e ON c.company_id = e.company_id AND e.permanent = 1
+GROUP BY c.name;
+```
+
+Note, that we could have got correct result in many other ways. Last query was used just to demonstate the flexibility of full ON condition. Let's now see a more advanced query using an inner join:
+
+``` sql
+-- Rank students by their average grade in descending order
+SELECT s.name, AVG(t.grade) AS avg_grade, RANK() 
+OVER (ORDER BY AVG(t.grade) DESC) AS rank
+FROM student s
+INNER JOIN tests t ON s.pers_nr = t.pers_nr
+GROUP BY s.pers_nr, s.name;
+```
+
+`RANK() OVER (ORDER BY AVG(t.grade) DESC) AS rank`: This is a window function that calculates the rank for each student based on their average grade. The RANK() function assigns a unique rank to each distinct value in the specified column, with the same rank for the same values. The OVER (ORDER BY AVG(t.grade) DESC) clause specifies the order in which the ranking will be calculated. In this case, it orders the students by their average grade in descending order (highest average grade first). The rank will be assigned accordingly.
+
+## Self-joins
+
+Get a list of professors sharing the same room:
+
+``` sql
+SELECT p1.name AS professor1, p2.name AS professor2, p1.room
+FROM professor p1
+INNER JOIN professor p2 ON p1.room = p2.room AND p1.prof_nr <> p2.prof_nr;
+```
+
+## Subqueries
+
+Subquery is a query within a query. You can create subqueries within your SQL statements. These subqueries can reside in the WHERE clause, the FROM clause, or the SELECT clause.
+
+### Subquery in FROM
+
+A subquery can also be found in the FROM clause. These are also called inline views.
+
+``` sql
+-- Inner query returns only lectures with title Networks. 
+-- l is an alias given to that query results.
+SELECT p.name, l.title
+FROM professor p
+LEFT JOIN (SELECT * FROM lecture WHERE title = 'Networks') l
+ON p.prof_nr = l.prof_nr;
+
+-- A simpler example of a subquery in a FROM clause:
+SELECT * FROM (SELECT name AS p2_name FROM professor) AS p2;
+```
+
+### Subquery in SELECT
+
+A subquery can also be found in the SELECT clause. These are generally used when you wish to retrieve a calculation using an aggregate function such as the sum, count, min, max , or avg function, but you do not want the aggregate function to apply to the main query.
+
+``` sql
+-- Adding some more data
+-- Returns the name of professor and the count of lectures
+SELECT p.name, (SELECT count(title) FROM lecture l
+                WHERE  p.prof_nr = l.prof_nr) AS num_of_lectures
+FROM professor p;
+
+-- Alternatively, this can be computed using the left join:
+SELECT p.name, COUNT(l.title) AS num_of_lectures
+FROM professor p
+LEFT JOIN lecture l ON p.prof_nr = l.prof_nr
+GROUP BY p.name;
+```
+Note, that in this case subquery should only return 1 row or error would be thrown.
+
+### Subquery in WHERE
+
+Finally, most often, the subquery will be found in the WHERE clause. These subqueries are also called nested subqueries:
+
+``` sql
+-- Returns names of professor with lectures with cp >= 4
+SELECT p.name
+FROM professor p
+WHERE p.prof_nr IN (SELECT prof_nr FROM lecture WHERE cp >= 4);
+
+-- Note however, that we could have also used the inner join in this case:
+SELECT DISTINCT p.name
+FROM professor p
+JOIN lecture l ON p.prof_nr = l.prof_nr
+WHERE l.cp >= 4;
+
+-- in that case, the DISTINCT is necessary, to avoid repeating the same professor
+-- in case it matches with multiple lectures fulfilling the condition
+```
+
+Other usefull statements that can be used with subqueries are EXIST (NOT EXIST), ANY, ALL, SOME.
+
+### WITH
+
+Another way to use subqueries is by using WITH statement. The SQL WITH clause provides a way of defining a temporary relation whose definition is available only to the query in which the WITH clause occurs, SQL WITH clauses is individually-evaluated SELECT statements for use in a larger container query. Using SQL WITH clauses we can simplify complicated queries and reduce statement repetition:
+
+``` sql
+-- Subquery would return lecture data and count of students attending
+WITH lecture_attends AS (
+    SELECT l.lecture_id, l.prof_nr, count(a.pers_nr) as attends_count
+    FROM lecture l
+    LEFT JOIN attends a ON a.lecture_id = l.lecture_id
+    GROUP BY l.lecture_id, l.prof_nr
+)
+SELECT p.name, SUM(l.attends_count)
+FROM professor p
+LEFT JOIN lecture_attends l ON l.prof_nr = p.prof_nr -- Now we can use subquery as table
+GROUP BY p.prof_nr;
+```
+
+Find the total credit points earned by each student:
+
+``` sql
+WITH student_cp AS (
+    SELECT s.pers_nr, SUM(l.cp) AS total_cp
+    FROM student s
+    INNER JOIN attends a ON s.pers_nr = a.pers_nr
+    INNER JOIN lecture l ON a.lecture_id = l.lecture_id
+    GROUP BY s.pers_nr
+)
+SELECT s.name, student_cp.total_cp
+FROM student s
+INNER JOIN student_cp ON s.pers_nr = student_cp.pers_nr
+```
+
+Find the top 5 students with the highest average grade and display their names, average grades, and the number of attended lectures:
+
+``` sql
+WITH student_avg_grade AS (
+    SELECT s.pers_nr, s.name, AVG(t.grade) AS avg_grade
+    FROM student s
+    INNER JOIN tests t ON s.pers_nr = t.pers_nr
+    GROUP BY s.pers_nr, s.name
+),
+student_lecture_count AS (
+    SELECT s.pers_nr, COUNT(a.lecture_id) AS lecture_count
+    FROM student s
+    INNER JOIN attends a ON s.pers_nr = a.pers_nr
+    GROUP BY s.pers_nr
+)
+SELECT sag.name, sag.avg_grade, slc.lecture_count
+FROM student_avg_grade sag
+INNER JOIN student_lecture_count slc ON sag.pers_nr = slc.pers_nr
+ORDER BY sag.avg_grade DESC
+LIMIT 5;
+```
+
+Finally let's see a couple more window functions:
+
+``` sql
+-- Assign a row number to students based on their total 
+-- credit points earned, in descending order
+WITH student_cp AS (
+    SELECT s.pers_nr, SUM(l.cp) AS total_cp
+    FROM student s
+    INNER JOIN attends a ON s.pers_nr = a.pers_nr
+    INNER JOIN lecture l ON a.lecture_id = l.lecture_id
+    GROUP BY s.pers_nr
+)
+SELECT s.name, student_cp.total_cp, ROW_NUMBER()
+OVER (ORDER BY student_cp.total_cp DESC) AS row_number
+FROM student s
+INNER JOIN student_cp ON s.pers_nr = student_cp.pers_nr;
+
+-- if we want to ensure the ordering is fixed, we can also sort by the student name, in addition to the total credit points:
+WITH student_cp AS (
+    SELECT s.pers_nr, SUM(l.cp) AS total_cp
+    FROM student s
+    INNER JOIN attends a ON s.pers_nr = a.pers_nr
+    INNER JOIN lecture l ON a.lecture_id = l.lecture_id
+    GROUP BY s.pers_nr
+)
+SELECT s.name, student_cp.total_cp, ROW_NUMBER()
+OVER (ORDER BY student_cp.total_cp DESC, s.name ASC) AS row_number
+FROM student s
+INNER JOIN student_cp ON s.pers_nr = student_cp.pers_nr;
+```
+
+In this query, the ROW_NUMBER() window function assigns a unique row number to each student based on their total credit points earned. The students are ordered by their total credit points in descending order (highest credit points first), and row numbers are assigned accordingly.
+
+``` sql
+-- Retrieve the 3th to 5th students ordered by their names
+SELECT s.name
+FROM student s
+ORDER BY s.name
+LIMIT 2 OFFSET 2;
+
+-- Note that this returns only 1 value, since we have only 3 students
+```
+
+In this query, the OFFSET function is used in conjunction with the LIMIT clause to paginate the result set. It orders the students by their names and retrieves the 3th to 5th students. The OFFSET value specifies the starting point of the result set, and the LIMIT value specifies the number of rows to retrieve.
+
+## VIEW
+
+In case you want your query to be available permanently, you can create a VIEW based on that query. In SQL, a view is a virtual table based on the result set of an SQL statement. A view contains rows and columns, just like a real table. The fields in a view are fields from one or more real tables in the database. You can add SQL statements and functions to a view and present the data as if the data were coming from one single table. A view is created with the CREATE VIEW statement:
+
+``` sql
+-- Let's say we want to see all dependencies in lectures. 
+-- This can be obtained using the following query:
+SELECT l1.title AS prerequisite, l2.title AS followup
+FROM lecture l1
+INNER JOIN requires r ON l1.lecture_id = r.prerequisite
+LEFT JOIN lecture l2 ON l2.lecture_id = r.followup;
+
+-- If we want to reuse this query later, we can create VIEW based on it.
+CREATE VIEW dependencies_view
+AS
+SELECT l1.title AS prerequisite, l2.title AS followup
+FROM lecture l1
+INNER JOIN requires r ON l1.lecture_id = r.prerequisite
+LEFT JOIN lecture l2 ON l2.lecture_id = r.followup;
+
+-- And now use this VIEW as if this was a table.
+SELECT *
+FROM dependencies_view
+WHERE prerequisite = 'Networks';
+```
+
+### Views vs Tables
+
+It is possible to create new table besed on data from a query:
+
+``` sql
+-- We can create permanent table to store this data.
+CREATE TABLE dependencies_table
+AS
+SELECT l1.title AS prerequisite, l2.title AS followup
+FROM lecture l1
+INNER JOIN requires r ON l1.lecture_id = r.prerequisite
+LEFT JOIN lecture l2 ON l2.lecture_id = r.followup;
+```
+
+Note, that this new table and view we have created before are two very different things. You can see it with simple example:
+
+``` sql
+-- At this point both queries should return same result.
+SELECT * FROM dependencies_view;
+SELECT * FROM dependencies_table;
+
+-- Now let's add new record
+INSERT INTO requires (prerequisite, followup)
+VALUES (3, 1);
+
+-- We see new record in this view
+SELECT * FROM dependencies_view;
+
+-- But nothing changed in this table. 
+-- It was created based on data that existed at the moment of creation.
+SELECT * FROM dependencies_table;
+```
+
+## Bulk commands
+
+### Load data from files
+
+It is possible to copy table data into a file OR load data into a table from a file:
+
+``` sql
+-- Checking that we have some data in students table.
+SELECT * FROM student;
+
+-- Saving this data to file
+\copy student TO '/tmp/students';
+
+-- Removing all data from table
+DELETE FROM student;
+
+-- Nothing is returned
+SELECT * FROM student;
+
+-- Loading data back into the table
+\copy student FROM '/tmp/students';
+
+-- We again have our data
+SELECT * FROM student;
+
+-- You can also export it as a csv file
+\copy student TO '/tmp/students.csv' DELIMITER ',' CSV HEADER;
+```
+
+### Loading data from another query
+
+It is also possible to INSERT data into the table in bulk from another query:
+
+``` sql
+-- Using this query we can make sure that everyone attends Databases
+INSERT INTO attends (pers_nr, lecture_id)
+SELECT pers_nr, lecture_id
+FROM student, lecture
+WHERE title = 'Databases';
+```
