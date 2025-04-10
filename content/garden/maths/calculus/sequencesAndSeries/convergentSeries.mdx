@@ -90,7 +90,23 @@ Add the proof for the harmonic series. Probably with Cauchy criterion.
 \sum^{\infty}_{n=1}{\frac{1}{n}}
 ```
 
-diverges. Despite the sequence of terms converging to zero, the series diverges. This is a good example to show that the terms of the sequence converging to zero is a necessary but not sufficient condition for the series to converge.
+diverges. Despite the sequence of terms converging to zero, the series diverges. This is a good example to show that the terms of the sequence converging to zero is a necessary but not sufficient condition for the series to converge. 
+
+## Geometric Series
+
+<Image
+    src="/maths/harmonicSeries.png"
+    alt="Harmonic Series"
+    width={500}
+/>
+
+However, there is a nice visualization showing that the series is bounded.
+
+<Image
+    src="/maths/harmonicSeriesBound.jpg"
+    alt="Harmonic Series"
+    width={500}
+/>
 
 ## Telescope Series
 
@@ -123,9 +139,57 @@ But if we try to do the same for the value of 0 and the sum over 0. We can split
 Add the proof for the Cauchy criterion. Show that it also works for the sequence of partial sums.
 </Callout>
 
+We have seen that for sequences we can use the [Cauchy criterion](/garden/maths/calculus/sequencesAndSeries/convergentSequences#cauchy-criterion) to check if a sequence converges. Specifically we can say that a sequence converges if the following holds:
+
+```math
+\forall \epsilon > 0 \quad \exists N_{\epsilon} \in \mathbb{N} : |a_n - a_m| < \epsilon \text{ for all } n, m \geq N_{\epsilon}
+```
+
+We can also apply this to series. The Cauchy criterion for series states that a series converges if the following holds:
+
+```math
+\forall \epsilon > 0 \exists N_{\epsilon} \in \mathbb{N} : |\sum^{m}_{k=n} a_k| < \epsilon \text{ for all } m \geq n \text{ and } n \geq N_{\epsilon}
+```
+
+So after some point $N_{\epsilon}$ the sum of all terms from $n$ to all $m$ is less than $\epsilon$. So in other words after some point the sum of all terms does not change the value of the series anymore. This is a very powerful test to check if a series converges. 
+
+<Callout type="proof">
+The proof is rather simple. We know a series converges if the sequence of partial sums converges. So we can just apply the Cauchy criterion for sequences to the sequence of partial sums. So if the partial sums are Cauchy, then the series converges. For the partial sums to be Cauchy, we need to show that the following holds where $S_n = \sum^{n}_{k=1}{a_k}$:
+
+```math
+\forall \epsilon > 0 \exists N_{\epsilon} \in \mathbb{N} : |S_m - S_{n-1}| < \epsilon \text{ for all } n, m \geq N_{\epsilon}
+```
+
+From this we can derive the following which gives us the Cauchy criterion for series:
+
+```math
+|S_m - S_{n-1}| = |\sum^{m}_{k=1}{a_k} - \sum^{n-1}_{k=1}{a_k}| = |\sum^{m}_{k=n}{a_k}| < \epsilon \text{ for all } n, m \geq N_{\epsilon}
+```
+</Callout>
+
 ## Direct Comparison Test
 
-The direct comparison test is another method like the Cauchy criterion to check if a series converges. The idea is in my opinion a lot more intuitive tho. The direct comparison is as follows. If we have two series $\sum^{\infty}_{n=1}{a_n}$ and $\sum^{\infty}_{n=1}{b_n}$ and we know that the following holds for all $k \geq 1$:
+The direct comparison test is another method like the Cauchy criterion to check if a series converges. The idea comes from the [Monotone Convergence Theorem](/garden/maths/calculus/sequencesAndSeries/convergentSequences#monotone-convergence-theorem) and is in my opinion a lot more intuitive then the cauchy criterion. 
+
+First let's just focus on series where after some point $k$ the terms are always positive. So more formally we focus on series where the following holds:
+
+```math
+\text{Let } \sum^{\infty}_{n=1}{a_n} \text{ be a series with } a_n \geq 0 \text{ for all } n \geq k \text{ where } k \geq 1
+```
+
+We can then use the monotone convergence theorem to show that the series converges if the sequence of partial sums is bounded. So we can show that the sequence of partial sums is bounded by some value $M$ and that the sequence of partial sums is monotone increasing intuitively this is of course true as the terms are always positive:
+
+```math
+S_{n+1} - S_n = \sum^{n+1}_{k=1}{a_k} - \sum^{n}_{k=1}{a_k} = a_{n+1} \geq 0 \text{ for all } n \geq 1
+```
+
+So if we have such a series that fullfils the conditions above, we just need to show that the sequence of partial sums is bounded to show that the series converges. 
+
+<Callout type="todo">
+Add an example of using this and showing that the sequence of partial sums is bounded. Such as maybe the telescope series.
+</Callout>
+
+The direct comparison follows from the idea shown above but in a more general way and kind of mixing it with the [squeeze theorem](/garden/maths/calculus/sequencesAndSeries/convergentSequences#squeeze-theorem). The idea is that we can compare two series and show that one converges if the other converges. The formal definition of the direct comparison test is as follows. If we have two series $\sum^{\infty}_{n=1}{a_n}$ and $\sum^{\infty}_{n=1}{b_n}$ and we know that the following holds for all $k \geq 1$:
 
 ```math
 0 \leq a_k \leq b_k
@@ -181,18 +245,26 @@ We have seen that series can converge to some limit or diverge. But there is als
 
 If a series is absolutely convergent, then it is also convergent. However, the converse is not true. A series can be convergent without being absolutely convergent. 
 
-```
+```math
 \sum^{\infty}_{n=1}{a_n} \text{ converges} \implies \sum^{\infty}_{n=1}{|a_n|} \text{ converges}
 ```
 
-This is easily proven by the cauchy criterion. If the series converges, then by the cauchy criterion the following holds:
+This is easily proven by the cauchy criterion for series. If the series is absolutely convergent, then the value of the series is finite. If we instead take the absolute value of the value of the series, we get a smaller or equal value as some terms may cancel each other out. So the absolute value of the series is less than or equal to the value of the series. Therefore the value of the series is also finite and converges.   
 
 ```math
 |\sum^{m}_{k=n} a_k| \leq \sum^{m}_{k=n} |a_k| < \epsilon \text{ for all } m \leq n \text{ and } n \leq N_{\epsilon}
 ```
 
-<Callout type="todo">
-Missing stuff
+If we say that $S_n = \sum^{n}_{k=1}{a_k}$ and $T_n = \sum^{n}_{k=1}{|a_k|}$, then we also get the following from the above inequality:
+
+```math
+|S_n| = |\sum^{\infty}_{k=1}{a_k}| = |\lim_{n \to \infty} S_n| = \lim_{n \to \infty} |S_n| \leq \lim_{n \to \infty} T_n = \sum^{\infty}_{k=1}{|a_k|}
+```
+
+<Callout type="example">
+Let's look at the series $\sum^{\infty}_{n=1}{(-1)^{n+1} \frac{1}{n}}$. The sequence of the terms converge to zero, so our first condition is met. If we analyze the values of the series then we notice that the series converges to $\ln(2)$. So the series converges. 
+
+But if we take the absolute value of the terms of the series, we get the harmonic series $\sum^{\infty}_{n=1}{\frac{1}{n}}$ which diverges. So we can say that the original series is convergent but not absolutely convergent. This is a good example to show that the converse of that absolute convergence implies convergence is not true. 
 </Callout>
 
 ## Alternating Series Test
@@ -203,7 +275,17 @@ Also known as Leibniz test.
 
 ## Riemann Rearrangement Theorem
 
+A Rearrangement of a series is a new series that is formed by rearranging the terms of the original series. More formally the series $\sum^{\infty}_{n=1}{x_n}$ is a rearrangement of the series $\sum^{\infty}_{n=1}{a_n}$ if there exists a bijective function of the form:
+
+```math
+f: \mathbb{N} \to \mathbb{N} \text{ such that } x_n = a_{f(n)} \text{ for all } n \in \mathbb{N}
+```
+
+Riemann showed that the series $\sum^{\infty}_{n=1}{(-1)^{n+1} \frac{1}{n}}$ could be rearranged to converge to any real number. 
+
 ### Dirchlet's Rearrangement Theorem
+
+Dirchlet showed that if a series converges absolutely, then any rearrangement of the series converges and that it even converges to the same value. 
 
 ## Ratio Test
 

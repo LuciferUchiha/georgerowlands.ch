@@ -116,7 +116,7 @@ However, the other way around is not true. Not all bounded sequences converge. F
 a_n \text{ converges} \implies a_n \text{ is bounded}
 ```
 
-<Callout type="example">
+<Callout type="example" title="Constant Sequence">
 For the constant sequence such as $a_n = 5$ the limit is the constant itself, so in this case 5. This is rather obvious but we can also prove it. By definition we know that after some specific index $N_{\epsilon}$ all terms have to be within the epsilon neighborhood around the limit and because epsilon is larger than 0 so get the following that needs to be satisfied for all $n \geq N_{\epsilon}$:
 
 ```math
@@ -138,12 +138,20 @@ Because the following always holds:
 \end{align*}
 ```
 </Callout>
-<Callout type="example">
+<Callout type="example" title="Harmonic Sequence">
 The next sequence we can look at is the following:
 
 ```math
 (a_n)_{n \geq 1} = \frac{1}{n} = 1, \frac{1}{2}, \frac{1}{3}, \ldots
 ```
+
+This is the so called **harmonic sequence**.
+
+<Callout type="todo">
+Show desmos graph. 
+
+Can this proof really not be done without assuming that the limit is 0?
+</Callout>
 
 For this sequence again we can get $|a_n - L| < \epsilon$ for all $n \geq N_{\epsilon}$. Because of [Archimedes principle](/garden/maths/discrete/intervals#archimedes-principle) we know that for any $x > 0$ there exists a $n \in \mathbb{N}$ such that $y \leq nx$ or $y \geq nx$ for all $y \in \mathbb{R}$. In this case the first inequality is important. If we set $x = \epsilon$ and $y = 1$ then we know the following:
 
@@ -167,7 +175,13 @@ Which then means that for all $n \geq N_{\epsilon}$ the following holds:
 |a_n - 0| = \frac{1}{n} \leq \frac{1}{N_{\epsilon}} < \epsilon
 ```
 
-So if we had $\epsilon = 0.8$ then we can calculate $N_{0.8} by doing the following:
+So the limit of the sequence is 0. We call such sequences that converge to 0 **null or zero sequences**. This is a very important class of sequences as they are a building block for [convergent series](/garden/maths/calculus/sequencesAndSeries/convergentSeries). So we formally say that a sequence is a null sequence if:
+
+```math
+\lim_{n \to \infty} a_n = 0
+```
+
+We have seen that some index $N_{\epsilon}$ exists such that for all $n \geq N_{\epsilon}$ the harmonic sequence is within the epsilon neighborhood around 0. We can also calculate this index for a given epsilon. For example if we had $\epsilon = 0.8$ then we can calculate $N_{0.8} by doing the following:
 
 ```math
 \begin{align*}
@@ -178,13 +192,13 @@ So if we had $\epsilon = 0.8$ then we can calculate $N_{0.8} by doing the follow
 \end{align*}
 ```
 
-So $N_{0.8} = 2$ which means that for $\epsilon = 0.8$ all terms after $n=2$ are within the epsilon neighborhood around 0. So the limit of the sequence is 0. 
+So $N_{0.8} = 2$ which means that for $\epsilon = 0.8$ all terms after $n=2$ are within the epsilon neighborhood around 0. 
 </Callout>
 <Callout type="example">
 From the script:
 using archimedes principle to show that the limit of $a_n = \frac{n}{n+1} = 1$
 </Callout>
-<Callout type="example">
+<Callout type="example" title="Divergent Alternating Sequence">
 We have seen lots of examples of sequences that converge to a limit. But what about sequences that do not converge? Let's look at the following sequence:
 
 ```math
@@ -210,7 +224,7 @@ Let's assume by contradiction that a limit exists and that $\epsilon = \frac{1}{
 
 This is a contradiction and therefore the sequence does not converge. Note that we just added 0 by adding and subtracting $L$ and then used the triangle inequality.
 </Callout>
-<Callout type="example">
+<Callout type="example" title="Arithmetic Sequence">
 Lastly let's look at the sequence $(a_n)_{n \geq 1} = n$. This sequence does not converge as the terms keep getting larger and larger. We can prove this by contradiction. Let's assume that the sequence converges to a limit $L$. Then for $\epsilon = 1$ we know that there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
 
 ```math
@@ -218,6 +232,12 @@ Lastly let's look at the sequence $(a_n)_{n \geq 1} = n$. This sequence does not
 ```
 
 However, this already does not hold for the first term as $|a_1 - L| = |1 - L| \geq 1$ is not possible. So the sequence does not converge.
+
+This sequence is actually a special case of the arithmetic sequence. An arithmetic sequence is a sequence where the difference between two consecutive terms is constant. In this case the constant is 1 but we could also for example look at the sequence $a_n = 2n + 3$ as an arithmetic sequence with a common difference of 2. We can also write this more generally as:
+
+```math
+a_n = a_1 + (n-1)d \text{ with } d \in \mathbb{R} \text{ and } n \in \mathbb{N}
+```
 </Callout>
 
 ## Properties of Convergent Sequences
@@ -448,6 +468,11 @@ This is what the Cauchy criterion states. A sequence is convergent if it is a so
 
 So if we can find an index $N_{\epsilon}$ such that for all terms after this index the distance between any two terms is less than $\epsilon$, then the sequence converges. 
 
+<Callout type="proof">
+Todo
+https://www.youtube.com/watch?v=R2AFZD0jiKQ
+</Callout>
+
 <Callout type="todo">
 As an example let's look at the harmonic sequence $a_n = \frac{1}{n}$. We know that this sequence converges to 0. But we can also use the Cauchy criterion to show that it converges. Let's assume that we have a sequence $a_n$ and we want to show that it is Cauchy. We can do this by showing that the distance between two terms of the sequence is less than $\epsilon$. 
 
@@ -460,6 +485,12 @@ As an example let's look at the harmonic sequence $a_n = \frac{1}{n}$. We know t
 ```
 
 So depending on how we set the epsilon we can find an index $N_{\epsilon}$ such that for all terms after this index the distance between any two terms is less than $\epsilon$.
+</Callout>
+
+## Cauchy-Cantor Theorem
+
+<Callout type="todo">
+Weird stuff with intervals that can then be used to show that real numbers are uncountable. 
 </Callout>
 
 ## Balzano-Weierstrass Theorem
@@ -605,18 +636,11 @@ Example:
 ```
 </Callout>
 
-## Important Sequences
+<Callout type="todo">
+Todo these two examples still need to be integrated somewhere as an example.
 
-These are probably better integrated as examples above
-
-### Artihmetic Sequences
-
-### Zero Sequences
-
-### Harmonic Sequences
-
-**Nullfolge** eine Folge die den Grenzwert 0 besitzt.
-**Harmonische Folge** $a_n={1\over n}$ ist eine Nullfolge
+Are there any more examples of well known and useful sequences?
+</Callout>
 
 ### Geometric Sequences
 
