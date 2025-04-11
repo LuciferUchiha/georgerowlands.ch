@@ -1,0 +1,154 @@
+# Conditional Probability and Independence
+
+
+## Conditional Probability
+
+The conditional probability of $B$ given $A$ is defined as:
+
+```math
+P(B | A)= \frac{P(A \cap B)}{P(A)}
+```
+
+## Multiplication Rule
+
+Rearranging the conditional probability formula gives the multiplication rule:
+
+```math
+P(A \cap B)=P(A) \cdot P(B|A)
+```
+
+```math
+P(A) \cdot P(B|A) = P(B) \cdot P(A|B)
+```
+
+
+## Law of Total Probability
+
+The **total probability** for an event $B$, where $A_i$ are the possible intermediate events leading to $B$, is given by:
+
+```math
+P(B)= \sum_{i=1}^{n}{P(A_i)\cdot P(B|A_i)}
+```
+
+A good video explanation can be found [here](https://studyflix.de/statistik/satz-der-totalen-wahrscheinlichkeit-1111) and [here](https://www.youtube.com/watch?v=0iJSW0VNddo).
+
+## Bayes' Theorem
+
+Given that event $B$ has already occurred, the probability that it happened via intermediate event $A_j$ is given by Bayes' theorem:
+
+```math
+P(A_j|B)= {P(A_j \cap B) \over P(B)} = {P(A_j) \cdot P(B | A_j) \over P(B)}
+```
+
+A good video explanation can be found [here](https://studyflix.de/statistik/satz-von-bayes-1113) and [here](https://www.youtube.com/watch?v=wUDxQFbXqjA).
+
+## De Morgan's Laws
+
+De Morgan's laws also apply to events:
+
+```math
+\begin{align*}
+    \overline{A \cup B} &= \overline{A} \cap \overline{B} \\
+    \overline{A \cap B} &= \overline{A} \cup \overline{B}
+\end{align*}
+```
+
+## Stochastic Independence
+
+It is possible that the probability of an event $B$ depends on another event $A$. This leads us to the concept of conditional probability.
+
+However, if this is not the case, meaning that the events do not depend on each other, we refer to such events as **stochastically independent**. In this case, the following holds:
+
+```math
+P(A | B) = P(A) \text{ and } P(B | A) = P(B)
+```
+
+From the multiplication rule, we then get:
+
+```math
+P(A \cap B)=P(A) \cdot P(B|A)=P(A) \cdot P(B)
+```
+
+Thus, we can define that two events are stochastically independent if:
+
+```math
+P(A \cap B)= P(A) \cdot P(B)
+```
+
+<Callout type="example" title="Example: Stochastically Independent Coin Tosses">
+
+A coin is tossed three times, and we consider the following events:
+
+- $A=$ Heads on the 1st toss
+- $B=$ Heads on the 2nd toss
+- $C=$ Tails on the 3rd toss
+
+They are all stochastically independent since they do not influence each other.
+
+</Callout>
+
+## Multi-Stage Random Experiments
+
+In a multi-stage random experiment, multiple random experiments are conducted sequentially. These are often represented using tree diagrams (event trees), distinguishing between final outcomes and intermediate outcomes.
+
+We define the following rules:
+
+1. The probabilities along a path are multiplied together.
+2. If multiple paths lead to the same final outcome, their probabilities are added.
+
+A good video explanation can be found [here](https://studyflix.de/statistik/baumdiagramm-1107).
+
+<Callout type="example" title="Example: Multi-Stage Random Experiment">
+
+An urn contains 6 balls: 2 white and 4 black. We randomly draw 2 balls one after another without replacement, meaning 2 stages. We ask: What is the probability of drawing 2 balls of the same color ($A$) or 2 balls of different colors ($B$)?
+
+**Stage 1:**
+
+- $P(W) = {2 \over 6} = {1 \over 3}$
+- $P(S) = {4 \over 6} = {2 \over 3}$
+
+**Stage 2:**
+After the first draw, only 5 balls remain. If a white ball was drawn:
+
+- $P(W|W) = {1 \over 5}$
+- $P(S|W) = {4 \over 5}$
+
+If a black ball was drawn:
+
+- $P(W|S) = {2 \over 5}$
+- $P(S|S) = {3 \over 5}$
+
+The results are:
+
+For same-colored balls:
+
+```math
+P(A)=P(WW) + P(SS) = {1 \over 3} \cdot {1 \over 5} + {2 \over 3} \cdot {2 \over 5} = {7 \over 15}
+```
+
+For differently-colored balls:
+```math
+P(A)=P(WS) + P(SW) = {1 \over 3} \cdot {4 \over 5} + {2 \over 3} \cdot {2 \over 5} = {8 \over 15}
+```
+
+![multi-stage-random-experiment](/maths/mehrstufigeZufallsexperimente.png)
+
+</Callout>
+
+## Birthday Paradox
+
+The birthday paradox is an example of how certain probabilities are often misestimated intuitively.
+
+We ask: "What is the probability that at least two people in a group of $k$ people share the same birthday?"
+
+To answer this, we first consider the probability that **no** two people share a birthday:
+
+For 2 people: ${365 \over 365} \cdot {364 \over 365}$  
+For 3 people: ${365 \over 365} \cdot {364 \over 365} \cdot {363 \over 365}$  
+etc.  
+
+This probability approaches 0 as $k$ increases. Thus, we can answer our question as follows:
+
+```math
+P(\text{same})=1-P(\text{different}) \Leftrightarrow P(A)=1- \frac{365 \cdot (365-1)\cdot...\cdot (365-n+1)}{365^n}
+```

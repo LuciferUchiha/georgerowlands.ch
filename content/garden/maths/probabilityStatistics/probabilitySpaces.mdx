@@ -8,14 +8,19 @@ A lot of systems are very complex. For example describing the motion of water mo
 
 Another example of a complex system is quantum theory. For most already the name is enough to make them shiver. But in 1900 Max Planck came up with some building blocks to describe the system of quantum theory using probability theory. This was the birth of quantum theory. This was highly controversial at the time because physicists were used to deterministic models, i.e models that were able to predict outcomes with certainty. Einstein was one of the most vocal critics of quantum theory. He famously said "God does not play dice with the universe" and one of his life goals was to find a deterministic model for quantum theory. But so far no one has been able to do so.
 
-These probabilistic models are based on the concept of a **probability space**, a mathematical model that describes the possible outcomes of a random experiment and the probability of each outcome.
+These probabilistic models are based on the concept of a **probability space**, a mathematical model that describes the possible outcomes of a random experiment and the probability of each outcome. A probability space consists of three components:
+- A sample space $\Omega$ which is the set of all possible outcomes of the random experiment.
+- An event space $\mathcal{F}$ which is a collection of events that we are interested in. 
+- A probability measure $\P$ which assigns a probability to each event in the event space.
+
+This triplet is called a **probability space** and is denoted by $(\Omega, \mathcal{F}, \P)$.
 
 ## Random Experiments
 
-First of all, we need to define what a **random experiment** is. A random experiment or also called trial is an experiment that can be repeated arbitrarily often and leads to a mutually exclusive and exhaustive set of outcomes. 
+First we need to define what a **random experiment** is. A random experiment or also called trial is an experiment that can be repeated arbitrarily often and leads to a mutually exclusive and exhaustive set of outcomes. 
 
 What does this mean? Mutually exclusive outcomes means that only one of the outcomes can happen at a time. Two outcomes 
-can not happen at the same time. Exhaustive means that one of the outcomes must happen. There are no other outcomes. 
+can not happen at the same time. Exhaustive means that one of the outcomes must happen. There are no other outcomes that can happen and are not in the set of outcomes. 
 
 Importantly, the outcome of a random experiment is not predictable with certainty beforehand, there is always some element of randomness involved. This is why it is called a random experiment and is the reason why we need probability theory to describe the system.
 
@@ -31,36 +36,41 @@ With this knowledge, we could already informally describe a probabilistic model 
 are two possible outcomes: heads or tails and that the probability of each outcome is 0.5. A different probabilistic model for the random experiment of flipping a coin could also be if we include the outcome of the coin landing on its side and giving it a very small probability of happening. We could also use a biased coin that has a higher probability of landing on heads than on tails.
 
 It turns out that flipping a coin isn't actually fair, i.e the probability of heads and tails isn't 0.5. You can 
-watch [this video by Numberphile](https://www.youtube.com/watch?v=AYnJv68T3MM) to know more.
+watch [this video by Numberphile](https://www.youtube.com/watch?v=AYnJv68T3MM) to know more. The spanish coin is for example slightly heavier on one side and therefore has a higher probability of landing on that side. The same could be true for certain dice dependin on material and the layout of the face values such as [discussed here](https://boardgames.stackexchange.com/questions/13398/why-do-the-opposing-sides-of-a-d20-generally-add-up-to-21/13408#13408).
 
 ### Law of Large Numbers
 
-The interesting thing about random experiments is when you perform the experiment once you can not predict the outcome. But if you perform the experiment multiple times you can predict the outcome. For example, if you flip a coin once you can not predict if it will land on heads or tails. But if you flip the coin 1000 times you can predict that it will land on heads roughly 500 times and tails roughly 500 times. This is called the law of large numbers. 
+The interesting thing about random experiments is when you perform the experiment once you can not predict the outcome. But if you perform the experiment multiple times you can predict the outcome with better certaincy. The intuition behind this is rather simple, the more times you perform the experiment the more information you have about the system and the better your able to model it and come up with some statistics about the system. For example, if you threw a weirdly shaped dice once you could not predict the outcome. But if you performed the experiment 1000 times you could possibly predict the outcome with a higher degree of certainty. This is called the law of large numbers. 
 
 ## Sample Space
 
-If we want to model a random experiment we first need a set of all the possible outcomes of the random experiment. This set is called the **sample space** and is denoted by $\Omega$. The elements of the sample space are the mutually exclusive and exhaustive outcomes of the random experiment which are denoted by $\omega \in \Omega$ and are also 
-often called **elementary events**, **elementary experiments** or **states**.
+Now to model a random experiment we first need our first component, a set of all the possible outcomes of the random experiment. This set is the so called the **sample space** and is denoted by $\Omega$. The elements of the sample space are the mutually exclusive and exhaustive outcomes of the random experiment which are denoted by $\omega \in \Omega$ and are also often called **elementary events**, **elementary experiments** or **states**.
 
-We've seen what mutually exclusive means that they cannot occur simultaneously. For example a coin cannot land on heads and tails at the same time. So we could formally write our sample space for a coin flip as:
+We've seen that mutually exclusive means that they cannot occur simultaneously. For example a coin cannot land on heads and tails at the same time. So we could formally write our sample space for a coin flip as:
 
 ```math
 \Omega = \{\text{Heads}, \text{Tails}\}
 ```
 
-We've also seen that our model should be exhaustive, i.e our sample space should contain all possible outcomes. The number of outcomes in the sample space can vary depending on the random experiment but we will see more about this later.
+We've also seen that our model should be exhaustive, i.e our sample space should contain all possible outcomes. Depending on how complex the experiment is and how much detail we want to include in our model we can include more or less outcomes. For example, if we want to include the outcome of the coin landing on its side we could write our sample space as:
+
+```math
+\Omega = \{\text{Heads}, \text{Tails}, \text{Side}\}
+```
+
+The sample space just needs to be exhaustive for our experiments, for example we could agree that if the coin did happen to land on its side we could just ignore that toss. The number of outcomes in the sample space can vary depending on the random experiment but we will see more about this later.
 
 ## Events
 
-An **event** is a set of outcomes. In other words, an event is a subset of the sample space $A \subseteq \Omega$. We can then get the set of all possible events by taking the [power set](/garden/maths/discrete/setTheory#power-set) of the sample space $\mathscr{P}(\Omega)$. 
+We have seen that an experiment has a sample space of outcomes. Sometimes we are however interested in groupings of outcomes. For example, if we are rolling a die we might be interested in seeing what the probability is of rolling an even number. This is where so called **events** come into play. An event is a set of outcomes. In other words, an event is a subset of the sample space $A \subseteq \Omega$. We can then get the set of all possible events by taking the [power set](/garden/maths/discrete/setTheory#power-set) of the sample space $\mathscr{P}(\Omega)$. By defining a set of events that we are interested in we have our second component of the probability space, the **event space** $\mathcal{F}$.
 
-Say we then perform a random experiment and the experiment results in the outcome $\omega$ so $\omega \in \Omega$. 
-- We then say if $\omega \in A$ then the event $A$ has occurred.
+If we have an event $A$ and we  perform a random experiment and the experiment results in the outcome $\omega$ so $\omega \in \Omega$. 
+- We then say if $\omega \in A$, that the event $A$ has occurred.
 - If $\omega \notin A$ then the event $A$ has not occurred.
 
 This then leads to two special events that can easily be defined and interpreted:
-- The **impossible event** is the empty set $\emptyset$. This corresponds to an event that will never occur. 
-- The **certain/sure/guaranteed event** is the sample space $\Omega$. This corresponds to an event that will always occur.
+- The **impossible event** is the empty set $\emptyset$. This corresponds to an event that will never occur as some outcome must occur and there are no outcomes in the empty set.
+- The **certain/sure/guaranteed event** is the sample space $A=\Omega$. This corresponds to an event that will always occur as some outcome must occur and all outcomes are in event $A=\Omega$.
 
 <Callout type="example">
 We have already defined the sample space for rolling a six-sided die as $\Omega = \{1,2,3,4,5,6\}$. We can now construct the following events, i.e subsets of the sample space:
@@ -74,9 +84,7 @@ We have already defined the sample space for rolling a six-sided die as $\Omega 
 
 ### Sigma Algebra
 
-In some cases we might not want to consider all possible events. For example when the sample space $\Omega$ is very large. In such cases we can define a **sigma algebra** denoted by $\F$ which is a specific collection of events that we are interested in. To make sure that all the properties of probability theory hold we need to make sure that the sigma algebra satisfies some specific properties.
-
-Firstly the certain event must be in the sigma algebra so:
+In some cases we might not want to consider all possible events such as when we define our event space $\mathcal{F}$ as the power set of the sample space $\mathscr{P}(\Omega)$ which is the set of all possible events. We wouldn't want to do this for example when the sample space $\Omega$ is very large. As the number of elements in the power set is $|\mathscr{P}(\Omega)|=2^{|\Omega|}$. In such cases we can define a **sigma algebra** denoted by $\F$ which is a specific collection of events that we are interested in. To make sure that all the properties of probability theory hold we need to make sure that the sigma algebra satisfies some specific properties. The first property is intuitive and is that the certain event must be in the sigma algebra so:
 
 ```math
 \Omega \in \F
@@ -94,7 +102,7 @@ Lastly if we have some events in the sigma algebra then the union of these event
 A_1,A_2,... \in \F \Rightarrow \bigcup_{i=1}^{\infty} A_i \in \F
 ```
 
-These properties ensure that the sigma algebra is closed under the operations of complement and union. This is important because we want to be able to calculate the probability of complex events by breaking them down into their elementary parts which we will see later. 
+These properties ensure that the sigma algebra is closed under the operations of complement and union. This is important because we want to be able to calculate the probability of complex events by breaking them down into their elementary parts and combining them using set operations. 
 
 <Callout type="example">
 If we take our running example of rolling a six-sided die we can define different sigma algebras. The following are some valid sigma algebras:
@@ -111,9 +119,9 @@ The above sigma algebras are all valid because they satisfy the properties of a 
 - $\F = \{\{1,2,4,5,6\}\}$, the complement of the event $\{1,2,4,5,6\}$ is not in the sigma algebra
 </Callout>
 
-### Properties of Events
+### Properties of Events and the Events Space
 
-The above definition of a sigma algebra also has some consequences for events and the power set of the sample space as it is also a sigma algebra. 
+The above definition of a sigma algebra also has some consequences for events and the power set of the sample space as it is also fullfills the properties of a sigma algebra. 
 
 Because the certain event has to be in the sigma algebra and the complement of an event has to be in the sigma algebra we can see that the sigma algebra must therefore also contain the impossible event. 
 
@@ -135,7 +143,7 @@ A \cup B = A \cup B \cup \emptyset \cup \emptyset \cup \emptyset \cup \ldots
 ```
 </Callout>
 
-So we know that the union of two events is in the sigma algebra but what about the intersection of two events? We can see that the intersection of two events is the complement of the union of the complements of the two events. To see this I recommend drawing a Venn diagram. 
+So we know that the union of two events is in the sigma algebra but what about the intersection of two events? We can see that the intersection of two events is the complement of the union of the complements of two events. To see this I recommend drawing a Venn diagram. 
 
 ```math
 A \cap B = (A^c \cup B^c)^c
@@ -179,7 +187,7 @@ The same goes for the relations between events.
 
 ## Probability Measure
 
-So far we actually haven't seen any probabilities. We have only defined what experiments are and what outcomes or events can occur. We haven't defined with what probability these outcomes or events occur. This is where the **probability measure** comes in. The probability measure is a map that assigns a probability to each event in the sample space. More formally we can define the probability measure on a sample space $\Omega$ and a sigma algebra $\mathcal{F}$ as:
+So far we actually haven't seen any probabilities. We have only defined what experiments are and what outcomes and events can occur. We haven't defined with what probability these outcomes or events occur. This is where the **probability measure** comes in. The probability measure is a map or function that assigns a probability to each event in the sample space. Each probability is a number between 0 and 1. 1 means that the event is certain to happen and 0 means that the event is impossible. You can also interpret these decimal values as percentages. So a probability of 0.5 means that the event has a 50% chance of happening. More formally we can define the probability measure on a sample space $\Omega$ and a sigma algebra $\mathcal{F}$ as:
 
 ```math
 \begin{align*}
@@ -188,7 +196,7 @@ So far we actually haven't seen any probabilities. We have only defined what exp
 \end{align*}
 ```
 
-And that satisfies some properties. These properties are called the **Kolmogorov axioms** and were introduced by the Russian mathematician Andrey Kolmogorov in 1933. We can see that each event $A$ is assigned a probability $\P(A)$ which is a number between 0 and 1. 1 means that the event is certain to happen and 0 means that the event is impossible. This leads to the first property that the probability measure must satisfy. 
+For such a function to be a probability measure it needs to satisfy some properties just like the sigma algebra to be compatbile with probability theory. These properties are called the **Kolmogorov axioms** and were introduced by the Russian mathematician Andrey Kolmogorov in 1933. We can see that each event $A$ is assigned a probability $\P(A)$ which is a number between 0 and 1 and that 1 means that the event is certain to happen and 0 means that the event is impossible. This leads to the first property that the probability measure must satisfy. 
 
 ```math
 \P(\Omega) = 1
@@ -200,16 +208,16 @@ so the probability of the certain event is 1 as it will always occur. The next p
 \P(A) = \sum_{i=1}^{\infty} \P(A_i) \text{ where } A = \bigcup_{i=1}^{\infty} A_i \text{ and } A_i \cap A_j = \emptyset \text{ for } i \neq j \text{ so a disjoint union}
 ```
 
-This property is very important because it allows us to calculate the probability of complex events by breaking them down into its disjoint parts which at the lowest level are the probabilities of the elementary events or outcomes.
+This property is very important because it allows us to calculate the probability of complex events by breaking them down into its disjoint parts which at the lowest level are the probabilities of the outcomes.
 
 <Callout type="example">
-We can now define the probability measure for the sample space of rolling a six-sided die. We can say that each outcome is equally likely so the probability of each outcome is $\frac{1}{6}$. So the probability measure for the sample space is:
+We can now define the probability measure for the sample space of rolling a six-sided die. We can say that each outcome is equally likely, so the probability of each outcome is $\frac{1}{6}$. Therefore the probability measure for the sample space is:
 
 ```math
 \P(\{1\}) = \frac{1}{6}, \P(\{2\}) = \frac{1}{6}, \ldots, \P(\{6\}) = \frac{1}{6}
 ```
 
-We can now calculate the probability of more complex events by breaking them down into their disjoint parts. For example, the probability of the event "rolling an even number" is:
+Using this we can calculate the probability of more complex events by breaking them down into their disjoint parts. For example, the probability of the event "rolling an even number" is:
 
 ```math
 \P(\{2,4,6\}) = \P(\{2\}) + \P(\{4\}) + \P(\{6\}) = \frac{1}{6} + \frac{1}{6} + \frac{1}{6} = \frac{1}{2}
@@ -220,9 +228,9 @@ Which matches our intuition that the probability of rolling an even number is $\
 
 ## Laplace Experiments
 
-If all elementary events in a random experiment have the same probability of occurring, meaning all outcomes are **equally likely**, we speak of a Laplace experiment. This is also called a uniform distribution.
+There are some experiments that occur in a very regular manner, which earns them a name. One such experiment is the **Laplace experiment**. If all outcomes in a random experiment have the same probability of occurring, meaning all outcomes are **equally likely**, we speak of a Laplace experiment. 
 
-For a sample space of size $|\Omega|=m$ with $m$ equally likely elementary events, we have a **Laplace space**. Each elementary event $\omega_i$ has the same probability, known as **counting density**:
+For a sample space of size $|\Omega|=m$ with $m$ equally likely outcomes, we have a **Laplace space**. Each outcome $\omega_i$ has the same probability, known as **counting density**:
 
 ```math
 P(\{\omega_i\}) = p(\omega_i)= \frac{1}{m} \text{ with } i=1,2,...,m
@@ -234,10 +242,10 @@ Thus, the probability of an event $A$ is defined as:
 P(A) = \sum_{\omega_i \in A}{p(\omega_i)} = |A| \cdot \frac{1}{m} = \frac{|A|}{m}
 ```
 
-<Callout type="example" title="Example Laplace Experiment: Rolling a Die">
+<Callout type="example">
 When rolling a die, all 6 outcomes are equally likely, making it a Laplace experiment.
 
-For each elementary event, $p(\omega_i) = \frac{1}{6}$
+For each outcome, $p(\omega_i) = \frac{1}{6}$
 
 For the event "even number," $A = \{2,4,6\}$, the probability is:
 
@@ -246,7 +254,17 @@ P(A)=\frac{3}{6} = \frac{1}{2} = 50\%
 ```
 </Callout>
 
+## Bernoulli Experiment
+
+Another common experiment is the **Bernoulli experiment**. A Bernoulli experiment is a random experiment with exactly two possible outcomes. This can often be interpreted as a success/hit or failure/miss. 
+
+The most simple Bernoulli experiment is flipping a coin. The two possible outcomes are heads or tails. We can also interpret this as a success if we get heads and a failure if we get tails. Another example is rolling a die. We can interpret this as a success if we roll a 6 and a failure if we roll any other number.
+
+Importantly, unlike a Laplace experiment, the probabilities of the outcomes do not necessarily have to be equal. In the the case of flipping a coin this holds and is a laplace experiment if the coin is fair. But if we have a biased coin then the probabilities of the outcomes are not equal. The same goes for rolling a 6. With a fair die the probability of rolling a 6 and therefore having a "success" is $\frac{1}{6}$. The probability of rolling a failure, i.e not rolling a 6 is then $\frac{5}{6}$.
+
 ## Why use Sigma Algebras?
+
+As already previously mentioned, in some cases when the sample space is very large we might not want to consider all possible events. In such cases we can define a sigma algebra which is a specific collection of events that we are interested in. Let's see some examples of why we might want to define a sigma algebra.
 
 ### Finite Sample Space
 
@@ -280,163 +298,3 @@ Thus, we have $\omega_i = i$ for $i=(1,2,...)$ and
 </Callout>
 
 ### Uncountable Sample Space
-
-## Conditional Probability
-
-The conditional probability of $B$ given $A$ is defined as:
-
-```math
-P(B | A)= \frac{P(A \cap B)}{P(A)}
-```
-
-## Multiplication Rule
-
-Rearranging the conditional probability formula gives the multiplication rule:
-
-```math
-P(A \cap B)=P(A) \cdot P(B|A)
-```
-
-```math
-P(A) \cdot P(B|A) = P(B) \cdot P(A|B)
-```
-
-
-## Law of Total Probability
-
-The **total probability** for an event $B$, where $A_i$ are the possible intermediate events leading to $B$, is given by:
-
-```math
-P(B)= \sum_{i=1}^{n}{P(A_i)\cdot P(B|A_i)}
-```
-
-A good video explanation can be found [here](https://studyflix.de/statistik/satz-der-totalen-wahrscheinlichkeit-1111) and [here](https://www.youtube.com/watch?v=0iJSW0VNddo).
-
-## Bayes' Theorem
-
-Given that event $B$ has already occurred, the probability that it happened via intermediate event $A_j$ is given by Bayes' theorem:
-
-```math
-P(A_j|B)= {P(A_j \cap B) \over P(B)} = {P(A_j) \cdot P(B | A_j) \over P(B)}
-```
-
-A good video explanation can be found [here](https://studyflix.de/statistik/satz-von-bayes-1113) and [here](https://www.youtube.com/watch?v=wUDxQFbXqjA).
-
-## De Morgan's Laws
-
-De Morgan's laws also apply to events:
-
-```math
-\begin{align*}
-    \overline{A \cup B} &= \overline{A} \cap \overline{B} \\
-    \overline{A \cap B} &= \overline{A} \cup \overline{B}
-\end{align*}
-```
-
-## Stochastic Independence
-
-It is possible that the probability of an event $B$ depends on another event $A$. This leads us to the concept of conditional probability.
-
-However, if this is not the case, meaning that the events do not depend on each other, we refer to such events as **stochastically independent**. In this case, the following holds:
-
-```math
-P(A | B) = P(A) \text{ and } P(B | A) = P(B)
-```
-
-From the multiplication rule, we then get:
-
-```math
-P(A \cap B)=P(A) \cdot P(B|A)=P(A) \cdot P(B)
-```
-
-Thus, we can define that two events are stochastically independent if:
-
-```math
-P(A \cap B)= P(A) \cdot P(B)
-```
-
-<Callout type="example" title="Example: Stochastically Independent Coin Tosses">
-
-A coin is tossed three times, and we consider the following events:
-
-- $A=$ Heads on the 1st toss
-- $B=$ Heads on the 2nd toss
-- $C=$ Tails on the 3rd toss
-
-They are all stochastically independent since they do not influence each other.
-
-</Callout>
-
-## Multi-Stage Random Experiments
-
-In a multi-stage random experiment, multiple random experiments are conducted sequentially. These are often represented using tree diagrams (event trees), distinguishing between final outcomes and intermediate outcomes.
-
-We define the following rules:
-
-1. The probabilities along a path are multiplied together.
-2. If multiple paths lead to the same final outcome, their probabilities are added.
-
-A good video explanation can be found [here](https://studyflix.de/statistik/baumdiagramm-1107).
-
-<Callout type="example" title="Example: Multi-Stage Random Experiment">
-
-An urn contains 6 balls: 2 white and 4 black. We randomly draw 2 balls one after another without replacement, meaning 2 stages. We ask: What is the probability of drawing 2 balls of the same color ($A$) or 2 balls of different colors ($B$)?
-
-**Stage 1:**
-
-- $P(W) = {2 \over 6} = {1 \over 3}$
-- $P(S) = {4 \over 6} = {2 \over 3}$
-
-**Stage 2:**
-After the first draw, only 5 balls remain. If a white ball was drawn:
-
-- $P(W|W) = {1 \over 5}$
-- $P(S|W) = {4 \over 5}$
-
-If a black ball was drawn:
-
-- $P(W|S) = {2 \over 5}$
-- $P(S|S) = {3 \over 5}$
-
-The results are:
-
-For same-colored balls:
-
-```math
-P(A)=P(WW) + P(SS) = {1 \over 3} \cdot {1 \over 5} + {2 \over 3} \cdot {2 \over 5} = {7 \over 15}
-```
-
-For differently-colored balls:
-```math
-P(A)=P(WS) + P(SW) = {1 \over 3} \cdot {4 \over 5} + {2 \over 3} \cdot {2 \over 5} = {8 \over 15}
-```
-
-![multi-stage-random-experiment](/maths/mehrstufigeZufallsexperimente.png)
-
-</Callout>
-
-## Birthday Paradox
-
-The birthday paradox is an example of how certain probabilities are often misestimated intuitively.
-
-We ask: "What is the probability that at least two people in a group of $k$ people share the same birthday?"
-
-To answer this, we first consider the probability that **no** two people share a birthday:
-
-For 2 people: ${365 \over 365} \cdot {364 \over 365}$  
-For 3 people: ${365 \over 365} \cdot {364 \over 365} \cdot {363 \over 365}$  
-etc.  
-
-This probability approaches 0 as $k$ increases. Thus, we can answer our question as follows:
-
-```math
-P(\text{same})=1-P(\text{different}) \Leftrightarrow P(A)=1- \frac{365 \cdot (365-1)\cdot...\cdot (365-n+1)}{365^n}
-```
-
-## Bernoulli Experiment
-
-A Bernoulli experiment is a random experiment with exactly two possible outcomes: success or failure.
-
-A common example is rolling a die. We are only interested in whether we roll a 6. That is, rolling a 6 is considered a success, while all other outcomes are grouped together as a failure.
-
-Unlike a Laplace experiment, the probabilities of the outcomes do not necessarily have to be equal. In the example above, the probability of success is $\frac{1}{6}$.
