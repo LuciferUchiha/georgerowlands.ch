@@ -202,7 +202,11 @@ For such a function to be a probability measure it needs to satisfy some propert
 \P(\Omega) = 1
 ```
 
-so the probability of the certain event is 1 as it will always occur. The next property is called **countable-additivity** or sometimes also **$\sigma$-additivity**. This property states that the probability of the union of mutually exclusive events is equal to the sum of the probabilities of the individual events. 
+so the probability of the certain event is 1 as it will always occur. 
+
+### Countable Additivity
+
+The next property is called **countable-additivity** or sometimes also **$\sigma$-additivity**. This property states that the probability of the union of mutually exclusive events is equal to the sum of the probabilities of the individual events. 
 
 ```math
 \P(A) = \sum_{i=1}^{\infty} \P(A_i) \text{ where } A = \bigcup_{i=1}^{\infty} A_i \text{ and } A_i \cap A_j = \emptyset \text{ for } i \neq j \text{ so a disjoint union}
@@ -224,6 +228,38 @@ Using this we can calculate the probability of more complex events by breaking t
 ```
 
 Which matches our intuition that the probability of rolling an even number is $\frac{1}{2}$.
+</Callout>
+
+### Inclusion-Exclusion Principle
+
+<Callout type="todo">
+But what if the event is not mutually exclusive? Inclusion-exclusion principle
+</Callout>
+
+### Union Bound
+
+<Callout type="todo">
+monotonicity for two events and then generalize to n events which becomes booles inequality. Is called union bound because it is a bound on the union of events. 
+</Callout>
+
+### Complementary Events
+
+If we know that the probability of an event $A$ is $p$ so $\P(A) = p$ then we can also quickly calculate the probability of the **complementary event** so if the event $A$ does not occur then the event $A^c$ must occur. The probability of the complementary event is then:
+
+```math
+\P(A^c) = 1 - \P(A) = 1 - p
+```
+
+The proof of this is rather simple as we can see that the event $A$ and the event $A^c$ are mutually exclusive and exhaustive. So together they make up the entire sample space. So we can write:
+
+```math
+\P(A) + \P(A^c) = \P(\Omega) = 1 \Rightarrow \P(A^c) = 1 - \P(A)
+```
+
+### Continuity of Probability Measure
+
+<Callout type="todo">
+This is kind of weird and is the part where the events are monotonic.
 </Callout>
 
 ## Laplace Experiments
@@ -278,23 +314,78 @@ Where $n$ is the number of possible outcomes and $n \in \mathbb{N}$.
 
 <Callout type="example" title="Example Finite Sample Space">
 We are playing dungeons and dragons and we are rolling a 20-sided die. Then the sample space is:
+
 ```math
 \Omega = \{1,2,3, \ldots, 20\}
+```
+
+For the events space we can just take the power set of the sample space:
+
+```math
+\mathcal{F} = \mathscr{P}(\Omega) = \{\emptyset, \{1\}, \{2\}, \ldots, \{20\}, \{1,2\}, \ldots, \{1,2,\ldots,20\}\}
+```
+
+And because the d20 is fair we have a Laplace experiment with the probability measure:
+
+```math
+\P(\{\omega_i\}) = p(\omega_i)= \frac{1}{20} \text{ with } i=1,2,...,20
 ```
 </Callout>
 
 ### Countable Sample Space
 
-Contains infinitely many elementary events, but they can be numbered like the natural numbers.
-
-<Callout type="example" title="Example Countably Infinite Sample Space">
-We roll a die until we get a 6 for the first time. Theoretically, this could take forever, but we can count the number of rolls until the first 6 appears.
-
-Thus, we have $\omega_i = i$ for $i=(1,2,...)$ and
+Now if we have a sample space that is countably infinite, we can still define a sample space. This means that the sample space contains infinitely many outcomes, but they can be numbered like the natural numbers. 
 
 ```math
-\Omega = \{1,2,3,...\}
+\Omega = \{\omega_1,\omega_2,\omega_3,...\} \text{ with } \omega_i \in \mathbb{N} \text{ and } i=1,2,...,\infty
+```
+
+Importantly the sample space is countable so $|\Omega|=|\N|$. This is important asdDespite the sample space being infinite we can still define a probability measure for the sample space that still adds up to 1.
+
+<Callout type="example">
+We flip a biased coin multiple times. The coin lands on heads with a probability of $p$ and on tails with a probability of $1-p$. If we stop flipping the coin when we get tails we can define the sample space as:
+
+```math
+\Omega = \N = \{1,2,3,...\}
+```
+
+Where the outcome is the number of flips until we get tails. This could be any natural number and could therefore also go on forever if we are super unlucky and never get tails. The proability that we get tails after $k$ flips is:
+
+```math
+p_k = p^{k-1}(1-p) \text{ with } k=1,2,3,...
+```
+
+As for the first $k-1$ flips we have to get heads and on the $k$-th flip we have to get tails. As the events space we can again just simply take the power set of the sample space and the probability measure is:
+
+```math
+P(A) = \sum_{k \in A} p_k = \sum_{k \in A} p^{k-1}(1-p) \text{ with } A \in \mathcal{F}
+```
+
+To show that this is a valid probability measure we let the sum go to infinity and you just have to trust me that my calculus skills are good enough to show that this converges to 1. 
+
+```math
+\sum_{k=1}^{\infty} p_k = \sum_{k=1}^{\infty} p^{k-1}(1-p) = 1
 ```
 </Callout>
 
 ### Uncountable Sample Space
+
+Now comes the tricky part. Suppose $\Omega$ is uncountable, i.e. it contains infinitely many outcomes but they can not be numbered like the natural numbers. An example for such a sample space could be the set of all real numbers between 0 and 1. This is an uncountable set because there are infinitely many real numbers between 0 and 1 and they can not be numbered like the natural numbers. 
+
+```math
+\Omega = [0,1] \text{ or } \mathbb{R} \text{ or } \mathbb{R}^n
+```
+
+This means that the sample space is uncountable and therefore we can not just take the power set of the sample space as the event space. As for some events we can not define a proability meassure that satisfies the properties of a probability measure such as adding up to 1. So in some cases the following will not work:
+
+```math
+P(A) = \sum_{\omega \in A} p_{\omega} \text{ with } A \in \mathcal{F}
+```
+
+For uncountable sets, this kind of sum doesn't work as if we assign a nonzero probability to each individual point they would sum to infinity, and assigning zero to all points gives a total probability of zero which is also not valid. This is why instead we need to use a special sigma algebras to restrict the events space to a collection of events that we are interested in and for which we can define a probability measure.
+
+<Callout type="example">
+Think of a droplet of water in a segment $[0,1]$. The sample space is the set of all possible locations of the droplet in the segment. The sample space is uncountable because there are infinitely many real numbers between 0 and 1. So we can not just take the power set of the sample space as the event space. So instead we use a special sigma algebra called the **Borel sigma algebra**. I Will not go into detail how it is constructed but you need to be aware that we can not just always use the power set of the sample space. 
+
+Same goes for the proability measure. We can not just use the counting density as we did for the finite laplace space. Instead we need to use a special probability measure called the **Lebesgue measure**. This is a special probability measure that is defined on the Borel sigma algebra and is used to define the probability of events in uncountable sample spaces.
+</Callout>
