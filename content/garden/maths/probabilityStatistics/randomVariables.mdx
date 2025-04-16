@@ -1,1 +1,270 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
 # Random Variables
+
+So far we have seen how to work with probabilities of events and how to calculate them. However, we are often interested in quantifying outcomes of random experiments. This is where **random variables** come into play. A random variable is a function that assigns a numerical value to each outcome of a random experiment. More formally we define a random variable (r.v. or RV) $X$ as a function as follows:
+
+```math
+\begin{align*}
+X: \Omega &\to \mathbb{R} \\
+\omega &\mapsto a \in \mathbb{R}
+\end{align*}
+```
+
+where $\Omega$ is the sample space of the random experiment and $a$ is a real number. Importantly, for the random variable to be well defined, the function $X$ must be measurable. In other words, for all $a \in \mathbb{R}$, the following set must be measurable:
+
+```math
+\{\omega \in \Omega | X(\omega) \leq a\} \in \mathcal{F}
+```
+
+where $\mathcal{F}$ is the sigma-algebra of the sample space. This means that we can assign a probability to the event that the random variable takes on a value less than or equal to $a$. This is important because it allows us to use the random variable to model the outcomes of the random experiment in a probabilistic way. Here as always we need to be careful if our set of outcomes is not countable as then the sigma-algebra can get complicated and the definition of the random variable can be more complex.
+
+<Callout type="example">
+As a simple example let's look at a fun gambling game we can play with our friends. The game is as follows, we throw a die and if the die shows a 1, 2 or 3 we lose 1 point. If we throw a 4 nothing happens. If we throw a 5 or 6 we win 2 points. We can now define a random variable $X$ to quantify our profit and describe the outcome of the game. The random variable $X$ is defined as follows:
+
+```math
+\forall \omega \in \Omega: X(\omega) = \begin{cases}
+-1 & \text{ if } \omega = 1, 2, 3 \\
+0 & \text{ if } \omega = 4 \\
+2 & \text{ if } \omega = 5, 6
+\end{cases}
+```
+
+So if we throw a 5 we get $X(5) = 2$ points. If we throw a 1 we get $X(1) = -1$ points. Importantly we said that the for all $a \in \mathbb{R}$ the set $\{\omega \in \Omega | X(\omega) \leq a\}$ must be in our sigma-algebra. So depending on our sigma-algebra a random variable can be well defined for it or not. Consider the following sigma-algebra:
+
+- $\mathcal{F}_1 = \mathcal{P}(\Omega)$, the power set of $\Omega$. This is the largest sigma-algebra and contains all possible events.
+- $\mathcal{F}_2 = \{\emptyset, \Omega\}$, the trivial sigma-algebra. This is the smallest sigma-algebra and contains only the empty set and the whole sample space.
+- $\mathcal{F}_3 = \{\emptyset, \{1, 2, 3\}, \{4, 5, 6\}, \Omega\}$.
+- $\mathcal{F}_4 = \{\emptyset, \{1, 2, 3\}, \{1, 2, 3, 4\}, \{4, 5, 6\}, \{5, 6\}, \{1, 2, 3, 5, 6\}, \{4\}, \Omega\}$.
+
+If we collect the outcomes for all the different random variable values we get the following sets:
+
+```math
+\{\omega \in \Omega | X(\omega) \leq a\} = \begin{cases}
+\emptyset & \text{ if } a < -1 \\
+\{1, 2, 3\} & \text{ if } -1 \leq a < 0 \\
+\{1, 2, 3, 4\} & \text{ if } 0 \leq a < 2 \\
+\{1, 2, 3, 4, 5, 6\} & \text{ if } a \geq 2
+\end{cases}
+```
+
+So we notice that the random variable is not well defined for $\mathcal{F}_2$ as the set $\{1, 2, 3\}$ is not in the sigma-algebra and not for $\mathcal{F}_3$ as the set $\{1, 2, 3, 4\}$ is not in the sigma-algebra. However, it is well defined for $\mathcal{F}_1$ and $\mathcal{F}_4$. So we can use the random variable $X$ to quantify our profit in the game if we use these sigma-algebras. In most cases we will use the power set of the sample space as our sigma-algebra, so we can use any random variable we want. However, it is important to keep in mind that the random variable must be well defined for the sigma-algebra we are using and that we can not always use the power set as our sigma-algebra.
+</Callout>
+
+<Callout type="example" title="Indicator Variables">
+If we have a specific event $A$ in our sample space $\Omega$, we can also define a special random variable called an **indicator variable**. The indicator variable is defined as follows:
+
+```math
+\forall \omega \in \Omega: 1_A(\omega) = \begin{cases}
+1 & \text{ if } \omega \in A \\
+0 & \text{ if } \omega \notin A
+\end{cases}
+```
+
+If we again analyze the set $\{\omega \in \Omega | 1_A(\omega) \leq a\}$ we get the following sets:
+
+```math
+\{\omega \in \Omega | 1_A(\omega) \leq a\} = \begin{cases}
+\emptyset & \text{ if } a < 0 \\
+A^c & \text{ if } 0 \leq a < 1 \\
+\Omega & \text{ if } a \geq 1
+\end{cases}
+```
+
+So we notice that for the indicator variable to be well defined we need to have the event $A$ in our sigma-algebra. 
+</Callout>
+
+## Probability of Random Variables
+
+We have seen that a random variable is a function that assigns a numerical value to each outcome of a random experiment and we have seen that we can assign a probability to an event. In this section we want to combine these two concepts and assign a probability to a random variable. We have already seen that for all values $a \in \mathbb{R}$ of a random variable $X$ we can define the following set:
+
+```math
+\{\omega \in \Omega | X(\omega) \leq a\} \in \mathcal{F}
+```
+
+This set contains all the outcomes of the random experiment for which the random variable $X$ takes on a value less than or equal to $a$. Because it is a set of outcomes it means that we can assign a probability to it. We can do this by using the probability measure $P$ of the sigma-algebra $\mathcal{F}$. More specifically the probability of the random variable $X$ taking on a value less than or equal to $a$ is defined as follows:
+
+```math
+\P(\{\omega \in \Omega | X(\omega) \leq a\})
+```
+
+To simplify the notation we usually omit the dependence on the outcome $\omega$ and the brackets and just simply write:
+
+```math
+\P(X \leq a)
+```
+
+This is the probability of the random variable $X$ taking on a value less than or equal to $a$. We can also extend this notation to the case where the random variable $X$ takes on a value in an interval $(a, b]$:
+
+```math
+\P(X \in (a, b]) = \P(a < X \leq b) = \P(\{\omega \in \Omega | a < X(\omega) \leq b\})
+```
+
+Or also more rarely used to the case where the random variable $X$ takes on a value in some set $A$:
+
+```math
+\P(X \in A) = \P(\{\omega \in \Omega | X(\omega) \in A\})
+```
+
+<Callout type="todo">
+Are these valid definitions of the probability of a random variable?
+What about equals, less than, greater than, etc?
+</Callout>
+
+<Callout type="example">
+If we go back to our example of the gambling game we can now calculate the different probabilities of the random variable $X$ taking on a value less than or equal to $a$. We defined the random variable $X$ as follows:
+
+```math
+\forall \omega \in \Omega: X(\omega) = \begin{cases}
+-1 & \text{ if } \omega = 1, 2, 3 \\
+0 & \text{ if } \omega = 4 \\
+2 & \text{ if } \omega = 5, 6
+\end{cases}
+```
+
+We have also already analyzed the different sets of outcomes for the different values of $a$:
+
+```math
+\{\omega \in \Omega | X(\omega) \leq a\} = \begin{cases}
+\emptyset & \text{ if } a < -1 \\
+\{1, 2, 3\} & \text{ if } -1 \leq a < 0 \\
+\{1, 2, 3, 4\} & \text{ if } 0 \leq a < 2 \\
+\{1, 2, 3, 4, 5, 6\} & \text{ if } a \geq 2
+\end{cases}
+```
+
+Because when throwing a die we have a laplace experiment we know that the probability of each outcome is $\frac{1}{6}$. So we can now calculate the different probabilities:
+
+```math
+\begin{align*}
+\P(X \leq -1) &= \P(\{1, 2, 3\}) = \frac{3}{6} = \frac{1}{2} \\
+\P(X \leq 0) &= \P(\{1, 2, 3, 4\}) = \frac{4}{6} = \frac{2}{3} \\
+\P(X \leq 2) &= \P(\{1, 2, 3, 4, 5, 6\}) = \frac{6}{6} = 1 \\
+\end{align*}
+```
+
+What about less than 1 or positive? etc?
+</Callout>
+<Callout type="example">
+We can also do the same and define the proability of an indicator variable for an event $A$. 
+
+```math
+\begin{align*}
+\P(1_A \leq 0) = \P(\{\omega \in \Omega | 1_A(\omega) \leq 0\}) = \P(A^c) = 1 - \P(A) \\
+\P(1_A \leq 1) = \P(\{\omega \in \Omega | 1_A(\omega) \leq 1\}) = \P(A) \\
+\P(1_A \leq 2) = \P(\{\omega \in \Omega | 1_A(\omega) \leq 2\}) = 1 \\
+\end{align*}
+```
+
+Is this correct?
+</Callout>
+
+## Probability Mass Function (PMF)
+
+If the random variable is discrete, so in other words the range of the random variable are countable, we can define the **probability mass function** short PMF, or sometimes also called the **density function**. The PMF is defined as follows for all discrete values $a$ of the random variable $X$:
+
+```math
+p_X(a) = \P(X = a) = \P(\{\omega \in \Omega | X(\omega) = a\}) = \P(X \in \{a\})
+```
+    
+where $a$ is a value of the random variable $X$. Sometimes we also write $f_X(a)$ instead of $p_X(a)$. The PMF is a function that assigns a probability to each value of the random variable. This means that the PMF maps a value of the range of the random variable to a probability between 0 and 1. Because the PMF is only define for discrete values the graph of the PMF is a set of discrete points. 
+
+It is important to note that the PMF is only defined for discrete random variables. For continuous random variables we will define a different function called the **probability density function** (PDF) which we will see later.
+
+<Callout type="todo">
+Why does it not work for continuous random variables? What does it have to do with countable outcomes and sigma-algebras?
+</Callout>
+
+## Cumulative Distribution Function (CDF)
+
+For any random variable $X$ we can define the **cumulative distribution function**, short CDF or sometimes also called the **distribution function**. The CDF is defined as follows for any value $a \in \mathbb{R}$:
+
+```math
+F_X(a) = \P(X \leq a) = \P(\{\omega \in \Omega | X(\omega) \leq a\})
+```
+
+This function assigns a probability to the random variable $X$ taking on a value less than or equal to $a$. So this means that the CDF is a function that maps a value of the range of the random variable to a probability between 0 and 1. If the random variable is discrete, we can also define the CDF as follows:
+
+```math
+F_X(a) = \sum_{a \in X, a\leq a} p_X(a) = \sum_{a \in X, a \leq a} \P(X = a)
+```
+
+Because probabilities are always between 0 and 1, the CDF is a non-decreasing function or in other words monotonicily increasing. This means that the CDF is a function that is always increasing or constant, but never decreasing. This comes from the fact that if $a \leq b$ then $\{\omega \in \Omega | X(\omega) \leq a\} \subseteq \{\omega \in \Omega | X(\omega) \leq b\}$, so we have:
+
+```math
+\P(X \leq a) \leq \P(X \leq b)
+```
+
+If we have $a < b$ then we also have the following:
+
+```math
+\P(a < X \leq b) = F_X(b) - F_X(a)
+```
+
+This is the so called basic identity and can directly be proven by reordering the disjoint union:
+
+```math
+\begin{align*}
+\{X \leq b\} &= \{X \leq a\} \cup \{a < X \leq b\} \\
+\P(X \leq b) &= \P(\{X \leq a\} \cup \{a < X \leq b\}) \\
+F_X(b) &= F_X(a) + \P(a < X \leq b) \\
+\P(a < X \leq b) &= F_X(b) - F_X(a)
+\end{align*}
+```
+
+<Callout type="todo">
+The CDF is also a right-continuous function, which means that it is continuous from the right. 
+
+As $a$ goes to infinity the CDF goes to 1 and as $a$ goes to minus infinity the CDF goes to 0. This means that the CDF is a function that is bounded between 0 and 1.
+</Callout>
+
+Importantly, the CDF is defined for all types of random variables, not just discrete values. This means that we can use the CDF to calculate probabilities for both discrete and continuous random variables.
+
+<Callout type="example">
+If we go back to our example of the gambling game we already saw some of the probabilities of the random variable $X$ taking on a value less than or equal to $a$. We can now define the CDF for the random variable $X$ for all values of $a \in \mathbb{R}$:
+
+```math
+F_X(a) = \begin{cases} 
+0 & \text{ if } a < -1 \\
+\frac{1}{2} & \text{ if } -1 \leq a < 0 \\
+\frac{2}{3} & \text{ if } 0 \leq a < 2 \\
+1 & \text{ if } a \geq 2
+\end{cases}
+```
+
+TODODODOODODODODOD PLOT
+</Callout>
+<Callout type="example">
+Again we can also do the same and define the CDF for an indicator variable for an event $A$. 
+
+```math
+F_X(a) = \begin{cases}
+0 & \text{ if } a < 0 \\
+1 - \P(A) & \text{ if } 0 \leq a < 1 \\
+1 & \text{ if } a \geq 1
+\end{cases}
+```
+</Callout>
+
+## Bernoulli Distribution
+
+## Uniform Distribution
+
+## Independent Random Variables
+
+## Transforming Random Variables
+
+## Constructing Random Variables
+
+## Discrete vs Continuous Random Variables
+
+### Binomial Distribution
+
+### Geometric Distribution
+
+### Poisson Distribution
+
+### Exponential Distribution
+
+### Normal Distribution

@@ -108,7 +108,8 @@ Because we know coin tosses are indepdent of each other we can then also easily 
 ```
 </Callout>
 
-<Callout type="info">
+### Physical Independence vs Stochastic Independence
+
 It is important to note that stochastic independence does not have to mean that the events are physically independent of each other. Two events can be indepdent of each other despite the experiment only being conducted once physically. An interesting example of this is if we throw two dice at the same time. The two dice are physically independent of each other. Now we have the following events:
 - $A$: The first die is even, so $A=$\{(2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6)\}. So $A$ has 18 outcomes out of 36 possible outcomes.
 - $B$: The second die has a sum of 7, so $B=$\{(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)\}. So $B$ has 6 outcomes out of 36 possible outcomes.
@@ -133,10 +134,29 @@ Now we have:
 
 So now clearly the two events are not independent of each other. What is happening here? The reason for this is that within event $B$ the number of outcomes where the event $A$ has an influence is the same as for the ones it doesn't. In other words the number of outcomes where the first die is even is 3 and the number of outcomes where the first die is odd is also 3. So the event has no influence. However, in event $C$ the number of outcomes where the first die is even is 2 and the number of outcomes where the first die is odd is 3. So the parity of the first die matters.
 
-Another important note is that for a probabilistic model the difference between throwing two coins and throwing one coin twice is or two coins one after another is not important. This is because we do not model any dependence between the two coins, so for example the first coin influencing the second coin, which could in practice be the case as the two coins hit each other in the air. So in other words the two events are independent of each other so it does not matter if we throw them at the same time or one after another. This is important to keep in mind as it can lead to confusion.
-</Callout>
+### Independence of Multiple Events
 
-## Multi-Stage Random Experiments
+## Multiplication Rule
+
+By rearranging the formula for conditional probability, we actually get a formula for the intersection of two events, so in other words a formula for when two events happen at the same time. This is called the **multiplication rule**. Why this is called the multiplication rule we will see later when we talk about stochastic independence and multi-stage random experiments. We get the multiplication rule by rearranging the formula for conditional probability by multiplying both sides by $\P(B)$:
+
+```math
+\P(A | B) = \frac{\P(A \cap B)}{\P(B)} \Leftrightarrow \P(A \cap B) = \P(A | B) \cdot \P(B)
+```
+
+This is the multiplication rule for two events. However, this also works the other way around. So in other words if we have the probability of $B$ given $A$, we can also rearrange the formula for conditional probability to get the multiplication rule in the other direction: 
+
+```math
+\P(B | A) = \frac{\P(A \cap B)}{\P(A)} \Leftrightarrow \P(A \cap B) = \P(B | A) \cdot \P(A)
+```
+
+So from this we can see that the multiplication rule is symmetric or more formally we have:
+
+```math
+\P(A \cap B) = \P(A | B) \cdot \P(B) = \P(B | A) \cdot \P(A)
+```
+
+### Multi-Stage Random Experiments
 
 In a multi-stage random experiment, multiple random experiments are conducted sequentially. These are often represented using tree diagrams (event trees), distinguishing between final outcomes and intermediate outcomes.
 
@@ -147,7 +167,16 @@ We define the following rules:
 
 A good video explanation can be found [here](https://studyflix.de/statistik/baumdiagramm-1107).
 
-<Callout type="example" title="Example: Multi-Stage Random Experiment">
+<Callout type="info">
+An important note is that for a probabilistic model the difference between throwing two coins and throwing one coin twice is or two coins one after another is not important. This is because we do not model any dependence between the two coins, so for example the first coin influencing the second coin, which could in practice be the case as the two coins hit each other in the air. So in other words the two events are independent of each other so it does not matter if we throw them at the same time or one after another. This is important to keep in mind as it can lead to confusion.
+If you still find it confussing think of the possible tree diagrams and you will see that they are the same.
+</Callout>
+
+<Callout type="example" title="Independent Stages">
+
+</Callout>
+
+<Callout type="example" title="Dependent Stages">
 An urn contains 6 balls: 2 white and 4 black. We randomly draw 2 balls one after another without replacement, meaning 2 stages. We ask: What is the probability of drawing 2 balls of the same color ($A$) or 2 balls of different colors ($B$)?
 
 **Stage 1:**
@@ -182,26 +211,6 @@ P(A)=P(WS) + P(SW) = {1 \over 3} \cdot {4 \over 5} + {2 \over 3} \cdot {2 \over 
 ![multi-stage-random-experiment](/maths/mehrstufigeZufallsexperimente.png)
 </Callout>
 
-## Multiplication Rule
-
-By rearranging the formula for conditional probability, we actually get a formula for the intersection of two events, so in other words a formula for when two events happen at the same time. This is called the **multiplication rule**. Why this is called the multiplication rule we will see later when we talk about stochastic independence and multi-stage random experiments. We get the multiplication rule by rearranging the formula for conditional probability by multiplying both sides by $\P(B)$:
-
-```math
-\P(A | B) = \frac{\P(A \cap B)}{\P(B)} \Leftrightarrow \P(A \cap B) = \P(A | B) \cdot \P(B)
-```
-
-This is the multiplication rule for two events. However, this also works the other way around. So in other words if we have the probability of $B$ given $A$, we can also rearrange the formula for conditional probability to get the multiplication rule in the other direction: 
-
-```math
-\P(B | A) = \frac{\P(A \cap B)}{\P(A)} \Leftrightarrow \P(A \cap B) = \P(B | A) \cdot \P(A)
-```
-
-So from this we can see that the multiplication rule is symmetric or more formally we have:
-
-```math
-\P(A \cap B) = \P(A | B) \cdot \P(B) = \P(B | A) \cdot \P(A)
-```
-
 <Callout type="example" title="Birthday Problem">
 The birthday paradox is an example of how certain probabilities are often misestimated intuitively.
 
@@ -218,13 +227,6 @@ This probability approaches 0 as $k$ increases. Thus, we can answer our question
 ```math
 P(\text{same})=1-P(\text{different}) \Leftrightarrow P(A)=1- \frac{365 \cdot (365-1)\cdot...\cdot (365-n+1)}{365^n}
 ```
-
-</Callout>
-
-<Callout type="todo">
-We can also extend this to more than two events, so we can have the multiplication rule for $n$ events. 
-
-This chains well with multi-stage random experiments and the birthday paradox.
 </Callout>
 
 ## Law of Total Probability
