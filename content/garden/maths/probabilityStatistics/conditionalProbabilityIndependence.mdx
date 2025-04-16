@@ -1,36 +1,164 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
 # Conditional Probability and Independence
 
+In some cases when performing a random experiment we may already have some prior information or possess incomplete information about the experiment. We may also be interested in knowing the probability of an outcome under certain conditions. This leads us to the concept of **conditional probability**.
 
-## Conditional Probability
+The most simple example would be if we threw a die and then a friend told us that the die showed an even number. If we then wanted to know what the probability of the die showing a 6 is, so that we land on Mayfair in Monopoly, we would have to take into account that the die can only show an even number. In this case we have prior information about the die showing an even number which is the same as knowing incomplete information about the die and also wanting to know a probability under certain conditions. This is a conditional probability. 
 
-The conditional probability of $B$ given $A$ is defined as:
+Formally we want to know the probability of an event $A$ given that another event $B$ has already occurred. We denote this as $\P(A | B)$, which is read as the probability of $A$ given $B$. We define the conditional probability of $A$ given $B$ as follows:
 
 ```math
-P(B | A)= \frac{P(A \cap B)}{P(A)}
+\P(A | B) = \frac{\P(A \cap B)}{\P(B)}
 ```
+
+Importantly to avoid division by 0, we need to have $\P(B) \neq 0$. These formula makes sense and can also be intuitively understood. Let's look at this in the case of the die example. We have the following events in a laplace
+- $A$: Die shows 6, so $A=\{6\}$
+- $B$: Die shows an even number, so $B=\{2,4,6\}$
+- $A \cap B$: Die shows 6 and an even number, so $A \cap B=\{6\}$
+
+Because we have a laplace space, the proabilities are simple. But what is the conditional probability actually telling us. In the numerator we have the outcomes that are in both $A$ and $B$, so these are the events that interest us and can happen. In the denominator we have the outcomes that are in $B$, so these are the events that will happen. So the conditional probability is the ratio of the events that interest us and can happen to the events that will happen. For the die example we then get:
+
+```math
+\P(A | B) = \frac{\P(A \cap B)}{\P(B)} = \frac{1/6}{3/6} = \frac{1}{3}
+```
+
+This means that the probability of the die showing a 6 given that it shows an even number is $\frac{1}{3}$. This is intuitive as we have 3 possible outcomes that are even and only one of them is a 6. 
+
+<Callout type="todo">
+This can also be nicely be shown with a Venn diagram
+</Callout>
+
+If it turns out that the prior information we are given happens to be the exact same as the event we are interested in, so $A=B$, then we know that the event $A$ will surely happen and we get the following:
+
+```math
+\P(A | A) = \frac{\P(A \cap A)}{\P(A)} = \frac{\P(A)}{\P(A)} = 1
+```
+
+This again makes intuitively sense as if for example we know that the die shows a 6, then the probability of the die showing a 6 is 1. 
+
+We can also have the opposite case where the prior information makes it impossible for the event to happen, so $A \cap B = \emptyset$. For example if I told you that the die shows a 7, then the probability of the die showing a 6 is 0. This is also intuitive as the die can not show a 7. In this case we get:
+
+```math
+\P(A | B) = \frac{\P(A \cap B)}{\P(B)} = \frac{0}{\P(B)} = 0
+```
+
+An important thing to notice is that prior information is not symmetric. So in other words one event might "increase" the probability of another event, but the other event does not "increase" the probability of the first event by the same amount if even at all. For example if we have two events $A$ and $B$, where $A$ is the die showing a 6 and $B$ is the die showing an even number, then we have:
+
+```math
+\P(A | B) = \frac{\P(A \cap B)}{\P(B)} = \frac{1/6}{3/6} = \frac{1}{3} \text{ and } \P(B | A) = \frac{\P(B \cap A)}{\P(A)} = \frac{1/6}{1/6} = 1
+```
+
+Therefore in general we have that $\P(A | B) \neq \P(B | A)$. This is important to keep in mind as it can lead to confusion.
+
+Depending on the experiment we can also have that the prior information of $B$ has no influence on the event $A$. So the the probability of $A$ is the same as the probability of $A$ given $B$, $\P(A | B) = \P(A)$. This is called **stochastic independence** as the two events do not influence each other and can be done indepdently of each other, we will go into this in more detail later. An example of this would be if we have two coins and we want to know the probability of the second coin showing heads given that the first coin shows heads. So if we model our experiment as a laplace space, we have the following events:
+- $A$: Coin 1 shows heads, so $A=\{(H,H),(H,T)\}$
+- $B$: Coin 2 shows heads, so $B=\{(H,H),(T,H)\}$
+- $A \cap B$: Coin 1 shows heads and Coin 2 shows heads, so $A \cap B=\{(H,H)\}$
+
+We know that the probability of the second coin showing heads is $\frac{1}{2}$, either it shows heads or tails. If we know that the first coin shows heads, this does not change the probability of the second coin showing heads. intuitively this also makes sense as the two coins are physically indepdent of each other and we model them as such, so we do not somehow inbetween the two coin tosses become a supernatural being and influence the second coin toss. So we have:
+
+```math
+\P(A | B) = \frac{\P(A \cap B)}{\P(B)} = \frac{1/4}{1/2} = \frac{1}{2} = \P(A)
+```
+
+By our [definition of a probability meassure](/maths/probabilityStatistics/probabilitySpaces#probability-measure), it turns out that the conditional probability is also a probability meassure. More precisely, if $B$ is an event with $\P(B) \neq 0$, then we can define the conditional probability as a probability meassure on the event space $\mathcal{F}$ of the sample space $\Omega$ as follows:
+
+```math
+\P( \cdot | B) : \mathcal{F} \to [0,1] \text{ with } \P(A | B) = \frac{\P(A \cap B)}{\P(B)}
+```
+
+To show it is a probability meassure we need to show that it satisfies the three properties of a probability meassure:
+1. Countable additivity: $\P(\bigcup_{i=1}^{\infty} A_i | B) = \sum_{i=1}^{\infty} \P(A_i | B)$ for disjoint events $A_i$. ----------------TODOO------------- 
+2. $\P(\emptyset | B) = 0$. We have already seen this above in one of the example and it is rather simple. We have $\emptyset \cap B = \emptyset$ and $\P(B) \neq 0$, so we have $\P(\emptyset | B) = \frac{\P(\emptyset)}{\P(B)} = \frac{0}{\P(B)} = 0$.
+3. $\P(\Omega | B) = 1$. This is also simple as we have $\Omega \cap B = B$ and $\P(B) \neq 0$, so we have $\P(\Omega | B) = \frac{\P(B)}{\P(B)} = 1$.
 
 ## Multiplication Rule
 
-Rearranging the conditional probability formula gives the multiplication rule:
+By rearranging the formula for conditional probability, we actually get a formula for the intersection of two events, so in other words a formula for when two events happen at the same time. This is called the **multiplication rule**. Why this is called the multiplication rule we will see later when we talk about stochastic independence and multi-stage random experiments. We get the multiplication rule by rearranging the formula for conditional probability by multiplying both sides by $\P(B)$:
 
 ```math
-P(A \cap B)=P(A) \cdot P(B|A)
+\P(A | B) = \frac{\P(A \cap B)}{\P(B)} \Leftrightarrow \P(A \cap B) = \P(A | B) \cdot \P(B)
 ```
+
+This is the multiplication rule for two events. However, this also works the other way around. So in other words if we have the probability of $B$ given $A$, we can also rearrange the formula for conditional probability to get the multiplication rule in the other direction: 
 
 ```math
-P(A) \cdot P(B|A) = P(B) \cdot P(A|B)
+\P(B | A) = \frac{\P(A \cap B)}{\P(A)} \Leftrightarrow \P(A \cap B) = \P(B | A) \cdot \P(A)
 ```
 
+So from this we can see that the multiplication rule is symmetric or more formally we have:
+
+```math
+\P(A \cap B) = \P(A | B) \cdot \P(B) = \P(B | A) \cdot \P(A)
+```
+
+<Callout type="example" title="Birthday Problem">
+The birthday paradox is an example of how certain probabilities are often misestimated intuitively.
+
+We ask: "What is the probability that at least two people in a group of $k$ people share the same birthday?"
+
+To answer this, we first consider the probability that **no** two people share a birthday:
+
+For 2 people: ${365 \over 365} \cdot {364 \over 365}$  
+For 3 people: ${365 \over 365} \cdot {364 \over 365} \cdot {363 \over 365}$  
+etc.  
+
+This probability approaches 0 as $k$ increases. Thus, we can answer our question as follows:
+
+```math
+P(\text{same})=1-P(\text{different}) \Leftrightarrow P(A)=1- \frac{365 \cdot (365-1)\cdot...\cdot (365-n+1)}{365^n}
+```
+
+</Callout>
+
+<Callout type="todo">
+We can also extend this to more than two events, so we can have the multiplication rule for $n$ events. 
+
+This chains well with multi-stage random experiments and the birthday paradox.
+</Callout>
 
 ## Law of Total Probability
 
-The **total probability** for an event $B$, where $A_i$ are the possible intermediate events leading to $B$, is given by:
+In some cases we may have a bunch of conditional proabilities and we want to know the total probability of an event. This is called the **law of total probability**. More precisely, if we have the exhaustive mutually exclusive events $B_1, B_2, \ldots, B_n$ so in other words $B_1 \cup B_2 \cup \ldots \cup B_n = \Omega$ and $B_i \cap B_j = \emptyset$ for $i \neq j$. You can also think of these events $B_i$ as [partitions](/maths/discrete/setTheory#partitions) of the sample space $\Omega$. Then we can write the total probability of an event $A$ as follows:
 
 ```math
-P(B)= \sum_{i=1}^{n}{P(A_i)\cdot P(B|A_i)}
+\P(A) = \sum_{i=1}^{n} \P(A | B_i) \cdot \P(B_i) = \sum_{i=1}^{n} \P(A \cap B_i)
 ```
 
-A good video explanation can be found [here](https://studyflix.de/statistik/satz-der-totalen-wahrscheinlichkeit-1111) and [here](https://www.youtube.com/watch?v=0iJSW0VNddo).
+This comes from the multiplication rule and the fact that the events $A_i$ are mutually exclusive. Each term in the sum represents the probability of $B$ occurring given that one of the events $A_i$ has occurred which from the multiplication rule is the same as the events $A_i$ happening and $B$ happening at the same time, so $A_i \cap B$. Because the events $A_i$ are exhaustive they cover the entire sample space $\Omega$, so when we sum over all the events $A_i$ we get the total probability of $B$. We can also prove this formally using the distributivity of set operations. We have:
+
+```math
+A = A \cap \Omega = A \cap (B_1 \cup B_2 \cup \ldots \cup B_n) = (A \cap B_1) \cup (A \cap B_2) \cup \ldots \cup (A \cap B_n)
+```
+ 
+And because the events $A_i$ are mutually exclusive we can use countable additivity to get:
+
+```math
+\P(A) = \P(A \cap B_1) + \P(A \cap B_2) + \ldots + \P(A \cap B_n) = \sum_{i=1}^{n} \P(A \cap B_i) = \sum_{i=1}^{n} \P(A | B_i) \cdot \P(B_i)
+```
+
+<Callout type="example">
+As an example for the law of total probability, let's consider a football match. We have the following events:
+- $A$: The team wins.
+- $B$: The team plays at home.
+- $B^c$: The team plays away.
+
+Now if we wanted to know the probability of the team winning, we could use the law of total probability. For this we need to know the probability of the team winning at home and away and the probability of the team playing at home and away. So for example we could have:
+- $P(A | B) = 0.8$ for the proability of the team winning at home.
+- $P(A | B^c) = 0.3$ for the probability of the team winning away.
+- $P(B) = 0.6$ for the probability of the team playing at home.
+- $P(B^c) = 1 - P(B) = 0.4$ for the probability of the team playing away.
+
+Then we can use the law of total probability to get:
+
+```math
+\P(A) = \P(A | B) \cdot \P(B) + \P(A | B^c) \cdot \P(B^c) = 0.8 \cdot 0.6 + 0.3 \cdot 0.4 = 0.48 + 0.12 = 0.6
+```
+
+This means that the probability of the team winning is 0.6 or 60% with the given probabilities. This is also intuitive from the numbers as the team wins 80% of the time at home and 30% of the time away and they play 60% of the time at home and 40% of the time away. So team is more likely to win.
+</Callout>
 
 ## Bayes' Theorem
 
@@ -134,21 +262,3 @@ P(A)=P(WS) + P(SW) = {1 \over 3} \cdot {4 \over 5} + {2 \over 3} \cdot {2 \over 
 ![multi-stage-random-experiment](/maths/mehrstufigeZufallsexperimente.png)
 
 </Callout>
-
-## Birthday Paradox
-
-The birthday paradox is an example of how certain probabilities are often misestimated intuitively.
-
-We ask: "What is the probability that at least two people in a group of $k$ people share the same birthday?"
-
-To answer this, we first consider the probability that **no** two people share a birthday:
-
-For 2 people: ${365 \over 365} \cdot {364 \over 365}$  
-For 3 people: ${365 \over 365} \cdot {364 \over 365} \cdot {363 \over 365}$  
-etc.  
-
-This probability approaches 0 as $k$ increases. Thus, we can answer our question as follows:
-
-```math
-P(\text{same})=1-P(\text{different}) \Leftrightarrow P(A)=1- \frac{365 \cdot (365-1)\cdot...\cdot (365-n+1)}{365^n}
-```
