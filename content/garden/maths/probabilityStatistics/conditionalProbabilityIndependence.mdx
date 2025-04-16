@@ -36,7 +36,11 @@ If it turns out that the prior information we are given happens to be the exact 
 \P(A | A) = \frac{\P(A \cap A)}{\P(A)} = \frac{\P(A)}{\P(A)} = 1
 ```
 
-This again makes intuitively sense as if for example we know that the die shows a 6, then the probability of the die showing a 6 is 1. 
+This again makes intuitively sense as if for example we know that the die shows a 6, then the probability of the die showing a 6 is 1. There is a similar scenario where the sample space is the condition. You can think of this as if your friend told you that the die is showing a number between 1 and 6. He might as well have told you nothing. In this case we have the following:
+
+```math
+\P(A | \Omega) = \frac{\P(A \cap \Omega)}{\P(\Omega)} = \frac{\P(A)}{1} = \P(A)
+```
 
 We can also have the opposite case where the prior information makes it impossible for the event to happen, so $A \cap B = \emptyset$. For example if I told you that the die shows a 7, then the probability of the die showing a 6 is 0. This is also intuitive as the die can not show a 7. In this case we get:
 
@@ -52,16 +56,7 @@ An important thing to notice is that prior information is not symmetric. So in o
 
 Therefore in general we have that $\P(A | B) \neq \P(B | A)$. This is important to keep in mind as it can lead to confusion.
 
-Depending on the experiment we can also have that the prior information of $B$ has no influence on the event $A$. So the the probability of $A$ is the same as the probability of $A$ given $B$, $\P(A | B) = \P(A)$. This is called **stochastic independence** as the two events do not influence each other and can be done indepdently of each other, we will go into this in more detail later. An example of this would be if we have two coins and we want to know the probability of the second coin showing heads given that the first coin shows heads. So if we model our experiment as a laplace space, we have the following events:
-- $A$: Coin 1 shows heads, so $A=\{(H,H),(H,T)\}$
-- $B$: Coin 2 shows heads, so $B=\{(H,H),(T,H)\}$
-- $A \cap B$: Coin 1 shows heads and Coin 2 shows heads, so $A \cap B=\{(H,H)\}$
-
-We know that the probability of the second coin showing heads is $\frac{1}{2}$, either it shows heads or tails. If we know that the first coin shows heads, this does not change the probability of the second coin showing heads. intuitively this also makes sense as the two coins are physically indepdent of each other and we model them as such, so we do not somehow inbetween the two coin tosses become a supernatural being and influence the second coin toss. So we have:
-
-```math
-\P(A | B) = \frac{\P(A \cap B)}{\P(B)} = \frac{1/4}{1/2} = \frac{1}{2} = \P(A)
-```
+## Conditional Probability as a Probability Measure
 
 By our [definition of a probability meassure](/maths/probabilityStatistics/probabilitySpaces#probability-measure), it turns out that the conditional probability is also a probability meassure. More precisely, if $B$ is an event with $\P(B) \neq 0$, then we can define the conditional probability as a probability meassure on the event space $\mathcal{F}$ of the sample space $\Omega$ as follows:
 
@@ -73,6 +68,119 @@ To show it is a probability meassure we need to show that it satisfies the three
 1. Countable additivity: $\P(\bigcup_{i=1}^{\infty} A_i | B) = \sum_{i=1}^{\infty} \P(A_i | B)$ for disjoint events $A_i$. ----------------TODOO------------- 
 2. $\P(\emptyset | B) = 0$. We have already seen this above in one of the example and it is rather simple. We have $\emptyset \cap B = \emptyset$ and $\P(B) \neq 0$, so we have $\P(\emptyset | B) = \frac{\P(\emptyset)}{\P(B)} = \frac{0}{\P(B)} = 0$.
 3. $\P(\Omega | B) = 1$. This is also simple as we have $\Omega \cap B = B$ and $\P(B) \neq 0$, so we have $\P(\Omega | B) = \frac{\P(B)}{\P(B)} = 1$.
+
+## Stochastic Independence
+
+We have seen that for certain events if we know that one event $B$ has already occurred, this can influence the probability of another event $A$. However, depending on the experiment we can also have that the prior information of $B$ has no influence on the event $A$. So the the probability of $A$ is the same as the probability of $A$ given $B$. This is called **stochastic independence** as the two events do not influence each other and can be done indepdently of each other. More formally we can write this as follows:
+
+```math
+\P(A | B) = \P(A) = \frac{\P(A \cap B)}{\P(B)}
+```
+
+Where $\P(B) \neq 0$. This means that the probability of $A$ given $B$ is the same as the probability of $A$ without any prior information. If we multiply both sides by $\P(B)$ we get:
+
+```math
+\P(A \cap B) = \P(A) \cdot \P(B)
+```
+
+This formula is preferred as it avoids the division by 0 and is more intuitive. The probability of $A$ and $B$ happening is the same as the probability of $A$ happening and then times the probability of $B$ happening. From this formula we can also see that independence is symmetric, so if $A$ and $B$ are independent, then $B$ and $A$ are also independent. As if we would devide both sides by $\P(A)$ we would get:
+
+```math
+\frac{\P(A \cap B)}{\P(A)} = \P(B) \Leftrightarrow \P(B | A) = \P(B)
+```
+
+<Callout type="example">
+An example of this would be if we have two coins and we want to know the probability of the second coin showing heads given that the first coin shows heads. So if we model our experiment as a laplace space, we have the following events:
+- $A$: Coin 1 shows heads, so $A=\{(H,H),(H,T)\}$
+- $B$: Coin 2 shows heads, so $B=\{(H,H),(T,H)\}$
+- $A \cap B$: Coin 1 shows heads and Coin 2 shows heads, so $A \cap B=\{(H,H)\}$
+
+We know that the probability of the second coin showing heads is $\frac{1}{2}$, either it shows heads or tails. If we know that the first coin shows heads, this does not change the probability of the second coin showing heads. intuitively this also makes sense as the two coins are physically indepdent of each other and we model them as such, so we do not somehow inbetween the two coin tosses become a supernatural being and influence the second coin toss. So we have:
+
+```math
+\P(A | B) = \frac{\P(A \cap B)}{\P(B)} = \frac{1/4}{1/2} = \frac{1}{2} = \P(A)
+```
+
+Because we know coin tosses are indepdent of each other we can then also easily calculate the probability of both coins showing heads. This is simply the probability of a coin showing heads times the probability of the other coin showing heads. So we have:
+
+```math
+\P(A \cap B) = \P(A) \cdot \P(B) = \frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}
+```
+</Callout>
+
+<Callout type="info">
+It is important to note that stochastic independence does not have to mean that the events are physically independent of each other. Two events can be indepdent of each other despite the experiment only being conducted once physically. An interesting example of this is if we throw two dice at the same time. The two dice are physically independent of each other. Now we have the following events:
+- $A$: The first die is even, so $A=$\{(2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6)\}. So $A$ has 18 outcomes out of 36 possible outcomes.
+- $B$: The second die has a sum of 7, so $B=$\{(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)\}. So $B$ has 6 outcomes out of 36 possible outcomes.
+- $A \cap B$: The first die is even and the second die has a sum of 7, so $A \cap B=\{(2,5),(4,3),(6,1)\}$. So $A \cap B$ has 3 outcomes out of 36 possible outcomes.
+
+You would think that it matters if the first die is even or not, but it does not. These two events are independent of each other despite their being a physical dependency. To show they are independent we just need to show that the $P(A \cap B) = \P(A) \cdot \P(B)$, so we have:
+
+```math
+\P(A \cap B) = \frac{3}{36} = \frac{1}{12} \text{ and } \P(A) \cdot \P(B) = \frac{18}{36} \cdot \frac{6}{36} = \frac{108}{1296} = \frac{1}{12}
+```
+
+So the two events are independent of each other. Interestingly if we define the event slightly differently we get a different result:
+- $A$: The first die is even, so $A=$\{(2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6)\}. So $A$ has 18 outcomes out of 36 possible outcomes.
+- $C$: The second die has a sum of 6, so $C=$\{(1,5),(2,4),(3,3),(4,2),(5,1)\}. So $C$ has 5 outcomes out of 36 possible outcomes. 
+- $A \cap C$: The first die is even and the second die has a sum of 6, so $A \cap C=\{(2,4),(4,2)\}$. So $A \cap C$ has 2 outcomes out of 36 possible outcomes.
+
+Now we have:
+
+```math
+\P(A \cap C) = \frac{2}{36} = \frac{1}{18} \text{ and } \P(A) \cdot \P(C) = \frac{18}{36} \cdot \frac{5}{36} = \frac{90}{1296} = \frac{5}{72}
+```
+
+So now clearly the two events are not independent of each other. What is happening here? The reason for this is that within event $B$ the number of outcomes where the event $A$ has an influence is the same as for the ones it doesn't. In other words the number of outcomes where the first die is even is 3 and the number of outcomes where the first die is odd is also 3. So the event has no influence. However, in event $C$ the number of outcomes where the first die is even is 2 and the number of outcomes where the first die is odd is 3. So the parity of the first die matters.
+
+Another important note is that for a probabilistic model the difference between throwing two coins and throwing one coin twice is or two coins one after another is not important. This is because we do not model any dependence between the two coins, so for example the first coin influencing the second coin, which could in practice be the case as the two coins hit each other in the air. So in other words the two events are independent of each other so it does not matter if we throw them at the same time or one after another. This is important to keep in mind as it can lead to confusion.
+</Callout>
+
+## Multi-Stage Random Experiments
+
+In a multi-stage random experiment, multiple random experiments are conducted sequentially. These are often represented using tree diagrams (event trees), distinguishing between final outcomes and intermediate outcomes.
+
+We define the following rules:
+
+1. The probabilities along a path are multiplied together.
+2. If multiple paths lead to the same final outcome, their probabilities are added.
+
+A good video explanation can be found [here](https://studyflix.de/statistik/baumdiagramm-1107).
+
+<Callout type="example" title="Example: Multi-Stage Random Experiment">
+An urn contains 6 balls: 2 white and 4 black. We randomly draw 2 balls one after another without replacement, meaning 2 stages. We ask: What is the probability of drawing 2 balls of the same color ($A$) or 2 balls of different colors ($B$)?
+
+**Stage 1:**
+
+- $P(W) = {2 \over 6} = {1 \over 3}$
+- $P(S) = {4 \over 6} = {2 \over 3}$
+
+**Stage 2:**
+After the first draw, only 5 balls remain. If a white ball was drawn:
+
+- $P(W|W) = {1 \over 5}$
+- $P(S|W) = {4 \over 5}$
+
+If a black ball was drawn:
+
+- $P(W|S) = {2 \over 5}$
+- $P(S|S) = {3 \over 5}$
+
+The results are:
+
+For same-colored balls:
+
+```math
+P(A)=P(WW) + P(SS) = {1 \over 3} \cdot {1 \over 5} + {2 \over 3} \cdot {2 \over 5} = {7 \over 15}
+```
+
+For differently-colored balls:
+```math
+P(A)=P(WS) + P(SW) = {1 \over 3} \cdot {4 \over 5} + {2 \over 3} \cdot {2 \over 5} = {8 \over 15}
+```
+
+![multi-stage-random-experiment](/maths/mehrstufigeZufallsexperimente.png)
+</Callout>
 
 ## Multiplication Rule
 
@@ -121,7 +229,9 @@ This chains well with multi-stage random experiments and the birthday paradox.
 
 ## Law of Total Probability
 
-In some cases we may have a bunch of conditional proabilities and we want to know the total probability of an event. This is called the **law of total probability**. More precisely, if we have the exhaustive mutually exclusive events $B_1, B_2, \ldots, B_n$ so in other words $B_1 \cup B_2 \cup \ldots \cup B_n = \Omega$ and $B_i \cap B_j = \emptyset$ for $i \neq j$. You can also think of these events $B_i$ as [partitions](/maths/discrete/setTheory#partitions) of the sample space $\Omega$. Then we can write the total probability of an event $A$ as follows:
+In some cases we may have a bunch of conditional probailities so, the proabilities of an event $A$ given that another event $B$ has already occurred but we actually want to know the total probability of $A$. This leads to the **law of total probability**. 
+
+More precisely, if we have the exhaustive mutually exclusive events $B_1, B_2, \ldots, B_n$ so in other words $B_1 \cup B_2 \cup \ldots \cup B_n = \Omega$ and $B_i \cap B_j = \emptyset$ for $i \neq j$. You can also think of these events $B_i$ as [partitions](/maths/discrete/setTheory#partitions) of the sample space $\Omega$. Then we can write the total probability of an event $A$ as follows:
 
 ```math
 \P(A) = \sum_{i=1}^{n} \P(A | B_i) \cdot \P(B_i) = \sum_{i=1}^{n} \P(A \cap B_i)
@@ -133,7 +243,7 @@ This comes from the multiplication rule and the fact that the events $A_i$ are m
 A = A \cap \Omega = A \cap (B_1 \cup B_2 \cup \ldots \cup B_n) = (A \cap B_1) \cup (A \cap B_2) \cup \ldots \cup (A \cap B_n)
 ```
  
-And because the events $A_i$ are mutually exclusive we can use countable additivity to get:
+And because the events $B_i$ are mutually exclusive we can use countable additivity to get:
 
 ```math
 \P(A) = \P(A \cap B_1) + \P(A \cap B_2) + \ldots + \P(A \cap B_n) = \sum_{i=1}^{n} \P(A \cap B_i) = \sum_{i=1}^{n} \P(A | B_i) \cdot \P(B_i)
@@ -162,103 +272,40 @@ This means that the probability of the team winning is 0.6 or 60% with the given
 
 ## Bayes' Theorem
 
-Given that event $B$ has already occurred, the probability that it happened via intermediate event $A_j$ is given by Bayes' theorem:
+Another common case is we are given a conditional proability and we want to know the reverse of the conditional probability. So we have the probability of an event $B$ given that another event $A$ has already occurred, so $\P(B | A)$ and we want to know the probability of $A$ given that $B$ has already occurred, so $\P(A | B)$. This is called **Bayes' theorem**. Bayes' theorem follows from the multiplication rule and the law of total probability. More formally if we again have the events $B_1, B_2, \ldots, B_n$ which partition the sample space $\Omega$ then we can write Bayes' theorem as follows for the events $A$ and $B_i$:
 
 ```math
-P(A_j|B)= {P(A_j \cap B) \over P(B)} = {P(A_j) \cdot P(B | A_j) \over P(B)}
+\P(B_i | A) = \frac{\P(B_i \cap A)}{\P(A)} = \frac{\P(A | B_i) \cdot \P(B_i)}{\sum_{j=1}^{n} \P(A | B_j) \cdot \P(B_j)}
 ```
 
-A good video explanation can be found [here](https://studyflix.de/statistik/satz-von-bayes-1113) and [here](https://www.youtube.com/watch?v=wUDxQFbXqjA).
+Importantly we need to have $\P(A) \neq 0$ and $\P(B_i) \neq 0$. This is also called the **inverse probability** as we are looking for inverse of the conditional proability that we already have.
 
-## De Morgan's Laws
+<Callout type="example" title="Sickness Test">
+One of the most common examples of Bayes' theorem is the test for a sickness as it can be quiet counter intuitive and paradoxical/scary. We want to develop a test for a rare sickness. We know that the sickness occurs in 0.01% of the population so $\frac{1}{10000}$ people have the sickness. We also know that the test very accurate. If the person really is sick, the test will show positive with a probability of 99%. So we can model this experiment. 
 
-De Morgan's laws also apply to events:
+We create our sample space $\Omega$ as a set of tuples $(X,Y)$ where each tuple represents a person and $X$ is the event of the person being sick and $Y$ is the event of the test showing positive. We use boolean values for $X$ and $Y$. So we have the following events:
+- $S$: The person is sick, so $S=\{(1,0),(1,1)\}$
+- $T$: The test shows positive, so $T=\{(0,1),(1,1)\}$
+- etc.
+
+From the information we have we can get the following probabilities:
+- $\P(S) = 0.0001$ for the probability of a person being sick.
+- $\P(T | S) = 0.99$ for the probability of the test showing positive given that the person is sick.
+- $\P(T | S^c) = 0.01$ for the probability of the test showing positive given that the person is not sick. This follows from the fact that if the test is positive, then there are only two possibilities: the person is sick and the test shows positive or the person is not sick and the test shows positive. 
+
+What we now want to know is if I take the test and it shows positive, what is the probability that I am actually sick. So we want to know $\P(S | T)$. We can use Bayes' theorem to get this:
 
 ```math
-\begin{align*}
-    \overline{A \cup B} &= \overline{A} \cap \overline{B} \\
-    \overline{A \cap B} &= \overline{A} \cup \overline{B}
-\end{align*}
+\P(S | T) = \frac{\P(T | S) \cdot \P(S)}{\sum_{i=1}^{2} \P(T | S_i) \cdot \P(S_i)} = \frac{0.99 \cdot 0.0001}{0.99 \cdot 0.0001 + 0.01 \cdot 0.9999} \approx 0.0098 = 0.98\%
 ```
 
-## Stochastic Independence
+No, you are not seeing that wrong. Despite the test being 99% accurate, the probability of you actually being sick is only 0.98%. Why is this happening? We can split the people that will have a positive test result into two groups:
+1. People that are sick and have a correct positive test result. Because the sickness is so rare, this group represents roughly $\frac{1}{10000}$ of the population, so 0.01% of the population.
+2. The other group is the people that are not sick and have a false positive test result. This group represents roughly $\frac{1}{100}$ of the population, so 1% of the population.
 
-It is possible that the probability of an event $B$ depends on another event $A$. This leads us to the concept of conditional probability.
-
-However, if this is not the case, meaning that the events do not depend on each other, we refer to such events as **stochastically independent**. In this case, the following holds:
-
-```math
-P(A | B) = P(A) \text{ and } P(B | A) = P(B)
-```
-
-From the multiplication rule, we then get:
-
-```math
-P(A \cap B)=P(A) \cdot P(B|A)=P(A) \cdot P(B)
-```
-
-Thus, we can define that two events are stochastically independent if:
-
-```math
-P(A \cap B)= P(A) \cdot P(B)
-```
-
-<Callout type="example" title="Example: Stochastically Independent Coin Tosses">
-
-A coin is tossed three times, and we consider the following events:
-
-- $A=$ Heads on the 1st toss
-- $B=$ Heads on the 2nd toss
-- $C=$ Tails on the 3rd toss
-
-They are all stochastically independent since they do not influence each other.
-
+Given that the test is positive, it is much more likely that you are in the second group than in the first group. This is because the test is so accurate, but the sickness is so rare. This is a common example of how Bayes' theorem can lead to counter intuitive results and it is important to keep this in mind when interpreting test results.
 </Callout>
 
-## Multi-Stage Random Experiments
-
-In a multi-stage random experiment, multiple random experiments are conducted sequentially. These are often represented using tree diagrams (event trees), distinguishing between final outcomes and intermediate outcomes.
-
-We define the following rules:
-
-1. The probabilities along a path are multiplied together.
-2. If multiple paths lead to the same final outcome, their probabilities are added.
-
-A good video explanation can be found [here](https://studyflix.de/statistik/baumdiagramm-1107).
-
-<Callout type="example" title="Example: Multi-Stage Random Experiment">
-
-An urn contains 6 balls: 2 white and 4 black. We randomly draw 2 balls one after another without replacement, meaning 2 stages. We ask: What is the probability of drawing 2 balls of the same color ($A$) or 2 balls of different colors ($B$)?
-
-**Stage 1:**
-
-- $P(W) = {2 \over 6} = {1 \over 3}$
-- $P(S) = {4 \over 6} = {2 \over 3}$
-
-**Stage 2:**
-After the first draw, only 5 balls remain. If a white ball was drawn:
-
-- $P(W|W) = {1 \over 5}$
-- $P(S|W) = {4 \over 5}$
-
-If a black ball was drawn:
-
-- $P(W|S) = {2 \over 5}$
-- $P(S|S) = {3 \over 5}$
-
-The results are:
-
-For same-colored balls:
-
-```math
-P(A)=P(WW) + P(SS) = {1 \over 3} \cdot {1 \over 5} + {2 \over 3} \cdot {2 \over 5} = {7 \over 15}
-```
-
-For differently-colored balls:
-```math
-P(A)=P(WS) + P(SW) = {1 \over 3} \cdot {4 \over 5} + {2 \over 3} \cdot {2 \over 5} = {8 \over 15}
-```
-
-![multi-stage-random-experiment](/maths/mehrstufigeZufallsexperimente.png)
+<Callout type="example" title="Breast Cancer Test">
 
 </Callout>

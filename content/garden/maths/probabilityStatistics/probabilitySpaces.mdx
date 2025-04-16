@@ -185,6 +185,24 @@ The same goes for the relations between events.
     width={600}
 />
 
+### De Morgan's Laws
+
+<Callout type="todo">
+One speciel interaction and interpretation is missing in the above images and that is De Morgan's laws. 
+
+</Callout>
+
+```math
+\begin{align*}
+    \overline{A \cup B} &= \overline{A} \cap \overline{B} \\
+    \overline{A \cap B} &= \overline{A} \cup \overline{B}
+\end{align*}
+```
+
+<Callout type="example">
+
+</Callout>
+
 ## Probability Measure
 
 So far we actually haven't seen any probabilities. We have only defined what experiments are and what outcomes and events can occur. We haven't defined with what probability these outcomes or events occur. This is where the **probability measure** comes in. The probability measure is a map or function that assigns a probability to each event in the sample space. Each probability is a number between 0 and 1. 1 means that the event is certain to happen and 0 means that the event is impossible. You can also interpret these decimal values as percentages. So a probability of 0.5 means that the event has a 50% chance of happening. More formally we can define the probability measure on a sample space $\Omega$ and a sigma algebra $\mathcal{F}$ as:
