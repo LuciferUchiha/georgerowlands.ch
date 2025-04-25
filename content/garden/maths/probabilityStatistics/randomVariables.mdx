@@ -18,7 +18,9 @@ where $\Omega$ is the sample space of the random experiment and $a$ is a real nu
 \{\omega \in \Omega | X(\omega) \leq a\} \in \mathcal{F}
 ```
 
-where $\mathcal{F}$ is the sigma-algebra of the sample space. This means that we can assign a probability to the event that the random variable takes on a value less than or equal to $a$. This is important because it allows us to use the random variable to model the outcomes of the random experiment in a probabilistic way. Here as always we need to be careful if our set of outcomes is not countable as then the sigma-algebra can get complicated and the definition of the random variable can be more complex.
+where measurable means that the set is in the sigma-algebra $\mathcal{F}$ of the sample space. Because it is in the sigma-algebra, it means that we can assign a probability to the event that the random variable takes on a value less than or equal to $a$. This is important because it allows us to use the random variable to model the outcomes of the random experiment in a probabilistic way. Here as always we need to be careful if our set of outcomes is not countable as then the sigma-algebra can get complicated and the definition of the random variable can be more complex. 
+
+Depending on the values of the random variable we can define different types of random variables. For example, if the experiment maps to a finite or countable set of values, we can define a **discrete random variable**. If the experiment maps to an uncountable set of values such as a real interval, we can define a **continuous random variable**. We will see more about this later.
 
 <Callout type="example">
 As a simple example let's look at a fun gambling game we can play with our friends. The game is as follows, we throw a die and if the die shows a 1, 2 or 3 we lose 1 point. If we throw a 4 nothing happens. If we throw a 5 or 6 we win 2 points. We can now define a random variable $X$ to quantify our profit and describe the outcome of the game. The random variable $X$ is defined as follows:
@@ -31,7 +33,9 @@ As a simple example let's look at a fun gambling game we can play with our frien
 \end{cases}
 ```
 
-So if we throw a 5 we get $X(5) = 2$ points. If we throw a 1 we get $X(1) = -1$ points. Importantly we said that the for all $a \in \mathbb{R}$ the set $\{\omega \in \Omega | X(\omega) \leq a\}$ must be in our sigma-algebra. So depending on our sigma-algebra a random variable can be well defined for it or not. Consider the following sigma-algebra:
+So if we throw a 5 we get $X(5) = 2$ points. If we throw a 1 we get $X(1) = -1$ points. Because the random variables range is finite with only 3 possible values, we have a discrete random variable. 
+
+Importantly we said that the for all $a \in \mathbb{R}$ the set $\{\omega \in \Omega | X(\omega) \leq a\}$ must be in our sigma-algebra. So depending on our sigma-algebra a random variable can be well defined for it or not. Consider the following sigma-algebra:
 
 - $\mathcal{F}_1 = \mathcal{P}(\Omega)$, the power set of $\Omega$. This is the largest sigma-algebra and contains all possible events.
 - $\mathcal{F}_2 = \{\emptyset, \Omega\}$, the trivial sigma-algebra. This is the smallest sigma-algebra and contains only the empty set and the whole sample space.
@@ -62,7 +66,7 @@ If we have a specific event $A$ in our sample space $\Omega$, we can also define
 \end{cases}
 ```
 
-If we again analyze the set $\{\omega \in \Omega | 1_A(\omega) \leq a\}$ we get the following sets:
+Again we only have two possible values for the indicator variable, 0 and 1, hence we have a discrete random variable. If we also analyze the set $\{\omega \in \Omega | 1_A(\omega) \leq a\}$ we get the following sets:
 
 ```math
 \{\omega \in \Omega | 1_A(\omega) \leq a\} = \begin{cases}
@@ -72,7 +76,7 @@ A^c & \text{ if } 0 \leq a < 1 \\
 \end{cases}
 ```
 
-So we notice that for the indicator variable to be well defined we need to have the event $A$ in our sigma-algebra. 
+So we notice that for the indicator variable to be well defined we need to have the event $A$ in our sigma-algebra as by the definition of a sigma-algebra we need to have the event $A^c$ in our sigma-algebra as well. So if we have a sigma-algebra that does not contain the event $A$, we can not use the indicator variable to quantify the event. 
 </Callout>
 
 ## Probability of Random Variables
@@ -160,37 +164,119 @@ We can also do the same and define the proability of an indicator variable for a
 Is this correct?
 </Callout>
 
-## Probability Mass Function (PMF)
+### Almost Sure Events
 
-If the random variable is discrete, so in other words the range of the random variable are countable, we can define the **probability mass function** short PMF, or sometimes also called the **density function**. The PMF is defined as follows for all discrete values $a$ of the random variable $X$:
+So far we have said that an event $A$ is a sure event if it contains all the outcomes of the sample space $\Omega$ and therefore has the proability $\P(A) = 1$. However, we can also define a different type of sure event called an **almost sure event**, commonly abbreviated as "a.s.". An event $A$ is called almost surely if the following holds:
+
+```math
+\P(A) = 1
+```
+
+Therfore an equivalent definition of an almost sure event $A$ is also if the complementary event $A^c$ has the following proability:
+
+```math
+\P(A^c) = 0
+```
+
+Now you might be thinking well what is the difference between a sure event and an almost sure event? The difference is that a sure event contains all the outcomes of the sample space $\Omega$ and therefore has the probability $\P(A) = 1$. An almost sure event on the other hand does not contain all the outcomes of the sample space $\Omega$ but has the probability $\P(A) = 1$. This means that an almost sure event can be a subset of the sample space $\Omega$ but still have the probability $\P(A) = 1$.
+
+<Callout type="example">
+Tossing a coin infinitely many times
+</Callout>
+
+<Callout type="example" title="Infinite Monkey Theorem">
+Monkey typing shakespeare.
+</Callout>
+
+Because of this definition on some event we can also extend the idea to random variables. We can for example say that $X \leq a$ almost surely if the following holds:
+
+```math
+\P(X \leq a) = 1
+```
+
+This means that the set of outcomes for which the random variable $X$ takes on a value less than or equal to $a$ is almost surely. In other words, the set of outcomes for which the random variable $X$ takes on a value less than or equal to $a$ has the probability $\P(X \leq a) = 1$. 
+
+The same can be done for two random variables $X$ and $Y$. We can say that $X \leq Y$ almost surely if the following holds:
+
+```math
+\P(X \leq Y) = 1
+```
+
+The definition of this set of outcomes is a bit more complex as we have two random variables. However, an example of this would be if we defined the random variable $X$ as the outcome of a die throw and the random variable $Y$ boolean value that is true if the die throw is even and false if the die throw is odd. 
+
+## Discrete Random Variables
+
+We have already seen that if a random variable $X$ takes on a finite or countable set of values, we can define a **discrete random variable**. Common examples of discrete random variables are throwing a die, flipping a coin, or counting the number of something happening. We will go into more detail about some special discrete random variables later that have earned their own names.
+
+### Probability Mass Function (PMF)
+
+If the random variable is discrete, so in other words the range of the random variable are countable, we can define the **probability mass function** short PMF, or sometimes also called the **density function** or just simply **discrete distribution of $X$**. The PMF is a function that assigns a probability to each value of the random variable. This means that the PMF maps a value of the range of the random variable to a probability between 0 and 1. More formally we the PMF maps the values as follows:
+
+```math
+\begin{align*}
+p_X: \mathbb{R} &\to [0, 1] \\
+a &\mapsto p_X(a)
+\end{align*}
+```
+
+The PMF is defined as for all discrete values $a$ of the random variable $X$ and is defined as follows:
 
 ```math
 p_X(a) = \P(X = a) = \P(\{\omega \in \Omega | X(\omega) = a\}) = \P(X \in \{a\})
 ```
     
-where $a$ is a value of the random variable $X$. Sometimes we also write $f_X(a)$ instead of $p_X(a)$. The PMF is a function that assigns a probability to each value of the random variable. This means that the PMF maps a value of the range of the random variable to a probability between 0 and 1. Because the PMF is only define for discrete values the graph of the PMF is a set of discrete points. 
+where $a$ is a value of the random variable $X$. Sometimes we also write $f_X(a)$ instead of $p_X(a)$ or if the random variable is clear from the context we just write $p(a)$ or $f(a)$. Because the PMF is a probability meassure, it must satisfy the matching properties, one of which is that the sum of all probabilities must be equal to 1 so we have:
 
-It is important to note that the PMF is only defined for discrete random variables. For continuous random variables we will define a different function called the **probability density function** (PDF) which we will see later.
+```math
+\sum_{a \in X} p_X(a) = 1
+```
 
-<Callout type="todo">
-Why does it not work for continuous random variables? What does it have to do with countable outcomes and sigma-algebras?
+It is important to remember that the PMF is only defined for discrete random variables. For continuous random variables we will define a different function called the **probability density function** (PDF) which we will see later. Because it is discrete the graph of the PMF is a series of discrete points, this is commonly shown using a table or a bar graph. 
+
+<Image 
+    src="/maths/verteilungsFunktion.png" 
+    caption="The table containing the values of the random variable $X$ and the corresponding probabilities."
+    width={500} 
+/>
+
+<Image
+    src="/maths/stabdiagram.png" 
+    caption="The bar graph of the PMF of the random variable $X$."
+    width={500} 
+/>
+
+<Callout type="note">
+You might be thinking why does this not work for continuous random variables? The reason is rather simple and comes from the definition of a proability meassure and the behaviour of summing over an uncountable set. 
+
+This has briefly been hit on when we [discuss why we need a sigma-algebra](/maths/probabilityStatistics/probabilitySpaces#sigma-algebras) and the fact that we can not assign a probability to an uncountable set.
 </Callout>
 
-## Cumulative Distribution Function (CDF)
+### Cumulative Distribution Function (CDF)
 
-For any random variable $X$ we can define the **cumulative distribution function**, short CDF or sometimes also called the **distribution function**. The CDF is defined as follows for any value $a \in \mathbb{R}$:
+For any random variable $X$ we can define the **cumulative distribution function**, short CDF or sometimes also called the **distribution function**. Again the CDF is a function that assigns a probability to the random variable $X$ taking on a value less than or equal to $a$. The CDF is defined for all values of $a \in \mathbb{R}$ and is defined as follows:
+
+```math
+\begin{align*}
+F_X: \mathbb{R} &\to [0, 1] \\
+a &\mapsto F_X(a)
+\end{align*}
+```
+
+Importantly the difference between the PMF and the CDF is that the CDF assings a probability to the random variable $X$ taking on a value less than or equal to $a$ and not just equal to $a$. This also means that it assigns a probability to the entire range of the random variable $X$ and not just to a single value. More formally we can define the CDF as follows:
 
 ```math
 F_X(a) = \P(X \leq a) = \P(\{\omega \in \Omega | X(\omega) \leq a\})
 ```
 
-This function assigns a probability to the random variable $X$ taking on a value less than or equal to $a$. So this means that the CDF is a function that maps a value of the range of the random variable to a probability between 0 and 1. If the random variable is discrete, we can also define the CDF as follows:
+We will first focus on the case where the random variable is discrete. In this case we can define the CDF as follows:
 
 ```math
-F_X(a) = \sum_{a \in X, a\leq a} p_X(a) = \sum_{a \in X, a \leq a} \P(X = a)
+\P(X \leq a) = F_X(a) = \sum_{y \in X, y\leq a} p_X(y) = \sum_{y \in X, y \leq a} \P(X = y)
 ```
 
-Because probabilities are always between 0 and 1, the CDF is a non-decreasing function or in other words monotonicily increasing. This means that the CDF is a function that is always increasing or constant, but never decreasing. This comes from the fact that if $a \leq b$ then $\{\omega \in \Omega | X(\omega) \leq a\} \subseteq \{\omega \in \Omega | X(\omega) \leq b\}$, so we have:
+Where we sum the probabilities over all values of the random variable $X$ that are less than or equal to $a$. Intuitively this makes sense.
+
+Because probabilities are also always between 0 and 1, the CDF is a non-decreasing function or in other words monotonically increasing. This means that the CDF is a function that is always increasing or constant, but never decreasing. This comes from the fact that if $a \leq b$ then $\{\omega \in \Omega | X(\omega) \leq a\} \subseteq \{\omega \in \Omega | X(\omega) \leq b\}$, so we have:
 
 ```math
 \P(X \leq a) \leq \P(X \leq b)
@@ -202,7 +288,7 @@ If we have $a < b$ then we also have the following:
 \P(a < X \leq b) = F_X(b) - F_X(a)
 ```
 
-This is the so called basic identity and can directly be proven by reordering the disjoint union:
+This is the so called **basic identity** and can directly be proven by reordering the disjoint union:
 
 ```math
 \begin{align*}
@@ -212,14 +298,6 @@ F_X(b) &= F_X(a) + \P(a < X \leq b) \\
 \P(a < X \leq b) &= F_X(b) - F_X(a)
 \end{align*}
 ```
-
-<Callout type="todo">
-The CDF is also a right-continuous function, which means that it is continuous from the right. 
-
-As $a$ goes to infinity the CDF goes to 1 and as $a$ goes to minus infinity the CDF goes to 0. This means that the CDF is a function that is bounded between 0 and 1.
-</Callout>
-
-Importantly, the CDF is defined for all types of random variables, not just discrete values. This means that we can use the CDF to calculate probabilities for both discrete and continuous random variables.
 
 <Callout type="example">
 If we go back to our example of the gambling game we already saw some of the probabilities of the random variable $X$ taking on a value less than or equal to $a$. We can now define the CDF for the random variable $X$ for all values of $a \in \mathbb{R}$:
@@ -233,7 +311,17 @@ F_X(a) = \begin{cases}
 \end{cases}
 ```
 
-TODODODOODODODODOD PLOT
+<div className="flex justify-center mt-5">
+    <iframe src="https://www.desmos.com/calculator/v2hy1ergap?embed" width="500" height="500"/>
+</div>
+
+We can also see the basic identity in effect. For example if we want to know the probability that we get points, so $X > 0$, we can use the basic identity with $a = 0$ and $b = 2$:
+
+```math
+\P(X > 0) = \P(0 < X \leq 2) = F_X(2) - F_X(0) = 1 - \frac{2}{3} = \frac{1}{3}
+```
+
+This also matches with our intuition as we have 2 outcomes that give us points and 4 outcomes that do not give us points. So the probability of getting points is $\frac{2}{6} = \frac{1}{3}$. Visually this can be interpreted as taking the part of the function from the left to the point $b$ and then subtracting the part of the function from the left to the point $a$. 
 </Callout>
 <Callout type="example">
 Again we can also do the same and define the CDF for an indicator variable for an event $A$. 
@@ -247,24 +335,123 @@ F_X(a) = \begin{cases}
 ```
 </Callout>
 
-## Bernoulli Distribution
+<Callout type="todo">
+The CDF is also a right-continuous function, which means that it is continuous from the right. 
 
-## Uniform Distribution
+As $a$ goes to infinity the CDF goes to 1 and as $a$ goes to minus infinity the CDF goes to 0. This means that the CDF is a function that is bounded between 0 and 1.
+</Callout>
 
-## Independent Random Variables
+### Bernoulli Distribution
 
-## Transforming Random Variables
+We have already seen [bernoulli experiments](/maths/probabilityStatistics/probabilitySpaces#bernoulli-experiments) as a special case of a random experiment. A Bernoulli experiment is an experiment that has only two possible outcomes, usually called success and failure. We can also define a random variable and therefore distribution for a Bernoulli experiment. We denote a random variable $X$ as a Bernoulli random variable with parameter $p$ as $X \sim \text{Ber}(p)$, where $p$ is the probability of success. The Bernoulli random variable takes the value 1 with probability $p$ and the value 0 with probability $1 - p$. In other words, we can say that a Bernoulli random variable is a discrete random variable that takes the values in $W=\{0,1\}$ with the following probabilities:
 
-## Constructing Random Variables
+```math
+\P(X = 0) = 1 - p \text{ and } \P(X = 1) = p
+```
 
-## Discrete vs Continuous Random Variables
+<Callout type="todo">
+Plots of the PMF and CDF for the Bernoulli distribution.
+</Callout>
+
+<Callout type="example">
+We can define a Bernoulli random variable for shooting a penalty in a football game. We can define the random variable $X$ as follows:
+
+```math
+X \sim \text{Ber}(p) = \begin{cases}
+0 & \text{ if the penalty is missed} \\
+1 & \text{ if the penalty is scored}
+\end{cases}
+```
+
+where $p$ is the probability of scoring the penalty. So if we have a penalty taker that scores 80% of the time, we can define the random variable as $X \sim \text{Ber}(0.8)$
+</Callout>
 
 ### Binomial Distribution
 
+We have already seen [bernoulli experiments](/maths/probabilityStatistics/probabilitySpaces#bernoulli-experiments) as a special case of a random experiment and the corresponding random variable $X \sim \text{Ber}(p)$ that defines the Bernoulli distribution. 
+
+The idea of the binomial distribution is to extend the Bernoulli distribution to a sequence of $n$ independent Bernoulli experiments. We can define a random variable $X$ as a binomial random variable with parameters $n$ and $p$ as $X \sim \text{Bin}(n, p)$, where $n$ is the number of experiments and $p$ is the probability of success. The range of the binomial random variable is the set of integers from 0 to $n$ so it takes values from the set $W=\{0, 1, 2, \ldots, n\}$ and represents the number of successes in $n$ independent Bernoulli experiments. So if we have a sequence of $n$ independent Bernoulli experiments with probability of success $p$, we can define probability to have exactly $k$ successes as follows:
+
+```math
+\P(X = k) = \binom{n}{k} p^k (1 - p)^{n - k}
+```
+
+where $\binom{n}{k}$ is the [binomial coefficient](/maths/commonFunctions/binomialCoefficient).
+
+<Callout type="todo">
+Derivation of the formula using combinatorics.
+
+Also show that sum of 0 to n of the binomial formula is 1.
+
+Proof that binomial is the sum of independent Bernoulli random variables. In particular if n=1 then we have the Bernoulli distribution. 
+
+We can also show that two binomial random variables added together is also a binomial random variable. 
+</Callout>
+
+<Callout type="example">
+multiple choice exam with 10 questions and 4 possible answers. What is the probability of getting exactly 6 questions right?
+</Callout>
+
 ### Geometric Distribution
 
+### Negative Binomial Distribution
+
+### Hypergeometric Distribution
+
+### Coupon Collector Problem
+
 ### Poisson Distribution
+
+## Continuous Random Variables
+
+CDF is always left continous with if also right continous then it is continuous. 
+
+### Probability Density Function (PDF)
+
+### Cumulative Distribution Function (CDF)
+
+### Uniform Distribution
 
 ### Exponential Distribution
 
 ### Normal Distribution
+
+#### Standard Normal Distribution
+
+#### Quantiles
+
+#### Z-Score
+
+## Working with Random Variables
+
+### Independent Random Variables
+
+We say that $X_1, X_2, \ldots, X_n$ are independent random variables if the following holds:
+
+```math
+\forall a_1, a_2, \ldots, a_n \in \mathbb{R} \P(X_1 \leq a_1, X_2 \leq a_2, \ldots, X_n \leq a_n) = \P(X_1 \leq a_1) \cdot \P(X_2 \leq a_2) \cdots \P(X_n \leq a_n) = \prod_{i=1}^n \P(X_i \leq a_i)
+```
+
+
+```math
+\forall i,j F_{X_i} = F_{X_j}
+```
+
+#### Grouping Random Variables
+
+### Transforming Random Variables
+
+### Constructing Random Variables
+
+We have seen that a CDF is a function that assigns a probability to the random variable $X$ taking on a value less than or equal to $a$ and fulfills the following 3 properties:
+- $F_X(a)$ is a non-decreasing function.
+- $F_X(a)$ is a right-continuous function.
+- $\lim_{a \to -\infty} F_X(a) = 0$ and $\lim_{a \to +\infty} F_X(a) = 1$.
+
+The question is now if we are given some function $F:\mathbb{R} \to [0, 1]$ that fulfills these properties, does a random variable $X$ exist such that $F_X(a) = F(a)$? The practical consequence would be that we can then simulate an arbitrary random variable $X$ given only the CDF.
+
+First bernoulli?
+
+Then uniform?
+
+Then an arbitrary CDF?

@@ -1,3 +1,5 @@
+import { join } from "path";
+
 export default {
   combinatorics: "",
   probability: "",
@@ -5,6 +7,7 @@ export default {
   conditionalProbabilityIndependence: "",
   randomVariables: "",
   expectedVariance: "",
+  jointDistributions: "",
   algorithms: "",
   discreteRandomVariables: "",
   continuousRandomVariables: "",
