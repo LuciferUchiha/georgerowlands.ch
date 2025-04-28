@@ -1,1 +1,64 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
 # Joint Distributions
+
+When working with a single random variable we are often asking questions such as "What is the probability that the person is less than 30 years old?" or "What is the probability that the person is taller than 1.8m?". But what if we wanted to ask questions about two random variables at the same time? For example, "What is the probability that the person is less than 30 years old and taller than 1.8m?". This is a joint distribution of two random variables. Joint distributions are also sometimes called multivariate distributions or vector-valued random variables. 
+
+Joint distributions are used to describe the relationship between two or more random variables. They can be used to find the probability of a certain combination of values for the random variables, as well as the reverse problem of finding the separate distributions of the random variables given the joint distribution, which is called finding the marginal distributions.
+
+
+
+
+vector valued random variable. Kind of like multiple real valued random variables that are combined with ands, so need to happen at the same time. is this like cutting the space into boxes?
+
+X is a vector so bold, or write X_1 and X_2 in subscript. Something with products?
+
+Can define the probability meassure of a vector valued random variable. The probability space $(\RR^n, \mathcal{B}(\RR^n), \P_X)$, where $\mathcal{B}(\RR^n)$ is the Borel $\sigma$-algebra on $\RR^n$ and the probability measure $\P_X$ that assigns to each Borel set $B \in \mathcal{B}(\RR^n)$ the probability $\P_X(X \in B)$.
+
+```math
+\P_X(A) = \P(X \in A), \quad A \in \mathcal{B}(\RR^n)
+```
+
+where $F_X$ is the probability density function of the random variable $X$ and also the distribution function CMF, 
+
+## Discrete Joint Distributions
+
+We are given $n$ discrete random variables $X_1, X_2, \ldots, X_n$, so that $X_i$ takes values in the set $W_i$ almost surely and $W_i \subseteq \mathbb{R}$, is finite or countable. Why almost surely?
+
+Then we can define the joint distribution of $X_1, X_2, \ldots, X_n$ which is like the joint probability mass function (pmf) of the random variables. The joint distribution is a function $p(x_1, x_2, \ldots, x_n)$ that assigns a probability to each possible combination of values of the random variables.
+
+```math
+p(x_1, x_2, \ldots, x_n) = \P(X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n), \quad (x_1, x_2, \ldots, x_n) \in W_1 \times W_2 \times \ldots \times W_n
+```
+
+can also be written as conditional probabilities.
+
+Sum of the joint distribution over all possible values of $X_1, X_2, \ldots, X_n$ is 1.
+
+Proof using disjoint union
+
+we can also define a joint cdf
+
+<Callout type="example">
+Two Bernoulli random variables, X, Y both with paramter 1/2, so flipping a fair coin.
+
+p(x,y)
+
+p(x,x)
+
+z=x+y, p(x,z)
+</Callout>
+<Callout type="example">
+Rolling two dice, X and Y, with values in $\{1, 2, \ldots, 6\}$. X is for even Y is for prime.
+</Callout>
+
+### Transformed Distributions
+
+### Marginal Distributions
+
+### Expectation of a Joint Distribution
+
+### Independence of Joint Distributions
+
+## Continuous Joint Distributions

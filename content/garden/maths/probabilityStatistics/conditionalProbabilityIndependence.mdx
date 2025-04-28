@@ -71,7 +71,7 @@ To show it is a probability meassure we need to show that it satisfies the three
 
 ## Stochastic Independence
 
-We have seen that for certain events if we know that one event $B$ has already occurred, this can influence the probability of another event $A$. However, depending on the experiment we can also have that the prior information of $B$ has no influence on the event $A$. So the the probability of $A$ is the same as the probability of $A$ given $B$. This is called **stochastic independence** as the two events do not influence each other and can be done indepdently of each other. More formally we can write this as follows:
+We have seen that for certain events if we know that one event $B$ has already occurred, this can influence the probability of another event $A$. However, depending on the experiment we can also have that the prior information of $B$ has no influence on the event $A$. So the the probability of $A$ is the same as the probability of $A$ given $B$. This is called **stochastic independence** as the two events do not influence each other and can be done independently of each other. More formally we can write this as follows:
 
 ```math
 \P(A | B) = \P(A) = \frac{\P(A \cap B)}{\P(B)}
@@ -88,8 +88,6 @@ This formula is preferred as it avoids the division by 0 and is more intuitive. 
 ```math
 \frac{\P(A \cap B)}{\P(A)} = \P(B) \Leftrightarrow \P(B | A) = \P(B)
 ```
-
-When reading literature on probability and statistics you will often come across the abbreviation **"i.i.d."**. This stands for **independent and identically distributed**. This means that the events are independent of each other and have the same distribution. Where the distribution means they have the same probability measure. This is often used in the context of random variables and stochastic processes. The i.i.d. assumption is often used in statistics and machine learning to simplify the analysis of data and models.
 
 <Callout type="example">
 An example of this would be if we have two coins and we want to know the probability of the second coin showing heads given that the first coin shows heads. So if we model our experiment as a laplace space, we have the following events:
@@ -108,8 +106,6 @@ Because we know coin tosses are indepdent of each other we can then also easily 
 ```math
 \P(A \cap B) = \P(A) \cdot \P(B) = \frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}
 ```
-
-We couldv'e also said that the two coins are i.i.d. as they are independent of each other and have the same distribution, so they are identically distributed. This means that the two coins have the same probability measure, so they have the same probability of showing heads or tails. Having the i.i.d condition would also allow us to make the coins unfair, so for example the coin has a 60% chance of showing heads and a 40% chance of showing tails. However, both coins would need to have the same probability measure, so they would both need to have a 60% chance of showing heads and a 40% chance of showing tails, hence they are identically distributed. 
 </Callout>
 
 ### Physical Independence vs Stochastic Independence

@@ -335,11 +335,109 @@ F_X(a) = \begin{cases}
 ```
 </Callout>
 
-<Callout type="todo">
-The CDF is also a right-continuous function, which means that it is continuous from the right. 
+From the example above and the plot we notice that for a function to be a CDF it must fullfill three properties:
+1. $F_X(a)$ is a non-decreasing function. 
+2. $F_X(a)$ is a right-continuous function.
+3. As the variable value $a$ goes to infinity the CDF goes to 1 and as $a$ goes to minus infinity the CDF goes to 0. 
 
-As $a$ goes to infinity the CDF goes to 1 and as $a$ goes to minus infinity the CDF goes to 0. This means that the CDF is a function that is bounded between 0 and 1.
+
+The first property is rather trivial and comes from the fact that probabilities are always between 0 and 1 and that we are looking at values less than or equal to $a$. There are many ways to prove this but one is by monotonicity of the probability measure. If $a \leq b$ we have $\{\omega \in \Omega | X(\omega) \leq a\} \subseteq \{\omega \in \Omega | X(\omega) \leq b\}$, so we have:
+
+```math
+\P(X \leq a) \leq \P(X \leq b) \iff F_X(a) \leq F_X(b)
+```
+
+The second property is important because it means that the CDF is continuous from the right. This means it can have jumps but that the limits from the right exist and are equal to the value of the function at that point. A CDF can also be continuous from the left, but this is not required. more formally we can say that for all $a \in \mathbb{R}$:
+
+```math
+F_X(a) = \lim_{b \to a^+} F_X(b)
+```
+
+The last property in a way is like with the PMF, to garantee that the CDF is a valid probability measure. For this to be the case the values of the CDF must be between 0 and 1. In other words, the CDF must be bounded between 0 and 1. This means that the CDF must go to 1 as $a$ goes to infinity and to 0 as $a$ goes to minus infinity. This is important so it can be used to assign probabilities to events.
+
+<Callout type="todo">
+Proofs of property 2 and 3.
 </Callout>
+
+### Conditional Random Variables
+
+Is the same but on a restricted domain, i.e. set of outcomes that match the condition.
+
+### Transforming Random Variables
+
+we can remap random variables to new random variables, or create a new random variable from multiple random variables. This is commonly done by using a function $g$ that maps the random variable to a new random variable. More formally we can define a new mapping.
+
+### Independent Random Variables
+
+Just like with events, we can also define the concept of independence for random variables. We say that $X_1, X_2, \ldots, X_n$ are independent random variables if the following holds:
+
+```math
+\forall a_1, a_2, \ldots, a_n \in \mathbb{R} \P(X_1 \leq a_1, X_2 \leq a_2, \ldots, X_n \leq a_n) = \P(X_1 \leq a_1) \cdot \P(X_2 \leq a_2) \cdots \P(X_n \leq a_n) = \prod_{i=1}^n \P(X_i \leq a_i)
+```
+
+This is very similar to the definition of independence for events. The only difference is that we are looking at the joint probability of the random variables taking on a value less than or equal to their respective values $a_i$. We discuss [joint distributions](/maths/probabilityStatistics/jointDistributions) here in more detail. 
+
+It actually turns out that the random variables $X_1, X_2, \ldots, X_n$ are independent if and only if for any choice of Intervals $I_1, I_2, \ldots, I_n$ the probability that each random variable $X_i$ takes on a value in the interval $I_i$ is equal to the product of the probabilities of each random variable taking on a value in their respective intervals. More formally we can say that:
+
+```math
+\forall I_1, I_2, \ldots, I_n \subseteq \mathbb{R} \P(X_1 \in I_1, X_2 \in I_2, \ldots, X_n \in I_n) = \P(X_1 \in I_1) \cdot \P(X_2 \in I_2) \cdots \P(X_n \in I_n) = \prod_{i=1}^n \P(X_i \in I_i)
+```
+
+<Callout type="example">
+We are throwing two independent dice and are considering the laplace model where $\Omega = \{1, 2, 3, 4, 5, 6\}^2$ and $\mathcal{F} = \mathcal{P}(\Omega)$. We can define the random variables $X$ and $Y$ as the outcome of the first and second die respectively and then $Z$ as the sum of the two dice. So for each outcome $\omega = (x, y)$ we define the random variables as follows:
+
+```math
+X(\omega) = x \text{ and } Y(\omega) = y \text{ and } Z(\omega) = x + y
+```
+
+Let's first start by comparing the random variables $X$ and $Y$. To check this we look a the Intervals $I, J \subseteq \{1, 2, 3, 4, 5, 6\}$ and check if they are independent. We can do this by looking at the joint probability of the random variables $X$ and $Y$ taking on a value in the intervals $I$ and $J$. This is like checking if the events $X \in I$ and $Y \in J$ are independent. So we have:
+
+```math
+\begin{align*}
+\P(X \in I, Y \in J) &= \P(\{(x, y) \in \Omega | x \in I, y \in J\}) = \P(I \times J) \\
+&= \frac{|I \times J|}{|\Omega|} = \frac{|I| \cdot |J|}{36} \\ 
+&= \frac{|I|}{6} \cdot \frac{|J|}{6} = \frac{|I \times \{1, 2, 3, 4, 5, 6\}|}{36} \cdot \frac{|J \times \{1, 2, 3, 4, 5, 6\}|}{36} \\
+&= \P(X \in I) \P(Y \in J)
+\end{align*}
+```
+
+So we have shown that the random variables $X$ and $Y$ are independent. Because we can find the intervals $I$ and $J$ for any values $x, y \in \RR$ we can also find the sets $\{X \in I \} = \{X \leq x\}$ and $\{Y \in J \} = \{Y \leq y\}$ and therefore we can also show that the random variables $X$ and $Y$ are independent in the sense of the CDF. So we have:
+
+```math
+\P(X \leq x, Y \leq y) = \P(X \leq x) \P(Y \leq y)
+```
+
+This also makes intuitively sense as the two dice are physically independent and throwing one die does not affect the outcome of the other die. However, what about the random variable $Z$? We can also check if the random variable $Z$ is independent of one of the other random variables. To show this we can look at a specific example and check if the random variable $Z$ is independent of the random variable $X$. So we can look at the intervals $I = \{1\}$ and $J = \{1,2\}$. We can then check the following:
+
+```math
+\begin{align*}
+\P(X \leq 1, Z \leq 2) &= \P(\{(1, 1)\}) \\
+&= \frac{1}{36} \neq \frac{1}{6} \cdot \frac{2}{36} = \P(X \leq 1) \P(Z \leq 2)
+\end{align*}
+```
+
+So we have shown that the random variable $Z$ is not independent of the random variable $X$. This also makes intuitively sense as the random variable $Z$ is dependent on the random variable $X$ and therefore the two random variables are not independent.
+</Callout>
+
+When reading literature on probability and statistics you will often come across the abbreviation **"i.i.d."**. This stands for **independent and identically distributed**. This is a stricter version of independence and means that the random variables or events are independent of each other and have the same distribution. The i.i.d. assumption is often used in statistics and machine learning to simplify the analysis of data and models. More formally we can say that two random variables $X_1$ and $X_2$ are i.i.d. if they are independent and the following holds:
+
+```math
+\forall i,j F_{X_i} = F_{X_j}
+```
+
+An example of this would be if we have two coins that are thrown independently of each other. We can define the random variables $X_1$ and $X_2$ as the outcome of the first and second coin respectively. The two coins are then i.i.d. as they are independent of each other and have the same distribution, so they are identically distributed, so they have the same probability of showing heads or tails. Having the i.i.d condition would also allow us to make the coins unfair, so for example the coin has a 60% chance of showing heads and a 40% chance of showing tails. However, both coins would need to have the same probability measure, so they would both need to have a 60% chance of showing heads and a 40% chance of showing tails, hence they are identically distributed. 
+
+<Callout type="todo">
+Also breaking it down using marginal distribuations 
+
+and convolutions if X+Y 
+</Callout>
+
+#### Grouping Random Variables
+
+If $X_1, X_2, \ldots, X_n$ are independent random variables then so is some subset of them, for example $X_1, X_2$ or $X_1, X_2, X_3$. 
+
+Can also split them into groups and then apply a function to each group and they are still independent. Doesn't make a lot of sense surely the function can be dependent on the random variables?
 
 ### Bernoulli Distribution
 
@@ -422,26 +520,7 @@ CDF is always left continous with if also right continous then it is continuous.
 
 #### Z-Score
 
-## Working with Random Variables
-
-### Independent Random Variables
-
-We say that $X_1, X_2, \ldots, X_n$ are independent random variables if the following holds:
-
-```math
-\forall a_1, a_2, \ldots, a_n \in \mathbb{R} \P(X_1 \leq a_1, X_2 \leq a_2, \ldots, X_n \leq a_n) = \P(X_1 \leq a_1) \cdot \P(X_2 \leq a_2) \cdots \P(X_n \leq a_n) = \prod_{i=1}^n \P(X_i \leq a_i)
-```
-
-
-```math
-\forall i,j F_{X_i} = F_{X_j}
-```
-
-#### Grouping Random Variables
-
-### Transforming Random Variables
-
-### Constructing Random Variables
+## Constructing Random Variables
 
 We have seen that a CDF is a function that assigns a probability to the random variable $X$ taking on a value less than or equal to $a$ and fulfills the following 3 properties:
 - $F_X(a)$ is a non-decreasing function.
