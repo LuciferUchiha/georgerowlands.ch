@@ -1,11 +1,18 @@
 export default {
-    functions: "",
-    differentiation: "",
-    newtonsMethod: "",
-    analysis: "",
-    sequencesAndSeries: "Sequences & Series",
+    sequences: "",
+    sumOperator: "",
+    productOperator: "",
+    convergentSequences: "",
+    series: "",
+    convergentSeries: "",
     continuousFunctions: "",
-    limits: "",
+    convergentFunctions: "",
+    differentiableFunctions: "",
+    power: "",
+    taylor: "",
+    fourier: "",
+    functionAnalysis: "",
+    limitRules: "",
     integrals: "Integrals"
 }
   

@@ -1,0 +1,124 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
+# Convergent Functions
+
+We have seen [convergent sequences](/garden/maths/calculus/convergentSequences) where as the index $n$ of the sequence approaches infinity, the sequence converges to a limit $L$. We have also seen that this concept of convergence exists for series, allowing us to define [convergent series](/garden/maths/calculus/convergentSeries). In this section we will look at the concept of convergence for functions.
+
+## Accumulation Points
+
+Before we can define the limit of a function, we need to understand the concept of accumulation points or also often called limit points. An accumulation point of a set $D$ is a point $x_0$ such that every neighborhood of $x_0$ contains at least one point of $D$ different from $x_0$, more formally $x_0$ is an accumulation point of $D$ if the following holds:
+
+```math
+\forall \epsilon > 0 \quad ((x_0 - \epsilon, x_0 + \epsilon) \setminus \{x_0\}) \cap D \neq \emptyset
+```
+
+<Callout type="example">
+If we define $D=\{0\} \cup (1,2)$, then $x_0=0$ is not an accumulation point of $D$ since we can take the neighborhood where $\epsilon=1$ and we have $(0-1,0+1) \setminus \{0\}$ which is $(-1,1)$ except for the point $0$ and this neighborhood does not contain any point of $D$. They nearly touch at the point $1$ but don't. The same would hold for $\epsilon=0.5$ and so on so $0$ is not an accumulation point of $D$.
+
+However, if we take $x_0=1$, then for any $\epsilon>0$ we have $(1-\epsilon,1+\epsilon) \setminus \{1\}$ which is guaranteed to contain some point larger than $1$. Because our contains the interval $(1,2)$, there is also a point larger than $1$ in the interval $(1,2)$ and hence $1$ is an accumulation point of $D$. 
+
+The reverse is also true, if we take $x_0=2$, then for any $\epsilon>0$ we have $(2-\epsilon,2+\epsilon) \setminus \{2\}$ which is guaranteed to contain some point smaller than $2$ and again because our set contains the interval $(1,2)$, there is also a point smaller than $2$ in the interval $(1,2)$ and hence $2$ is an accumulation point of $D$. 
+
+This is actually the case for any point in the interval $[1,2]$ and hence the set of all accumulation points of $D$ denoted as $D'$ is $D'=[1,2]$.
+
+Another example would be if we take the set $D=(1,2) \cup (3,5)$. Then the set of all accumulation points of $D$ is $D'=[1,2] \cup [3,5]$. For the points between 2 and 3, so $x \in (2,3)$, we can show that they are not accumulation points. Because if we pick any $\epsilon > 0$ less or equal to the following value we don't have any points in the neighborhood of $x$ that are also in $D$:
+
+```math
+\epsilon = \frac{\min(3-x,x-2)}{2}
+```
+
+So for example if we take $x=2.2$ we take the minimum of $3-2.2=0.8$ and $2.2-2=0.2$ which is $0.2$ and we can take $\epsilon=0.1$. So we have $(2.2-0.1,2.2+0.1) \setminus \{2.2\}$ which is $(2.1,2.3)$ and this neighborhood does not contain any point of $D$. So $x=2.2$ is not an accumulation point of $D$. The same would hold for any point in the interval $(2,3)$. To illustrate this we could take $x=2.001$. The minimum of $3-2.001=0.999$ and $2.001-2=0.001$ is $0.001$ and we can take $\epsilon=0.0005$ to then have $(2.001-0.0005,2.001+0.0005) \setminus \{2.001\}$ which is $(2.0005,2.0015)$ and this neighborhood does not contain any point of $D$. So $x=2.001$ is not an accumulation point of $D$.
+</Callout>
+
+## Limit of a Function
+
+Now that we understand the concept of accumulation points, we can define the limit of a function. First we define the function $f$ on a set $D \subseteq \RR$ as a mapping from $D$ to $\RR$:
+
+```math
+f:D \to \RR
+```
+
+if $x_0 \RR$ is then an accumulation point of $D$ then we write that the function $f$ has a limit $L$ at the point $x_0$ as follows:
+
+```math
+\lim_{x \to x_0}{f(x)}=L 
+```
+
+if for every $\epsilon > 0$ there exists a $\delta > 0$ such that the following holds:
+
+```math
+\forall \epsilon > 0 \quad \exists \delta > 0 \quad \forall x \in ((x_0 - \delta, x_0 + \delta) \setminus \{x_0\}) \cap D \quad |f(x) - L| < \epsilon
+```
+
+Because we know that $x_0$ is an accumulation point of $D$ we know that there exists at least one point $x$ in the neighborhood of $x_0$ that is also in $D$. We can interpret the definition of the limit of a function similarly to the epsilon-delta definition of continuity. As we approach the point $x_0$ from both sides, so making $\delta$ smaller and smaller, the function $f(x)$ approaches the limit $L$. Or in other words, for any $\epsilon$-neighborhood of $L$ we can find a point $x$ in the neighborhood of $x_0$ such that $f(x)$ is in the $\epsilon$-neighborhood of $L$. The requirement for the point $x_0$ to be an accumulation point of $D$ is important because if it is not, then we may not be able to find a point $x$ where $f(x)$ is in the $\epsilon$-neighborhood of $L$.
+
+<Image 
+    src="/maths/limitOfFunctions.png"
+    caption="Limit of a Function as x approaches the accumulation point a."
+    width={500}
+/>
+
+<Callout type="example">
+
+</Callout>
+
+Another way of defining the limit of a function is to use sequences. If $x_0$ is an accumulation point of $D$ and we take any sequence $a_n$ in $D \setminus \{x_0\}$ such that the sequence converges to $x_0$ as $n$ approaches infinity, so $\lim_{n \to \infty} a_n = x_0$, then we can say that the limit of the function $f$ at the point $x_0$ is equal to the limit of the sequence $a_n$ as $n$ approaches infinity:
+
+```math
+\lim_{n \to \infty} f(a_n) = L
+```
+
+The idea is that as the sequence $a_n$ approaches the point $x_0$, the function $f(a_n)$ approaches the limit $L$. So in a way we are again saying that the function $f$ approaches the limit $L$ as we approach the point $x_0$.
+
+<Callout type="example">
+We are given the function $f(x) = 2x$ and we want to inspect the limit at the point $x_0=0$. We can take the sequence $a_n = \frac{1}{n}$ which converges to $0$ as $n$ approaches infinity. We can then calculate the limit of the function at the point $x_0=0$ by substituting the sequence into the function:
+
+```math
+\lim_{x \to 0} f(x) = \lim_{n \to \infty} f(a_n) = \lim_{n \to \infty} f(\frac{1}{n}) = \lim_{n \to \infty} 2(\frac{1}{n}) = 0
+```
+
+So we can say that the limit of the function $f$ at the point $x_0=0$ is $0$. We can also take the sequence $a_n = -\frac{1}{n}$ which also converges to $0$ as $n$ approaches infinity. Again applying the sequence to the function we get:
+
+```math
+\lim_{x \to 0} f(x) = \lim_{n \to \infty} f(a_n) = \lim_{n \to \infty} f(-\frac{1}{n}) = \lim_{n \to \infty} 2(-\frac{1}{n}) = 0
+```
+</Callout>
+
+## Limit of a Function at Infinity
+
+Wir können den Funktionswert an der Stelle $x = 0$zwar nicht berechnen, aber mit einer Folge $x_n$ beliebig nahe an die Definitionslücke herantasten.
+
+<Callout type="todo">
+What about accumulation points at the point $x_0=\infty$? or if we have a function that is not defined at $x_0$?
+</Callout>
+
+## Left and Right Limits
+
+### Zusammenfassung Grenzwert einer Funktion
+
+Betrachtet man bei der Grenzwertbetrachtung einer Funktion $f$ an der Stelle $x_0$ nur Zahlenfolgen $x_n$, die kleinere Werte als $x_0$ enthalten, dann bezeichnet man den Grenzwert als Linkseitigen Grenzwert
+
+```math
+\lim_{x \to x_0,(x<x_0)}{f(x)}=\lim_{h \to 0,(h>0)}{f(x_0-h)}=G_L
+```
+
+Zahlenfolgen mit grösseren Werten als $x_0$ erzeugen den Rechtseitigen Grenzwert
+
+```math
+\lim_{x \to x_0,(x>x_0)}{f(x)}=\lim_{h \to 0,(h>0)}{f(x_0+h)}=G_R
+```
+
+Streben für jede gegen $x_0$ konvergente Zahlenfolge $x_n$ die Funktionswerte $f(x_n)$ gegen denselben Wert $G$, dann besitzt die Funktion $f$ an der Stelle $x_0$ den Grenzwert $G$
+
+```math
+\lim_{x \to x_0}{f(x)}=G=G_R=G_L
+```
+
+## Rechenregeln für Funktionsgrenzwerte
+
+Seien $f$ und $g$ zwei Funktionen mit dem gleichen Grenzwerten $G,F$ bei $x_0$ dann gilt:
+
+- $\lim_{x \to x_0}{(f(x)\pm g(x))}=F\pm G$
+- $\lim_{x \to x_0}{(f(x)*g(x))}=F*G$
+- $\lim_{x \to x_0}{(f(x)\over g(x))}=F\over G$ für $g(x_0) \neq 0$ und $G \neq 0$

@@ -1,4 +1,5 @@
 import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
 
 # Function Analysis
 
@@ -47,6 +48,14 @@ mit $a_n \neq 0$ heisst **Polynom vom Grad** $n$. Die reelen Zahlen $a_0,a_1,...
 $f_1(x)=x^3-x+2$ ist ein Polynom 3. Grades.
 $f_2(x)=2x^7-4x^5+x^2-3x+2$ ist ein Polynom 7. Grades.
 </Callout>
+
+```math
+a_n x^n + a_{n-1} x^{n-1} + \ldots + a_1 x + a_0 = 0
+```
+
+### Fundamental Theorem of Algebra
+
+Every polynomial of degree $n$ has $n$ roots in the complex plane. so has $n$ solutions including complex solutions.
 
 ### Linearfaktoren
 
@@ -97,7 +106,7 @@ Ein Polynomfunktion ist eine rationale Funktion wo $n=0$.
 
 ### Echt rationale Funktionen
 
-Wenn $m<n$
+Wenn $m < n$
 
 ### Unecht rationale Funktionen
 
@@ -111,14 +120,23 @@ Sei $f(x) = \frac{g(x)}{h(x)}$ eine rationale Funktion. Mit Zähler und Nenner s
 
 Die im Zähler($g(x)$) verbleibenden Linearfaktoren ergeben die **Nullstellen** der Funktion $f(x)$.
 
+Das Newtonverfahren (oder Tangentenverfahren von Newton) ist eine sogenanntes Iterationsverfahren. Das Lösen von Gleichungen gehört zu den wichtigsten Aufgaben der Mathematik. Jedoch können wir schon einfache Gleichungen, wie z. B. $x^3+x=1$ nicht mehr so einfach lösen. Weshalb wir ein Näherungsverfahren zur Lösung von Gleichungen der Form $f(x)=0$ verwenden.
+Jede Gleichung kann auf diese Form gebracht werden.
+
+```math
+x^3+x=1 \iff x^3+x-1=0
+```
+
+Ist $\xi$ eine Lösung der Gleichung $f(x)=0$ gilt $f(\xi)=0$, so kann die Stelle $\xi$ auch Nullstelle sein.
+
 #### Polstellen
 
 Die im Nenner ($h(x)$)verbleibenden Linearfaktoren ergeben die **Polstellen**
 der Funktion $f(x)$.
 
-##### Pollstelle $k$-ter Ordnung
+##### Pollstelle k-ter Ordnung
 
-Ist Linearfaktor im gekürzten Nenner in $k$-ter Ordnung $(x − x_0)^k, k \in N$  dann nennt man die Stelle $x_0$ eine Polstelle $k$−ter Ordnung.
+Ist Linearfaktor im gekürzten Nenner in $k$-ter Ordnung $(x - x_0)^k, k \in N$  dann nennt man die Stelle $x_0$ eine Polstelle $k$-ter Ordnung.
 
 ##### Pollstelle mit Vorzeichenwechsel
 
@@ -143,15 +161,15 @@ Die vollständig weggekürzten Linearfaktoren im Nenner geben die
 
 ### Verhalten rationale Funktionen im Unendlichen
 
-Genau gleich wie [[2-Folgen#Rationale Folgen]].
+Genau gleich wie 2-FolgenRationale Folgen.
 Sei $f(x) = {g(x)\over h(x)}$ eine rationale Funktion, dann gilt für den Grenzwert:
 
 ```math
-\lim_{n \to \infty}{f(x)} = \begin{dcases}
+\lim_{n \to \infty}{f(x)} = \begin{cases}
         0, grad\space g < grad \space h \\
-        {a_n\over b_n} , grad \space g=grad \space h \\
-        {a_n\over b_n} * \infty , grad \space g > grad\space h
-\end{dcases}
+        {a_n \over b_n} , grad \space g=grad \space h \\
+        {a_n \over b_n} * \infty , grad \space g > grad\space h
+\end{cases}
 ```
 
 ## Umkehrfunktion
@@ -221,109 +239,6 @@ $cos: x \mapsto cos(x), R \mapsto [-1,1]$
 
 ### Cotangens
 
-## Grenzwert einer Funktion
-
-```math
-f(x)={1-x^3-cos(2x)}\over x^2
-``` 
-
-ist für $x=0$ nicht definiert, hier besteht eine Definitionslücke. Wir können den Funktionswert an der Stelle $x = 0$zwar nicht berechnen, aber mit einer Folge $x_n$ beliebig nahe an die Definitionslücke herantasten.
-
-### Rechtseitigen Grenzwert
-
-Die Folge $x_n=1\over n$ für $n \to \infty$ konvergiert gegen 0. Wir können somit die Folgenglieder in die Funktion einsetzen:
-
-Wir vermuten, dass die Funktionswerte gegen den Grenzwert 2 konvergieren.
-Es gilt also für jede beliebige Folge $x_n \to 0$, dass $f(x_n) \to 2$ gilt. Man schreibt daher:
-
-```math
-\lim_{n \to \infty}{f(x_n)}=\lim_{x \to \infty,(x>0)}{f(x)}=2
-``` 
-
-und bezeichnet diesen Wert als den **rechtseitigen Grenzwert** der Funktion $f(x)$ an der Stelle $x=0$
-
-### Linkseitigen Grenzwert
-
-Wir wollen nun eine Folge betrachten, die sich von links dem Wert 0 nähert. Z.B $x_n=-1\over n$. Hier erhalten wie folgende Wertetabelle beim einsetzen:
-
-Aus der Wertetabelle entnehmen wir auch hier, dass die Folge der Funktionswerte $f(x_n)$ gegen den Wert 2 konvergiert.
-Man schreibt daher:
-
-```math
-\lim_{n \to \infty}{f(x_n)}=\lim_{x \to \infty,(x<0)}{f(x)}=2
-```
-
-und bezeichnet diesen Wert als den **linkseitigen Grenzwert** der Funktion $f(x)$ an der Stelle $x=0$
-
-### Zusammenfassung Grenzwert einer Funktion
-
-Betrachtet man bei der Grenzwertbetrachtung einer Funktion $f$ an der Stelle $x_0$ nur Zahlenfolgen $x_n$, die kleinere Werte als $x_0$ enthalten, dann bezeichnet man den Grenzwert als Linkseitigen Grenzwert
-
-```math
-\lim_{x \to x_0,(x<x_0)}{f(x)}=\lim_{h \to 0,(h>0)}{f(x_0-h)}=G_L
-```
-
-Zahlenfolgen mit grösseren Werten als $x_0$ erzeugen den Rechtseitigen Grenzwert
-
-```math
-\lim_{x \to x_0,(x>x_0)}{f(x)}=\lim_{h \to 0,(h>0)}{f(x_0+h)}=G_R
-```
-
-Streben für jede gegen $x_0$ konvergente Zahlenfolge $x_n$ die Funktionswerte $f(x_n)$ gegen denselben Wert $G$, dann besitzt die Funktion $f$ an der Stelle $x_0$ den Grenzwert $G$
-
-```math
-\lim_{x \to x_0}{f(x)}=G=G_R=G_L
-```
-
-## Rechenregeln für Funktionsgrenzwerte
-
-Seien $f$ und $g$ zwei Funktionen mit dem gleichen Grenzwerten $G,F$ bei $x_0$ dann gilt:
-
-- $\lim_{x \to x_0}{(f(x)\pm g(x))}=F\pm G$
-- $\lim_{x \to x_0}{(f(x)*g(x))}=F*G$
-- $\lim_{x \to x_0}{(f(x)\over g(x))}=F\over G$ für $g(x_0) \neq 0$ und $G \neq 0$
-
-## Stetigkeit
-
-Eine Funktion heisst stetig, wenn ihr Graph kein Loch und keinen Sprung aufweist, d.h. wenn man beim Zeichnen ihres Graphen den Stift nicht absetzen muss.
-
-Eine Funktion heisst an einer Stelle $x = x_0$ stetig, wenn der Grenzwert von $f(x)$ für $x \to x_0$ existiert und mit dem Funktionswert an der Stelle $x_0$ übereinstimmt:
-
-```math
-\lim_{x \to x_0}{f(x)}=f(x_0)
-```
-
-Eine Funktion, die an jeder Stelle ihres Definitionsbereiches $D$ stetig ist, nennt man eine **stetige Funktion** (auf $D$).  
-Existiert der Grenzwert hingegen nicht oder ist er nicht gleich wie der Funktionswert, so ist die Funktion an dieser Stelle **unstetig**.
-
-### Hebbare Unstetigkeitsstelle
-
-Wenn bei einer Funktion f der linksseitige Grenzwert und der rechtsseitige Grenzwert existieren und gleich sind aber nicht mit dem Funktionswert $f(x_0)$ übereinstimmen oder die funktion an $x_0$ nicht definiert ist, dann kann man eine neue Funktion definieren, die an der Stelle $x_0$ stetig ist. Die Stelle $x_0$ heisst **hebbare Unstetigkeitsstelle**
-
-```math
-\hat{f}=\begin{dcases}
-        f(x), x\neq x_0 \\
-        G, x=x_0
-\end{dcases}
-```
-
-### Stetige Funktionen
-
-- Polynomfunktion sind für $R$ stetig.
-- Exponentialfunktionen $f(x)=a^x, (a > 0, 1\neq 0)$ sind für $R$ stetig.  
-- Logarithmusfunktionen $f(x)=log_a(x), (a > 0, 1\neq 0)$ sind für $x>0$ stetig.
-- Trigonometrsiche Funktionen $cos(x), sin(x)$ sind für $R$ stetig.
-- Hyperbelfunktionen $sinh(x), cosh(x), tanh(x))$sind für R stetig.
-
-### Rechenregeln für Stetige Funktionen
-
-Sind die Funktionen $f$ und $g$ auf ihrem ganzen Definitionsbereich stetig, insbesonders an der Stelle $x_0$ gilt:
-
-- $f \pm g$ ist ebenfalls stetig in $x_0$
-- $f * g$ ist ebenfalls stetig in $x_0$
-- $f \over g$ ist ebenfalls stetig in $x_0$, falls $g(x_0) \neq 0$
-- Die Komposition von $f \circ g$ ist ebenfalls an der Stelle $x_0$ stetig
-
 ## Steigung
 
 Die allgemeine Geradengleichung lautet:
@@ -347,7 +262,7 @@ Gleichung der Sekante lautet: $g(x)=m*(x-x_0)+f(x_0)$
 
 ### Tangente - Differenzialkoeffizient
 
-Eine **Tangente** einer Funktion $f$ im Punkt $x_0$ ist eine Gerade durch einen Punkt $P(x_0/f(x_0))$. Der Grenzwert des [[#Sekante - Differenzenquotient]] wird als **Differnzialkoeffizient**, dafür gibt es verschiedende Schreibweisen:
+Eine **Tangente** einer Funktion $f$ im Punkt $x_0$ ist eine Gerade durch einen Punkt $P(x_0/f(x_0))$. Der Grenzwert des Sekante - Differenzenquotient wird als **Differnzialkoeffizient**, dafür gibt es verschiedende Schreibweisen:
 
 ```math
 f'(x_0)=\lim_{\Delta x \to x_0}{f(x_0 + \Delta x)-f(x_0)\over \Delta x}=\lim_{\Delta x \to x_0}{\Delta f \over \Delta x}={df \over dx}=\lim_{h \to x_0}{{f(x+h)-f(x)}\over h}
@@ -371,3 +286,48 @@ Die $n$-te Ableitung für $n>3$ schreibt man $f^{(n)}$, die Funktion ist dann $n
 
 - Jede differenzierbare Funktion ist auch stetig und hat an allen Stellen eine eindeutige Steigung.
 - Ist eine Funktion $f$ an der Stelle $x_0$ nicht stetig, dann ist sie dort auch nicht differenzierbar.
+
+## Monotonie
+
+Die erste Ableitung an der Stelle $x_0$ beschreibt das Steigungsverhalten einer Funktion $f$ in der unmittelbaren Umgebung der Stelle $x_0$
+
+```math
+f'(x_0)=\begin{dcases}
+        <0 \Rightarrow \text{Funktion fällt, streng monoton fallend} \\
+        >0 \Rightarrow \text{Funktion wächst, streng monoton wachsend}
+\end{dcases}
+```
+
+## Krümmung
+
+Die zweite Ableitung an der Stelle $x_0$ be-schreibt das Krümmungsverhalten einer Funktion $f$ in der unmittelbaren Umgebung der Stelle $x_0$:
+
+```math
+f''(x_0)=\begin{dcases}
+        <0 \Rightarrow \text{Rechtskrümmung, Steigung nimmt ab} \\
+       <0 \Rightarrow \text{Linkskrümmung, Steigung nimmt zu wachsend}
+\end{dcases}
+```
+
+### Konkav
+
+Ist $f''(x) < 0 \Rightarrow f'(x)$ ist streng monoton fallend $\Rightarrow f(x)$ ist konkav (Rechtsgekrümmt).
+
+### Konvex
+
+Ist $f''(x) > 0 \Rightarrow f'(x)$ ist streng monoton wachsend $\Rightarrow f(x)$ ist konvex (linksgekrümt).
+
+## Extremwerte
+
+### Lokales Maximum
+
+Ist $f'(x_0)=0$ und $f''(x_0)<0$, dann ist x_0 ein lokales Maximum.
+
+### Lokales Minimum
+
+Ist $f'(x_0)=0$ und $f''(x_0)>0$, dann ist x_0 ein lokales Minimum.
+
+## Wendepunkte und Sattelpunkte
+
+Ist $f''(x_0)=0$ und $f'''(x_0)\neq 0$, dann ist $x_0$ ein Wendepunkt.
+Wenn zusätzlich noch $f'(x_0)=0$, dann ist $x_0$ zusätzlich noch ein Sattelpunkt.

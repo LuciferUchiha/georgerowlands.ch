@@ -1,3 +1,6 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
 # Continuous Functions
 
 ## Real Functions
@@ -11,3 +14,45 @@
 ## Extreme Value Theorem
 
 ## Inverse Function Theorem
+
+
+## Stetigkeit
+
+Eine Funktion heisst stetig, wenn ihr Graph kein Loch und keinen Sprung aufweist, d.h. wenn man beim Zeichnen ihres Graphen den Stift nicht absetzen muss.
+
+Eine Funktion heisst an einer Stelle $x = x_0$ stetig, wenn der Grenzwert von $f(x)$ für $x \to x_0$ existiert und mit dem Funktionswert an der Stelle $x_0$ übereinstimmt:
+
+```math
+\lim_{x \to x_0}{f(x)}=f(x_0)
+```
+
+Eine Funktion, die an jeder Stelle ihres Definitionsbereiches $D$ stetig ist, nennt man eine **stetige Funktion** (auf $D$).  
+Existiert der Grenzwert hingegen nicht oder ist er nicht gleich wie der Funktionswert, so ist die Funktion an dieser Stelle **unstetig**.
+
+### Hebbare Unstetigkeitsstelle
+
+Wenn bei einer Funktion f der linksseitige Grenzwert und der rechtsseitige Grenzwert existieren und gleich sind aber nicht mit dem Funktionswert $f(x_0)$ übereinstimmen oder die funktion an $x_0$ nicht definiert ist, dann kann man eine neue Funktion definieren, die an der Stelle $x_0$ stetig ist. Die Stelle $x_0$ heisst **hebbare Unstetigkeitsstelle**
+
+```math
+\hat{f}=\begin{dcases}
+        f(x), x\neq x_0 \\
+        G, x=x_0
+\end{dcases}
+```
+
+### Stetige Funktionen
+
+- Polynomfunktion sind für $R$ stetig.
+- Exponentialfunktionen $f(x)=a^x, (a > 0, 1\neq 0)$ sind für $R$ stetig.  
+- Logarithmusfunktionen $f(x)=log_a(x), (a > 0, 1\neq 0)$ sind für $x>0$ stetig.
+- Trigonometrsiche Funktionen $cos(x), sin(x)$ sind für $R$ stetig.
+- Hyperbelfunktionen $sinh(x), cosh(x), tanh(x))$sind für R stetig.
+
+### Rechenregeln für Stetige Funktionen
+
+Sind die Funktionen $f$ und $g$ auf ihrem ganzen Definitionsbereich stetig, insbesonders an der Stelle $x_0$ gilt:
+
+- $f \pm g$ ist ebenfalls stetig in $x_0$
+- $f * g$ ist ebenfalls stetig in $x_0$
+- $f \over g$ ist ebenfalls stetig in $x_0$, falls $g(x_0) \neq 0$
+- Die Komposition von $f \circ g$ ist ebenfalls an der Stelle $x_0$ stetig
