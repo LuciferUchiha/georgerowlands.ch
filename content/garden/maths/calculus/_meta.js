@@ -8,11 +8,12 @@ export default {
     continuousFunctions: "",
     convergentFunctions: "",
     differentiableFunctions: "",
+    riemannIntegrals: "",
+    numericalIntegration: "",
     power: "",
     taylor: "",
     fourier: "",
     functionAnalysis: "",
     limitRules: "",
-    integrals: "Integrals"
 }
   
