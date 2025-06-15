@@ -3,9 +3,7 @@ import Image from "@components/Image/Image";
 
 # Intervals and Bounds
 
-If we have a [set of real numbers](/garden/maths/discrete/setTheory#real-numbers), we can define a [subset](/garden/maths/discrete/setTheory#sub-and-superset) of this set by specifying a range of values. This subset is called an interval. To define an interval, we need two real numbers, $a$ and $b$, with $a < b$.
-
-We can then define the following types of intervals:
+If we have a [set of real numbers](/garden/maths/discrete/setTheory#real-numbers), we can define a [subset](/garden/maths/discrete/setTheory#sub-and-superset) of this set by specifying a range of values. This subset is called an interval. To define an interval, we need two real numbers, $a$ and $b$, with $a \leq b$. We can then define the following types of intervals:
 
 - **Open interval**: We include all the numbers between $a$ and $b$, but not $a$ and $b$ themselves. This is denoted as $(a, b) = \{x \in \mathbb{R} \mid a < x < b\}$. More precisely, an open interval does not include it's two endpoints.
 - **Closed interval**: We include all the numbers between $a$ and $b$, as well as $a$ and $b$ themselves. This is denoted as $[a, b] = \{x \in \mathbb{R} \mid a \leq x \leq b\}$. A closed interval includes both endpoints and all the numbers in between.
@@ -53,11 +51,13 @@ If we have a set of real numbers $A \subseteq \mathbb{R}$, we can define the fol
 - **Upper bound**: A real number $c$ is an upper bound of $A$ if $\forall a \in A: a \leq c$. In other words, $c$ is greater than or equal to all elements of $A$. We then say that $A$ is bounded above.
 - **Lower bound**: A real number $c$ is a lower bound of $A$ if $\forall a \in A: a \geq c$. In other words, $c$ is less than or equal to all elements of $A$. We then say that $A$ is bounded below.
 
-Important to note is that the upper and lower bounds can be elements of the set $A$ itself but they can also be real numbers that are not in the set. If a set has both an upper and lower bound it is called bounded. If it only has one of the two it is called half-bounded, i.e bounded above or bounded below where the other bound is either $-\infty$ or $\infty$. An alternative definition is to say that the set $A$ is bounded if there exists a real number $c > 0$ such that;
+Important to note is that the upper and lower bounds can be elements of the set $A$ itself but they can also be real numbers that are not in the set. If a set has both an upper and lower bound it is called bounded. If it only has one of the two it is called half-bounded, i.e bounded above or bounded below where the other bound is either $-\infty$ or $\infty$. An alternative definition is to say that the set $A$ is bounded if there exists a real number $c > 0$ such that:
 
 ```math
 \forall a \in A: |a| \leq c
 ```
+
+### Maximum and Minimum of a Set
 
 We can now also define the operations of maximum and minimum for two numbers $a, b \in \mathbb{R}$ as:
 
@@ -74,14 +74,24 @@ This then also leads to another definition of the [absolute value](/garden/maths
 |x| = \text{max}(x, -x) = \begin{cases} x & \text{if } x \geq 0 \\ -x & \text{if } x < 0 \end{cases}
 ```
 
-### Maximum and Minimum of a Set
-
 With our knowledge of intervals and bounds, we can now also extend the definition of the maximum and minimum to sets of real numbers. We can define the maximum and minimum of a set $A \subseteq \mathbb{R}$ as:
 
 - **Maximum**: A real number $c$ is the maximum of $A$ if it is an upper bound of $A$ so $\forall a \in A: a \leq c$ and $c \in A$. We then write $\text{max}(A) = c$.
 - **Minimum**: A real number $c$ is the minimum of $A$ if it is a lower bound of $A$ so $\forall a \in A: a \geq c$ and $c \in A$. We then write $\text{min}(A) = c$.
 
 Not all sets have a maximum or minimum also if the set is upper or lower bounded. 
+
+<Callout type="example">
+The interval $[1, \infty)$ has a lower bound but is unbounded above. So it has a minimum but no maximum. The minimum is $1$ and the maximum does not exist.
+
+The interval $(-1, 1)$ has no upper or lower bound. Therefore it also has no maximum or minimum.
+
+Lastly the interval $(1, \infty)$ has a lower bound of $1$ but is unbounded above. However, it does not have a minimum or maximum. To show that there is no maximum is trivial, but to show that there is no minimum we can do the following:
+
+For there to be a minimum, there must be a real number $c$ such that $\forall x \in (1, \infty): x \geq c$. If we take any element $b \in (1, \infty)$ then we can take the value in between $1$ and $b$ such as $c = \frac{1 + b}{2}$. This value is still in the interval $(1, \infty)$ but because $b$ was arbitrary, we can always find a value in the interval that is smaller than $c$. Therefore there is no minimum.
+
+An alternative way to think about this is if we look at the set of the lower bounds of the interval $(1, \infty)$ which is $(-\infty, 1]$. This set has maximum $1$ but no minimum. So the interval $(1, \infty)$ has no minimum.
+</Callout>
 
 ### Supremum and Infimum
 
@@ -90,7 +100,137 @@ If we know an upper or lower bound of a set then all values that are greater or 
 - **Supremum**: A real number $c$ is the supremum of $A$ if it is the smallest upper bound of $A$. In other words, $c$ is an upper bound of $A$ and if $d$ is another upper bound of $A$ then $c \leq d$. We then write $\sup A = c$.
 - **Infimum**: A real number $c$ is the infimum of $A$ if it is the largest lower bound of $A$. In other words, $c$ is a lower bound of $A$ and if $d$ is another lower bound of $A$ then $c \geq d$. We then write $\inf A = c$.
 
-So if a set has a maximum then the supremum is the same as the maximum and if a set has a minimum then the infimum is the same as the minimum. We can probaly also say many other things. 
+So if a set has a maximum then the supremum is the same as the maximum and if a set has a minimum then the infimum is the same as the minimum. 
+
+<Callout type="example">
+Let $A = \{\frac{2x}{x+3} \mid x \in \mathbb{R} \text{ and } x > 0\}$. 
+
+Then we first check the bounds. Because $x > 0$ we can see the following for all $x \in A$. 
+
+```math
+\frac{2x}{x+3} \geq 0
+```
+
+So $0$ is a lower bound of $A$. We can rearrange the expression to find the upper bound:
+
+```math
+\frac{2x}{x+3} = \frac{2x}{x(1 + \frac{3}{x})} = \frac{2}{1 + \frac{3}{x}} < 2
+```
+
+So $2$ is an upper bound of $A$. Now the question is, is 2 the supremum, so is it the smallest upper bound? Let's assume that there is a smaller upper bound $c$ so that $c < 2$. Then we have:
+
+```math
+\begin{align*}
+0 < \frac{2x}{x+3} & \leq c \\
+2x & \leq c(x + 3) \\
+2x & \leq cx + 3c \\
+2x - cx & \leq 3c \\
+(2 - c)x & \leq 3c 
+\end{align*}
+```
+
+If we then set $x = \frac{4c}{2 - c}$, we can see that this is a valid value for $x$. This then leads to:
+
+```math
+\begin{align*}
+(2 - c)\frac{4c}{2 - c} & \leq 3c \\
+4c & \leq 3c 
+\end{align*}
+```
+
+This is a contradiction because $c > 0$ and therefore $4c \leq 3c$ can not hold. So there can not be a smaller upper bound than $2$. Therefore, $2$ is the supremum of $A$. An alternative way and possibly more intuitive way to prove that $2$ is the supremum is that we must show that for any $\epsilon > 0$ there exists an $x \in A$ such that:
+
+```math
+2 - \epsilon < \frac{2x}{x+3} < 2
+```
+
+The right side is trivial as we already know that $2$ is an upper bound. For the left side, we can rearrange the expression to find:
+
+```math
+\begin{align*}
+2 - \epsilon & < \frac{2x}{x+3} \\
+(2 - \epsilon)(x + 3) & < 2x \\
+(2 - \epsilon)x + 3(2 - \epsilon) & < 2x \\
+(2 - \epsilon)x + 6 - 3\epsilon & < 2x \\
+(2 - \epsilon)x - 2x & < -6 + 3\epsilon \\
+(2 - \epsilon - 2)x & < -6 + 3\epsilon \\
+(-\epsilon)x & < -6 + 3\epsilon \\
+x & > \frac{-6 + 3\epsilon}{-\epsilon} \\
+x & > \frac{6 - 3\epsilon}{\epsilon} \\
+x & > \frac{6}{\epsilon} - 3
+\end{align*}
+```
+
+Because $x > 0$ it also has to hold that $\frac{6}{\epsilon} - 3 > 0$ which is true for small enough $\epsilon > 0$. So we can always find an $x \in A$ such that $2 - \epsilon < \frac{2x}{x+3} < 2$ for any $\epsilon > 0$. Therefore, $2$ is the supremum of $A$.
+
+Is $2$ also the maximum of $A$? To check this we can see if $2 \in A$. So we need to find an $x \leq 0$ such that:
+
+```math
+\begin{align*}
+\frac{2x}{x+3} & = 2 \\
+2x & = 2(x + 3) \\
+2x & = 2x + 6 \\
+0 & = 6
+\end{align*}
+```
+
+This is a contradiction, so $2$ is not in $A$. Therefore, $2$ is not the maximum of $A$ but it is the supremum of $A$.
+
+The last part is to find the infimum of $A$. We already know that $0$ is a lower bound of $A$ the question is if there exists a larger lower bound than $0$. If we assume that there is a larger lower bound $c > 0$ then we can rearrange the expression to find:
+
+```math
+\begin{align*}
+c \leq \frac{2x}{x+3} \\
+c (x + 3) & \leq 2x \\
+c x + 3c & \leq 2x \\
+3c & \leq 2x - c x \\
+3c & \leq x(2 - c)
+\end{align*}
+```
+
+If we then set $x = \frac{2c}{2 - c}$, we can see that this is a valid value for $x$. This then leads to:
+
+```math
+\begin{align*}
+3c & \leq \frac{2c(2 - c)}{2 - c} \\
+3c & \leq 2c
+\end{align*}
+```
+
+This is a contradiction because $c > 0$ and therefore $3c \leq 2c$ can not hold. So there can not be a larger lower bound than $0$. Therefore, $0$ is the infimum of $A$. An alternative way to prove that $0$ is the infimum is that we must show that for any $\epsilon > 0$ there exists an $x \in A$ such that:
+
+```math
+0 < \frac{2x}{x+3} < \epsilon
+```
+
+The left side is trivial as we already know that $0$ is a lower bound. For the right side, we can rearrange the expression to find:
+
+```math
+\begin{align*}
+\frac{2x}{x+3} & < \epsilon \\
+2x & < \epsilon(x + 3) \\
+2x & < \epsilon x + 3\epsilon \\
+2x - \epsilon x & < 3\epsilon \\
+(2 - \epsilon)x & < 3\epsilon \\
+x & < \frac{3\epsilon}{2 - \epsilon}
+\end{align*}
+```
+
+Since $0 < \epsilon < 2 - \epsilon$ as we want $x$ to be positive, we can always find an $x \in A$ such that $0 < \frac{2x}{x+3} < \epsilon$ for any $\epsilon > 0$. Therefore, $0$ is the infimum of $A$.
+
+Is $0$ also the minimum of $A$? To check this we can see if $0 \in A$. So we need to find an $x > 0$ such that:
+
+```math
+\begin{align*}
+\frac{2x}{x+3} & = 0 \\
+2x & = 0(x + 3) \\
+2x & = 0 \\
+x & = 0
+\end{align*}
+```
+
+This is a contradiction, as $x$ must be greater than $0$. So $0$ is not in $A$. Therefore, $0$ is not the minimum of $A$ but it is the infimum of $A$.
+</Callout>
 
 We can also describe the set of all upper or lower bounds of a set $A$ as:
 

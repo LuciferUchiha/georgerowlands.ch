@@ -112,9 +112,9 @@ We can also define such a relation on the rational numbers $\mathbb{Q}$ in a sim
     width={300}
 />
 
-This can't be done with the rational numbers for example if the two sets are construct in such a way that the only number in between $a$ and $b$ is irrational such as $\sqrt{2}$.
+This can't be done with the rational numbers for example if the two sets are construct in such a way that the only number in between $a$ and $b$ is irrational such as $\sqrt{2}$. You can see a proof of why $\sqrt{2}$ is not a rational number in the [proof of irrational numbers](/garden/maths/discrete/setTheory#rational-and-irrational-numbers).
 
-<Callout type="example">
+<Callout type="proof" title="Completeness Property of Rational Numbers">
 We can construct the two sets $A$ and $B$ as follows:
 - Let $A = \{a \in \mathbb{Q} | 1 \leq a \leq 2 \text{ and } a^2 \leq 2\}$. This set contains all rational numbers between 1 and 2 whose square is less than or equal to 2.
 - Let $B = \{b \in \mathbb{Q} | 1 \leq b \leq 2 \text{ and } b^2 \geq 2\}$. This set contains all rational numbers between 1 and 2 whose square is greater than or equal to 2.
@@ -122,31 +122,154 @@ We can construct the two sets $A$ and $B$ as follows:
 By constructing these two sets, we have basically taken all the rational numbers between 1 and 2. By the completeness property we would then also have a real number $c$ such that $c^2 = 2$. However, $\sqrt{2}$ is not a rational number so it can't be in either set and therefore the completeness property does not hold for the rational numbers. This is why the real numbers are called complete.
 </Callout>
 
-We can show that the ordering relation is compatible with the arithmetic operations on real numbers.
+The real numbers $\mathbb{R}$ have the arithmetic operations of addition and multiplication defined on them, which are compatible with the ordering relation $\leq$. This means that we can add and multiply real numbers while preserving the order. 
+
+<Callout type="proof" title="Addition preserves order">
+The addition of real numbers preserves the order relation $\leq$. More formally, we want to show that if $a \leq b$ for any real numbers $a$ and $b$, then for any real number $c$, we have $a + c \leq b + c$. We can show this as follows for $a, b, c \in \mathbb{R}$ where $a \leq b$:
 
 ```math
 \begin{align*}
-\text{Addition: } \forall a, b, c \in \mathbb{R}, & a \leq b \implies a + c \leq b + c \\
-\text{Multiplication: } \forall a \geq 0, b \geq 0: a \cdot b \geq 0
+a \leq b \\
+0 \leq b - a \\
+c \leq b - a + c \\
+a + c \leq b + c
 \end{align*}
 ```
 
-Using these properties we can show a multitude of things including that the additive and multiplicative identities and inverses are unique.
+We can then also extend this for $a, b, c, d \in \mathbb{R}$ where $a \leq b$ and $c \leq d$ to show that $a + c \leq b + d$. 
 
-```math	
+```math
 \begin{align*}
-0 \cdot a & = 0 \text{ for all } a \in \mathbb{R} \\
-(-1) \cdot a & = -a \text{ for all } a \in \mathbb{R} \text{ and } (-1)^2 = 1 \\
-a \geq 0 \iff -a \leq 0 & \\
-a^2 \geq 0 & \text{ for all } a \in \mathbb{R} \text{ and } 1 = 1 \cdot 1 \geq 0 \\
-a \leq b \text{ and } c \leq d \implies a + c \leq b + d & \text{ for all } a, b, c, d \in \mathbb{R} \\
-0 \leq a \leq b \text{ and } 0 \leq c \leq d \implies a \cdot c \leq b \cdot d & 
+a \leq b \\
+a + c \leq b + c \\
+c \leq d \\
+c + b \leq d + b \\
+a + c \leq c + b \leq b + d \\
+a + c \leq b + d
+\end{align*}
+```
+</Callout>
+
+<Callout type="proof" title="Multiplication preserves order">
+The multiplication of real numbers preserves the order relation $\leq$. More formally, we first want to show that if $a \geq 0$ and $b \geq 0$ for any real numbers $a$ and $b$, then $a \cdot b \geq 0$. Showing this is rather simple.
+
+```math
+\begin{align*}
+a \geq 0 \\
+a \cdot b \geq 0 \cdot b \\
+a \cdot b \geq 0
 \end{align*}
 ```
 
-There are probably many more properties that can be derived and proven from the ordering of real numbers.
+We can then extend this to show that if $0 \leq a \leq b$ and $0 \leq c \geq 0$, then $a \cdot c \leq b \cdot c$. 
 
-### Archimedes Principle
+```math
+\begin{align*}
+0 \leq a \leq b \\
+0 \leq b - a \\
+0 \cdot c \leq (b - a) \cdot c \\
+0 \leq b \cdot c - a \cdot c \\
+a \cdot c \leq b \cdot c
+\end{align*}
+```
+
+Lastly we can also show that if $a \leq b$ and $c \leq d$ for any real numbers $a, b, c, d$, then $a \cdot c \leq b \cdot d$. This is done by combining the two previous proofs. This is rather more complex to show but similar to the addition proof.
+
+```math
+\begin{align*}
+a \leq b \\
+a \cdot c \leq b \cdot c \\
+c \leq d \\
+c \cdot b \leq d \cdot b \\
+a \cdot c \leq c \cdot b \leq b \cdot d \\
+a \cdot c \leq b \cdot d
+\end{align*}
+```
+</Callout>
+
+Using these properties we can show a multitude of things such as that the additive inverse of a real number $a$ is unique. If we assume that there are two additive inverses $b$ and $c$ such that $a + b = 0$ and $a + c = 0$, then we can show that $b = c$:
+
+```math
+\begin{align*}
+b = b + 0 \\
+b = b + (a + c) \\
+b = (b + a) + c \\
+b = 0 + c \\
+b = c
+\end{align*}
+```
+
+The same goes for the multiplicative inverse of a real number $a$ where $a \neq 0$. If we assume that there are two multiplicative inverses $b$ and $c$ such that $a \cdot b = 1$ and $a \cdot c = 1$, then we can show that $b = c$:
+
+```math
+\begin{align*}
+a \cdot b & = 1 \\
+a \cdot c - 1 & = 0 \\
+a \cdot b - a \cdot c & = 0 \\
+a \cdot (b - c) & = 0 \\
+b - c & = 0 \\
+b & = c
+\end{align*}
+```
+
+We already used the fact that $0 \cdot a = 0$ in the proof of multiplication preserving order. However, we can also show this in a more general way. We can show that $0 \cdot a = 0$ for all real numbers $a$ and that $(-1) \cdot a = -a$ for all real numbers $a$ using the distributive property of multiplication over addition.
+
+```math
+\begin{align*}
+0 \cdot a + 0 \cdot a & = (0 + 0) \cdot a \\
+0 \dot a + 0 \cdot a & = 0 \cdot a \\
+0 \cdot a & = 0 \\
+\\
+1 \cdot a + (-1) \cdot a & = (1 + (-1)) \cdot a \\
+1 \cdot a + (-1) \cdot a & = 0 \cdot a \\
+(-1) \cdot a & = -a
+\end{align*}
+```
+
+specifically we can also show that $(-1)^2 = 1$ using $a=-1$:
+
+```math
+(-1) \cdot a = -a \\
+(-1) \cdot (-1) = -(-1) \\
+(-1)^2 = 1
+```
+
+We can also show that the negation of a positive real number is negative. If we assume that $0 \leq a$ for some real number $a$, then we can show that $-a \leq 0$:
+
+```math
+\begin{align*}
+0 & \leq a \\
+0 \cdot (-1) & \leq a \cdot (-1) \\
+0 & \leq -a \\
+-a & \leq 0
+\end{align*}
+```
+
+In a similar way we can also show that the square of a real number is non-negative. If we assume that $a \in \mathbb{R}$, then we can show that $0 \leq a^2$. The case where $a = 0$ is trivial, so we first assume that $0 < a$. Then we can show that $0 \leq a^2$:
+
+```math
+\begin{align*}
+0 & \leq a \\
+0 \cdot a & \leq a \cdot a \\
+0 & \leq a^2
+\end{align*}
+```
+We can also show that if $a < 0$, then $0 \leq a^2$. If $a$ is negative then we have $a=-b$ for some positive real number $b$. We can then show that $0 \leq a^2$:
+
+```math
+\begin{align*}
+a^2 & = (-b)^2 = (-b) \cdot (-b) \\
+& = ( 1 \cdot b) \cdot (1 \cdot b) \\
+& = (-1) \cdot (-1) \cdot b \cdot b \\
+& = 1 \cdot b^2 \\
+& = b^2 \\
+0 & \leq b^2 \text{and therefore } 0 \leq a^2
+\end{align*}
+```
+
+This comes from the previous proof where $0 \leq b$ so then $0 \cdot b \leq b \cdot b$ and therefore $0 \leq b^2$.
+
+### Archimedean Property
 
 ```math	
 \text{Let } x \in \mathbb{R}, x > 0 \text{ and } y \in \mathbb{R}. \text{ Then there exists an } n \in \mathbb{N} \text{ such that } y \leq nx \text{ and } y \geq nx.
@@ -173,8 +296,35 @@ Using these properties we can now show that we can always find a solution to the
 
 ### Young's Inequality
 
-No idea why this is useful but it is a thing.
+From the properties of the real numbers we can quickly come up with that the following quadratic inequality holds for all real numbers $a$ and $b$:
 
 ```math
-\text{Let } a, b \in \mathbb{R} \text{ then } \forall \epsilon > 0: 2ab \leq \epsilon a^2 + \frac{1}{\epsilon}b^2
+(a - b)^2 \geq 0
 ```
+
+This can be expanded to:
+
+```math
+a^2 - 2ab + b^2 \geq 0 \text{ or } 2ab \leq a^2 + b^2
+```
+
+The idea is now that we want to approximate a bound for the product $2ab$ by a weighted sum of the squares of $a$ and $b$. This is done by introducing a scaling factor $\epsilon > 0$ to the inequality, which is commonly chosen as $\epsilon = \frac{|a|}{|b|}$ where $b \neq 0$. Depending on the scaling factor the approximation becomes better or worse.
+This leads us to Young's inequality for all real numbers $a$ and $b$ and for all $\epsilon > 0$:
+
+```math
+2|ab| \leq \epsilon a^2 + \frac{1}{\epsilon}b^2
+```
+
+<Callout type="example">
+We want to have a bound for the product $2ab$ where $a = 3$ and $b = 4$. We can choose $\epsilon = 1$.
+
+```math
+2ab = 2 \cdot 3 \cdot 4 = 24 \leq 1 \cdot 3^2 + \frac{1}{1} \cdot 4^2 = 9 + 16 = 25
+```
+
+If we choose $\epsilon = \frac{3}{4}$, we get a different but in this case worse bound: 
+
+```math
+2ab = 2 \cdot 3 \cdot 4 = 24 \leq \frac{3}{4} \cdot 3^2 + \frac{1}{\frac{3}{4}} \cdot 4^2 = \frac{27}{4} + \frac{16}{\frac{3}{4}} = \frac{27}{4} + \frac{64}{3} = \frac{81 + 256}{12} = \frac{337}{12} \approx 28.08
+```
+</Callout>
