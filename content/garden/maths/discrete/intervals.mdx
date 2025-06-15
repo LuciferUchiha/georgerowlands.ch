@@ -3,88 +3,7 @@ import Image from "@components/Image/Image";
 
 # Intervals and Bounds
 
-## Ordering of Real Numbers
-
-We can define an ordering on the set of real numbers $\mathbb{R}$ by defining the relation $\leq$ between two real numbers $a$ and $b$.
-
-```math
-\begin{align*}
-\text{Reflexivity: } & a \leq a \text{ for all } a \in \mathbb{R} \\
-\text{Tansitivity: } & a \leq b \text{ and } b \leq c \implies a \leq c \text{ for all } a, b, c \in \mathbb{R} \\
-\text{Antisymmetry: } & a \leq b \text{ and } b \leq a \implies a = b \text{ for all } a, b \in \mathbb{R} \\
-\text{Totality: } & a \leq b \text{ or } b \leq a \text{ for all } a, b \in \mathbb{R}
-\end{align*}
-```
-
-We can show that the ordering relation is compatible with the arithmetic operations on real numbers.
-
-```math
-\begin{align*}
-\text{Addition: } \forall a, b, c \in \mathbb{R}, & a \leq b \implies a + c \leq b + c \\
-\text{Multiplication: } \forall a \geq 0, b \geq 0: a \cdot b \geq 0
-\end{align*}
-```
-
-However, the key difference between the real numbers and the rational numbers is the Ordering Completeness Property. 
-
-```math	
-\text{Let } A, B \subseteq \mathbb{R} \text{ be non-empty sets so } A \neq \emptyset \text{ and } B \neq \emptyset. \text{ If } A \leq B \text{ for all } a \in A \text{ and } b \in B, \text{ then there exists at least one real number } c \text{ such that } a \leq c \leq b \text{ for all } a \in A \text{ and } b \in B.
-```
-
-In other words, we can always find a real number that lies between two sets of real numbers if one set is less than or equal to the other. This can't be done with the rational numbers for example if the two sets are construct in such a way that the only inbetween number is irrational such as $\sqrt{2}$.
-
-Using these properties we can show a multitude of things including that the additive and multiplicative identities and inverses are unique.
-
-```math	
-\begin{align*}
-0 \cdot a & = 0 \text{ for all } a \in \mathbb{R} \\
-(-1) \cdot a & = -a \text{ for all } a \in \mathbb{R} \text{ and } (-1)^2 = 1 \\
-a \geq 0 \iff -a \leq 0 & \\
-a^2 \geq 0 & \text{ for all } a \in \mathbb{R} \text{ and } 1 = 1 \cdot 1 \geq 0 \\
-a \leq b \text{ and } c \leq d \implies a + c \leq b + d & \text{ for all } a, b, c, d \in \mathbb{R} \\
-0 \leq a \leq b \text{ and } 0 \leq c \leq d \implies a \cdot c \leq b \cdot d & 
-\end{align*}
-```
-
-There are probably many more properties that can be derived and proven from the ordering of real numbers.
-
-### Archimedes Principle
-
-```math	
-\text{Let } x \in \mathbb{R}, x > 0 \text{ and } y \in \mathbb{R}. \text{ Then there exists an } n \in \mathbb{N} \text{ such that } y \leq nx \text{ and } y \geq nx.
-```
-
-This can also be stated as:
-    
-```math
-\text{Let } x \in \mathbb{R} \text{ then there exists exactly one } n \in \mathbb{Z} \text{ such that } n \leq x < n + 1.
-```
-
-The interpretation is twofold. Firstly it states that we can always find an integer that is smaller than a real number and when we add 1 to that integer we get a real number that is larger than the original real number. So in other words, we can always bound a real number between two integers. 
-
-Secondly, it states that if we have a real number that is larger than 0 then we can always create a multiple of another real number with a natural number that is larger. The same goes for smaller creating a smaller multiple.
-
-<Image 
-    src="/maths/archimedianProperty.svg"
-    width={600}
-/>
-
-### Roots of Real Numbers
-
-Using these properties we can now show that we can always find a solution to the equation $x^2 = t$ for any real number $t \geq 0$. In other words, we can always find the square root of a real number that is greater or equal to 0.
-
-### Young's Inequality
-
-No idea why this is useful but it is a thing.
-
-```math
-\text{Let } a, b \in \mathbb{R} \text{ then } \forall \epsilon > 0: 2ab \leq \epsilon a^2 + \frac{1}{\epsilon}b^2
-```
-
-## Intervals
-
-If we have a [set of real numbers](/garden/maths/discrete/setTheory#real-numbers), we can define a [subset](/garden/maths/discrete/setTheory#sub-and-superset) of this set by specifying a range of values. This subset is called an interval.
-To define an interval, we need two real numbers, $a$ and $b$, with $a < b$.
+If we have a [set of real numbers](/garden/maths/discrete/setTheory#real-numbers), we can define a [subset](/garden/maths/discrete/setTheory#sub-and-superset) of this set by specifying a range of values. This subset is called an interval. To define an interval, we need two real numbers, $a$ and $b$, with $a < b$.
 
 We can then define the following types of intervals:
 
@@ -189,3 +108,22 @@ If $A \subseteq B \subseteq \mathbb{R}$ then:
 
 ### Compact Intervals
 
+The idea of a compact interval is that we want an interval that doesn't have any "gaps" or missing endpoints. This is closely related to the concept of closed intervals and bounded sets. In real analysis, a set is called compact if it is both closed and bounded. So an Inteval $I \subseteq \mathbb{R}$ is called compact if it has the following form:
+
+```math
+I = [a, b] \text{ with } a, b \in \mathbb{R} \text{ and } a \leq b
+```
+
+So in other words, a compact interval is a closed interval with real endpoints. 
+
+<Callout type="example">
+    Examples of compact intervals:
+    - $[0, 1]$ is a compact interval because it is closed and bounded.
+    - $[-5, 5]$ is a compact interval because it is closed and bounded.
+    - $[2, 3]$ is a compact interval because it is closed and bounded.
+    
+    Examples of non-compact intervals:
+    - $(0, 1)$ is not a compact interval because it is not closed.
+    - $(-\infty, 0]$ is not a compact interval because it is not bounded.
+    - $[0, \infty)$ is not a compact interval because it is not bounded.
+</Callout>

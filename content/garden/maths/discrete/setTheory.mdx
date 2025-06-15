@@ -291,7 +291,6 @@ Multiple restrictions can be applied to the set of integers, for example:
 ```
 </Callout>
 
-
 ### Rational and Irrational Numbers
 
 Rational numbers are numbers that can be expressed with a fraction of two integers. Importantly the denominator can not be zero as this is an undefined operation. Another way to remember them is that they can be written as terminating or repeating decimals. The set of rational numbers is denoted by:
@@ -385,6 +384,22 @@ q^2 = 2k^2
 This means that $q^2$ is even, which implies that $q$ is also even (because the square of an odd number is odd). But
 this contradicts our assumption that $p$ and $q$ have no common factors, since they both have a factor of 2. Therefore,
 our initial assumption that $\sqrt{2}$ is rational must be false, and we conclude that $\sqrt{2}$ is irrational.
+</Callout>
+
+<Callout type="proof" title="Proof pi is Irrational">
+Lindemann's proof that $\pi$ is irrational is a more advanced proof that uses the fact that $\pi$ is not a root of any polynomial with rational coefficients. 
+
+<Callout type="todo">
+I don't understand this proof yet. Why does pi not being a root of any polynomial with rational coefficients imply that it is irrational?
+</Callout>
+
+There exists no coefficients $a_0, a_1, ..., a_n$ such that the following equation holds:
+
+```math
+a_0 + a_1 \pi + a_2 \pi^2 + ... + a_n \pi^n = 0
+```
+
+So a polynomial with real coefficients cannot have $\pi$ as a root. This means that $\pi$ is not a solution to any polynomial equation with rational coefficients, and therefore it is irrational.
 </Callout>
 
 ### Real Numbers
@@ -716,7 +731,7 @@ The power set of the set $A$ is commonly written as: $P(A)$, $\mathscr{P}(A)$, $
 \mathscr{P}(A) = \{X \mid X \subseteq A\}
 ```
 
-To create the power set of a set, we can use either a tree diagram or a hasse diagram. The tree diagram is the most common way to create a power set, but the hasse diagram is a more compact way to represent the power set.
+To create the power set of a set, we can use either a tree diagram or a hasse diagram. The tree diagram is the most common way to create a power set, but the hasse diagram is a more compact way to represent the power set. However, the intended use of the [hasse diagram is to show an order relation between the subsets](/garden/maths/discrete/relationsFunctions/orderRelations#hasse-diagram).
 
 For the tree diagram, we start with the empty set and then add the elements of the original set one by one. For each element we have two choices, either include it in the subset or not. 
 
@@ -737,7 +752,7 @@ This also results in a diagram where the subsets are ordered by their cardinalit
 
 <Image 
     src="/maths/setsHasseDiagram.png"
-    caption="Hasse diagram showing the power set of the set {1,2,3}."
+    caption="Hasse diagram showing the power set of the set {1,2,3} and the subset relation."
     width={300}
 />
 

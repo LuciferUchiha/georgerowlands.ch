@@ -1,0 +1,180 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
+# Order Relations
+
+Just like we have [equivalence relations](/garden/maths/discrete/relationsFunctions/equivalenceRelations) we can also define so called order relations. The equivalence relation worked in a similar way to our normal understanding of equivalence. The order relation works in a similar way to our normal understanding of order so that one thing is less than or equal to another thing and vice versa.
+
+## Partial Order
+
+We can define a so called partial order $R$ on a set $X$ as a homogeneous relation or in other words a binary relation between the same sets, that is reflexive, antisymmetric and transitive. This is sometimes also called a **weak order** or a order relation. Because the relation $R$ defines an ordering it is often denoted by the symbol $\leq$. 
+
+The pair $P=(X, R)$ or simply $(X, \leq)$ is then called a partially ordered set or often abbreviated as poset.  
+
+For a relation $R$ to be a partial order, it must satisfy the following properties:
+- **Reflexivity**: For all $a \in X$, $a R a$ (or $a \leq a$).
+- **Antisymmetry**: For all $a, b \in X$, if $a R b$ and $b R a$, then $a = b$ (or $a \leq b$ and $b \leq a$ implies $a = b$).
+- **Transitivity**: For all $a, b, c \in X$, if $a R b$ and $b R c$, then $a R c$ (or $a \leq b$ and $b \leq c$ implies $a \leq c$).
+
+So the only difference between a partial order and an equivalence relation is that the partial order is antisymmetric instead of symmetric. This means that if two elements are related to each other, they must be equal. In other words, if $a \leq b$ and $b \leq a$, then $a = b$. Whereas in an equivalence relation, if $a \equiv b$ then $b \equiv a$ is true but $a$ and $b$ do not have to be equal. 
+
+We can also compare this to our normal understanding of "less than or equal to":
+- We say that two things that are the same are less than or equal to each other because they are equal (reflexive and antisymmetric).
+- If something is less than or equal to something else, then a third thing that is less than or equal to the second thing is also less than or equal to the first thing (transitive).
+
+<Callout type="example">
+The following relations are partial orders on the set $X = \{1, 2, 3, 4, 5\}$:
+- The relation $R = \{(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)\}$ is a partial order .
+- The relation $R = \{(1, 2), (2, 3), (3, 4), (4, 5), (1, 3), (1, 4), (1, 5), (2, 4), (2, 5), (3, 5)\}$ is a partial order.
+- The relation $R = \{(1, 2), (2, 3), (3, 4), (1, 3), (1, 4), (2, 4)\}$ is a partial order.
+Despite that 5 is not related to 1, 2, 3 and 4, the relation is still a partial order because it is reflexive, antisymmetric and transitive. This is why it is called a partial order because not every pair of elements needs to be comparable.
+</Callout>
+
+<Callout type="example" title="Subset is a Partial Order">
+The subset relation $\subseteq$ on the power set of a set $X$ is a partial order. 
+</Callout>
+
+<Callout type="example" title="Divisibility is a Partial Order">
+The divisibility relation $\mid$ on the set of natural numbers $\mathbb{N}$ is a partial order. For example, $2 \mid 4$ and $3 \mid 6$ but $2 \nmid 3$.
+</Callout>
+
+### Strong Partial Order
+
+A strong or also called strict partial order is a homogeneous relation $R$ often denoted by the symbol $< $ on a set $X$ that satisfies the following properties:
+- **Irreflexivity**: For all $a \in X$, it is not the case that $a R a$ (or $a < a$).
+- **Asymmetry**: For all $a, b \in X$, if $a R b$, then it is not the case that $b R a$ (or $a < b$ does not imply $b < a$).
+- **Transitivity**: For all $a, b, c \in X$, if $a R b$ and $b R c$, then $a R c$ (or $a < b$ and $b < c$ implies $a < c$).
+
+So the difference between a strong partial order and a partial order is that the strong partial order is irreflexive and asymmetric instead of reflexive and antisymmetric. Important to note is that asymmetric and antisymmetric are not the same. Asymmetric means that if $a < b$ then it is not the case that $b < a$. Antisymmetric means that if $a \leq b$ and $b \leq a$, then $a = b$.
+
+So we can see that where the weak order was like our normals understanding of "less than or equal to", the strong order is like our normal understanding of "less than". We can see this in the properties of the relation:
+- We say that two things that are the same are not less than each other (irreflexive).
+- If something is less than something else, then that something else is not less than the first thing (asymmetric).
+- If something is less than something else, and that something else is less than a third thing, then the first thing is also less than the third thing (transitive).
+
+<Callout type="example">
+The following relations are strong partial orders on the set $X = \{1, 2, 3, 4, 5\}$:
+- The relation $R = \{(1, 2), (2, 3), (3, 4), (4, 5)\}$ is a strong partial order.
+- The relation $R = \{(1, 2), (2, 3), (3, 4), (1, 3), (1, 4), (2, 4)\}$ is a strong partial order.
+</Callout>
+
+## Total Order
+
+The reason a total order is a special case of a partial order is that it imposes an additional requirement: every pair of elements must be comparable. In other words, for any two elements $a$ and $b$ in the set, either $a \leq b$ or $b \leq a$ must hold.
+
+<Callout type="example">
+The natural numbers $\mathbb{N}$ with the "less than or equal to" relation $\leq$ is a total order. For any two natural numbers $a$ and $b$, either $a \leq b$ or $b \leq a$ holds. 
+
+However, the power set $P(X)$ of a set $X$ with the subset relation $\subseteq$ is not a total order because there are pairs of subsets that are not comparable. For example, if $X = \{1, 2\}$, then the subsets $\{1\} \subseteq \{1, 2\}$ are related by the subset relation, but $\{1\}$ and $\{2\}$ are not related by the subset relation because neither $\{1\} \subseteq \{2\}$ nor $\{2\} \subseteq \{1\}$ holds. In other words, there is no relation between the two subsets.
+</Callout>
+
+## Hasse Diagram
+
+We can create a so called ordering graph where the vertices are the elements of the set and the edges represent the relation between the elements. If the relation is a partial order, this results in a so called Hasse diagram. 
+
+Importantly the Hasse diagram draws the so called "cover" relations, which are the relations that cannot be derived from other relations in the diagram. This means that if $a \leq b$ and there is no element $c$ such that $a \leq c \leq b$, then there is an edge between $a$ and $b$ in the Hasse diagram. This is best seen when drawing the Hasse diagram for the power set of a set $X$ and the subset relation $\subseteq$. The Hasse diagram will not contain edge from the empty set to the set $X$ if it has more than one element because there are other subsets $c$ such that $\emptyset \subseteq c \subseteq X$. 
+
+<Image 
+    src="/maths/setsHasseDiagram.png"
+    caption="Hasse diagram showing the power set of the set {1,2,3} and the subset relation."
+    width={300}
+/>
+
+This can also be seen in the Hasse diagram of the natural numbers $\mathbb{N}$ with the "less than or equal to" relation $\leq$. The Hasse diagram will contain an edge from $1$ to $2$, from $2$ to $3$, and so on, but it will not contain an edge from $1$ to $3$ because there is the element $c=2$ such that $1 \leq 2 \leq 3$.
+
+If the relation is a total order, the Hasse diagram is a linear graph where all elements are connected in a single line. Hence the total order is also called a linear order.
+
+
+<Image 
+    src="/maths/relationsTotalOrderHasse.png"
+    caption='Hasse diagram showing the "less than or equal to" relation on powers of 2.'
+    width={300}
+/>
+
+## Ordering of Real Numbers
+
+We can define a weak total ordering on the set of real numbers $\mathbb{R}$ by defining the relation $\leq$ between two real numbers $a$ and $b$:
+
+```math
+\begin{align*}
+\text{Reflexivity: } & a \leq a \text{ for all } a \in \mathbb{R} \\
+\text{Tansitivity: } & a \leq b \text{ and } b \leq c \implies a \leq c \text{ for all } a, b, c \in \mathbb{R} \\
+\text{Antisymmetry: } & a \leq b \text{ and } b \leq a \implies a = b \text{ for all } a, b \in \mathbb{R} \\
+\text{Totality: } & a \leq b \text{ or } b \leq a \text{ for all } a, b \in \mathbb{R}
+\end{align*}
+```
+
+We can also define such a relation on the rational numbers $\mathbb{Q}$ in a similar way. However, the key difference between the real numbers and the rational numbers is the that the ordering of the real numbers has the completeness property. This means that for any two non-empty sets of real numbers $A$ and $B$ such that $\forall a \in A, b \in B: a \leq b$, there exists at least one real number $c$ such that $\forall a \in A, b \in B: a \leq c \leq b$. So in a more intuitive way, this means that for any number $a$ in set $A$ and any number $b$ in set $B$, we can always find a real number $c$ that lies between them, this then also means that for any two real numbers $a$ and $b$ such that $a < b$, there exists a real number $c$ such that $a < c < b$ as we could just define $A = \{a\}$ and $B = \{b\}$.
+
+<Image 
+    src="/maths/relationsOrderCompleteness.png"
+    caption="Illustration of the completeness property of real numbers."
+    width={300}
+/>
+
+This can't be done with the rational numbers for example if the two sets are construct in such a way that the only number in between $a$ and $b$ is irrational such as $\sqrt{2}$.
+
+<Callout type="example">
+We can construct the two sets $A$ and $B$ as follows:
+- Let $A = \{a \in \mathbb{Q} | 1 \leq a \leq 2 \text{ and } a^2 \leq 2\}$. This set contains all rational numbers between 1 and 2 whose square is less than or equal to 2.
+- Let $B = \{b \in \mathbb{Q} | 1 \leq b \leq 2 \text{ and } b^2 \geq 2\}$. This set contains all rational numbers between 1 and 2 whose square is greater than or equal to 2.
+
+By constructing these two sets, we have basically taken all the rational numbers between 1 and 2. By the completeness property we would then also have a real number $c$ such that $c^2 = 2$. However, $\sqrt{2}$ is not a rational number so it can't be in either set and therefore the completeness property does not hold for the rational numbers. This is why the real numbers are called complete.
+</Callout>
+
+We can show that the ordering relation is compatible with the arithmetic operations on real numbers.
+
+```math
+\begin{align*}
+\text{Addition: } \forall a, b, c \in \mathbb{R}, & a \leq b \implies a + c \leq b + c \\
+\text{Multiplication: } \forall a \geq 0, b \geq 0: a \cdot b \geq 0
+\end{align*}
+```
+
+Using these properties we can show a multitude of things including that the additive and multiplicative identities and inverses are unique.
+
+```math	
+\begin{align*}
+0 \cdot a & = 0 \text{ for all } a \in \mathbb{R} \\
+(-1) \cdot a & = -a \text{ for all } a \in \mathbb{R} \text{ and } (-1)^2 = 1 \\
+a \geq 0 \iff -a \leq 0 & \\
+a^2 \geq 0 & \text{ for all } a \in \mathbb{R} \text{ and } 1 = 1 \cdot 1 \geq 0 \\
+a \leq b \text{ and } c \leq d \implies a + c \leq b + d & \text{ for all } a, b, c, d \in \mathbb{R} \\
+0 \leq a \leq b \text{ and } 0 \leq c \leq d \implies a \cdot c \leq b \cdot d & 
+\end{align*}
+```
+
+There are probably many more properties that can be derived and proven from the ordering of real numbers.
+
+### Archimedes Principle
+
+```math	
+\text{Let } x \in \mathbb{R}, x > 0 \text{ and } y \in \mathbb{R}. \text{ Then there exists an } n \in \mathbb{N} \text{ such that } y \leq nx \text{ and } y \geq nx.
+```
+
+This can also be stated as:
+    
+```math
+\text{Let } x \in \mathbb{R} \text{ then there exists exactly one } n \in \mathbb{Z} \text{ such that } n \leq x < n + 1.
+```
+
+The interpretation is twofold. Firstly it states that we can always find an integer that is smaller than a real number and when we add 1 to that integer we get a real number that is larger than the original real number. So in other words, we can always bound a real number between two integers. 
+
+Secondly, it states that if we have a real number that is larger than 0 then we can always create a multiple of another real number with a natural number that is larger. The same goes for smaller creating a smaller multiple.
+
+<Image 
+    src="/maths/archimedianProperty.svg"
+    width={600}
+/>
+
+### Roots of Real Numbers
+
+Using these properties we can now show that we can always find a solution to the equation $x^2 = t$ for any real number $t \geq 0$. In other words, we can always find the square root of a real number that is greater or equal to 0.
+
+### Young's Inequality
+
+No idea why this is useful but it is a thing.
+
+```math
+\text{Let } a, b \in \mathbb{R} \text{ then } \forall \epsilon > 0: 2ab \leq \epsilon a^2 + \frac{1}{\epsilon}b^2
+```

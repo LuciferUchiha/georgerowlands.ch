@@ -158,7 +158,7 @@ export default async function RootLayout({ children }) {
           footer={footer}
           // ... Your additional layout options
           nextThemes = {{
-            defaultTheme: "dark",
+            defaultTheme: "light",
             attribute: 'class',
           }}
           editLink= "Edit this page on GitHub ✍🏻"
