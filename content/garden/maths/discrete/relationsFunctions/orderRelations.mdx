@@ -271,28 +271,34 @@ This comes from the previous proof where $0 \leq b$ so then $0 \cdot b \leq b \c
 
 ### Archimedean Property
 
+The Archimedean property, named after the ancient Greek mathematician Archimedes is an interesting property which the real numbers have. There are multiple interpreations and ways to state this property, but the most common one is that for any two real numbers $x > 0$ and $y \in \mathbb{R}$, there exists an integer $n \in \mathbb{N}$ such that the following holds:
+
 ```math	
-\text{Let } x \in \mathbb{R}, x > 0 \text{ and } y \in \mathbb{R}. \text{ Then there exists an } n \in \mathbb{N} \text{ such that } y \leq nx \text{ and } y \geq nx.
+y \leq nx
 ```
 
-This can also be stated as:
-    
-```math
-\text{Let } x \in \mathbb{R} \text{ then there exists exactly one } n \in \mathbb{Z} \text{ such that } n \leq x < n + 1.
-```
-
-The interpretation is twofold. Firstly it states that we can always find an integer that is smaller than a real number and when we add 1 to that integer we get a real number that is larger than the original real number. So in other words, we can always bound a real number between two integers. 
-
-Secondly, it states that if we have a real number that is larger than 0 then we can always create a multiple of another real number with a natural number that is larger. The same goes for smaller creating a smaller multiple.
+So if we have a real number then we can always create a multiple of another positive real number with a natural number that is larger. 
 
 <Image 
     src="/maths/archimedianProperty.svg"
     width={600}
 />
 
+An alternative way to state the Archimedean property is that for any real number $x \in \mathbb{R}$, there exists exactly one integer $n \in \mathbb{Z}$ such that:
+
+```math
+n \leq x < n + 1.
+```
+
+So we can always find an integer that is smaller than a real number and when we add 1 to that integer we get an integer that is larger than the original real number. So in other words, we can always bound a real number between two integers. This also leads to the conclusion that the set of natural numbers $\mathbb{N}$ is unbounded and has an infinite number of elements. Because the natural numbers are an infinite set and also a subset of the integers $\mathbb{Z}$, the set of integers is also unbounded and has an infinite number of elements the same goes for the other sets of numbers such as the rational numbers $\mathbb{Q}$ and the real numbers $\mathbb{R}$.
+
 ### Roots of Real Numbers
 
 Using these properties we can now show that we can always find a solution to the equation $x^2 = t$ for any real number $t \geq 0$. In other words, we can always find the square root of a real number that is greater or equal to 0.
+
+<Callout type="todo">
+This is not complete yet
+</Callout>
 
 ### Young's Inequality
 
