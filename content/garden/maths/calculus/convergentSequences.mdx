@@ -77,7 +77,7 @@ terms where $n \leq N_{\epsilon}$ and which then means there are an infinite num
 ```
 
 <Callout type="note">
-An important note is that the limit needs to be a real number if it is a real valued sequence. The limit can not be infinity as infinity is not a real number. So if a sequence converges to infinity, it is divergent. We can also define this more formally. A sequence $a_n$ converges/diverges to $+\infty$ if for every $T > 0$ there exists an entry index $N_T$ such that for all $n \geq N_T$ the terms are:
+An important note is that a sequence has at most one real number as its limit if it is a real valued sequence. The limit can not be infinity as infinity is not a real number. So if a sequence converges to infinity, it is divergent. We can also define this more formally. A sequence $a_n$ converges/diverges to $+\infty$ if for every $T > 0$ there exists an entry index $N_T$ such that for all $n \geq N_T$ the terms are:
 
 ```math
 \lim_{n \to \infty} a_n = +\infty \text{ if } \forall T > 0, \exists N_T \in \mathbb{N} \text{ such that } \forall n \geq N_T, a_n > T
@@ -145,15 +145,27 @@ The next sequence we can look at is the following:
 (a_n)_{n \geq 1} = \frac{1}{n} = 1, \frac{1}{2}, \frac{1}{3}, \ldots
 ```
 
-This is the so called **harmonic sequence**.
+<div className="flex justify-center mt-5">
+    <iframe src="https://www.desmos.com/calculator/wjpp2xwcfq?embed" width="500" height="500"/>
+</div>
+
+This is a so called **harmonic sequence**. In general the harmonic sequence is defined as:
+
+```math
+(a_n)_{n \geq 1} = \frac{1}{a + (n-1)d} = \frac{1}{a}, \frac{1}{a + d}, \frac{1}{a + 2d}, \ldots
+```
+
+where $a$ is the first term and $d$ is the common difference. In the above case $a = 1$ and $d = 1$. We can see that the terms of the sequence get closer and closer to 0 as $n$ increases. So we could suspect that the limit of this sequence is 0. We can also prove this using the epsilon neighborhood definition of a limit. We want to show that for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|a_n - 0| < \epsilon \text{ or } \frac{1}{n} < \epsilon
+```
 
 <Callout type="todo">
-Show desmos graph. 
-
-Can this proof really not be done without assuming that the limit is 0?
+Is this proof correct? I don't rly understand the archimedes principle part.
 </Callout>
 
-For this sequence again we can get $|a_n - L| < \epsilon$ for all $n \geq N_{\epsilon}$. Because of [Archimedes principle](/garden/maths/discrete/intervals#archimedes-principle) we know that for any $x > 0$ there exists a $n \in \mathbb{N}$ such that $y \leq nx$ or $y \geq nx$ for all $y \in \mathbb{R}$. In this case the first inequality is important. If we set $x = \epsilon$ and $y = 1$ then we know the following:
+For this sequence again we can get $|a_n - L| < \epsilon$ for all $n \geq N_{\epsilon}$. Because of [Archimedes principle](/garden/maths/discrete/intervals#archimedes-principle) we know that for any $x > 0$ there exists a $n \in \mathbb{N}$ such that $y \leq nx$ for all $y \in \mathbb{R}$. If we set $x = \epsilon$ and $y = 1$ then we know the following:
 
 ```math
 \begin{align*}
@@ -195,8 +207,45 @@ We have seen that some index $N_{\epsilon}$ exists such that for all $n \geq N_{
 So $N_{0.8} = 2$ which means that for $\epsilon = 0.8$ all terms after $n=2$ are within the epsilon neighborhood around 0. 
 </Callout>
 <Callout type="example">
-From the script:
-using archimedes principle to show that the limit of $a_n = \frac{n}{n+1} = 1$
+Let's look at the following sequence:
+
+```math
+(a_n)_{n \geq 1} = \frac{n}{n+1} = \frac{1}{2}, \frac{2}{3}, \frac{3}{4}, \ldots
+```
+
+By observing the terms of the sequence we can see that they get closer and closer to 1 as $n$ increases. We can also prove this using the epsilon neighborhood definition of a limit. We want to show that for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|a_n - 1| < \epsilon \text{ or } \left|\frac{n}{n+1} - 1\right| < \epsilon
+```
+
+We can rewrite this as:
+
+```math
+\begin{align*}
+\left|\frac{n}{n+1} - 1\right| < \epsilon \\
+\left|\frac{n - (n+1)}{n+1}\right| < \epsilon \\
+\left|\frac{-1}{n+1}\right| < \epsilon \\
+\frac{1}{n+1} < \epsilon
+\end{align*}
+```
+
+Then by the Archimedes property we know that some $N_{\epsilon} \in \mathbb{N}$ exists such that:
+```math
+\frac{1}{N_{\epsilon} + 1} < \epsilon
+```
+
+Which means that the sequence converges to 1. We can also calculate the entry index for a given epsilon. For example if we had $\epsilon = 0.1$ then we can calculate $N_{0.1}$ by doing the following:
+
+```math
+\begin{align*}
+\frac{1}{N_{0.1} + 1} < 0.1 \\
+\frac{1}{N_{0.1} + 1} < \frac{1}{10} \\
+10 < N_{0.1} + 1 \\
+9 < N_{0.1}
+\end{align*}
+```
+So $N_{0.1} = 10$ which means that for $\epsilon = 0.1$ all terms after $n=10$ are within the epsilon neighborhood around 1.
 </Callout>
 <Callout type="example" title="Divergent Alternating Sequence">
 We have seen lots of examples of sequences that converge to a limit. But what about sequences that do not converge? Let's look at the following sequence:
@@ -225,37 +274,62 @@ Let's assume by contradiction that a limit exists and that $\epsilon = \frac{1}{
 This is a contradiction and therefore the sequence does not converge. Note that we just added 0 by adding and subtracting $L$ and then used the triangle inequality.
 </Callout>
 <Callout type="example" title="Arithmetic Sequence">
-Lastly let's look at the sequence $(a_n)_{n \geq 1} = n$. This sequence does not converge as the terms keep getting larger and larger. We can prove this by contradiction. Let's assume that the sequence converges to a limit $L$. Then for $\epsilon = 1$ we know that there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+Lastly let's look at the following sequence: 
 
 ```math
-|a_n - L| < 1
+(a_n)_{n \geq 1} = n = 1, 2, 3, 4, \ldots
 ```
-
-However, this already does not hold for the first term as $|a_1 - L| = |1 - L| \geq 1$ is not possible. So the sequence does not converge.
 
 This sequence is actually a special case of the arithmetic sequence. An arithmetic sequence is a sequence where the difference between two consecutive terms is constant. In this case the constant is 1 but we could also for example look at the sequence $a_n = 2n + 3$ as an arithmetic sequence with a common difference of 2. We can also write this more generally as:
 
 ```math
 a_n = a_1 + (n-1)d \text{ with } d \in \mathbb{R} \text{ and } n \in \mathbb{N}
 ```
+
+The specific sequence above does not converge as the terms keep getting larger and larger. We can prove this by contradiction. Let's assume that the sequence converges to a limit $L$. Then for $\epsilon = 1$ we know that there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|a_n - L| < 1 \text{ or } |n - L| < 1
+```
+
+However, $n$ is positive and gets larger and larger, therefore the distance also gets larger and larger. So there exists no such $N_{\epsilon}$ that satisfies the inequality for all $n \geq N_{\epsilon}$. Therefore the sequence does not converge.
 </Callout>
 
 ## Properties of Convergent Sequences
 
+<Callout type="todo">
+This needs to be rewritten and the examples need to be added.
+</Callout>
+
 Sind $a_n$ und $b_n$ konvergente Folgen mit den Grenzwerten $a$ bzw. $b$, so ist auch die Folge:
 
-- $c*a_n$ konvergent mit $\lim_{n \to \infty} {c*a_n} = c*\lim_{n \to \infty} {a_n} = c*a$ für $c \in R$
+- $c \cdot a_n$ konvergent mit $\lim_{n \to \infty} {c \cdot a_n} = c \cdot \lim_{n \to \infty} {a_n} = c \cdot a$ für $c \in R$
 
 
 - $a_n \pm b_n$ konvergent mit $\lim_{n \to \infty}{a_n \pm b_n}={{\lim_{n \to \infty}{a_n}} \pm {\lim_{n \to \infty}{b_n}}}={a \pm b}$
+¨
 
+<Callout type="proof">
+This is in her notes for addition
+</Callout>
+
+<Callout type="example">
 Example from her notes with $a_n = n \over n+1$ and splits it into $1 \over n$ and $1 \over n+1$ and then shows that the limit is the sum of the limits.
+</Callout>
 
-- $a_n *b_n$ konvergent mit $\lim_{n \to \infty}{a_n* b_n}={{\lim_{n \to \infty}{a_n}} * {\lim_{n \to \infty}{b_n}}}={a * b}$
+- $a_n \cdot b_n$ konvergent mit $\lim_{n \to \infty}{a_n \cdot b_n}={{\lim_{n \to \infty}{a_n}} \cdot {\lim_{n \to \infty}{b_n}}}={a \cdot b}$
 
+<Callout type="proof">
+This is in her notes for multiplication
+</Callout>
+<Callout type="example">
 Example from her notes with $a_n = (1 + \frac{1}{n})^b$ 
 
-- $a_n \over b_n$ konvergent mit $\lim_{n \to \infty}{a_n \over b_n}={{\lim_{n \to \infty}{a_n}} \over {\lim_{n \to \infty}{b_n}}}={a \over b}$ falls $b \neq 0$
+
+or $a_n = \frac{n^2 - 2n}{n^2 + n + 1}$.
+</Callout>
+
+- $a_n \over b_n$ konvergent mit $\lim_{n \to \infty}{a_n \over b_n}={{\lim_{n \to \infty}{a_n}} \over {\lim_{n \to \infty}{b_n}}}={a \over b}$ falls $b \neq 0$ and $b_n \neq 0$ for all $n \geq 1$.
 
 Comes from the above. example could be $a_n = \frac{n^2 - 2n}{n^2 + n + 1}$
 
@@ -297,6 +371,10 @@ Let's look at the sequence $a_n = \frac{sin(n)}{n}$. We know that the sine funct
 ```math
 \frac{-1}{n} \leq \frac{sin(n)}{n} \leq \frac{1}{n}
 ```
+
+<div className="flex justify-center mt-5">
+    <iframe src="https://www.desmos.com/calculator/fyvmo0pb9y?embed" width="500" height="500"/>
+</div>
 
 As $n$ goes to infinity the terms on the left and right side go to 0. So by the squeeze theorem the sequence $a_n = \frac{sin(n)}{n}$ also converges to 0.
 
