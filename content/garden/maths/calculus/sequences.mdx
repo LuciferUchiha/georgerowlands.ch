@@ -119,10 +119,10 @@ In linear algebra a vector is often represented as an n-tuple. For example a 3-d
 
 We can analyze the behavior of a sequence by looking at how the terms of the sequence change. Certain sequences for example are always increasing or decreasing. We call these sequences that are always increasing or decreasing monotonic sequences. More formally:
 
-- A sequence $a_n$ is **monotonically increasing** if $a_n \leq a_{n+1}$ for all $n \in N$. This is often also abbreviated to just increasing. If $a_n < a_{n+1}$ for all $n \in N$ then the sequence is **strictly monotonically increasing**.
-- A sequence $a_n$ is **monotonically decreasing** if $a_n \geq a_{n+1}$ for all $n \in N$. This is also often abbreviated to just decreasing. If $a_n > a_{n+1}$ for all $n \in N$ then the sequence is **strictly monotonically decreasing**.
+- A sequence $a_n$ is **monotonically increasing** if $a_n \leq a_{n+1}$ for all $n \geq 1$. This is often also abbreviated to just increasing. If $a_n < a_{n+1}$ for all $n \geq 1$ then the sequence is **strictly monotonically increasing**.
+- A sequence $a_n$ is **monotonically decreasing** if $a_n \geq a_{n+1}$ for all $n \geq 1$. This is also often abbreviated to just decreasing. If $a_n > a_{n+1}$ for all $n \geq 1$ then the sequence is **strictly monotonically decreasing**.
 
-Another popular way of saying that a sequence is monotonically increasing is to say that the sequence is non-decreasing. Similarly, a monotonically decreasing sequence is often called non-increasing. 
+Another popular way of saying that a sequence is monotonically increasing is to say that the sequence is non-decreasing. Similarly, a monotonically decreasing sequence is often called non-increasing. If a sequence is either monotonically increasing or decreasing, then it is called a **monotonic sequence**.
 
 The concept of monotonicity is rather intuitive. It can also be visually inspected by plotting the terms of the sequence on a graph. If the values on the y-axis are always going up or always going down, then the sequence is monotonically increasing or decreasing. To be strictly monotonically increasing or decreasing the values must be strictly going up or down and not stay on the same level.
 
@@ -131,6 +131,10 @@ The concept of monotonicity is rather intuitive. It can also be visually inspect
     caption="A monotonically increasing sequence (red) and a monotonically decreasing sequence (blue)."
     width={500}
 />
+
+<Callout type="note">
+For a sequence to be monotonically increasing or decreasing we said that all terms $n \geq 1$ must be considered. However, in some contexts, the first few terms of the sequence are not considered, for example when analyzing the long-term behavior of the sequence such as the convergence of a sequence as $n$ approaches infinity. In this case, we can also say that the sequence is monotonically increasing or decreasing if the terms from a certain index $K$ onwards are monotonically increasing or decreasing. This is often denoted as $n \geq K$.
+</Callout>
 
 <Callout type="example">
 Let's look at some intuitive examples:

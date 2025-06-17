@@ -366,7 +366,7 @@ This is a very simple but powerful theorem that can be used to show that many se
 />
 
 <Callout type="example">
-Let's look at the sequence $a_n = \frac{sin(n)}{n}$. We know that the sine function is bounded between -1 and 1 and then that the following inequalities hold:
+Let's look at the sequence $a_n = \frac{sin(n)}{n}$. We know that the sine function is bounded between -1 and 1 and then that by dividing everything by $n$ we get the following:
 
 ```math
 \frac{-1}{n} \leq \frac{sin(n)}{n} \leq \frac{1}{n}
@@ -385,9 +385,27 @@ As $n$ goes to infinity the terms on the left and right side go to 0. So by the 
 
 ## Monotone Convergence Theorem
 
-Theorem by Karl Weierstrass:
+The monotone convergence theorem is a very important theorem and way to show that certain sequences converge. It states that if a sequence is monotonically increasing and bounded above or monotonically decreasing and bounded below, then the sequence converges. The intuitive idea behind this theorem is that if a sequence is monotonically increasing, then the terms of the sequence get larger and larger but are still bounded above by some value. This means that the sequence can not grow indefinitely and must converge to some limit. The same holds for monotonically decreasing sequences that are bounded below. 
 
-If the sequence $(a_n)_{n\geq 1}$ is monotonically increasing and bounded above, then it converges. More precisely we can determine the limit as:
+<Image 
+    src="/maths/monotonConvergence.jpg"
+    caption="Illustration of the idea behind the monotone convergence theorem"
+    width={500}
+/>
+
+Lets' formally define the theorem. First we need to remind ourselves of the definitions of [monotonic sequences](/garden/maths/calculus/sequences#monotonic-sequences). A sequence $(a_n)_{n\geq 1}$ is called monotonically increasing if for all $n \geq 1$ the following holds:
+
+```math
+a_n \leq a_{n+1}
+```
+
+Then if the sequence is also bounded above, i.e. there exists a real number $c$ such that the following holds:
+
+```math
+a_n \leq c \text{ for all } n \geq 1
+```
+
+Then the sequence converges to the supremum of the set of all terms of the sequence. We can write this as:
 
 ```math	
 \lim_{n \to \infty} a_n = \sup\{a_n | n \geq 1\}
@@ -399,44 +417,228 @@ The same holds for monotonically decreasing sequences that are bounded below. He
 \lim_{n \to \infty} a_n = \inf\{a_n | n \geq 1\}
 ```
 
+So the formal statement of the monotone convergence theorem is:
+
 ```math
 a_n \text{ is monotone} \land a_n \text{ is bounded} \implies a_n \text{ converges}
 ```
 
 The other direction does not hold. For example the sequence $a_n = (-1)^n \frac{1}{n}$ converges to 0 but it is only bounded by 1 and -1 and not monotonically increasing or decreasing as it oscillates between -1 and 1.
 
+<Callout type="proof">
+The proof of the monotone convergence theorem is rather intuitive. We will only show the proof for the case of monotonically increasing sequences that are bounded above. The proof for monotonically decreasing sequences that are bounded below is similar.
+
+If $(a_n)_{n\geq 1}$ is bounded above, then there exists the supremum $c = \sup\{a_n | n \geq 1\}$. This then means that because $c$ is the smallest upper bound, we know that for every $\epsilon > 0$ the value $c - \epsilon$ is not an upper bound for the sequence. So there exists an index $N_{\epsilon}$ so that $a_{N_{\epsilon}} > c - \epsilon$.
+
+From this it follows that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+c - \epsilon < a_\{N_{\epsilon}} \leq a_n \leq c < c + \epsilon
+```
+
+Key here is that because the sequence is monotonically increasing, we know that all terms after $N_{\epsilon}$ are larger than $a_{N_{\epsilon}}$ so we can write $a_n \geq a_{N_{\epsilon}}$ for all $n \geq N_{\epsilon}$. This then leads to the definition of the limit with rearranging the terms:
+
+```math
+\begin{align*}
+c - \epsilon < a_n < c + \epsilon \\
+-\epsilon < a_n - c < \epsilon \\
+|a_n - c| < \epsilon \text{ for all } n \geq N_{\epsilon}
+\end{align*}
+```
+</Callout>
+
+<Callout type="example" title="Geometric Sequence">
+Let's look at the following sequence where $b \in \mathbb{Z}$ and $q \in \mathbb{R}$. 
+
+```math
+(a_n)_{n \geq 1} = n^b q^n
+```
+
+This sequence has the following special property:
+
+```math
+\lim_{n \to \infty} n^b q^n = 0 \text{ if } 0 \leq q < 1
+```
+
+This is clear if $q = 0$ as then all terms are 0. If $q$ is positive so $q > 0$ then the sequence is monotonically decreasing. We can see this if we look at the next term of the sequence and with some rearranging we get the following:
+
+```math
+\begin{align*}
+a_{n+1} &= (n+1)^b q^{n+1} \\
+&= (n+1)^b q^n \cdot q \\
+&= \frac{(n+1)^b}{n^b} \cdot n^b q^n \cdot q \\
+&= \frac{(n+1)^b}{n^b} \cdot a_n cdot q \\
+&= \left(\frac{n+1}{n}\right)^b \cdot a_n \cdot q \\
+&= \left(1 + \frac{1}{n}\right)^b \cdot a_n \cdot q
+\end{align*}
+```
+
+Because we know the following:
+
+```math
+(a_n)_{n \geq 1} = (1 + \frac{1}{n})^b \text{ then } \lim_{n \to \infty} a_n = 1
+```
+
+This sequence goes to 1 as $n$ goes to infinity. Because the term in the brackets gets closer and closer to 1 as $n$ increases. So the limit of this sequence is 1 which means the following holds for all $\epsilon > 0$:
+
+```math
+|(1 + \frac{1}{n})^b - 1| < \epsilon \text{ for all } n \geq N_{\epsilon}
+```
+
+and because $b \in \mathbb{Z}$ the term is always positve so if we set $\epsilon = \frac{1}{q} -1$ then we get the following:
+
+```math
+\begin{align*}
+|(1 + \frac{1}{n})^b - 1| < \epsilon \\
+(1 + \frac{1}{n})^b - 1 < \frac{1}{q} - 1 \\
+(1 + \frac{1}{n})^b < \frac{1}{q}
+\end{align*}
+```
+
+And lastly we can use this to show that the sequence is monotonically decreasing:
+
+```math
+\begin{align*}
+a_{n+1} &= \left(1 + \frac{1}{n}\right)^b \cdot a_n \cdot q \\
+&< \frac{1}{q} \cdot a_n \cdot q \\
+&= a_n
+\end{align*}
+```
+
+So we have shown that the sequence is monotonically decreasing and bounded below by 0 because $q$ is positive. So by the monotone convergence theorem the sequence converges. The question remains what is the limit $L$ of the sequence? For this we can use the trick that what happens in the begging of the sequence does not matter for the limit. So we use the following important property of limits:
+
+```math
+\lim_{n \to \infty} a_n = \lim_{n \to \infty} a_{n+k} \text{ for all } k \in \mathbb{N}
+```
+
+<Callout type="todo">
+Maybe this belongs further up in the article? Is there also some proof for this? The intuition is obvious
+</Callout>
+
+This results in the following:
+
+```math
+\begin{align*}
+a_{n + 1} = (1 + \frac{1}{n})^b \cdot a_n \cdot q \\
+\lim_{n \to \infty} a_{n + 1} &= \lim_{n \to \infty} (1 + \frac{1}{n})^b \cdot a_n \cdot q \\
+L &= \lim_{n \to \infty} (1 + \frac{1}{n})^b \cdot \lim_{n \to \infty} a_n \cdot q \\
+L &= 1 \cdot L \cdot q \\
+L - qL &= 0 \\
+L(1 - q) &= 0
+\end{align*}
+```
+
+so the statement corresponding to that the sequence converges only holds if $q < 1$. If $q = 1$ then the sequence is constant and converges to $n^b$. If $q > 1$ then the sequence diverges to infinity as the terms get larger and larger.
+The same can be shown for the case where $q < 0$ in this case the sequence oscillates between positive and negative values but still converges to 0 if $q > -1$ and diverges to infinity if $q < -1$. If $q = -1$ then the sequence just oscillates between the values $n^b$ and $-n^b$ and does not converge. 
+
+So we can summarize the results as follows:
+- If $|q| < 1$ then the sequence converges to 0.
+- If $|q| = 1$ then the sequence converges to $n^b$ if $q = 1$ and oscillates between $n^b$ and $-n^b$ if $q = -1$.
+- If $|q| > 1$ then the sequence diverges to infinity if $q > 1$ and diverges to negative infinity if $q < -1$.
+
+
+It turns out that this sequence is similar to a very important class of sequences. Specifically if we omit the $n^b$ part and just look at sequence $a_n = q^n$ then this is the so called **geometric sequence**. There is also an alternative definition of a geometric sequence that is more common in the literature. A geometric sequence is defined as:
+
+```math
+(a_n)_{n \geq 1} = a_1 r^{n-1}
+```
+
+where $a_1$ is the first term of the sequence and $r$ is the common ratio. To get from the first definition to the second we can simply set $a_1 = n^b$ and $r = q$. Then the actual first term is $q$ and every subsequent term is the previous term multiplied by the common ratio $r$.
+
+If we observe the terms we can see that what is actually happening that each term is actually the previous term multiplied by the common ratio $r$. So we can write the terms of the sequence as:
+
+```math
+a_1, a_1 r, a_1 r^2, a_1 r^3, \ldots
+```
+
 <Image 
-    src="/maths/monotonConvergence.jpg"
-    caption="Illustration of the idea behind the monotone convergence theorem"
+    src="/maths/geometricSequence.webp"
+    caption="Illustration of the idea behind the geometric sequence"
     width={500}
 />
 
-## Polynomial vs Exponential
+If we think of the geometric sequence in terms of changing the area as illustrated we can understand the relation of the value of the ratio and how it affects the convergence a bit more intuitively. It also shows that geometric progression is exponential growth or exponential decline, as opposed to arithmetic progressions showing linear growth or linear decline. 
 
-$n^bq^n = 0$ Shows that any power of $n$ is smaller than any exponential function important for algorithms.
+However, probably the most important fact that comes from the sequence above is for the [asymptotic growth of algorithms](/garden/cs/algd/analysisOfAlgorithms). If we pick $q=\frac{1}{r} where $r > 1$ then we know that this sequence converges to 0. When writing it out we get the following:
 
-$n^{1\over n} = 1$
+```math
+\lim_{n \to \infty} \frac{n^b}{r^n} = 0 \text{ for } r > 1
+```
 
-## Limits of Recursive Sequences
+Which shows that the exponential growth of $r^n$ is much larger than the polynomial growth of $n^b$. This is a very important result as it shows that algorithms that take exponential time to run are much slower than algorithms that take polynomial time to run. This is a very important result in the analysis of algorithms and is often used to show that certain algorithms are not efficient. 
+</Callout>
+<Callout type="example" title="Rational Sequences">
+Für eine rationale Folge, die im Zähler aus einem Polynom k-ten Grades
+und im Nenner aus einem Polynom l-ten Grades besteht, gilt:
+```math
+ \lim_{n \to \infty}{{a_kn^k+a_{k-1}n^{k-1}+...+a_0}\over{b_ln^l+b_{l-1}n^{l-1}+...+b_0}} = \begin{dcases}
+        {a_k\over b_k} *\infty, falls\space k >l \\
+        {a_k\over b_k} , falls\space k=l \\
+        0 , falls\space k<l
+\end{dcases}
+```
+</Callout>
+<Callout type="example">
+the limit of $n^{1\over n} = 1$
+seems Weird
+</Callout>
 
-From notes more generally $a_n = 1 \over 2 (a_{n-1} + c \over a_{n-1})$ and $a_1 = c$ using Weierstrass $c > 1$.
+## Bernoulli's Inequality
 
-recursive defined sequences $a_{n+1} = 1 \over 2 (a_n + 2 \over a_n)$ goes to $\sqrt{2}$
+<Callout type="todo">
+Does this come from probability theory? Where does this belong? For now I put it here because it is used in the proof of Euler's number.
+</Callout>
+
+Bernoulli's Inequality states that for all $n \in \mathbb{N}$ and $x \in \mathbb{R}$ the following holds:
+
+```math
+(1+x)^n \geq 1+nx
+```
+
+<Callout type="proof">
+This can be proven by induction. 
+
+The base case for $n=1$ is trivial as $(1+x)^1 = 1+x$. For the inductive step we assume that the inequality holds for some $n=k$ and then show that it also holds for $n=k+1$.
+
+```math
+\begin{align*}
+(1+x)^{k+1} &= (1+x)^k \cdot (1+x) \\
+&\geq (1+ kx) \cdot (1+x) \text{ by the inductive hypothesis} \\
+&= 1 + x + kx + kx^2 \\
+&= 1 + (k+1)x + kx^2 \\
+&\geq 1 + (k+1)x \text{ because } kx^2 \geq 0 \text{ for } k \geq 0
+\end{align*}
+```
+
+Therefore the inequality holds for all $n \in \mathbb{N}$ and $x \in \mathbb{R}$.
+</Callout>
 
 ## Euler's Number
 
-Lots of possible origins but one is analyzing the compound interest formula.
+There are some key constants in mathematics that always pop up in different areas of mathematics. One of these constants is the number pi, $\pi = 3.14159...$, which is the ratio of the circumference of a circle to its diameter. Another important constant is Euler's number, $e = 2.71828...$, which is the base of the natural logarithm $\ln(x)$. But where does this number come from? 
 
-First comes Bernoulli's Inequality.Does this come from probability theory?
+One possible origin of Euler's number is the compound interest formula. Imagine you are given a coin and you want to invest it in a bank that pays you interest. The bank pays you interest at a rate of 100% per year, so essentially you double your money every year. If you invest your coin for one year, you will have $(1+1)=2$ coins at the end of the year. The following year you will have $4$ coins, then $8$ coins and so on. This is a very simple example of exponential growth.
+
+Now imagine that instead of waiting a whole year to get your interest, you get it twice a year so every 6 months. Then you will have $(1+\frac{1}{2})^2 = (1.5)^2 = 2.25$ coins at the end of the year. If you get your interest every month, then you will have $(1+\frac{1}{12})^{12} \approx 2.613$ coins at the end of the year. If you get your interest every day, then you will have $(1+\frac{1}{365})^{365} \approx 2.714$ coins at the end of the year.
+
+This pattern continues and the more often you get your interest, the closer you get to a certain limit. This limit is actually Euler's number $e$. We can write this as:
 
 ```math
-(1+x)^n \geq 1+nx \text{ for all } x \geq -1 \text{ and } n \in N
-```	
-
-
-```math
-\lim_{n \to \infty} (1+{1\over n})^n = e
+\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e
 ```
+
+So there is a natural limit to how much you can grow your money by compounding interest. The more often you compound your interest, the closer you get to this limit.
+
+## Limits of Recursive Sequences
+
+babylonian method for finding square roots is a very old method that is still used today. It is based on the idea of finding the average of two numbers and then using this average to find a better approximation of the square root.
+
+From notes more generally $a_n = 1 \over 2 (a_{n-1} + c \over a_{n-1})$ and $a_1 = c$ $c > 1$.
+
+Used important technique of finding the limit based on the knowledge of it existing just like in the proof of the geometric sequence.
+
+recursive defined sequences $a_{n+1} = 1 \over 2 (a_n + 2 \over a_n)$ goes to $\sqrt{2}$
+
 
 ## Limes Superior and Inferior
 
@@ -713,33 +915,3 @@ Example:
 \lim_{n \to \infty} (\frac{n^2 + 2}{n^3 + 1} + i \frac{n^3 + 2n + 1}{n^3 + n + 1}) = 0 + i = i
 ```
 </Callout>
-
-<Callout type="todo">
-Todo these two examples still need to be integrated somewhere as an example.
-
-Are there any more examples of well known and useful sequences?
-</Callout>
-
-### Geometric Sequences
-
-Folgen der Form: $a_n= a_1 *q^{n-1}$ sind geometrische Folgen.
- Jedes Glied ist das geometrische Mittel seiner beiden Nachbarglieder $a_n=\sqrt {a_{n-1}+a_{n+1}}$
-
-Eine geometrische Folge $a_n= a_1* q^{n-1}$
-
-- mit $|q|>1$ ist divergent
-- mit $|q|<1$ ist konvergent mit Grenzwert 0
-- mit $q=1$ ist eine konstante Folge $a_1$
-- mit $q=-1$ ist divergent, da alternierend.
-
-### Rational Sequences
-
-Für eine rationale Folge, die im Zähler aus einem Polynom k-ten Grades
-und im Nenner aus einem Polynom l-ten Grades besteht, gilt:
-```math
- \lim_{n \to \infty}{{a_kn^k+a_{k-1}n^{k-1}+...+a_0}\over{b_ln^l+b_{l-1}n^{l-1}+...+b_0}} = \begin{dcases}
-        {a_k\over b_k} *\infty, falls\space k >l \\
-        {a_k\over b_k} , falls\space k=l \\
-        0 , falls\space k<l
-\end{dcases}
-```
