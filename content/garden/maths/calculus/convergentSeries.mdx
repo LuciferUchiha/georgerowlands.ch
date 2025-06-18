@@ -26,13 +26,36 @@ For a series to converge the underlying sequence must be a null sequence, in oth
 
 There is an intuitive interpretation behind this condition. Imagine you're summing up the terms of a series. For the series to converge, the partial sums need to settle on a finite value as you keep adding more and more terms. If the terms of the sequence do not approach zero, it becomes impossible for the partial sums to settle, and the series will diverge. In short, if the terms are not getting smaller and smaller, the series will keep getting larger and larger and will not converge.
 
-## Geometric Series
+Another important property of convergent series is that the order in which we sum the terms does not matter as the addition of real numbers is associative and commutative. This means that we can rearrange the terms of a convergent series without affecting its convergence or the value of the series. So formally if the function $f$ is a bijective mapping from the natural numbers to the natural numbers, then:
 
-<Callout type="todo">
-Shouldn't this be ar^k instead of just r^k?
+```math
+\sum_{n=1}^{\infty} a_n = \sum_{n=1}^{\infty} a_{f(n)}
+```
+
+In addition, just like with the convergence of a sequence, what the series does in the beginning does not affect the convergence of the series. For example, if we start summing the terms of a series at a different index, the series will still converge, but the value of the series will change. This is of course only true for real valued series, as if we would add infinity and then add a finite number, the series would diverge and if we skipped adding the infinity term, the series would converge to a finite value. So more formally for any $m \geq N_0$ we have:
+
+```math
+\sum_{n=N_0}^{\infty} a_n \text{converges} \iff \sum_{n=m}^{\infty} a_n \text{converges}
+```
+
+<Callout type="proof">
+
 </Callout>
 
-Let's look at some example of series and analyze their convergence. The geometric series is a good example to start with. We define the geometric series for a value $q \in \mathbb{C}$ where $|q| < 1$ as:
+<Callout type="example" title="Geometric Series">
+Let's look at some example of series and analyze their convergence. We have seen [the geometric sequence](/garden/maths/calculus/convergentSeries) before. The geometric sequence is a sequence where each term is a constant multiple of the previous term. So formally the geometric sequence is defined as follows where $q \in \mathbb{C}$ is a constant:
+
+```math
+a_n = q^n
+```
+
+Then the geometric sequence has the following properties as $n \to \infty$:
+- If $|q| < 1$, then the sequence converges to 0.
+- If $q = 1$, then the sequence  converges to 1.
+- If $q = -1$, then the sequence oscillates between 1 and -1.
+- If $|q| > 1$, then the sequence diverges to infinity.
+
+The geometric series is then just the sum of the terms of the geometric sequence:
 
 ```math
 \sum^{\infty}_{k=0}{q^k}
@@ -50,16 +73,15 @@ S_n &= \frac{1 - q^{n+1}}{1-q}
 \end{align*}
 ```
 
-Now we have a closed form for the sequence of partial sums. We can now take the limit of the sequence of partial sums to see if the series converges. As $n \to \infty$ the term $q^{n+1}$ goes to zero as $|q| < 1$. So we can assume the limit exists and that it is $\frac{1}{1-q}$. Let's prove it is indeed the limit:
+Now we have a closed form for the sequence of partial sums and therefore we can analyze the convergence of the geometric series. For this we take the limit of the sequence of partial sums to see if the series converges. As $n \to \infty$ the term $q^{n+1}$ goes to zero as $|q| < 1$. So we can assume the limit exists and that it is $\frac{1}{1-q}$. Let's prove it is indeed the limit:
 
 ```math
 \lim_{n \to \infty}\left|\frac{1 - q^{n+1}}{1-q} - \frac{1}{1-q}\right| = \lim_{n \to \infty}\left|\frac{1 - q^{n+1} - 1}{1-q}\right| = \lim_{n \to \infty}\left|\frac{- q^{n+1}}{1-q}\right| = \lim_{n \to \infty}\left|\frac{q^{n+1}}{1-q}\right| = 0
 ```
 
-So sequence of partial sums converges to $\frac{1}{1-q}$ with $|q| < 1$, which means the geometric series converges to $\frac{1}{1-q}$.
+So the sequence of partial sums converges to $\frac{1}{1-q}$ with $|q| < 1$, which means the geometric series converges to $\frac{1}{1-q}$.
 
-<Callout type="example">
-Let's look at the geometric series for $q = \frac{1}{2}$:
+Let's look at a concrete example of a geometric series for $q = \frac{1}{2}$:
 
 ```math
 \begin{align*}
@@ -68,7 +90,7 @@ Let's look at the geometric series for $q = \frac{1}{2}$:
 \end{align*}
 ```
 
-But what if the index starts at 1 rather than 0? Let's revist the closed form for the sequence of partial sums:
+But what if the index starts at 1 rather than 0 to see if the starting index has an effect on the convergence of the series and the value of the series. For this let's revisit the closed form for the sequence of partial sums:
 
 ```math
 \begin{align*}
@@ -78,21 +100,32 @@ But what if the index starts at 1 rather than 0? Let's revist the closed form fo
 ```
 
 We know that this sequence still converges. So we can say that what we do in the first steps does not have an effect on the convergence of the series. However, it does have an effect on the value of the series. So the geometric series for $q = \frac{1}{2}$ starting at 1 converges to $\frac{\frac{1}{2}}{1-\frac{1}{2}} = 1$ instead of 2.
+
+Another way of looking at this is that we know that $\sum^{\infty}_{k=0}{\frac{1}{2^k}} = 2$ and that we can write this also as follows:
+
+```math
+\sum^{\infty}_{k=1}{\frac{1}{2^k}} = 2 = 1 + \frac{1}{2} + \frac{1}{4} + \sum^{\infty}_{k=3}{\frac{1}{2^k}} 
+```
+
+So therefore we must have:
+
+```math
+\sum^{\infty}_{k=3}{\frac{1}{2^k}} = \frac{1}{4}
+```
 </Callout>
 
-## Harmonic Series
+<Callout type="example" title="Harmonic Series">
+We have seen an example of a series that converges, now let's look at an example of a series that diverges. Just like with the geometric series that uses the geometric sequence, we can also look at the harmonic series that uses the [harmonic sequence](/garden/maths/calculus/convergentSeries). In this case we will analyze the following harmonic series:
 
-<Callout type="todo">
-Add the proof for the harmonic series. Probably with Cauchy criterion.
-</Callout>
-
-```math	
+```math
 \sum^{\infty}_{n=1}{\frac{1}{n}}
 ```
 
-diverges. Despite the sequence of terms converging to zero, the series diverges. This is a good example to show that the terms of the sequence converging to zero is a necessary but not sufficient condition for the series to converge. 
+We already know that the harmonic sequence converges to zero as $n$ approaches infinity. So the precondition is met. However, this does not automatically mean that the series also converges. In fact, the harmonic series diverges despite the sequence of terms converging to zero, the series diverges. This is a good example to show that the terms of the sequence converging to zero is a necessary but not sufficient condition for the series to converge. 
 
-## Geometric Series
+<Callout type="todo">
+This isn't so intuitive so it will need a proof. Maybe later on with cauchy criterion or something like that.
+</Callout>
 
 <Image
     src="/maths/harmonicSeries.png"
@@ -107,37 +140,63 @@ However, there is a nice visualization showing that the series is bounded.
     alt="Harmonic Series"
     width={500}
 />
-
-## Telescope Series
-
-<Callout type="todo">
-Add the proof for the telescope series, show visually why it is called a telescope series.
 </Callout>
+
+<Callout type="example" title="Telescoping Series">
+The telescoping series is another special case of a series that converges. The telescoping series is a series where the terms cancel each other out in a way that the series converges to a finite value. The telescoping series is defined as follows:
 
 ```math
 \sum^{\infty}_{n=1}{\frac{1}{n(n+1)}}
 ```
 
-converges to 1.
+Now you might be wondering why this series is called telescoping series. The reason is that we can rewrite the terms to the following:
 
-## Beware of Infinite Sums
+```math
+\frac{1}{n(n+1)} = \frac{1}{n} - \frac{1}{n+1}
+```
 
-An important note:
-In the case of series we can not just use our usual rules for the [sum operator](/garden/maths/calculus/sequencesAndSeries/sumOperator). The reason is because the sums go to infinity and we can not just use the normal rules of arithmetic.
+So then when we write out the first few terms of the series, we get:
 
-So if we have a series $\sum^{\infty}_{k=1}{a_k}$ und $\sum^{\infty}_{j=1}{b_j}$ and they converge then the following rules apply:
-1. $\sum^{\infty}_{k=1}{c*a_k}=c* \sum^{\infty}_{k=1}{a_k}$ für $c \in C$
-2. $\sum^{\infty}_{k=1}{a_k\pm b_k}=\sum^{\infty}_{k=1}{a_k}\pm \sum^{\infty}_{k=1}{b_k}$
+```math
+\sum^{\infty}_{n=1}{\left(\frac{1}{n} - \frac{1}{n+1}\right)} = \left(1 - \frac{1}{2}\right) + \left(\frac{1}{2} - \frac{1}{3}\right) + \left(\frac{1}{3} - \frac{1}{4}\right) + \ldots
+```
 
-For this lets compare two example $\sum^{\infty}_{n=1}{\frac{1}{n(n+1)}$ into $\sum^{\infty}_{n=1}{\frac{1}{n}} - \sum^{\infty}_{n=1}{\frac{1}{n+1}}$ We already know this is the telescoping series that converges to 1. So in this infinity minus infinity case we get 1.
+and as we can see the terms cancel each other out in a way that we are left with only the first term and the last term of the series. So we can rewrite the series as follows:
 
-But if we try to do the same for the value of 0 and the sum over 0. We can split it into $\sum^{\infty}_{n=1}{1} - \sum^{\infty}_{n=1}{1}$ which is not correct as these then diverge and we suddenly get a value of 1 (infinity minus infinity).
+```math
+\sum^{\infty}_{n=1}{\frac{1}{n(n+1)}} = \lim_{n \to \infty} \left(1 - \frac{1}{n+1}\right) = 1
+```
+</Callout>
 
-## Cauchy Criterion
+<Callout type="info" title="Beware of Infinite Sums">
+In the case of series we can not just use our usual rules for the [sum operator](/garden/maths/calculus/sequencesAndSeries/sumOperator). The reason is because the sums go to infinity and we can not just use the normal rules of arithmetic. 
+
+To see this let's compare two example previously seen examples. We can rewrite 
+
+```math
+\sum^{\infty}_{n=1}{\frac{1}{n(n+1)}} = \sum^{\infty}_{n=1}{\frac{1}{n}} - \sum^{\infty}_{n=1}{\frac{1}{n+1}}$
+```
+
+We already know this is the telescoping series that converges to 1. So in this infinity minus infinity case we get 1.
+However, if we try to do the same for the value of 0 and the sum over 0. We can do the following split: 
+
+```math
+0 = \sum^{\infty}_{n=1}{1} - \sum^{\infty}_{n=1}{1}
+```
+
+which is not correct as these then diverge and we suddenly get a value of 1 (infinity minus infinity).
+
+So we can only perform operations with series if we have a series $\sum^{\infty}_{k=1}{a_k}$ and $\sum^{\infty}_{j=1}{b_j}$ and they both converge. If this is the case we can perform the following operations:  
+- $\sum^{\infty}_{k=1}{c*a_k}=c* \sum^{\infty}_{k=1}{a_k}$ für $c \in C$
+- $\sum^{\infty}_{k=1}{a_k\pm b_k}=\sum^{\infty}_{k=1}{a_k}\pm \sum^{\infty}_{k=1}{b_k}$
 
 <Callout type="todo">
-Add the proof for the Cauchy criterion. Show that it also works for the sequence of partial sums.
+Add a proof for this. Maybe using the sequence of partial sums.
+</Callout> 
+
 </Callout>
+
+## Cauchy Criterion
 
 We have seen that for sequences we can use the [Cauchy criterion](/garden/maths/calculus/sequencesAndSeries/convergentSequences#cauchy-criterion) to check if a sequence converges. Specifically we can say that a sequence converges if the following holds:
 
@@ -167,29 +226,63 @@ From this we can derive the following which gives us the Cauchy criterion for se
 ```
 </Callout>
 
+The cauchy criterion also has a special property that follows from it. Just like with the sequences at some point the difference must go to zero. For the series this means that the terms of the series must go to zero and therefore also the partial sum. So in other words after some point to all $m \geq n$ the section of the series must be zero. More formally:
+
+```math
+\sum_{k=1}^{\infty} a_k \text{ converges} \implies \lim_{n \to \infty} \sum_{k=n}^{m} a_k = 0
+```
+
+<Callout type="proof">
+Using the cauchy criterion we can actually prove that the underlying sequence must be a null sequence. The proof is pretty simple. We assume we have a series $\sum_{n=1}^{\infty} a_n$ that converges. Then from the cauchy criterion we know that the following holds:
+
+```math
+\forall \epsilon > 0 \exists N_{\epsilon} \in \mathbb{N} : |\sum^{m}_{k=n} a_k| < \epsilon \text{ for all } m \geq n \text{ and } n \geq N_{\epsilon}
+```
+
+Then if we specifically set $m=n$ we get:
+
+```math
+\begin{align*}
+|\sum^{n}_{k=n} a_k| < \epsilon \\
+|a_n| < \epsilon \\
+|a_n - 0| < \epsilon
+\end{align*}
+```
+
+So we can see that the terms of the series must go to zero as $n$ approaches infinity. So we can conclude that the underlying sequence must be a null sequence.
+</Callout>
+
+<Callout type="example">
+She just shows that the sequence goes to zero and then splits it into the telescoping series and the geometric series to find the value of the series.
+
+```math
+\sum^{\infty}_{n=1}{\frac{3^n + n^2 + n}{3^{n+1}(n(n+1))}}
+```
+</Callout>
+
 ## Direct Comparison Test
 
 The direct comparison test is another method like the Cauchy criterion to check if a series converges. The idea comes from the [Monotone Convergence Theorem](/garden/maths/calculus/sequencesAndSeries/convergentSequences#monotone-convergence-theorem) and is in my opinion a lot more intuitive then the cauchy criterion. 
 
-First let's just focus on series where after some point $k$ the terms are always positive. So more formally we focus on series where the following holds:
+First let's just focus on series that converges where after some point $k$ the terms are always positive. So more formally we focus on series where the following holds:
 
 ```math
 \text{Let } \sum^{\infty}_{n=1}{a_n} \text{ be a series with } a_n \geq 0 \text{ for all } n \geq k \text{ where } k \geq 1
 ```
 
-We can then use the monotone convergence theorem to show that the series converges if the sequence of partial sums is bounded. So we can show that the sequence of partial sums is bounded by some value $M$ and that the sequence of partial sums is monotone increasing intuitively this is of course true as the terms are always positive:
+The idea is to use the monoton convergence theorem. First we need to show that the sequence of partial sums is monotone increasing. This is true if the terms of the series are always positive. 
 
 ```math
 S_{n+1} - S_n = \sum^{n+1}_{k=1}{a_k} - \sum^{n}_{k=1}{a_k} = a_{n+1} \geq 0 \text{ for all } n \geq 1
 ```
 
-So if we have such a series that fullfils the conditions above, we just need to show that the sequence of partial sums is bounded to show that the series converges. 
+Now because we know that the sequence of partial sums is monotone increasing, and that it converges as otherwise the series would diverge, we can conclude that the sequence of partial sums must also be bounded by the monotone convergence theorem. 
 
 <Callout type="todo">
-Add an example of using this and showing that the sequence of partial sums is bounded. Such as maybe the telescope series.
+Add an example of using this and showing that the sequence of partial sums is bounded. 
 </Callout>
 
-The direct comparison follows from the idea shown above but in a more general way and kind of mixing it with the [squeeze theorem](/garden/maths/calculus/sequencesAndSeries/convergentSequences#squeeze-theorem). The idea is that we can compare two series and show that one converges if the other converges. The formal definition of the direct comparison test is as follows. If we have two series $\sum^{\infty}_{n=1}{a_n}$ and $\sum^{\infty}_{n=1}{b_n}$ and we know that the following holds for all $k \geq 1$:
+The direct comparison follows from the idea shown above but in a more general way and kind of mixing it with the [squeeze theorem](/garden/maths/calculus/sequencesAndSeries/convergentSequences#squeeze-theorem). The idea is that we can compare two series and show that one converges if the other converges. The formal definition of the direct comparison test is as follows. If we have two series $\sum^{\infty}_{n=1}{a_n}$ and $\sum^{\infty}_{n=1}{b_n}$ and we know that the following holds for all $k$ after some point $m \in \mathbb{N}$ so $k  \geq m$:
 
 ```math
 0 \leq a_k \leq b_k
@@ -201,7 +294,7 @@ So the terms of both series are always positive and the terms of the first serie
 \sum^{\infty}_{n=1}{b_n} \text{ converges} \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
 ```
 
-THe intuition behind this is rather simple. If $b_n$ converges, then the sum of all terms of $b_n$ is finite. If $a_n$ is always less than or equal to $b_n$, then the sum of all terms of $a_n$ must also be finite. Because we are only allowing for positve terms, we also do not have to worry about convergence against negative infinity. In a similar way we can also show that if the first series diverges, then the second series also diverges. 
+The intuition behind this is rather simple. If $b_n$ converges, then the sum of all terms of $b_n$ is finite. If $a_n$ is always less than or equal to $b_n$, then the sum of all terms of $a_n$ must also be finite. Because we are only allowing for positve terms, we also do not have to worry about convergence against negative infinity. In a similar way we can also show that if the first series diverges, then the second series also diverges. 
 
 ```math
 \sum^{\infty}_{n=1}{a_n} \text{ diverges} \implies \sum^{\infty}_{n=1}{b_n} \text{ diverges}
