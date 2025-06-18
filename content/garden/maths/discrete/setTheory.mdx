@@ -433,40 +433,6 @@ Infinity is not a number in the traditional sense, but rather a concept that ref
 end. Therefore it is not an element of any set of numbers, including the real numbers.
 </Callout>
 
-#### Heron's Method
-
-Using Heron's method we can approximate a real number by a rational number with any desired accuracy. The idea is that a square with an area of $A$ has a side length of $\sqrt A$.
-
-To approximate $\sqrt a$ we start by creating a rectangle which we know the area of and then slowly adjust the sides to get closer to a square with the area of $A$ and therefore the side length of $\sqrt A$.
-
-We start with a guess $a_1$ and then calculate the next guess $a_2$ by taking the average of the previous guess and the area divided by the previous guess.
-
-```math
-a_2 = \frac{a_1 + \frac{A}{a_1}}{2}
-```
-
-This can be repeated until the desired accuracy is reached:
-
-```math
-a_{n+1} = \frac{a_n + \frac{A}{a_n}}{2}
-```
-
-<Callout type="example">
-To approximate $\sqrt{5}$ we start with a guess of $a_1=5$. We then calculate the next approximation:
-
-```math
-a_2 = \frac{5 + \frac{5}{5}}{2} = \frac{5 + 1}{2} = 3
-```
-
-If we then repeat this process we get for $a_4 = 2.234$ which is a good approximation of $\sqrt{5}=2.236$.
-
-<Image 
-    src="/maths/setsHeronsMethod.gif"
-    caption="Animation showing Heron's method to approximate the square root of 5."
-    width={500}
-/>
-</Callout>
-
 ### Complex Numbers
 
 The set of complex numbers is denoted by $\Bbb{C}$. You can see what complex numbers are and how they are used [here](/garden/maths/complexNumbers/explanation).

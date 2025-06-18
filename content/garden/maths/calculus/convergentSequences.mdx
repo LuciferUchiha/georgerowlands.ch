@@ -631,14 +631,69 @@ So there is a natural limit to how much you can grow your money by compounding i
 
 ## Limits of Recursive Sequences
 
-babylonian method for finding square roots is a very old method that is still used today. It is based on the idea of finding the average of two numbers and then using this average to find a better approximation of the square root.
+<Callout type="todo">
+Somehow want to show that the it only works for $A > 1$ to show that it is bounded? or that the start value needs to be greater than 1?
 
-From notes more generally $a_n = 1 \over 2 (a_{n-1} + c \over a_{n-1})$ and $a_1 = c$ $c > 1$.
+Then also show that it is monotonically decreasing and therefore has a limit.
 
-Used important technique of finding the limit based on the knowledge of it existing just like in the proof of the geometric sequence.
+Something about it being a fixed point iteration?
+</Callout>
 
-recursive defined sequences $a_{n+1} = 1 \over 2 (a_n + 2 \over a_n)$ goes to $\sqrt{2}$
+### Babylonian/Heron's Method
 
+Heron's method, also known as the Babylonian method, is a way to approximate square roots of real numbers. Using this method we can also approximate a real number by a rational number with any desired accuracy. 
+
+The idea of the method is that a square with an area of $A$ has a side length of $\sqrt A$. To approximate $\sqrt a$ we start by creating a rectangle which we know the area of and then slowly adjust the sides to get closer to a square with the area of $A$ and therefore the side length of $\sqrt A$. Importantly, this method only works for $A > 1$.
+
+We start with a guess $a_1$ and then calculate the next guess $a_2$ by taking the average of the previous guess and the area divided by the previous guess.
+
+```math
+a_2 = \frac{a_1 + \frac{A}{a_1}}{2}
+```
+
+This can be repeated until the desired accuracy is reached:
+
+```math
+a_{n+1} = \frac{a_n + \frac{A}{a_n}}{2}
+```
+
+<Callout type="proof">
+As we can see this method actually produces a sequence of approximations. However, rather then the sequence being some formula like $a_n = n^2$ it is defined recursively. So the question is then does this sequence converge to the square root of $A$ as $n$ goes to infinity? This should obviously be the case as we are getting closer and closer to the square root of $A$ with each iteration but we can also prove this formally.
+
+This proof uses an important technique of finding the limit based on the knowledge of it existing. We will assume that the limit exists and then show that it is equal to $\sqrt A$.
+
+Let $L = \lim_{n \to \infty} a_n$. Then we can use the recursive definition of the sequence to write:
+
+```math
+\begin{align*}
+\lim_{n \to \infty} a_{n+1} &= \lim_{n \to \infty} \frac{a_n + \frac{A}{a_n}}{2} \\
+L &= \lim_{n \to \infty} \frac{1}{2} \left(\lim_{n \to \infty} a_n + \lim_{n \to \infty} \frac{A}{a_n}\right) \\
+L &= \frac{1}{2} \left(L + \frac{A}{L}\right) \\
+2L &= L + \frac{A}{L} \\
+L &= \frac{A}{L} \\
+L^2 &= A \\
+L &= \sqrt A
+\end{align*}
+```
+
+So we have shown that the limit of the sequence is indeed $\sqrt A$ and therefore the approximation as $n$ goes to infinity converges to the square root of $A$.
+</Callout>
+
+<Callout type="example">
+To approximate $\sqrt{5}$ we start with a guess of $a_1=5$. We then calculate the next approximation:
+
+```math
+a_2 = \frac{5 + \frac{5}{5}}{2} = \frac{5 + 1}{2} = 3
+```
+
+If we then repeat this process we get for $a_4 = 2.234$ which is a good approximation of $\sqrt{5}=2.236$.
+
+<Image 
+    src="/maths/setsHeronsMethod.gif"
+    caption="Animation showing Heron's method to approximate the square root of 5."
+    width={500}
+/>
+</Callout>
 
 ## Limes Superior and Inferior
 
@@ -648,42 +703,54 @@ Using the monoton-convergence theorem we can perform a very important operation.
 b_n = \inf\{a_k | k \geq n\} \text{ and } c_n = \sup\{a_k | k \geq n\}
 ```
 
-Because a_n is bounded we know that $b_n$ and $c_n$ are also bounded as the infimum and supremum are always the largest lower bound and smallest upper bound of the subsequence. 
+Because a_n is bounded we know that an infimum and supremum exist for all $n \geq 1$. We also notice that for all $n \geq 1$ the following holds:
+
+```math
+b_{n+1} \subseteq b_n \text{ and } c_{n+1} \supseteq c_n
+```
+
+So because $a_n$ is bounded, the sequences $b_n$ and $c_n$ are also bounded. The sequence $b_n$ is bounded below by the infimum of the sequence and the sequence $c_n$ is bounded above by the supremum of the sequence.
 
 <Callout type="example">
 Let's look at the sequence $a_n = (-1)^n (1 + \frac{1}{n})$. This sequence is bounded between -2 and 2 and does not converge as it oscillates between positive and negative values. However, we can define the two sequences $b_n$ and $c_n$ as follows:
 
 ```math
 \begin{align*}
-b_1 &= \inf\{a_k | k \geq 1\} = \inf\{-2} = -2 \\
-b_2 &= \inf\{a_k | k \geq 2\} = \inf\{-2, 1.5\} = -2 \\
-b_3 &= \inf\{a_k | k \geq 3\} = \inf\{-2, 1.5, -1.333\} = -2 \\
-b_4 &= \inf\{a_k | k \geq 4\} = \inf\{-2, 1.5, -1.333, 1.25\} = -2 \\
-\vdots \\
-c_1 &= \sup\{a_k | k \geq 1\} = \sup\{-2\} = -2 \\
-c_2 &= \sup\{a_k | k \geq 2\} = \sup\{-2, 1.5\} = 1.5 \\
-c_3 &= \sup\{a_k | k \geq 3\} = \sup\{-2, 1.5, -1.333\} = 1.5 \\
-c_4 &= \sup\{a_k | k \geq 4\} = \sup\{-2, 1.5, -1.333, 1.25\} = 1.5 \\
-\vdots
+b_1 &= \inf\{a_k | k \geq 1\} = \inf\{-2, 1.5, -1.333, 1.25 \ldots\} = -2 \\
+b_2 &= \inf\{a_k | k \geq 2\} = \inf\{1.5, -1.333, 1.25, -1.2 \ldots\} =  -1.333 \\
+b_3 &= \inf\{a_k | k \geq 3\} = \inf\{-1.333, 1.25, -1.2 \ldots\} =  -1.333 \\
+b_4 &= \inf\{a_k | k \geq 4\} = \inf\{1.25, -1.2 \ldots\} = -1.2 \\
+\ldots \\
+c_1 &= \sup\{a_k | k \geq 1\} = \sup\{-2, 1.5, -1.333, 1.25 \ldots\} = 1.5 \\
+c_2 &= \sup\{a_k | k \geq 2\} = \sup\{1.5, -1.333, 1.25, -1.2 \ldots\} = 1.5 \\
+c_3 &= \sup\{a_k | k \geq 3\} = \sup\{-1.333, 1.25, -1.2 \ldots\} = 1.25 \\
+c_4 &= \sup\{a_k | k \geq 4\} = \sup\{1.25, -1.2, -1.2 \ldots\} = 1.25 \\
+\ldots
 \end{align*}
 ```
 </Callout>
 
-From the example we can see that the sequence $b_n$ and $c_n$ are monotonic. This makes sense because as knew values are added to the set the infimum will only get smaller and the supremum will only get larger. So we can actually be more precise and say that $b_n$ is monotonically increasing and $c_n$ is monotonically decreasing and that they are both bounded. The fact that they are monotonic also follows from the following properties of the supremum and infimum where $A \subseteq B$:
+From the example we can see that the sequence $b_n$ and $c_n$ are monotonic. This comes from the following properties where if $A \subseteq B$ and $B$ is bounded from above then we have:
 
 ```math
-\begin{align*}
-\text{If B is bounded from above then } \sup(A) &\leq \sup(B) \\
-\text{If B is bounded from below then } \inf(A) &\geq \inf(B) 
-\end{align*}
+\sup A \leq \sup B
 ```
 
-In this case the set $A$ corresponds to the sequence at time $k$ and the set $B$ corresponds to the sequence at time $k+1$. So we can see that the infimum of the set at time $k$ is always less than or equal to the infimum of the set at time $k+1$ and the supremum of the set at time $k$ is always greater than or equal to the supremum of the set at time $k+1$. This means that the sequence $b_n$ is monotonically increasing and the sequence $c_n$ is monotonically decreasing. 
+and if $B$ is bounded from below then we have:
+
+```math
+\inf A \geq \inf B
+```
+
+This makes sense because as values are taken away from the set $A$ to create the set $B$, the supremum can only decrease or stay the same and the infimum can only increase or stay the same. 
+```
+
+In this case the set $A$ corresponds to the sequence at time $k+1$ and the set $B$ corresponds to the sequence at time $k$. So we can see that the infimum of the set at time $k+1$ is always larger than or equal to the infimum of the set at time $k$ and the supremum of the set at time $k+1$ is always less than or equal to the supremum of the set at time $k$. This means that the sequence $b_n$ is monotonically decreasing and the sequence $c_n$ is monotonically increasing. 
 
 ```math
 \begin{align*}
-b_n &\leq b_{n+1} \\
-c_n &\geq c_{n+1}
+b_n &\geq b_{n+1} \\
+c_n &\leq c_{n+1}
 \end{align*}
 ```
 
@@ -697,6 +764,13 @@ Because they are both monotonic and bounded we can apply the monotone convergenc
 ```
 
 We can interpret the Limes Superior and Limes Inferior as the largest and smallest limit points of the sequence. So in a way as $n$ goes to infinity the Limes Superior is like an upper bound that the sequence approaches and the Limes Inferior is like a lower bound that the sequence approaches.
+
+<Image 
+    src="/maths/limesSuperiorInferior.png"
+    caption="Limes Superior and Limes Inferior going towards the upper and lower bounds of the sequence."
+    width={500}
+/>
+</Callout>
 
 Because we also know that the infimum is always less than or equal to the supremum we can also say that all terms of the $b_n \leq c_n$ and therefore the limit of the sequence $b_n$ is less than or equal to the limit of the sequence $c_n$:
 
@@ -734,26 +808,89 @@ We can also show the other way around. If the sequence converges to a limit $L$ 
 So eventually all terms are within the epsilon neighborhood around $L$, $(L - \epsilon, L + \epsilon)$. This means that the terms of the sequence are also within the epsilon neighborhood around the supremum and infimum. 
 </Callout>
 
+<Callout type="example">
+Let's look at the sequence $a_n = (-1)^n + \frac{1}{n}$. This sequence is bounded between -1 and 2 so we have:
+
+```math
+-1 \leq a_n \leq 2
+```
+
+Because the sequence is bounded we can create the two sequences $b_n$ and $c_n$ as follows:
+
+```math
+\begin{align*}
+b_n &= \inf\{a_k | k \geq n\} = \inf\{a_n, a_{n+1}, a_{n+2}, \ldots\} \\
+b_1 &= \inf\{0, 1 + \frac{1}{2}, -1 + \frac{1}{3}, 1 + \frac{1}{4}, \ldots\} = -1 \\
+b_2 &= \inf\{1 + \frac{1}{2}, -1 + \frac{1}{3}, 1 + \frac{1}{4}, \ldots\} = -1 \\
+b_{2n} &= \inf\{1 + \frac{1}{2n}, -1 + \frac{1}{2n+1}, 1 + \frac{1}{2n+2}, \ldots\} = -1 + \frac{1}{2n+1} = -1\\
+b_{2n+1} &= \inf\{-1 + \frac{1}{2n+1}, 1 + \frac{1}{2n+2}, -1 + \frac{1}{2n+3}, \ldots\} = -1 + \frac{1}{2n+1} = -1\\
+\ldots \\
+c_n &= \sup\{a_k | k \geq n\} = \sup\{a_n, a_{n+1}, a_{n+2}, \ldots\} \\
+c_1 &= \sup\{0, 1 + \frac{1}{2}, -1 + \frac{1}{3}, 1 + \frac{1}{4}, \ldots\} = 1 + \frac{1}{2} \\
+c_2 &= \sup\{1 + \frac{1}{2}, -1 + \frac{1}{3}, 1 + \frac{1}{4}, \ldots\} = 1 + \frac{1}{2} \\
+c_{2n} &= \sup\{1 + \frac{1}{2n}, -1 + \frac{1}{2n+1}, 1 + \frac{1}{2n+2}, \ldots\} = 1 + \frac{1}{2n} \\
+c_{2n+1} &= \sup\{-1 + \frac{1}{2n+1}, 1 + \frac{1}{2n+2}, -1 + \frac{1}{2n+3}, \ldots\} = 1 + \frac{1}{2n+2} \\
+c_{n} &= \{1 + \frac{1}{2}, 1 + \frac{1}{2}, \ldots, 1 + \frac{1}{2n}, 1 + \frac{1}{2n+2}, \ldots\}
+\end{align*}
+```
+
+So we can see that we get the following limits:
+
+```math
+\liminf_{n \to \infty} a_n = -1 \text{ and } \limsup_{n \to \infty} a_n = 1
+```
+
+And because the Limes Superior and Limes Inferior do not converge to the same limit, we can say that the orginal sequence $a_n$ does not converge.
+</Callout>
+
 ## Cauchy Criterion
 
 We have seen a few ways now how to calculate the limit of a sequence or determine if a sequence converges based on certain properties that the sequence has, such as being bounded and monotonic. However, there is another way to determine if a sequence converges or diverges. This is called the Cauchy criterion. 
 
 Previously we looked to see if the Limes Superior and Limes Inferior of a sequence converge to the same limit. Cauchy's idea is similar to this but instead of looking at the Limes Superior and Limes Inferior we look at the distance between two terms of the sequence. The idea is that if the terms of the sequence get closer and closer together, then they must converge to a limit. 
 
-This is what the Cauchy criterion states. A sequence is convergent if it is a so called **Cauchy sequence** or the sequence is **Cauchy**. A sequence is Cauchy if the following holds:
+This is what the Cauchy criterion states. A sequence is convergent if it is a so called **Cauchy sequence** or the sequence is **Cauchy** and a sequence is Cauchy if the following holds:
 
 ```math
 \forall \epsilon > 0 \exists N_{\epsilon} \in \mathbb{N} \text{ such that } \forall n, m \geq N_{\epsilon} \text{ we have } |a_n - a_m| < \epsilon
 ```
 
-So if we can find an index $N_{\epsilon}$ such that for all terms after this index the distance between any two terms is less than $\epsilon$, then the sequence converges. 
+So if we can find an index $N_{\epsilon}$ such that for all terms after this index the distance between any two terms is less than $\epsilon$, then the sequence converges. So this leads to the following statements:
 
-<Callout type="proof">
-Todo
-https://www.youtube.com/watch?v=R2AFZD0jiKQ
-</Callout>
+- $(a_n)_{n \geq 1} \text{ is Cauchy} \implies \text{ the sequence converges}$
+- $\text{the sequence converges} \implies (a_n)_{n \geq 1} \text{ is Cauchy}$
+- Therefore a sequence is Cauchy if and only if it converges so $(a_n)_{n \geq 1} \text{ is Cauchy} \iff \text{ the sequence converges}$.
+
+This also means that we can use the reverse to show that a sequence diverges, so $(a_n)_{n \geq 1} \text{ is not Cauchy} \implies \text{ the sequence diverges}$ and $\text{the sequence diverges} \implies (a_n)_{n \geq 1} \text{ is not Cauchy}$.
+
+Lastly a further important property of Cauchy sequences is that they are bounded. This means that if a sequence is Cauchy, then it is also bounded. However, the reverse is not true so just because a sequence is bounded does not mean that it is Cauchy and therefore converges. This makes sense as otherwise the monotone convergence theorem would be unnecessarily complicated. But why are Cauchy sequences bounded?
 
 <Callout type="todo">
+Intuitively this makes sense but no idea why.
+</Callout>
+
+<Callout type="proof">
+We can prove that the cauchy criterion implies that the sequence converges. Let's assume that the sequence converges, then we know that there exists a limit $L$ such that for all $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|a_n - L| < \epsilon
+```
+
+Now because it counts for all $\epsilon > 0$ we can also manipulate and use cauchy to get the following:
+
+```math
+\begin{align*}
+|a_n - L| < \epsilon \\
+|a_n - L| < \frac{\epsilon}{2} \\
+|a_m - a_n| &= |a_m - L + L - a_n| \\
+&\leq |a_m - L| + |L - a_n| \text{ by the triangle inequality} \\
+&< \frac{\epsilon}{2} + \frac{\epsilon}{2} \\
+&= \epsilon
+\end{align*}
+```
+</Callout>
+
+<Callout type="example">
 As an example let's look at the harmonic sequence $a_n = \frac{1}{n}$. We know that this sequence converges to 0. But we can also use the Cauchy criterion to show that it converges. Let's assume that we have a sequence $a_n$ and we want to show that it is Cauchy. We can do this by showing that the distance between two terms of the sequence is less than $\epsilon$. 
 
 ```math
@@ -775,8 +912,20 @@ Weird stuff with intervals that can then be used to show that real numbers are u
 
 ## Balzano-Weierstrass Theorem
 
-<Callout type="todo">
-Every bounded sequence has a convergent subsequence. 
+The Balzano-Weierstrass theorem is a very important theorem in real analysis like the montone convergence theorem and the squeeze theorem. It states that every bounded sequence of real numbers has a convergent subsequence. 
+
+First let's define what a subsequence is. A subsequence of a sequence $a_n$ is a sequence $b_k$ that is formed by taking some of the terms of the original sequence $a_n$ and keeping the order of the terms. Or by removing some of the terms of the original sequence $a_n$ while keeping the order of the remaining terms. Importantly with both approaches the resulting subsequence must still be infinite. So we can say a subsequence $b_n$ is a function just like the original sequence $a_n$ so $b_n: N \to R$ but where there exists a strictly increasing function $k: N \to N$ such that:
+
+```math
+b_n = a_n \circ k \text{so} b_n = a_{k(n)} \text{ for all } n \in N
+```
+
+<Callout type="example">
+If the sequence $a_n = n$ so we have $(1, 2, 3, 4, \ldots)$ then we can create the subsequence $b_n = (2, 4, 6, 8, \ldots)$ by taking every second term of the original sequence. However, the subsequence $c_n = (4,2,6,8,\ldots)$ is not a valid subsequence as the order of the terms is not preserved. So we can only take terms from the original sequence and keep the order of the terms.
+</Callout>
+
+<Callout type="proof">
+Some proof and example of using it? She didn't show anything.
 </Callout>
 
 ## Vector Sequences
@@ -805,6 +954,10 @@ If we have the vector $L=(l_1, l_2, \ldots, l_d)$ and a vector sequence $a_n$, t
 
 1. The vector sequence $a_n$ converges to the vector $L$, $\lim_{n \to \infty} a_n = L$.
 2. $\lim_{n \to \infty} a_{n,i} = l_i$ for all $i=1,2,\ldots,d$.
+
+<Callout type="todo">
+She has a proof that these two statements are equivalent. Seems weird and complicated
+</Callout>
 
 <Callout type="example">
 Let's define a vector sequence as follows:
