@@ -420,7 +420,7 @@ We have seen that series can converge to some limit or diverge. But there is als
 \sum^{\infty}_{n=1}{|a_n|} \text{ converges}
 ```
 
-If a series is absolutely convergent, then it is also convergent. However, the converse is not true. A series can be convergent without being absolutely convergent. 
+If a series is absolutely convergent, then it is also convergent. However, the converse is not true. A series can be convergent without being absolutely convergent. We call a series that is convergent but not absolutely convergent **conditionally convergent**.
 
 ```math
 \sum^{\infty}_{n=1}{a_n} \text{ converges} \implies \sum^{\infty}_{n=1}{|a_n|} \text{ converges}
@@ -438,17 +438,47 @@ If we say that $S_n = \sum^{n}_{k=1}{a_k}$ and $T_n = \sum^{n}_{k=1}{|a_k|}$, th
 |S_n| = |\sum^{\infty}_{k=1}{a_k}| = |\lim_{n \to \infty} S_n| = \lim_{n \to \infty} |S_n| \leq \lim_{n \to \infty} T_n = \sum^{\infty}_{k=1}{|a_k|}
 ```
 
+Or in short:
+
+```math
+|\sum^{\infty}_{n=1}{a_n} | \leq \sum^{\infty}_{n=1}{|a_n|}
+```
+
 <Callout type="example">
-Let's look at the series $\sum^{\infty}_{n=1}{(-1)^{n+1} \frac{1}{n}}$. The sequence of the terms converge to zero, so our first condition is met. If we analyze the values of the series then we notice that the series converges to $\ln(2)$. So the series converges. 
+Let's look at the series $\sum^{\infty}_{n=1}{(-1)^{n+1} \frac{1}{n}}$ which is the so called alternating harmonic series. The sequence of the terms converge to zero, so our first condition is met. If we analyze the values of the series then we notice that the series converges to $\ln(2)$. So the series converges.
 
 But if we take the absolute value of the terms of the series, we get the harmonic series $\sum^{\infty}_{n=1}{\frac{1}{n}}$ which diverges. So we can say that the original series is convergent but not absolutely convergent. This is a good example to show that the converse of that absolute convergence implies convergence is not true. 
 </Callout>
 
 ## Alternating Series Test
 
-Also known as Leibniz test. 
+The alternating series test is useful test for checking the convergence of series that alternate in sign such as the alternating harmonic series. The test states that if we have a series of the form:
 
-### Alternating Series Estimation Theorem
+```math
+\sum^{\infty}_{n=1}{(-1)^{n+1} a_n}
+```
+
+where either all $a_n$ are positive or all $a_n$ are negative and the absolute values of the terms are decreasing, more formally for all $n \geq N_0$ we have $|a_{n+1}| \leq |a_n|$, and lastly the limit of the terms goes to zero, then the series converges.
+
+Intuitively this makes sense as the terms of the series are alternating in sign and the absolute values of the terms are decreasing. So the series is "balancing out" and converging to a finite value. 
+
+So in the case of the alternating harmonic series all the above conditions are met and therefore it converges to some value $S$. Alternating series that suit this form also have the interesting property that the value of the series $S$ can be bounded if all the terms are positive:
+
+```math
+a_1 - a_2 \leq S \leq a_1
+```
+
+This comes from the fact that the first term of the series is positive will be the largest term. As an example for the alternating harmonic series we have:
+
+```math
+1 - \frac{1}{2} \leq S \leq 1 \implies \frac{1}{2} \leq S \leq 1
+```
+
+<Callout type="todo">
+This can somehow be extended to the alternating series estimation theorem which probably also works for all negative terms?
+
+She has a nice visualization of the idea of this estimation with it going back and forth within the bounds.
+</Callout>
 
 ## Riemann Rearrangement Theorem
 
