@@ -496,6 +496,8 @@ Dirchlet showed that if a series converges absolutely, then any rearrangement of
 
 ## Ratio Test
 
+One of the most important tests for convergence of series is the ratio test. The ratio test is a method to check if a series converges or diverges by looking at the ratio of consecutive terms in the series. Similarily to the cauchy criterion where we looked at the difference between consecutive terms, we can also look at the ratio of consecutive terms. The ratio test states that if we have a series $\sum^{\infty}_{n=1}{a_n}$, where importantly $a_n \neq 0$ for all $n$ to avoid division by zero, then we can analyze the convergence of the series by looking at the limit of the ratio of consecutive terms:
+
 ```math
 \limsup_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
 ```
@@ -504,16 +506,379 @@ Dirchlet showed that if a series converges absolutely, then any rearrangement of
 \liminf_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| > 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ diverges}
 ```
 
-## Root Test
+IF the value of the limit is equal to 1, then the test is inconclusive and we can not say anything about the convergence of the series. In this case we need to use another test to check if the series converges or diverges. 
 
-Stronger version of the ratio test. Can do everything the ratio test can do and more. 
+The intuition behind the ratio test is that if the ratio of consecutive terms is less than 1, then the terms of the series are getting smaller and smaller, which means that the series converges. If the ratio is greater than 1, then the terms of the series are getting larger and larger, which means that the series diverges. If the ratio is equal to 1, then we can not say anything about the convergence of the series.
+
+<Callout type="proof">
+dont get the proof
+</Callout>
+
+<Callout type="example">
+Let's look at the following series:
 
 ```math
-\limsup_{n \to \infty} \sqrt[n]{|a_n|} < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
+\sum^{\infty}_{n=1}{\frac{n!}{n^n}}
 ```
+
+Using the ratio test we can analyze the convergence of this series. We can calculate the ratio of consecutive terms:
+
+```math
+\begin{align*}
+\left| \frac{a_{n+1}}{a_n} \right| &= \left| \frac{(n+1)!}{(n+1)^{n+1}} \cdot \frac{n^n}{n!} \right| \\
+&= \left| \frac{(n+1)!n^n}{(n+1)^{n+1}n!} \right| \\
+&= \left| \frac{(n+1)!}{n!} \cdot (\frac{n}{n+1})^n \cdot \frac{1}{n+1} \right| \\
+&= \left| (n+1) \cdot \left(\frac{n}{n+1}\right)^n \cdot \frac{1}{n+1} \right| \\
+&= \left| \left(\frac{n}{n+1}\right)^n \right| \\
+&= \left| \frac{1}{\left(1 + \frac{1}{n}\right)^n} \right| \\
+&\to \left| \frac{1}{e} \right| = \frac{1}{e} < 1
+\end{align*}
+```
+
+Therefore we can conclude that the series converges by the ratio test. Because a precondition of convergence is that the terms of the series must go to zero, we can also conclude that the terms of the series go to zero as $n$ approaches infinity so we get the following:
+
+```math
+\lim_{n \to \infty} a_n = \lim_{n \to \infty} \frac{n!}{n^n} = 0
+```
+</Callout>
+<Callout type="example">
+We can show that the harmonic series $\sum^{\infty}_{n=1}{\frac{1}{n}}$ diverges using the ratio test:
+
+```math
+\begin{align*}
+\left| \frac{a_{n+1}}{a_n} \right| &= \left| \frac{\frac{1}{n+1}}{\frac{1}{n}} \right| \\
+&= \left| \frac{n}{n+1} \right| \\
+&= \left| 1 - \frac{1}{n+1} \right|
+\end{align*}
+```
+
+As $n$ approaches infinity, the limit of the ratio is equal to 1 therefore we can not say anything about the convergence of the series.
+</Callout>
+
+Importantly we need to use the limit superior and limit inferior as these always exists, whereas the limit does not always exist and could cause the test to be nonsensical. However, if the limit of the ratio does exist, so $\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right|$ = $L$, then the limes superior and limit inferior are equal to the limit and we can use the limit instead of the limes superior and limit inferior. So we can write the ratio test as follows:
+
+```math
+\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
+```
+
+```math
+\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| > 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ diverges}
+```
+
+<Callout type="example">
+Another reason why we  need to use the limes superior and limit inferior is that we can construct a series $a_n$ that converges but has the a limes inferior less then 1 and a limes superior greater than 1. And a series $b_n$ that diverges but has the same limes superior and limit inferior. 
+</Callout>
+
+## Exponential Series
+
+We have seen a possible origin of the euler number $e$. But we can also show a possible origin of the euler number to some power $z \in \mathbb{C}$. Specifically we can show that the following series:
+
+```math
+\sum^{\infty}_{n=0}{\frac{z^n}{n!}} = \exp(z) = e^z
+```
+
+Hence it is called the exponential series. For $z = 0$ we get the following:
+
+```math
+1 + \frac{z}{1!} + \frac{z^2}{2!} + \frac{z^3}{3!} + \ldots = 1 + 0 + 0 + 0 + \ldots = 1
+```
+
+Which is correct. Let's now check if the series converges for $z \neq 0$. We can use the ratio test to check if the series converges:
+
+```math
+\begin{align*}
+\left| \frac{a_{n+1}}{a_n} \right| &= \left| \frac{z^{n+1}}{(n+1)!} \cdot \frac{n!}{z^n} \right| \\
+&=  \left| \frac{z^{n+1}n!}{(n+1)!z^n} \right| \\
+&= \left| \frac{z^{n+1}}{z^n} \cdot \frac{n!}{(n+1)!} \right| \\
+&= \left| z \cdot \frac{1}{n+1} \right| \\
+&= \left| \frac{z}{n+1} \right|
+\end{align*}
+```
+
+Which as $n$ approaches infinity goes to zero for all $z \in \mathbb{C}$. So we can conclude that the series converges for all $z \in \mathbb{C}$. However the question still remains if the series converges to $e^z$. 
+
+### Convergence Radius
+
+For complex numbers this is probably a circle and for real numbers this is probably a line hence an interval rather then a radius.
+
+If we are given the following series where $z \in \mathbb{C}$:
+
+```math
+\sum^{\infty}_{n=0}{\frac{z^n n!}{n^n}}
+```
+
+Then the question is for which values of $z$ does this series converge? To analyze this we can use the ratio test:
+
+```math
+\begin{align*}
+\left| \frac{a_{n+1}}{a_n} \right| &= \left| \frac{z^{n+1} (n+1)!}{(n+1)^{n+1}} \cdot \frac{n^n}{z^n n!} \right| \\
+&= \left| \frac{z^{n+1}(n+1)!n^n}{(n+1)^{n+1}z^n n!} \right| \\
+&= \left| \frac{znn^n}{(n+1)^{n+1}} \right| \\
+&= \left| \frac{zn^{n+1}}{(n+1)^{n+1}} \right| \\
+&= \left| z \cdot \left(\frac{n}{n+1}\right)^{n+1} \right| \\
+&= \left| z \cdot \left(1 - \frac{1}{n+1}\right)^{n+1} \right| \\
+&\to \left| z \cdot \frac{1}{e} \right| = \frac{|z|}{e} < 1
+\end{align*}
+```
+
+So for  the series to converge we need the following to hold:
+
+```math
+\frac{|z|}{e} < 1 \implies |z| < e
+```
+
+This results in the complex plane their being a circle with radius $e$ around the origin where the series converges. This is the so called **convergence radius** of the series. If we are outside of this circle, then the series diverges. If we are on or inside this circle, then the series converges. 
+
+Another example would be the following series which is similar to the geometric series:
+
+```math
+\sum^{\infty}_{n=1}{n \cdot z^n}
+```
+
+We can use the ratio test to check for which values of $z$ this series converges:
+
+```math
+\begin{align*}
+\left| \frac{a_{n+1}}{a_n} \right| &= \left| \frac{(n+1)z^{n+1}}{n z^n} \right| \\
+&= \left| \frac{n+1}{n} \cdot z \right| \\
+&= \frac{n+1}{n} \cdot |z| < 1 
+\end{align*}
+```
+
+As $n$ approaches infinity, the term $\frac{n+1}{n}$ approaches 1. So we can conclude that the series converges for all $|z| < 1$. This means that the convergence radius of this series is 1. If we are outside of this circle, then the series diverges. If we are on or inside this circle, then the series converges. We might also wonder what is the actual value of the series. If we write out the terms we can notice some patterns:
+
+```math
+\begin{align*}
+\sum^{\infty}_{n=1}{n \cdot z^n} &= z + 2z^2 + 3z^3 + 4z^4 + \ldots \\
+&= z + z^2 + z^2 + z^3 + z^3 + z^3 + z^4 + z^4 + z^4 + z^4 + \ldots \\
+&= z (1 + z + z^2 + z^3 + \ldots) + z^2 (1 + z + z^2 + \ldots) + z^3 (1 + z + \ldots) + \ldots \\
+&= (z + z^2 + z^3 + \ldots)(1 + z + z^2 + \ldots) \\
+&= z(1 + z + z^2 + \ldots) \cdot \frac{1}{1 - z} \\
+&= \frac{z}{(1 - z)^2}
+\end{align*}
+```
+
+## Root Test
+
+We have seen that the ratio test can be very useful for analyzing the convergence of series. However, in some cases the ratio test is inconclusive when the limit of the ratio of consecutive terms is equal to 1 such as the harmonic series. In these cases, we can use another test that is even more powerful and can be used in more cases. This is the root test. Everything the ratio test solves, the root test can also solve but  the root test can also solve cases where the ratio test is inconclusive. The root test is similar to the ratio test but instead of looking at the ratio of consecutive terms, the root test states that if we have a series $\sum^{\infty}_{n=1}{a_n}$, then we can analyze the convergence of the series by looking at the limit superior and limit inferior of the $n$-th root of the absolute value of the terms. More formally we have the following:
+
+```math
+\limsup_{n \to \infty} \sqrt[n]{|a_n|} < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges absolutely}
+```
+
+Because the absolute convergence implies convergence, we can also say that the series converges. However, if the limit superior and limit inferior are greater than 1, then we can say that the series diverges and therefore also the absolute series diverges. More formally we have the following:
 
 ```math
 \limsup_{n \to \infty} \sqrt[n]{|a_n|} > 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ and } \sum^{\infty}_{n=1}{|a_n|} \text{ diverges}
 ```
+
+Again if the limit superior and limit inferior are equal to 1, then the test is inconclusive and we can not say anything about the convergence of the series. 
+
+Importantly if the limit exists, so $\lim_{n \to \infty} \sqrt[n]{|a_n|} = L$, then the limit superior and limit inferior are equal to the limit and we can use the limit instead of the limes superior and limit inferior. So we can write the root test as follows:
+
+```math
+\lim_{n \to \infty} \sqrt[n]{|a_n|} < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
+```
+
+```math
+\lim_{n \to \infty} \sqrt[n]{|a_n|} > 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ and } \sum^{\infty}_{n=1}{|a_n|} \text{ diverges}
+```
+
+<Callout type="example">
+We define the following sequence and series:
+
+```math
+\sum^{\infty}_{n=1}{a_n} \text{ where } a_n = \begin{cases}
+\frac{1}{2^{n+1}} & \text{if } n \text{ is even} \\
+\frac{1}{2^{n}} & \text{if } n \text{ is odd}
+\end{cases}
+```
+
+First we can check if the series converges by using the ratio test. Let's assume that $n$ is even, so $n = 2k$ for some $k \in \mathbb{N}$ then we have:
+
+```math
+\frac{a_{n+1}}{a_n} = \frac{\frac{1}{2^{n+1}}}{\frac{1}{2^{n+1}}} = 1
+```
+
+and if $n$ is odd, so $n = 2k + 1$ for some $k \in \mathbb{N}$ then we have:
+
+```math
+\frac{a_{n+1}}{a_n} = \frac{\frac{1}{2^{n+2}}}{\frac{1}{2^{n}}} = \frac{1}{4}
+```
+
+So we get the following limes superior and limes inferior:
+
+```math
+\limsup_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| = 1 \text{ and } \liminf_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| = \frac{1}{4}
+```
+
+Because the limes superior is not less than 1 and the limes inferior is not larger than 1, the ratio test is inconclusive. So we can not say anything about the convergence of the series. So instead let's use the root test. We assume that $n$ is even, so $n = 2k$ for some $k \in \mathbb{N}$ then we have:
+
+```math
+\sqrt[n]{|a_n|} = \sqrt[2k]{\frac{1}{2^{2k+1}}} = \left(\frac{1}{2^{2k}}\right)^{\frac{1}{2k}} =  \frac{1}{2^{\frac{2k}{2k}}} = \frac{1}{2}
+```
+
+and  if $n$ is odd, so $n = 2k + 1$ for some $k \in \mathbb{N}$ then we have:
+
+```math
+\sqrt[n]{|a_n|} = \sqrt[2k]{\frac{1}{2^{2k+1}}} = \left(\frac{1}{2^{2k+1}}\right)^{\frac{1}{2k}} =  \frac{1}{2^{\frac{2k+1}{2k}}} = \frac{1}{2^{1 + \frac{1}{2k}}} 
+```
+
+which as $k \to \infty$ approaches 0. So we also get $\frac{1}{2}$ as the limit. So we can conclude that the series converges absolutely by the root test as the limit is less than 1.
+</Callout>
+
+## Power Series
+
+One of the most important types of series in maths and computer science is the **power series** as it finds many applications such as in the Taylor series and Fourier series. A power series is a series with $z \in \mathbb{C}$ or $z \in \mathbb{R}$ of the form:
+
+```math
+\sum^{\infty}_{n=0} c_n z^n = c_0 + c_1 z + c_2 z^2 + c_3 z^3 + \ldots = p(z)
+```
+
+where $c_n \in \mathbb{C}$ or $c_n \in \mathbb{R}$ are the coefficients of the series. So the power series is actually equivalent to a polynomial of infinite degree. 
+
+
+We have also actually already seen some examples of power series such as the exponential series $\sum^{\infty}_{n=0} \frac{z^n}{n!}$ where the coefficients are $c_n = \frac{1}{n!}$ and the geometric series $\sum^{\infty}_{n=0} z^n$ where the coefficients are $c_n = 1$.
+
+The power series converges for all $z$ in some interval or circle around the origin. The convergence radius of the power series is often denoted with the phi symbol $\varphi$ or just simply $r$. So we can say that the power series converges for all $z$ such that:
+
+```math
+|z| < r \text{converges and if } |z| > r \text{ diverges}
+```
+
+But how do we define the convergence radius of a power series? We can use the root test to define the convergence radius of a power series. The convergence radius is defined as follows:
+
+```math
+r = \begin{cases}
+\infty & \text{if } \limsup_{n \to \infty} |c_n|^{\frac{1}{n}} = 0 \\
+\frac{1}{\limsup_{n \to \infty} |c_n|^{\frac{1}{n}}} & \text{if } \limsup_{n \to \infty} |c_n|^{\frac{1}{n}} \neq 0
+\end{cases}
+```
+
+By convention if the set $\{|c_n|^{\frac{1}{n}} : n \in \mathbb{N}\}$ is not bounded we set the convergence radius to zero and therefore the power series does not converge. On the other hand if the set is bounded and $\limsup_{n \to \infty} |c_n|^{\frac{1}{n}} = 0$, then the convergence radius is infinite and the power series converges for all $z \in \mathbb{C}$ or $z \in \mathbb{R}$.
+
+<Callout type="proof">
+We can prove that the convergence radius is defined as above by using the root test:
+
+```math
+\begin{align*}
+\limsup_{n \to \infty} |a_n|^{\frac{1}{n}} &= \limsup_{n \to \infty} |c_n z^n|^{\frac{1}{n}} \\
+&= \limsup_{n \to \infty} |c_n|^{\frac{1}{n}} |z| \\
+&= |z| \cdot \limsup_{n \to \infty} |c_n|^{\frac{1}{n}} \\
+&= |z| \cdot \lim_sup_{n \to \infty} |c_n|^{\frac{1}{n}} < 1 \\
+&\implies |z| < \frac{1}{\limsup_{n \to \infty} |c_n|^{\frac{1}{n}}}
+\end{align*}
+```
+
+Where the right side is the convergence radius $r$. So we can conclude that the power series converges for all $|z| < r$ and diverges for all $|z| > r$.
+</Callout>
+
+<Callout type="example">
+Let's look at the following power series:
+
+```math
+\sum^{\infty}_{n=1}{\left(\frac{5n + 2n^3}{2n + 6n^3}\right)^n}
+```
+
+Then the contents of the bracket are the coefficients $c_n$ and $z$ is equal to 1. Let's analyze the behaviour  of the coefficients $c_n$ as $n$ approaches infinity to find the convergence radius of the power series:
+
+```math
+\begin{align*}
+\limsup_{n \to \infty} |c_n|^{\frac{1}{n}} &= \limsup_{n \to \infty} \left(\frac{5n + 2n^3}{2n + 6n^3}\right) \\
+&= \limsup_{n \to \infty} \frac{2}{6} = \frac{1}{3} < 1
+\end{align*}
+```
+
+So by the root test we can conclude that the coefficients $c_n$ converge to $\frac{1}{3}$ and therefore the convergence radius of the power series is:
+
+```math
+r = \frac{1}{\limsup_{n \to \infty} |c_n|^{\frac{1}{n}}} = \frac{1}{\frac{1}{3}} = 3
+```
+
+and because the convergence radius is greater than 1, we can conclude that the power series converges for all $|z| < 3$ and diverges for all $|z| > 3$.
+</Callout>
+
+### Riemann Zeta Function
+
+The riemann zeta function is a special function that is defined as the following power series for $s > 0$:
+
+```math
+\zeta(s) = \sum^{\infty}_{n=1}{\frac{1}{n^s}} = 1 + \frac{1}{2^s} + \frac{1}{3^s} + \frac{1}{4^s} + \ldots
+```
+
+If we analyze the convergence of this series we hit a few walls. First we can use the ratio test to check if the series converges:
+
+```math
+\begin{align*}
+\left| \frac{a_{n+1}}{a_n} \right| &= \left| \frac{\frac{1}{(n+1)^s}}{\frac{1}{n^s}} \right| \\
+&= \left| \frac{n^s}{(n+1)^s} \right| \\
+&= \left| \left(\frac{n}{n+1}\right)^s \right| \\
+&= \left| \left(1 - \frac{1}{n+1}\right)^s \right| 
+&\to 1 \text{ as } n \to \infty
+\end{align*}
+```
+
+So the ratio test is inconclusive. We can also use the root test to check if the series converges:
+
+```math
+\begin{align*}
+\sqrt[n]{|a_n|} &= \sqrt[n]{\frac{1}{n^s}} \\
+&= \left|\frac{1}{n^\frac{1}{n}}\right|^{s} \\
+&\to 1 \text{ as } n \to \infty
+\end{align*}
+```
+
+So the root test is also inconclusive. Instead let's look at some of the terms, maybe we can use the direct comparison test to check if the series converges. We can see that for $s=1$ we get the harmonic series which diverges because of the following observation:
+
+```math
+\begin{align*}
+&1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \frac{1}{5} + \frac{1}{6} + \frac{1}{7} + \frac{1}{8} + \ldots \\
+&\geq 1 + \frac{1}{4} + \frac{1}{4} + \frac{1}{8} + \frac{1}{8} + \frac{1}{8} + \frac{1}{8} + \ldots \\
+&\geq 1 + \frac{1}{2} + \frac{1}{2} + \frac{1}{2} + \ldots \\
+&\geq 1 + 1 + 1 + 1 + \ldots = \infty
+\end{align*}
+```
+
+For $s > 1$ we can use a similar idea:
+
+```math
+\begin{align*}
+&1 + \frac{1}{2^s} + \frac{1}{3^s} + \frac{1}{4^s} + \frac{1}{5^s} + \frac{1}{6^s} + \frac{1}{7^s} + \frac{1}{8^s} + \ldots \\
+&\leq 1 + \frac{1}{2^s} + \frac{1}{2^s} + \frac{1}{4^s} + \frac{1}{4^s} + \frac{1}{4^s} + \frac{1}{4^s} + \ldots \\
+&= 1 + \frac{2}{2^s} + \frac{2^2}{2^{2s}} + \frac{2^3}{2^{3s}} + \frac{2^4}{2^{4s}} + \ldots \\
+&= 1 + \frac{1}{2^{s-1}} + \frac{1}{2^{2(s-1)}} + \frac{1}{2^{3(s-1)}} + \ldots \\
+&= 1 + \frac{1}{2^{s-1}} + \left(\frac{1}{2^{s-1}}\right)^2 + \left(\frac{1}{2^{s-1}}\right)^3 + \ldots \\
+&= \sum^{\infty}_{n=0}{\left(\frac{1}{2^{s-1}}\right)^n} 
+\end{align*}
+```
+
+Which is just the geometric series with the first term $1$ and the common ratio $\frac{1}{2^{s-1}}$. So we can conclude that the series converges because for $s > 1$ the common ratio is less than 1. And using our formula we can find the sum of the series:
+
+```math
+\sum^{\infty}_{n=0}{q^n} = \frac{1}{1 - q} \text{ where } |q| < 1
+```
+
+Therefore we can give an upper bound for the Riemann zeta function for $s > 1$:
+
+```math
+\zeta(s) = \sum^{\infty}_{n=1}{\frac{1}{n^s}} \leq \frac{1}{1 - \frac{1}{2^{s-1}}}
+```
+
+Using this upper bound we have therefore shown that the Riemann zeta function converges for $s > 1$ using the direct comparison test as it less than or equal to the convergent geometric series. If we look at the missing values so for $0 < s \leq 1$, we can see that the series diverges again using the direct comparison test as the following happens:
+
+```
+\frac{1}{n} \leq \frac{1}{n^s}
+```
+
+and therfore with the direct comparison test to the harmonic series we can conclude that the Riemann zeta function diverges for $0 < s \leq 1$. So in summary:
+
+```math
+\zeta(s) = \sum^{\infty}_{n=1}{\frac{1}{n^s}} = \begin{cases}
+\diverges & \text{if } 0 < s \leq 1 \\
+\text{converges} & \text{if } s > 1
+\end{cases}
+```
+
+## Double Series and Multiplication of Series
 
 ## Cauchy Product
