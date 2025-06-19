@@ -569,6 +569,16 @@ Importantly we need to use the limit superior and limit inferior as these always
 Another reason why we  need to use the limes superior and limit inferior is that we can construct a series $a_n$ that converges but has the a limes inferior less then 1 and a limes superior greater than 1. And a series $b_n$ that diverges but has the same limes superior and limit inferior. 
 </Callout>
 
+## Sequences of Functions
+
+We know a sequence is a function that maps natural numbers to real or complex numbers. But we can also define a sequence of functions and therefore a sequence of sequences. 
+
+Some weird complicated stuff.
+
+This leads to us being able to swap the limit and the sum signs under some condition?
+
+This is then used to prove that the exponential series converges to $e^z$ for all $z \in \mathbb{C}$.
+
 ## Exponential Series
 
 We have seen a possible origin of the euler number $e$. But we can also show a possible origin of the euler number to some power $z \in \mathbb{C}$. Specifically we can show that the following series:
@@ -881,4 +891,22 @@ and therfore with the direct comparison test to the harmonic series we can concl
 
 ## Double Series and Multiplication of Series
 
+We can define a double sequence c_kl that looks like a matrix. If we then add the elements column by column we get a sequence of U_n. From this sequence we can also create a series that sums up the elements so it is then a sum of sums. This is a double series. We can also add the elements row by row to get a different sequence S_n and also add the elements of this sequence to get a different double series. There are many ways of adding the elements and depending on the order the value of the series can be different because addition is not commutative in general.
+
+So we say that some series is linear ordering of the double series if there is a bijection between the indices of the single series and the indices of the double series. 
+
+From cauchy it follows that if the linear ordering series converges absolutly then so do the adding by row or by column series. And it follows that these also must be the same. If this is the case then so does every other linear ordering also converges absolutly to the same value.
+
 ## Cauchy Product
+
+Now what if we want to multiply two series? So we need to to find some way to multiply the elements of the series together which will then form a new series. This is called the **Cauchy Product** which has a similar idea to cantors diagonalization?
+
+This again results in a series (or double series?). The reason for defining the product of two series in this way was that if we had 2 polynomials which are just power series we want to have an accurate result and representation if we were to multipyl them.
+
+Importantly the cauchy product must not converge! When does it converge? 
+
+If the two original series converge then the cauchy product can still converge. We can only say that if both the original series converge absolutely then the cauchy product also converge and their sum just becomes "normal looking?"
+
+using this we can prove that exp(x + y) = exp(x) * exp(y)
+
+we also compare the exponential series with the euler series where x=1 for the exponential series.
