@@ -94,7 +94,7 @@ This is a default callout.
 ### Jupyter Notebooks
 
 <Callout type="todo">
-TODO add how the hound works and how to use it.
+TODO add how the hound works and how to use it. But in short I can use the hound to convert Jupyter Notebooks to markdown files. It is called the hound because it watches over my notes and when they change it will bark after converting the changed notebooks to markdown files.
 </Callout>
 
 ### LaTeX
@@ -108,7 +108,7 @@ I = \int_0^{2\pi} \sin(x)\,dx
 ```
 
 Luckily Jupyter Notebooks also use MathJax to render LaTeX content in the same way. This means that nextra 
-supports everything. This leads to [my LaTeX Notation Guideline](./maths/latexGuidelines) to have 
+supports everything. This leads to [my LaTeX Notation Guideline](/garden/maths/latexGuidelines) to have 
 a consistent notation across all notes.
 
 You can see what is supported by MathJax [here](https://docs.mathjax.org/en/latest/input/tex/macros/index.html).
@@ -185,7 +185,5 @@ Then feel free to make a pull request. There are however some rules to keep in m
 
 - Markdown filenames and folders are written in camelCase.
 - Titles should follow the
-[IEEE Editorial Style Manual](https://www.ieee.org/content/dam/ieee-org/ieee/web/org/conferences/style_references_manual.pdf).
-They should also be added to the markdown file and specified in the `_meta.json` which maps files to titles and is also
-responsible for the ordering.
-- LaTeX should conform with my notation and guideline, if something is not defined there you can of course add it.
+[IEEE Editorial Style Manual](https://www.ieee.org/content/dam/ieee-org/ieee/web/org/conferences/style_references_manual.pdf). The titles are at the top of the mdx file. For the page to work and correctly render the file should also be added to the `_meta.json` file in the same folder as the mdx file. This file is responsbile for the navigation and the metadata of the page such as ordering.
+- LaTeX should conform with my [notation and guideline](/garden/maths/latexGuidelines), if something is not defined there you can of course add it.
