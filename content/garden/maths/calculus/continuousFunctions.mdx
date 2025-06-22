@@ -5,31 +5,96 @@ import Image from "@components/Image/Image";
 
 ## Real Functions
 
+definition of a function with the sets and then the set of real valued functions.
+
+definition of addition and scalar multiplication. Set of all functions therefore make a vector space. where the null function that is always zero is the zero vector.
+
+we also define the product of two functions. which also leads to the constant function of 1 which is the multiplicative identity. Then we also have the quotient definition of two functions and the composition of two functions.
+
+### Bounded Functions
+
+If the set of of resulting values, i.e the image of the function, is bounded, then the function is called a **bounded function**.
+
+### Montonic Functions
+
+definition of (strictly) increasing and decreasing functions.
+
+constant function is bounded and  monotonic but not strict. Identity function is strictly increasing but not bounded
+
+However, if the identity function is restricted to a bounded interval, then it is both strictly increasing and bounded.
+
+the polynomial functions are strict monotonic if the degree is odd. so x, x^3, x^5, etc. are strictly increasing and bounded on the interval [-1, 1]. But they are not bounded on the entire real line.
+
 ## Epsilon-Delta Definition of Continuity
 
-## Intermediate Value Theorem
-
-### Number of Roots
-
-## Extreme Value Theorem
-
-## Inverse Function Theorem
-
-
-## Stetigkeit
-
-Eine Funktion heisst stetig, wenn ihr Graph kein Loch und keinen Sprung aufweist, d.h. wenn man beim Zeichnen ihres Graphen den Stift nicht absetzen muss.
-
-Eine Funktion heisst an einer Stelle $x = x_0$ stetig, wenn der Grenzwert von $f(x)$ für $x \to x_0$ existiert und mit dem Funktionswert an der Stelle $x_0$ übereinstimmt:
+If we have a function $f: D \to R$ where $D \subseteq R$ then we say that $f$ is continuous at a point $x_0 \in D$ if for every $\epsilon > 0$ there exists a $\delta > 0$ such that for all $x \in D$ the following holds:
 
 ```math
-\lim_{x \to x_0}{f(x)}=f(x_0)
+|x  - x_0| < \delta \implies |f(x) - f(x_0)| < \epsilon
 ```
 
-Eine Funktion, die an jeder Stelle ihres Definitionsbereiches $D$ stetig ist, nennt man eine **stetige Funktion** (auf $D$).  
-Existiert der Grenzwert hingegen nicht oder ist er nicht gleich wie der Funktionswert, so ist die Funktion an dieser Stelle **unstetig**.
+So in other words, the image in the delta-neighborhood of $x_0$ is contained in the epsilon-neighborhood of $f(x_0)$:
 
-### Hebbare Unstetigkeitsstelle
+```math
+f((x_0 - \delta, x_0 + \delta)) \subseteq (f(x_0) - \epsilon, f(x_0) + \epsilon)
+```
+
+<Image
+    src="/maths/deltaContinuity.png"
+    caption="The epsilon and delta neighborhoods of a point x_0 and the function f(x_0)."
+    width={500}
+/>
+
+This can be interpreted as the function $f$ being continuous at the point $x_0$ if we can make the output values of $f$ as close to $f(x_0)$ as we want by choosing input values sufficiently close to $x_0$. Or in other words the difference of the point $x$ to $x_0$ can be made arbitrarily small if we move the output value of $f$ to $f(x_0)$. This idea of their not being any drastic changes in the output value of $f$ when we change the input value $x$ slightly around $x_0$ is what makes a function continuous at a point. This idea of continuity is also what a lot of  people have in mind when they think of continuous functions. It is also what makes the function "smooth" at that point, i.e. it has no jumps or holes at that point and can be drawn without lifting the pen from the paper.
+
+We then say the entire function $f$ is continuous on the set $D$ if it is continuous at every point $x_0 \in D$.
+
+<Callout type="example">
+We are given the following function:
+
+```math
+f(x) = x
+```
+
+And we assume it is continuous at all points $x_0 \in R$. Then we have
+
+```math
+|x - x_0| < \delta \implies |f(x) - f(x_0)| = |x - x_0| < \epsilon
+```
+
+Which is the case as $|f(x) - f(x_0)| = |x - x_0|$ and we can therefore choose $\delta = \epsilon$ for any $\epsilon > 0$.
+</Callout>
+
+### Applying Functions to Limits
+
+If a function $f$ is continuous at a point $x_0$, then we can apply it to the limit of a sequence or function that approaches $x_0$. In other words, if f is continuous at $x_0$, then any sequence $(a_n)_{n \geq 1} \subseteq D$ that converges to $x_0$ so $\lim_{n \to \infty} a_n = x_0$ implies that:
+
+```math
+\lim_{n \to \infty} f(a_n) = f(x_0) = f (\lim_{n \to \infty} a_n)
+```
+
+So we can interchange the limit and the function application:
+
+```math
+\lim_{n \to \infty} f(a_n) = f(\lim_{n \to \infty} a_n)
+```
+
+<Callout type="proof">
+This is a bit complicated looking
+</Callout>
+
+<Callout type="example">
+Example with a function that is not continuous at a point $x_0$. and then we can show that if we take a sequence that converges to $x_0$, the limit of the function applied to the sequence does not equal the function value at $x_0$.
+
+Is this a way to prove that a function is not continuous at a point?
+</Callout>
+<Callout type="example">
+We can also create a function that is not continous at any point.
+
+We show this with the limits not holding.
+</Callout>
+
+### Removable discontinuity
 
 Wenn bei einer Funktion f der linksseitige Grenzwert und der rechtsseitige Grenzwert existieren und gleich sind aber nicht mit dem Funktionswert $f(x_0)$ übereinstimmen oder die funktion an $x_0$ nicht definiert ist, dann kann man eine neue Funktion definieren, die an der Stelle $x_0$ stetig ist. Die Stelle $x_0$ heisst **hebbare Unstetigkeitsstelle**
 
@@ -40,19 +105,108 @@ Wenn bei einer Funktion f der linksseitige Grenzwert und der rechtsseitige Grenz
 \end{dcases}
 ```
 
-### Stetige Funktionen
+### Operations with Continuous Functions
 
-- Polynomfunktion sind für $R$ stetig.
-- Exponentialfunktionen $f(x)=a^x, (a > 0, 1\neq 0)$ sind für $R$ stetig.  
-- Logarithmusfunktionen $f(x)=log_a(x), (a > 0, 1\neq 0)$ sind für $x>0$ stetig.
-- Trigonometrsiche Funktionen $cos(x), sin(x)$ sind für $R$ stetig.
-- Hyperbelfunktionen $sinh(x), cosh(x), tanh(x))$sind für R stetig.
+If both functions $f$ and $g$ are continuous at a point $x_0$, then the following operations yield continuous functions at $x_0$:
+- The sum $f + g$ is continuous at $x_0$.
+- The difference $f - g$ is continuous at $x_0$.
+- The product $f \cdot g$ is continuous at $x_0$.
+- The quotient $\frac{f}{g}$ is continuous at $x_0$ if $g(x_0) \neq 0$.
+- The scalar multiplication $c \cdot f$ is continuous at $x_0$ for any constant $c$.
+- The composition $f \circ g$ is continuous at $x_0$ if $g$ is continuous at $x_0$ and $f$ is continuous at $g(x_0)$.
 
-### Rechenregeln für Stetige Funktionen
+<Callout type="example">
+x + 1 is continuous at every point in R. and we know that x is continous in r so then 2x + 1 is also continuous at every point in R.
 
-Sind die Funktionen $f$ und $g$ auf ihrem ganzen Definitionsbereich stetig, insbesonders an der Stelle $x_0$ gilt:
+also works for other operations like multiplication and division (as long as the denominator is not zero).
+</Callout>
 
-- $f \pm g$ ist ebenfalls stetig in $x_0$
-- $f * g$ ist ebenfalls stetig in $x_0$
-- $f \over g$ ist ebenfalls stetig in $x_0$, falls $g(x_0) \neq 0$
-- Die Komposition von $f \circ g$ ist ebenfalls an der Stelle $x_0$ stetig
+From the repeated use of these rules we get that polynomial functions are continuous at every point in $R$. And that the quotient of two polynomial functions are continous apart from their nullpoints of the denominator.
+
+We can also show that the absolute value, max and min functions are continuous at point x_0 if f and g are continuous at $x_0$. This can also be shown visually.
+
+## Intermediate Value Theorem
+
+The Intermediate value theorem is a result of the continuity of a function. The theorem is if we are given an interval $I \subseteq R$ and we have a continuous function $f: I \to R$. If we then take two points $a, b \in I$ such that $f(a) < f(b)$, then there exists at least one point $c \in (a, b)$ such that $f(c) = y$ for any $y$ in the interval $(f(a), f(b))$. In other words, the function takes every value between $f(a)$ and $f(b)$ at least once in the interval $(a, b)$.
+
+<Image
+    src="/maths/intermediateValueTheorem.png"
+    caption="Visual representation of the intermediate value theorem."
+    width={500}
+/>
+
+<Callout type="proof">
+The proof is very weird.
+</Callout>
+
+### Number of Roots
+
+From the intermediate value theorem it follows that if we have a continous function $f: [a, b] \to R$ and $f(a) \cdot f(b) < 0$, then there exists at least one point $c \in (a, b)$ such that $f(c) = 0$. In other words, the function has at least one nullpoint in the interval $(a, b)$.
+
+<Callout type="todo">
+Add intuitive image
+</Callout>
+
+As we have also already seen what the polynomial functions look like, we can also see that they have at least one real root in the interval $(a, b)$ if the function is continuous and of odd degree. For even degree polynomials, the function can have no real roots for example x^2 + 1 has no real roots, but two complex roots.
+
+<Callout type="todo">
+There is some link to NxN matrices having at least one real eigenvalue if n is odd. Probably comes from the intermediate value theorem and the fact that the characteristic polynomial is a polynomial of degree n.
+</Callout>
+
+## Extreme Value Theorem
+
+The extreme value theorem is another rather intuitive but powerful theorem like the intermediate value theorem. It states that if we have a continuous function $f$ that is defined on a [compact interval] $I = [a, b]$, so $I$ is closed and bounded, then $f$ has at least one global maximum and one global minimum in the interval $I$. More formally, we have a function $f: I \to R$ that is continuous on $I$, then there exists points $x_{max}, x_{min} \in I$ such that:
+
+```math
+f(x_{min}) \leq f(x) \leq f(x_{max}) \quad \forall x \in I
+```
+
+The intuition behind this theorem is that if a function is continuous on a closed and bounded interval, then it cannot "escape" the interval and must therefore reach its maximum and minimum values at some points in the interval. 
+
+An important consequence of this theorem is because it has a global maximum and minimum, then it means that the function is bounded on the interval $I$, so in other words we have:
+
+```math
+f(x_{min}) = \inf \{f(x) \mid x \in I} \quad \text{and} \quad f(x_{max}) = \sup{f(x) \mid x \in I}
+```
+
+<Callout type="proof">
+Proof that the interval is beschrankt. 
+
+There is a korellar that if f is stetig on a compact interval. Then the image of f is also compact, so it is closed and bounded. So the function is bounded on the interval.
+</Callout>
+
+<Callout type="example">
+If we look at the function $f(x) = \frac{1}{x}$ on the interval $I = (0, 1]$, note this is not a compact interval because it is not closed. Then we can see that function only has a global minimum at $x = 1$ where $f(1) = 1$ and no global maximum because it approaches infinity as $x$ approaches 0. So the function is not bounded on this interval.
+
+If we look at the function $f(x) = x^2$ on the interval $I = [0, \infty)$, then we can see that the function has a global minimum at $x = 0$ where $f(0) = 0$ and no global maximum because it approaches infinity as $x$ approaches infinity. So the function is not bounded on this interval.
+
+Another example is the function $f(x) = x$ on the interval $I = [0, 1)$, then we can see that the function has a global minimum at $x = 0$ where $f(0) = 0$ but no global maximum because it approaches 1 as $x$ approaches 1. So the function is not bounded on this interval. However, if we take the interval $I = [0, 1]$, then the function has a global maximum at $x = 1$ where $f(1) = 1$ and a global minimum at $x = 0$ where $f(0) = 0$. So the function is bounded on this interval.
+</Callout>
+
+## Inverse Function Theorem
+
+The inverse function theorem states that if we have a continuous function $f: I \to R$ that is strictly monotonic on a closed interval $I = [a, b]$, then it has an inverse function $f^{-1}: f(I) \to I$ that is also continuous and strictly monotonic. So more specifcally, if $f$ is strictly increasing then $f^{-1}$ is also strictly increasing, and if $f$ is strictly decreasing then $f^{-1}$ is also strictly decreasing.
+
+<Callout type="proof">
+For their to be an inverse function $f^{-1}$, the function $f$ must be bijective, so it must be injective and surjective. Because the function is strictly monotonic, it is injective, because for a function to be injective, it must not map two different input values to the same output value. More formally if $x \neq y$ then $f(x) \neq f(y)$ for all $x, y \in I$ as then $x < y$ or $x > y$ and therefore $f(x) < f(y)$ or $f(x) > f(y)$, so the function is injective.
+
+To show the function is surjective is a bit more complicated. We need to show that for every $y \in f(I)$ there exists an $x \in I$ such that $f(x) = y$. Let's say we have $a = f(x)$ for some $x \in I$. Then we know if $x \neq y$ then $a \neq b$. Then because of the intermediate value theorem, we know that for every $y \in (f(a), f(b))$ there exists an $z \in [x, y]$ such that $f(z) = y$. Therefore if $f: [x,y] \to [a, b] is surjective, then there also exists an inverse function $f^{-1}: [a, b] \to [x, y]$. 
+
+But what about the monotonicity of the inverse function? If $f$ is strictly increasing, then for every $x_1 < x_2$ we have $f(x_1) < f(x_2)$. The inverse function therefore must also be strictly increasing, because if $f^{-1}(y_1) < f^{-1}(y_2)$ then $f(f^{-1}(y_1)) < f(f^{-1}(y_2))$ which means $y_1 < y_2$. So the inverse function is also strictly increasing. The same argument holds for the case where $f$ is strictly decreasing, then the inverse function is also strictly decreasing.
+</Callout>
+
+We can actually extend this defintion to open intervals and also unbounded intervals.
+
+<Callout type="example">
+If we look at the polynomial functions $f: [0, \infty) \to [0, \infty)$ defined by $f(x) = x^n$ for $n \in N$, then we can see that the function is strictly increasing and therefore also has a strictly increasing inverse function $f^{-1}(y) = y^{1/n}$ which is called the $n$-th root function. This function is therefore also continuous on the interval $[0, \infty)$. 
+
+Another example is the exponential function $f: R \to (0, \infty)$ defined by $f(x) = e^x$, which is strictly increasing and therefore also has a strictly increasing inverse function $f^{-1}(y) = \ln(y)$ which is called the natural logarithm function. This function is also continuous on the interval $(0, \infty)$.
+
+She goes into a lot more detail showing these things.
+
+Lastly we can show using the exponential and the logarithm function the link back to the polynomial functions. As we can write:
+
+```math
+a^b = e^{b \cdot \ln(a)}
+```
+</Callout>
