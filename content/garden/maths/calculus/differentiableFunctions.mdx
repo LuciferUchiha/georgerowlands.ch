@@ -1,32 +1,63 @@
 # Differentiable Functions
 
-## Konstantenregel
+The part with the sekante and tangent.
 
-Die Ableitung einer Konstanten ist 0.
-```mathf(x)=C \Rightarrow f'(x)=0, C \in R```
+## Steigung
 
-## Faktorregel
+Die allgemeine Geradengleichung lautet:
+
+```math
+g(x)=m*(x-x_0)+y_0
+```
+
+$m$ ist dann die Steigung der Geraden.
+
+### Sekante -  Differenzenquotient
+
+Eine Gerade durch 2 Punkte $P_0(x_0/f(x_0))$ und $P_1(x_1/f(x_1))$ heisst **Sekante**.
+Die Steigung der Sekante wird **Differenzenquotient** genannt.
+
+```math
+m={\Delta f \over \Delta x }={{f(x1)-f(x_0)} \over {x_1-x_0}}={f(x_0 + \Delta x)-f(x_0)\over \Delta x}
+```
+
+Gleichung der Sekante lautet: $g(x)=m*(x-x_0)+f(x_0)$
+
+### Tangente - Differenzialkoeffizient
+
+Eine **Tangente** einer Funktion $f$ im Punkt $x_0$ ist eine Gerade durch einen Punkt $P(x_0/f(x_0))$. Der Grenzwert des Sekante - Differenzenquotient wird als **Differnzialkoeffizient**, dafür gibt es verschiedende Schreibweisen:
+
+```math
+f'(x_0)=\lim_{\Delta x \to x_0}{f(x_0 + \Delta x)-f(x_0)\over \Delta x}=\lim_{\Delta x \to x_0}{\Delta f \over \Delta x}={df \over dx}=\lim_{h \to x_0}{{f(x+h)-f(x)}\over h}
+```
+
+Gleichung der Tangente lautet: $g(x)=f(x_0)+f'(x_0)*(x-x_0)$
+
+Existiert der Grenzwert des Differenzenquotienten dann nennt man die Funktion **differenzierbar** an der Stelle $x_0$. Der Grenzwert wird als **Ableitung** der Funktion $f$ an der Stelle $x_0$.
+
+
+## Stone-Weierstrass Theorem
+
+Is this really the correct theorem? 
+
+It is about the if some condition is met the differiantal is unique and continuous.
+
+## Constant Rule
+
+The derivative of a constant function is zero.
+
+```math
+f(x)=c \Rightarrow f'(x)=0, \forall c \in \mathbb{R}
+```
+
+This is obvious from the slope.
+
+## Factor Rule
 
 Beim Ableiten einer Funktion, bleibt ein konstanter Faktor $k \in R$ vor einer Funktion unverändert erhalten.
 ```mathg(x)=k*f(x) \Rightarrow g'(x)=k*f'(x)```
 
-## Ableitungen der trigonometrischen Funktionen
-
-- $f(x)=sin(x) \Rightarrow f'(x)=cos(x)$
-- $f(x)=cos(x) \Rightarrow f'(x)=-sin(x)$
-- $f(x)=tan(x) \Rightarrow f'(x)={1\over cos^2(x)}=1+tan^2(x)$ für $x \neq (2k+1){\pi \over 2}$
-- $f(x)=cot(x) \Rightarrow f'(x)=- {1\over sin^2(x)}=-1-cot^2(x)$ für $x \neq k \pi$
-
-## Potenzregel
-
-Die [[4-Funktionen#Potenzfunktion]] $f(x) = x^n$ ist für alle $x \in R$ differenzierbar.
-```mathf(x)=x^n \Rightarrow f'(x)=nx^{n-1}, n \in Z```
-
-```ad-example
-![[Pasted image 20211024162633.png]]
-```
-
-## Summenregel
+## Summation Rule
 
 Die Ableitung einer Summe ist gleich der Summe der Ableitungen.
 ```maths(x)=f(x)\pm g(x) \Rightarrow s'(x)=f'(x) \pm g'(x)```
@@ -35,7 +66,7 @@ Die Ableitung einer Summe ist gleich der Summe der Ableitungen.
 ![[Pasted image 20211024162805.png]]
 ```
 
-## Produktregel
+## Product Rule
 
 ```mathf(x)=u(x)* v(x) \Rightarrow f'(x)=u'(x)*v(x) + u(x)*v'(x)```
 
@@ -49,7 +80,7 @@ Allgemein gilt für die Ableitung eines Produktes aus $n$ Faktoren.
 ```mathf(x)=u_1*u_2*...*u_n \Rightarrow f'(x)=u'_1*u_2*...u_n+u_1*u'_2*..*u_n+...+u_1*u_2*...*u'_n```
 So wäre: $(uvw)'=u'vw+uv'w+uvw'$ und $(uvwz)'=u'vwz+uv'wz+uvw'z+uvwz'$
 
-## Quotientenregel
+## Quotient Rule
 
 ```mathf(x)={u(x)\over v(x)} \Rightarrow f'(x)={{u'(x)*v(x)-u(x)*v'(x)}\over v(x)^2}```
 
@@ -57,7 +88,16 @@ So wäre: $(uvw)'=u'vw+uv'w+uvw'$ und $(uvwz)'=u'vwz+uv'wz+uvw'z+uvwz'$
 ![[Pasted image 20211024164435.png]]
 ```
 
-## Kettenregel
+## Power Rule
+
+Die [[4-Funktionen#Potenzfunktion]] $f(x) = x^n$ ist für alle $x \in R$ differenzierbar.
+```mathf(x)=x^n \Rightarrow f'(x)=nx^{n-1}, n \in Z```
+
+```ad-example
+![[Pasted image 20211024162633.png]]
+```
+
+## Chain Rule
 
 Unter der Verkettung der Funktionen $g$ und $h$ versteht man die Nacheinanderausführung der Funktionen. Man wendet die äussere Funktion $g$ auf das Ergebnis der inneren Funktion $h$. Also von innen nach aussen.
 $f(x)=g(h(x)) \iff f(x)=(g \circ h)(x)$
@@ -69,6 +109,15 @@ so dass sich für die äussere Funktion $f=g(z)=g(h(x))$
 
 ```ad-example
 ![[Pasted image 20211024170605.png]]
+```
+
+## Inverse Function Rule
+
+Die Funktion $f(x)$ sei differenzierbar mit der Ableitung $f'(x)$ und besitzt die Umkehrfunktion $x = g(y)$. Die Ableitung der Umkehrfunktion $g(y)$ ist
+```mathg'(y)={1\over f'(x)}```
+
+```ad-example
+![[Pasted image 20211024172038.png]]
 ```
 
 ## Ableitung der Exponentialfunktion
@@ -88,11 +137,9 @@ wenn $f(x)=ln(x) \Rightarrow f'(x)= \frac{1}{x}$
 ![[Pasted image 20211024171755.png|100]]
 ```
 
-## Ableitung der Umkehrfunktion
+## Ableitungen der trigonometrischen Funktionen
 
-Die Funktion $f(x)$ sei differenzierbar mit der Ableitung $f'(x)$ und besitzt die Umkehrfunktion $x = g(y)$. Die Ableitung der Umkehrfunktion $g(y)$ ist
-```mathg'(y)={1\over f'(x)}```
-
-```ad-example
-![[Pasted image 20211024172038.png]]
-```
+- $f(x)=sin(x) \Rightarrow f'(x)=cos(x)$
+- $f(x)=cos(x) \Rightarrow f'(x)=-sin(x)$
+- $f(x)=tan(x) \Rightarrow f'(x)={1\over cos^2(x)}=1+tan^2(x)$ für $x \neq (2k+1){\pi \over 2}$
+- $f(x)=cot(x) \Rightarrow f'(x)=- {1\over sin^2(x)}=-1-cot^2(x)$ für $x \neq k \pi$

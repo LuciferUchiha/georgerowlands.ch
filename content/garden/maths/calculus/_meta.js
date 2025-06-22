@@ -7,6 +7,7 @@ export default {
     convergentSeries: "",
     continuousFunctions: "",
     convergentFunctions: "",
+    limitRules: "",
     differentiableFunctions: "",
     riemannIntegrals: "",
     numericalIntegration: "",
@@ -14,6 +15,5 @@ export default {
     taylor: "",
     fourier: "",
     functionAnalysis: "",
-    limitRules: "",
 }
   
