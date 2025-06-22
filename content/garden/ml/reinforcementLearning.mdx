@@ -1,0 +1,44 @@
+# Reinforcement Learning
+
+what is the visulization tool? what is the difference between stochastic and probabilistic? Just means not deterministic?
+
+Analogy with grid world seems to be a good way to think about it?
+
+state space, the environment is not necessarily fully observable.
+
+action space
+
+reward from the environment to the agent which results in a policy to choose the actions based on the state. environment changes state based on action and reward given state and action.
+
+want to maximize the reward over time which is called the return.
+
+have a value function which is the expected return from a state.
+
+Q function is the expected return from a state and action. Everything is very stochastic including the reward function. Results in 3 percepectives. Based on state, state and action, state action and resulting state etc.
+
+Is a markov process. More specifcally a markov decision process (MDP). and then a MDP with a reward.
+
+we can actually calculate the probability that I result from one state to another state so as multiple actions can result in the same state. can also do the same for given action. Or reward as result, slowly build up joint probabilities.
+
+We then finally get to law of total expectation and law of total probability. Can use these to calculate the expected return from a state or state and action.
+
+Bellman equation is the key equation in reinforcement learning. It means we can use something recursive to calculate the value function and Q function. Have a "discount" factor.
+
+Finding the optimum results in the Bellman optimality equation. We want to pick the optimal aciton and branches. This is q star?
+
+The Bellman optimality equation is used to find the optimal policy by maximizing the expected return. The optimal Q function, denoted as Q*, gives the maximum expected return for each state-action pair.
+
+visitation frequency is the number of times a state or state-action pair is visited during the process?
+
+episodic task vs non-episodic task. an episode is a sequence of states, actions, and rewards that ends in a terminal state. Non episodic tasks might not have a goal state. 
+
+aren't distributions because they don't add up to 1. But they can be normalized to form a probability distribution. state action frequency can e rewrittent to use the visitation frequency. 
+
+We look at the visitation frequency to categorize. For example some states that are important we aren't visting enough or the opposite.
+
+initial state action distribution what is the probability that a start in some state or state action pair. What is the point of this apart from rewritting the state frequency. Looking at crypto currency on different days. Or in a game start i random position.
+
+Bellman equation can be computed using dynamic programming yay, as always.
+
+Finally rather than calculating the value function we approximate. This results in the policy evaluation algorithm.
+
