@@ -60,7 +60,7 @@ Because we know that $x_0$ is an accumulation point of $D$ we know that there ex
 />
 
 <Callout type="example">
-
+To be done
 </Callout>
 
 Another way of defining the limit of a function is to use sequences. If $x_0$ is an accumulation point of $D$ and we take any sequence $a_n$ in $D \setminus \{x_0\}$ such that the sequence converges to $x_0$ as $n$ approaches infinity, so $\lim_{n \to \infty} a_n = x_0$, then we can say that the limit of the function $f$ at the point $x_0$ is equal to the limit of the sequence $a_n$ as $n$ approaches infinity:
@@ -69,7 +69,7 @@ Another way of defining the limit of a function is to use sequences. If $x_0$ is
 \lim_{n \to \infty} f(a_n) = L
 ```
 
-The idea is that as the sequence $a_n$ approaches the point $x_0$, the function $f(a_n)$ approaches the limit $L$. So in a way we are again saying that the function $f$ approaches the limit $L$ as we approach the point $x_0$.
+The idea is that as the sequence $a_n$ approaches the point $x_0$, the function $f(a_n)$ approaches the limit $L$. So in a way we are again saying that the function $f$ approaches the limit $L$ as we approach the point $x_0$. 
 
 <Callout type="example">
 We are given the function $f(x) = 2x$ and we want to inspect the limit at the point $x_0=0$. We can take the sequence $a_n = \frac{1}{n}$ which converges to $0$ as $n$ approaches infinity. We can then calculate the limit of the function at the point $x_0=0$ by substituting the sequence into the function:
@@ -85,40 +85,192 @@ So we can say that the limit of the function $f$ at the point $x_0=0$ is $0$. We
 ```
 </Callout>
 
-## Limit of a Function at Infinity
+From this definition it also becomes rather clear that the function $f$ is also continuous at the point $x_0$ if the limit of the function at the point $x_0$ is equal to the value of the function at the point $x_0$, so $f(x_0) = L$. Importantly the limit at $x_0$ does not have to be defined, but if it does exist and it is not equal to the value of the function at the point $x_0$, then we say that the function has a discontinuity at the point $x_0$. However, if a function is continuous at the point $x_0$, then the limit of the function at the point $x_0$ is equal to the value of the function at the point $x_0$ and therefore the limit exists.
 
-Wir können den Funktionswert an der Stelle $x = 0$zwar nicht berechnen, aber mit einer Folge $x_n$ beliebig nahe an die Definitionslücke herantasten.
+<Callout type="example">
+We are given the following function:
+
+```math
+f(x) = \begin{cases} x & \text{if } x \neq 2 \\
+3 & \text{if } x = 2 \end{cases}
+```
+
+Then the limit of the function as we approach the point $x_0=2$ is $2$, but the value of the function at the point $x_0=2$ is $3$. So we can say that the function has a discontinuity at the point $x_0=2$ because the limit of the function at the point $x_0=2$ is not equal to the value of the function at the point $x_0=2$.
+</Callout>
+
+<Image 
+    src="/maths/limitsAndContinuity.png"
+    caption="Limits and Continuity of a Function"
+    width={500}
+/>
 
 <Callout type="todo">
 What about accumulation points at the point $x_0=\infty$? or if we have a function that is not defined at $x_0$?
 </Callout>
 
+If we have two functions $f$ und $g$, that are both defined on a set $D$ and both have the same the limits $A$ and $B$ at the point $x_0$ so we have:
+
+```math
+\lim_{x \to x_0}{f(x)} = A \quad \text{and} \quad \lim_{x \to x_0}{g(x)} = B
+```
+
+then we can also define the following limits:
+- **Sum/Difference of Functions**: The limit of the sum of the two functions at the point $x_0$ is equal to the sum of the limits of the two functions at the point $x_0$: $\lim_{x \to x_0}{(f(x) \pm g(x))} = A \pm B$.
+- **Product of Functions**: The limit of the product of the two functions at the point $x_0$ is equal to the product of the limits of the two functions at the point $x_0$: $\lim_{x \to x_0}{(f(x) * g(x))} = A * B$.
+
+## Squeeze Theorem for Limits
+
+There is similar version of the [Squeeze theorem of sequences](/garden/maths/calculus/convergentSequences#squeeze-theorem) for limits of functions. If we have three functions $a,b,f$ that are all defined on a set and we have the following function inequality:
+
+```math
+a(x) \leq f(x) \leq b(x) \quad \text{for all } x \in D
+```
+
+If we then have the following limits at the point $x_0$:
+
+```math
+\lim_{x \to x_0}{a(x)} = \lim_{x \to x_0}{b(x)} = L
+```
+
+then we can conclude that the limit of the function $f$ at the point $x_0$ is also equal to $L$:
+
+```math
+\lim_{x \to x_0}{f(x)} = L
+```
+
+<Callout type="example">
+We can look at the following function:
+
+```math
+f(x) = \frac{\sin(x)}{x}
+```
+
+We know that this function is not defined at the point $x_0=0$ because we would have a division by zero. However, we can still look at the limit of the function as we approach the point $x_0=0$. We can use the Squeeze theorem to find this limit. Specifically we look at it for $0 \leq x \leq \sqrt{6}$.
+
+Don't get how this example works?
+</Callout>
+
 ## Left and Right Limits
 
-### Zusammenfassung Grenzwert einer Funktion
-
-Betrachtet man bei der Grenzwertbetrachtung einer Funktion $f$ an der Stelle $x_0$ nur Zahlenfolgen $x_n$, die kleinere Werte als $x_0$ enthalten, dann bezeichnet man den Grenzwert als Linkseitigen Grenzwert
+If we have the function $f$ defined on a set $D \subseteq \RR$ then we can actually define two different limits at the point $x_0$ depending on the direction from which we approach the point $x_0$, these limits are called the left limit and the right limit. We do this by changing the domain of the function $f$ to only include points that are either smaller or larger than $x_0$. More specifically we define the left limit of the function $f$ at the point $x_0$ as follows:
 
 ```math
-\lim_{x \to x_0,(x<x_0)}{f(x)}=\lim_{h \to 0,(h>0)}{f(x_0-h)}=G_L
+\lim_{x \to x_0^-}{f(x)} = L
 ```
 
-Zahlenfolgen mit grösseren Werten als $x_0$ erzeugen den Rechtseitigen Grenzwert
+where $x$ is only in the limited domain $D^- = \{x \in D \mid x < x_0\} = D \cap (-\infty, x_0)$. We can also do the same for the right limit of the function $f$ at the point $x_0$:
 
 ```math
-\lim_{x \to x_0,(x>x_0)}{f(x)}=\lim_{h \to 0,(h>0)}{f(x_0+h)}=G_R
+\lim_{x \to x_0^+}{f(x)} = L
 ```
 
-Streben für jede gegen $x_0$ konvergente Zahlenfolge $x_n$ die Funktionswerte $f(x_n)$ gegen denselben Wert $G$, dann besitzt die Funktion $f$ an der Stelle $x_0$ den Grenzwert $G$
+where $x$ is only in the limited domain $D^+ = \{x \in D \mid x > x_0\} = D \cap (x_0, \infty)$. If the left limit and the right limit are equal, then we say that the function is continuous at the point $x_0$ and therefore the limit of the function at the point $x_0$ is equal to the value of the function at the point $x_0$:
 
 ```math
-\lim_{x \to x_0}{f(x)}=G=G_R=G_L
+\lim_{x \to x_0^-}{f(x)} = \lim_{x \to x_0^+}{f(x)} \implies \lim_{x \to x_0}{f(x)} = f(x_0)
 ```
 
-## Rechenregeln für Funktionsgrenzwerte
+<Callout type="example">
+Let's consider the following function:
 
-Seien $f$ und $g$ zwei Funktionen mit dem gleichen Grenzwerten $G,F$ bei $x_0$ dann gilt:
+```math
+f(x) = \begin{cases} cos(x) & \text{if } x \geq 0 \\
+x + 1 & \text{if } x < 0 \end{cases}
+```
 
-- $\lim_{x \to x_0}{(f(x)\pm g(x))}=F\pm G$
-- $\lim_{x \to x_0}{(f(x)*g(x))}=F*G$
-- $\lim_{x \to x_0}{(f(x)\over g(x))}=F\over G$ für $g(x_0) \neq 0$ und $G \neq 0$
+Then we know that the cosine function is continous for all $x > 0$ and the function $x + 1$ is continuous for all $x < 0$. The question remains what happens at the point $x_0=0$. We can look at the left limit and the right limit of the function at the point $x_0=0$. The left limit is defined as follows:
+
+```math
+\lim_{x \to 0^-}{f(x)} = \lim_{x \to 0^-}{(x + 1)} = 1
+```
+
+The right limit is defined as follows:
+
+```math
+\lim_{x \to 0^+}{f(x)} = \lim_{x \to 0^+}{cos(x)} = cos(0) = 1
+```
+
+Because the cosine function is defined at the point $x_0=0$ and the value of the function at the point $x_0=0$ is also equal to $1$, we can say that the function is continuous at the point $x_0=0$. So we have:
+
+```math
+\lim_{x \to 0}{f(x)} = 1
+```
+
+However, this does not normally have to be the case. If the left limit and the right limit are not equal, then we say that the function has a discontinuity at the point $x_0$.
+</Callout>
+
+## Going to Infinity
+
+We say a function has an infinite limit at the point $x_0$ if the function approaches infinity as we approach the point $x_0$. More formally, we say that the limit of the function $f$ at the point $x_0$ is equal to infinity if for every $T > 0$ there exists a $\delta > 0$ such that the following holds for all $x \in D \setminus \{x_0\}$:
+
+```math
+\lim_{x \to x_0}{f(x)} = \infty \quad \text{if} \quad |x - x_0| < \delta \quad \implies \quad f(x) > T
+```
+
+The same goes for negative infinity if we change the condition to $f(x) < -T$:
+
+```math
+\lim_{x \to x_0}{f(x)} = -\infty \quad \text{if} \quad |x - x_0| < \delta \quad \implies \quad f(x) < -T
+```
+
+This can be interpreted that for any positive number $T$ we can find a neighborhood around the point $x_0$ such that all points in this neighborhood have a function value larger than $T$. This means that as we approach the point $x_0$, the function value gets larger and larger without bound.
+
+<Callout type="example">
+Let's consider the function $f(x) = \frac{1}{x}$ as $x$ approaches $0$. The function is not defined at the point $x_0=0$ because we would have a division by zero. However, we can still look at the limit of the function as we approach the point $x_0=0$. We can do this by looking at the left limit and the right limit of the function at the point $x_0=0$.
+
+The left limit is defined as follows:
+
+```math
+\lim_{x \to 0^-}{f(x)} = \lim_{x \to 0^-}{\frac{1}{x}} = -\infty
+```
+
+The right limit is defined as follows:
+
+```math
+\lim_{x \to 0^+}{f(x)} = \lim_{x \to 0^+}{\frac{1}{x}} = \infty
+```
+
+Because we can pick for any positive number $T$ the delta to be $\frac{1}{T}$.
+</Callout>
+
+<Callout type="example">
+The limit of the natural logarithm function $f(x) = \ln(x)$ as $x$ approaches $0$ from the right is also equal to negative infinity.
+</Callout>
+
+## Limits at Infinity
+
+If we have a function $f$ that is defined on a set $D \subseteq \RR$ and it is unbounded, then we can define the limit of the function at infinity. We say that the limit of the function $f$ at infinity is equal to $L$ if for every $\epsilon > 0$ there exists a $c > 0$ for all $x \in D$ such that the following holds:
+
+```math
+x > c \quad \implies \quad |f(x) - L| < \epsilon
+```
+
+We denote this as:
+
+```math
+\lim_{x \to \infty}{f(x)} = L
+```
+
+This definition means for any $\epsilon$-neighborhood of $L$, we can find a point $c$ such that for all points $x$ larger than $c$, the function $f(x)$ is in the $\epsilon$-neighborhood of $L$. 
+
+<Callout type="todo">
+Doesn't make a lot of sense to me.
+</Callout>
+
+We can equivalently define the limit of the function $f$ at negative infinity by changing the condition to $x < -c$. So $\lim_{x \to -\infty}{f(x)} = L$ if the following holds:
+
+```math
+x < -c \quad \implies \quad |f(x) - L| < \epsilon
+```
+
+<Callout type="example">
+Let's consider the function $f(x) = \frac{1}{x}$ as $x$ approaches infinity. We want to find the limit:
+
+```math
+\lim_{x \to \infty}{f(x)} = \lim_{x \to \infty}{\frac{1}{x}}
+```
+
+We can see that as $x$ gets larger and larger, the value of $f(x)$ gets closer and closer to $0$. So we can say that the limit of the function $f$ at infinity is $0$. 
+
+Can we actually show this better?
+</Callout>
