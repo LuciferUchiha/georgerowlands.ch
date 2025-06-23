@@ -34,7 +34,7 @@ m = \lim_{\Delta x \to 0} \frac{f(x_0 + \Delta x) - f(x_0)}{\Delta x} = \lim_{h 
 ```
 
 <Callout type="todo">
-Add image of tangent line at point $x_0$ with the slope defined by the limit of the difference quotient.
+Add image of tangent line at point $x_0$ with the slope defined by the limit of the difference quotient. What are actually the origin of sekant and tangent lines? Probably from trigonometry.
 </Callout>
 
 Using the derivate which is just the slope of the tangent line we can then find the equation of the tangent line at the point $x_0$, all we are missing the y-intercept $b$. We get this be reordering the equation of the tangent line to the point-slope form:
@@ -327,7 +327,7 @@ We can also look at the sine and cosine functions which are also continuous ever
 &=\lim_{h\to 0}\frac{\sin x_{0}\cos h+\cos x_{0}\sin h-\sin x_{0}}{h}\\
 &=\sin x_{0}\underbrace{\lim_{h\to 0}\frac{\cos h-1}{h}}_{=0}
   +\cos x_{0}\underbrace{\lim_{h\to 0}\frac{\sin h}{h}}_{=1}\\
-&=\cos x_{0}.
+&=\cos x_{0}
 \end{align*}
 ```
 
@@ -348,7 +348,7 @@ Key here is that $\lim_{h\to 0}\frac{\sin h}{h}=1$ and $\lim_{h\to 0}\frac{\cos 
 Therefore we have:
 
 ```math
-\sin'(x) = \cos x.
+\sin'(x) = \cos x
 ```
 
 Because the cosine function is defined for all $x \in \mathbb{R}$, the sine function is differentiable everywhere on $\mathbb{R}$ and thus continuous everywhere on $\mathbb{R}$ as well.
@@ -362,71 +362,225 @@ Proceeding analogously for the cosine function we have:
 &=\lim_{h\to 0}\frac{\cos x_{0}\cos h-\sin x_{0}\sin h-\cos x_{0}}{h}\\
 &=\cos x_{0}\underbrace{\lim_{h\to 0}\frac{\cos h-1}{h}}_{=0}
   -\sin x_{0}\underbrace{\lim_{h\to 0}\frac{\sin h}{h}}_{=1}\\
-&=-\sin x_{0}.
+&=-\sin x_{0}
 \end{aligned}
 ```
 
 Therefore we have:
 
 ```math
-\cos'(x) = -\sin x.
+\cos'(x) = -\sin x
 ```
 </Callout>
 
 ## Constant Rule
 
-The derivative of a constant function is zero.
+We have already seen in one of the examples that the derivative of a constant function is zero. This is a fundamental rule in calculus and is known as the **constant rule**. 
 
 ```math
-f(x)=c \Rightarrow f'(x)=0, \forall c \in \mathbb{R}
+f(x)=c \quad \Longrightarrow \quad f'(x)=0,\qquad \forall c \in\mathbb R
 ```
-
-This is obvious from the slope.
 
 ## Factor Rule
 
-Beim Ableiten einer Funktion, bleibt ein konstanter Faktor $k \in R$ vor einer Funktion unverändert erhalten.
-```mathg(x)=k*f(x) \Rightarrow g'(x)=k*f'(x)```
+Another rule that is very useful is the **factor rule**. It states that if we have a function that is a constant multiple of another function, then the derivative of that function is just the constant multiplied by the derivative of the other function. More formally:
+
+```math
+f(x)=c\cdot g(x) \quad \Longrightarrow \quad f'(x)=c \cdot g'(x),\qquad \forall c \in\mathbb R
+```
+
+We can see this by looking at the limit definition of the derivative at any point $x_0$ in the domain of $g$,
+
+```math
+\begin{align*}
+f'(x_0)
+&=\lim_{h\to 0}\frac{f(x_0+h)-f(x_0)}{h} \\
+&=\lim_{h\to 0}\frac{c g(x_0+h)-c g(x_0)}{h} \\
+&=c \lim_{h\to 0}\frac{g(x_0+h)-g(x_0)}{h} \\
+&=c g'(x_0)
+\end{align*}
+```
+
+<Callout type="example">
+As an example, let's look at the derivative of the following function:
+
+```math
+f(x) = 5\sin x
+```
+
+Because 5 is a constant it just gets factored out of the limit and we are left with the derivative of the sine function, which we already know is $\cos x$. So we can write:
+
+```math
+\begin{align*}
+f'(x)
+&= \lim_{h\to 0}\frac{5\sin(x+h)-5\sin x}{h} \\
+&= 5\lim_{h\to 0}\frac{\sin(x+h)-\sin x}{h} \\
+&= 5\cos x
+\end{align*}
+```
+</Callout>
 
 ## Summation Rule
 
-Die Ableitung einer Summe ist gleich der Summe der Ableitungen.
-```maths(x)=f(x)\pm g(x) \Rightarrow s'(x)=f'(x) \pm g'(x)```
+The **summation rule** states that the derivative of the sum of two functions is the sum of the derivatives of those functions. More formally, if we have two functions $a$ and $b$, then:
 
-```ad-example
-![[Pasted image 20211024162805.png]]
+```math
+f(x)=a(x)\pm b(x)\quad\Longrightarrow\quad f'(x)=a'(x)\pm b'(x)
 ```
+
+Again, we can see this by looking at the limit definition of the derivative at any point $x_0$ in the domain of $a$ and $b$:
+
+```math
+\begin{align*}
+f'(x_0)
+&=\lim_{h\to 0}\frac{a(x_0+h)\!\pm\! b(x_0+h)-[a(x_0)\!\pm\! b(x_0)]}{h}\\
+&=\lim_{h\to 0}\left[\frac{a(x_0+h)-a(x_0)}{h}\right]
+ \pm \lim_{h\to 0}\left[\frac{b(x_0+h)-b(x_0)}{h}\right]\\
+&=a'(x_0)\pm b'(x_0)
+\end{align*}
+```
+
+<Callout type="example">
+Let us look at the following function:
+
+```math
+f(x)=3x^{2}+5x-7
+```
+
+We already know that the derivative of $x^2$ is $2x$ and the derivative of $x$ is $1$. So we can apply the summation rule along with the factor rule to find the derivative of $f$:
+
+```math
+\begin{align*}
+f'(x)
+&= 3\cdot 2x + 5\cdot 1 + 0 \\
+&= 6x + 5
+\end{align*}
+```
+</Callout>
 
 ## Product Rule
 
-```mathf(x)=u(x)* v(x) \Rightarrow f'(x)=u'(x)*v(x) + u(x)*v'(x)```
+We often need to differentiate the product of two functions. The **product rule** states that if $f(x)$ is the product of two functions $a(x)$ and $b(x)$, then the derivative of $f$ is given by:
 
-```ad-example
-![[Pasted image 20211024163316.png]]
+```math
+f(x)=a(x)b(x) \quad\Longrightarrow\quad 
+f'(x)=a'(x)b(x)+a(x)b'(x)
 ```
 
-### Allgemeine Produktregel
+Again we can derive this by looking at the limit definition of the derivative at any point $x_0$ in the domain of $a$ and $b$:
 
-Allgemein gilt für die Ableitung eines Produktes aus $n$ Faktoren.
-```mathf(x)=u_1*u_2*...*u_n \Rightarrow f'(x)=u'_1*u_2*...u_n+u_1*u'_2*..*u_n+...+u_1*u_2*...*u'_n```
-So wäre: $(uvw)'=u'vw+uv'w+uvw'$ und $(uvwz)'=u'vwz+uv'wz+uvw'z+uvwz'$
+```math
+\begin{align*}
+f'(x_0)
+&=\lim_{h\to 0}\frac{a(x_0+h)b(x_0+h)-a(x_0)b(x_0)}{h}\\
+&=\lim_{h\to 0}\frac{a(x_0+h)b(x_0+h)-a(x_0)b(x_0+h)
+                 +a(x_0)b(x_0+h)-a(x_0)b(x_0)}{h}\\
+&=\lim_{h\to 0}\bigg[
+     b(x_0+h)\frac{a(x_0+h)-a(x_0)}{h}
+   +a(x_0)\frac{b(x_0+h)-b(x_0)}{h}\bigg]\\
+&=b(x_0)a'(x_0)+a(x_0)b'(x_0)
+\end{align*}
+```
+
+<Callout type="example">
+We can apply the product rule to find the derivative of the following function:
+
+```math
+f(x)=x^{2}\sin x.
+```
+
+We can identify $a(x)=x^{2}$ and $b(x)=\sin x$. We already know that the derivative of $x^{2}$ is $2x$ and the derivative of $\sin x$ is $\cos x$. So we can apply the product rule to get the following:
+
+```math
+\begin{align*}
+f'(x)
+&= a'(x)b(x) + a(x)b'(x) \\
+&= 2x\sin x + x^{2}\cos x.
+\end{align*}
+```
+</Callout>
 
 ## Quotient Rule
 
-```mathf(x)={u(x)\over v(x)} \Rightarrow f'(x)={{u'(x)*v(x)-u(x)*v'(x)}\over v(x)^2}```
+Just like we have the product rule for the product of two functions, we also have a **quotient rule** for the quotient of two functions. So if $f(x)$ is the quotient of two functions $a(x)$ and $b(x)$ and $b(x) \neq 0$ then the derivative of $f$ is given by:
 
-```ad-example
-![[Pasted image 20211024164435.png]]
+```math
+f(x)=\frac{a(x)}{b(x)} \quad\Longrightarrow\quad
+f'(x)=\frac{a'(x)b(x)-a(x)b'(x)}{[b(x)]^{2}} 
 ```
 
-## Power Rule
+Again we can derive this by looking at the limit definition of the derivative at any point $x_0$ in the domain of $a$ and $b$ where $b(x_0) \neq 0$. Importantly, we use the product rule and $b^{-1}(x)$ for the derivative of the reciprocal function:
 
-Die [[4-Funktionen#Potenzfunktion]] $f(x) = x^n$ ist für alle $x \in R$ differenzierbar.
-```mathf(x)=x^n \Rightarrow f'(x)=nx^{n-1}, n \in Z```
-
-```ad-example
-![[Pasted image 20211024162633.png]]
+```math
+\begin{align*
+f'(x)
+&=a'(x)b^{-1}(x)+a(x)(b^{-1}(x))'\\
+&=a'(x)b^{-1}(x)-a(x)b^{-2}(x)b'(x)\\
+&=\frac{a'(x)}{b(x)}-\frac{a(x)b'(x)}{[b(x)]^{2}}\\
+&=\frac{a'(x)b(x)-a(x)b'(x)}{[b(x)]^{2}}
+\end{align*}
 ```
+
+<Callout type="example" title="Derivative of Tangent and Cotangent Functions">
+The tangent function is defined as the quotient of the sine and cosine functions:
+
+```math
+f(x)=\tan x=\frac{\sin x}{\cos x}.
+```
+
+So we can apply the quotient rule to find the derivative of the tangent function with our known derivatives of the sine and cosine functions:
+
+```math
+\begin{align*}
+f'(x)
+&=\frac{\cos x \cdot \cos x - \sin x \cdot (-\sin x)}{(\cos x)^{2}} \\
+&=\frac{\cos^{2} x + \sin^{2} x}{(\cos x)^{2}} \\
+&=\frac{1}{(\cos x)^{2}} = \sec^{2} x.
+\end{align*}
+```
+
+Note that we used the Pythagorean identity $\sin^{2} x + \cos^{2} x = 1$ to simplify the expression and that the tangent function is not defined for $x = (2k + 1)\frac{\pi}{2}$ where $k \in \mathbb{Z}$ because the cosine function is zero at these points, making the denominator zero.
+
+We can then do the same for the cotangent function which is defined as the quotient of the cosine and sine functions. Here again we can apply the quotient rule with our known derivatives of the sine and cosine functions and note that the cotangent function is not defined for $x = k\pi$ where $k \in \mathbb{Z}$ because the sine function is zero at these points, making the denominator zero:
+
+```math
+f(x)=\cot x=\frac{\cos x}{\sin x}.
+```
+
+Which gives us:
+
+```math
+\begin{align*}
+f'(x)
+&=\frac{\sin x \cdot (-\sin x) - \cos x \cdot \cos x}{(\sin x)^{2}} \\
+&=\frac{-\sin^{2} x - \cos^{2} x}{(\sin x)^{2}} \\
+&=-\frac{1}{(\sin x)^{2}} = -\csc^{2} x.
+\end{align*}
+```
+</Callout>
+
+## Power Rule (integer exponent)
+
+For $n\in\mathbb N$,
+
+```math
+f(x)=x^{n}\quad\Longrightarrow\quad f'(x)=n\,x^{\,n-1}.
+```
+
+**Derivation (by induction using the product rule)**
+
+*Base case* $n=1$ is trivial.
+*Inductive step*: assume the rule holds for some $n=k$.  For $n=k+1$,
+
+```math
+x^{k+1}=x^{k}\cdot x
+\quad\Longrightarrow\quad
+\frac{d}{dx}x^{k+1}
+= k\,x^{k-1}\cdot x + x^{k}\cdot 1
+=(k+1)x^{k}.
+```
+
+Thus the rule holds for all positive integers $n \in \mathbb N$. Once we have seen the chain rule, we can extend this to all real numbers $n \in \mathbb R$ using the exponential function.
 
 ## Chain Rule
 
@@ -451,13 +605,11 @@ Die Funktion $f(x)$ sei differenzierbar mit der Ableitung $f'(x)$ und besitzt di
 ![[Pasted image 20211024172038.png]]
 ```
 
-## Ableitung der Exponentialfunktion
+## L'Hospital's Rule
 
-```mathf(x)=e^{g(x)} \Rightarrow f'(x)= g'(x)* e^{g(x)}```
+## Higher Order Derivatives
 
-```ad-example
-![[Pasted image 20211024171328.png]]
-```
+
 
 ## Ableitung der Logarithmusfunktion
 
@@ -467,10 +619,3 @@ wenn $f(x)=ln(x) \Rightarrow f'(x)= \frac{1}{x}$
 ```ad-example
 ![[Pasted image 20211024171755.png|100]]
 ```
-
-## Ableitungen der trigonometrischen Funktionen
-
-- $f(x)=sin(x) \Rightarrow f'(x)=cos(x)$
-- $f(x)=cos(x) \Rightarrow f'(x)=-sin(x)$
-- $f(x)=tan(x) \Rightarrow f'(x)={1\over cos^2(x)}=1+tan^2(x)$ für $x \neq (2k+1){\pi \over 2}$
-- $f(x)=cot(x) \Rightarrow f'(x)=- {1\over sin^2(x)}=-1-cot^2(x)$ für $x \neq k \pi$
