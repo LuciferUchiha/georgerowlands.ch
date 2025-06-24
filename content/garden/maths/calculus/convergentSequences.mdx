@@ -116,6 +116,10 @@ However, the other way around is not true. Not all bounded sequences converge. F
 a_n \text{ converges} \implies a_n \text{ is bounded}
 ```
 
+<Callout type="proof">
+We can also show this formally like in the solutions of the exercise
+</Callout>
+
 <Callout type="example" title="Constant Sequence">
 For the constant sequence such as $a_n = 5$ the limit is the constant itself, so in this case 5. This is rather obvious but we can also prove it. By definition we know that after some specific index $N_{\epsilon}$ all terms have to be within the epsilon neighborhood around the limit and because epsilon is larger than 0 so get the following that needs to be satisfied for all $n \geq N_{\epsilon}$:
 
@@ -294,6 +298,13 @@ The specific sequence above does not converge as the terms keep getting larger a
 
 However, $n$ is positive and gets larger and larger, therefore the distance also gets larger and larger. So there exists no such $N_{\epsilon}$ that satisfies the inequality for all $n \geq N_{\epsilon}$. Therefore the sequence does not converge.
 </Callout>
+<Callout type="example" title="Root Sequence">
+using binomialsatz like in exercise sheet 2. of some constant
+
+Then also the square root of n
+
+Then the square root of n - sqrt of n + 1.
+</Callout>
 
 ## Properties of Convergent Sequences
 
@@ -336,6 +347,10 @@ Comes from the above. example could be $a_n = \frac{n^2 - 2n}{n^2 + n + 1}$
 - If there exists a $K \geq 1$ and $a_n \leq b_n$ for all $n \geq K$ then $\lim_{n \to \infty}{a_n} \leq \lim_{n \to \infty}{b_n}$ in other words $a \leq b$.
 
 - Das Produkt einer beschränkten Folge und einer Nullfolge ist immer eine Nullfolge.
+
+<Callout type="todo">
+From the exercises if an converges then so does a_n+1 + a_n and A-n? all of these different mixes.
+</Callout>
 
 ## Squeeze Theorem
 
@@ -381,6 +396,8 @@ As $n$ goes to infinity the terms on the left and right side go to 0. So by the 
 ```math
 \lim_{n \to \infty} \frac{sin(n)}{n} = 0
 ```
+
+Another good example from exercise 2 is nth root of 5^n + 11^n + 17^n
 </Callout>
 
 ## Monotone Convergence Theorem
