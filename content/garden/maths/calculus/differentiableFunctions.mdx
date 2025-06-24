@@ -1019,46 +1019,6 @@ Match this up with the previous example of the saddle point and local extremum.
 
 ## L'Hospital's Rule
 
-First something that cauchy did that shows that for some differentiable functions f and g there exists some $\xi$ in (a,b) such that 
-
-```math
-g'(\xi)(f(b) - f(a)) = f'(\xi)(g(b) - g(a)).
-```
-
-Intuitive meaning? If g'(\xi) neq 0 and g(b) - g(a) neq 0, then we can divide both sides by g'(\xi)(g(b) - g(a)) to get:
-
-```math
-\frac{f(b) - f(a)}{g(b) - g(a)} = \frac{f'(\xi)}{g'(\xi)}.
-```
-
-What does this mean and the interpretation? If g(x) = x, then we get the mean value theorem version for the derivative. The proof of this comes from using rolles theorem?
-
-lhopital and Bernoulli's rules follows from this?
-
-f and g are defined on (a,b) with g'(x) neq 0 for all x in (a,b) and limit of f(x) as x goes to b- is 0 or pm infinity and the same for g(x) and the limit of f'(x) over g'(x) exists then it follows that the limit of f(x) over g(x) as x goes to b- is equal to the limit of f'(x) over g'(x) as x goes to b-. This is known as **L'Hospital's Rule** and is very useful for evaluating limits of indeterminate forms such as $\frac{0}{0}$ or $\frac{\infty}{\infty}$. This rule also holds if a/b is pm infinity and if the limit goes to a+ with the same conditions. Basically we have 
-
-```math
-\lim_{x \to p} \frac{f(x)}{g(x)} = \lim_{x \to p} \frac{f'(x)}{g'(x)}
-```
-
-Where $f'(x)$ and $g'(x)$ are the derivatives of $f(x)$ and $g(x)$ respectively and p is some number. This rule can be applied multiple times if the limit is still not obvious. 
-Scenarios where this rule is useful are when the limit is of the form $\frac{0}{0}$ or $\frac{\pm \infty}{\pm \infty}$.
-
-<Callout type="example">
-
-The limit of ln over x^a = 0, showing that polynomials grow faster than logarithmic functions another key finding for complexity analysis of algorithms. 
-
-Another example is x times ln x as x goes to zero+
-
-x^3 - 1 over x^2 - 1 as x goes to 1.
-
-f(x)=x+ sinxcosx g(x) = f(x) * exp(sin x) and then f(x) over g(x) 
-
-limit of cos x -1 over x^2 as x goes to 0 
-</Callout>
-
-## A  L'Hôpital's Rule
-
 L'Hôpital's rule is a powerful tool in calculus for evaluating limits of functions that initially yield indeterminate forms, such as $\frac{0}{0}$ or $\frac{\infty}{\infty}$. It allows us to compute the limit of a ratio of two functions by taking the limit of the ratio of their derivatives instead. This rule is particularly useful when dealing with limits that involve functions that are difficult to evaluate directly. However, before we look at L'Hôpital's rule, we need to understand a stronger version of the Mean Value Theorem, **Extended Mean Value Theorem**. The mean value theorem stated the following: If $f$ is continuous on the closed interval $[a,b]$ and differentiable on the open interval $(a,b)$, then there exists at least one point $\xi$ in the open interval $(a,b)$ such that:
 
 ```math
@@ -1123,71 +1083,74 @@ There are some important things to note about L'Hôpital's rule:
 3. **Repeated application**: If after one application the new limit again has an indeterminate form, we can apply the rule again (provided the conditions hold each time).
 
 <Callout type="example">
-Evaluate $\displaystyle\lim_{x\to 0}\dfrac{1-\cos x}{x^{2}}$.
+Let us look at the following limit for all $a > 0$:
 
 ```math
-\text{Indeterminate form } \frac00
-\;\Longrightarrow\;
-\lim_{x\to 0}\frac{\sin x}{2x}
-\quad\bigl(\text{1st derivative}\bigr)
-=
-\frac12\lim_{x\to 0}\frac{\sin x}{x}.
+\lim_{x \to \infty} \frac{\ln x}{x^a}.
 ```
 
-Apply L’Hôpital a **second** time (or recall the fundamental limit):
+This limit yields the indeterminate form $\frac{\infty}{\infty}$ as $x \to \infty$ so we can apply L'Hôpital's rule:
 
 ```math
-\lim_{x\to 0}\frac{\sin x}{x}=1
-\quad\Longrightarrow\quad
-\boxed{\dfrac{1-\cos x}{x^{2}}\xrightarrow[x\to 0]{} \tfrac12}.
+\begin{align*}
+\lim_{x \to \infty} \frac{\ln x}{x^a} &= \lim_{x \to \infty} \frac{\frac{1}{x}}{ax^{a-1}} \\
+&= \lim_{x \to \infty} \frac{1}{ax^a} \\
+&= 0.
+\end{align*}
+```
+
+This limit is a very important one, as it shows that the logarithm grows much slower than any polynomial function as $x \to \infty$. This is especially useful in complexity analysis of algorithms, where we often encounter logarithmic and polynomial functions.
+</Callout>
+<Callout type="example">
+Next we can look at the limit:
+
+```math
+\lim_{x \to 0^+} x \ln x.
+```
+
+Importantly this limit is going towards zero from the right, so we get the indeterminate form $0 \cdot (-\infty)$. We can rewrite this as a fraction to apply L'Hôpital's rule:
+
+```math
+\lim_{x \to 0^+} x \ln x = \lim_{x \to 0^+} \frac{\ln x}{\frac{1}{x}}.
+```
+
+Which now has the form $\frac{-\infty}{\infty}$ as $x \to 0^+$ so we can now apply L'Hôpital's rule:
+
+```math
+\begin{align*}
+\lim_{x \to 0^+} \frac{\ln x}{\frac{1}{x}} &= \lim_{x \to 0^+} \frac{\frac{1}{x}}{-\frac{1}{x^2}} \\
+&= -\lim_{x \to 0^+} -x \\
+&= 0.
+\end{align*}
 ```
 </Callout>
-
 <Callout type="example">
-Let $a>0$.  Show $\displaystyle\lim_{x\to\infty}\dfrac{\ln x}{x^{a}}=0$.
+If we look at the limit:
 
 ```math
-\text{Form } \frac\infty\infty \;\Longrightarrow\;
-\lim_{x\to\infty}\frac{\dfrac1x}{a x^{a-1}}
-=
-\frac1a\lim_{x\to\infty}x^{-a}=0.
+\lim_{x \to 1} \frac{x^3 - 1}{x^2 - 1}.
 ```
 
-Hence logarithms grow slower than any positive power.  (Important in algorithmic complexity comparisons.) 
-</Callout>
-
-<Callout type="example">
-Rewrite $x\ln x$ as  
+Then as $x \to 1$ we get the indeterminate form $\frac{0}{0}$ so we can apply L'Hôpital's rule:
 
 ```math
-x\ln x=\frac{\ln x}{x^{-1}}.
+\begin{align*}
+\lim_{x \to 1} \frac{x^3 - 1}{x^2 - 1} &= \lim_{x \to 1} \frac{3x^2}{2x} \\
+&= \lim_{x \to 1} \frac{3x}{2} \\
+&= \frac{3}{2}.
+\end{align*}
 ```
 
-Both numerator and denominator $\to -\infty$, so apply L’Hôpital:
+We could've also solved this limit by factoring the numerator and denominator:
 
 ```math
-\lim_{x\to 0^+}\frac{\dfrac1x}{-x^{-2}}=-\lim_{x\to 0^+}x=0.
+\begin{align*}
+\lim_{x \to 1} \frac{x^3 - 1}{x^2 - 1} &= \lim_{x \to 1} \frac{(x-1)(x^2 + x + 1)}{(x-1)(x+1)} \\
+&= \lim_{x \to 1} \frac{x^2 + x + 1}{x + 1} \\
+&= \frac{1^2 + 1 + 1}{1 + 1} \\
+&= \frac{3}{2}.
+\end{align*}
 ```
 
-Thus $\boxed{\displaystyle\lim\_{x\to 0^+}x\ln x=0}$. 
-</Callout>
-
-<Callout type="example">
-Compute $\displaystyle\lim_{x\to 1}\dfrac{x^{3}-1}{x^{2}-1}$.
-
-```math
-\text{Form } \frac00 \Longrightarrow
-\lim_{x\to 1}\frac{3x^{2}}{2x}= \frac{3}{2}.
-```
-
-One application suffices.  (Polynomial long division would agree.) 
-</Callout>
-
-<Callout type="example">
-```math
-\lim_{x\to 0}\frac{\cos x-1}{x^{2}}
-= \lim_{x\to 0}\frac{-\sin x}{2x}
-= -\tfrac12\lim_{x\to 0}\frac{\sin x}{x}
-= -\tfrac12.
-```
+The reason why we couldn't just from the start plug in $x=1$ is because the limit is not defined at that point, as both the numerator and denominator are zero. However, we can still evaluate the limit by using L'Hôpital's rule or by factoring the expression.
 </Callout>
