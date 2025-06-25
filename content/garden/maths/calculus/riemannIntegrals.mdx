@@ -6,27 +6,416 @@ import Image from "@components/Image/Image";
 [link](https://www.youtube.com/watch?v=wQTOV2zqHFE)
 [link](https://www.youtube.com/watch?v=lP1sALCSxQs)
 
-In der Differentialrechnung ist eine Funktion $f$ gegeben und deren Ableitung $f'$ gesucht. In der Integralrechnung ist es genau anders herum. Die Ableitung $f'$ ist gegeben und die Funktion $f$ wird gesucht. Z.B. Wenn $f'(x)=2x$ ist dann wissen wir das $f(x)=x^2$ ist. Die gesuchte Funktion beim integrieren wird auch oft als die Stammfunktion $F$ genannt, beachte hier ist es ein Grossbuchstabe. Wir sehen also, dass das Integrieren die Umkehrfunktion zum Ableiten.
+When we were looking at differentiable functions, the motivation was to find the slope of a function at a point which resulted in the derivative of a function. 
 
-```math
-F(x)=f(x)=\int{f'(x)\,dx}
-```
+For Integrals there are two main motivations. The first one is that given a function $f$ we want to find the area between the function and the x-axis for a given interval $[a,b]$. 
 
-Zu unserem oberen Beispiel können wir auch noch eine Konstante $C$ hinzufügen und es ist immernoch eine Stammfunktion also
+<Callout type="todo">
+Image
+</Callout>
 
-```math
-f(x)=x^2+3 \Rightarrow f'(x)= 2x
-```
-
-Wir können also sehen, dass es zu jeder stetigen Funktion $f(x)$ unendlich viele Stammfunktionen gibt. Das heisst dann wiederum, dass zwei beliebige Stammfunktionen $F_1(x)-F_2()=Konstante$ sich nur um eine Konstante unterscheiden. Wir beschreiben also die Menge aller Stammfunktionen als
-
-```math
-F(x)=F_1(x)+C
-```
+The second motivation is that given a derivative of a function $f'$ we want to find the original function $F$, which is also often called the antiderivative or the primitive function. So for example if we had $f'(x)=1$ then we know that $F(x)=x$ is a potential primitive function. This is not the only one though, we could also have $F(x)=x+3$ or $F(x)=x-5$. We will later on see why this is the case and how we can find the general form of the primitive function.
 
 ## Riemann Sums
 
+Let's start with the first motivation. We want to find the area between a function $f$ and the x-axis for a given interval $[a,b]$. The idea starts with by looking at how this is done for the simplest function, the constant function $f(x)=c$. 
 
+For a constant function the area between the function and the x-axis is simply the height of the function times the width of the interval. So for a constant function $f(x)=c$ on the interval $[a,b]$ we have the area $A$ given by:
+
+```math
+A = c \cdot (b-a)
+```
+
+<Callout type="todo">
+Image
+</Callout>
+
+Notice that if $c=0$ then the area is also 0, which makes sense because it would just be a line on the x-axis. If $c$ is negative then the area is also negative because the difference is always positive because $a \leq b$ and a positive time negative is negative.
+
+We extend this idea to a function that is constant on a finite number of subintervals. A so called step function. For example, if we have a function that is constant on the intervals $[a_1,b_1]$, $[a_2,b_2]$, ..., $[a_n,b_n]$ then the area is given by:
+
+```math
+A = c_1 \cdot (b_1-a_1) + c_2 \cdot (b_2-a_2) + ... + c_n \cdot (b_n-a_n)
+```
+
+Where $c_i$ is the height, i.e. the value of the function on the interval $[a_i,b_i]$. We can write such a function also using the summation notation and an indicator function. First let us define the the Intervals as $I_n = [a_n,b_n]$. We then define the indicator function $\chi_{I_n}(x)$ as follows:
+
+```math
+\chi_{I_n}(x) = \begin{cases}
+1 & \text{if } x \in I_n \\
+0 & \text{otherwise}
+\end{cases}
+```
+
+So if $x$ is in the interval $I_n$ then the indicator function is 1, otherwise it is 0. We can then write the step function as follows:
+
+```math
+g(x) = \sum_{i=1}^{n} c_i \cdot \chi_{I_i}(x)
+```
+
+and the area under the curve of the step function $g$ on the interval $[a,b]$ is given by:
+
+```math
+A = \sum_{i=1}^{n} c_i \cdot (b_i - a_i)
+```
+
+This is what leads us to the Riemann sum and the Integral. The idea is that we can approximate a function $f$ by a step function. So more specifically we define a new function $g$ that where we take the original function $f$ and partition the interval $[a,b]$ into $n$ subintervals $I_i$. We then replace the original function values with some constant value $c_i$ on each subinterval or just simply a constant function $g_n$. 
+
+More formally we are given a function $f: [a,b] \to \mathbb{R}$ where $I=[a,b]$ is the interval we want to integrate over. We then define a partition $P$ of the interval $I$ as a finite subset defined as follows:
+
+```math
+P = \{a=x_0 < x_1 < ... < x_n = b\} \subset I 
+```
+
+Importantly we also have $\{a,b\} \subseteq P$. So a partition is just a finite set of points that must include the endpoints of the interval $[a,b]$. The fact that we have a finite set of points is also why we don't say that $P \subseteq I$ but rather $P \subset I$ as we want to exclude the case where $P$ is the whole interval $I$ and therefore an infinite set of points. We can then also define the set of all partitions of an interval $I$ as follows:
+
+```math
+\mathcal{P}(I) = \{P \subseteq I \mid P \text{ is a finite set and } \{a,b\} \subseteq P\}
+```
+
+We define the length of an interval $I = [x_{i-1},x_i]$ as the difference between the endpoints:
+
+```math
+\delta_i = x_i - x_{i-1}
+```
+
+The so called norm of the partition $P$ is defined as the maximum length of the intervals in the partition:
+
+```math
+||P|| = \max_{1 \leq i \leq n} \delta_i = \max_{1 \leq i \leq n} (x_i - x_{i-1})
+```
+
+So now if we go back to our initial idea where we split the interval $[a,b]$ into $n$ subintervals $I_i = [a_i,b_i]$ then every point $\delta_i \in I_i$ fullfills the following condition:
+
+```math
+x_{i-1} \leq \delta_i \leq x_i
+```
+
+We can then define the Riemann sum as follows where $\delta = \{\delta_1, \delta_2, ..., \delta_n\}$ is a set of points from each interval $I_i$, so $\delta_i \in I_i$. These points are often called the sample or evaluation points. The Riemann sum is then defined as follows:
+
+```math
+S(f, P, \delta) = \sum_{i=1}^{n} f(\delta_i) \cdot (x_i - x_{i-1})
+```
+
+Where $f(\delta_i)$ is the value of the function $f$ at the point $\delta_i$ and $\delta_i$ is a point in the interval $[a_i,b_i]$ where we evaluate the function $f$. As we have seen this is just a step function that approximates the original function $f$ and what we are doing is summing up the areas of the rectangles that are formed by the function values and the width of the intervals. As the number of intervals $n$ increases, the Riemann sum approaches the area under the curve of the function $f$ on the interval $[a,b]$. 
+
+Once we have a partition $P$ the choice of the sample points $\delta_i$ can have an impact on the value of the Riemann sum. However, as long as the function $f$ is bounded on the interval $[a,b]$, we can still obtain a valid approximation of the area under the curve there are 5 key choices for the sample points that are commonly used. These choices are often referred to as **Riemann rules**:
+
+- **Left rule:** Also known as the **left Riemann sum**, this rule chooses the left-hand endpoint of each sub-interval $I_i$ as the sample point $\delta_i$.
+
+```math
+S_{\text{left}}(f,P)=\sum_{i=1}^{n}f(x_{i-1})\,(x_{i}-x_{i-1}).
+```
+
+- **Right rule:** Also known as the **right Riemann sum**, this rule chooses the right-hand endpoint of each sub-interval $I_i$ as the sample point $\delta_i$.
+
+```math
+S_{\text{right}}(f,P)=\sum_{i=1}^{n}f(x_{i})\,(x_{i}-x_{i-1}).
+```
+
+- **Midpoint rule:** Also known as the **middle Riemann sum**, this rule chooses the midpoint of each sub-interval $I_i$ as the sample point $\delta_i$. The midpoint is calculated as $m_i = \frac{x_{i-1} + x_i}{2}$.
+
+```math
+S_{\text{mid}}(f,P)=\sum_{i=1}^{n}f\!\left(m_{i}\right)\,(x_{i}-x_{i-1}).
+```
+
+These three prescriptions generate step functions whose rectangles touch the graph of $f$ at the left edge, the right edge, or the midpoint of each $I_{i}$ respectively. 
+
+<Callout type="todo">
+Image
+</Callout>
+
+However the most important rules definition-wise are the so-called **upper rule** or **upper Riemann sum** and the **lower rule** or **lower Riemann sum**. The upper Riemann sum is defined as follows:
+
+```math
+S_\text{upper}f, P) = \sum_{i=1}^{n} (\sup_{x \in I_i} f(x)) \cdot (x_i - x_{i-1})
+```
+
+Where $\sup_{x \in I_i} f(x)$ is the supremum of the function $f$ on the interval $I_i$. The lower Riemann sum is defined as follows:
+
+```math
+S_\text{lower}f, P) = \sum_{i=1}^{n} (\inf_{x \in I_i} f(x)) \cdot (x_i - x_{i-1})
+```
+
+These two can be interpreted as that for the upper Riemann sum we look at the maximum value of the function on the interval $I_i$ and for the lower Riemann sum we look at the minimum value of the function on the interval $I_i$ and use those values as our constant values for the step function.
+
+<Callout type="todo">
+Image
+</Callout>
+
+It then follows that the area under the curve of the bounded function $f$ on the interval $[a,b]$ is bounded by the upper and lower Riemann sums:
+
+```math
+S_\text{lower}f, P) \leq S(f, P, \delta) \leq S_\text{upper}f, P)
+```
+
+Why does the function need to be bounded? Because if the function is not bounded then the supremum and infimum of the function on the interval $I_i$ can be infinite and therefore the Riemann sums would also be infinite. In addition because the function $f$ is bounded, i.e. there exists a constant $M$ such that $|f(x)| \leq M$ for all $x \in [a,b]$, then there is an upper and lower bound for the values of the function on the interval $I_i$:
+
+```math
+-M \leq \inf_{x \in I_i} f(x) \leq \sup_{x \in I_i} f(x) \leq M
+```
+
+and therefore we can also define an upper and lower bound for the area under the curve of the function $f$ on the interval $[a,b]$:
+
+```math
+-M \cdot (b-a) \leq S_\text{lower}f, P) \leq S(f, P, \delta) \leq S_\text{upper}f, P) \leq M \cdot (b-a)
+```
+
+You can think of these upper and lower bounds as the area of the rectangles that are formed by the maximum and minimum values of the function on the interval $I_i$ multiplied by the width of the interval.
+
+<Callout type="todo">
+Image
+</Callout>
+
+We can also refine a partition $P$ by adding more points to it. So we say that a partition $Q$ is a refinement of a partition $P$ if $P \subset Q$. From this it also logically follows that the union of two partitions $P$ and $Q$ is also a partition, i.e. $P \cup Q \in \mathcal{P}(I)$ and therfore also the union has a common refinement.
+
+We can now use define new Riemann sums for the refined partition $Q$. If the function $f$ is bounded on the interval $[a,b]$ then we get the following inequality for the Riemann sums:
+
+```math
+S_\text{lower}f, P) \leq S_\text{lower}f, Q) \leq S(f, Q, \delta) \leq S_\text{upper}f, Q) \leq S_\text{upper}f, P)
+```
+
+<Callout type="todo">
+Image
+</Callout>
+
+The idea behind this is that the more points we add to the partition, the more accurate our approximation of the area under the curve becomes. From this it also follows that we can define "the lowest" lower Riemann sum and "the highest" upper Riemann sum as follows:
+
+```math
+S_\text{lower}f) = \sup_{P \in \mathcal{P}(I)} S_\text{lower}f, P) \quad \text{and} \quad S_\text{upper}f) = \inf_{P \in \mathcal{P}(I)} S_\text{upper}f, P)
+```
+
+This "lowest" lower Riemann sum is the **Lower Riemann Integral** and the "highest" upper Riemann sum is the **Upper Riemann Integral**. It obviously follows that the lower Riemann integral is less than or equal to the upper Riemann integral:
+
+```math
+\sup_{P \in \mathcal{P}(I)} S_\text{lower}f, P) \leq \inf_{P \in \mathcal{P}(I)} S_\text{upper}f, P) \Rightarrow S_\text{lower}f) \leq S_\text{upper}f)
+```
+
+<Callout type="todo">
+Image
+</Callout>
+
+We therefore say that a function $f$ is Riemann integrable on the interval $[a,b]$ if the lower and upper Riemann integrals are equal:
+
+```math
+S_\text{lower}f) = S_\text{upper}f)
+```
+
+This value is then called the **Riemann Integral** of the function $f$ on the interval $[a,b]$ and is denoted by:
+
+```math
+\int_{a}^{b} f(x) dx = S_\text{lower}f) = S_\text{upper}f)
+```
+
+You can think of the symbol $\int$ as a stylized letter "S" for "Sum", which is what we are doing here, we are summing up the areas of the rectangles that are formed by the function values and the width of the intervals. The symbol $dx$ is just like the notation in the derivative that indicates a small change in the variable $x$, here between the two points $x_{i-1}$ and $x_i$ in the partition $P$. We call the function $f$ the **integrand**, the interval $[a,b]$ the **integration interval**, $a$ the **lower limit of integration**, and $b$ the **upper limit of integration** and $x$ the **variable of integration**.
+
+
+<Callout type="example">
+Let's check if the constant function $f(x)=c$ is Riemann integrable on the interval $[a,b]$ and compute the integral.
+
+So we want to show that the upper and lower Riemann sums are equal for all partitions $P$ of the interval $[a,b]$. We take an arbitrary partition $P=\{x_0,\dots ,x_n\}$ of $[a,b]$ and any choice of sample points $\delta=\{\delta_1,\dots ,\delta_n\}$. Because $f(x)=c$ is constant we get:
+
+```math
+\sup_{x\in I_i} f(x) = \inf_{x\in I_i} f(x) = c \quad \text{for each sub-interval } I_i=[x_{i-1},x_i].
+```
+
+Therefore:
+
+```math
+S_\text{upper}f,P)=\sum_{i=1}^{n} c\,(x_i-x_{i-1})=c\sum_{i=1}^{n} (x_i-x_{i-1}) = c(b-a) = S_\text{lower}f,P)
+```
+
+Thus $S_\text{upper}f,P)=S_\text{lower}f,P)$ for **every** $P$. This also means that if we take $\inf_P S_\text{upper}f,P)$ and $\sup_P S_\text{lower}f,P)$ we get the same value:
+
+```math
+S_\text{upper}f)=S_\text{lower}f)=c(b-a).
+```
+
+Since they are equal, $f$ is Riemann integrable on $[a,b]$ and we get the Riemann integral:
+
+```math
+\int_{a}^{b} c\,dx = c(b-a).
+```
+
+This matches our initial intuition that the area under a constant function is just the height of the function times the width of the interval.
+</Callout>
+<Callout type="example">
+Next we look at dirchlet's function on the interval $[0,1]$ which is defined as follows:
+
+```math
+g(x)=\begin{cases}
+1,&x\in\mathbb{Q}\\
+0,&x\notin\mathbb{Q}
+\end{cases}
+```
+
+We have already seen that this function is nowhere continuous, as it oscillates between 0 and 1 for every point in the interval $[0,1]$ but it is bounded, as it only takes the values 0 and 1. We now want to check if this function is Riemann integrable on the interval $[0,1]$.
+
+For any partition $P=\{x_0,\dots ,x_n\}$ of the interval $[0,1]$ each interval $I_i=[x_{i-1},x_i]$ contains both rational and irrational numbers. Hence we have:
+
+```math
+\sup_{x\in I_i} g(x)=1,\qquad\inf_{x\in I_i} g(x)=0.$
+```
+
+Therefore if we compute the upper and lower Riemann sums for any partition $P$ we get:
+
+```math
+\begin{align*}
+S_\text{upper}g,P)=\sum_{i=1}^{n} 1\,(x_i-x_{i-1}) = 1\cdot(1-0)=1 \\
+S_\text{lower}g,P)=\sum_{i=1}^{n} 0\,(x_i-x_{i-1}) = 0.
+\end{align*}
+```
+
+Both values are independent of the choice of $P$ so when we take the infimum and supremum over all partitions we get:
+
+```math
+\begin{align*}
+S_\text{upper}g)=\inf_{P}S_\text{upper}g,P)=1, \\
+S_\text{lower}g)=\sup_{P}S_\text{lower}g,P)=0.
+\end{align*}
+```
+
+Since $S_\text{upper}g)\neq S_\text{lower}g)$, the function $g$ is not Riemann integrable on the interval $[0,1]$.
+This example underlines why continuity (or at least “almost everywhere” continuity) is crucial for Riemann integrability.
+</Callout>
+
+### Riemann's Criterion
+
+We have seen a way to determine whether a bounded function is Riemann integrable by checking the equality of the upper and lower Riemann sums. Hwoever, just like we have [cauchy's criterion]() for convergence of sequences, we can also define a criterion for Riemann integrability, this is called Riemann's criterion.
+
+The criterion states a bounded function $f:\[a,b]\to\mathbb R$ is **Riemann integrable** if the following condition holds:
+
+```math
+\forall\;\varepsilon>0\;\exists\;P\in\mathcal P([a,b])\;:\;
+S_{\text{upper}}(f,P)-S_{\text{lower}}(f,P)<\varepsilon.
+```
+
+Intuitively this means that you can make the gap between the upper and lower Riemann sums arbitrarily small by choosing a suitable partition $P$. This criterion is equivalent to the condition that the upper and lower Riemann integrals are equal, i.e. we have the following equivalence:
+
+```math
+S_{\text{lower}}(f)=S_{\text{upper}}(f)\quad\Longleftrightarrow\quad
+\bigl(\forall\varepsilon>0\;\exists P\text{ with }S_{\text{upper}}(f,P)-S_{\text{lower}}(f,P)<\varepsilon\bigr).
+```
+
+<Callout type="proof">
+We can prove this equivalence by showing both directions. First we assume $f$ is integrable so $S\_{\text{lower}}(f)=S\_{\text{upper}}(f)=A$ where $A$ is the Riemann integral of $f$ on the interval $[a,b]$. If we then take some $\varepsilon>0$. By definition of the supremum there exists a partition $P\_1$ such that
+
+```math
+S_{\text{upper}}(f,P_1)<I+\tfrac{\varepsilon}{2},
+```
+
+and a partition $P\_2$ with
+
+```math
+S_{\text{lower}}(f,P_2)>I-\tfrac{\varepsilon}{2}.
+```
+
+If we then take the common refinement of these two partitions, we can show that the gap between the upper and lower Riemann sums can be made arbitrarily small.
+
+```math
+S_{\text{lower}}(f,P)\ge S_{\text{lower}}(f,P_2)>I-\tfrac{\varepsilon}{2},\qquad
+S_{\text{upper}}(f,P)\le S_{\text{upper}}(f,P_1)<I+\tfrac{\varepsilon}{2},
+```
+
+so the gap is smaller than $\varepsilon$. We can also show the converse direction so suppose the gap can be made arbitrarily small, then we have:
+
+```math
+L:=\sup_{P}S_{\text{lower}}(f,P),\qquad U:=\inf_{P}S_{\text{upper}}(f,P).
+```
+
+Because all lower sums are less than or equal to all upper sums so: 
+
+```math
+L=\sup_{P}S_{\text{lower}}(f,P)\leq\inf_{P}S_{\text{upper}}(f,P)=U.
+```
+
+We also have that $L\leq U$. Given $\varepsilon>0$, choose $P$ with $U-L\le S_{\text{upper}}(f,P)-S_{\text{lower}}(f,P)< \varepsilon$ completing the proof.
+</Callout>
+
+This idea as mentioned is similar to Cauchy's criterion for convergence of sequences, where we can make the difference between the upper and lower sums arbitrarily small by refining the partition. This is also what leads to another common way to think about the Riemann integral, which is that it is the limit of the Riemann sums as the number of intervals $n$ goes to infinity, i.e. as the norm of the partition $\delta(P_n)$ goes to 0:
+
+```math
+\int_a^b f(x)\,dx
+=\lim_{n\to\infty}S(f,P_n,\delta^{(n)})
+\quad\text{for any choice of sample points }\delta^{(n)}.
+```
+
+The criterion above guarantees that the limit exists and is the same for all ways of picking the samples, provided the upper-lower gap tends to $0$.
+
+<Callout type="example">
+Let's look again at the linear function $f(x)=x$ on the interval $[a,b]$ and check if it is Riemann integrable using Riemann's criterion. First we will take a uniform partition $P_n=\{a + i\cdot \frac{b-a}{n} \mid i=0,1,\dots,n\}$ of the interval $[a,b]$ with $n$ subintervals. This results in each subinterval $|I_i|$ having the same width $h = \frac{b-a}{n}$.
+
+Then let us use this partition to calculate the lower and upper Riemann sums. Note that we are using the left-endpoint for the lower sum and the right-endpoint for the upper sum. In this case this makes sense because the function $f(x)=x$ is increasing on the interval $[a,b]$. The lower Riemann sum is given by:
+
+```math
+\begin{align*}
+S_{\text{lower}}(f,P_n) 
+&=\sum_{i=1}^{n} f(x_{i-1})\,(x_i-x_{i-1}) \\
+&=\sum_{i=1}^{n}\Bigl(a+(i-1)h\Bigr)\,h \\
+&=h\Bigl[na+h\sum_{i=1}^{n}(i-1)\Bigr] \\
+&=h\Bigl[na+h\,\frac{(n-1)n}{2}\Bigr] \\
+&=\frac{b-a}{n}\left[na+\frac{b-a}{n}\,\frac{(n-1)n}{2}\right] \\
+&=(b-a)a+\frac{(b-a)^2}{2}\left(\frac{\,n-1\,}{n}\right).
+\end{align*}
+```
+
+Analog for the upper Riemann sum using the right-endpoint:
+
+```math
+\begin{align*}
+S_{\text{upper}}(f,P_n) 
+&=\sum_{i=1}^{n} f(x_i)\,(x_i-x_{i-1}) \\
+&=\sum_{i=1}^{n}\Bigl(a+i\,h\Bigr)\,h \\
+&=h\Bigl[na+h\sum_{i=1}^{n}i\Bigr] \\
+&=h\Bigl[na+h\,\frac{n(n+1)}{2}\Bigr] \\
+&=\frac{b-a}{n}\left[na+\frac{b-a}{n}\,\frac{n(n+1)}{2}\right] \\
+&=(b-a)a+\frac{(b-a)^2}{2}\left(\frac{\,n+1\,}{n}\right).
+\end{align*}
+```
+
+Now if we subtract the lower sum from the upper sum, we get:
+
+```math
+\begin{align*}
+S_{\text{upper}}(f,P_n)-S_{\text{lower}}(f,P_n)
+&=\frac{(b-a)^2}{2}\left(\frac{n+1}{n}-\frac{n-1}{n}\right) \\
+&=\frac{(b-a)^2}{2}\left(\frac{2}{n}\right) \\
+&=\dfrac{(b-a)^2}{n}.
+\end{align*}
+```
+
+So for a given $\varepsilon > 0$, we can choose $n$ such that $\frac{(b-a)^2}{n} < \varepsilon$. This means that for any $\varepsilon > 0$, we can find a partition $P_n$ such that the difference between the upper and lower Riemann sums is less than $\varepsilon$. Therefore, by Riemann's criterion, the function $f(x)=x$ is Riemann integrable on the interval $[a,b]$ and we can compute the integral by taking the limit as $n$ goes to infinity for the lower or upper Riemann sums:
+
+```math
+\begin{align*}
+\lim_{n\to\infty}S_{\text{lower}}(f,P_n) &= \lim_{n\to\infty} (b-a)a + \frac{(b-a)^2}{2} (\frac{n-1}{n}) \\
+&= (b-a)a + \frac{(b-a)^2}{2} \\
+&= (b-a)\left(a + \frac{b-a}{2}\right) \\
+&= \frac{(b-a)(a+b)}{2} \\
+&= \frac{b^2-a^2}{2} 
+\end{align*}
+```
+</Callout>
+
+## Properties of Riemann Integrals
+
+If monotonic and bounded then Riemann integrable show proof.
+
+If f and g are integrtable then Also addition/subtraction, scalar multiplicaitom, multiplicaiton, division, absolute value, min max are all Riemann integrable. Because addition and scalar multiplication then integrtable functions form a vector space.
+
+<Callout type="example">
+This means that polynomials are integratable.
+
+therfore also the division if there is no zero in the denominator. example of 1/x^2 + 1 on [0,1] is integratable.
+</Callout>
+
+Splitting the interval into subintervals and then integrating over each subinterval is also Riemann integrable. 
+
+Show this also holds if one part is above x-axis and the other part is below x-axis. 
+
+Follows that a to a is just 0. 
+
+Swapping the lower and upper limit of integration changes the sign of the integral.
 
 ## Antiderivatives
 
