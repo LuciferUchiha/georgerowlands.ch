@@ -399,23 +399,230 @@ So for a given $\varepsilon > 0$, we can choose $n$ such that $\frac{(b-a)^2}{n}
 
 ## Properties of Riemann Integrals
 
-If monotonic and bounded then Riemann integrable show proof.
+### Integrals of Monotonic and Bounded Functions
 
-If f and g are integrtable then Also addition/subtraction, scalar multiplicaitom, multiplicaiton, division, absolute value, min max are all Riemann integrable. Because addition and scalar multiplication then integrtable functions form a vector space.
+There are many properties of Riemann integrals that are useful to know. The first one we have already seen in effect when solving the example of the identity function $f(x)=x$ on the interval $[a,b]$. The first property is a bit similar to the [monotone convergence theorem]() for sequences, which states that if a sequence is monotonic and bounded, then it converges. Something similar holds for Riemann integrals, which is that if a function $f$ is monotonic and bounded on the interval $[a,b]$, then it is Riemann integrable on that interval. 
 
-<Callout type="example">
-This means that polynomials are integratable.
+<Callout type="proof">
+The proof is rather intuitive. If $f$ is monotonic increasing, then the infimum of the function is always equivalent to the left rule and the supremum is always equivalent to the right rule. So if we take a uniform partition of the interval $[a,b]$ we get the following:
 
-therfore also the division if there is no zero in the denominator. example of 1/x^2 + 1 on [0,1] is integratable.
+```math
+\begin{align*}
+S_{\text{lower}}(f,P_n) - S_{\text{upper}}(f,P_n) &= \sum_{i=1}^{n} (\sup_{x \in I_i} f(x))(x_i - x_{i-1}) - \sum_{i=1}^{n} (\inf_{x \in I_i} f(x))(x_i - x_{i-1}) \\
+&= \sum_{i=1}^{n} f(x_{i+1}) \frac{b-a}{n} - \sum_{i=1}^{n} f(x_i) \frac{b-a}{n} \\
+&= \frac{b-a}{n} \sum_{i=1}^{n} (f(x_{i+1}) - f(x_i)) \\
+&= \frac{b-a}{n} (f(x_{n}) - f(x_{n-1}) + f(x_{n-1}) - f(x_{n-2}) + ... + f(x_1) - f(x_0)) \\
+&= \frac{b-a}{n} (f(x_{n}) - f(x_0)) \\
+&= \frac{b-a}{n} (f(b) - f(a)).
+\end{align*}
+```
+
+So for any $\varepsilon > 0$, we can choose $n$ such that $\frac{b-a}{n} (f(b) - f(a)) < \varepsilon$. Another way to determine this is that as $n$ goes to infinity, the difference between the upper and lower Riemann sums goes to 0 showing that the function is Riemann integrable on the interval $[a,b]$.
 </Callout>
 
-Splitting the interval into subintervals and then integrating over each subinterval is also Riemann integrable. 
+### Linearity of Riemann Integrals
 
-Show this also holds if one part is above x-axis and the other part is below x-axis. 
+When looking at differentiable functions we saw that we could extract some rules for the derivative of a function such as the [product rule](), the [quotient rule](), the [chain rule]() and others. In the motivation for the integral it was also mentioned that the integral is the inverse operation of the derivative. This means that we can also extract some rules for the integral of a function based on the rules for the derivative. 
 
-Follows that a to a is just 0. 
+Let $f$ and $g$ be bounded and Riemann integrable on the interval $I=[a,b]\subset\mathbb R$ then we often group these functions together and denote them as $f,g\in\mathcal R(I)$, the set of all bounded and Riemann integrable functions on the interval $I$. 
 
-Swapping the lower and upper limit of integration changes the sign of the integral.
+The summation rule for Riemann integrals states that if $f,g\in\mathcal R([a,b])$ then the sum $f+g$ is also Riemann integrable on $[a,b]$ and the integral of the sum is equal to the sum of the integrals:
+
+```math
+\int_a^b\!\bigl(f(x)+g(x)\bigr)\,dx \;=\;
+\int_a^b f(x)\,dx\;+\;\int_a^b g(x)\,dx.
+````
+
+<Callout type="proof">
+For any partition $P$ with points $\delta$,
+\[
+S(f+g,P,\delta)=S(f,P,\delta)+S(g,P,\delta).
+\]
+</Callout>
+
+Also just like with the derivative we can also scale the function by a real scalar $\alpha\in\mathbb R$ and still obtain a Riemann integrable function. This is called scalar multiplication and is defined as follows:
+
+```math
+\int_a^b \alpha\,f(x)\,dx \;=\; \alpha \!\int_a^b f(x)\,dx.
+```
+
+<Callout type="proof">
+A Riemann sum of $\alpha f$ is
+\[
+S(\alpha f,P,\delta)=\sum_i \alpha f(\delta_i)\,\Delta x_i
+                  =\alpha\,S(f,P,\delta).
+\]
+</Callout>
+
+Together the scalar multiplication and the summation rule imply full linearity so we have:
+
+```math
+\forall\,\alpha,\beta\in\mathbb R:\qquad
+\int_{a}^{b}\bigl(\alpha f(x)+\beta g(x)\bigr)\,dx
+   \;=\;\alpha\!\int_{a}^{b}f(x)\,dx
+   \;+\;\beta\!\int_{a}^{b}g(x)\,dx.
+```
+
+This also means that the following linear mapping exists and that we can define a vector space of Riemann integrable functions on the interval $[a,b]$:
+
+```math
+\mathcal I_{[a,b]}:\;f\longmapsto\int_a^b f(x)\,dx
+```
+
+We also have a product rule for Riemann integrals, which states that if $f,g\in\mathcal R([a,b])$ then the point-wise product $fg$ is also Riemann integrable on $[a,b]$:
+
+```math
+\int_{a}^{b} f(x)g(x)\,dx \quad\text{exists.}
+```
+
+<Callout type="proof">
+no clue
+</Callout>
+
+If we have the functions $f,g\in\mathcal R([a,b])$ and $g(x) \neq 0$ for all $x\in[a,b]$, then we can also say that the quotient $f/g$ is Riemann integrable on $[a,b]$:
+
+```math
+\int_a^b \frac{f(x)}{g(x)}\,dx \quad\text{exists.}
+```
+
+<Callout type="proof">
+no clue
+</Callout>
+
+<Callout type="example">
+From the previously mentioned rules we can easily derive that polynomials are also integrable. Because a polynomial $p(x)$ can be written as the sum of monomials, i.e. $p(x) = a_0 + a_1 x + a_2 x^2 + \dots + a_n x^n$, where $a_i$ are real coefficients, we can apply the summation rule and the scalar multiplication rule to each monomial separately. So every polynomial is Riemann integrable due to the fact that the integral is linear.
+
+```math
+\int_a^b p(x)\,dx = \int_a^b a_0 + a_1 x + a_2 x^2 + \dots + a_n x^n\,dx \quad \text{exists.}
+```
+
+If $q(x)$ is a polynomial and $q(x) \neq 0$ so it doesn't have any roots in the interval $[a,b]$, then we can also compute the integral of any rational function $f(x) = \frac{p(x)}{q(x)}$ where $p(x)$ is also a polynomial. This is because we can use the product rule and the quotient rule to compute the integral of the rational function.
+</Callout>
+
+### Additivity over Subintervals
+
+If we have an integrable function $f$ on an interval $[a,b]$, we can split the integral over the interval into two integrals over sub-intervals $[a,c]$ and $[c,b]$ where $c$ is any point in the interval $(a,b)$ so $a < c < b$. This is known as the **additivity property of integrals**:
+
+```math
+\int_{a}^{b} f(x)\,dx
+  \;=\;\int_{a}^{c} f(x)\,dx
+     +\int_{c}^{b} f(x)\,dx.
+```
+
+<Callout type="proof">
+The proof of this follows from the definition of the Riemann integral being a sum. We already know from the rules of the [sum operator]() that we can split sums into two parts, we just need to make sure that the Partitions we use for the two integrals are compatible.
+</Callout>
+
+<Callout type="example">
+This is especially useful when we have a piecewise continuous function, i.e. a function that is continuous on each sub-interval but may have discontinuities at the endpoints of the sub-intervals. Let's look at the following example:
+
+```math
+f(x)=\begin{cases}
+x, & -1 \leq x\le 2,\\
+2, & 2 < x \leq 3.
+\end{cases}
+```
+
+We then take the interval $[-1,3]$ and split it at the point $c=2$:
+
+```math
+\begin{align*}
+\int_{-1}^{3}f(x)\,dx
+&=\int_{-1}^{2}x\,dx+\int_{2}^{3}2\,dx \\
+&=\Bigl[\tfrac{x^{2}}{2}\Bigr]_{-1}^{2}+2(3-2) \\
+&=\tfrac{3}{2}+2 \\
+&=\tfrac{7}{2}.
+```
+
+Notice the first part of the graph lies partly below the $x$-axis, but the additivity formula still holds.
+</Callout>
+
+### Zero-width and Limit Orientation
+
+We can create a so called **degenerate interval** by taking the same point as both the lower and upper limit of integration, i.e. $a=b$. In this case, the integral is defined as follows:
+
+```math
+\int_{a}^{b}f(x)\,dx=0.
+```
+
+The reason is that every partition only has one point, so the Riemann sum is always zero, as there is no width to the interval.
+
+The integral also has some orientation rules, which are important to know. Specifically if we swap the lower and upper limit of integration, the sign of the integral changes. This is because the Riemann sums are defined in such a way that the order of the limits matters. If we exchange all $x_{i-1}$ and $x_i$ in the Riemann sums, we change the sign of each summand, which leads to the following:
+
+```math
+\int_{a}^{b}f(x)\,dx=-\int_{b}^{a}f(x)\,dx.
+```
+
+### Uniform Continuity
+
+If f is continuous then it is integratable. 
+
+Before we prove it we define uniform continiouty. First a reminder of continuity using the epsilon-delta definition:
+
+
+Then write out the definition of uniform continuity:
+
+Notice it is almost the same as continiouty the order of the quantifiers is different. 
+
+She doesnt actually show the proof. But if f is continuous then it is also uniformly continuous on a closed interval $[a,b]$.
+
+<Callout type="example">
+We want to look at the function f(x) = x^2 on the interval $[0,1]$.
+
+as a reminder the definition of the integral is as the limit of the Riemann sums as the partition gets finer and finer. So we can take a equal length partition so $\delta(P_n)=\frac{1}{n}$ and then for our points we take x_k = k over n? All a bit werid setup.
+
+```math
+S(f,P_n,\delta^{(n)}) = \sum_{k=1}^{n} f\left(\frac{k}{n}\right) \cdot \frac{1}{n} = \sum_{k=1}^{n} \left(\frac{k}{n}\right)^2 \cdot \frac{1}{n} = \frac{1}{n^3} \sum_{k=1}^{n} k^2.
+```
+
+Using the formula for the sum of squares we get:
+
+```math
+\sum_{k=1}^{n} k^2 = \frac{n(n+1)(2n+1)}{6}.
+```
+
+This means we get for the limit of the Riemann sums:
+
+```math
+\begin{align*}
+\int_{0}^{1} x^2 \,dx &= \lim_{n\to\infty} S(f,P_n,\delta^{(n)}) \\
+&= \lim_{n\to\infty} \frac{1}{n^3} \cdot \frac{n(n+1)(2n+1)}{6} \\
+&= \lim_{n\to\infty} \frac{(n+1)(2n+1)}{6n^2} \\
+&= \lim_{n\to\infty} \frac{2n^2 + 3n + 1}{6n^2} \\
+&= \frac{2}{6} = \frac{1}{3}.
+\end{align*}
+```
+
+Are these calculations correct?
+</Callout>
+
+### Mean Value Theorem for Integrals
+
+2. **Monotonicity**
+   If $f(x)\le g(x)$ for every $x\in[a,b]$ then
+
+   ```math
+   \int_a^b\!f(x)\,dx\;\le\;\int_a^b\!g(x)\,dx.
+   ```
+
+5. **Absolute‑value inequality (triangle inequality)**
+
+   ```math
+   \Bigl|\int_a^b\!f(x)\,dx\Bigr|
+   \;\le\;\int_a^b |f(x)|\,dx.
+   ```
+
+6. **Bounds via extrema**
+   Let
+   $\displaystyle m:=\min_{x\in[a,b]}f(x),\;
+     M:=\max_{x\in[a,b]}f(x)$.
+   Then
+
+   ```math
+   m(b-a)\;\le\;\int_a^b\!f(x)\,dx\;\le\;M(b-a).
+   ```
+
+## Fundamental Theorem of Calculus
 
 ## Antiderivatives
 
@@ -581,49 +788,3 @@ Ein Video zu dem ganzen Prozess findest du [hier](https://www.youtube.com/watch?
 ## Double Integrals
 
 Ein gutes Video zu wie man das macht findest du [hier](https://www.youtube.com/watch?v=n8NDyxOMVEw)
-
-## Integration Rules 
-
-### Faktorregel
-
-Ein konstanter Faktor, $C \in \mathbb{R}$, darf vor das Integral gezogen werden
-
-```math
-\int_{a}^{b}{C \cdot f(x)\,dx}=C\cdot \int_{a}^{b}{f(x)\,dx}
-```
-
-Diese Regel gilt auch für unbestimmte Integrale.
-
-### Summenregel
-
-Eine endliche Summe von Funktionen darf gliedweise integriert werden
-
-```math
-\int_{a}^{b}{(f_1(x)+...+f_n(x))\,dx}=\int_{a}^{b}{f_1(x)\,dx}\,+...+ \int_{a}^{b}{f_n(x)\,dx}
-```
-
-Diese Regel gilt auch für unbestimmte Integrale.
-
-### Vertauschungsregel
-
-Wenn man die beiden Integrationsgrenzen vertauscht bewirkt dies ein Vorzeichenwechsel des Integrals
-
-```math
-\int_{b}^{a}{f(x)\,dx}=-\int_{a}^{b}{f(x)\,dx}
-```
-
-### Gleiche Integrationsgrenzen
-
-Falls die Integrationsgrenzen gleich sind also $a=b$, dann ist der Integralwert gleich 0. Dies macht auch Sinn wenn sich das Integral als Fläche unter der Funktionskurve vorstellt.
-
-```
-math\int_{a}^{a}{f(x)\,dx}=0
-```
-
-### Zerlegung des Integrationsintervalls
-
-Für jede Stelle $c$ aus dem Integrationsintervall $a\leq c \leq b$ gilt
-
-```math
-\int_{a}^{b}{f(x)\,dx}=\int_{a}^{c}{f(x)\,dx}+\int_{c}^{b}{f(x)\,dx}
-```
