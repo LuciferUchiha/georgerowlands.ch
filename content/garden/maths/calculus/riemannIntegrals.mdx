@@ -82,7 +82,7 @@ We define the length of an interval $I = [x_{i-1},x_i]$ as the difference betwee
 The so called norm of the partition $P$ is defined as the maximum length of the intervals in the partition:
 
 ```math
-||P|| = \max_{1 \leq i \leq n} \delta_i = \max_{1 \leq i \leq n} (x_i - x_{i-1})
+\|P\| = \max_{1 \leq i \leq n} \delta_i = \max_{1 \leq i \leq n} (x_i - x_{i-1})
 ```
 
 So now if we go back to our initial idea where we split the interval $[a,b]$ into $n$ subintervals $I_i = [a_i,b_i]$ then every point $\delta_i \in I_i$ fullfills the following condition:
@@ -128,13 +128,13 @@ Image
 However the most important rules definition-wise are the so-called **upper rule** or **upper Riemann sum** and the **lower rule** or **lower Riemann sum**. The upper Riemann sum is defined as follows:
 
 ```math
-S_\text{upper}f, P) = \sum_{i=1}^{n} (\sup_{x \in I_i} f(x)) \cdot (x_i - x_{i-1})
+S_\text{upper}(f, P) = \sum_{i=1}^{n} (\sup_{x \in I_i} f(x)) \cdot (x_i - x_{i-1})
 ```
 
 Where $\sup_{x \in I_i} f(x)$ is the supremum of the function $f$ on the interval $I_i$. The lower Riemann sum is defined as follows:
 
 ```math
-S_\text{lower}f, P) = \sum_{i=1}^{n} (\inf_{x \in I_i} f(x)) \cdot (x_i - x_{i-1})
+S_\text{lower}(f, P) = \sum_{i=1}^{n} (\inf_{x \in I_i} f(x)) \cdot (x_i - x_{i-1})
 ```
 
 These two can be interpreted as that for the upper Riemann sum we look at the maximum value of the function on the interval $I_i$ and for the lower Riemann sum we look at the minimum value of the function on the interval $I_i$ and use those values as our constant values for the step function.
@@ -146,7 +146,7 @@ Image
 It then follows that the area under the curve of the bounded function $f$ on the interval $[a,b]$ is bounded by the upper and lower Riemann sums:
 
 ```math
-S_\text{lower}f, P) \leq S(f, P, \delta) \leq S_\text{upper}f, P)
+S_\text{lower}(f, P) \leq S(f, P, \delta) \leq S_\text{upper}(f, P)
 ```
 
 Why does the function need to be bounded? Because if the function is not bounded then the supremum and infimum of the function on the interval $I_i$ can be infinite and therefore the Riemann sums would also be infinite. In addition because the function $f$ is bounded, i.e. there exists a constant $M$ such that $|f(x)| \leq M$ for all $x \in [a,b]$, then there is an upper and lower bound for the values of the function on the interval $I_i$:
@@ -158,7 +158,7 @@ Why does the function need to be bounded? Because if the function is not bounded
 and therefore we can also define an upper and lower bound for the area under the curve of the function $f$ on the interval $[a,b]$:
 
 ```math
--M \cdot (b-a) \leq S_\text{lower}f, P) \leq S(f, P, \delta) \leq S_\text{upper}f, P) \leq M \cdot (b-a)
+-M \cdot (b-a) \leq S_\text{lower}(f, P) \leq S(f, P, \delta) \leq S_\text{upper}(f, P) \leq M \cdot (b-a)
 ```
 
 You can think of these upper and lower bounds as the area of the rectangles that are formed by the maximum and minimum values of the function on the interval $I_i$ multiplied by the width of the interval.
@@ -172,7 +172,7 @@ We can also refine a partition $P$ by adding more points to it. So we say that a
 We can now use define new Riemann sums for the refined partition $Q$. If the function $f$ is bounded on the interval $[a,b]$ then we get the following inequality for the Riemann sums:
 
 ```math
-S_\text{lower}f, P) \leq S_\text{lower}f, Q) \leq S(f, Q, \delta) \leq S_\text{upper}f, Q) \leq S_\text{upper}f, P)
+S_\text{lower}(f, P) \leq S_\text{lower}(f, Q) \leq S(f, Q, \delta) \leq S_\text{upper}(f, Q) \leq S_\text{upper}(f, P)
 ```
 
 <Callout type="todo">
@@ -182,13 +182,13 @@ Image
 The idea behind this is that the more points we add to the partition, the more accurate our approximation of the area under the curve becomes. From this it also follows that we can define "the lowest" lower Riemann sum and "the highest" upper Riemann sum as follows:
 
 ```math
-S_\text{lower}f) = \sup_{P \in \mathcal{P}(I)} S_\text{lower}f, P) \quad \text{and} \quad S_\text{upper}f) = \inf_{P \in \mathcal{P}(I)} S_\text{upper}f, P)
+S_\text{lower}(f) = \sup_{P \in \mathcal{P}(I)} S_\text{lower}(f, P) \quad \text{and} \quad S_\text{upper}(f) = \inf_{P \in \mathcal{P}(I)} S_\text{upper}(f, P)
 ```
 
 This "lowest" lower Riemann sum is the **Lower Riemann Integral** and the "highest" upper Riemann sum is the **Upper Riemann Integral**. It obviously follows that the lower Riemann integral is less than or equal to the upper Riemann integral:
 
 ```math
-\sup_{P \in \mathcal{P}(I)} S_\text{lower}f, P) \leq \inf_{P \in \mathcal{P}(I)} S_\text{upper}f, P) \Rightarrow S_\text{lower}f) \leq S_\text{upper}f)
+\sup_{P \in \mathcal{P}(I)} S_\text{lower}(f, P) \leq \inf_{P \in \mathcal{P}(I)} S_\text{upper}(f, P) \Rightarrow S_\text{lower}(f) \leq S_\text{upper}(f)
 ```
 
 <Callout type="todo">
@@ -198,13 +198,13 @@ Image
 We therefore say that a function $f$ is Riemann integrable on the interval $[a,b]$ if the lower and upper Riemann integrals are equal:
 
 ```math
-S_\text{lower}f) = S_\text{upper}f)
+S_\text{lower}(f) = S_\text{upper}(f)
 ```
 
 This value is then called the **Riemann Integral** of the function $f$ on the interval $[a,b]$ and is denoted by:
 
 ```math
-\int_{a}^{b} f(x) dx = S_\text{lower}f) = S_\text{upper}f)
+\int_{a}^{b} f(x) dx = S_\text{lower}(f) = S_\text{upper}(f)
 ```
 
 You can think of the symbol $\int$ as a stylized letter "S" for "Sum", which is what we are doing here, we are summing up the areas of the rectangles that are formed by the function values and the width of the intervals. The symbol $dx$ is just like the notation in the derivative that indicates a small change in the variable $x$, here between the two points $x_{i-1}$ and $x_i$ in the partition $P$. We call the function $f$ the **integrand**, the interval $[a,b]$ the **integration interval**, $a$ the **lower limit of integration**, and $b$ the **upper limit of integration** and $x$ the **variable of integration**.
@@ -222,13 +222,13 @@ So we want to show that the upper and lower Riemann sums are equal for all parti
 Therefore:
 
 ```math
-S_\text{upper}f,P)=\sum_{i=1}^{n} c\,(x_i-x_{i-1})=c\sum_{i=1}^{n} (x_i-x_{i-1}) = c(b-a) = S_\text{lower}f,P)
+S_\text{upper}(f,P)=\sum_{i=1}^{n} c\,(x_i-x_{i-1})=c\sum_{i=1}^{n} (x_i-x_{i-1}) = c(b-a) = S_\text{lower}(f,P)
 ```
 
-Thus $S_\text{upper}f,P)=S_\text{lower}f,P)$ for **every** $P$. This also means that if we take $\inf_P S_\text{upper}f,P)$ and $\sup_P S_\text{lower}f,P)$ we get the same value:
+Thus $S_\text{upper}(f,P)=S_\text{lower}(f,P)$ for **every** $P$. This also means that if we take $\inf_P S_\text{upper}(f,P)$ and $\sup_P S_\text{lower}(f,P)$ we get the same value:
 
 ```math
-S_\text{upper}f)=S_\text{lower}f)=c(b-a).
+S_\text{upper}(f)=S_\text{lower}(f)=c(b-a).
 ```
 
 Since they are equal, $f$ is Riemann integrable on $[a,b]$ and we get the Riemann integral:
@@ -283,7 +283,7 @@ This example underlines why continuity (or at least “almost everywhere” cont
 
 We have seen a way to determine whether a bounded function is Riemann integrable by checking the equality of the upper and lower Riemann sums. Hwoever, just like we have [cauchy's criterion]() for convergence of sequences, we can also define a criterion for Riemann integrability, this is called Riemann's criterion.
 
-The criterion states a bounded function $f:\[a,b]\to\mathbb R$ is **Riemann integrable** if the following condition holds:
+The criterion states a bounded function $f:[a,b]\to\mathbb R$ is **Riemann integrable** if the following condition holds:
 
 ```math
 \forall\;\varepsilon>0\;\exists\;P\in\mathcal P([a,b])\;:\;
@@ -332,7 +332,7 @@ L=\sup_{P}S_{\text{lower}}(f,P)\leq\inf_{P}S_{\text{upper}}(f,P)=U.
 We also have that $L\leq U$. Given $\varepsilon>0$, choose $P$ with $U-L\le S_{\text{upper}}(f,P)-S_{\text{lower}}(f,P)< \varepsilon$ completing the proof.
 </Callout>
 
-This idea as mentioned is similar to Cauchy's criterion for convergence of sequences, where we can make the difference between the upper and lower sums arbitrarily small by refining the partition. This is also what leads to another common way to think about the Riemann integral, which is that it is the limit of the Riemann sums as the number of intervals $n$ goes to infinity, i.e. as the norm of the partition $\delta(P_n)$ goes to 0:
+This idea as mentioned is similar to Cauchy's criterion for convergence of sequences, where we can make the difference between the upper and lower sums arbitrarily small by refining the partition. This is also what leads to another common way to think about the Riemann integral, which is that it is the limit of the Riemann sums as the number of intervals $n$ goes to infinity, i.e. as the norm of the partition $\|P_n\|$ goes to 0:
 
 ```math
 \int_a^b f(x)\,dx
@@ -431,13 +431,14 @@ The summation rule for Riemann integrals states that if $f,g\in\mathcal R([a,b])
 ```math
 \int_a^b\!\bigl(f(x)+g(x)\bigr)\,dx \;=\;
 \int_a^b f(x)\,dx\;+\;\int_a^b g(x)\,dx.
-````
+```
 
 <Callout type="proof">
-For any partition $P$ with points $\delta$,
-\[
+For any partition $P$ with points $\delta$ we have:
+
+```math
 S(f+g,P,\delta)=S(f,P,\delta)+S(g,P,\delta).
-\]
+```
 </Callout>
 
 Also just like with the derivative we can also scale the function by a real scalar $\alpha\in\mathbb R$ and still obtain a Riemann integrable function. This is called scalar multiplication and is defined as follows:
@@ -447,11 +448,12 @@ Also just like with the derivative we can also scale the function by a real scal
 ```
 
 <Callout type="proof">
-A Riemann sum of $\alpha f$ is
-\[
+A Riemann sum of $\alpha f$ is:
+
+```math
 S(\alpha f,P,\delta)=\sum_i \alpha f(\delta_i)\,\Delta x_i
                   =\alpha\,S(f,P,\delta).
-\]
+```
 </Callout>
 
 Together the scalar multiplication and the summation rule imply full linearity so we have:
@@ -532,6 +534,7 @@ We then take the interval $[-1,3]$ and split it at the point $c=2$:
 &=\Bigl[\tfrac{x^{2}}{2}\Bigr]_{-1}^{2}+2(3-2) \\
 &=\tfrac{3}{2}+2 \\
 &=\tfrac{7}{2}.
+\end{align*}
 ```
 
 Notice the first part of the graph lies partly below the $x$-axis, but the additivity formula still holds.
@@ -555,235 +558,566 @@ The integral also has some orientation rules, which are important to know. Speci
 
 ### Uniform Continuity
 
-If f is continuous then it is integratable. 
+Continuity is a fundamental property of functions that we have encountered in calculus. Continuity also has some implications for the Riemann integral. 
 
-Before we prove it we define uniform continiouty. First a reminder of continuity using the epsilon-delta definition:
+First we recall the definition of continuity at a point, which is also called **point-wise continuity** using the epsilon–delta definition. A function $f:I\to\mathbb R$ is continuous at a point $x_0\in I$ if we have the following:
 
+```math
+\forall\varepsilon>0\;\exists\delta>0:
+|x-x_0|<\delta\;\Longrightarrow\;|f(x)-f(x_0)|<\varepsilon.
+```
 
-Then write out the definition of uniform continuity:
+We have also seen that if this condition holds for every point $x_0$ in the Domain $D$ of the function, then we say that the function is continuous. The same holds if the domain is an interval $I$, i.e. the function is continuous on the interval $I$ if it is continuous at every point in $I$. More formally, we can write $f$ is continious on $I$ if the following holds:
 
-Notice it is almost the same as continiouty the order of the quantifiers is different. 
+```math
+\forall x_0\in[a,b]\;\forall\varepsilon>0\;\exists\delta>0:
+|x-x_0|<\delta \;\Longrightarrow\; |f(x)-f(x_0)|<\varepsilon.
+```
 
-She doesnt actually show the proof. But if f is continuous then it is also uniformly continuous on a closed interval $[a,b]$.
+Ordinary continuity already tells us that for each point $x_0$ we can shrink the input window $(x_0-\delta,x_0+\delta)$ until all outputs stay within an $\varepsilon$-band of $f(x_0)$.
+
+Uniform continuity insists on something stronger. If we pick a $\varepsilon$ then we need to be able to pick at least one $\delta$ such that every pair of points in the interval are within $\delta$ of each other such that there outputs stay within an $\varepsilon$-band of each other. 
+
+Geometrically meaning? 
+
+Because the same $\delta$ serves everywhere, the logical quantifiers flip for a function $f:I\to\mathbb R$ on an interval $I$ to be uniformly continuous:
+
+```math
+\forall\varepsilon>0\;\exists\delta>0\;
+\text{s.t. }|x-y|<\delta\;\Longrightarrow\;|f(x)-f(y)|<\varepsilon
+\quad\forall x,y\in I.
+```
+
+So the key difference ist that the chosen $\delta$ does not depend on the particular point $x_0$ in the interval, but only on the $\varepsilon$ we choose. 
+
+Luckily it turns out that every continuous function on a compact interval is uniformly continuous. This is known as the **Heine–Cantor theorem**.
+
+<Callout type="proof">
+no clue
+</Callout>
 
 <Callout type="example">
-We want to look at the function f(x) = x^2 on the interval $[0,1]$.
+Let $f(x)=\sqrt{x}$ on $(0,1]$. It is continuous on $(0,1]$ but **not** uniformly continuous there?
 
-as a reminder the definition of the integral is as the limit of the Riemann sums as the partition gets finer and finer. So we can take a equal length partition so $\delta(P_n)=\frac{1}{n}$ and then for our points we take x_k = k over n? All a bit werid setup.
+On $[0,1]$, however, $f$ becomes uniformly continuous
+</Callout>
 
-```math
-S(f,P_n,\delta^{(n)}) = \sum_{k=1}^{n} f\left(\frac{k}{n}\right) \cdot \frac{1}{n} = \sum_{k=1}^{n} \left(\frac{k}{n}\right)^2 \cdot \frac{1}{n} = \frac{1}{n^3} \sum_{k=1}^{n} k^2.
-```
-
-Using the formula for the sum of squares we get:
+As mentioned above, every continuous function on a closed interval $[a,b]$ is uniformly continuous. This is a very important property of continuous functions and is often used in analysis. This is also the reason why we can conclude that every continuous function on a closed interval is Riemann integrable, so we have for every continuous function $f:[a,b]\to\mathbb R$:
 
 ```math
-\sum_{k=1}^{n} k^2 = \frac{n(n+1)(2n+1)}{6}.
+f:[a,b]\to\mathbb R\text{ is continuous} \quad\Longrightarrow\quad
+\int_a^b f(x)\,dx \text{ exists.}
 ```
 
-This means we get for the limit of the Riemann sums:
+<Callout type="proof">
+Uses Riemann's criterion and uniform continuity.
+</Callout>
+
+However, the converse is not true, i.e. not every Riemann integrable function is continuous. 
+
+Below is a *self-contained, polished version* of the example—including a short comment on why every polynomial is continuous—ready to paste in.
+
+---
+
+<Callout type="example">
+
+We revisit $f(x)=x^{2}$ on the interval $[0,1]$. Every polynomial is continuous on $\mathbb R$, hence also on any closed interval—because. By linearity we also know it is Riemann integrable on $[0,1]$. If we didn't know that, we could still have found the integral with the knowledge that $f$ is continuous on $[0,1]$ and hence uniformly continuous there. 
+
+To calculate the integral we use the uniform partition:
+
+```math
+P_n=\Bigl\{x_k=\frac{k}{n}\,\Big|\,k=0,1,\dots,n\Bigr\},\qquad
+\|P_n\|=\frac1n.
+```
+
+And because on the interval $[0,1]$ the function $f(x)=x^{2}$ is increasing, we can use the right endpoints as sample points for our Riemann sums.
 
 ```math
 \begin{align*}
-\int_{0}^{1} x^2 \,dx &= \lim_{n\to\infty} S(f,P_n,\delta^{(n)}) \\
-&= \lim_{n\to\infty} \frac{1}{n^3} \cdot \frac{n(n+1)(2n+1)}{6} \\
-&= \lim_{n\to\infty} \frac{(n+1)(2n+1)}{6n^2} \\
-&= \lim_{n\to\infty} \frac{2n^2 + 3n + 1}{6n^2} \\
-&= \frac{2}{6} = \frac{1}{3}.
+S\bigl(f,P_n\bigr)
+ &=\sum_{k=1}^{n} f(x_k)\,\Delta x_k
+ =\sum_{k=1}^{n}\!\Bigl(\tfrac{k}{n}\Bigr)^2\!\cdot\!\frac1n  \\
+ &=\frac{1}{n^{3}}\sum_{k=1}^{n}k^{2}.
 \end{align*}
 ```
 
-Are these calculations correct?
+Using the slightly less known formula then the gaussian sum for the sum of squares:
+
+```math
+\sum_{k=1}^{n}k^{2}=\frac{n(n+1)(2n+1)}{6}
+```
+
+We get:
+
+```math
+S\bigl(f,P_n\bigr)= \frac{1}{n^{3}}\cdot\frac{n(n+1)(2n+1)}{6} =
+\frac{(n+1)(2n+1)}{6n^{2}}.
+```
+
+If we then take the limit as $n$ goes to infinity, so the partition gets finer and finer and $\|P_n\|\to 0$, we get the Riemann integral:
+
+```math
+\begin{aligned}
+\int_{0}^{1}x^{2}\,dx
+   &=\lim_{n\to\infty}S(f,P_n) \\
+   &=\lim_{n\to\infty}\frac{(n+1)(2n+1)}{6n^{2}} \\
+   &=\lim_{n\to\infty}\frac{2n^{2}+3n+1}{6n^{2}} \\
+   &=\frac{2}{6}
+   =\frac{1}{3}.
+\end{aligned}
+```
+
+For later on:
+An antiderivative of $x^{2}$ is $\tfrac{x^{3}}{3}$; evaluating it at the endpoints using the Fundamental Theorem of Calculus gives us:
+
+```math
+\Bigl[\tfrac{x^{3}}{3}\Bigr]_{0}^{1}=\frac{1}{3}-0=\frac{1}{3},
+```
+
+confirming the Riemann-sum result.
+</Callout>
+
+<Callout type="example">
+We can define the following piecewise function: 
+
+```math
+h(x)=\begin{cases}
+\sin x,&0\le x<\pi,\\
+1,&\pi\le x\le 2\pi.
+\end{cases}
+```
+
+The function $h$ has a single jump at $x=\pi$. However, it is still Riemann integrable on the interval $[0,2\pi]$ because the set of discontinuities (the single point $\{\pi\}$) has measure zero. We can compute the integral of $h$ over the interval $[0,2\pi]$ by splitting it into two parts, one for each piece of the function:
+
+```math
+\int_{0}^{2\pi}\!h(x)\,dx
+=\int_{0}^{\pi}\!\sin x\,dx
++\int_{\pi}^{2\pi}\!1\,dx
+=\bigl[{-\cos x}\bigr]_{0}^{\pi}+(\pi)
+=(1+1)+\pi
+=2+\pi.
+```
+</Callout>
+
+<Callout type="example">
+A classical counter-example for the converse is **Thomae's function** which is defined as follows:
+
+```math
+t(x)=\begin{cases}
+\frac1q,&x=\frac{p}{q}\text{ in lowest terms},\\[6pt]
+0,&x\notin\mathbb Q,
+\end{cases}\qquad x\in[0,1],
+```
+
+The function is discontinuous at every rational point in the interval $[0,1]$ and continuous at every irrational point. However, it is still Riemann integrable on the interval $[0,1]$ because the set of discontinuities (the rationals in $[0,1]$) has measure zero which leads to the following integral:
+
+```math
+\int_0^1 t(x)\,dx = 0.
+```
+</Callout>
+
+### Useful Inequalities
+
+When dealing with Riemann integrals, there are several useful inequalities that can help us understand the behavior of integrals and their relationships just like the properties of limits, derivatives and integrals mentioned above.
+
+The first is the so called **monotonicity inequality** which states that if $f$ and $g$ are Riemann integrable functions on the interval $[a,b]$ and $f(x)\le g(x)$ for every $x\in[a,b]$, then the integral of $f$ is less than or equal to the integral of $g$:
+
+```math
+f(x) \leq g(x)\quad\forall x\in[a,b]
+\quad\Longrightarrow\quad
+\int_{a}^{b}f(x)\,dx \;\le\;\int_{a}^{b}g(x)\,dx.
+```
+
+The intuition behind this is rather clear. If you think of the two graphs where both the values are positive then they are stacked one above the other. Then every vertical slice at $x$ has $f$'s height below $g$'s height, so each slender rectangle forming the "$f$-area" sits completely inside the corresponding "$g$-area". A similar argument holds if the graphs are negative, or if one is positive and the other negative.
+
+The next inequality is the **absolute-value inequality**. This inequality is similar to the triangle inequality for vectors and sums. It states that the absolute value of the integral of a function is less than or equal to the integral of the absolute value of the function:
+
+```math
+\Bigl|\int_{a}^{b}f(x)\,dx\Bigr|
+   \;\le\;\int_{a}^{b}|f(x)|\,dx.
+```
+
+The intuition is also rather obvious as we defined the integral as the limit of Riemann sums, which are sums of rectangles. The absolute value inequality states that the area of the rectangles is always positive, so the absolute value of the integral is less than or equal to the integral of the absolute value of the function.
+
+The last inequality is a bit more complex. We know that the integrable functions form a vector space. For the real vector space there is the [Cauchy–Schwarz inequality]() which states that for any two vectors $\mathbf{v},\mathbf{w}\in\mathbb R^{n}$, the following holds:
+
+```math
+\mathbf{v}\cdot\mathbf{w} \leq \|\mathbf{v}\| \|\mathbf{w}\|,
+```
+
+where $\mathbf{v}\cdot\mathbf{w}$ is the dot product of the two vectors, and $\|\mathbf{v}\|$ and $\|\mathbf{w}\|$ are the norms of the vectors. For the integrable functions, we can define an inner product as follows:
+
+```math
+\mathbf{f}\cdot\mathbf{g} = <f,g> = \int_{a}^{b}f(x)g(x)\,dx,
+```
+
+So we can also define the norm of a function as follows:
+
+```math
+\|\mathbf{f}\| = \sqrt{\int_{a}^{b}f(x)^{2}\,dx}.
+```
+
+Then the Cauchy–Schwarz inequality for integrals states that for any two integrable functions $f,g\in\mathcal R([a,b])$, the following holds:
+
+```math
+\Bigl|⟨f,g⟩\Bigr| \leq \|f\|\,\|g\|.
+```
+
+This results in the following Cauchy-Schwarz inequality for integrals:
+
+```math
+\Bigl|\int_{a}^{b}f(x)g(x)\,dx\Bigr| \leq \Bigl(\int_{a}^{b}f(x)^{2}\,dx\Bigr)^{1/2}\Bigl(\int_{a}^{b}g(x)^{2}\,dx\Bigr)^{1/2}.
+```
+
+<Callout type="proof">
+already kind of given?
 </Callout>
 
 ### Mean Value Theorem for Integrals
 
-2. **Monotonicity**
-   If $f(x)\le g(x)$ for every $x\in[a,b]$ then
+We have already seen the [Mean Value Theorem for Derivatives](), which states that if a function is continuous on a closed interval $[a,b]$ and differentiable on the open interval $(a,b)$, then there exists at least one point $c\in(a,b)$ such that:
 
-   ```math
-   \int_a^b\!f(x)\,dx\;\le\;\int_a^b\!g(x)\,dx.
-   ```
+```math
+f'(c) = \frac{f(b) - f(a)}{b - a}.
+```
 
-5. **Absolute‑value inequality (triangle inequality)**
+This is a very important theorem in calculus and has many applications. For integrals there is also a similar theorem known as the **Mean Value Theorem for Integrals**. It states that if a function $f$ is continuous on a closed interval $[a,b]$and therefore also integrable, then there exists at least one point $c\in[a,b]$ such that:
 
-   ```math
-   \Bigl|\int_a^b\!f(x)\,dx\Bigr|
-   \;\le\;\int_a^b |f(x)|\,dx.
-   ```
+```math
+\int_{a}^{b}f(x)\,dx = f(c)(b-a).
+```
 
-6. **Bounds via extrema**
-   Let
-   $\displaystyle m:=\min_{x\in[a,b]}f(x),\;
-     M:=\max_{x\in[a,b]}f(x)$.
-   Then
+So in other words, we can find a point $c$ in the interval $[a,b]$ such that the area under the curve of the function $f$ over the interval $[a,b]$ is equal to the area of a rectangle with height $f(c)$ and width $b-a$. So in other words we can not only approximate the integral with a rectangle but also the height is the value of the function at some point in the interval.
 
-   ```math
-   m(b-a)\;\le\;\int_a^b\!f(x)\,dx\;\le\;M(b-a).
-   ```
+<Callout type="todo">
+Add image
+</Callout>
 
-## Fundamental Theorem of Calculus
+<Callout type="proof">
+She doesn't show this.
+</Callout>
 
-## Antiderivatives
+<Callout type="example">
+The condition for that the function $f$ is continuous on the interval $[a,b]$ is very important. We can easily show this with the following example for $f: [0,1]\to\mathbb R$:
+
+```math
+f(x)=\begin{cases}
+0 & \text{if } 0 \leq x < \frac{1}{2}, \\
+1 & \text{if } \frac{1}{2} \leq x \leq 1.
+\end{cases}
+```
+
+This function is not continuous at $x=\frac{1}{2}$, but it is still Riemann integrable on the interval $[0,1]$ because the set of discontinuities (the single point $\{\frac{1}{2}\}$) has measure zero:
+
+```math
+\int_{0}^{1}f(x)\,dx = \int_{0}^{\frac{1}{2}}0\,dx + \int_{\frac{1}{2}}^{1}1\,dx = 0 + \frac{1}{2} = \frac{1}{2}.
+```
+
+However, there is no point $c\in[0,1]$ such that $\frac{1}{2} = f(c)(1-0) = f(c)$, because $f(c)$ is either $0$ or $1$ for all $c\in[0,1]$. So the Mean Value Theorem for Integrals does not hold for this function.
+</Callout>
+
+Cauchy also extended the Mean Value Theorem for Integrals to two functions. So if $f,g: [a,b]\to\mathbb R$ are continuous and bounded (therefore also Riemann integrable) on the interval $[a,b]$ and $g(x) \geq 0$ for all $x\in[a,b]$, then there exists at least one point $c\in[a,b]$ such that:
+
+```math
+\int_{a}^{b}f(x)g(x)\,dx = f(c)\int_{a}^{b}g(x)\,dx.
+```
+
+First notice that this is a generalization of the Mean Value Theorem for Integrals, because if we take $g(x) = 1$ for all $x\in[a,b]$, then we get the original theorem. 
+
+<Callout type="todo">
+What is the intuition behind this? Why does it hold?
+</Callout>
+
+<Callout type="proof">
+This is all a bit confusing as I dont get the intuition. Let
+
+$$
+m=\min_{[a,b]} f,\qquad M=\max_{[a,b]} f .
+$$
+
+Because $f$ is continuous on the compact interval $[a,b]$, both exist and
+
+$$
+m\le f(x)\le M\quad\text{for all }x\in[a,b].
+$$
+
+Multiplying by the positive length $(b-a)$ and integrating gives
+
+$$
+m(b-a)\;\le\;\int_a^b f(x)\,dx\;\le\;M(b-a).
+$$
+
+Define
+
+$$
+A\;=\;\frac1{b-a}\int_a^b f(x)\,dx,
+$$
+
+the *average value* of $f$ on $[a,b]$.  Then $m\le A\le M$.  continuity of $f$ implies the intermediate value property, so **there exists** $c\in[a,b]$ with $f(c)=A$, i.e.
+
+$$
+\int_a^b f(x)\,dx \;=\; f(c)(b-a).
+$$
+
+Assume
+
+- $f,g:[a,b]\to\mathbb{R}$ are continuous,
+- $g(x)\ge0$ on $[a,b]$.
+
+If $\int_a^b g(x)\,dx = 0$, then $g\equiv0$ (continuity), and the identity holds trivially for any $c$.
+
+Otherwise set
+
+$$
+G := \int_a^b g(x)\,dx \;>\; 0,
+\quad\quad
+m := \min_{[a,b]} f,\;
+M := \max_{[a,b]} f .
+$$
+
+Multiply the pointwise inequality $m\le f(x)\le M$ by $g(x)$ and integrate:
+
+$$
+m\,G \;\le\; \int_a^b f(x)g(x)\,dx \;\le\; M\,G .
+$$
+
+Form the ratio
+
+$$
+A := \frac{\displaystyle\int_a^b f(x)g(x)\,dx}{\displaystyle\int_a^b g(x)\,dx},
+\qquad
+m \le A \le M .
+$$
+
+As before, the intermediate value theorem gives a point $c\in[a,b]$ with
+
+$$
+f(c)=A\;=\;\frac{\int_a^b f(x)g(x)\,dx}{\int_a^b g(x)\,dx}
+$$
+
+which results in:
+
+$$
+\int_a^b f(x)g(x)\,dx \;=\; f(c)\int_a^b g(x)\,dx
+$$
+
+</Callout>
+
+## Antiderivatives and the Fundamental Theorem of Calculus
 
 indefinite integral of a function is the antiderivative of that function.
 
+Main theorem of calculus states that the integral and the derivative are inverse operations. 
+
+```math
+F(x) = \int_{a}^{x}f(t)\,dt\quad \forall x\in[a,b] \qquad\text{and} \qquad F'(x) = f(x)\quad \forall x\in[a,b].
+```
+
+The Fundamental Theorem of Calculus 
+
+```math
+\int_{a}^{b}f(x)\,dx = F(b) - F(a)
+```
+
+where $F$ is an antiderivative of $f$ on the interval $[a,b]$. 
+
+Integrationsconstant $C$
+
+```math
+\int f(x)\,dx = F(x) + C
+```
+
+where $F$ is an antiderivative of $f$ on the interval $[a,b]$.
+
+We can now much easier calculate the integral of a function by finding an antiderivative of that function and then evaluating it at the endpoints of the interval. 
+
+<Callout type="example">
+f(x) = x^2 from 0 to 1
+
+f(x) = x from 1 to 2
+
+f(x) = cosx from 0 to pi/2
+</Callout>
 ## Integration by Substitution
 
+When integrating by substitution we want to simplify the integral—or, if possible, transform it into a basic integral—by means of suitable variable substitutions.
 
-Bei der Integration durch Substitutionen wollen wir mit Hilfe von geeigneten Variabel-Substitutionen das Integral vereinfachen oder wenn möglich sogar zu einem Grundintegral umwandeln.
-
-Am besten können wir diese Methode verwenden wenn wir den folgenden Fall haben
+We can best use this method when we have the following situation
 
 ```math
 \int{f(x)\,dx}=\int{f(g(x))\cdot g(x)'\,dx}
 ```
 
-also wenn wir eine Verkettung von Funktionen haben und die innere Funktion abgeleitet im Integral vorkommt. Ein häufiges Beispiel ist
+that is, when we have a composition of functions and the derivative of the inner function also appears in the integrand. A common example is
 
 ```math
 \int{x\cdot e^{x^2}}
 ```
 
-weil es nicht normalerweise lösbar ist. Hier ist $g(x)=x^2$ was abgeleitet zu $g'(x)=2x$ wird wir haben aber nur $x$ nicht $2x$. Grund dafür ist die Faktorregel welche besagt das wir die 2 ja herausnehmen können, deshalb können wir Konstanten bei der obigen Voraussetzung ignorieren.
+because it is not readily solvable otherwise. Here \$g(x)=x^2\$, whose derivative is \$g'(x)=2x\$, but we only have \$x\$ and not \$2x\$ in the integrand.
+The reason is the constant‑factor rule, which says we can factor out the 2; therefore we may ignore constants in the above condition.
 
-Der erste Schritt haben wir schon gemacht wir haben unsere variable zum Substituieren identifiziert $u=x^2$. Wir müssen aber alles was mit der alten Variable zu tun haben ersetzen, inklusive das $dx$. Um dies zu erreichen benutzen wir noch die folgende Formel $dx=\frac{du}{u'}=\frac{du}{2x}$.
+We have already completed the first step: we have identified the substitution variable \$u=x^2\$.
+However, we must replace everything involving the old variable, including the \$dx\$. To do this we use the relation
+$dx=\dfrac{du}{u'}=\dfrac{du}{2x}$.
 
-Nun können wir in der Formel alles ersetzen
+Now we can substitute everywhere in the integral:
 
 ```math
 \int{x\cdot e^{x^2}}=\int{x\cdot e^u\, \frac{du}{2x}}
 ```
 
-Dank der obigen Voraussetzung lässt sich das vordere $x$ wegkürzen.
+Thanks to the condition above, the leading $x$ cancels:
 
 ```math
 \int{\frac{e^u\,du}{2}}=\int{\frac{1}{2}\cdot e^u\,du}=\frac{1}{2}\int{e^u\,du}
 ```
 
-Nun haben wir ein Grundintegral und wir wissen das $e^u$ abgeleitet/integriert $e^u$ bleibt können wir das Integral lösen
+We now have a basic integral, and since the derivative/integral of $e^u$ is $e^u$, we can solve it:
 
 ```math
-\frac{1}{2}\int{e^u\,du}=\frac{1}{2}e^u +C
+\frac{1}{2}\int{e^u\,du}=\frac{1}{2}e^u + C
 ```
 
-Oftmals will man noch die originale Variable beibehalten, dafür macht man dann eine Rücksubstitution.
+Often we want to return to the original variable, so we perform a back‑substitution:
 
 ```math
-\frac{1}{2}e^u +C=\frac{1}{2}e^{x^2} +C
+\frac{1}{2}e^u + C=\frac{1}{2}e^{x^2} + C
 ```
 
-## Integration durch Substitutionen eines bestimmten Integrals
+## Integration by Substitution of a Definite Integral
 
-Bei einem bestimmten Integral gehen wir genau gleich vor wie bei einem unbestimmten jedoch haben wir noch 2 weitere Schritte. Zwar müssen wir die Grenzen auch ersetzen und am Schluss dann das Integral ausrechnen. Dafür verwenden wir das folgende Beispiel
+For a definite integral we proceed exactly as for an indefinite one, but there are two additional steps: we must also transform the limits and finally evaluate the integral. We illustrate this with the following example
 
 ```math
 \int_{0}^{1}{x\cdot \sqrt{1+x^2}}
 ```
 
-Wir setzen $u=1+x^2$ und somit auch $dx=\frac{du}{x'}=\frac{du}{2x}$
+We set $u = 1 + x^2$ and thus $dx=\dfrac{du}{x'}=\dfrac{du}{2x}$.
 
-Nun müssen wir die Grenzen noch ersetzen. Für die untere Grenze ist $x=0$ und somit dann $u=1+0^2=1$. Für die obere Grenze $x=1$ und somit $u=1+1^2=2$. Nun können wir alles ersetzen.
+Next we replace the limits. For the lower limit $x = 0$, so $u = 1+0^2 = 1$.
+For the upper limit $x = 1$, so $u = 1+1^2 = 2$. Now we substitute everything:
 
 ```math
-\int_{0}^{1}{x\cdot \sqrt{1+x^2}}=\int_{u=1}^{u=2}{x\cdot \sqrt{u}\,\frac{du}{2x}}=\int_{1}^{2}{\frac{1}{2}\cdot \sqrt{u}\,du}=\frac{1}{2}\int_{1}^{2}{(u)^{\frac{1}{2}}\,du}
+\int_{0}^{1}{x\cdot \sqrt{1+x^2}}
+  =\int_{u=1}^{u=2}{x\cdot \sqrt{u}\,\frac{du}{2x}}
+  =\int_{1}^{2}{\frac{1}{2}\cdot \sqrt{u}\,du}
+  =\frac{1}{2}\int_{1}^{2}{u^{\frac{1}{2}}\,du}
 ```
 
-Weil $(\frac{2}{3}u^{\frac{3}{2}})'=(u)^{\frac{1}{2}}$ können wir schreiben
+Because $\bigl(\tfrac{2}{3}u^{\frac{3}{2}}\bigr)' = u^{\frac{1}{2}}$, we write
 
 ```math
-\frac{1}{2}\cdot\Big|\frac{2}{3}u^{\frac{3}{2}}\Big|_1^2=\frac{1}{3}\cdot\Big|\sqrt{u^3}\Big|_1^2=\frac{1}{3}(\sqrt{8}-1)
+\frac{1}{2}\cdot\Bigl|\frac{2}{3}u^{\frac{3}{2}}\Bigr|_1^2
+   =\frac{1}{3}\cdot\Bigl|\sqrt{u^3}\Bigr|_1^2
+   =\frac{1}{3}(\sqrt{8}-1)
 ```
 
 ## Integration by Parts
 
-Die Partielle Integrationsmethode wird auch oft Produkt integration genannt. Wir können diese Integrationsmethode wenn schon aus einem Produkt von 2 Funktionen besteht oder es als Produkt von 2 Funktionen darstellbar ist z.B. $\int{x\cdot e^x \,dx}$
+The method of partial integration is also often called product integration.
+We can apply this integration method whenever the integrand already is, or can be rewritten as, a product of two functions, e.g. $\int{x\cdot e^x \,dx}$:
 
 ```math
 \int{f(x)\,dx}=\int{u(x)\cdot v(x)\,dx}
 ```
 
-Wichtig dabei ist, dass auch eines der Faktoren einfach integrierbar ist, wir sehen also schnell das eines der Faktoren eine Ableitung ist.
+It is important that one of the factors is easy to integrate; thus we quickly see that one of the factors is a derivative.
 
-Aus der Produktregel der Differentialrechnung können wir folgendes bilden
-
-```math
-\begin{align*}
-&(u(x)\cdot v(x))'=u'(x)\cdot v(x)+u(x)\cdot v'(x) \\
-&\Rightarrow u(x)\cdot v'(x)=(u(x)\cdot v(x))'-u'(x)\cdot v(x)
-\end{align*}
-```
-
-Unbestimmte Integration auf beiden Seiten führt dann zu
+From the product rule of differential calculus we derive
 
 ```math
 \begin{align*}
-&\int{u(x)\cdot v'(x)\,dx}= \int{(u(x)\cdot v(x))'\,dx}-\int{u'(x)\cdot v(x)\,dx} \\
-&\Rightarrow \int{u(x)\cdot v'(x)\,dx}= u(x)\cdot v(x)-\int{u'(x)\cdot v(x)\,dx}
+&(u(x)\cdot v(x))' = u'(x)\cdot v(x) + u(x)\cdot v'(x)\\
+&\Rightarrow u(x)\cdot v'(x) = (u(x)\cdot v(x))' - u'(x)\cdot v(x)
 \end{align*}
 ```
 
-Mit dieser Formel kann man dann die Integration lösen wenn man $u(x)$ ableitet und $v(x)$ integriert.
-
-Genau so kann man auch vorgehen wenn es ein bestimmtes Integral ist nur ist es dann
+Integrating both sides gives
 
 ```math
-\int_a^b{u(x)\cdot v'(x)\,dx} = \Big|u(x)\cdot v(x)\Big|_a^b-\int_a^b{u'(x)\cdot v(x)\,dx}
+\begin{align*}
+&\int{u(x)\cdot v'(x)\,dx}
+   = \int{(u(x)\cdot v(x))'\,dx} - \int{u'(x)\cdot v(x)\,dx}\\
+&\Rightarrow \int{u(x)\cdot v'(x)\,dx}
+   = u(x)\cdot v(x) - \int{u'(x)\cdot v(x)\,dx}
+\end{align*}
 ```
 
-Mehr dazu findest du auch [hier](https://studyflix.de/mathematik/partielle-integration-1862)
+Using this formula, one can carry out the integration by differentiating $u(x)$ and integrating $v(x)$.
+
+For a definite integral, the corresponding formula is
+
+```math
+\int_a^b{u(x)\cdot v'(x)\,dx}
+   = \Bigl|u(x)\cdot v(x)\Bigr|_a^b - \int_a^b{u'(x)\cdot v(x)\,dx}
+```
+
+You can find more on this [here](https://studyflix.de/mathematik/partielle-integration-1862).
 
 <Callout type="example">
-Wir wollen das follgende Problem lösen
+
+We want to solve the following problem
 
 ```math
 \int{x\cdot e^x \, dx}=?
 ```
 
-Zuerst zerlegen wir den Integrand wie oben beschrieben.
+First we split the integrand as described above:
 
-- $u(x)=x$
-- $u'(x)=1$
-- $v'(x)=e^x$
-- $v(x)=e^x$
+* $u(x)=x$
+* $u'(x)=1$
+* $v'(x)=e^x$
+* $v(x)=e^x$
 
-Aus der Formel können wir dann folgende berechnen
+Using the formula we obtain
 
 ```math
 \begin{align*}
-\int{x\cdot e^x \, dx}&=x \cdot e^x - \int{1 \cdot e^x \,dx} \\
-&\Rightarrow x \cdot e^x - e^x + C = (x-1) \cdot e^x + C
+\int{x\cdot e^x \, dx}
+   &= x \cdot e^x - \int{1 \cdot e^x \,dx}\\
+   &\Rightarrow x \cdot e^x - e^x + C
+    = (x-1)\cdot e^x + C
 \end{align*}
 ```
+
 </Callout>
 
 ## Integration using Partial Fractions
 
-Integration durch Partialbruchzerlegung ist eine spezielle Integrationsmethode die für echt gebrochen rationale Funktionen entwickelt wurde. Ist eine Funktion unecht gebrochen, muss sie zuerst in eine ganzrationale und eine echt gebrochen rationale Funktionen zerlegt werden mit der Polynomdivision. Diese Umwandlung ist immer möglich.
+Integration using partial fraction decomposition is a specialized technique developed for **proper** rational functions.
+If a rational function is **improper**, it must first be decomposed into a polynomial part and a proper rational part by polynomial division. This transformation is always possible.
 
-Ein Video zu der Polynomdivision gibt es [hier](https://www.youtube.com/watch?v=j_f9itXqZHs)
+A video on polynomial division is available [here](https://www.youtube.com/watch?v=j_f9itXqZHs).
 
-Ist der Grad $m$ des Nenners größer als der Grad $n$ des Zählers, so heißt die rationale Funktion $f(x)$ echt gebrochen.
+If the degree $m$ of the denominator is greater than the degree $n$ of the numerator, the rational function $f(x)$ is called *proper*.
 
 ```math
-\text{echt gebrochene Funktion: }f(x)=\frac{x^3+x^2+x+1}{x^4+3x+3}
+\text{proper rational function: }f(x)=\frac{x^3+x^2+x+1}{x^4+3x+3}
 ```
 
 ```math
-\text{unecht gebrochene Funktion: }f(x)=\frac{x^3+x^2+x+1}{x^2+5x+1}
+\text{improper rational function: }f(x)=\frac{x^3+x^2+x+1}{x^2+5x+1}
 ```
 
-Im Nenner sollte ausserdem eine Linearfaktorzerlegung sein. Ist dies nicht der Fall kann dies schnell erreicht werden, indem man die Nullstellen herausfindet.
+Moreover, the denominator should already be factored into linear factors.
+If this is not the case, it can be achieved quickly by finding the zeros.
 
-Ein Video zu der Linearfaktorzerlegung gibt es [hier](https://www.youtube.com/watch?v=wRc6AtV7HmY)
+A video on factoring into linear factors is available [here](https://www.youtube.com/watch?v=wRc6AtV7HmY).
 
-Danach kann die Partialbruchzerlegung einfach gemacht werden und von jedem partiellen Bruch das Integral berechnen dank der Summenregel.
+After that, the partial fraction decomposition can be carried out easily, and the integral of each partial fraction can be computed thanks to the sum rule.
 
-Ein Video zu dem ganzen Prozess findest du [hier](https://www.youtube.com/watch?v=E39ne4lX8s8)
+You can find a video on the entire process [here](https://www.youtube.com/watch?v=E39ne4lX8s8).
 
 ## Improper Integrals
 
 [link](https://studyflix.de/mathematik/uneigentliche-integrale-1806)
+
+### Direct Comparison Test for Integrals
+
+often cant give concrete antiderivative. example of $e^{-x^2}$.
+
+### Integral Test
 
 ## Double Integrals
 
