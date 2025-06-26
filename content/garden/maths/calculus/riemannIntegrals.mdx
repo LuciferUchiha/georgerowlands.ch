@@ -207,8 +207,7 @@ This value is then called the **Riemann Integral** of the function $f$ on the in
 \int_{a}^{b} f(x) dx = S_\text{lower}(f) = S_\text{upper}(f)
 ```
 
-You can think of the symbol $\int$ as a stylized letter "S" for "Sum", which is what we are doing here, we are summing up the areas of the rectangles that are formed by the function values and the width of the intervals. The symbol $dx$ is just like the notation in the derivative that indicates a small change in the variable $x$, here between the two points $x_{i-1}$ and $x_i$ in the partition $P$. We call the function $f$ the **integrand**, the interval $[a,b]$ the **integration interval**, $a$ the **lower limit of integration**, and $b$ the **upper limit of integration** and $x$ the **variable of integration**.
-
+You can think of the symbol $\int$ as a stylized letter "S" for "Sum", which is what we are doing here, we are summing up the areas of the rectangles that are formed by the function values and the width of the intervals. The symbol $dx$ is just like the notation in the derivative that indicates a small change in the variable $x$, here between the two points $x_{i-1}$ and $x_i$ in the partition $P$. We call the function $f$ the **integrand**, the interval $[a,b]$ the **integration interval**, $a$ the **lower limit of integration**, and $b$ the **upper limit of integration** and $x$ the **variable of integration**. Because the lower and upper limit of integration are defined we also call this a **definite integral**.
 
 <Callout type="example">
 Let's check if the constant function $f(x)=c$ is Riemann integrable on the interval $[a,b]$ and compute the integral.
@@ -615,10 +614,6 @@ Uses Riemann's criterion and uniform continuity.
 
 However, the converse is not true, i.e. not every Riemann integrable function is continuous. 
 
-Below is a *self-contained, polished version* of the example—including a short comment on why every polynomial is continuous—ready to paste in.
-
----
-
 <Callout type="example">
 
 We revisit $f(x)=x^{2}$ on the interval $[0,1]$. Every polynomial is continuous on $\mathbb R$, hence also on any closed interval—because. By linearity we also know it is Riemann integrable on $[0,1]$. If we didn't know that, we could still have found the integral with the knowledge that $f$ is continuous on $[0,1]$ and hence uniformly continuous there. 
@@ -829,191 +824,249 @@ What is the intuition behind this? Why does it hold?
 </Callout>
 
 <Callout type="proof">
-This is all a bit confusing as I dont get the intuition. Let
-
-$$
-m=\min_{[a,b]} f,\qquad M=\max_{[a,b]} f .
-$$
-
-Because $f$ is continuous on the compact interval $[a,b]$, both exist and
-
-$$
-m\le f(x)\le M\quad\text{for all }x\in[a,b].
-$$
-
-Multiplying by the positive length $(b-a)$ and integrating gives
-
-$$
-m(b-a)\;\le\;\int_a^b f(x)\,dx\;\le\;M(b-a).
-$$
-
-Define
-
-$$
-A\;=\;\frac1{b-a}\int_a^b f(x)\,dx,
-$$
-
-the *average value* of $f$ on $[a,b]$.  Then $m\le A\le M$.  continuity of $f$ implies the intermediate value property, so **there exists** $c\in[a,b]$ with $f(c)=A$, i.e.
-
-$$
-\int_a^b f(x)\,dx \;=\; f(c)(b-a).
-$$
-
-Assume
-
-- $f,g:[a,b]\to\mathbb{R}$ are continuous,
-- $g(x)\ge0$ on $[a,b]$.
-
-If $\int_a^b g(x)\,dx = 0$, then $g\equiv0$ (continuity), and the identity holds trivially for any $c$.
-
-Otherwise set
-
-$$
-G := \int_a^b g(x)\,dx \;>\; 0,
-\quad\quad
-m := \min_{[a,b]} f,\;
-M := \max_{[a,b]} f .
-$$
-
-Multiply the pointwise inequality $m\le f(x)\le M$ by $g(x)$ and integrate:
-
-$$
-m\,G \;\le\; \int_a^b f(x)g(x)\,dx \;\le\; M\,G .
-$$
-
-Form the ratio
-
-$$
-A := \frac{\displaystyle\int_a^b f(x)g(x)\,dx}{\displaystyle\int_a^b g(x)\,dx},
-\qquad
-m \le A \le M .
-$$
-
-As before, the intermediate value theorem gives a point $c\in[a,b]$ with
-
-$$
-f(c)=A\;=\;\frac{\int_a^b f(x)g(x)\,dx}{\int_a^b g(x)\,dx}
-$$
-
-which results in:
-
-$$
-\int_a^b f(x)g(x)\,dx \;=\; f(c)\int_a^b g(x)\,dx
-$$
-
+This is all a bit confusing as I dont get the intuition. But i know it uses the Mean Value Theorem for Integrals.
 </Callout>
 
-## Antiderivatives and the Fundamental Theorem of Calculus
+## Antiderivatives
 
-indefinite integral of a function is the antiderivative of that function.
+As mentioned in the introduction there are two motivations for the integral. The first one was to find the area under a curve this resulted in us defining the **definite integral** as the limit of Riemann sums. This is a very important concept in calculus and has many applications in physics, engineering, and other fields. 
 
-Main theorem of calculus states that the integral and the derivative are inverse operations. 
+The second motivation is that given the derivative of a function, can we reconstruct the original function? This is what results in the **antiderivative** or **primitive function**. The antiderivative is a function that, when differentiated, gives us the original function. This is the inverse operation of differentiation and is also known as **integration**.  More formally we say that a function $F:I\to\mathbb R$ is an antiderivative of a function $f:I\to\mathbb R$ on an interval $I$ if it is continious and differentiable on $I$ and satisfies the following condition:
+
+```math
+F'(x) = f(x)\quad\forall x\in I.
+```
+
+This leads us to the **main theorem of calculus**, which states that the if we define the antiderivative $F$ of a continous function $f$ as:
+
+```math
+F(x) = \int_{a}^{x}f(t)\,dt\quad \forall x\in[a,b].
+```
+
+then $F$ is continious and differentiable on the interval $[a,b]$ so then the derivative of $F$ is equal to the function $f$:
+
+```math
+F'(x) = f(x)\quad \forall x\in[a,b].
+```
+
+The intuition behind defining the antiderivative as the integral of the function $f$ from a fixed point $a$ to a variable upper limit $x$ is that we are accumulating the values of the function $f$ over the interval $[a,x]$. This means that as we move the upper limit $x$ along the interval, we are summing up the values of the function $f$ from the point $a$ to the point $x$.
+
+
+The intuition defining the antiderivative as the integral of the function $f$ from a fixed point $a$ to a variable upper limit $x$ is that we are accumulating the values of the function $f$ over the interval $[a,x]$ like a sliding window. As that window slides, you keep a running total of the area between the graph of $f(t)$ and the t-axis.
+
+So if we then take a tiny step from $x$ to $x + h$ then our sliding window scoops up a thin vertical strip whose width is approximately $h$ and whose height is approximately $f(x)$ (the function’s value doesn’t change much over such a small span). So the extra area you gain is roughly the rectangle's area, $f(x) h$. If we then let that step size $h$ go to zero, the rate at which $F$ grew over that tiny move is:
+
+```math
+\lim_{h\to 0}\frac{F(x+h) - F(x)}{h} = \lim_{h\to 0}\frac{\int_{a}^{x+h}f(t)\,dt - \int_{a}^{x}f(t)\,dt}{h} = \lim_{h\to 0}\frac{\int_{x}^{x+h}f(t)\,dt}{h}.
+```
+
+Which leads us to the definition of the derivative of $F$ at the point $x$, showing that the derivative of the antiderivative $F$ is equal to the function $f$.
+
+<Callout type="todo">
+Add image
+</Callout>
+
+So we summarize the main theorem of calculus states that the integral and the derivative are inverse operations and the following holds:
 
 ```math
 F(x) = \int_{a}^{x}f(t)\,dt\quad \forall x\in[a,b] \qquad\text{and} \qquad F'(x) = f(x)\quad \forall x\in[a,b].
 ```
 
-The Fundamental Theorem of Calculus 
+<Callout type="proof">
+To prove the main theorem of calculus, we need to show that the function $F$ defined as the integral of $f$ from a fixed point $a$ to a variable upper limit $x$ is continuous and differentiable on the interval $[a,b]$, and that its derivative is equal to the function $f$. So we need to show the following limit exists:
 
 ```math
-\int_{a}^{b}f(x)\,dx = F(b) - F(a)
+\lim_{x \to x_0} \frac{F(x) - F(x_0)}{x - x_0} = f(x_0).
 ```
 
-where $F$ is an antiderivative of $f$ on the interval $[a,b]$. 
+First we can calculate the difference of the two points as follows:
 
-Integrationsconstant $C$
+```math
+F(x) - F(x_0) = \int_{a}^{x}f(t)\,dt - \int_{a}^{x_0}f(t)\,dt = \int_{x_0}^{x}f(t)\,dt.
+```
+
+From the mean value theorem for integrals we know that there exists a point $c\in[x_0,x]$ such that:
+
+```math
+\int_{x_0}^{x}f(t)\,dt = f(c)(x - x_0).
+```
+
+This means that we can rewrite the difference as follows:
+
+```math
+\begin{align*}
+F(x) - F(x_0) = f(c)(x - x_0) \\
+\frac{F(x) - F(x_0)}{x - x_0} = f(c).
+\end{align*}
+```
+
+Now we can again take the limit as $x$ approaches $x_0$. Importantly as $x$ approaches $x_0$, the point $c$ also approaches $x_0$ because $c$ is always between $x_0$ and $x$. So we can write:
+
+```math
+\begin{align*}
+F'(x_0) &= \lim_{x \to x_0} \frac{F(x) - F(x_0)}{x - x_0} \\
+&= \lim_{x \to x_0} f(c) \\
+&= f(x_0).
+\end{align*}
+```
+</Callout>
+
+## Indefinite Integrals
+
+Because of the main theorem of calculus we know that every continious function $f$ on the interval $[a,b]$ has at least one antiderivative $F$ Specifically:
+
+```math
+F(x) = \int_{a}^{x}f(t)\,dt\quad \forall x\in[a,b].
+```
+
+If we assume there are two antiderivatives $F$ and $G$ of $f$ on the interval $[a,b]$, so $F'(x) = G'(x) = f(x)$ for all $x \in [a,b]$. Then we can define a new function $H$ as the difference of the two antiderivatives:
+
+```math
+H(x) = F(x) - G(x)\quad \forall x\in[a,b].
+```
+
+If we would take the derivative of this new function $H$, we would get:
+```math
+\begin{align*}
+H'(x) &= F'(x) - G'(x) \\
+&= f(x) - f(x) \\
+&= 0\quad \forall x\in[a,b].
+\end{align*}
+```
+
+This means that the derivative of $H$ is zero for all $x\in[a,b]$. Because the derivative exists we can apply the Mean Value Theorem for derivatives. So for any $x_1,x_2\in[a,b]$ with $x_1<x_2$, the MVT gives a point $c\in(x_1,x_2)$ such that:
+
+```math
+\begin{align*}
+H'(c) &= \frac{H(x_2) - H(x_1)}{x_2 - x_1} \\
+&= 0.
+\end{align*}
+```
+
+Since the choice of $x_1,x_2$ is arbitrary for the above, $H$ takes the same value everywhere on $[a,b]$. Hence $H(x)=C$ for some constant $C\in\mathbb R$ which results in the following:
+
+```math
+\begin{align*}
+H(x) &= C \\
+F(x) - G(x) &= C \\
+F(x) &= G(x) + C \quad \forall x\in[a,b].
+\end{align*}
+```
+
+This shows that any two antiderivatives of a continuous function differ by nothing more than the additive constant $C$. This constant is the so-called **integration constant**. This means that the antiderivative is not unique, but rather unique up to a constant. This matches with our idea of the Integral as the inverse operation of the derivative. As we have: 
+
+```math
+(2x)' = 2 = (2x + 1)' = (2x + 2)' = (2x + C)' \quad\forall C\in\mathbb R.
+```
+
+So we actually have an infinite number of antiderivatives for a given function $f$ on the interval $[a,b]$. Hence we can write the following:
 
 ```math
 \int f(x)\,dx = F(x) + C
 ```
 
-where $F$ is an antiderivative of $f$ on the interval $[a,b]$.
+This is called the **indefinite integral** of the function $f$ and represents the family of all antiderivatives of $f$ on the interval $[a,b]$.
 
-We can now much easier calculate the integral of a function by finding an antiderivative of that function and then evaluating it at the endpoints of the interval. 
+## Fundamental Theorem of Calculus
+
+We can now connect the two motivations for the integral, the area under a curve and the antiderivative to make the **Fundamental Theorem of Calculus** (FTC). The FTC states that if $f$ is a continuous function on the interval $[a,b]$, then the following holds:
+
+```math
+\int_{a}^{b}f(x)\,dx = F(b) - F(a)
+```
+
+This means that the definite integral of a function $f$ over the interval $[a,b]$ can be computed by just finding an antiderivative $F$ of $f$ and evaluating it at the endpoints of the interval. This is a very powerful result because it allows us to compute integrals without having to compute Riemann sums or limits and it combines all the different aspects of calculus in a single theorem.
+
+<Callout type="proof">
+For the proof of the Fundamental Theorem of Calculus we first note the following:
+
+```math
+\begin{align*}
+F(x) = \int_{a}^{x}f(t)\,dt \\
+F(b) = \int_{a}^{b}f(t)\,dt \\
+F(a) = \int_{a}^{a}f(t)\,dt = 0.
+\end{align*}
+```
+
+Therefore we can write the definite integral as follows:
+
+```math
+\int_{a}^{b}f(x)\,dx = F(b) - 0 = F(b) - F(a).
+```
+
+We also know that for any antiderivative $G$ we have $G = F + C$ for some constant $C$. Now if we use we get:
+
+```math
+\begin{align*}
+G(b) = F(b) + C \\
+G(a) = F(a) + C \\
+G(b) - G(a) = (F(b) + C) - (F(a) + C) = F(b) - F(a).
+\end{align*}
+```
+
+Putting it all together we get for any antiderivative $G$ of $f$ on the interval $[a,b]$:
+
+```math
+\int_{a}^{b}f(x)\,dx = G(b) - G(a).
+```
+</Callout>
 
 <Callout type="example">
-f(x) = x^2 from 0 to 1
+We can now easily calcualte the integral of the function $f(x)=x$ on the interval $[1,2]$ using the Fundamental Theorem of Calculus:
 
-f(x) = x from 1 to 2
+```math
+\begin{align*}
+\int_{1}^{2}x\,dx &= \Bigl[\tfrac{1}{2}x^{2}\Bigr]_{1}^{2} \\
+&= \tfrac{1}{2}\cdot 2^{2} - \tfrac{1}{2}\cdot 1^{2} \\
+&= \tfrac{4}{2} - \tfrac{1}{2} \\
+&= \tfrac{3}{2}.
+\end{align*}
+```
 
-f(x) = cosx from 0 to pi/2
+The reason for the fraction is because of the power rule the 2 will be taken down as a factor and the exponent will be reduced by one. By adding the fraction we can elimate the factor 2 when taking it down.
 </Callout>
-## Integration by Substitution
 
-When integrating by substitution we want to simplify the integral—or, if possible, transform it into a basic integral—by means of suitable variable substitutions.
-
-We can best use this method when we have the following situation
+<Callout type="example">
+We can also calculate the integral of the function $f(x)=x^2$ on the interval $[0,1]$ using the Fundamental Theorem of Calculus and verify the result from the example above:
 
 ```math
-\int{f(x)\,dx}=\int{f(g(x))\cdot g(x)'\,dx}
+\begin{align*}
+\int_{0}^{1}x^{2}\,dx &= \Bigl[\tfrac{1}{3}x^{3}\Bigr]_{0}^{1} \\
+&= \tfrac{1}{3}\cdot 1^{3} - \tfrac{1}{3}\cdot 0^{3} \\
+&= \tfrac{1}{3} - 0 \\
+&= \tfrac{1}{3}.
+\end{align*}
 ```
+</Callout>
 
-that is, when we have a composition of functions and the derivative of the inner function also appears in the integrand. A common example is
+<Callout type="example">
+We can also calculate more tricky integrals using the Fundamental Theorem of Calculus. For example, we can calculate the integral of the function $f(x)=cos(x)$ on the interval $[0, \frac{\pi}{2}]$:
 
 ```math
-\int{x\cdot e^{x^2}}
+\begin{align*}
+\int_{0}^{\frac{\pi}{2}} \cos(x) \, dx &= \Bigl[\sin(x)\Bigr]_{0}^{\frac{\pi}{2}} \\
+&= \sin(\frac{\pi}{2}) - \sin(0) \\
+&= 1 - 0 = 1.
+\end{align*}
 ```
 
-because it is not readily solvable otherwise. Here \$g(x)=x^2\$, whose derivative is \$g'(x)=2x\$, but we only have \$x\$ and not \$2x\$ in the integrand.
-The reason is the constant‑factor rule, which says we can factor out the 2; therefore we may ignore constants in the above condition.
-
-We have already completed the first step: we have identified the substitution variable \$u=x^2\$.
-However, we must replace everything involving the old variable, including the \$dx\$. To do this we use the relation
-$dx=\dfrac{du}{u'}=\dfrac{du}{2x}$.
-
-Now we can substitute everywhere in the integral:
+We can also look at the partner of cosine the sine function. For example, we can calculate the integral of the function $f(x)=sin(x)$ on the interval $[0, \pi]$:
 
 ```math
-\int{x\cdot e^{x^2}}=\int{x\cdot e^u\, \frac{du}{2x}}
+\begin{align*}
+\int_{0}^{\pi} \sin(x) \, dx &= \Bigl[-\cos(x)\Bigr]_{0}^{\pi} \\
+&= -\cos(\pi) - (-\cos(0)) \\
+&= -(-1) - (-1) \\
+&= 1 - (-1) \\
+&= 1 + 1 \\
+&= 2.
+\end{align*}
 ```
-
-Thanks to the condition above, the leading $x$ cancels:
-
-```math
-\int{\frac{e^u\,du}{2}}=\int{\frac{1}{2}\cdot e^u\,du}=\frac{1}{2}\int{e^u\,du}
-```
-
-We now have a basic integral, and since the derivative/integral of $e^u$ is $e^u$, we can solve it:
-
-```math
-\frac{1}{2}\int{e^u\,du}=\frac{1}{2}e^u + C
-```
-
-Often we want to return to the original variable, so we perform a back‑substitution:
-
-```math
-\frac{1}{2}e^u + C=\frac{1}{2}e^{x^2} + C
-```
-
-## Integration by Substitution of a Definite Integral
-
-For a definite integral we proceed exactly as for an indefinite one, but there are two additional steps: we must also transform the limits and finally evaluate the integral. We illustrate this with the following example
-
-```math
-\int_{0}^{1}{x\cdot \sqrt{1+x^2}}
-```
-
-We set $u = 1 + x^2$ and thus $dx=\dfrac{du}{x'}=\dfrac{du}{2x}$.
-
-Next we replace the limits. For the lower limit $x = 0$, so $u = 1+0^2 = 1$.
-For the upper limit $x = 1$, so $u = 1+1^2 = 2$. Now we substitute everything:
-
-```math
-\int_{0}^{1}{x\cdot \sqrt{1+x^2}}
-  =\int_{u=1}^{u=2}{x\cdot \sqrt{u}\,\frac{du}{2x}}
-  =\int_{1}^{2}{\frac{1}{2}\cdot \sqrt{u}\,du}
-  =\frac{1}{2}\int_{1}^{2}{u^{\frac{1}{2}}\,du}
-```
-
-Because $\bigl(\tfrac{2}{3}u^{\frac{3}{2}}\bigr)' = u^{\frac{1}{2}}$, we write
-
-```math
-\frac{1}{2}\cdot\Bigl|\frac{2}{3}u^{\frac{3}{2}}\Bigr|_1^2
-   =\frac{1}{3}\cdot\Bigl|\sqrt{u^3}\Bigr|_1^2
-   =\frac{1}{3}(\sqrt{8}-1)
-```
+</Callout>
 
 ## Integration by Parts
+
+Comes from the product rule of differentiation and is a method to integrate the product of two functions. It is particularly useful when one of the functions is easy to differentiate and the other is easy to integrate.
 
 The method of partial integration is also often called product integration.
 We can apply this integration method whenever the integrand already is, or can be rewritten as, a product of two functions, e.g. $\int{x\cdot e^x \,dx}$:
@@ -1056,21 +1109,24 @@ For a definite integral, the corresponding formula is
 You can find more on this [here](https://studyflix.de/mathematik/partielle-integration-1862).
 
 <Callout type="example">
-
-We want to solve the following problem
+We want to solve the following problem which would be rather difficult to solve otherwise:
 
 ```math
 \int{x\cdot e^x \, dx}=?
 ```
 
-First we split the integrand as described above:
+First we split the integrand as described above and get:
 
-* $u(x)=x$
-* $u'(x)=1$
-* $v'(x)=e^x$
-* $v(x)=e^x$
+```math
+\begin{align*}
+u(x) &= x\\
+u'(x) &= 1\\
+v'(x) &= e^x\\
+v(x) &= e^x
+\end{align*}
+```
 
-Using the formula we obtain
+Using the integration by parts formula we can now compute the integral:
 
 ```math
 \begin{align*}
@@ -1081,6 +1137,105 @@ Using the formula we obtain
 \end{align*}
 ```
 
+Because multiplication is commutative, we can also swap the order of the factors in the integrand, i.e. we can also write:
+
+```math
+\int{x\cdot e^x \, dx} = \int{e^x \cdot x \, dx}
+```
+
+and then use the same method with:
+
+```math
+\begin{align*}
+u(x) &= e^x\\
+u'(x) &= e^x\\
+v'(x) &= x\\
+v(x) &= \frac{1}{2}x^2
+\end{align*}
+```
+
+we get the same result:
+
+</Callout>
+
+## Integration by Substitution
+
+Comes from the chain rule of differentiation and is a method to simplify integrals by changing the variable of integration. It is particularly useful when the integrand is a composition of functions, i.e. when it can be expressed as $f(g(x))$ where $g(x)$ is a function whose derivative also appears in the integrand.
+
+When integrating by substitution we want to simplify the integral—or, if possible, transform it into a basic integral—by means of suitable variable substitutions.
+
+We can best use this method when we have the following situation
+
+```math
+\int{f(x)\,dx}=\int{f(g(x))\cdot g(x)'\,dx}
+```
+
+that is, when we have a composition of functions and the derivative of the inner function also appears in the integrand. 
+
+<Callout type="example">
+A common example is
+
+```math
+\int{x\cdot e^{x^2}}
+```
+
+because it is not readily solvable otherwise. Here \$g(x)=x^2\$, whose derivative is \$g'(x)=2x\$, but we only have \$x\$ and not \$2x\$ in the integrand.
+The reason is the constant‑factor rule, which says we can factor out the 2; therefore we may ignore constants in the above condition.
+
+We have already completed the first step: we have identified the substitution variable \$u=x^2\$.
+However, we must replace everything involving the old variable, including the \$dx\$. To do this we use the relation
+$dx=\dfrac{du}{u'}=\dfrac{du}{2x}$.
+
+Now we can substitute everywhere in the integral:
+
+```math
+\int{x\cdot e^{x^2}}=\int{x\cdot e^u\, \frac{du}{2x}}
+```
+
+Thanks to the condition above, the leading $x$ cancels:
+
+```math
+\int{\frac{e^u\,du}{2}}=\int{\frac{1}{2}\cdot e^u\,du}=\frac{1}{2}\int{e^u\,du}
+```
+
+We now have a basic integral, and since the derivative/integral of $e^u$ is $e^u$, we can solve it:
+
+```math
+\frac{1}{2}\int{e^u\,du}=\frac{1}{2}e^u + C
+```
+
+Often we want to return to the original variable, so we perform a back‑substitution:
+
+```math
+\frac{1}{2}e^u + C=\frac{1}{2}e^{x^2} + C
+```
+</Callout>
+<Callout type="example">
+For a definite integral we proceed exactly as for an indefinite one, but there are two additional steps: we must also transform the limits and finally evaluate the integral. We illustrate this with the following example
+
+```math
+\int_{0}^{1}{x\cdot \sqrt{1+x^2}}
+```
+
+We set $u = 1 + x^2$ and thus $dx=\dfrac{du}{x'}=\dfrac{du}{2x}$.
+
+Next we replace the limits. For the lower limit $x = 0$, so $u = 1+0^2 = 1$.
+For the upper limit $x = 1$, so $u = 1+1^2 = 2$. Now we substitute everything:
+
+```math
+\int_{0}^{1}{x\cdot \sqrt{1+x^2}}
+  =\int_{u=1}^{u=2}{x\cdot \sqrt{u}\,\frac{du}{2x}}
+  =\int_{1}^{2}{\frac{1}{2}\cdot \sqrt{u}\,du}
+  =\frac{1}{2}\int_{1}^{2}{u^{\frac{1}{2}}\,du}
+```
+
+Because $\bigl(\tfrac{2}{3}u^{\frac{3}{2}}\bigr)' = u^{\frac{1}{2}}$, we write
+
+```math
+\frac{1}{2}\cdot\Bigl|\frac{2}{3}u^{\frac{3}{2}}\Bigr|_1^2
+   =\frac{1}{3}\cdot\Bigl|\sqrt{u^3}\Bigr|_1^2
+   =\frac{1}{3}(\sqrt{8}-1)
+```
 </Callout>
 
 ## Integration using Partial Fractions
