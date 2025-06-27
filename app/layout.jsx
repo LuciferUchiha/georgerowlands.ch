@@ -6,6 +6,7 @@ import './globals.css'
 import BuyMeACoffee from '../public/buyMeACoffee.svg'
 import Image from 'next/image'
 import { Analytics } from '@vercel/analytics/next';
+import 'katex/dist/katex.min.css'
  
 export const metadata = {
   // Define your metadata here
