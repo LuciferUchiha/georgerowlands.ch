@@ -2,10 +2,11 @@ import Callout from "@components/Callout/Callout";
 
 # Algebraic Structures
 
-non-empty set S of objects such as numbers, functions or matrices with one or more operations $*$. 
+An algebraic structure consists of a non-empty set $S$ together with one or more operations defined on that set. These elements can be numbers, functions, matrices, or other mathematical objects.
 
-Depending on the properties of the operations and the set, the algebraic structure can be classified into different types.
-which can be useful for understanding the properties of the set and the operations and deriving proofs.
+The combination of a set with its operations creates a framework that allows us to classify mathematical systems based on the properties they satisfy. By identifying which algebraic structure a system belongs to (such as groups, rings, or fields), we can immediately understand its fundamental properties, apply established theorems, and develop more efficient proofs.
+
+These structures form a hierarchy of increasingly specialized systems, each building upon the properties of simpler structures while adding new requirements.
 
 ## Operations
 
@@ -33,14 +34,43 @@ division is not a closed operation on the set of integers. For example:
 
 ### Binary Operation 
 
-More specifically, a binary operation on a set is a binary operation whose two domains and the codomain are the same set, i.e
-the operation takes two elements from the set and returns an element from the set (closure).
+A binary operation on a set $S$ is a function $*: S \times S \rightarrow S$ that maps each ordered pair of elements from $S$ to an element in the same set $S$. Formally:
+
+```math
+*: S \times S \rightarrow S
+```
+
+This means a binary operation takes two elements from the set and returns an element from the same set, satisfying the closure property by definition.
+
+<Callout type="example">
+Common binary operations include:
+- Addition (+) on integers: $\mathbb{Z} \times \mathbb{Z} \rightarrow \mathbb{Z}$
+- Multiplication (·) on real numbers: $\mathbb{R} \times \mathbb{R} \rightarrow \mathbb{R}$
+- Composition (∘) on functions: $\{f | f: X \rightarrow X\} \times \{f | f: X \rightarrow X\} \rightarrow \{f | f: X \rightarrow X\}$
+</Callout>
 
 ### N-ary Operation
 
-Officially doesn't have to be closed.
+An n-ary operation on a set $S$ is a function that takes $n$ inputs from $S$ and produces an output, which may or may not be in $S$:
+
+```math
+f: S^n \rightarrow T
+```
+
+Unlike binary operations on a set, n-ary operations don't necessarily map back to the same set (closure is not required by definition). When $T = S$, we have a closed n-ary operation.
+
+<Callout type="example">
+Examples of n-ary operations:
+- Unary operation (n=1): Negation on integers, $-: \mathbb{Z} \rightarrow \mathbb{Z}$
+- Ternary operation (n=3): if-then-else in programming, which takes a boolean condition and two values
+- Nullary operation (n=0): A constant function that takes no arguments
+</Callout>
 
 ## Properties of Operations
+
+The behavior of algebraic structures is determined by the properties that their operations satisfy. These properties establish rules for how elements interact and provide the foundation for classifying different algebraic systems. By understanding which properties hold for a given operation, we can determine what theorems apply and how to manipulate expressions within the structure.
+
+The following key properties define most common algebraic structures and form the basis for more complex mathematical systems:
 
 ### Commutativity
 
@@ -154,6 +184,10 @@ not necessarily for the right:
 
 ### Existential Clauses
 
+<Callout type="todo">
+From here on the content is just a rough outline and very incomplete. It needs to be fleshed out with more details and examples to complete it.
+</Callout>
+
 There are also operations that define existential clauses, i.e the operation requires the existence of a special 
 element that satisfies a certain property.
 
@@ -234,3 +268,23 @@ of integers modulo a prime number
 ### Modules
 
 generalization of vector spaces, but instead of scalars being in a field, they are in a ring??
+
+## Homomorphisms
+
+morphe means shape in greek, so homomorphism means same shape.
+
+homomorphism is a structure-preserving map between two algebraic structures of the same type.
+Homomorphisms of vector spaces are also called linear maps
+
+map, i.e relation for $f: S \to T$ that preserves the structure of the algebraic structure so if they both
+define the same operation *, then the homomorphism will preserve the operation. Preserving 
+the operation means that it doesn't matter if you apply the operation before or after the homomorphism i.e 
+the mapping. Why is this useful think of linear transformations in linear algebra?
+
+```math
+f(a * b) = f(a) * f(b)
+```
+
+### Isomorphisms
+
+bijective homomorphism, i.e a homomorphism that is also a bijection can go back and forth between the two structures.

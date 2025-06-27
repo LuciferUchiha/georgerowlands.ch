@@ -5,7 +5,5 @@ export default {
   infinityCountability: "",
   relationsFunctions: "Relations & Functions",
   algebraicStructures: "",
-  homomorphisms: "",
-  combinatorics: "",
   proofs: ""
 }
