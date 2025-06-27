@@ -490,7 +490,11 @@ If we have the functions $f,g\in\mathcal R([a,b])$ and $g(x) \neq 0$ for all $x\
 no clue
 </Callout>
 
-<Callout type="example">
+<Callout type="example" title="Area Between Two Curves">
+A good example that strengthens intuition.
+</Callout>
+
+<Callout type="example" title="Polynomials are Integrable">
 From the previously mentioned rules we can easily derive that polynomials are also integrable. Because a polynomial $p(x)$ can be written as the sum of monomials, i.e. $p(x) = a_0 + a_1 x + a_2 x^2 + \dots + a_n x^n$, where $a_i$ are real coefficients, we can apply the summation rule and the scalar multiplication rule to each monomial separately. So every polynomial is Riemann integrable due to the fact that the integral is linear.
 
 ```math
@@ -566,7 +570,7 @@ First we recall the definition of continuity at a point, which is also called **
 |x-x_0|<\delta\;\Longrightarrow\;|f(x)-f(x_0)|<\varepsilon.
 ```
 
-We have also seen that if this condition holds for every point $x_0$ in the Domain $D$ of the function, then we say that the function is continuous. The same holds if the domain is an interval $I$, i.e. the function is continuous on the interval $I$ if it is continuous at every point in $I$. More formally, we can write $f$ is continious on $I$ if the following holds:
+We have also seen that if this condition holds for every point $x_0$ in the Domain $D$ of the function, then we say that the function is continuous. The same holds if the domain is an interval $I$, i.e. the function is continuous on the interval $I$ if it is continuous at every point in $I$. More formally, we can write $f$ is continuous on $I$ if the following holds:
 
 ```math
 \forall x_0\in[a,b]\;\forall\varepsilon>0\;\exists\delta>0:
@@ -831,7 +835,7 @@ This is all a bit confusing as I dont get the intuition. But i know it uses the 
 
 As mentioned in the introduction there are two motivations for the integral. The first one was to find the area under a curve this resulted in us defining the **definite integral** as the limit of Riemann sums. This is a very important concept in calculus and has many applications in physics, engineering, and other fields. 
 
-The second motivation is that given the derivative of a function, can we reconstruct the original function? This is what results in the **antiderivative** or **primitive function**. The antiderivative is a function that, when differentiated, gives us the original function. This is the inverse operation of differentiation and is also known as **integration**.  More formally we say that a function $F:I\to\mathbb R$ is an antiderivative of a function $f:I\to\mathbb R$ on an interval $I$ if it is continious and differentiable on $I$ and satisfies the following condition:
+The second motivation is that given the derivative of a function, can we reconstruct the original function? This is what results in the **antiderivative** or **primitive function**. The antiderivative is a function that, when differentiated, gives us the original function. This is the inverse operation of differentiation and is also known as **integration**.  More formally we say that a function $F:I\to\mathbb R$ is an antiderivative of a function $f:I\to\mathbb R$ on an interval $I$ if it is continuous and differentiable on $I$ and satisfies the following condition:
 
 ```math
 F'(x) = f(x)\quad\forall x\in I.
@@ -843,7 +847,7 @@ This leads us to the **main theorem of calculus**, which states that the if we d
 F(x) = \int_{a}^{x}f(t)\,dt\quad \forall x\in[a,b].
 ```
 
-then $F$ is continious and differentiable on the interval $[a,b]$ so then the derivative of $F$ is equal to the function $f$:
+then $F$ is continuous and differentiable on the interval $[a,b]$ so then the derivative of $F$ is equal to the function $f$:
 
 ```math
 F'(x) = f(x)\quad \forall x\in[a,b].
@@ -913,7 +917,7 @@ F'(x_0) &= \lim_{x \to x_0} \frac{F(x) - F(x_0)}{x - x_0} \\
 
 ## Indefinite Integrals
 
-Because of the main theorem of calculus we know that every continious function $f$ on the interval $[a,b]$ has at least one antiderivative $F$ Specifically:
+Because of the main theorem of calculus we know that every continuous function $f$ on the interval $[a,b]$ has at least one antiderivative $F$ Specifically:
 
 ```math
 F(x) = \int_{a}^{x}f(t)\,dt\quad \forall x\in[a,b].
@@ -1066,38 +1070,38 @@ We can also look at the partner of cosine the sine function. For example, we can
 
 ## Integration by Parts
 
-Comes from the product rule of differentiation and is a method to integrate the product of two functions. It is particularly useful when one of the functions is easy to differentiate and the other is easy to integrate.
-
-The method of partial integration is also often called product integration.
-We can apply this integration method whenever the integrand already is, or can be rewritten as, a product of two functions, e.g. $\int{x\cdot e^x \,dx}$:
+As mentioned a lot of the integration rules and methods can be derived from the rules of differentiation. One such method is **integration by parts**. This method is based on the product rule of differentiation and is used to integrate the product of two functions which is why it is also known as **partial integration** or **product integration**. It is particularly useful when one of the functions is easy to differentiate and the other is easy to integrate for example $h(x) = x \cdot e^x$. Or in general when the integrand can be expressed or rewritten as a product of two functions:
 
 ```math
-\int{f(x)\,dx}=\int{u(x)\cdot v(x)\,dx}
+\int{h(x)\,dx}=\int{f(x) \cdot g(x)\,dx}
 ```
 
-It is important that one of the factors is easy to integrate; thus we quickly see that one of the factors is a derivative.
-
-From the product rule of differential calculus we derive
+where $f(x)$ is a function that is easy to differentiate and $g(x)$ is a function that is easy to integrate. The integration by parts formula is then given by:
 
 ```math
-\begin{align*}
-&(u(x)\cdot v(x))' = u'(x)\cdot v(x) + u(x)\cdot v'(x)\\
-&\Rightarrow u(x)\cdot v'(x) = (u(x)\cdot v(x))' - u'(x)\cdot v(x)
-\end{align*}
+\int{f(x)\cdot g'(x)\,dx} = f(x)\cdot g(x) - \int{f'(x)\cdot g(x)\,dx}
 ```
 
-Integrating both sides gives
+<Callout type="proof">
+This formula is derived from the product rule of differentiation. We can rewrite the product rule as follows:
 
 ```math
 \begin{align*}
-&\int{u(x)\cdot v'(x)\,dx}
-   = \int{(u(x)\cdot v(x))'\,dx} - \int{u'(x)\cdot v(x)\,dx}\\
-&\Rightarrow \int{u(x)\cdot v'(x)\,dx}
-   = u(x)\cdot v(x) - \int{u'(x)\cdot v(x)\,dx}
+(f(x) \cdot g(x))' &= f'(x) \cdot g(x) + f(x) \cdot g'(x) \\
+f'(x) \cdot g(x) &= (f(x) \cdot g(x))' - f(x) \cdot g'(x).
 \end{align*}
 ```
 
-Using this formula, one can carry out the integration by differentiating $u(x)$ and integrating $v(x)$.
+If we then take the integral of both sides and using the fact that the integral of a derivative is the original function (up to a constant), we get:
+
+```math
+\begin{align*}
+\int{f'(x) \cdot g(x)\,dx} &= \int\Bigl((f(x) \cdot g(x))' - f(x) \cdot g'(x)\Bigr)\,dx \\
+&= \int{(f(x) \cdot g(x))'\,dx} - \int{f(x) \cdot g'(x)\,dx} \\
+&= f(x) \cdot g(x) - \int{f(x) \cdot g'(x)\,dx} + C,
+\end{align*}
+```
+</Callout>
 
 For a definite integral, the corresponding formula is
 
@@ -1106,23 +1110,57 @@ For a definite integral, the corresponding formula is
    = \Bigl|u(x)\cdot v(x)\Bigr|_a^b - \int_a^b{u'(x)\cdot v(x)\,dx}
 ```
 
-You can find more on this [here](https://studyflix.de/mathematik/partielle-integration-1862).
+<Callout type="proof">
+We define the function $H$ as follows:
+
+```math
+H(x) = f(x) \cdot g(x).
+```
+
+We then know that if we differentiate $H$ using the product rule, we get:
+
+```math
+H'(x) = f'(x) \cdot g(x) + f(x) \cdot g'(x).
+```
+
+Because we know that $H$ is an antiderivative of the above summation, we can write the following using the Fundamental Theorem of Calculus:
+
+```math
+\begin{align*}
+\int{H'(x)\,dx} = \int{f'(x) \cdot g(x) + f(x) \cdot g'(x)\,dx} \\
+&= H(b) - H(a) \\
+&= f(b) \cdot g(b) - f(a) \cdot g(a).
+\end{align*}
+````
+
+If we were then to just integrate the second term, we can use the above equation to rewrite it as follows:
+
+```math
+\begin{align*}
+\int{f'(x) \cdot g(x)\,dx} + \int{f(x) \cdot g'(x)\,dx} = H(b) - H(a) \\
+\int{f'(x) \cdot g(x)\,dx} = H(b) - H(a) - \int{f(x) \cdot g'(x)\,dx} \\
+\int{f'(x) \cdot g(x)\,dx} = f(b) \cdot g(b) - f(a) \cdot g(a) - \int{f(x) \cdot g'(x)\,dx}.
+\end{align*}
+```
+
+Which gives us the integration by parts formula.
+</Callout>
 
 <Callout type="example">
 We want to solve the following problem which would be rather difficult to solve otherwise:
 
 ```math
-\int{x\cdot e^x \, dx}=?
+\int_{0}^{1}{x\cdot e^x \, dx}
 ```
 
 First we split the integrand as described above and get:
 
 ```math
 \begin{align*}
-u(x) &= x\\
-u'(x) &= 1\\
-v'(x) &= e^x\\
-v(x) &= e^x
+f(x) &= x\\
+f'(x) &= 1\\
+g'(x) &= e^x\\
+g(x) &= e^x
 \end{align*}
 ```
 
@@ -1131,9 +1169,12 @@ Using the integration by parts formula we can now compute the integral:
 ```math
 \begin{align*}
 \int{x\cdot e^x \, dx}
-   &= x \cdot e^x - \int{1 \cdot e^x \,dx}\\
-   &\Rightarrow x \cdot e^x - e^x + C
-    = (x-1)\cdot e^x + C
+   &= \Bigl[x\cdot e^x\Bigr]_{0}^{1} - \int_{0}^{1}{1\cdot e^x \, dx} \\
+   &= \Bigl[1\cdot e^1 - 0\cdot e^0\Bigr] - \Bigl[e^x\Bigr]_{0}^{1} \\
+   &= e - (e^1 - e^0) \\
+   &= e - (e - 1) \\
+   &= e - e + 1 \\
+   &= 1.
 \end{align*}
 ```
 
@@ -1147,44 +1188,205 @@ and then use the same method with:
 
 ```math
 \begin{align*}
-u(x) &= e^x\\
-u'(x) &= e^x\\
-v'(x) &= x\\
-v(x) &= \frac{1}{2}x^2
+f(x) &= e^x\\
+f'(x) &= e^x\\
+g'(x) &= x\\
+g(x) &= \frac{1}{2}x^2
 \end{align*}
 ```
 
-we get the same result:
+However, we can see that this is a suboptimal choice because it quickly gets a bit complicated to find the antiderivative:
 
+```math
+\begin{align*}
+\int{e^x \cdot x \, dx}
+   &= \Bigl[e^x \cdot \frac{1}{2}x^2\Bigr]_{0}^{1} - \int_{0}^{1}{e^x \cdot x \, dx} \\
+   &= \Bigl[e^1 \cdot \frac{1}{2}\cdot 1^2 - e^0 \cdot \frac{1}{2}\cdot 0^2\Bigr] - \int_{0}^{1}{e^x \cdot x \, dx} \\
+   &= \Bigl[e - 0\Bigr] - \int_{0}^{1}{e^x \cdot x \, dx} \\
+   &= e - \int_{0}^{1}{e^x \cdot x \, dx}.
+\end{align*}
+```
+</Callout>
+<Callout type="example">
+I nice trick is to make a function into a multiplication so that we can use integration by parts. For example, we can rewrite the integral of the function $f(x)=\ln(x)$ as follows:
+
+```math
+\int \ln(x)\,dx = \int \ln(x) \cdot 1\,dx.
+```
+
+This allows us to use integration by parts with the following choices:
+
+```math
+\begin{align*}
+f(x) &= \ln(x)\\
+f'(x) &= \frac{1}{x}\\
+g'(x) &= 1\\
+g(x) &= x.
+\end{align*}
+```
+
+This gives us the following integral:
+
+```math
+\begin{align*}
+\int \ln(x)\,dx &= \Bigl[\ln(x) \cdot x\Bigr] - \int \frac{1}{x} \cdot x\,dx \\
+&= \Bigl[\ln(x) \cdot x\Bigr] - \int 1\,dx \\
+&= \Bigl[\ln(x) \cdot x\Bigr] - x + C \\
+&= x \cdot \ln(x) - x + C.
+\end{align*}
+```
 </Callout>
 
 ## Integration by Substitution
 
-Comes from the chain rule of differentiation and is a method to simplify integrals by changing the variable of integration. It is particularly useful when the integrand is a composition of functions, i.e. when it can be expressed as $f(g(x))$ where $g(x)$ is a function whose derivative also appears in the integrand.
-
-When integrating by substitution we want to simplify the integral—or, if possible, transform it into a basic integral—by means of suitable variable substitutions.
-
-We can best use this method when we have the following situation
+Another important method for solving integrals is **integration by substitution**. This method is also known as **u-substitution** or **change of variables**. The method comes from the chain rule of differentiation and is used to simplify integrals by changing the variable of integration. It is particularly useful when the integrand is a composition of functions, i.e. when it can be expressed as $f(g(x))$ where $g(x)$ is a function whose derivative also appears in the integrand. So we can best use this method when we have an integral in the form:
 
 ```math
-\int{f(x)\,dx}=\int{f(g(x))\cdot g(x)'\,dx}
+\int{f(g(x))\cdot g(x)'\,dx}
 ```
 
-that is, when we have a composition of functions and the derivative of the inner function also appears in the integrand. 
+The idea is that with a suitable change of variable $u = g(x)$, we can transform the integral into one that is easier to evaluate. The formula for definite integrals where $g:[a,b]\to\mathbb R$ is a continuous differentiable function and its image $g(x) \subseteq I$ and $f:[I]\to\mathbb R$ is a continuous function is:
+
+```math
+\int_{a}^{b}{f(g(x))\cdot g'(x)\,dx} = \int_{g(a)}^{g(b)}{f(u)\,du}
+```
+
+and for indefinite integrals:
+
+```math
+\int{f(g(x))\cdot g'(x)\,dx} = \int{f(u)\,du} = F(u) + C = F(g(x)) + C,
+```
+
+You can think of the substitution as re-labelling the $x$-axis. The point $x=a$ maps to $u=g(a)$, the point $x=b$ maps to $u=g(b)$, and the differential $dx$ transforms to $du$ via the chain rule:
+
+```math
+du = g'(x)\,dx \quad\Longrightarrow\quad \frac{du}{dx} = g'(x) \quad\Longrightarrow\quad dx = \frac{du}{g'(x)}.
+```
+
+<Callout type="proof">
+Because $f$ is said to be continous so there exists an antiderivative $H$. We also know that $g$ is a continuous differentiable function, so we can apply the chain rule to get the following:
+
+```math
+(H \circ g)'(x) = H'(g(x)) \cdot g'(x) = f(g(x)) \cdot g'(x).
+```
+
+If we then also integrate both sides and use the Fundamental Theorem of Calculus, we get:
+
+```math
+\begin{align*}
+\int{f(g(x))\cdot g'(x)\,dx} = \int{(H \circ g)'(x)\,dx} \\
+&= (H \circ g)(b) - (H \circ g)(a) \\
+&= H(g(b)) - H(g(a)) \\
+&= \int_{g(a)}^{g(b)}{f(u)\,du}.
+\end{align*}
+```
+
+Where $H$ is an antiderivative of $f$ and $u=g(x)$.
+</Callout>
 
 <Callout type="example">
-A common example is
+Let's look at an example of how to use integration by substitution to solve an integral. We want to solve the following integral:
 
 ```math
-\int{x\cdot e^{x^2}}
+\int_{0}^{1} (1+x^{2})^{2025}\,2x\,dx.
 ```
 
-because it is not readily solvable otherwise. Here \$g(x)=x^2\$, whose derivative is \$g'(x)=2x\$, but we only have \$x\$ and not \$2x\$ in the integrand.
-The reason is the constant‑factor rule, which says we can factor out the 2; therefore we may ignore constants in the above condition.
+We can set $u = 1 + x^2$, then we have $du = 2x\,dx$, which gives us $dx = \frac{du}{2x}$.
 
-We have already completed the first step: we have identified the substitution variable \$u=x^2\$.
-However, we must replace everything involving the old variable, including the \$dx\$. To do this we use the relation
-$dx=\dfrac{du}{u'}=\dfrac{du}{2x}$.
+```math
+\begin{align*}
+\int_{x=0}^{x=1} (1+x^{2})^{2025}\,2x\,dx
+  &= \int_{u(0)}^{u(1)} u^{2025}\,du \\
+  &= \int_{1}^{2} u^{2025}\,du.
+\end{align*}
+```
+
+We then get take the antiderivative and substitute back to get the final result:
+
+```math
+\int_{1}^{2} u^{2025}\,du = \Bigl[\frac{1}{2026}u^{2026}\Bigr]_{1}^{2}
+  = \frac{1}{2026}\Bigl(2^{2026} - 1^{2026}\Bigr)
+  = \frac{1}{2026}(2^{2026} - 1).
+```
+</Callout>
+<Callout type="example">
+We can also calculate the following integral:
+
+```math
+\int{2x^3 + 1)^7 x^2 \,dx}.
+```
+
+We can use integration by substitution to solve this integral. We can set $u = 2x^3 + 1$. If we take the derivative we get $\frac{du}{dx} = 6x^2$, which gives us $dx = \frac{du}{6x^2}$. Using this substitution we can rewrite the integral as follows:
+
+```math
+\begin{align*}
+\int{(2x^3 + 1)^7 x^2 \,dx}
+   &= \int{u^7 \cdot x^2 \cdot \frac{du}{6x^2}} \\
+   &= \int{\frac{1}{6}u^7 \,du} \\
+   &= \frac{1}{6} \cdot \frac{u^8}{8} + C 
+   \end{align*}
+```
+
+We can then substitute back $u = 2x^3 + 1$ to get the final result:
+
+```math
+\begin{align*}
+\frac{1}{6} \cdot \frac{(2x^3 + 1)^8}{8} + C 
+   &= \frac{(2x^3 + 1)^8}{48} + C.
+\end{align*}
+```
+
+We can also check our result by differentiating the result and see if we get the original integrand back:
+
+```math
+\begin{align*}
+(\frac{(2x^3 + 1)^8}{48} + C)' 
+   &= \frac{1}{48} \cdot 8(2x^3 + 1)^7 \cdot (6x^2) \\
+   &= \frac{1}{6}(2x^3 + 1)^7 x^2.
+\end{align*}
+```
+</Callout>
+<Callout type="example">
+Let's look at another example of how to use integration by substitution to solve an integral. We want to solve the following integral:
+
+```math
+\int_{0}^{1}{x\cdot \sqrt{1+x^2}}
+```
+
+We set $u = 1 + x^2$ and thus we have $du = 2x\,dx$, which gives us $dx = \frac{du}{2x}$.
+
+Next we replace the limits. For the lower limit $x = 0$, so $u = 1+0^2 = 1$.
+For the upper limit $x = 1$, so $u = 1+1^2 = 2$. Now we substitute everything:
+
+```math
+\int_{0}^{1}{x\cdot \sqrt{1+x^2}}
+  =\int_{u=1}^{u=2}{x\cdot \sqrt{u}\,\frac{du}{2x}}
+  =\int_{1}^{2}{\frac{1}{2}\cdot \sqrt{u}\,du}
+  =\frac{1}{2}\int_{1}^{2}{u^{\frac{1}{2}}\,du}
+```
+
+Because $\bigl(\tfrac{2}{3}u^{\frac{3}{2}}\bigr)' = u^{\frac{1}{2}}$, we write
+
+```math
+\frac{1}{2}\cdot\Bigl[\frac{2}{3}u^{\frac{3}{2}}\Bigr]_{1}^{2}
+  = \frac{1}{3}\Bigl(2^{\frac{3}{2}} - 1^{\frac{3}{2}}\Bigr)
+  = \frac{1}{3}\Bigl(2\sqrt{2} - 1\Bigr).
+```
+</Callout>
+<Callout type="example">
+We can also use integration by substitution to solve indefinite integrals. The only difference is that we don't have to change the limits of integration. For example, we can solve the following integral:
+
+```math
+\int{x\cdot e^{x^2}\,dx}.
+```
+
+because it is not readily solvable otherwise. Here $u(x)=x^2$, whose derivative is $u'(x)=2x$, but we only have $x$ and not $2x$ in the integrand.
+The reason is the constant factor, which says we can factor out the 2; therefore we may ignore constants in the above condition.
+
+We have already completed the first step by identifying the substitution variable $u=x^2$. Next, we must replace everything involving the old variable, including the $dx$. To do this we use the relation:
+```math
+u = x^2 \quad\Longrightarrow\quad u' = 2x \quad\Longrightarrow\quad u' = \frac{du}{dx} \quad\Longrightarrow\quad du = 2x\,dx.
+```   
 
 Now we can substitute everywhere in the integral:
 
@@ -1204,42 +1406,16 @@ We now have a basic integral, and since the derivative/integral of $e^u$ is $e^u
 \frac{1}{2}\int{e^u\,du}=\frac{1}{2}e^u + C
 ```
 
-Often we want to return to the original variable, so we perform a back‑substitution:
+Often we want to return to the original variable, so we perform a back-substitution:
 
 ```math
 \frac{1}{2}e^u + C=\frac{1}{2}e^{x^2} + C
 ```
 </Callout>
-<Callout type="example">
-For a definite integral we proceed exactly as for an indefinite one, but there are two additional steps: we must also transform the limits and finally evaluate the integral. We illustrate this with the following example
-
-```math
-\int_{0}^{1}{x\cdot \sqrt{1+x^2}}
-```
-
-We set $u = 1 + x^2$ and thus $dx=\dfrac{du}{x'}=\dfrac{du}{2x}$.
-
-Next we replace the limits. For the lower limit $x = 0$, so $u = 1+0^2 = 1$.
-For the upper limit $x = 1$, so $u = 1+1^2 = 2$. Now we substitute everything:
-
-```math
-\int_{0}^{1}{x\cdot \sqrt{1+x^2}}
-  =\int_{u=1}^{u=2}{x\cdot \sqrt{u}\,\frac{du}{2x}}
-  =\int_{1}^{2}{\frac{1}{2}\cdot \sqrt{u}\,du}
-  =\frac{1}{2}\int_{1}^{2}{u^{\frac{1}{2}}\,du}
-```
-
-Because $\bigl(\tfrac{2}{3}u^{\frac{3}{2}}\bigr)' = u^{\frac{1}{2}}$, we write
-
-```math
-\frac{1}{2}\cdot\Bigl|\frac{2}{3}u^{\frac{3}{2}}\Bigr|_1^2
-   =\frac{1}{3}\cdot\Bigl|\sqrt{u^3}\Bigr|_1^2
-   =\frac{1}{3}(\sqrt{8}-1)
-```
-</Callout>
 
 ## Integration using Partial Fractions
 
+<Callout type="todo">
 Integration using partial fraction decomposition is a specialized technique developed for **proper** rational functions.
 If a rational function is **improper**, it must first be decomposed into a polynomial part and a proper rational part by polynomial division. This transformation is always possible.
 
@@ -1263,16 +1439,117 @@ A video on factoring into linear factors is available [here](https://www.youtube
 After that, the partial fraction decomposition can be carried out easily, and the integral of each partial fraction can be computed thanks to the sum rule.
 
 You can find a video on the entire process [here](https://www.youtube.com/watch?v=E39ne4lX8s8).
+</Callout>
 
 ## Improper Integrals
 
-[link](https://studyflix.de/mathematik/uneigentliche-integrale-1806)
+So far we have only looked at integrals over compact intervals $[a,b]$ where $a$ and $b$ are finite real numbers. However, there are also integrals over non-compact intervals, i.e. intervals that extend to infinity. These integrals are called **improper integrals**. 
+
+```math
+\int_{a}^{\infty}f(x)\,dx \quad\text{or}\quad \int_{-\infty}^{b}f(x)\,dx \quad\text{or}\quad \int_{-\infty}^{\infty}f(x)\,dx.
+```
+
+Or also integrals over functions that are not bounded, i.e. where the function $f$ goes to infinity at some point in the interval $[a,b]$. These integrals are also called **improper integrals**. For example, we can look at the following integral:
+
+```math
+\int_{0}^{1}\frac{1}{\sqrt{x}} \,dx. \text{ or } \int_{0}^{\infty}\frac{1}{(1-x)^2} \,dx.
+```
+
+As $x$ approaches $0$, the function $\frac{1}{\sqrt{x}}$ goes to infinity, so the integral is improper. However, if we would take any $\epsilon>0$ and look at the interval $[\epsilon,1]$ we would get a finite integral:
+
+```math
+\begin{align*}
+\int_{\epsilon}^{1}\frac{1}{\sqrt{x}} \,dx &= \Bigl[\frac{x^{\frac{1}{2}}}{\frac{1}{2}}\Bigr]_{\epsilon}^{1} \\
+&= \Bigl[2\sqrt{x}\Bigr]_{\epsilon}^{1} \\
+&= 2\sqrt{1} - 2\sqrt{\epsilon} \\
+&= 2 - 2\sqrt{\epsilon}. 
+\end{align*}
+```
+
+As $\epsilon$ approaches $0$, the integral approaches $2$. So we then say that the improper integral converges to $2$:
+
+```math
+\int_{0}^{1}\frac{1}{\sqrt{x}} \,dx = \lim_{\epsilon\to 0}\int_{\epsilon}^{1}\frac{1}{\sqrt{x}} \,dx = 2.
+```
+
+From this we can see that improper integrals can be defined as limits of proper integrals. This idea is what leads us also to the definition of improper integrals over non-compact intervals. We define the impropert integral for the function $f: [a, \infty) if it is bounded and integrable on the interval $[a,b]$ for any $b>a$ as follows:
+
+```math
+\int_{a}^{\infty}f(x)\,dx = \lim_{b\to\infty}\int_{a}^{b}f(x)\,dx.
+``` 
+
+We then say that $f$ is integrable on $[a, \infty)$ if the improper integral converges. We can also define the improper integral for the function $f: (-\infty, b]$ if it is bounded and integrable on the interval $[a,b]$ for any $b>a$ as follows:
+
+```math
+\int_{-\infty}^{b}f(x)\,dx = \lim_{a\to-\infty}\int_{a}^{b}f(x)\,dx.
+```
+
+We then say that $f$ is integrable on $(-\infty, b]$ if the improper integral converges. If we have an integral over the whole real line, i.e. $(-\infty, \infty)$, we can split it into two parts and use the above definitions:
+
+```math
+\int_{-\infty}^{\infty}f(x)\,dx = \int_{-\infty}^{a}f(x)\,dx + \int_{a}^{\infty}f(x)\,dx = \lim_{b\to-\infty}\int_{b}^{a}f(x)\,dx + \lim_{c\to\infty}\int_{a}^{c}f(x)\,dx.
+```
+
+This means that the improper integral converges if both limits exist and therefore the integral converges.
+
+<Callout type="example">
+Let's look at an example of an improper integral. We want to solve the following integral:
+
+```math
+\int_{0}^{\infty}e^{-x} \,dx.
+```
+
+We can use the definition of improper integrals to solve this integral:
+
+```math
+\begin{align*}
+\int_{0}^{\infty}e^{-x} \,dx &= \lim_{b\to\infty}\int_{0}^{b}e^{-x} \,dx \\
+&= \lim_{b\to\infty}\Bigl[-e^{-x}\Bigr]_{0}^{b} \\
+&= \lim_{b\to\infty}\Bigl[-e^{-b} - (-e^{0})\Bigr] \\
+&= \lim_{b\to\infty}\Bigl[-e^{-b} + 1\Bigr] = 1.
+\end{align*}
+```
+</Callout>
+<Callout type="example">
+Another example of an improper integral is the following:
+
+```math
+\int_{1}^{\infty}\frac{1}{x^c} \,dx.
+```
+
+Again we can take the limit, but we need to be careful about the value of $c$:
+
+```math
+\begin{align*}
+\int_{1}^{\infty}\frac{1}{x^c} \,dx &= \lim_{b\to\infty}\int_{1}^{b}\frac{1}{x^c} \,dx \\
+&= \lim_{b\to\infty} \int_{1}^{b}x^{-c} \,dx \\
+&= \lim_{b\to\infty} \begin{cases}
+\Bigl[\ln(x)\Bigr]_{1}^{b} & \text{if } c=1 \\
+\Bigl[\frac{x^{-c +1}}{-c+1}\Bigr]_{1}^{b} & \text{if } c\neq 1
+\end{cases} \\
+&= \lim_{b\to\infty} \begin{cases}
+\Bigl[\ln(b) - \ln(1)\Bigr] & \text{if } c=1 \\
+\Bigl[\frac{b^{-c +1}}{-c+1} - \frac{1^{-c +1}}{-c+1}\Bigr] & \text{if } c\neq 1
+\end{cases}\\
+&= \lim_{b\to\infty} \begin{cases}
+\ln(b) & \text{if } c=1 \\
+\frac{b^{-c +1}}{-c+1} - \frac{1}{-c+1} & \text{if } c\neq 1
+\end{cases}.
+\end{align*}
+```
+
+So if $c=1$, the integral diverges to infinity. If $c>1$, the integral also diverges to infinity because $b^{-c +1}$ goes to $0$ as $b$ goes to infinity. If $c < 1$, the integral converges to $\frac{1}{c-1}$.
+</Callout>
 
 ### Direct Comparison Test for Integrals
+
+To see if the imporper integral converges or diverges, we can use the **direct comparison test**. 
 
 often cant give concrete antiderivative. example of $e^{-x^2}$.
 
 ### Integral Test
+
+A test that uses integrals to see if a series converges or diverges.
 
 ## Double Integrals
 
