@@ -1,4 +1,4 @@
 export default {
-  explanation: "",
+  complexNumbers: "",
   cheatSheet: ""
 }
