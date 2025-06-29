@@ -158,23 +158,23 @@ So, based on this sample, our estimated average student height $\theta$ is 172 c
 Once we have constructed an estimator $T$ for our parameter of interest $\theta$, we want to know how good our estimator is. One way to assess this is by examining its **bias**. The bias of an estimator tells us whether our estimator systematically overestimates or underestimates the true parameter value. More formally, for any parameter value $\theta \in \Theta$, the bias of an estimator $T$ is defined as:
 
 ```math
-\text{Bias}_{\theta}(T) = \mathbb{E}_\theta[T] - \theta
+\text{Bias}_{\theta}(T) = \E_\theta[T] - \theta
 ```
 
-Here, $\mathbb{E}_\theta[T]$ is the expected value (average outcome) of $T$ under the assumption that the true parameter is $\theta$. If the bias is zero for all $\theta$, i.e.
+Here, $\E_\theta[T]$ is the expected value (average outcome) of $T$ under the assumption that the true parameter is $\theta$. If the bias is zero for all $\theta$, i.e.
 
 ```math
-\text{Bias}_{\theta}(T) = 0 \quad \Longleftrightarrow \quad \mathbb{E}_\theta[T] = \theta \quad \forall \theta \in \Theta,
+\text{Bias}_{\theta}(T) = 0 \quad \Longleftrightarrow \quad \E_\theta[T] = \theta \quad \forall \theta \in \Theta,
 ```
 
 then $T$ is called **unbiased**. This means that if we were to repeat our data collection and estimation process over and over, on average, our estimator would return the true parameter value. If the bias is nonzero, then the estimator is **biased**. This means our estimator is systematically too high or too low, even on average.
 
-### Mean Squared Error (MSE)
+## Mean Squared Error (MSE)
 
 While bias tells us about the average "miss", it does not tell us about the **variability** of the estimator from sample to sample. For that, we use the **mean squared error** (MSE). The MSE is defined as:
 
 ```math
-\text{MSE}_{\theta}(T) = \mathbb{E}_\theta[(T - \theta)^2]
+\text{MSE}_{\theta}(T) = \E_\theta[(T - \theta)^2]
 ```
 
 This measures the average squared distance between our estimator and the true parameter. It is a way to combine both the **systematic error** (bias) and the **random error** (variance) into a single quantity. This allows us to rewrite the MSE as:
@@ -217,7 +217,7 @@ We can then calculate the MSE as follows:
 Now let's look at the second estimator, the sample mean $T^{(2)} = \frac{1}{n} \sum_{i=1}^{n} X_i$. Again we can calculate the expected value:
 
 ```math
-\mathbb{E}_\theta[T^{(2)}] = \mathbb{E}_\theta\left[ \frac{1}{n} \sum_{i=1}^n X_i \right] = \frac{1}{n} \sum_{i=1}^n \mathbb{E}_\theta[X_i] = \frac{1}{n} n \theta = \theta
+\E_\theta[T^{(2)}] = \E_\theta\left[ \frac{1}{n} \sum_{i=1}^n X_i \right] = \frac{1}{n} \sum_{i=1}^n \E_\theta[X_i] = \frac{1}{n} n \theta = \theta
 ```
 
 This means that the bias is again zero:
@@ -403,92 +403,212 @@ Notice how taking the log made differentiation and solving for the maximum strai
 
 ## Estimating Multiple Parameters
 
-So far we have seen cases where we have stochastic model with a single parameter $\theta \in \RR$ such as the success probability of a Bernoulli random variable. However, in many cases we want more complex models with multiple parameters $\theta_1, \theta_2, \ldots, \theta_m$ for $m \geq 2$ such as the normal distribution parameters $\mu$ and $\sigma^2$ simultaneously. In general we extend our parameter space to include all of these parameters:
+So far, we have seen cases where we have stochastic model with a single parameter $\theta \in \RR$ such as the success probability of a Bernoulli random variable. However, in many cases we want more complex models with multiple parameters $\theta_1, \theta_2, \ldots, \theta_m$ for $m \geq 2$ such as the normal distribution parameters $\mu$ and $\sigma^2$ simultaneously. In general we extend our parameter space to include all of these parameters:
 
 ```math
-(\theta_1, \theta_2, \ldots, \theta_k) \in \Theta \subseteq \RR^m
+(\theta_1, \theta_2, \ldots, \theta_k) \in \Theta \subseteq \mathbb{R}^k
 ```
 
-All of our previous definitions of estimators, bias, etc. still hold? Is it then just vector operations? Mabye show some this stuff.
+All our definitions and methods from above (estimators, bias, mean squared error, MLE, etc.) still apply; we now just work with vectors (and sometimes matrices) instead of scalars.
 
-<Callout type="example" title="Estimating Multiple Parameters">
-We want to estimate the parameters $\theta=(\mu, \sigma^2)$ or simply $\theta=(\mu, std)$ of a normal distribution simultaneously. We assume we have a sample of $n$ observations $x_i$ which are i.i.d. random variables $X_i$ drawn from a normal distribution with unknown mean $\mu$ and unknown variance $\sigma^2$ so:
+<Callout type="example" title="Estimating Mean and Variance of a Normal Distribution">
+Let's consider the important example of estimating both the mean and variance of a normal distribution from observed data. So we suppose $X_1, X_2, \ldots, X_n$ are i.i.d. random variables with
 
 ```math
-X_1, X_2, \ldots, X_n \text{ are i.i.d. } \sim \mathcal{N}(\mu, \sigma^2)
+X_i \sim \mathcal{N}(\mu, \sigma^2), \quad i = 1, \ldots, n
 ```
 
-The probability density function (PDF) for a normal distribution is given by:
+where both $\mu$ (mean) and $\sigma^2$ (variance) are unknown. Given a sample $x_1, \ldots, x_n$, we want to estimate $\mu$ and $\sigma^2$. The probability density function (PDF) for a single normal distributed observation is:
 
 ```math
-f_{X_i}(x_i; \mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right)
+f(x_i; \mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right)
 ```
 
-Because the observations are i.i.d., the joint likelihood function for the entire sample is the product of the individual PDFs:
-
-```math
-\L(x_1, \ldots, x_n; \mu, \sigma^2) = \prod_{i=1}^{n} f_{X_i}(x_i; \mu, \sigma^2) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right)
-```
-
-Taking the log of the likelihood function, we get the log-likelihood (maybe show in steps if anything complicated was done)
-
-```math
-?
-```
-
-To find the parameters $\theta=(\mu, \sigma^2)$ that maximize the log-likelihood, we can take partial derivatives with respect to $\mu$ and $\sigma^2$ and set them to zero. Because we want the maximum we are looking for the global maximum. Normally this would be a bit more complicated as you would have to do some checks with the hessian or something to make sure we get the global maximum and not a local maximum or that it is concave i dont know. However for the gaussian we know that it is always concave.First we differentiate with respect to $\mu$:
-
-```math
-?
-```
-
-So we get the maximum likelihood estimator for $\mu$ as:
-
-```math
-T_{\mu} = \frac{1}{n} \sum_{i=1}^{n} X_i = \bar{X}_n
-```
-
-and then if we place our observations we get the maximum likelihood estimate for $\mu$ as:
-
-```math
-\hat{\mu} = \frac{1}{n} \sum_{i=1}^{n} x_i
-```
-
-Which is simply the sample mean of the observed data. We can then do the same for $\sigma^2$. First we differentiate the log-likelihood with respect to $\sigma^2$:
-
-Do all the same stuff as above with the workings out blablabla. Make it clear how we got to the below.
-
-We then get the maximum likelihood estimator for $\sigma^2$ as:
-
-```math
-T_{\sigma^2} = \frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X}_n)^2 = \frac{1}{n} \sum_{i=1}^{n} (X_i)^2 - \bar{X}_n^2
-```
-
-We can actually also expand the square:
+Since the $X\_i$ are i.i.d., the joint likelihood is the product of the individual PDFs:
 
 ```math
 \begin{align*}
-T_{\sigma^2} &= \frac{1}{n} \sum_{i=1}^{n} (X_i - \bar{X}_n)^2 \\
-?
-&= \frac{1}{n} \sum_{i=1}^{n} (X_i)^2 - \bar{X}_n^2
+\mathcal{L}(x_1, \ldots, x_n; \mu, \sigma^2)
+&= \prod_{i=1}^n f(x_i; \mu, \sigma^2) \\
+&= \prod_{i=1}^n \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right) \\
+&= \left( \frac{1}{\sqrt{2\pi \sigma^2}} \right)^n \prod_{i=1}^n \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right) \\
+&= \frac{1}{(2\pi \sigma^2)^{n/2}} \exp\left( -\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2 \right )
 \end{align*}
 ```
 
-and if we place our observations we get the maximum likelihood estimate for $\sigma^2$ as:
+Here, we used the fact that $\prod\_{i=1}^n a = a^n$ for the normalizing constant, and that the exponential of a sum is the product of exponentials. Next we again take the log as it is much easier to work with the log-likelihood, since logs turn products into sums and exponents into products:
 
 ```math
-\hat{\sigma^2} = \frac{1}{n} \sum_{i=1}^{n} (x_i - \hat{\mu})^2 = \frac{1}{n} \sum_{i=1}^{n} (x_i)^2 - \hat{\mu}^2
+\begin{align*}
+\ell(x_1, \ldots, x_n; \mu, \sigma^2)
+&= \log \mathcal{L}(x_1, \ldots, x_n; \mu, \sigma^2) \\
+&= \log \left( \frac{1}{(2\pi \sigma^2)^{n/2}} \right ) - \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2 \\
+&= -\frac{n}{2} \log(2\pi \sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2
+\end{align*}
 ```
 
-This is the so called momentum estimator for $(\E[X], \V[X])$ for any model $P_\theta$ where $X_1, X_2, \ldots, X_n$ are i.i.d. random variables. However, it has the drawback that it is not unbiased for $(\E[X], \V[X])$ as it is biased for the variance. 
-
-First show that the estimator for the mu is unbiased then that it is biased for sigma. Show the maths and workings out.
-
-However, we can also derive an unbiased estimator by simply correcting the estimator for the variance as follows:
+Notice that the first term $-\frac{n}{2} \log(2\pi \sigma^2)$ is a function of $\sigma^2$ but is independent of $\mu$ so when we differentiate with respect to $\mu$, it acts as a multiplicative constant and does not affect the location of the maximum. When we differentiate the log-likelihood with respect to $\mu$. The only term depending on $\mu$ is the second term:
 
 ```math
-T'_{\sigma^2} = S^2 = \frac{n}{n-1}T_{\sigma^2} = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X}_n)^2 
+-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2
 ```
 
-The estimator then becomes unbiased for the variance. Because the estimator is so commonly used, it is often referred to as the "empirical sample variance" and is denoted by $S^2$. 
+We use the chain rule and power rule:
+
+```math
+\frac{\partial}{\partial \mu} (x_i - \mu)^2 = 2(x_i - \mu)(-1) = -2(x_i - \mu)
+```
+
+So, the derivative is:
+
+```math
+\begin{align*}
+\frac{\partial}{\partial \mu} \ell(x_1, \ldots, x_n; \mu, \sigma^2)
+&= -\frac{1}{2\sigma^2} \sum_{i=1}^n \frac{\partial}{\partial \mu} (x_i - \mu)^2 \\
+&= -\frac{1}{2\sigma^2} \sum_{i=1}^n -2(x_i - \mu) \\
+&= \frac{1}{\sigma^2} \sum_{i=1}^n (x_i - \mu)
+\end{align*}
+```
+
+The $-1$ comes from the chain rule because $\frac{d}{d\mu}(x\_i - \mu) = -1$ with respect to $\mu$. Next to find the maximum, we solve:
+
+```math
+\frac{\partial}{\partial \mu} \ell(x_1, \ldots, x_n; \mu, \sigma^2) = 0
+```
+
+However, it is important to note that for some models, maximizing the likelihood could result in finding local minima or saddle points, so you should check that the solution is indeed a maximum. For the normal distribution, the log-likelihood is a concave function in $\mu$ (a downward-facing parabola), so the critical point we find is the unique global maximum. In more complicated or non-concave cases, you might need to check the second derivative (the Hessian matrix, in higher dimensions) to confirm the maximum.
+
+So solving for $\mu$ we get:
+
+```math
+\sum_{i=1}^n (x_i - \mu) = 0 \implies \sum_{i=1}^n x_i = n\mu \implies \mu = \frac{1}{n} \sum_{i=1}^n x_i
+```
+
+So, the maximum likelihood estimator for $\mu$ is the sample mean:
+
+```math
+T_\mu = \bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i
+```
+
+and for the observed sample,
+
+```math
+\hat{\mu} = \frac{1}{n} \sum_{i=1}^n x_i
+```
+
+Next, we differentiate the log-likelihood with respect to $\sigma^2$. Here, both terms depend on $\sigma^2$:
+
+```math
+-\frac{n}{2} \log(2\pi \sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2
+```
+
+However to make the differentiation clearer, we can do it term by term:
+
+```math
+\begin{align*}
+\frac{\partial}{\partial \sigma^2} \log(2\pi \sigma^2) &= \log(2\pi) + \log(\sigma^2) = \frac{1}{\sigma^2}
+\frac{\partial}{\partial \sigma^2} \left(-\frac{1}{2\sigma^2} S_n\right) &= \frac{1}{2(\sigma^2)^2} S_n
+\end{align*}
+```
+
+Where $S_n = \sum_{i=1}^n (x_i - \mu)^2$. Putting it all together we have:
+
+```math
+\begin{align*}
+\frac{\partial}{\partial \sigma^2} \ell(x_1, \ldots, x_n; \mu, \sigma^2)
+&= -\frac{n}{2} \frac{1}{\sigma^2} + \frac{1}{2(\sigma^2)^2} \sum_{i=1}^n (x_i - \mu)^2
+\end{align*}
+```
+
+Setting this equal to zero and solving for $\sigma^2$ we get:
+
+```math
+\begin{align*}
+-\frac{n}{2} \frac{1}{\sigma^2} + \frac{1}{2(\sigma^2)^2} \sum_{i=1}^n (x_i - \mu)^2 &= 0 \\
+-n \sigma^2 + \sum_{i=1}^n (x_i - \mu)^2 &= 0 \\
+n \sigma^2 &= \sum_{i=1}^n (x_i - \mu)^2 \\
+\sigma^2 &= \frac{1}{n} \sum_{i=1}^n (x_i - \mu)^2
+\end{align*}
+```
+
+Notice we still have a $\mu$ in our estimator. To remove it we replace $\mu$ here with the estimator $\hat{\mu}$ because, in practice, the variance estimator depends on our best estimate of the mean (which we just found above). This ensures our variance estimator is based on the "center" of the observed data. Thus, the MLE estimator for the variance is:
+
+```math
+T_{\sigma^2} = \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X}_n)^2
+```
+
+We can expand the squared difference as follows:
+
+```math
+\begin{align*}
+T_{\sigma^2}
+&= \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X}_n)^2 \\
+&= \frac{1}{n} \left( \sum_{i=1}^n X_i^2 - 2\bar{X}_n \sum_{i=1}^n X_i + n\bar{X}_n^2 \right) \\
+&= \frac{1}{n} \left( \sum_{i=1}^n X_i^2 - 2n\bar{X}_n^2 + n\bar{X}_n^2 \right) \\
+&= \frac{1}{n} \sum_{i=1}^n X_i^2 - \bar{X}_n^2
+\end{align*}
+```
+
+and then get for observed data,
+
+```math
+\hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \hat{\mu})^2 = \frac{1}{n} \sum_{i=1}^n (x_i)^2 - \hat{\mu}^2
+```
+
+This is the so-called **momentum estimator** for $(\E[X], \V[X])$ for any model $P_\theta$ where $X_1, X_2, \ldots, X_n$ are i.i.d. random variables. Now let's see if our estimators are biased, i.e. if their expected values differ from the true parameter values by some constant:
+
+```math
+\E[\bar{X}_n] = \E\left[\frac{1}{n}\sum_{i=1}^n X_i\right]
+= \frac{1}{n}\sum_{i=1}^n \E[X_i] = \frac{1}{n}\sum_{i=1}^n \mu = \mu
+```
+
+So our mean estimator is unbiased:
+
+```math
+\text{Bias}_\mu(\bar{X}_n) = \E[\bar{X}_n] - \mu = 0
+```
+
+Next we compute the bias of the MLE variance estimator:
+
+```math
+\E[T_{\sigma^2}]
+= \E\left[ \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X}_n)^2 \right]
+= \frac{n-1}{n}\sigma^2
+```
+
+<Callout type="todo">
+How was this expectation calculated? Is it possible without variance?
+</Callout>
+
+So, because $\frac{n-1}{n} \sigma^2 < \sigma^2$, the MLE estimator systematically underestimates the true variance. This is the one drawback of the momentum estimator. However, we can obtain an **unbiased variance estimator** which is often used instead. To get this unbiased estimator for $\sigma^2$, we simply solve for a constant $c$ so that $\E[c T_{\sigma^2}] = \sigma^2$. So we set $S^2 = cT_{\sigma^2}$ and require $\E[S^2] = \sigma^2$:
+
+```math
+\E[S^2] = c \frac{n-1}{n} \sigma^2 = \sigma^2
+\implies c = \frac{n}{n-1}
+```
+
+Thus:
+
+```math
+\begin{align*}
+S^2 &= \frac{n}{n-1} T_{\sigma^2} \\
+&= \frac{n}{n-1} \cdot \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X}_n)^2 \\
+&= \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2
+\end{align*}
+```
+
+and for observed data:
+
+```math
+\hat{\sigma}_{\text{unbiased}}^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \hat{\mu})^2
+```
+
+This is the so-called **empirical sample variance**, and we have:
+
+```math
+\E[S^2] = \frac{1}{n-1} \E\left[ \sum_{i=1}^n (X_i - \bar{X}_n)^2 \right]
+= \frac{1}{n-1} (n-1)\sigma^2 = \sigma^2
+```
+
+Thus, $S^2$ is an unbiased estimator for $\sigma^2$.
 </Callout>
