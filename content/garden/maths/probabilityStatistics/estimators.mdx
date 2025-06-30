@@ -249,6 +249,12 @@ Would a concrete number example make sense here and help?
 
 ## Maximum Likelihood Estimation (MLE)
 
+<Callout type="todo">
+Why is the MLE estimator nice?
+1. It is **consistent**: As the sample size increases, the MLE converges in probability to the true parameter value and is also asymptotically unbiased.
+2. It is **efficient**: Among all consistent estimators, the MLE achieves the lowest possible variance in the limit as the sample size goes to infinity. Something with central limit theorem?
+</Callout>
+
 The **maximum likelihood estimation (MLE)** method is a powerful and widely used technique in statistics for estimating the parameters of a statistical model. It is based on the principle of **likelihood**, which measures how well a particular set of parameters explains the observed data. The ML-method (where “ML” for once doesn't mean machine learning but maximum likelihood!) is a **systematic approach to constructing estimators** that are often very good and have desirable properties. The idea is to choose parameter values that make the observed data as "likely" as possible, according to our chosen model family.
 
 Suppose we have collected a sample of data points $x_1, x_2, \ldots, x_n$, which we treat as a realization of random variables $X_1, X_2, \ldots, X_n$. As before, we assume these are **i.i.d.** random variables, each distributed according to some family $P_\theta$, parameterized by the unknown $\theta \in \Theta$.
@@ -580,7 +586,9 @@ Next we compute the bias of the MLE variance estimator:
 How was this expectation calculated? Is it possible without variance?
 </Callout>
 
-So, because $\frac{n-1}{n} \sigma^2 < \sigma^2$, the MLE estimator systematically underestimates the true variance. This is the one drawback of the momentum estimator. However, we can obtain an **unbiased variance estimator** which is often used instead. To get this unbiased estimator for $\sigma^2$, we simply solve for a constant $c$ so that $\E[c T_{\sigma^2}] = \sigma^2$. So we set $S^2 = cT_{\sigma^2}$ and require $\E[S^2] = \sigma^2$:
+So, because $\frac{n-1}{n} \sigma^2 < \sigma^2$, the MLE estimator systematically underestimates the true variance. This is the one drawback of the momentum estimator. However, as $n$ goes to infinity the bias goes to zero. So we say that the estimator is **asymptotically unbiased**. This means that as we collect more data, the bias becomes negligible and the estimator approaches the true parameter value.
+
+We can also obtain an **unbiased variance estimator** which is often used instead. To get this unbiased estimator for $\sigma^2$, we simply solve for a constant $c$ so that $\E[c T_{\sigma^2}] = \sigma^2$. So we set $S^2 = cT_{\sigma^2}$ and require $\E[S^2] = \sigma^2$:
 
 ```math
 \E[S^2] = c \frac{n-1}{n} \sigma^2 = \sigma^2
@@ -596,6 +604,12 @@ S^2 &= \frac{n}{n-1} T_{\sigma^2} \\
 &= \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2
 \end{align*}
 ```
+
+<Callout type="todo">
+Why are we allowed to just make this multiplication? Doesn't this have an effect on the model and paramter choice?
+
+Wont it now be less accurate then the original MLE estimator?
+</Callout>
 
 and for observed data:
 

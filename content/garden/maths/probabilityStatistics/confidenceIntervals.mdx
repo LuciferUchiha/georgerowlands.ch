@@ -1,1 +1,595 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
 # Confidence Intervals
+
+So far, we have seen that [point estimators](/garden/maths/probabilityStatistics/estimators) provide a single "best guess" for an unknown parameter $\theta$ based on observed data. However, point estimates alone do not express how much uncertainty is involved in our estimate. Often, it is more informative to report a **range of plausible values** for $\theta$ that is likely to contain the true parameter. This is known as a **confidence interval** and is an **interval estimate**.
+
+Just as estimators answer "What is our best guess for $\theta$?", **confidence intervals** answer "How reliable is our estimator, and how far might it be from the true parameter?" For instance, if we toss a coin $n=100$ times and observe $70$ heads, the [maximum likelihood estimator (MLE)]() gives us $0.7$ for the probability of heads. But is this estimate reliable? How much uncertainty is associated with it?
+
+Before defining the interval, we specify the **confidence level**, denoted $1 - \alpha$, where $\alpha$ is a small number such as $0.05$ or $0.01$. The most common choice is a 95% confidence level, so where $\alpha = 0.05$, but others like 99% with $\alpha = 0.01$ are also used.
+
+Next if we are given a sample of data $X_1, X_2, \ldots, X_n$ drawn from a model $P_\theta$ with parameter $\theta$, a **confidence interval** is a random interval $I = [A, B]$ where $A$ and $B$ are functions of the data:
+
+```math
+\begin{align*}
+a, b: \mathbb{R}^n \rightarrow \mathbb{R} \\
+A = a(X_1, X_2, \ldots, X_n) \\
+B = b(X_1, X_2, \ldots, X_n)
+\end{align*}
+```
+
+Such that, for all $\theta \in \Theta$ we have:
+
+```math
+\P_\theta(A \leq \theta \leq B) = 1 - \alpha
+```
+
+Here, $A$ and $B$ are themselves random variables, since they depend on the sample. The interpretation is that, before observing the data, the probability that the random interval $[A,B]$ contains the true parameter is exactly $1-\alpha$. However, let's go a bit more into detail of how this should be interpreted as confidence intervals are frequently misunderstood, even by professionals. The correct interpretation is subtle but crucial:
+
+- **A 95% confidence interval does NOT mean** there is a 95% probability that the true parameter lies inside the calculated interval. The parameter is fixed (but unknown), and the interval is random (because it depends on the sample). So the following statement is wrong: "There is a 95% probability that $\theta$ is between $A$ and $B$."
+- **A 95% confidence interval does NOT mean** that 95% of the observed data points fall within the interval. The interval is about the parameter, not the data. So the following statement is wrong: "95% of my data lies in $[A,B]$."
+- **A 95% confidence interval does NOT mean** that if you repeat the experiment, there is a 95% chance the new estimate will lie within the previous interval.
+
+**The correct interpretation** is that if we were to repeat the experiment many times and compute a confidence interval each time, then approximately 95% of those intervals would contain the true parameter value.
+
+<Callout type="example">
+Suppose a factory produces metal rods, and we take a random sample of 25 rods. We calculate a 95% confidence interval for the mean length to be $[36.8, 39.0]$ mm.
+
+Then it is **incorrect** to say there is a 95% probability the true mean is in $[36.8, 39.0]$; the true mean is fixed and either is or isn't in that interval.
+
+However it is **correct** that if we took many samples and calculated the interval each time, about 95% of those intervals would contain the true mean.
+</Callout>
+
+<Callout type="example" title="Normal Model with Known Variance">
+Let's see how to construct a confidence interval for a familiar example. Suppose a factory produces metal rods, and we want to estimate the average length of all rods produced. Measuring every rod is impractical, so instead we draw a random sample of $n$ rods and use those measurements to estimate the unknown mean length $\mu$.
+
+Let the lengths of our sample be $X_1, X_2, ..., X_n$, where we assume:
+
+```math
+X_1, X_2, \ldots, X_n \sim N(\mu, \sigma^2)
+```
+
+where, for simplicity, we **know the variance** $\sigma^2 = 1$. We have already seen that the **MLE estimator** for the mean $\mu$ is the sample mean:
+
+```math
+\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i
+```
+
+Now, we define the **confidence interval**. So in general we want to find some random variables such that:
+
+```math
+\P_\theta(A \leq \mu \leq B) = 1 - \alpha
+```
+
+The random variables $A$ and $B$ need to be independent of the actual parameter $\mu$. Luckily due to the [Central Limit Theorem (CLT)](), which states that, for i.i.d. random variables $X_1, X_2, ..., X_n$ with mean $\mu$ and finite variance $\sigma^2$, the sample mean $\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i$ is approximately standard normally distributed for large $n$, even if the $X_i$ themselves are not normal so we have:
+
+```math
+\frac{X_1 + X_2 + \ldots + X_n - n\mu}{\sqrt{n}} = \sqrt{n}(\bar{X}_n - \mu) = Z \sim N(0,1)
+```
+
+Where $Z$ is a standard normal variable that gives us the sample mean. This distribution does not rely on the actual value of $\mu$ but can be used to construct confidence intervals for $\mu$. So we can then construct a symmetric interval around the mean:
+
+```math
+\begin{align*}
+1 - \alpha = \P_\theta(c \leq \mu \leq c) \\
+&= \P_\theta\left(c \leq \sqrt{n}(\bar{X}_n - \mu) \leq c\right) 
+\end{align*}
+```
+
+where $c > 0$ is a constant chosen so that the interval has the desired coverage. 
+
+```math
+\P_\theta(-c \leq \sqrt{n}(\bar{X}_n - \mu) \leq c)
+= \P_\theta(-c \leq Z \leq c)
+= \P_\theta(-c \leq -Z \leq c) 
+```
+
+We can split this up because for any random variable $Z$ and any $a < b$, we have $\P(a \leq Z \leq b) = \P(Z \leq b) - \P(Z < a) which leads to:
+
+```math
+\P_\theta[-c \leq Z \leq c] = \P_\theta[Z \leq c] - \P_\theta[Z < -c]
+```
+
+Now because we know $Z \sim N(0,1)$, we can use:
+
+```math
+Z \sim N(0,1) \implies \P_\theta(Z \leq c) = \Phi(c)
+```
+
+where $\Phi(c)$ is the cumulative distribution function (CDF) of the standard normal distribution:
+
+```math
+\Phi(c) = \int_{-\infty}^{c} \frac{1}{\sqrt{2\pi}} e^{-\frac{x^2}{2}} \, dx
+```
+
+For the negative argument, by symmetry of the normal distribution we have $\Phi(-c) = 1 - \Phi(c)$, so:
+
+```math
+\P(-c \leq Z \leq c) = \Phi(c) - (1 - \Phi(c)) = 2\Phi(c) - 1
+```
+
+To then get our confidence interval for $\mu$, we need to solve for $\mu$:
+
+```math
+\begin{align*}
+-c \leq \sqrt{n}(\bar{X}_n - \mu) \leq c \\
+\frac{-c}{\sqrt{n}} \leq \bar{X}_n - \mu \leq \frac{c}{\sqrt{n}} \\
+\bar{X}_n - \frac{c}{\sqrt{n}} \leq \mu \leq \bar{X}_n + \frac{c}{\sqrt{n}} \\
+\mu \in \left[ \bar{X}_n - \frac{c}{\sqrt{n}},\ \bar{X}_n + \frac{c}{\sqrt{n}} \right]
+\end{align*}
+```
+
+to find $c$ for the given confidence level we set:
+
+```math
+\begin{align*}
+2\Phi(c) - 1 &= 1 - \alpha \\
+2\Phi(c) &= 1 - 0.05 + 1 \\
+2\Phi(c) &= 1.95 \\
+\Phi(c) &= 0.975
+\end{align*}
+```
+
+Using the quantile function and a table of the standard normal distribution, we find that $c \approx 1.96$. So, the $95%$ confidence interval is:
+
+```math
+\left[\bar{X}_n - \frac{1.96}{\sqrt{n}},\ \bar{X}_n + \frac{1.96}{\sqrt{n}} \right]
+```
+
+So now suppose we measure $n = 25$ rods and get a sample mean of $\bar{X}_{25} = 37.9$ mm.
+
+- The margin of error is $\frac{1.96}{5} = 0.392$
+- The 95% Confidence Interval is $[37.9 - 0.392,\ 37.9 + 0.392] = [37.508,\ 38.292]$ mm.
+
+If we measured $n = 100$ rods, with $\bar{X}_{100} = 37.9$ mm:
+
+- The margin is $\frac{1.96}{10} = 0.196$
+- The 95% Confidence Interval is $[37.9 - 0.196,\ 37.9 + 0.196] = [37.704,\ 38.096]$ mm.
+
+If we measure $n = 400$ rods, with $\bar{X}_{400} = 37.9$ mm:
+
+- The margin is $\frac{1.96}{20} = 0.098$
+- The 95% Confidence Interval is $[37.9 - 0.098,\ 37.9 + 0.098] = [37.802,\ 37.998]$ mm.
+
+Notice that the **width** of the confidence interval is proportional to $\frac{1}{\sqrt{n}}$. As we collect more data (increase $n$), the interval becomes narrower—our estimate becomes more precise. In the above example, if we only had $n=25$ samples, the margin would be $1.96/5 = 0.392$, so the interval would be $[37.508,\ 38.292]$ mm. This highlights how the number of observations directly affects the reliability and precision of our conclusions.
+</Callout>
+
+## General Strategy for Constructing Confidence Intervals
+
+We have seen an example of the process but we can also define a general strategy. The process for any model follows these steps:
+
+1. **Determine an estimator $T$** for $\theta$. This is typically using the maximum likelihood estimation (MLE) or method of moments.
+2. **Find a random variable $Z = f(T, \theta)$** whose distribution does **not depend** on $\theta$ (or, is at least known). So in the case of the normal distribution as seen above, we had chose the standardized normal distribution because it has a known distribution and does not depend on $\theta$.
+3. **Invert the probability statement** for $Z$ to solve for $\theta$ in terms of the data, yielding an interval $[A, B]$ such that:
+
+```math
+\P_\theta(A \leq \theta \leq B) = 1 - \alpha
+```
+
+## Chi-Squared and Gamma Distributions
+
+So far, we have seen that statistical inference often requires not just point estimators, but also an understanding of the distribution of those estimators. Two important families of distributions that appear over and over in statistics are the **Chi-Squared** and **Gamma** distributions. These are fundamental in the analysis of variances, in hypothesis testing, and for constructing confidence intervals for quantities like variance. To understand how and why these distributions appear, we start with the Gamma function.
+
+### Gamma Function
+
+Both the Chi-Squared and Gamma distributions are defined using the **Gamma function** $\Gamma(x)$, which generalizes the factorial function to non-integer values. For $x > 0$,
+
+```math
+\Gamma(x) = \int_0^\infty t^{x-1} e^{-t} \, dt
+```
+
+In particular, for $n \in \mathbb{N}$ (the natural numbers), the Gamma function satisfies
+
+```math
+\Gamma(n) = (n-1)!
+```
+
+This means the usual factorial is just a special case.
+
+### Chi-Squared Distribution
+
+The **Chi-Squared distribution** arises naturally as the distribution of the sum of squared standard normal random variables. Suppose we have $k$ independent random variables $X_1, X_2, \ldots, X_k$ with:
+
+```math
+X_i \sim N(0, 1), \quad i = 1, \ldots, k
+```
+
+where $N(0,1)$ denotes the standard normal distribution. We then define their sum of squares as:
+
+```math
+S_k = \sum_{i=1}^k X_i^2
+```
+
+The random variable $S_k$ follows a **Chi-Squared distribution** with $k$ degrees of freedom, denoted
+
+```math
+S_k \sim \chi^2_k
+```
+
+The parameter $k$ is called the **degrees of freedom** and typically represents the number of independent squared standard normal variables being summed. The **probability density function (PDF)** of the Chi-Squared distribution with $k$ degrees of freedom is given by
+
+```math
+f_X(x) = \frac{1}{2^{k/2} \Gamma(k/2)} x^{k/2 - 1} e^{-x/2}, \quad x > 0
+```
+
+This means the Chi-Squared distribution is always positive and has its mass concentrated near zero for small $k$, but as $k$ increases, it becomes more symmetric and spread out.
+
+The [exponential distribution]() is actually a special case of the Chi-Squared distribution for $k=2$. We can see this directly by writing both PDFs. **Chi-Squared with $k=2$:**
+
+  ```math
+  f(x) = \frac{1}{2^{2/2} \Gamma(2/2)} x^{2/2 - 1} e^{-x/2}
+       = \frac{1}{2 \cdot 1} x^{0} e^{-x/2}
+       = \frac{1}{2} e^{-x/2}
+  ```
+
+**Exponential distribution with rate $\lambda = 1/2$:**
+
+```math
+f(x) = \lambda e^{-\lambda x} = \frac{1}{2} e^{-x/2}
+```
+
+So, we see that
+
+```math
+\chi^2_2 \sim \text{Exp}(\lambda = 1/2)
+```
+
+meaning the distributions are exactly the same in this case.
+
+<Callout type="example" title="Sample Variance using Chi-Squared Distribution">
+Suppose $X_1, X_2, \ldots, X_n \sim N(\mu, \sigma^2)$ are i.i.d. random variables. We define the **sample variance** as
+
+```math
+S^2 = \frac{1}{n} \sum_{i=1}^n (X_i - \bar{X}_n)^2
+```
+
+where $\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i$ is the sample mean. If we standardize the random variables we get:
+
+```math
+Z_i = \frac{X_i - \mu}{\sigma} \sim N(0, 1)
+```
+
+Then the sum of squares of the standardized variables is:
+
+```math
+\sum_{i=1}^n Z_i^2 = \sum_{i=1}^n \left( \frac{X_i - \mu}{\sigma} \right)^2
+```
+
+Therefore we have:
+
+```math
+\sum_{i=1}^n Z_i^2 = \frac{1}{\sigma^2} \sum_{i=1}^n (X_i - \mu)^2 \sim \chi^2_n
+```
+
+But in practice, we estimate $\mu$ by $\bar{X}\_n$, costing us 1 degree of freedom (we “used up” 1 parameter). So the sum of squared residuals (using $\bar{X}\_n$) is:
+
+```math
+\sum_{i=1}^n \left( \frac{X_i - \bar{X}_n}{\sigma} \right)^2 \sim \chi^2_{n-1}
+```
+
+which more concisely becomes:
+
+```math
+\frac{1}{\sigma^2} \sum_{i=1}^n (X_i - \bar{X}_n)^2 = \frac{n S^2}{\sigma^2} \sim \chi^2_{n-1}
+```
+
+You can interpret this loss of a degree of freedom as a penalty for estimating the mean from the data meaning all the $X_i$ are not independent anymore. You can also think of it as the projection of the $n$-dimensional data vector onto the $(n-1)$-dimensional subspace orthogonal to $(1,1,...,1)$ (the mean direction) is what's left.
+</Callout>
+
+<Callout type="example" title="Length of a Random Normal Vector">
+Consider a random vector $\mathbf{Z} = (X_1, X_2, \ldots, X_n)$ where $X_i \sim N(0, 1)$ are i.i.d. standard normals. The squared length of this vector is:
+
+```math
+||\mathbf{Z}||^2 = X_1^2 + X_2^2 + \ldots + X_n^2 \sim \chi^2_n
+```
+
+If we take the square root, $Y = \sqrt{||\mathbf{Z}||^2} = \sqrt{\sum_{i=1}^n X_i^2}$, then $Y$ follows the **chi distribution** with $n$ degrees of freedom. For large $k$, the length of a standard normal vector is concentrated near $\sqrt{n}$:
+
+```math
+\frac{Y}{\sqrt{n}} \to 1 \quad \text{as } n \to \infty
+```
+
+That is, as the number of dimensions grows, the length becomes almost deterministic. This is an example of the law of large numbers for lengths: in high dimensions, most vectors have nearly the same length! This fact underpins a lot of intuition in random matrix theory and statistics. 
+</Callout>
+
+### Gamma Distribution
+
+The **Gamma distribution** generalizes the Chi-Squared and exponential distributions, and is parameterized by a **shape parameter** $\alpha > 0$ and a **rate parameter** $\lambda > 0$. If $X \sim \mathrm{Gamma}(\alpha, \lambda)$, then the PDF is
+
+```math
+f_X(x) = \frac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha - 1} e^{-\lambda x}, \quad x > 0
+```
+
+The Chi-Squared distribution is just a special case of the Gamma distribution:
+
+```math
+\chi^2_k = \mathrm{Gamma}\left( \alpha = \frac{k}{2},\ \lambda = \frac{1}{2} \right )
+```
+
+So, whenever you see a Chi-Squared random variable, you can always view it as a Gamma variable with those parameters. Similarly, the exponential distribution is yet another special case of the Gamma:
+
+```math
+\mathrm{Exp}(\lambda) = \mathrm{Gamma}(\alpha = 1, \lambda)
+```
+
+The Gamma distribution often arises as the distribution of waiting times in a Poisson process. If events occur randomly over time at a constant rate, then the waiting time until the $\alpha$-th event occurs is Gamma distributed with shape $\alpha$ and rate $\lambda$. The exponential distribution is just the waiting time until the **first** event.
+
+## T-Distribution
+
+So far, we have seen that many estimators such as the sample mean have distributions that are (exactly or approximately) normal under certain conditions. However, it becomes more interesting when we do not know the true variance $\sigma^2$ of the underlying population. In practice, $\sigma^2$ is almost never known and must itself be estimated from the data. This extra step introduces more uncertainty, and it turns out that the correct distribution to use for standardized statistics involving the sample mean and estimated variance is not the standard normal, but rather the **t-distribution**. The **t-distribution** accounts for this additional uncertainty and is defined as a continuous random variable $X \sim t\_k$ with $k$ degrees of freedom with the probability density function
+
+```math
+f_X(x) = \frac{\Gamma\left(\frac{k+1}{2}\right)}{\sqrt{k\pi}\ \Gamma\left(\frac{k}{2}\right)}
+         \left(1 + \frac{x^2}{k}\right)^{-\frac{k+1}{2}},
+         \quad x \in \mathbb{R}
+```
+
+where $\Gamma(\cdot)$ is the gamma function, and $k > 0$ is the number of degrees of freedom. Just like the Gamma and Chi-Squared distributions, the t-distribution has some interesting properties:
+
+- If $k=1$, the t-distribution is also called the **Cauchy distribution**.
+- As $k \to \infty$, the t-distribution approaches the standard normal distribution $N(0,1)$.
+
+Because of the last property it is intuitive that like the normal distribution, the t-distribution is symmetric and bell-shaped, but it has **heavier tails**. This property of heavier tails reflects the extra uncertainty that comes from estimating the variance. The t-distribution is **robust** to small sample sizes, so we use it to construct confidence intervals and hypothesis tests about means when the variance is unknown and the sample is small.
+
+We can see this relation to the normal distribution if we consider the process of estimating the population mean. Suppose we have a sample $X\_1, X\_2, \ldots, X\_n$ of i.i.d. random variables from a normal distribution:
+
+```math
+X_1, X_2, \ldots, X_n \sim N(\mu, \sigma^2)
+```
+
+We want to make inference about the population mean $\mu$. If we knew the variance $\sigma^2$, then the standardized sample mean is defined as follows:
+
+```math
+Z = \frac{\bar{X}_n - \mu}{\sigma / \sqrt{n}}
+```
+
+where $\sigma$ is the true standard deviation. So in the previous example because $\sigma^2=1$ we had: 
+
+```math
+Z = \frac{\bar{X}_n - \mu}{1 / \sqrt{n}} = \sqrt{n}(\bar{X}_n - \mu)
+```
+
+and $Z$ followed a standard normal distribution, $N(0,1)$. But usually, $\sigma^2$ is **unknown**, so we estimate it from the data using the **sample variance**:
+
+```math
+S^2 = \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \bar{X}_n)^2
+```
+
+If we then standardize the sample mean using the estimated standard deviation $S$, we obtain the **t-statistic**:
+
+```math
+T = \frac{\bar{X}_n - \mu}{S / \sqrt{n}}
+```
+
+This random variable $T$ follows a t-distribution with $n - 1$ degrees of freedom:
+
+```math
+T \sim t_{n-1}
+```
+
+The reason for this is that the **numerator** $(\bar{X}_n - \mu)$ is normal, centered at $0$, with standard deviation $\sigma/\sqrt{n}$. The **denominator** $S/\sqrt{n}$ involves $S^2$, which is related to a sum of squared normals, i.e., has a chi-squared distribution. Formally, if $Z \sim N(0,1)$ and $V \sim \chi^2_n$ are independent, then:
+
+```math
+\frac{Z}{\sqrt{V/n}} \sim t_n
+```
+
+## Confidence Intervals for Multiple Parameters
+
+We have already discussed how to construct confidence intervals for single parameters such as the mean of a normal distribution. Now, let's see how this process extends when we wish to construct intervals for both the mean **and** the variance, using an example and making use of the **t-distribution** and **chi-squared distribution**.
+
+<Callout type="example" title="Confidence Intervals for Multiple Parameters: Ostrich Egg Weights">
+Suppose two researchers, Mr. Smith and Dr. Thurston, are debating the average weight of ostrich eggs. Mr. Smith claims the mean is 1100g, Dr. Thurston claims it is 1200g. To resolve this, they collect $n = 8$ ostrich eggs and measure their weights (in grams):
+
+```math
+x_1=1090,\ x_2=1150,\ x_3=1170,\ x_4=1080,\ x_5=1210,\ x_6=1230,\ x_7=1180,\ x_8=1140
+```
+
+We model these weights as i.i.d. random variables:
+
+```math
+X_1, X_2, \ldots, X_8 \sim N(m, \sigma^2)
+```
+
+where $m$ is the unknown mean weight and $\sigma^2$ the unknown variance. We know the **sample mean** and **sample variance** are natural estimators:
+
+```math
+\bar{X}_8 = \frac{1}{8} \sum_{i=1}^8 X_i
+```
+
+```math
+S^2 = \frac{1}{7} \sum_{i=1}^8 (X_i - \bar{X}_8)^2
+```
+
+Here, $n = 8$ so we use $1/(n-1)$ for the sample variance with our unbiased estimator. We can also already calculate them: 
+
+```math
+\bar{X}_8 = 1156.25,\ S^2 = 2798.21
+```
+
+Next we want to define a confidence interval for the mean. Because we don't know the true variance $\sigma^2$, we use the sample variance $S^2$ instead which gives us the following correct standardized statistic, the **t-statistic**:
+
+```math
+T = \frac{\bar{X}_8 - \mu}{S/\sqrt{8}} \sim t_{7}
+```
+
+So for the **$1-\alpha$ confidence interval for the mean $m$** is constructed as:
+
+```math
+\begin{align*}
+1 - \alpha &= \P_\theta\left(c \leq \mu \leq c\right) \\
+&= \P_\theta\left(-c \leq \frac{\bar{X}_8 - \mu}{S/\sqrt{8}} \leq c\right)
+\end{align*}
+```
+
+<Callout type="todo">
+where we will solve for $c$ so the condition holds. How do we do this??? it should be 
+
+```math
+?????
+c = t_{7,1-\alpha/2}
+```
+
+where $t\_{7,1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the $t$-distribution with 7 degrees of freedom.
+</Callout>
+
+We get the actual confidence interval by rearranging the inequality and solving for $\mu$:
+
+```math
+\begin{align*}
+-c &\leq \frac{\bar{X}_8 - \mu}{S/\sqrt{8}} \leq c \\
+-c \cdot \frac{S}{\sqrt{8}} &\leq \bar{X}_8 - \mu \leq c \cdot \frac{S}{\sqrt{8}} \\
+\bar{X}_8 - c \cdot \frac{S}{\sqrt{8}} &\leq \mu \leq \bar{X}_8 + c \cdot \frac{S}{\sqrt{8}}
+\end{align*}
+```
+
+Suppose we calculate the standard deviation from the data as $S = 52.90$ and then using a table for the t-distribution we get $t_{7,0.995} = 3.499$ (for $1-\alpha = 99%$, i.e. $\alpha = 0.01$). 
+
+We can calculate the margin:
+
+```math
+\text{Margin} = 3.499 \cdot \frac{52.90}{\sqrt{8}} \approx 65.44
+```
+
+and then the confidence interval is:
+
+```math
+\left[
+  1156.25 - 3.499 \cdot \frac{52.90}{\sqrt{8}},
+  \ 1156.25 + 3.499 \cdot \frac{52.90}{\sqrt{8}}
+\right] = \left[
+  1156.25 - 65.44,\ 1156.25 + 65.44
+\right] = [1090.81,\ 1221.69]
+```
+
+So if we repeated this experiment many times, 99% of the calculated intervals would contain the true mean $m$. Notice that both Mr. Smith's and Dr. Thurston's claims (1100g, 1200g) are within this interval and thus plausible given the data.
+
+Now let's do it for the variance, we have seen that we can get the sample variance using Chi-Squared Distribution
+
+```math
+\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}
+```
+
+So we can construct the confidence interval for $\sigma^2$ as:
+
+```math
+\begin{align*}
+1 - \alpha &= \P_\theta\left(-c \leq \sigma^2 \leq c\right) \\
+&= \P_\theta\left(-c \leq \frac{(n-1)S^2}{\sigma^2} \leq c\right)
+\end{align*}
+```
+
+<Callout type="todo">
+Solve for c such that the condition holds
+
+We get the actual confidence interval by rearranging the inequality and solving for $\sigma^2$:
+
+```math
+\begin{align*}
+-c \leq \frac{(n-1)S^2}{\sigma^2} \leq c \\
+?
+\frac{(n-1)S^2}{c} &\leq \sigma^2 \leq \frac{(n-1)S^2}{c}
+\end{align*}
+```
+
+Why is the c positive on both sides?
+
+Suppose we calculate the variance from the data as $S^2 = 2798.21$ and then using a table for the Chi-Squared distribution we get $\chi^2\_{7,0.025} = 1.69$ and $\chi^2\_{7,0.975} = 16.01$ for $1-\alpha = 95\%$.
+
+We can calculate the margin:
+
+```math
+\text{Margin} = ?
+```
+
+and then the confidence interval is:
+
+Plug in the values:
+
+```math
+\left[
+?
+\right]
+= [1223.45, 11590.23]
+```
+</Callout>
+</Callout>
+
+## Approximate Confidence Intervals
+
+
+
+<Callout type="example" title="Bernoulli Model: Tea Tasting Lady">
+
+<Callout type="todo">
+I don^t know if this below is correct and it is still unfinished.
+</Callout>
+
+Recall the experiment with the **tea tasting lady**. Each observation $X\_i \sim \text{Bernoulli}(\theta)$, and we want a confidence interval for $\theta$.
+
+**Step 1: The Estimator**
+The MLE for $\theta$ is the sample mean:
+
+```math
+\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i
+```
+
+**Step 2: Find a Suitable $Z$**
+
+* For a Bernoulli model, each $X\_i$ is 0 or 1.
+* so By the Central Limit Theorem, for large $n$ we have:
+
+  ```math
+  \sqrt{n}(\bar{X}_n - \theta) \approx N(0, \theta(1-\theta))
+  ```
+
+  The variance of the sample mean is $\theta(1-\theta)/n$, so to get our random variable $Z$ that does not depend on $\theta$ or which we know very well we standardize it. To standardize it we do ???:
+
+  ```math
+  Show how it gets standardized
+  \frac{\bar{X}_n - \theta}{\sqrt{\theta(1-\theta)/n}} \approx N(0,1)
+  ```
+
+Invert the Probability Statement so that we can solve for c?
+
+```math
+\P\left(-c \leq \frac{\bar{X}_n - \theta}{\sqrt{\theta(1-\theta)/n}} \leq c\right) \approx 1-\alpha
+```
+
+Again, $2\Phi(c)-1 = 1-\alpha$ gives $c \approx 1.96$ for 95% confidence. Why how did this happen where did it come from and get calcualted? This Z is different to the other one so why the same value? Show the full workings out.
+
+**Step 4: Solve for $\theta$ in Terms of Data**
+
+This inequality is tricky because $\theta$ appears in the denominator. How did this inequality happen, where did it come from? Make it so that it is like the other example.
+In practice, we substitute $\bar{X}\_n$ (our observed proportion) for $\theta$ in the denominator to obtain an **approximate confidence interval**:
+
+$$
+\begin{align*}
+\left| \bar{X}_n - \theta \right| &\leq c \sqrt{\frac{\bar{X}_n (1-\bar{X}_n)}{n}} \\
+\implies \bar{X}_n - c \sqrt{\frac{\bar{X}_n (1-\bar{X}_n)}{n}} \leq \theta \leq \bar{X}_n + c \sqrt{\frac{\bar{X}_n (1-\bar{X}_n)}{n}}
+\end{align*}
+$$
+
+So the interval is:
+
+```math
+\left[
+\bar{X}_n - \frac{c}{\sqrt{n}} \sqrt{ \bar{X}_n(1 - \bar{X}_n) },
+\quad
+\bar{X}_n + \frac{c}{\sqrt{n}} \sqrt{ \bar{X}_n(1 - \bar{X}_n) }
+\right]
+```
+
+**Worked Example:**
+Suppose the lady gets $70$ correct out of $100$ ($n = 100$, $\bar{X}\_n = 0.7$), and for 95% confidence, $c = 1.96$.
+
+$$
+\begin{align*}
+\text{Standard error:} &\quad \sqrt{ \frac{0.7 \times 0.3}{100} } = \sqrt{ 0.0021 } \approx 0.0458 \\
+\text{Interval:} &\quad 0.7 \pm 1.96 \times 0.0458 \approx 0.7 \pm 0.0898 \\
+\text{Final bounds:} &\quad [0.610, 0.790]
+\end{align*}
+$$
+
+Show for more values and different sample means?
+</Callout>
