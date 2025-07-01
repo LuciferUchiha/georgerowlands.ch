@@ -127,7 +127,8 @@ to find $c$ for the given confidence level we set:
 2\Phi(c) - 1 &= 1 - \alpha \\
 2\Phi(c) &= 1 - 0.05 + 1 \\
 2\Phi(c) &= 1.95 \\
-\Phi(c) &= 0.975
+\Phi(c) &= 0.975 \\
+c &= \Phi^{-1}(0.975)
 \end{align*}
 ```
 
@@ -422,24 +423,29 @@ So for the **$1-\alpha$ confidence interval for the mean $m$** is constructed as
 \end{align*}
 ```
 
-<Callout type="todo">
-where we will solve for $c$ so the condition holds. How do we do this??? it should be 
+where we will solve for $c$ so the condition holds. We know that the $t$-distribution is symmetric, so we can do something similar to the normal distribution and split the probability:
 
 ```math
-?????
-c = t_{7,1-\alpha/2}
+\begin{align*}
+1 - \alpha &= \P_\theta\left(-c \leq \frac{\bar{X}_8 - \mu}{S/\sqrt{8}} \leq c\right) \\
+&= F_{t_{7}}(c) - F_{t_{7}}(-c) \\
+&= F_{t_{7}}(c) - (1 - F_{t_{7}}(c)) \\
+&= 2F_{t_{7}}(c) - 1 \\
+2 - \alpha &= 2F_{t_{7}}(c) \\
+1 - \frac{\alpha}{2} &= F_{t_{7}}(c) \\
+1 - \frac{\alpha}{2} &= F_{t_{7}}(c) \\
+c &= t_{7,1-\alpha/2}
+\end{align*}
 ```
 
-where $t\_{7,1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the $t$-distribution with 7 degrees of freedom.
-</Callout>
-
-We get the actual confidence interval by rearranging the inequality and solving for $\mu$:
+where $F_{t_{7}}(x)$ is the cumulative distribution function (CDF) of the t-distribution with 7 degrees of freedom and $t\_{7,1-\alpha/2}$ is the $(1-\alpha/2)$ quantile of the $t$-distribution with 7 degrees of freedom.We get the actual confidence interval by rearranging the inequality and solving for $\mu$:
 
 ```math
 \begin{align*}
 -c &\leq \frac{\bar{X}_8 - \mu}{S/\sqrt{8}} \leq c \\
 -c \cdot \frac{S}{\sqrt{8}} &\leq \bar{X}_8 - \mu \leq c \cdot \frac{S}{\sqrt{8}} \\
-\bar{X}_8 - c \cdot \frac{S}{\sqrt{8}} &\leq \mu \leq \bar{X}_8 + c \cdot \frac{S}{\sqrt{8}}
+\bar{X}_8 - c \cdot \frac{S}{\sqrt{8}} &\leq \mu \leq \bar{X}_8 + c \cdot \frac{S}{\sqrt{8}} \\
+\bar{X}_8 - t_{7,1-\alpha/2} \cdot \frac{S}{\sqrt{8}} &\leq \mu \leq \bar{X}_8 + t_{7,1-\alpha/2} \cdot \frac{S}{\sqrt{8}}
 \end{align*}
 ```
 
@@ -474,122 +480,232 @@ So we can construct the confidence interval for $\sigma^2$ as:
 
 ```math
 \begin{align*}
-1 - \alpha &= \P_\theta\left(-c \leq \sigma^2 \leq c\right) \\
-&= \P_\theta\left(-c \leq \frac{(n-1)S^2}{\sigma^2} \leq c\right)
+1 - \alpha &= \P_\theta\left(c_1 \leq \sigma^2 \leq c_2\right) \\
+&= \P_\theta\left(c_1 \leq \frac{(n-1)S^2}{\sigma^2} \leq c_2\right)
 \end{align*}
 ```
 
-<Callout type="todo">
-Solve for c such that the condition holds
+Because the Chi-Squared distribution is not symmetric, we cannot split the probability like we did for the t-distribution. Instead, we need to use different upper and lower quartiles of the Chi-Squared distribution. 
+
+```math
+\begin{align*}
+1 - \alpha &= \P_\theta\left(c_1 \leq \frac{(n-1)S^2}{\sigma^2} \leq c_2\right) \\
+&= F_{\chi^2_{n-1}}(c_2) - F_{\chi^2_{n-1}}(c_1) 
+\end{align*}
+```
+
+where $F_{\chi^2_{n-1}}(x)$ is the cumulative distribution function (CDF) of the Chi-Squared distribution with $n-1$ degrees of freedom. As we want an upper and lower bound, we can use the quantiles of the Chi-Squared distribution:
+
+```math
+\begin{align*}
+c_1 &= \chi^2_{n-1, \alpha/2} \\
+c_2 &= \chi^2_{n-1, 1 - \alpha/
+\end{align*}
+```
 
 We get the actual confidence interval by rearranging the inequality and solving for $\sigma^2$:
 
 ```math
 \begin{align*}
--c \leq \frac{(n-1)S^2}{\sigma^2} \leq c \\
-?
-\frac{(n-1)S^2}{c} &\leq \sigma^2 \leq \frac{(n-1)S^2}{c}
+-c &\leq \frac{(n-1)S^2}{\sigma^2} &\leq c \\
+-c &\leq (n-1)S^2 \cdot \frac{1}{\sigma^2} &\leq c \\
+\frac{-c}{(n-1)S^2} &\leq \frac{1}{\sigma^2} &\leq \frac{c}{(n-1)S^2} \\
+\frac{(n-1)S^2}{c} &\leq \sigma^2 &\leq \frac{(n-1)S^2}{c} \\
+\frac{(n-1)S^2}{\chi^2_{n-1,1-\alpha/2}} &\leq \sigma^2 &\leq \frac{(n-1)S^2}{\chi^2_{n-1,\alpha/2}}
 \end{align*}
 ```
 
-Why is the c positive on both sides?
-
 Suppose we calculate the variance from the data as $S^2 = 2798.21$ and then using a table for the Chi-Squared distribution we get $\chi^2\_{7,0.025} = 1.69$ and $\chi^2\_{7,0.975} = 16.01$ for $1-\alpha = 95\%$.
 
-We can calculate the margin:
+We can calculate the margin and then the confidence interval after plugging in the values to get:
 
 ```math
-\text{Margin} = ?
+[1223.45, 11590.23]
 ```
-
-and then the confidence interval is:
-
-Plug in the values:
-
-```math
-\left[
-?
-\right]
-= [1223.45, 11590.23]
-```
-</Callout>
 </Callout>
 
 ## Approximate Confidence Intervals
 
+We have seen that in many classical settings (such as the normal model with known variance), we can construct **exact** confidence intervals based on the precise sampling distribution of our estimator. However, in most practical applications, the exact distribution of the estimator is either unknown or too complex to work with directly. In these cases, we rely on **approximate confidence intervals**, most commonly using the **Central Limit Theorem (CLT)** to justify normal approximations.
 
-
-<Callout type="example" title="Bernoulli Model: Tea Tasting Lady">
-
-<Callout type="todo">
-I don^t know if this below is correct and it is still unfinished.
-</Callout>
-
-Recall the experiment with the **tea tasting lady**. Each observation $X\_i \sim \text{Bernoulli}(\theta)$, and we want a confidence interval for $\theta$.
-
-**Step 1: The Estimator**
-The MLE for $\theta$ is the sample mean:
+Recall from above: For i.i.d. random variables $X_1, X_2, \ldots, X_n$ with mean $\mu$ and finite variance $\sigma^2$, the CLT states that the sum:
 
 ```math
-\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i
+S_n = X_1 + X_2 + \ldots + X_n
 ```
 
-**Step 2: Find a Suitable $Z$**
-
-* For a Bernoulli model, each $X\_i$ is 0 or 1.
-* so By the Central Limit Theorem, for large $n$ we have:
-
-  ```math
-  \sqrt{n}(\bar{X}_n - \theta) \approx N(0, \theta(1-\theta))
-  ```
-
-  The variance of the sample mean is $\theta(1-\theta)/n$, so to get our random variable $Z$ that does not depend on $\theta$ or which we know very well we standardize it. To standardize it we do ???:
-
-  ```math
-  Show how it gets standardized
-  \frac{\bar{X}_n - \theta}{\sqrt{\theta(1-\theta)/n}} \approx N(0,1)
-  ```
-
-Invert the Probability Statement so that we can solve for c?
+is approximately normally distributed for large $n$:
 
 ```math
-\P\left(-c \leq \frac{\bar{X}_n - \theta}{\sqrt{\theta(1-\theta)/n}} \leq c\right) \approx 1-\alpha
+\frac{S_n - n\mu}{\sqrt{n}\sigma} = Z \sim N(0, 1)
 ```
 
-Again, $2\Phi(c)-1 = 1-\alpha$ gives $c \approx 1.96$ for 95% confidence. Why how did this happen where did it come from and get calcualted? This Z is different to the other one so why the same value? Show the full workings out.
+where $Z$ is a standard normal variable.
 
-**Step 4: Solve for $\theta$ in Terms of Data**
+We can rewrite $S_n$ in terms of the sample mean $\bar{X}_n$:
 
-This inequality is tricky because $\theta$ appears in the denominator. How did this inequality happen, where did it come from? Make it so that it is like the other example.
-In practice, we substitute $\bar{X}\_n$ (our observed proportion) for $\theta$ in the denominator to obtain an **approximate confidence interval**:
+```math
+S_n = n\bar{X}_n
+```
 
-$$
+However, here the sample mean $\bar{X}_n$ does not need to be normal itself; it is the sum of i.i.d. random variables, and the CLT applies to sums of such variables not just normal ones. So, substituting $S_n = n\bar{X}_n$ gives:
+
+```math
+\frac{n\bar{X}_n - n\mu}{\sqrt{n}\sigma} = \frac{n(\bar{X}_n - \mu)}{\sqrt{n}\sigma} = \frac{\sqrt{n}(\bar{X}_n - \mu)}{\sigma}
+```
+
+Therefore,
+
+```math
+\sqrt{n}(\bar{X}_n - \mu)/\sigma \sim N(0, 1)
+```
+
+or equivalently where $\bar{X}_n$ is the sample mean of any i.i.d. random variables $X_i$:
+
+```math
+\bar{X}_n \sim N\left(\mu,\, \frac{\sigma^2}{n}\right) \qquad \text{(approximately, for large $n$)}
+```
+
+We can also rewrite this again by multiply by $n$ to get:
+
+```math
+n\bar{X}_n = S_n \sim N\left(n\mu,\, n\sigma^2\right) \qquad \text{(approximately, for large $n$)}
+```
+
+Where $\mu = \E[X_i]$ and $\sigma^2 = \Var[X_i]$ are the mean and variance of the underlying distribution of the $X_i$. So regardless of the underlying distribution of the $X_i$ (provided the variance exists and $n$ is large). This **approximate normality** allows us to construct confidence intervals in much the same way as in the exact normal case.
+
+The key idea is that, even when the exact distribution of $S_n$ is unknown or complicated, the CLT ensures that for large $n$, $S_n$ behaves "almost" like a normal variable. Thus, **approximate confidence intervals** are typically accurate for large samples, and the approximation improves as $n$ grows.
+
+<Callout type="example" title="Tea Tasting Lady">
+Suppose the famous "tea tasting lady" claims to be able to tell whether milk or tea was poured first into a cup. In an experiment, she is given $n = 10$ trials, and she correctly classifies $s = 6$ pairs. Let $\theta$ denote the (unknown) probability that she correctly identifies a pair. We want an approximate confidence interval for $\theta$.
+
+In any model $P_\theta$, the number of correct guesses $S_{n}$ follows a binomial distribution:
+
+```math
+S_{n} \sim \mathrm{Bin}(n, \theta)
+```
+
+By the CLT, for large $n$ (even though $n=10$ is not very large, the approximation is still often used):
+
+```math
+S_{n} \approx N\left(n\theta,\ n\theta(1-\theta)\right)
+```
+
+We get the mean $n\theta$ and variance $n\theta(1-\theta)$ because the binomial distribution is a sum of independent Bernoulli trials, each with success probability $\theta$. We can standardize $S_{n}$ to get:
+
+```math
+S_{n}^* = \frac{S_{n} - n\theta}{\sqrt{n\,\theta(1-\theta)}} \approx N(0, 1)
+```
+
+This allows us to use properties of the standard normal distribution. Just like in the previous example where we also had $Z \sim N(0, 1)$, we can use the same approach here:
+
+```math
 \begin{align*}
-\left| \bar{X}_n - \theta \right| &\leq c \sqrt{\frac{\bar{X}_n (1-\bar{X}_n)}{n}} \\
-\implies \bar{X}_n - c \sqrt{\frac{\bar{X}_n (1-\bar{X}_n)}{n}} \leq \theta \leq \bar{X}_n + c \sqrt{\frac{\bar{X}_n (1-\bar{X}_n)}{n}}
-\end{align*}
-$$
-
-So the interval is:
-
-```math
-\left[
-\bar{X}_n - \frac{c}{\sqrt{n}} \sqrt{ \bar{X}_n(1 - \bar{X}_n) },
-\quad
-\bar{X}_n + \frac{c}{\sqrt{n}} \sqrt{ \bar{X}_n(1 - \bar{X}_n) }
-\right]
+\P\left(-c \leq S_{n}^* \leq c\right) = 1 - \alpha \\
 ```
 
-**Worked Example:**
-Suppose the lady gets $70$ correct out of $100$ ($n = 100$, $\bar{X}\_n = 0.7$), and for 95% confidence, $c = 1.96$.
+where $c$ is the quantile of the standard normal distribution, i.e. $c = \Phi^{-1}(1 - \alpha/2)$, where $\Phi$ is the CDF of the standard normal distribution. This gives us:
 
-$$
+```math
 \begin{align*}
-\text{Standard error:} &\quad \sqrt{ \frac{0.7 \times 0.3}{100} } = \sqrt{ 0.0021 } \approx 0.0458 \\
-\text{Interval:} &\quad 0.7 \pm 1.96 \times 0.0458 \approx 0.7 \pm 0.0898 \\
-\text{Final bounds:} &\quad [0.610, 0.790]
+\P\left(|S^*_n| \leq \Phi^{-1}(1 - \alpha/2)\right) = 1 - \alpha \\
+\P\left(|\frac{S_{n} - n\theta}{\sqrt{n\,\theta(1-\theta)}}| \leq \Phi^{-1}(1 - \alpha/2)\right) = 1 - \alpha
 \end{align*}
-$$
+```
 
-Show for more values and different sample means?
+Which leads to the following key inequality:
+
+```math
+\begin{align*}
+|\frac{S_{n} - n\theta}{\sqrt{n\,\theta(1-\theta)}}| &\leq \Phi^{-1}(1 - \alpha/2) \\
+|S_{n} - n\theta| &\leq \Phi^{-1}(1 - \alpha/2) \cdot \sqrt{n\,\theta(1-\theta)} \text{ or } (S_{n} - n\theta)^2 \leq \Phi^{-1}(1 - \alpha/2)^2 \cdot n\,\theta(1-\theta)
+\end{align*}
+```
+
+We now need to solve for $\theta$ which using the quadratic formula gives us where $\Phi = \Phi^{-1}(1 - \alpha/2)$ is the quantile of the standard normal distribution:
+
+```math
+\theta = \frac{2S_{n} + \Phi^2 \pm \sqrt{(2S_{n} + \Phi^2)^2 - 4nS^2_n(1 + \frac{\Phi^2}{n})}}{2 \cdot n (1 + \frac{\Phi^2}{n})}
+```
+
+which gives us the confidence interval $[\theta_1, \theta_2]$ where $\theta_1$ and $\theta_2$ are the two roots of the quadratic equation. However, this is quite complex to compute directly, so we often use approximate methods instead.
+
+Firstly we can use the fact that the maximum value of $\theta(1-\theta)$ is $\frac{1}{4}$ (attained at $\theta = \frac{1}{2}$):
+
+```math
+|S_{n} - n\theta| \leq \Phi^{-1}(1 - \alpha/2) \cdot \sqrt{n\theta(1-\theta)} \leq \Phi^{-1}(1 - \alpha/2) \cdot \sqrt{n \cdot \frac{1}{4}}
+```
+
+By solving this inequality for $\theta$, we get a simpler confidence interval:
+
+```math
+\begin{align*}
+\left[\frac{S_n}{n} - \frac{\Phi^{-1}(1 - \alpha/2)}{2\sqrt{n}},\ \frac{S_n}{n} + \frac{\Phi^{-1}(1 - \alpha/2)}{2\sqrt{n}}\right] \\
+&= \left[\bar{S_n} - \frac{\Phi^{-1}(1 - \alpha/2)}{2\sqrt{n}},\ \bar{S_n} + \frac{\Phi^{-1}(1 - \alpha/2)}{2\sqrt{n}}\right]
+\end{align*}
+```
+
+where $\bar{S_n} = \frac{S_{n}}{n}$ is the sample proportion of correct guesses. This gives us a confidence interval based on the sample mean $\bar{S_n}$ and the quantile of the standard normal distribution.
+
+Alternatively, we can also use our best estimator for $\theta$ and use it to approximate the variance. The sample mean $\bar{S_n}$ is a natural estimator for $\theta$:
+
+```math
+\bar{X_n} \sim N\left(\mu, \frac{\sigma^2}{n}\right) = N\left(\theta, \frac{\theta(1-\theta)}{n}\right)
+```
+
+Which results in:
+
+```math
+\E_\theta\left(\bar{S_n}\right) = \theta,\ \Var_\theta\left(\bar{S_n}\right) = \frac{\theta(1-\theta)}{n}
+```
+
+From the inequality above:
+
+```math
+|\bar{S_n} - \theta| \leq \Phi^{-1}(1 - \alpha/2) \cdot \sqrt{\frac{\theta(1-\theta)}{n}}
+```
+
+we get:
+
+```math
+\E_\theta\left(\bar{S_n}\right) \pm \Phi^{-1}(1 - \alpha/2) \sqrt{\frac{\theta(1-\theta)}{n}} = \theta \pm \frac{\Phi^{-1}(1 - \alpha/2)}{\sqrt{n}} \sqrt{\theta(1-\theta)}
+```
+
+Replacing $\theta$ with its estimator the sample mean $\hat{\theta} = \frac{S_{n}}{n}$ gives us the **double approximation**: 
+
+```math
+\Bigl[\bar{S_n} - \frac{\Phi^{-1}(1 - \alpha/2)}{\sqrt{n}} \sqrt{\bar{S_n}(1-\bar{S_n})},\ \bar{S_n} + \frac{\Phi^{-1}(1 - \alpha/2)}{\sqrt{n}} \sqrt{\bar{S_n}(1-\bar{S_n})}\Bigr]
+```
+
+For $1-\alpha = 0.95$ we get $\Phi^{-1}(1 - \alpha/2) = 1.96$. Then suppose the tea tasting lady correctly identified $S_{10} = 6$ out of $n = 10$ trials. Our estimator is then $\hat{\theta} = \frac{6}{10} = 0.6$. Resulting in the following confidence intervals:
+
+- Using the first method, we can calculate the confidence interval as follows:
+
+```math
+[0.6 - \frac{1.96}{2\sqrt{10}},\ 0.6 + \frac{1.96}{2\sqrt{10}}] \approx [0.290,\ 0.910]
+```
+
+- For the second method, we get:
+
+```math
+0.6 \pm \frac{1.96}{\sqrt{10}} \sqrt{ \frac{0.6 \times 0.4}{10} } \approx [0.296,\ 0.904]
+```
+
+Solving the complex quadratic equation exactly gives a slightly different interval $[0.3127,\ 0.8318]$. 
+
+If we had done $n=100$ trials instead, then the estimator would stay the same $\hat{\theta} = 0.6$, but the confidence interval would be much narrower:
+
+- For method 1, we would have:
+
+```math
+[0.502,\ 0.698]
+```
+
+- For method 2, we would have:
+
+```math
+[0.504,\ 0.696]
+```
+
+And solving the actual quadratic equation gives us $[0.502, 0.691]$. Notice how the intervals are much narrower now, reflecting the increased precision of our estimate with more data. This is a key property of confidence intervals: they become more precise as the sample size increases, which is a direct consequence of the CLT.
 </Callout>
