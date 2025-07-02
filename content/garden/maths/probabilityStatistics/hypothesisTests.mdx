@@ -1,1 +1,460 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
 # Hypothesis Tests
+
+In statistics, we don't just want to estimate unknown parameters—we also often want to test claims or beliefs about those parameters. For example, does a new drug work better than the old one? Is a coin fair? Does an English lady truly have the claimed ability to distinguish tea by taste?
+Hypothesis testing gives us a rigorous framework for making decisions about such claims, using only data and probabilistic reasoning.
+
+## Hypotheses
+
+Just as with [estimators]() and [confidence intervals](), we start with sample data $x_1, x_2, \ldots, x_n$, viewed as realizations of random variables $X_1, \ldots, X_n$ drawn from some population distribution in a family $\P_\theta$, parameterized by an unknown $\theta$.
+
+Often, we have a specific claim or belief about $\theta$ such as that it equals some value, or falls within a certain range—and we want to test if the data support this claim. This is where hypothesis testing comes into play. The formal structure is to consider two competing models for $\theta$:
+
+```math
+\begin{align*}
+\text{Null Hypothesis: } H_0: \theta \in \Theta_0 \\
+\text{Alternative Hypothesis: } H_A: \theta \in \Theta_A
+\end{align*}
+```
+
+We select $\Theta_0$ and $\Theta_A$ such that $\Theta_0 \cap \Theta_A = \emptyset$ and $\Theta_0, \Theta_A \subseteq \Theta$. Typically we have $\Theta_0 \cup \Theta_A = \Theta$ and we just define $\Theta_0$ for the null hypothesis and then just take $\Theta_A$ for the alternative as the complement, so $\Theta_A = \Theta \setminus \Theta_0$. When $\Theta_0$ only contains a single parameter $\theta_0$, we call this a **simple hypothesis**. Otherwise, we have a **composite hypothesis**.
+
+The intuition is that the null hypothesis ($H_0$) is the “status quo” or default claim. So it's the model we assume is true unless the data provide convincing evidence otherwise. The alternative hypothesis ($H_A$) represents a different possibility, often the actual effect or claim we are seeking evidence for. We will see why we do it this way around later. Testing is then about weighing the evidence from the data. Does the data look so unlikely under $H_0$ so that we should reject it, and instead believe $H_A$ might be true or vice versa?
+
+<Callout type="example" title="Tea Tasting Lady">
+An English lady claims that when drinking tea with milk she can, by taste alone, distinguish whether the milk or the tea was poured into the cup first. How can one verify whether this claim is true? This is where hypothesis testing comes into play. We can set up a hypothesis test to determine if her claim holds true or if it is simply a matter of chance.
+
+So we define the following ways to make tea:
+
+- **Type 1**: Pour the milk first, then add tea.
+- **Type 2**: Pour the tea first, then add milk.
+
+To test her claim, we conduct a blind taste test over $n$ days where she is given 2 cups of tea, one made with each method, and asked to identify which cup is type 1, so where the milk was poured first. We record her responses, where 1 indicates a correct classification and 0 an incorrect classification:
+
+```math
+x_1, x_2, \ldots, x_n \in \{0, 1\}
+```
+Each trial can be modeled as a Bernoulli trial with unknown success probability $\theta$ (her true ability), so $X_i \sim \text{Bernoulli}(\theta)$ for each $i = 1, 2, \ldots, n$ and the trials are i.i.d. Then we can get the random number of correct classifications by summing the observations so we get:
+
+```math
+S_n = \sum_{i=1}^{n} X_i
+```
+
+And because $X_i \text{ are i.i.d. } \text{Bernoulli}(p)$, we would have:
+
+```math
+S_n \sim \text{Binomial}(n, \theta)
+```
+
+We can also define the actual observed number of correct classifications as:
+
+```math
+s_n = \sum_{i=1}^{n} x_i
+```
+
+Now let's define our null and alternative hypotheses. Our parameter $\theta$ has the parameter space $\Theta = [0, 1]$. 
+As skeptics, we doubt the lady's claimed ability. Therefore, we choose as our (simple) null hypothesis:
+
+```math
+H_0: \theta = \frac{1}{2}
+```
+
+So in other words, we assume that she has no ability to distinguish between the two types of tea and is simply guessing which would give her a 50% chance of being correct, i.e. $\Theta_0 = \{\frac{1}{2}\}$. Our (composite) alternative hypothesis is that she does have some ability to distinguish between the two types of tea, so we can write:
+
+```math
+H_A: \theta > \frac{1}{2}
+```
+
+This means that we are looking for evidence that the lady's success rate is greater than 50%, which would suggest that she can at least somewhat distinguish between the two types of tea, i.e. $\Theta_A = (\frac{1}{2}, 1]$.
+
+<Callout type="todo">
+Why cant the null hypothesis be less than $\frac{1}{2}$?
+</Callout>
+</Callout>
+
+## Tests and Decisions
+
+The next step is to translate the hypotheses into a practical decision rule based on observed data. A test consists of two ingredients. Firstly a test statistic $T$, which is simply a function of the sample data (just like estimators):
+
+```math
+T = t(X_1, X_2, \ldots, X_n)
+```
+
+Given the observed data as realizations of the random variables $x_1 = X_1(\omega), x_2 = X_2(\omega), \ldots, x_n = X_n(\omega)$ for some $\omega \in \Omega$, we can compute the test statistic as:
+
+```math
+T(\omega) = t(X_1(\omega), X_2(\omega), \ldots, X_n(\omega))
+```
+
+You can imagine that the test statistic $T$ distills the evidence from the data into a single, easily interpretable number—such as the number of correct guesses, the sample mean, or the difference between two means.
+
+Secondly a critical region (or rejection region) $K \subset \mathbb{R}$. A deterministic set of "extreme" values for $T$ that would lead us to reject $H_0$. Which sets a threshold such that if the evidence (as measured by $T$) is extreme enough, meaning it's unlikely to have occurred if $H_0$ were true. By deterministic, we mean that the set $K$ is fixed and does not depend on the observed data or the parameter $\theta$.
+
+Because $T$ is a random variable, the events $T(\omega) \in K$ for some $\omega \in \Omega$ have a probability associated with them that can be considered under each model. So we can denote us rejecting the null hypothesis as:
+
+```math
+\text{Reject } H_0 \text{ if } T(\omega) \in K
+```
+
+However, failing to reject $H_0$ is not the same as accepting it as true, it simply means the evidence is not strong enough to rule out $H_0$. However, every time we use data to make a decision, we risk making a mistake. In hypothesis testing, there are two main kinds of error:
+
+- **Type 1 Error**: Rejecting $H_0$ when it is actually true (a “false positive”). You can think of this like convicting an innocent person, rejecting the null hypothesis when it's actually correct.
+- **Type 2 Error**: Failing to reject $H_0$ when $H_A$ is actually true (a “false negative”). You can think of this like letting a guilty person go free, failing to reject the null hypothesis when it's actually incorrect.
+
+Every hypothesis test involves a trade-off between these errors. Making it harder to convict (lowering Type 1 error) usually increases the risk of letting someone go (higher Type 2 error), and vice versa. Because these errors are fundamentally about making decisions based on uncertain data, we need to quantify them in terms of probabilities:
+
+```math
+\begin{align*}
+\alpha &= P_\theta(T \in K) \quad \theta \in \Theta_0 \text{ (Type 1 Error)} \\
+\beta(\theta) &= P_\theta(T \notin K) = 1 - P_\theta(T \in K) \quad \theta \in \Theta_A \text{ (Type 2 Error)}
+\end{align*}
+```
+
+<Callout type="example" title="Tea Tasting Lady"> 
+In the tea tasting lady example: 
+- **Type 1 Error:** Rejecting $H_0$ (random guessing) when she actually has no special ability (i.e., claiming she can taste the difference when she cannot). 
+- **Type 2 Error:** Failing to reject $H_0$ when she actually has a special ability ($\theta > 0.5$), i.e., missing a real effect. 
+</Callout>
+
+## Significance Level and Power
+
+To control the risk of a Type 1 error (the more serious error, in most scientific contexts such as about the effectiveness of the lady's tea tasting ability), we fix a significance level $\alpha \in (0,1)$ in advance (commonly $0.05$ or $0.01$). A test $(T, K)$ then has a significance level $\alpha$ if for all $\theta \in \Theta_0$:
+
+```math
+\P_\theta(T \in K) \leq \alpha
+```
+
+When setting up a hypothesis test, we need to decide on a **significance level** $\alpha$, which is the probability of making a Type 1 error, so we reject the null hypothesis when it is actually true. We want to avoid making this error, as it could lead to false conclusions our hypothesis such as about the effectiveness of the lady's tea tasting ability. So we say that a test $(T,K)$ has significance level $\alpha \in (0,1)$ (why not closed?)if for all $\theta \in \Theta_0$ we have:
+
+```math
+\P_\theta(T \in K) \leq \alpha
+```
+
+We similarly also want to avoid making a Type 2 error, which occurs when we fail to reject the null hypothesis when the alternative hypothesis is true. This means we want to ensure that our test has sufficient **power** to detect an effect when it exists. The power of a test at a point $\theta \in \Theta_A$ is the probability that the test correctly rejects $H_0$ when $\theta$ is actually true (i.e., detects a real effect):
+
+```math
+\begin{align*}
+\beta: \Theta_A &\to [0,1] \\
+\beta(\theta) &= P_\theta(T \in K)
+\end{align*}
+```
+
+You can interpret the significance level $\alpha$ as our tolerance for false positives: "I'll only reject $H_0$ if the evidence is so strong that such data would occur by chance less than $\alpha$ of the time." The power of a test is then like the sensitivity of a test: it tells us how likely the test is to detect an effect when there is one. 
+
+So we design our tests to control Type 1 errors first (to avoid making unjustified claims), and only then try to maximize power (minimize Type 2 errors). This leads to an asymmetry in how we treat the two types of errors as we prioritize minimizing Type 1 errors before addressing Type 2 errors. For this reason it is harder to reject $H_0$ than to fail to reject it as we only want reject the null hypothesis if the evidence is compelling. For this reason, we often set $H_0$ as the "skeptical" claim, and $H_A$ as the claim we actually want to prove. Because if we can reject $H_0$, the result is stronger.
+
+Note that such a decision in a test is never proof. It is simply a conclusion based on the evidence available or an interpretation of how well the data agrees with the presumed model. If $T \in K$ we reject $H_0$ and therefore we may no longer believe that $\theta \in Theta_0$ and therefore believe that $\theta \in \Theta_A$. However, it does not tell us the true value of the parameter $\theta$. The asymmetry ensures that only strong evidence leads us to overturn the null hypothesis. Failing to reject $H_0$ is not evidence in its favor it simply reflects the test's design.
+
+<Callout type="example" title="Tea Tasting Lady">
+For our random tea tasting lady experiment, we have the random variables $X_1, X_2, \ldots, X_n$ representing the tea samples she tastes, which are i.i.d and we assume are Bernoulli distributed with parameter $\theta$. Hence the number of total successes (i.e., the number of times she correctly identifies the tea) follows a Binomial distribution:
+
+```math
+S_n = \sum_{i=1}^n X_i \sim \text{Binomial}(n, \theta)
+```
+
+As mentioned we want to check the claim that the lady has a special ability, and therefore define our null hypothesis as the converse/"skeptical" claim. So our null hypothesis test is that the lady has no special ability, we defined this this as:
+
+```math
+H_0: \theta = \frac{1}{2}
+```
+
+We define our alternative hypothesis as the claim we want to test, which is that the lady has a special ability:
+
+```math
+H_A: \theta > \frac{1}{2}
+```
+
+If she has a special ability so $\theta > \frac{1}{2}, we would expect the sum $S_n$ to be higher than what we would expect under the null hypothesis. So a large value of $S_n$ supports the alternative hypothesis $H_A$. Therefore a possible test statistic could be: 
+
+```math
+T = S_n = \sum_{i=1}^n X_i
+```
+
+For our rejection region, we want to find some subset of the possible values of $T$ that would lead us to reject the null hypothesis. In our case we would reject it if $T$ is large enough, so we can set a threshold $c$ such that we reject $H_0$ if $T > c$. This results in a critical region for our test as follows:
+
+```math
+K = (c, \infty)
+```
+
+Therefore if our test has a significance level $\alpha$, we want to choose $c$ such that the probability of rejecting the null hypothesis when it is true is $\alpha$ as we need to control the Type 1 error rate resulting in the following probability:
+
+```math
+P_{\frac{1}{2}}(S_n > c) \leq \alpha
+```
+
+For the power function $\beta(\theta)$, we want to evaluate the probability of correctly rejecting the null hypothesis when the alternative hypothesis is true. This is given by:
+
+```math
+\beta(\theta) = P_{\theta}(S_n > c)
+```
+
+So in general we need to know the distribution of the test statistic under every $P_\theta$ or at least under the null hypothesis to compute the probabilities and the power function. In practice the distribution of $H_0$ can not always be obtained exactly, so approximations or simulations are often used.
+
+If we were to perform the test over $n=10$ days we would get the following table for different $\theta$ and critical values $c$:
+
+| $\theta$ | $c=7$ | $c=8$ | $c=9$ | $c=10$ |
+|----------|-------|-------|-------|--------|
+| 0.5     | 0.0547| 0.0107| 0.0010| 0 |
+| 0.6     | 0.1673| 0.0464| 0.0060| 0 |
+| 0.7     | 0.3828| 0.1493| 0.0282| 0 |
+
+We can interpret this table as follows for the first value where $\theta = 0.5$ and $c = 7$: the probability of having $c=7$ correct guesses when $\theta = 0.5$, so we are arbitrarily guessing, is $0.0547 \approx 5\%$. So if we choose a significance level of $\alpha = 0.05$, we would not reject the null hypothesis as we have the following:
+
+```math
+P_{\frac{1}{2}}(S_n > 7) = 0.0547 > \alpha
+```
+
+So the probability is not low enough for us to reject the null hypothesis. In this case when $c=8$ we have a low enough test statistic $T$ that falls within the acceptance region. So if the lady guesses 8 or more correctly we may believe she has a special ability.
+
+We can also calculate the power of the test using the table. For $c=7$ we have:
+
+```math
+\beta(0.6) = P_{0.6}(S_n > 7) = 0.1673 \text{ and } \beta(0.7) = P_{0.7}(S_n > 7) = 0.3828
+```
+
+So if the lady actually has a $70\%$ success rate, the power of the test is $38\%$, which means the chance to detect the effect if the lady has a 70% success rate is about 38%. We can see that for $\theta$ in the alternative hypothesis, so $\theta > \frac{1}{2}$, the power function $\beta(\theta)$ increases as $\theta$ increases. This means we have a significant probability of a Type 2 error (i.e. failing to detect a real ability) when the deviation from $0.5$ is small. In general:
+- Power close to $1$ means the test is likely to detect an effect if there is one. 
+- Power close to $\alpha$ means the test is weak (hard to detect even real effects). 
+- For fixed $n$ and $\alpha$, power increases as the true effect size increases. Where effect size is how different the true distribution is from the null distribution.
+- Choosing a higher $\alpha$ increases power but also increases the Type 1 error rate. So there is a trade-off: to decrease Type 1 error, you may increase Type 2 error (lower power), and vice versa. 
+</Callout>
+
+## Likelihood Ratio Test
+
+In this section, we explain a systematic approach to test construction which, in many situations, leads to an optimal test.
+
+Assume that $\theta_0 \neq \theta_A$ are two fixed numbers representing the null and alternative hypotheses, respectively, so we have the simple hypotheses:
+
+```math
+H_0: \theta = \theta_0 \quad \text{and} \quad H_A: \theta = \theta_A
+```
+
+We also assume that the random variables $X_1, \ldots, X_n$ are either jointly discrete or jointly continous under both $P_{\theta_0}$ and $P_{\theta_A}$. In particular the likelohood function $\L(x_1, \ldots, x_n \mid \theta)$ is well-defined for both $\theta = \theta_0$ and $\theta = \theta_A$. What does this all mean? And why?
+
+Then we can define the **likelihood ratio** as follows:
+
+```math
+R(x_1, \ldots, x_n) = \frac{\L(x_1, \ldots, x_n \mid \theta_A)}{\L(x_1, \ldots, x_n \mid \theta_0)}
+```
+
+By convention if $\L(x_1, \ldots, x_n \mid \theta_0) = 0$ then $R(x_1, \ldots, x_n) = \infty$. Intuitivly a large ratio indicated that the observed data is much more likely under the alternative hypothesis than under the null hypothesis.
+
+So it makes sense to use the likelihood ratio as a test statistic for hypothesis testing. 
+
+```math
+T = R(X_1, \ldots, X_n)
+```
+
+In particular, we can reject the null hypothesis in favor of the alternative hypothesis if the likelihood ratio is sufficiently large which leads to the critical region:
+
+```math
+K = (c, \infty)
+```
+
+For some constant $c$. Can K even get that big? its a ratio of likelihoods which are both in $[0, 1]$? This choice of $T$ and $K$ is known as the **Likelihood Ratio Test (LRT)**.
+
+Neyman Pearson Lemma: Let $c \geq 0$ to be a constant for the likelhood ratio test $(T,K)$ with significance level $\hat{\alpha} = \P_{\theta_0}(T > c)$, then if $(T',K')$ is any other test with $\alpha \leq \hat{\alpha}$, we have:
+
+```math
+\P_{\theta_A}(T' \in K') \leq \P_{\theta_A}(T \in K)
+```
+
+Which is why we say the likelihood ratio test is optimal in the sense that any other test with significance
+level no greater than the level of the likelihood ratio test will have lower power. So it maximizes the power of the test for a given significance level.
+
+The situation above with simple hypotheses is very special; in practice such cases occur rarely. However, the basic idea can be generalized to yield good or even optimal tests under less restrictive conditions. Often, for composite hypotheses we use the generalized likelihood ratio test (GLRT):
+
+```math
+R(x_1, \ldots, x_n) = \frac{\sup_{\theta \in \Theta_A} \L(x_1, \ldots, x_n \mid \theta)}{\sup_{\theta \in \Theta_0} \L(x_1, \ldots, x_n \mid \theta)}
+```
+
+<Callout type="example" title="Tea Tasting Lady">
+In the tea tasting lady example we assume the underlying model of the random variables $X_1, \ldots, X_n$ is Bernoulli with parameter $\theta$ and that they are all independent and identically distributed (i.i.d.). This means that the probability mass function (pmf) is:
+
+```math
+p_X(x_i; \theta) = \theta^{x_i} (1 - \theta)^{1 - x_i} \quad \text{for } x_i \in \{0, 1\}
+``` 
+
+and the joint likelihood function for an observed sample $(x_1, \ldots, x_n)$ is given by:
+
+```math
+\L(x_1, \ldots, x_n \mid \theta) = \prod_{i=1}^n p_X(x_i; \theta) = \theta^{\sum_{i=1}^n x_i} (1 - \theta)^{n - \sum_{i=1}^n x_i}
+```
+
+So for our simple null hypotheses $H_0: \theta = \frac{1}{2}$, we have:
+
+```math
+\L(x_1, \ldots, x_n \mid H_0) = \prod_{i=1}^n p_X(x_i; \frac{1}{2}) = \left(\frac{1}{2}\right)^{\sum_{i=1}^n x_i} \left(\frac{1}{2}\right)^{n - \sum_{i=1}^n x_i} = (\frac{1}{2})^{n} = \frac{1}{2^n}
+```
+
+And then combining with our composite alternative hypotheses $H_A: \theta > \frac{1}{2}$, we get the following likelihood ratio:
+
+```math
+\begin{align*}
+R(x_1, \ldots, x_n) &= \frac{\L(x_1, \ldots, x_n \mid \theta_A)}{\L(x_1, \ldots, x_n \mid H_0)} \\
+????
+&= \Bigl(\frac{\theta_A}{\frac{1}{2}}\Bigr)^{\sum_{i=1}^n x_i} \Bigl(\frac{1 - \theta_A}{\frac{1}{2}}\Bigr)^{n - \sum_{i=1}^n x_i}
+\end{align*}
+```
+
+Because by assumption that $\theta_A > \frac{1}{2}$, we have:
+
+```math
+\frac{\theta_A(1 - \theta_0)}{\theta_0(1 - \theta_A)} = \frac{\theta_A(1 - \frac{1}{2})}{\frac{1}{2}(1 - \theta_A)} = \frac{\theta_A}{1 - \theta_A} > 1
+```
+
+I dont get these calculations, they are weird and need explaining.
+
+So $R(x_1, \ldots, x_n; \frac{1}{2}, \theta_A)$ is large when the exponent $\sum_{i=1}^n x_i$ is large, which happens when there are many 1's in the sample. This makes sense because under the alternative hypothesis $H_A: \theta > \frac{1}{2}$, we expect to see more 1's than 0's. So this is equivalent to our previous test statistic $T = \sum_{i=1}^n x_i$, and the critical region $K = (c, \infty)$ for some constant $c$.
+
+Thus, the Neyman-Pearson approach leads us to reject $H_0$ (i.e. the hypothesis of random
+guessing) if the observed sum $_n$ is large just like the other test procedure we earlier motivated.
+</Callout>
+<Callout type="example" title="Normal Model with Known Variance">
+
+Let's look at test where we have $X_1, \ldots, X_n$ be independent and identically distributed (i.i.d.) random variables. These random variables are assumed to follow a normal distribution under $P_\theta$:
+
+```math
+X_i \sim N(m, \sigma^2) \quad \text{for } i = 1, \ldots, n
+```
+
+But with known variance $\sigma^2$ and the unknown mean parameter $\theta = \mu \in \mathbb{R}$. The probability density function (pdf) of the normal distribution is given by the following:
+
+```math
+f_X(x_i, \theta) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{(x_i - \theta)^2}{2 \sigma^2}\right)
+```
+
+Because the variables are i.i.d. normal, we can use the joint likelihood function for the sample $(x_1, \ldots, x_n)$ as follows:
+
+```math
+\L(x_1, \ldots, x_n \mid \theta) = \prod_{i=1}^n f_X(x_i, \theta) = (2 \pi \sigma^2)^{-n/2} \exp\left(-\frac{1}{2 \sigma^2} \sum_{i=1}^n (x_i - \theta)^2\right)
+```
+
+We want to test the simple hypotheses $H_0: \theta = \theta_0$ against the alternative $H_A: \theta = \theta_A$.
+
+we then get the ratio:
+
+```math
+\begin{align*}
+R(x_1, \ldots, x_n; \theta_0, \theta_A) &= \frac{\L(x_1, \ldots, x_n \mid \theta_A)}{\L(x_1, \ldots, x_n \mid \theta_0)} \\
+&= ??? Show workings out
+&= \exp\left(-\frac{1}{2 \sigma^2} \left(\sum_{i=1}^n (x_i - \theta_A)^2 - \sum_{i=1}^n (x_i - \theta_0)^2\right)\right)
+\end{align*}
+```
+
+These calcualtions are all a bit complex. We can rewrite this up to a multiplicative constant $k$ depending on $\sigma, \theta_0, \theta_A$ as:
+
+```math
+R(x_1, \ldots, x_n; \theta_0, \theta_A) = k(\sigma, \theta_0, \theta_A) \exp\left(-\frac{1}{2 \sigma^2} \left(\sum_{i=1}^n (x_i - \theta_A)^2 - \sum_{i=1}^n (x_i - \theta_0)^2\right)\right)
+```
+
+Thus the likelihood ratio tends to be large when the exponent is large:
+
+```math
+(\theta_A - \theta_0) \sum_{i=1}^n x_i 
+```
+
+Note that the interpretation of “large” here depends on the sign of $(\theta_A - \theta_0)$. In any case, we choose as the test statistic
+
+```math
+T = \sum_{i=1}^n X_i
+```
+
+if $(\theta_A - \theta_0) > 0$ so $(\theta_A > \theta_0)$, we set critical region of the form:
+
+```math
+K_{(>)} = (c_{(>)} , \infty)
+```
+
+and choose $c$ such that we reject $H_0$ is large so if $T > c_{(>)}$. Conversely, if $(\theta_A - \theta_0) < 0$ so $(\theta_A < \theta_0)$, then the exponent is large when $T$ is small, so we set the critical region of the form:
+
+```math
+K_{(<)} = (-\infty, c_{(<)})
+```
+
+In both cases we need to choose the constants $c_{(>)}$ and $c_{(<)}$ appropriately to control the Type I error rate with the significance level $\alpha$ as we wish to have:
+
+```math
+P_{\theta_0}(T \in K) \leq \alpha
+```
+
+For that we need to know the distribution of the test statistic $T$ under the null hypothesis $H_0: \theta = \theta_0$. Here this is easy as we jsut have a sum of i.i.d. normal random variables, which is also normal:
+
+```math
+T \sim N(n \theta_0, n \sigma^2)
+```
+
+We can also standardize the test statistic:
+
+```math
+Z = \frac{T - n \theta_0}{\sqrt{n \sigma^2}} \sim N(0, 1)
+```
+
+One should note that $Z$ is actually computable in the model $\P_\theta$ for $\theta \in \Theta_0$, i.e. with $\theta = \theta_0$ (under $H_0$), because by assumption the variance $\sigma^2$ is known and the mean $\theta_0$ to be tested is also known. (The same applies to $T$; however, the distribution of $Z$ under $H_0$ is simpler than that of $T$.)
+
+This last part doesn't make a lot of sense. Can we actually get a concrete example like the students height or something idk.
+</Callout>
+
+## Z-Test
+
+Normal Distribution, Test for the Mean with Known Variance
+
+<Callout type="example" title="Ostrich Eggs">
+Suppose two researchers, Mr. Smith and Dr. Thurston, are debating the average weight of ostrich eggs. Mr. Smith claims the mean is 1100g, Dr. Thurston claims it is 1200g. To resolve this, they collect $n = 8$ ostrich eggs and measure their weights (in grams):
+
+```math
+x_1=1090,\ x_2=1150,\ x_3=1170,\ x_4=1080,\ x_5=1210,\ x_6=1230,\ x_7=1180,\ x_8=1140
+```
+
+We model these weights as i.i.d. random variables:
+
+```math
+X_1, X_2, \ldots, X_8 \sim N(m, \sigma^2)
+```
+
+where $m$ is the unknown mean weight and $\sigma^2$ the variance is known $\sigma=55$ grams.
+</Callout>
+
+## T-Test
+
+Normal Distribution, Test for the Mean with Unknown Variance
+
+<Callout type="example" title="Ostrich Eggs">
+Now, Mr. Smith and Dr. Thurston wonder whether, in their first experiment, they might have used an incorrect estimate of the variance of ostrich eggs. Therefore, they decide to perform the tests again without the assumption of known variance—that is, by using a t-test.
+
+</Callout>
+
+## P-Value
+
+
+## Randomized Test
+
+<Callout type="todo">
+For now skip this part as it is a bit weird
+</Callout>
+
+As seen in the example above where the distribution of $T$ was discrete, it is impossible to achieve the exact significance level $\alpha$ for all possible values of $\theta$. So we can't usually define a critical region $K$ such that:
+
+```math
+P_\theta(T \in K) = \alpha
+```
+
+A common practice is to instead use a randomized test, where we randomize the decision to reject the null hypothesis based on the observed data. We define some number $\gamma \in [0, 1]$ such that:
+
+```math
+\gamma \P_\theta(T > c) + (1 - \gamma) \P_\theta(T > c+1) = \alpha
+```
+
+We then decide that if $T > c$, we reject the null hypothesis with probability $\gamma$, so $H_0$ is reject if firstly $T > c$ and secondly we draw a uniform random variable $U \sim \text{Uniform}(0, 1)$ and reject $H_0$ if $U < \gamma$.
+
+This seems very random and specfic for this example and I don't understand it, or how it would generalize.
+
+<Callout type="example" title="Tea Tasting Lady">
+By choosing $c=7$ we can actually achieve the exact level $\alpha = 0.05$ by defining $\gamma$ such that:
+
+```math
+\gamma = \frac{\alpha - \P_\theta(T > c+1)}{\P_\theta(T > c) - \P_\theta(T > c+1)} \approx 0.893
+```
+</Callout>
