@@ -816,6 +816,228 @@ T < -1.895 \implies -2.339 < -1.895
 
 ## Two-Sample Tests
 
+Often in statistics, we are interested not just in testing a single mean or parameter, but in comparing **two populations**. For example, suppose we wish to know whether a new drug reduces blood pressure more effectively than a standard drug. We then have two sets of samples, possibly of different sizes, and our goal is to test if their means (or some other parameters) differ. The key question becomes: **Is the observed difference between the two sample means larger than what we'd expect by chance, given the natural variability in the data?**
+
+There are two main scenarios:
+
+- **Paired (dependent) samples:** Each data point in one sample has a natural pairing in the other (e.g., measurements before and after a treatment for the same individuals).
+- **Unpaired (independent) samples:** The samples are independent; for example, they are from different groups of subjects.
+
+### Paired 
+
+Suppose we have two sets of measurements for each of $n$ subjects:
+
+- $X_1, X_2, \ldots, X_n$ (e.g., measurement **before** treatment)
+- $Y_1, Y_2, \ldots, Y_n$ (e.g., measurement **after** treatment)
+
+Assume $(X_i, Y_i)$ is a pair for the same subject, and each pair is independent of all others. A typical model is that $(X_i, Y_i)$ are jointly normally distributed, but for now assume they have equal variance $\sigma^2$ and the $X_i$ and $Y_i$ are independent within a pair).
+
+Our goal is then to **Test whether the mean of $X$ and the mean of $Y$ differ.** Because the data is paired, we can "collapse" the problem to a **one-sample test** of the differences:
+
+```math
+Z_i = X_i - Y_i, \quad i = 1, 2, \ldots, n
+```
+
+If $X_i$ and $Y_i$ are each distributed as $N(\mu_X, \sigma^2)$ and $N(\mu_Y, \sigma^2)$, and are independent within each pair, the difference $Z_i$ is also normally distributed:
+- The mean is straightforward as it follows from the properties of expectation:
+
+```math
+\E[Z_i] = \E[X_i - Y_i] = \E[X_i] - \E[Y_i] = \mu_X - \mu_Y
+```
+- The variance is given by the properties of variance for independent random variables:
+
+```math
+\V[Z_i] = \V[X_i - Y_i] = \V[X_i] + \V[Y_i] = \sigma^2 + \sigma^2 = 2\sigma^2
+```
+
+Thus, the distribution of the differences is:
+
+```math
+Z_i \sim N(\mu_X - \mu_Y, 2\sigma^2)
+```
+
+this also matches or intuition that the normal distribution is closed under linear combinations, and the difference of two independent normal variables is also normal. So, we reduce the two-sample problem to a one-sample test for the mean of $Z_i$.
+
+We can now formulate our hypotheses in terms of the difference in means. Suppose we want to test if the means are equal:
+
+```math
+\begin{align*}
+H_0: \mu_X = \mu_Y \qquad (\text{or } \mu_X - \mu_Y = 0) \\
+H_A: \mu_X \neq \mu_Y \qquad (\text{or } \mu_X - \mu_Y \neq 0)
+\end{align*}
+```
+
+Depending on whether we know the variance $\sigma^2$ or not we either use a z-test or a t-test. If we know the variance, we can use the z-test with the standardized test statistic:
+
+```math
+Z = \frac{\bar{Z}}{\sqrt{2\sigma^2 / n}} \sim N(0, 1) \quad \text{under } H_0
+```
+
+where $\bar{Z}$ is the sample mean of the differences $Z_i = X_i - Y_i$:
+
+```math
+\bar{Z} = \frac{1}{n} \sum_{i=1}^n Z_i
+```
+
+and the variance of the differences is $2\sigma^2$ as shown above. If the variance is unknown, we use the t-test where we estimate the variance from the sample differences:
+
+```math
+S_Z^2 = \frac{1}{n-1} \sum_{i=1}^n (Z_i - \bar{Z})^2
+```
+
+and then use the t-statistic:
+
+```math
+T = \frac{\bar{Z}}{S_Z - 0/ \sqrt{n}} \sim t_{n-1} \quad \text{under } H_0
+```
+
+where $S_Z$ is the sample standard deviation of the differences and the zero in the numerator is because we are testing if the mean of the differences is zero.
+
+<Callout type="example" title="Blood Pressure Before and After Treatment">
+Suppose we measure the blood pressure of $n=6$ patients before and after a treatment. And want to test if the treatment has a significant effect on blood pressure. The variance is unknown, so we use the t-test. The measurements are:
+
+| Patient | Before ($X\_i$) | After ($Y\_i$) | $Z\_i = X\_i - Y\_i$ |
+| ------- | :---------------: | :--------------: | :--------------------: |
+| 1       |        140        |        130       |           10           |
+| 2       |        135        |        132       |            3           |
+| 3       |        150        |        140       |           10           |
+| 4       |        145        |        143       |            2           |
+| 5       |        138        |        132       |            6           |
+| 6       |        142        |        139       |            3           |
+
+We compute the sample mean $Z\_i$:
+
+```math
+\bar{Z} = \frac{10 + 3 + 10 + 2 + 6 + 3}{6} = 5.67
+```
+
+and the sample variance:
+
+```math
+S_Z^2 = \frac{1}{5}[(10-5.67)^2 + (3-5.67)^2 + \ldots + (3-5.67)^2] = 13.0667
+```
+
+The test statistic is then:
+
+```math
+T = \frac{\bar{Z}}{S_Z/\sqrt{n}} = \frac{5.67}{\sqrt{13.0667/6}} \approx 8.3674
+```
+
+Then we compare $T$ to $t\_{5,1-\alpha/2}$ for your desired significance level to make a decision. 
+</Callout>
+
+### Unpaired
+
+Suppose now we have two independent samples:
+
+- $X_1, \ldots, X_n$ from $N(\mu_X, \sigma^2)$
+- $Y_1, \ldots, Y_m$ from $N(\mu_Y, \sigma^2)$
+
+We wish to test whether the means are equal, but there is **no natural pairing** between $X$ and $Y$:
+
+```math
+\begin{align*}
+H_0: \mu_X = \mu_Y \\
+H_A: \mu_X \neq \mu_Y
+\end{align*}
+```
+
+We are still interested in the difference between the sample means but here $n$ and $m$ can be different so we define the sample means as:
+
+```math
+D = \bar{X}_n - \bar{Y}_m = \frac{1}{n} \sum_{i=1}^n X_i - \frac{1}{m} \sum_{j=1}^m Y_j
+```
+
+where $\bar{X}_n$ is the sample mean of $X$ and $\bar{Y}_m$ is the sample mean of $Y$. Both $\bar{X}_n$ and $\bar{Y}_m$ are (independently) normally distributed because they are averages of independent normal variables:
+
+```math
+\bar{X}_n \sim N(\mu_X, \frac{\sigma^2}{n}) \quad \text{and} \quad \bar{Y}_m \sim N(\mu_Y, \frac{\sigma^2}{m})
+```
+
+The difference $\bar{X}_n - \bar{Y}_m$ is already a difference of averages (not sums), so it is naturally scaled by $n$ and $m$. If you were to compare the sum of all $X_i$ to the sum of all $Y_j$ directly, then different sample sizes would distort the result. However, by averaging first, we account for the different sample sizes and obtain a fair comparison between group means. So we calcualte the expectation of the distribution of the difference:
+
+```math
+\E(D) = \E(\bar{X}_n - \bar{Y}_m) = \E(\bar{X}_n) - \E(\bar{Y}_m) = \mu_X - \mu_Y
+```
+
+Importantly, note that the variances are the same in the two groups, so we can use the same $\sigma^2$ for both. The variance of the difference is given by:
+
+```math
+\V(D) = V(\bar{X}_n - \bar{Y}_m) = V(\bar{X}_n) + V(\bar{Y}_m) = \frac{\sigma^2}{n} + \frac{\sigma^2}{m} = \sigma^2 \left(\frac{1}{n} + \frac{1}{m}\right)
+```
+
+So the distribution of the difference is:
+
+```math
+D \sim N(\mu_X - \mu_Y, \sigma^2 \left(\frac{1}{n} + \frac{1}{m}\right))
+```
+
+To test the null hypothesis that the means are equal we can again either use a z-test if the variance $\sigma^2$ is known, or a t-test if it is unknown. So if $\sigma^2$ is known, we use the z-test with the test statistic:
+
+```math
+T = \frac{\bar{X}_n - \bar{Y}_m}{\sigma \sqrt{\frac{1}{n} + \frac{1}{m}}} \sim N(0, 1) \quad \text{under } H_0
+```
+
+If $\sigma^2$ is unknown, we estimate it from the data using the sample variances of each group:
+
+```math
+S_X^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2, \quad \text{and} \quad S_Y^2 = \frac{1}{m-1} \sum_{j=1}^m (Y_j - \bar{Y}_m)^2
+```
+
+We then use the pooled sample variance to estimate the variance of the difference:
+
+```math
+S^2 = \frac{(n-1) S_X^2 + (m-1) S_Y^2}{n + m - 2}
+```
+
+If we assume both groups have the same variance ($\sigma^2$), the best estimate uses data from both groups, combining (pooling) them. Otherwise by summing the squared deviations from both groups and dividing by the total degrees of freedom ($n + m - 2$), we get a more stable and accurate estimate, especially when sample sizes are small.
+
+The t-test statistic is then:
+
+```math
+T = \frac{\bar{X}_n - \bar{Y}_m}{S \sqrt{\frac{1}{n} + \frac{1}{m}}} \sim t_{n+m-2} \quad \text{under } H_0
+```
+
+where $S$ is the pooled sample standard deviation. Depending on the alternative hypothesis, we again calculate the critical regions using the correct quantiles of the t-distribution with $n + m - 2$ degrees of freedom.
+
+<Callout type="example" title="Unpaired">
+Suppose we have $n=8$ patients treated with a **new drug** and $m=10$ patients with an **old drug**. Their reduction in blood pressure is:
+
+* New Drug ($X$): $\[12, 8, 11, 13, 7, 10, 9, 14]$
+* Old Drug ($Y$): $\[8, 6, 9, 7, 5, 9, 10, 8, 7, 6]$
+
+We calculate the sample means:
+
+```math
+\bar{X}_8 = \frac{12+8+11+13+7+10+9+14}{8} = 10.5 \\
+\bar{Y}_{10} = \frac{8+6+9+7+5+9+10+8+7+6}{10} = 7.5
+```
+
+Sample variances:
+
+```math
+S_X^2 = \frac{1}{7} \sum_{i=1}^8 (X_i - 10.5)^2 = 6 \\
+S_Y^2 = \frac{1}{9} \sum_{j=1}^{10} (Y_j - 7.5)^2 = 2.5
+```
+
+Pooled variance:
+
+```math
+S^2 = \frac{7 \cdot 6 + 9 \cdot 2.5}{8 + 10 - 2} = \frac{42 + 22.5}{16} = 4.03
+```
+
+Test statistic:
+
+```math
+T = \frac{10.5 - 7.5}{\sqrt{4.03 \left(\frac{1}{8} + \frac{1}{10}\right)}} 
+= \frac{3}{\sqrt{4.03 \times 0.225}} 
+= \frac{3}{\sqrt{0.906}} 
+\approx \frac{3}{0.951} \approx 2.85
+```
+
+Then just compare $T$ to $t_{16, 1-\alpha/2}$ (for $\alpha = 0.05$, $t_{16, 0.975} \approx 2.12$) and decide whether to reject $H_0$. 
+</Callout>
+
 ## P-Value
 
 ## Randomized Test
