@@ -1040,6 +1040,39 @@ Then just compare $T$ to $t_{16, 1-\alpha/2}$ (for $\alpha = 0.05$, $t_{16, 0.97
 
 ## P-Value
 
+We have $X_1, X_2, \ldots, X_n$ as our sample of i.i.d. random variables and want to test our null hypothesis $H_0: \theta = \theta_0$ against the alternative hypothesis $H_A: \theta \in \theta_A$. 
+
+Ordered test-collection. T is a test statistc then a family of tests $(T, K_t)_{t \geq 0}$ where $K_t$ is the critical region for the test with parameter $t$. Then the family of tests is ordered with regard to T if $K_{t_1} \subseteq R$ and it holds that
+
+```math
+s \leq t implies K_{t} \subseteq K_{s}
+```
+
+Example is right-tailed test $K_t = (t, \infty)$, left-tailed test $K_t = (-\infty, t)$, two-tailed test $K_t = (-\infty, -t) \cup (t , \infty)$.
+
+We then define the **p-value** as follows. Let the null hypothesis be simple. And $(T, K_t)$ an ordered family of tests. Then the p-value is the random variable defined as:
+
+```math
+p-value = G(T)
+```
+
+where $G: \mathbb{R}+ \to [0, 1]$ is a function such that:
+
+```math
+G(t) = \P_\theta_0(T \in K_t)
+```
+
+- P value is a function of the test statistic $T$ and therfore a random variable.
+- The p-value depends on the observations $X_1, X_2, \ldots, X_n$ through the test statistic $T$. Therefore repeating the test can yield different p-values.
+- The p-value is alwys in the interval $[0, 1]$. If T is continous and $K_t= (t, \infty)$ then it can be shown that the pvalue is uniformly distributed on $[0, 1]$ under the null hypothesis. This means that if we repeat the test many times, the p-values will be uniformly distributed between 0 and 1?
+- The p-value gives us information about which tests in our family will reject the null hypothesis. If $p-value < \alpha$ then we reject the null hypothesis at the significance level $\alpha$. If $p-value \geq \alpha$ then we do not reject the null hypothesis at the significance level $\alpha$.
+- The p-value only depends on the null hypothesis and the test statistic, not on the alternative hypothesis. 
+
+
+<Callout type="example" title="Coin Tossing">
+
+</Callout>
+
 ## Randomized Test
 
 <Callout type="todo">
