@@ -223,39 +223,56 @@ So if the lady actually has a $70\%$ success rate, the power of the test is $38\
 
 ## Likelihood Ratio Test
 
-In this section, we explain a systematic approach to test construction which, in many situations, leads to an optimal test.
+In this section, we develop a systematic and principled approach to hypothesis testing based on the concept of likelihood, which often leads to the **most powerful/optimal possible test**. This test is known as the **Likelihood Ratio Test (LRT)**. The likelihood ratio test essentially compares how well the data is explained under the null hypothesis to how well it could possibly be explained under the alternative.
 
-Assume that $\theta_0 \neq \theta_A$ are two fixed numbers representing the null and alternative hypotheses, respectively, so we have the simple hypotheses:
+Suppose we want to test two simple hypotheses about the parameter $\theta$:
 
 ```math
 H_0: \theta = \theta_0 \quad \text{and} \quad H_A: \theta = \theta_A
 ```
 
-We also assume that the random variables $X_1, \ldots, X_n$ are either jointly discrete or jointly continous under both $P_{\theta_0}$ and $P_{\theta_A}$. In particular the likelohood function $\L(x_1, \ldots, x_n \mid \theta)$ is well-defined for both $\theta = \theta_0$ and $\theta = \theta_A$. What does this all mean? And why?
+where $\theta_0 \neq \theta_A$ are fixed and known. We also assume that the random variables $X_1, \ldots, X_n$ are either jointly discrete or jointly continuous under both $P_{\theta_0}$ and $P_{\theta_A}$. In particular the likelihood function is well-defined for both $\theta = \theta_0$ and $\theta = \theta_A$ if the random variables are independent and identically distributed (i.i.d.):
 
-Then we can define the **likelihood ratio** as follows:
+```math
+\L(x_1, x_2, \ldots, x_n; \theta) = \begin{cases}
+\prod_{i=1}^{n} p_{X_i}(x_i; \theta) & \text{if } X_i \text{ are discrete} \\
+\prod_{i=1}^{n} f_{X_i}(x_i; \theta) & \text{if } X_i \text{ are continuous}
+\end{cases}
+```
+
+We then can define the **likelihood ratio statistic** as follows:
 
 ```math
 R(x_1, \ldots, x_n) = \frac{\L(x_1, \ldots, x_n \mid \theta_A)}{\L(x_1, \ldots, x_n \mid \theta_0)}
 ```
 
-By convention if $\L(x_1, \ldots, x_n \mid \theta_0) = 0$ then $R(x_1, \ldots, x_n) = \infty$. Intuitivly a large ratio indicated that the observed data is much more likely under the alternative hypothesis than under the null hypothesis.
-
-So it makes sense to use the likelihood ratio as a test statistic for hypothesis testing. 
+By convention if $\L(x_1, \ldots, x_n \mid \theta_0) = 0$ then $R(x_1, \ldots, x_n) = \infty$. The likelihood ratio test uses this as its statistic:
 
 ```math
 T = R(X_1, \ldots, X_n)
 ```
 
-In particular, we can reject the null hypothesis in favor of the alternative hypothesis if the likelihood ratio is sufficiently large which leads to the critical region:
+The test then rejects $H_0$ in favor of $H_A$ if $R(x_1, \ldots, x_n)$ is sufficiently large, as then the observed data is much more likely under $H_A$ than under $H_0$. Intuitively this makes sense as if the data would be very rare if $H_0$ were true, but quite expected under $H_A$, then the data provide evidence against $H_0$. Because we reject the null hypothesis in favor of the alternative hypothesis if the likelihood ratio is sufficiently large we can define the critical region $K$ as:
 
 ```math
 K = (c, \infty)
 ```
 
-For some constant $c$. Can K even get that big? its a ratio of likelihoods which are both in $[0, 1]$? This choice of $T$ and $K$ is known as the **Likelihood Ratio Test (LRT)**.
+For some constant $c$. Both likelihoods are numbers in $[0,1]$ (for probability mass functions), but their ratio can be arbitrarily large for example if the data is almost impossible under $H_0$ but fits well under $H_A$ we get:
 
-Neyman Pearson Lemma: Let $c \geq 0$ to be a constant for the likelhood ratio test $(T,K)$ with significance level $\hat{\alpha} = \P_{\theta_0}(T > c)$, then if $(T',K')$ is any other test with $\alpha \leq \hat{\alpha}$, we have:
+```math
+\frac{0.99}{0.01} \quad \text{or} \quad \frac{0.1}{0.9} = 0.111 \quad \text{or} \quad \frac{0.5}{0.5} = 1
+```
+
+Just like with the [maximum likelihood estimator](), it is often more convenient in practice and theory to use the **log-likelhood ratio** instead of the likelihood ratio itself. The log-likelihood ratio is defined as:
+
+```math
+\lambda(x_1, \ldots, x_n) = \log R(x_1, \ldots, x_n) = \ell(x_1, \ldots, x_n \mid \theta_A) - \ell(x_1, \ldots, x_n \mid \theta_0)
+```
+
+where $\ell(x_1, \ldots, x_n \mid \theta)$ is the log-likelihood function.
+
+We said earlier that the likelihood ratio test is the most powerful or most optimal test we can define but what does this mean? The likelhood ratio test was setup by Jerzy Neyman and Egon Pearson in the 1930s. They defined a proved a lemma that characterizes the optimality of the likelihood ratio test in the case of simple hypotheses, the so-called **Neyman-Pearson Lemma**. It states that for two simple hypotheses $H_0: \theta = \theta_0$ and $H_A: \theta = \theta_A$, the likelihood ratio test $(T,K)$ with significance level $\hat{\alpha} = P_{\theta_0}(T \in K)$, then any other test with significance level $\alpha \leq \hat{\alpha}$ will have less or equal power under $H_A$. That is, for any other test $(T', K')$ with $P_{\theta_0}(T' \in K') \leq \alpha$, we have:
 
 ```math
 \P_{\theta_A}(T' \in K') \leq \P_{\theta_A}(T \in K)
@@ -264,14 +281,18 @@ Neyman Pearson Lemma: Let $c \geq 0$ to be a constant for the likelhood ratio te
 Which is why we say the likelihood ratio test is optimal in the sense that any other test with significance
 level no greater than the level of the likelihood ratio test will have lower power. So it maximizes the power of the test for a given significance level.
 
-The situation above with simple hypotheses is very special; in practice such cases occur rarely. However, the basic idea can be generalized to yield good or even optimal tests under less restrictive conditions. Often, for composite hypotheses we use the generalized likelihood ratio test (GLRT):
+Another important note is that when using the likelihood ratio test in practice we often have to deal with composite hypotheses. So we generalize the idea to the **generalized likelihood ratio test (GLRT)** which yields good or even optimal tests for composite hypotheses:
 
 ```math
 R(x_1, \ldots, x_n) = \frac{\sup_{\theta \in \Theta_A} \L(x_1, \ldots, x_n \mid \theta)}{\sup_{\theta \in \Theta_0} \L(x_1, \ldots, x_n \mid \theta)}
 ```
 
+Because of the supremum is compares the best possible fit to the data under the alternative hypothesis $H_A$ to the best possible fit under the null hypothesis $H_0$. The test then again rejects $H_0$ if $R$ is large enough.
+
 <Callout type="example" title="Tea Tasting Lady">
-In the tea tasting lady example we assume the underlying model of the random variables $X_1, \ldots, X_n$ is Bernoulli with parameter $\theta$ and that they are all independent and identically distributed (i.i.d.). This means that the probability mass function (pmf) is:
+Let's revisit the tea tasting lady and see the likelihood ratio explicitly step by step, both in terms of the likelihood and the log-likelihood.
+
+Suppose, as before, we model her correct guesses as $X_i \sim \text{Bernoulli}(\theta)$ i.i.d. for $i = 1, \ldots, n$. Let $x_1, \ldots, x_n \in {0,1}$ be the observed outcomes (1 if correct, 0 if not), and $S_n = \sum_{i=1}^n x_i$ is the total number of correct guesses. The probability mass function for each $X_i$ is then:
 
 ```math
 p_X(x_i; \theta) = \theta^{x_i} (1 - \theta)^{1 - x_i} \quad \text{for } x_i \in \{0, 1\}
@@ -283,92 +304,146 @@ and the joint likelihood function for an observed sample $(x_1, \ldots, x_n)$ is
 \L(x_1, \ldots, x_n \mid \theta) = \prod_{i=1}^n p_X(x_i; \theta) = \theta^{\sum_{i=1}^n x_i} (1 - \theta)^{n - \sum_{i=1}^n x_i}
 ```
 
-So for our simple null hypotheses $H_0: \theta = \frac{1}{2}$, we have:
+which can be rewritten using $S_n = \sum_{i=1}^n x_i$:
 
 ```math
-\L(x_1, \ldots, x_n \mid H_0) = \prod_{i=1}^n p_X(x_i; \frac{1}{2}) = \left(\frac{1}{2}\right)^{\sum_{i=1}^n x_i} \left(\frac{1}{2}\right)^{n - \sum_{i=1}^n x_i} = (\frac{1}{2})^{n} = \frac{1}{2^n}
+\L(x_1, \ldots, x_n \mid \theta) = \theta^{S_n} (1 - \theta)^{n - S_n}
 ```
 
-And then combining with our composite alternative hypotheses $H_A: \theta > \frac{1}{2}$, we get the following likelihood ratio:
+Now we consider again our two hypotheses:
+
+```math
+H_0: \theta = \frac{1}{2} \quad \text{and} \quad H_A: \theta >\frac{1}{2}
+```
+
+The likelihood under the simple null hypothesis $H_0$ is then:
+
+```math
+mathcal{L}(x_1, \ldots, x_n \mid H_0) = \left(\frac{1}{2}\right)^{s_n}\left(\frac{1}{2}\right)^{n-s_n} = \left(\frac{1}{2}\right)^n = \frac{1}{2^n}
+```
+
+For our composite alternative hypotheses $H_A$, rather than using the supremum we can just use the parameter $\theta_A$ and later on see how the ratio behaves as $\theta_A$ varies. So we can write the likelihood under the alternative hypothesis as:
+
+```math
+\L(x_1, \ldots, x_n \mid H_A) = \theta_A^{S_n} (1 - \theta_A)^{n - S_n}
+```
+
+We can then compute the likelihood ratio as follows:
 
 ```math
 \begin{align*}
-R(x_1, \ldots, x_n) &= \frac{\L(x_1, \ldots, x_n \mid \theta_A)}{\L(x_1, \ldots, x_n \mid H_0)} \\
-????
-&= \Bigl(\frac{\theta_A}{\frac{1}{2}}\Bigr)^{\sum_{i=1}^n x_i} \Bigl(\frac{1 - \theta_A}{\frac{1}{2}}\Bigr)^{n - \sum_{i=1}^n x_i}
+R(x_1, \ldots, x_n; \frac{1}{2}, \theta_A) &= \frac{\L(x_1, \ldots, x_n \mid H_A)}{\L(x_1, \ldots, x_n \mid H_0)} \\
+&= \frac{\theta_A^{S_n} (1 - \theta_A)^{n - S_n}}{\left(\frac{1}{2}\right)^n} \\
+&= \frac{\theta_A^{S_n}}{\left(\frac{1}{2}\right)^n} \cdot \frac{(1 - \theta_A)^{n - S_n}}{\left(\frac{1}{2}\right)^n} \\
+&= \left(\frac{\theta_A}{\frac{1}{2}}\right)^{S_n} \left(\frac{1 - \theta_A}{\frac{1}{2}}\right)^{n - S_n} \\
+&= \left(2 \theta_A\right)^{S_n} \left(2 (1 - \theta_A)\right)^{n - S_n}
 \end{align*}
 ```
 
-Because by assumption that $\theta_A > \frac{1}{2}$, we have:
+Because by assumption that $\theta_A > \frac{1}{2}$, we have that the first term $2 \geq 2 \theta_A > 1$ and therefore when $S_n$ increases, the factor $(2\theta_A)^{S_n}$ grows rapidly. For the second term we have $0 < 2 (1 - \theta_A) < 1$ so as $S_n$ increases, the factor $(2(1 - \theta_A))^{n - S_n}$ shrinks. So the likelihood ratio is large when $S_n$ is large, which makes sense as we expect more correct guesses under the alternative hypothesis $H_A$. 
+
+As a concrete example, we set $\theta_A = 0.7$ and compute the likelihood ratio for different values of $S_n$. We get $2 \theta_A = 1.4$ and $2(1 - \theta_A) = 0.6$. Then the likelihood ratio becomes:
 
 ```math
-\frac{\theta_A(1 - \theta_0)}{\theta_0(1 - \theta_A)} = \frac{\theta_A(1 - \frac{1}{2})}{\frac{1}{2}(1 - \theta_A)} = \frac{\theta_A}{1 - \theta_A} > 1
+R(x_1, \ldots, x_n; \frac{1}{2}, 0.7) = \left(1.4\right)^{S_n} \left(0.6\right)^{n - S_n}
 ```
 
-I dont get these calculations, they are weird and need explaining.
+If we compute this for $n = 10$ and different values of $S_n$, we get:
+- For $S_n = 3: $R = (1.4)^3 \cdot (0.6)^7 \approx 0.07$
+- For $S_n = 5: $R = (1.4)^5 \cdot (0.6)^5 \approx 0.41$
+- For $S_n = 7: $R = (1.4)^7 \cdot (0.6)^3 \approx 2.27$
 
-So $R(x_1, \ldots, x_n; \frac{1}{2}, \theta_A)$ is large when the exponent $\sum_{i=1}^n x_i$ is large, which happens when there are many 1's in the sample. This makes sense because under the alternative hypothesis $H_A: \theta > \frac{1}{2}$, we expect to see more 1's than 0's. So this is equivalent to our previous test statistic $T = \sum_{i=1}^n x_i$, and the critical region $K = (c, \infty)$ for some constant $c$.
+We can also look at the log-likelihood ratio:
 
-Thus, the Neyman-Pearson approach leads us to reject $H_0$ (i.e. the hypothesis of random
-guessing) if the observed sum $_n$ is large just like the other test procedure we earlier motivated.
+```math
+\begin{align*}
+\lambda(x_1, \ldots, x_n; \theta_0, \theta_A) &= \log R(x_1, \ldots, x_n; \theta_0, \theta_A) \\
+&= S_n \log(\theta_A) + (n - S_n) \log(1 - \theta_A) - (S_n \log(\frac{1}{2}) + (n - S_n) \log(\frac{1}{2})) \\
+&= S_n (\log(\theta_A) - \log(\frac{1}{2})) + (n - S_n) (\log(1 - \theta_A) - \log(\frac{1}{2})) \\
+&= S_n \log(2 \theta_A) + (n - S_n) \log(2 (1 - \theta_A))
+\end{align*}
+```
+
+This again shows that $\lambda$ is an increasing function of $s_n$, the larger the number of correct guesses, the larger the log-likelihood ratio.
+
+So we can say the likelihood ratio test statistic is equivalent to our previous test statistic $T = \sum_{i=1}^n x_i$, and thus, the Neyman-Pearson approach leads us to reject $H_0$ (i.e. the hypothesis of random guessing) if the observed sum $_n$ is large just like the other test procedure we motivated above.
 </Callout>
 <Callout type="example" title="Normal Model with Known Variance">
-
-Let's look at test where we have $X_1, \ldots, X_n$ be independent and identically distributed (i.i.d.) random variables. These random variables are assumed to follow a normal distribution under $P_\theta$:
+Let us also revisit the normal model example. Suppose $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$ i.i.d., with known variance $\sigma^2$ and the unknown mean parameter $\theta = \mu \in \mathbb{R}$:
 
 ```math
 X_i \sim N(m, \sigma^2) \quad \text{for } i = 1, \ldots, n
 ```
 
-But with known variance $\sigma^2$ and the unknown mean parameter $\theta = \mu \in \mathbb{R}$. The probability density function (pdf) of the normal distribution is given by the following:
+The probability density function (pdf) of the normal distribution is given by:
 
 ```math
 f_X(x_i, \theta) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{(x_i - \theta)^2}{2 \sigma^2}\right)
 ```
 
-Because the variables are i.i.d. normal, we can use the joint likelihood function for the sample $(x_1, \ldots, x_n)$ as follows:
+Because the variables are i.i.d. normal, we can just simply use the joint likelihood function for the sample $(x_1, \ldots, x_n)$:
 
 ```math
-\L(x_1, \ldots, x_n \mid \theta) = \prod_{i=1}^n f_X(x_i, \theta) = (2 \pi \sigma^2)^{-n/2} \exp\left(-\frac{1}{2 \sigma^2} \sum_{i=1}^n (x_i - \theta)^2\right)
+\L(x_1, \ldots, x_n \mid \theta) = \prod_{i=1}^n f_X(x_i, \theta) = \left(\frac{1}{\sqrt{2 \pi \sigma^2}}\right)^n \exp\left(-\frac{1}{2 \sigma^2} \sum_{i=1}^n (x_i - \theta)^2\right)
 ```
 
-We want to test the simple hypotheses $H_0: \theta = \theta_0$ against the alternative $H_A: \theta = \theta_A$.
+We want to test the simple hypotheses against each other:
 
-we then get the ratio:
+```math
+H_0: \theta = \mu_0 \quad \text{and} \quad H_A: \theta = \mu_A
+```
+
+where $\mu_0 \neq \mu_A$ are fixed and known. We then get the following likelihood ratio:
 
 ```math
 \begin{align*}
-R(x_1, \ldots, x_n; \theta_0, \theta_A) &= \frac{\L(x_1, \ldots, x_n \mid \theta_A)}{\L(x_1, \ldots, x_n \mid \theta_0)} \\
-&= ??? Show workings out
-&= \exp\left(-\frac{1}{2 \sigma^2} \left(\sum_{i=1}^n (x_i - \theta_A)^2 - \sum_{i=1}^n (x_i - \theta_0)^2\right)\right)
+R(x_1, \ldots, x_n) 
+&= \frac{\left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^n \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu_A)^2\right)}{\left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^n \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu_0)^2\right)} \\
+&= \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu_A)^2 + \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu_0)^2\right) \\
+&= \exp\left(\frac{1}{2\sigma^2}\left[ \sum_{i=1}^n (x_i - \mu_0)^2 - \sum_{i=1}^n (x_i - \mu_A)^2 \right]\right)
 \end{align*}
 ```
 
-These calcualtions are all a bit complex. We can rewrite this up to a multiplicative constant $k$ depending on $\sigma, \theta_0, \theta_A$ as:
+To see how this depends on the data, we can expand the difference in the exponents:
 
 ```math
-R(x_1, \ldots, x_n; \theta_0, \theta_A) = k(\sigma, \theta_0, \theta_A) \exp\left(-\frac{1}{2 \sigma^2} \left(\sum_{i=1}^n (x_i - \theta_A)^2 - \sum_{i=1}^n (x_i - \theta_0)^2\right)\right)
+\begin{align*}
+& \sum_{i=1}^n (x_i - \mu_0)^2 - \sum_{i=1}^n (x_i - \mu_A)^2 \\
+&= \sum_{i=1}^n \Big[ (x_i^2 - 2x_i \mu_0 + \mu_0^2) - (x_i^2 - 2x_i \mu_A + \mu_A^2) \Big] \\
+&= \sum_{i=1}^n \Big[ -2x_i\mu_0 + \mu_0^2 + 2x_i\mu_A - \mu_A^2 \Big] \\
+&= \sum_{i=1}^n [2x_i(\mu_A - \mu_0) + (\mu_0^2 - \mu_A^2)] \\
+&= 2(\mu_A - \mu_0) \sum_{i=1}^n x_i + n(\mu_0^2 - \mu_A^2)
+\end{align*}
 ```
 
-Thus the likelihood ratio tends to be large when the exponent is large:
+Putting it together, we have the likelihood ratio:
 
 ```math
-(\theta_A - \theta_0) \sum_{i=1}^n x_i 
+\begin{align*}
+R(x_1, \ldots, x_n) &= \exp\left(\frac{1}{2\sigma^2}\left[2(\mu_A - \mu_0)\sum_{i=1}^n x_i + n(\mu_0^2 - \mu_A^2)\right]\right) \\
+&= \exp\left(\frac{\mu_A - \mu_0}{\sigma^2} \sum_{i=1}^n x_i + \frac{n}{2\sigma^2}(\mu_0^2 - \mu_A^2)\right)
+\end{align*}
 ```
 
-Note that the interpretation of “large” here depends on the sign of $(\theta_A - \theta_0)$. In any case, we choose as the test statistic
+Again the test statistic is essentially $\sum_{i=1}^n x_i$ (or the sample mean), since the other terms are constant for given $n$ and $\sigma^2$. We also see this when taking the logarithm:
+
+```math
+\lambda(x_1, \ldots, x_n) = \log R(x_1, \ldots, x_n) = \frac{\mu_A - \mu_0}{\sigma^2} \sum_{i=1}^n x_i + \frac{n}{2\sigma^2}(\mu_0^2 - \mu_A^2)
+```
+
+So we can define the test statistic as:
 
 ```math
 T = \sum_{i=1}^n X_i
 ```
 
-if $(\theta_A - \theta_0) > 0$ so $(\theta_A > \theta_0)$, we set critical region of the form:
+For the critical region, we again want to reject $H_0$ if the likelihood ratio is large. This means we reject $H_0$ if $R(x_1, \ldots, x_n) > c$ for some constant $c$. However, we need to consider the sign of $(\mu_A - \mu_0)$ to determine how we define "large". If $(\mu_A - \mu_0) > 0$ so $(\mu_A > \mu_0)$, we set critical region of the form:
 
 ```math
 K_{(>)} = (c_{(>)} , \infty)
 ```
 
-and choose $c$ such that we reject $H_0$ is large so if $T > c_{(>)}$. Conversely, if $(\theta_A - \theta_0) < 0$ so $(\theta_A < \theta_0)$, then the exponent is large when $T$ is small, so we set the critical region of the form:
+and choose $c$ such that we reject $H_0$ is large so if $T > c_{(>)}$. Conversely, if $(\mu_A - \mu_0) < 0$ so $(\mu_A < \mu_0)$, then the exponent is large when $T$ is small, so we set the critical region of the form:
 
 ```math
 K_{(<)} = (-\infty, c_{(<)})
@@ -377,32 +452,197 @@ K_{(<)} = (-\infty, c_{(<)})
 In both cases we need to choose the constants $c_{(>)}$ and $c_{(<)}$ appropriately to control the Type I error rate with the significance level $\alpha$ as we wish to have:
 
 ```math
-P_{\theta_0}(T \in K) \leq \alpha
+P_{\mu_0}(T \in K) \leq \alpha
 ```
 
-For that we need to know the distribution of the test statistic $T$ under the null hypothesis $H_0: \theta = \theta_0$. Here this is easy as we jsut have a sum of i.i.d. normal random variables, which is also normal:
+To choose the constants $c_{(>)}$ and $c_{(<)}$, we need to consider the distribution of the test statistic $T$ under the null hypothesis $H_0: \theta = \mu_0$. Here this is easy as we just have a sum of i.i.d. normal random variables, which is also normal:
 
 ```math
-T \sim N(n \theta_0, n \sigma^2)
+T \sim N(n \mu_0, n \sigma^2)
 ```
 
 We can also standardize the test statistic:
 
 ```math
-Z = \frac{T - n \theta_0}{\sqrt{n \sigma^2}} \sim N(0, 1)
+Z = \frac{T - n\mu_0}{\sqrt{n\sigma^2}} \sim N(0, 1) \quad \text{under $H_0$}
 ```
 
-One should note that $Z$ is actually computable in the model $\P_\theta$ for $\theta \in \Theta_0$, i.e. with $\theta = \theta_0$ (under $H_0$), because by assumption the variance $\sigma^2$ is known and the mean $\theta_0$ to be tested is also known. (The same applies to $T$; however, the distribution of $Z$ under $H_0$ is simpler than that of $T$.)
+To control the Type I error rate at significance level $\alpha$, we choose the threshold $c$ so that
 
-This last part doesn't make a lot of sense. Can we actually get a concrete example like the students height or something idk.
+```math
+P_{\mu_0}(T > c) = \alpha
+```
+
+By substituting the standardized variable $Z$ into the equation, we have:
+
+```math
+\begin{align*}
+P_{\mu_0}(T > c) &= \alpha \\
+P_{\mu_0}\left(\frac{T - n\mu_0}{\sqrt{n\sigma^2}} > \frac{c - n\mu_0}{\sqrt{n\sigma^2}}\right) &= \alpha \\
+P\left(Z > \frac{c - n\mu_0}{\sqrt{n\sigma^2}}\right) = \alpha
+\end{align*}
+```
+
+Recall that the CDF of the standard normal is $\Phi(z) = P(Z \leq c)$. We want $P(Z > c}) = \alpha$, so:
+
+```math
+P(Z > c) = \alpha \implies P(Z \leq c) = 1 - \alpha
+```
+
+So $c = \Phi^{-1}(1-\alpha)$ is the point such that $1-\alpha$ of the distribution is below it and $\alpha$ is above it. So from the above equation we have:
+
+```math
+\begin{align*}
+\frac{c - n\mu_0}{\sqrt{n\sigma^2}} &= \Phi^{-1}(1-\alpha) \\
+c - n\mu_0 &= \sqrt{n\sigma^2} \Phi^{-1}(1-\alpha) \\
+c &= n\mu_0 + \sqrt{n\sigma^2} \Phi^{-1}(1-\alpha)
+\end{align*}
+```
+
+where $\Phi^{-1}$ is the quantile function (inverse CDF) of the standard normal distribution. This is directly analogous to setting quantiles for the confidence intervals. Rather then defining different critical regions for the two cases, we can just change the critical region to $T < c$ if $\mu_A < \mu_0$ and $T > c$ if $\mu_A > \mu_0$. This means we can define the critical region as:
+
+```math
+c = \begin{cases}
+c_{(>)} = n\mu_0 + \sqrt{n\sigma^2} \Phi^{-1}(1-\alpha) & \text{if } \mu_A > \mu_0 \\
+c_{(<)} = n\mu_0 - \sqrt{n\sigma^2} \Phi^{-1}(\alpha) & \text{if } \mu_A < \mu_0
+\end{cases}
+```
 </Callout>
 
 ## Z-Test
 
-Normal Distribution, Test for the Mean with Known Variance
+The z-test is the classic hypothesis test for the mean of a normal distribution when the variance $\sigma^2$ is known. It gets its name from the fact that the test statistic is standardized and follows a standard normal distribution under the null hypothesis.
+
+Suppose we have a sample of i.i.d. random variables $X_1, X_2, \ldots, X_n$ drawn from a normal distribution with unknown mean $\theta$ and known variance $\sigma^2$:
+
+```math
+X_i \sim N(\theta, \sigma^2) \quad \text{for } i = 1, \ldots, n
+```
+
+We want to test the null hypothesis:
+
+```math
+H_0: \theta = \theta_0
+```
+
+Against one of the alternative hypotheses:
+- **One-sided test**: $H_A: \theta > \theta_0$ (right) or $H_A: \theta < \theta_0$ (left)
+- **Two-sided test**: $H_A: \theta \neq \theta_0$
+
+Which alternative is most appropriate depends on the concrete question. For the mean we use the sample mean as our estimate:
+
+```math
+T = X_n = \frac{1}{n} \sum_{i=1}^n X_i
+```
+
+and standardize it to create the test statistic:
+
+```math
+Z = \frac{X_n - \theta_0}{\sigma / \sqrt{n}} \sim N(0, 1) \quad \text{under } H_0
+```
+
+The critical region $K$ which we consider as "extreme values" to reject the null hypothesis depend on the alternative hypothesis we are testing against. 
+
+For the **right one-sided** test against $H_A: \theta > \theta_0$, we want to reject the null hypothesis if the test statistic $Z$ is greater than some critical value $c_{(>)}$. So our set of critical values is:
+
+```math
+K = (c_{(>)} , \infty)
+```
+
+And we want to choose $c_{(>)}$ such that:
+
+```math
+\P_{\theta_0}(Z \in K) = \P_{\theta_0}(Z > c_{(>)} ) = \alpha
+```
+
+Which for the standard normal distribution gives us:
+
+```math
+\P_{\theta_0}(Z > c_{(>)} ) = 1 - \Phi(c_{(>)} ) = \alpha
+```
+
+where $\Phi$ is the cumulative distribution function (CDF) of the standard normal distribution. This means we can compute $c_{(>)}$ as:
+
+```math
+\alpha = 1 - \Phi(c_{(>)} ) \implies c_{(>)} = \Phi^{-1}(1 - \alpha)
+```
+
+Thus we reject the null hypothesis if:
+
+```math
+\begin{align*}
+Z &> \Phi^{-1}(1 - \alpha) \\
+\frac{X_n - \theta_0}{\sigma / \sqrt{n}} &> \Phi^{-1}(1 - \alpha) \\
+X_n &> \theta_0 + \sigma / \sqrt{n} \Phi^{-1}(1 - \alpha)
+\end{align*}
+```
+
+For the **left one-sided** test against $H_A: \theta < \theta_0$, we want to reject the null hypothesis if the test statistic $Z$ is less than some critical value $c_{(<)}$. So our set of critical values is:
+
+```math
+K = (-\infty, c_{(<)})
+```
+
+And we want to choose $c_{(<)}$ such that:
+
+```math
+\P_{\theta_0}(Z \in K) = \P_{\theta_0}(Z < c_{(<)} ) = \alpha
+```
+
+For the standard normal distribution this gives us:
+
+```math
+\P_{\theta_0}(Z < c_{(<)} ) = \Phi(c_{(<)} ) = \alpha
+```
+
+This means we can compute $c_{(<)}$ as:
+
+```math
+\alpha = \Phi(c_{(<)} ) \implies c_{(<)} = \Phi^{-1}(\alpha)
+```
+
+Thus we reject the null hypothesis if:
+
+```math
+\begin{align*}
+Z &< \Phi^{-1}(\alpha) \\
+\frac{X_n - \theta_0}{\sigma / \sqrt{n}} &< \Phi^{-1}(\alpha) \\
+X_n &< \theta_0 + \sigma / \sqrt{n} \Phi^{-1}(\alpha)
+\end{align*}
+```
+
+A useful property of the standard normal distribution is that $\Phi^{-1}(1 - \alpha) = -\Phi^{-1}(\alpha)$, so we can also express the critical value for the left one-sided test as:
+
+```math
+c_{(<)} = -\Phi^{-1}(1 - \alpha)
+```
+
+For the **two-sided test** against $H_A: \theta \neq \theta_0$, we want to reject the null hypothesis if the test statistic $Z$ is either greater than some critical value $c_{(>)}$ or less than some critical value $c_{(<)}$. So our set of critical values is:
+
+```math
+K = (-\infty, c_{(=)}) \cup (c_{(=)} , \infty)
+```
+
+So in other words, we want to choose $c_{(=)}$ such that:
+
+```math
+\P_{\theta_0}(Z \in K) = \P_{\theta_0}(|Z| > c_{(=)} ) = \P_{\theta_0}(Z < c_{(=)} ) + \P_{\theta_0}(Z > c_{(=)})= \alpha
+```
+
+Because the standard normal distribution is symmetric, we have:
+
+```math
+\P_{\theta_0}(Z < c_{(=)} ) = \P_{\theta_0}(Z > c_{(=)}) = \frac{\alpha}{2}
+```
+
+So solving for $c_{(=)}$ gives:
+
+```math
+c_{(=)} = \Phi^{-1}(1 - \alpha/2)
+```
 
 <Callout type="example" title="Ostrich Eggs">
-Suppose two researchers, Mr. Smith and Dr. Thurston, are debating the average weight of ostrich eggs. Mr. Smith claims the mean is 1100g, Dr. Thurston claims it is 1200g. To resolve this, they collect $n = 8$ ostrich eggs and measure their weights (in grams):
+Suppose two researchers, Mr. Smith and Dr. Thurston, are debating the average weight of ostrich eggs. To resolve this, they collect $n = 8$ ostrich eggs and measure their weights (in grams):
 
 ```math
 x_1=1090,\ x_2=1150,\ x_3=1170,\ x_4=1080,\ x_5=1210,\ x_6=1230,\ x_7=1180,\ x_8=1140
@@ -414,20 +654,169 @@ We model these weights as i.i.d. random variables:
 X_1, X_2, \ldots, X_8 \sim N(m, \sigma^2)
 ```
 
-where $m$ is the unknown mean weight and $\sigma^2$ the variance is known $\sigma=55$ grams.
+where $m$ is the unknown mean weight and $\sigma^2$ the variance is known as $\sigma=55$ grams. Dr. Thurston proposes to test Mr. Smith's claim by taking the hypothesis:
+
+```math
+H_0: \theta = 1100
+```
+
+against the alternative hypothesis:
+
+```math
+H_A: \theta > 1100
+```
+
+(or against his claim which is that the average weight is 1200g) at the significance level $\alpha = 0.05$ so $5\%$ Type I error rate. We calculate the sample mean as:
+
+```math
+T = \bar{X_8} = \frac{1090 + 1150 + 1170 + 1080 + 1210 + 1230 + 1180 + 1140}{8} = 1156.25
+```
+
+From the standard normal distribution, we find $\Phi^{-1}(1 - 0.05) \approx 1.645$. So for our standardized model our test statistic is:
+
+```math
+Z = \frac{T - \theta_0}{\sigma / \sqrt{n}} = \frac{1156.25 - 1100}{55 / \sqrt{8}} \approx 2.89
+```
+
+Which means we reject the null hypothesis $H_0$ at the $5\%$ significance level because:
+
+```math
+Z > 1.645 \implies 2.89 > 1.645
+```
+
+Mr. Smith, however, feels that this procedure disadvantages him and suggests instead testing Dr. Thurston's claim with the hypothesis:
+
+```math
+H_0: \theta = 1200
+```
+
+against the alternative hypothesis:
+
+```math
+H_A: \theta < 1200
+```
+
+(or alternatively against his claim that the average weight is 1100g) at the significance level $\alpha = 0.05$. The sample mean is still $T = 1156.25$ and we can compute the critical value as:
+
+```math
+c_{(<)} = \Phi^{-1}(\alpha) = -\Phi^{-1}(1 - \alpha) \approx -1.645
+```
+
+So for the standardized test statistic we have:
+
+```math
+Z = \frac{T - \theta_0}{\sigma / \sqrt{n}} = \frac{1156.25 - 1200}{55 / \sqrt{8}} \approx -2.25
+```
+
+Which means we reject the null hypothesis $H_0$ at the $5\%$ significance level because:
+
+```math
+Z < -1.645 \implies -2.25 < -1.645
+```
+
+So both of their claims are not supported by the data, and they conclude that the average weight of ostrich eggs is likely between 1100g and 1200g.
 </Callout>
 
 ## T-Test
 
-Normal Distribution, Test for the Mean with Unknown Variance
+The t-test is used when we want to test the mean of a normal distribution but the population variance $\sigma^2$ is unknown. The name comes from the fact that the standardized test statistic when both are unknown follows a t-distribution rather than a normal distribution.
+
+Suppose we have a sample of i.i.d. random variables $X_1, X_2, \ldots, X_n$ drawn from a normal distribution with unknown mean $\theta$ and unknown variance $\sigma^2$:
+
+```math
+X_i \sim N(\theta, \sigma^2) \quad \text{for } i = 1, \ldots, n
+```
+
+We want to test the null hypothesis:
+
+```math
+H_0: \theta = \theta_0 \quad
+```
+
+This is strictly a composite hypotheses since $\sigma_2$ is unspecified meaning the set of possible values for $\theta_0$ is:
+
+```math
+\Theta_0 = \{\theta_0\} \times (0, \infty)
+```
+
+Since $\sigma^2$ is unknown, we estimate it from the data using the sample variance:
+
+```math
+S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X})^2
+```
+
+where $\bar{X}$ is the sample mean. Just like for the [confidence intervals]() we then use this in our standardized normal model to create the test statistic. The t-test is based on the fact that under the null hypothesis, the sample mean follows a t-distribution with $n-1$ degrees of freedom. Specifically, we use the **t-statistic** defined as:
+
+```math
+T = \frac{\bar{X} - \theta_0}{S / \sqrt{n}} \sim t_{n-1} \quad \text{under } H_0
+```
+
+where $S$ is the sample standard deviation and $n$ is the sample size. Depending on the alternative hypothesis, we again calculate the critical regions using the correct quantiles of the t-distribution with $n-1$ degrees of freedom.
+- **Right one-sided test** against $H_A: \theta > \theta_0$:
+
+```math
+T > t_{n-1, 1 - \alpha}
+```
+
+- **Left one-sided test** against $H_A: \theta < \theta_0$:
+
+```math
+T < t_{n-1, \alpha}
+```
+
+- **Two-sided test** against $H_A: \theta \neq \theta_0$:
+
+```math
+|T| > t_{n-1, 1 - \alpha/2}
+```
 
 <Callout type="example" title="Ostrich Eggs">
-Now, Mr. Smith and Dr. Thurston wonder whether, in their first experiment, they might have used an incorrect estimate of the variance of ostrich eggs. Therefore, they decide to perform the tests again without the assumption of known variance—that is, by using a t-test.
+Now, Mr. Smith and Dr. Thurston wonder whether, in their first experiment, they might have used an incorrect estimate of the variance of ostrich eggs. Therefore, they decide to perform the tests again without the assumption of known variance so using the t-test instead of the z-test. Dr. Thurston still insists on testing:
 
+```math
+H_0: \theta = 1100 \quad \text{against } \quad H_A: \theta > 1100
+```
+
+with a significance level of $\alpha = 0.05$. The sample mean is still $T = 1156.25$ and the sample variance is:
+
+```math
+S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X})^2 = \frac{1}{n}(\sum_{i=1}^n (X_i^2) - n \bar{X}^2) = 2798.21
+```
+
+Taking the square root gives us the sample standard deviation of $S \approx 52.9$. From the t-distribution with $n-1$ degrees of freedom, we can find $t_{7, 0.95} \approx 1.895$. The test statistic is then:
+
+```math
+T = \frac{1156.25 - 1100}{52.9 / \sqrt{8}} \approx 3.008
+```
+
+We again reject the null hypothesis $H_0$ at the $5\%$ significance level because:
+
+```math
+T > 1.895 \implies 3.008 > 1.895
+```
+
+Not surprisingly, Mr. Smith remains unconvinced and suggests instead testing Dr. Thurston's claim with the alternative hypothesis reversed:
+
+```math
+H_0: \theta = 1200 \quad \text{against } \quad H_A: \theta < 1200
+```
+
+He computes the test statistic as:
+
+```math
+T = \frac{1156.25 - 1200}{52.9 / \sqrt{8}} \approx -2.339
+```
+
+For this alternative hypothesis, we need the quantile $t_{7, 0.05} = -t_{7, 0.95} \approx -1.895$. Again we reject the null hypothesis $H_0$ at the $5\%$ significance level because:
+
+```math
+T < -1.895 \implies -2.339 < -1.895
+```
 </Callout>
 
-## P-Value
+## Two-Sample Tests
 
+## P-Value
 
 ## Randomized Test
 
