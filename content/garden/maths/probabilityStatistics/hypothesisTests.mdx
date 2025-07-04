@@ -483,7 +483,7 @@ P\left(Z > \frac{c - n\mu_0}{\sqrt{n\sigma^2}}\right) = \alpha
 \end{align*}
 ```
 
-Recall that the CDF of the standard normal is $\Phi(z) = P(Z \leq c)$. We want $P(Z > c}) = \alpha$, so:
+Recall that the CDF of the standard normal is $\Phi(z) = P(Z \leq c)$. We want $P(Z > c) = \alpha$, so:
 
 ```math
 P(Z > c) = \alpha \implies P(Z \leq c) = 1 - \alpha
@@ -1038,39 +1038,143 @@ T = \frac{10.5 - 7.5}{\sqrt{4.03 \left(\frac{1}{8} + \frac{1}{10}\right)}}
 Then just compare $T$ to $t_{16, 1-\alpha/2}$ (for $\alpha = 0.05$, $t_{16, 0.975} \approx 2.12$) and decide whether to reject $H_0$. 
 </Callout>
 
-## P-Value
+## The P-value
 
-We have $X_1, X_2, \ldots, X_n$ as our sample of i.i.d. random variables and want to test our null hypothesis $H_0: \theta = \theta_0$ against the alternative hypothesis $H_A: \theta \in \theta_A$. 
+So far, we have established how hypothesis tests are structured by choosing a test statistic $T$ and a critical region $K$. The decision to reject or fail to reject the null hypothesis $H_0$ is usually made at some predetermined significance level $\alpha$. However, rather than choosing a single fixed significance level, it is common practice to quantify the strength of evidence against the null hypothesis using a single number called the **p-value**. Intuitively this p-value answers the following question:
 
-Ordered test-collection. T is a test statistc then a family of tests $(T, K_t)_{t \geq 0}$ where $K_t$ is the critical region for the test with parameter $t$. Then the family of tests is ordered with regard to T if $K_{t_1} \subseteq R$ and it holds that
+> If the null hypothesis $H_0$ were actually true, what is the probability of observing data as extreme as (or more extreme than) what we actually observed?
 
-```math
-s \leq t implies K_{t} \subseteq K_{s}
-```
+A small p-value means our data would be very unlikely if $H_0$ were true, providing strong evidence against it. Conversely, a large p-value means our data is quite consistent with $H_0$.
 
-Example is right-tailed test $K_t = (t, \infty)$, left-tailed test $K_t = (-\infty, t)$, two-tailed test $K_t = (-\infty, -t) \cup (t , \infty)$.
+To formally define the p-value clearly, we first introduce the notion of an **ordered family of tests**. Typically, when choosing a test, we do not just have one critical region but rather a collection (family) of critical regions parameterized by a value $t$:
 
-We then define the **p-value** as follows. Let the null hypothesis be simple. And $(T, K_t)$ an ordered family of tests. Then the p-value is the random variable defined as:
+- **Right-tailed test**:
 
 ```math
-p-value = G(T)
+K_t = (t, \infty)
 ```
 
-where $G: \mathbb{R}+ \to [0, 1]$ is a function such that:
+- **Left-tailed test**:
 
 ```math
-G(t) = \P_\theta_0(T \in K_t)
+K_t = (-\infty, t)
 ```
 
-- P value is a function of the test statistic $T$ and therfore a random variable.
-- The p-value depends on the observations $X_1, X_2, \ldots, X_n$ through the test statistic $T$. Therefore repeating the test can yield different p-values.
-- The p-value is alwys in the interval $[0, 1]$. If T is continous and $K_t= (t, \infty)$ then it can be shown that the pvalue is uniformly distributed on $[0, 1]$ under the null hypothesis. This means that if we repeat the test many times, the p-values will be uniformly distributed between 0 and 1?
-- The p-value gives us information about which tests in our family will reject the null hypothesis. If $p-value < \alpha$ then we reject the null hypothesis at the significance level $\alpha$. If $p-value \geq \alpha$ then we do not reject the null hypothesis at the significance level $\alpha$.
-- The p-value only depends on the null hypothesis and the test statistic, not on the alternative hypothesis. 
+- **Two-tailed test**:
+
+```math
+K_t = (-\infty, -t) \cup (t, \infty)
+```
+
+These sets form an **ordered family** because changing the threshold $t$ systematically shrinks or expands the critical region. For example, with a right-tailed test, larger values of $t$ correspond to smaller critical regions. Formally we say a family of tests for a statistic $T$ is ordered if we can define critical regions $K_t$ such that:
+
+```math
+s \leq t \implies K_s \subseteq K_t.
+```
+
+Now the idea of using this ordering is that it allows us to continuously measure how extreme our observed test statistic is by finding exactly the threshold $t$ at which we would just barely reject the null hypothesis which we denote as $K_t$. The p-value is then defined as the probability of observing a test statistic at least as extreme as our observed value under the null hypothesis. 
+
+So suppose we have a **simple null hypothesis** $H_0: \theta = \theta_0$ and an ordered family of tests defined by a statistic $T$ and critical regions $K_t$. Given observed data $X_1(\omega), \dots, X_n(\omega)$ for some outcome $\omega \in \Omega$, we compute the observed test statistic:
+
+```math
+T(\omega) = t(X_1(\omega), \dots, X_n(\omega)).
+```
+
+We then define the p-value as a random variable through the function $G$:
+
+```math
+\text{p-value}(\omega) = G(T(\omega)), \quad \text{where}\quad G(t) = P_{\theta_0}(T \in K_t).
+```
+
+So $K_t$ is the critical region corresponding to a threshold $t$ for the test statistic $T$. For the data we actually observe, say $T(\omega) = t_{obs}$, the set $K_{t_{obs}}$ consists of all test statistic values at least as extreme as what we observed. $G(t)$ is a function that gives, for any threshold $t$, the probability (under the null hypothesis) that $T$ falls in the corresponding critical region $K_t$. So if we observe a test statistic $T(\omega) = t_{obs}$, the p-value is the probability, under $H_0$, of observing a value of $T$ at least as extreme as what you observed.
+
+This definition directly captures the probability of observing outcomes at least as extreme as our data under the null hypothesis. If our observed statistic is very unusual under $H_0$, the probability $G(T(\omega))$ will be very small. Conversely, if our data fits well with the null hypothesis, this probability will be larger. Notice the p-value only depends on the null hypothesis and the test statistic, not on the alternative hypothesis. (What does this imply?)
+
+Therefore the p-value gives us information about which tests in our family will reject the null hypothesis. If $p-value < \alpha$ then we reject the null hypothesis at the significance level $\alpha$. If $p-value \geq \alpha$ then we do not reject the null hypothesis at the significance level $\alpha$.
+
+If the test statistic $T$ has a continuous distribution under the null hypothesis (meaning it can take any value within a range), then the p-value has the remarkable property of being uniformly distributed between $0$ and $1$. Formally, under $H_0$:
+
+```math
+\text{p-value} \sim U(0,1).
+```
+
+As we repeat the experiment many times under $H_0$, the observed $T$ varies randomly as we always get different samples. For each possible $T$, the chance (under $H_0$) that $T$ falls into a region at least as extreme as itself is exactly $u$ for some $u \in [0, 1]$, and the probability that the p-value is less than $u$ is just $u$. This means that if we repeatedly conduct the same test under the null hypothesis, the p-values we observe will be uniformly distributed across the interval $[0, 1]$ by definition of the uniform distribution and the way we defined the p-value.
+
+<Callout type="example" title="Tossing a Coin">
+Suppose we flip a coin $n = 100$ times and observe $X_n(\omega) = 60$ heads. Consider the null hypothesis:
+
+```math
+H_0: \theta = 0.5 \quad(\text{coin is fair})
+```
+
+and the alternative hypothesis:
+
+```math
+H_A: \theta \neq 0.5 \quad(\text{coin is biased}).
+```
+
+We know that the sum of independent Bernoulli trials (coin flips) follows a binomial distribution. Specifically, under the null hypothesis, the number of heads $X_n$ follows:
+
+```math
+X_n \sim \text{Binomial}(n, \theta_0) \quad \text{where } X_n = \sum_{i=1}^n X_i \text{ and } X_i \sim \text{Bernoulli}(\theta_0).
+```
+
+To simplify calculations, we can approximate the binomial distribution with a normal distribution when $n$ is large which is valid by the Central Limit Theorem. Thus, we can use the standardized test statistic:
+
+```math
+T(\omega) = \frac{X_n(\omega)- n\theta_0}{\sqrt{n\theta_0(1-\theta_0)}} 
+= \frac{60-50}{\sqrt{100\times0.5\times0.5}} 
+= \frac{10}{5} = 2.
+```
+
+Because our alternative hypothesis is two-sided, we use the two-tailed test. The critical region is:
+
+```math
+K_t = \left(-\infty, -t\right) \cup \left(t, \infty\right)
+```
+
+By definition, our p-value is computed as:
+
+```math
+\text{p-value}(\omega) 
+= G(T(\omega)) 
+= P_{\theta_0}(|T|\geq |T(\omega)|)
+= P_{\theta_0}(|T|\geq 2).
+```
+
+To calculate this probability explicitly, we recognize under the null hypothesis (fair coin, large $n$) that our statistic $T$ approximately follows a standard normal distribution $N(0,1)$. Thus, the probability above becomes:
+
+```math
+P_{\theta_0}(|T|\geq 2) = P(Z \leq -2) + P(Z \geq 2),\quad Z\sim N(0,1).
+```
+
+Because the standard normal is symmetric, we get:
+
+```math
+p-value(\omega) = P(Z \leq -2) + P(Z \geq 2)
+= 2P(Z\geq 2) = 2[1-\Phi(2)],
+```
+
+where $\Phi$ is the cumulative distribution function (CDF) of the standard normal. Using standard normal tables or software, we find $\Phi(2)\approx 0.97725$. Thus we have:
+
+```math
+\text{p-value}(\omega)=2(1-0.97725)=0.0455.
+```
+
+The calculation above shows explicitly how the definition via $G$ is used in practice. The function $G$ here is explicitly given by the tail-probabilities of the standard normal distribution:
+
+```math
+G(t)=P_{\theta_0}(|T|\geq t)=2[1-\Phi(t)],\quad t\geq0.
+```
+
+Hence, the p-value at the observed test-statistic $t=2$ is precisely $G(2)=0.0455$. So why do we get different values if we know repeatedy call this function? Because the t changes, i.e the underlying data changes? The resulting p-value $0.0455$ means:
+
+- **If the coin is actually fair** so under the assumption of $H_0$, the chance of observing a result as extreme or more extreme than 60 heads out of 100 is about $4.55\%$.
+- At the $5\%$ significance level, this is considered unlikely enough to reject the null hypothesis.
+- At the $1\%$ significance level, it is not sufficiently unlikely to reject the null hypothesis.
 
 
-<Callout type="example" title="Coin Tossing">
-
+If we know repeated this experiment an got 50 heads, our observed test statistic $T$ changes and therefore also $K_{T(\omega)}$ and $G(T(\omega))$ change accordingly. 
 </Callout>
 
 ## Randomized Test

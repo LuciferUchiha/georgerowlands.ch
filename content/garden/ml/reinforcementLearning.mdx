@@ -40,5 +40,10 @@ initial state action distribution what is the probability that a start in some s
 
 Bellman equation can be computed using dynamic programming yay, as always.
 
-Finally rather than calculating the value function we approximate. This results in the policy evaluation algorithm.
+Finally rather than calculating the value function we approximate. This results in the policy evaluation algorithm. where we iteratively learn the value function as the value function depends on the next value.
 
+grid example, where actions are equiproably random policy, so up down left right. The environment is deterministic, so always results in the one state from state and action pair.
+
+we can then also do policy evaluation for Q. can estimate the action values now.this improves our policy. WE then do policy iteration to always switch the policy greedly and then use that to improve the value function. This is called policy iteration. block coordinate descent? has some connection with this. value iteration is a special case of policy iteration where we always use the greedy policy and we do it together at the same time. Asynchrous policy iteration is where we do the policy evaluation and then the policy improvement in parallel so instead of using the old value, if I have a new value I can use that to improve the policy. This is called the actor-critic method. The actor is the policy and the critic is the value function?
+
+policy multi armed bandit, gambling with different machines to find the best casino machine. The exploration exploitation trade off is important here. We want to explore new actions but also exploit the best action we have found so far.
