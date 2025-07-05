@@ -112,13 +112,106 @@ Because we know coin tosses are indepdent of each other we can then also easily 
 ```
 </Callout>
 
+### Independence of Multiple Events
+
+When discussing independence, it is important to extend the idea beyond just two events. For a collection of events $(A\_i)\_{i\in I}$, we say they are **stochastically independent** if knowing the outcome of any combination of these events does **not** provide information about the others, no matter how many we choose.
+
+Formally, a finite collection $(A\_1, \ldots, A\_n)$ of events is called **independent** if for **every** subset $J \subseteq {1,\ldots, n}$ (with $|J|\geq 2$), the following holds:
+
+```math
+\P\left(\bigcap_{j\in J} A_j\right) = \prod_{j\in J} \P(A_j)
+```
+
+This definition is stronger than just requiring that every pair of events is independent; **every** subset must satisfy the condition. For three events $A$, $B$, and $C$, this means checking:
+
+```math
+\begin{align*}
+\P(A \cap B) &= \P(A)\cdot\P(B) \\
+\P(A \cap C) &= \P(A)\cdot\P(C) \\
+\P(B \cap C) &= \P(B)\cdot\P(C) \\
+\P(A \cap B \cap C) &= \P(A)\cdot\P(B)\cdot\P(C)
+\end{align*}
+```
+
+Simply checking all pairs is not enough; the joint intersection must also match the product of their probabilities. For larger collections, the number of subsets grows rapidly, so the check becomes more involved.
+
+<Callout type="example">
+Suppose we roll two fair six-sided dice and define the following events:
+
+- $A$: The **first die is even**; i.e., $\omega\_1 \in {2,4,6}$
+- $B$: The **second die is odd**; i.e., $\omega\_2 \in {1,3,5}$
+- $C$: **Both dice show $\leq 2$**; i.e., $\omega\_1 \leq 2$ and $\omega\_2 \leq 2$
+
+Let's compute all relevant probabilities and check all required conditions for independence. There are $36$ possible outcomes in total, as each die has $6$ outcomes: $|\Omega|=6 \times 6 = 36$.
+
+**Event $A$: First die is even**: Possible values: 2, 4, 6 for $\omega\_1$, any value for $\omega\_2$. Number of favorable outcomes: $3$ (even values) $\times 6 = 18$ so:
+
+```math
+\P(A) = \frac{18}{36} = \frac{1}{2}
+```
+
+**Event $B$: Second die is odd**: Possible values: 1, 3, 5 for $\omega\_2$, any value for $\omega\_1$. Number of favorable outcomes: $3 \times 6 = 18$ so:
+
+```math
+\P(B) = \frac{18}{36} = \frac{1}{2}
+```
+
+**Event $C$: Both dice are $\leq 2$**: Possible values: 1 or 2 for both dice. Number of favorable outcomes: $2 \times 2 = 4$ so:
+
+```math
+\P(C) = \frac{4}{36} = \frac{1}{9}
+```
+
+Next, we compute the pairwise intersections. **$A \cap B$:** First die even **and** second die odd so $\omega\_1 \in {2,4,6}$ ($3$ options) and $\omega\_2 \in {1,3,5}$ ($3$ options). Number of outcomes: $3 \times 3 = 9$.
+
+```math
+\P(A \cap B) = \frac{9}{36} = \frac{1}{4}
+```
+
+
+**$A \cap C$:** First die even **and** both dice $\leq 2$ so $\omega\_1 \in {2}$ (since only 2 is even and $\leq 2$) and $\omega\_2 \in {1,2}$. Number of outcomes: $1 \times 2 = 2$ so:
+
+```math
+\P(A \cap C) = \frac{2}{36} = \frac{1}{18}
+```
+
+**$B \cap C$:** Second die odd **and** both dice $\leq 2$ so $\omega\_2 \in {1}$ (since only 1 is odd and $\leq 2$) and $\omega\_1 \in {1,2}$. Number of outcomes: $2 \times 1 = 2$.
+
+```math
+\P(B \cap C) = \frac{2}{36} = \frac{1}{18}
+```
+
+Lastly we compute the triple intersection
+
+**$A \cap B \cap C$:** First die even, second die odd, both dice $\leq 2$ so $\omega\_1 = 2$ (only value both even and $\leq 2$) and $\omega\_2 = 1$ (only value both odd and $\leq 2$). Only 1 outcome: $(2,1)$
+
+```math
+\P(A \cap B \cap C) = \frac{1}{36}
+```
+
+Now we can summarize the probabilities and check independence:
+
+| Events              | Probability      | Product of Probabilities                        | Independent? |
+| ------------------- | ---------------- | ----------------------------------------------- | ------------ |
+| $A$               | $\frac{1}{2}$  |                                                 |              |
+| $B$               | $\frac{1}{2}$  |                                                 |              |
+| $C$               | $\frac{1}{9}$  |                                                 |              |
+| $A \cap B$        | $\frac{1}{4}$  | $\frac{1}{2}\cdot\frac{1}{2}$                 | Yes          |
+| $A \cap C$        | $\frac{1}{18}$ | $\frac{1}{2}\cdot\frac{1}{9}$                 | Yes          |
+| $B \cap C$        | $\frac{1}{18}$ | $\frac{1}{2}\cdot\frac{1}{9}$                 | Yes          |
+| $A \cap B \cap C$ | $\frac{1}{36}$ | $\frac{1}{2}\cdot\frac{1}{2}\cdot\frac{1}{9}$ | Yes          |
+
+So $A$, $B$, and $C$ are all independent events. By intuiton you wouldn't think that $A$ and $C$ are independent, or that $B$ and $C$ are independent, but they are. This is because there is an equally likely chance of the first die being even and the second die being odd, regardless of whether both dice are $\leq 2$. 
+</Callout>
+
 ### Probabilistic vs Stochastic
 
-<Callout type="todo">
-What is the the difference between probability and stochastic. So saying something is probabilist or something is stochastic. I think Probabilistic just means that there is some form of randomness involved so it is random or not deterministic. Stochastic on the other hand refers to processes that are random, so multiple steps. So in the case of stochastic independence we are talking about multiple steps, so multiple events that are independent of each other. So in other words stochastic independence is a special case of probabilistic independence.
+In probability theory, the terms probabilistic and stochastic are often used, sometimes interchangeably, but they do have subtle differences in emphasis.
 
-Hence we say we have stochastic processes rather than probabilistic processes. However, this is not always the case and sometimes we use the terms interchangeably.
-</Callout>
+- Probabilistic simply refers to anything involving or governed by the laws of probability. When we say something is probabilistic, we mean that there is inherent randomness or uncertainty in its behavior or outcome, as opposed to being deterministic.
+- Stochastic, on the other hand, typically describes systems or processes that evolve in time (or through multiple stages) where each step involves some random component. A stochastic process is a sequence of random experiments, where each experiment may depend on previous outcomes.
+
+Stochastic independence is thus a special, more precise term: it means that, in a sequence of random experiments (a process), the outcome of one does not influence the others. This distinction is why we talk about stochastic processes (multi-step, random systems) rather than "probabilistic processes," even though both terms involve randomness.
 
 ### Physical Independence vs Stochastic Independence
 
@@ -148,39 +241,6 @@ Now we have:
 ```
 
 So now clearly the two events are not independent of each other. What is happening here? The reason for this is that within event $B$ the number of outcomes where the event $A$ has an influence is the same as for the ones it doesn't. In other words the number of outcomes where the first die is even is 3 and the number of outcomes where the first die is odd is also 3. So the event has no influence. However, in event $C$ the number of outcomes where the first die is even is 2 and the number of outcomes where the first die is odd is 3. So the parity of the first die matters.
-</Callout>
-
-### Independence of Multiple Events
-
-A set of events $(A_i)_{i \in I}$ is called **stochastically independent** if $I$ is finite and for all $J \subseteq I$ we have:
-
-```math
-\P\left(\bigcap_{i \in J} A_i\right) = \prod_{i \in J} \P(A_i)
-```
-
-So any subset of the events is independent of each other. This means that the events do not influence each other and can be done independently of each other. Simply checking all the pairs of events is not enough to establish independence. So if we have three events $A$, $B$, and $C$, we need to check all the dependencies between them to be able to say that they are independent of each other:
-
-```math
-\begin{align*}
-\P(A \cap B) &= \P(A) \cdot \P(B) \\
-\P(A \cap C) &= \P(A) \cdot \P(C) \\
-\P(B \cap C) &= \P(B) \cdot \P(C) \\
-\P(A \cap B \cap C) &= \P(A) \cdot \P(B) \cdot \P(C)
-\end{align*}
-```
-
-<Callout type="todo">
-This was shown in algorithms and probability. We need to check all the dependencies to be able to say that the events are independent of each other. This becomes computationaly very expensive as the number of events increases. Can this also be done more efficiently with dp?
-</Callout>
-
-<Callout type="example">
-Lets consider the example of us throwing two dice and the following events:
-
-- $A$: The first die is even, $\{\omega | \omega_1 \in \{2,4,6\}\}$
-- $B$: The second die is odd, $\{\omega | \omega_2 \in \{1,3,5\}\}$
-- $C$: Both dice are smaller then or equal to 2, $\{\omega | \omega_1 \leq 2 \land \omega_2 \leq 2\}$
-
-Check all the dependencies (suprisngly A and C are independent)
 </Callout>
 
 ## Multiplication Rule
