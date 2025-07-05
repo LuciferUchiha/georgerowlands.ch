@@ -188,8 +188,9 @@ The same goes for the relations between events.
 ### De Morgan's Laws
 
 <Callout type="todo">
-One speciel interaction and interpretation is missing in the above images and that is De Morgan's laws. 
+One special interaction and interpretation is missing in the above images and that is De Morgan's laws.
 
+However, it probably makes the most sense to have this in combinatorics as it is more of a combinatorial identity than a probability identity. But it is still important and worth mentioning with a probabilistic example?
 </Callout>
 
 ```math
@@ -248,18 +249,6 @@ Using this we can calculate the probability of more complex events by breaking t
 Which matches our intuition that the probability of rolling an even number is $\frac{1}{2}$.
 </Callout>
 
-### Inclusion-Exclusion Principle
-
-<Callout type="todo">
-But what if the event is not mutually exclusive? Inclusion-exclusion principle
-</Callout>
-
-### Union Bound
-
-<Callout type="todo">
-monotonicity for two events and then generalize to n events which becomes booles inequality. Is called union bound because it is a bound on the union of events. 
-</Callout>
-
 ### Complementary Events
 
 If we know that the probability of an event $A$ is $p$ so $\P(A) = p$ then we can also quickly calculate the probability of the **complementary event** so if the event $A$ does not occur then the event $A^c$ must occur. The probability of the complementary event is then:
@@ -268,16 +257,247 @@ If we know that the probability of an event $A$ is $p$ so $\P(A) = p$ then we ca
 \P(A^c) = 1 - \P(A) = 1 - p
 ```
 
-The proof of this is rather simple as we can see that the event $A$ and the event $A^c$ are mutually exclusive and exhaustive. So together they make up the entire sample space. So we can write:
+The proof of this is rather simple as we can see that the event $A$ and the event $A^c$ are mutually exclusive and exhaustive. So together using countable additivity they make up the entire sample space. So we can write:
 
 ```math
 \P(A) + \P(A^c) = \P(\Omega) = 1 \Rightarrow \P(A^c) = 1 - \P(A)
 ```
 
-### Continuity of Probability Measure
+### Union Bound
+
+The union bound is one of the most useful and frequently encountered inequalities in probability theory. It provides a simple, general upper bound on the probability that at least one of several events occurs—even when those events may overlap. This is especially helpful when direct calculation of the probability of a union is complex or when events are not disjoint.
+
+Before introducing the union bound, it's essential to understand the **monotonicity property** of probability measures. The [monotonicity property also exists in integral calculus]() and is a fundamental property of probability measures. Monotonicity says that if one event is a subset of another, then its probability cannot be greater:
+
+```math
+A \subseteq B \implies \P(A) \leq \P(B)
+```
+
+This makes sense as every outcome that makes $A$ happen also makes $B$ happen (but maybe not vice versa), then $B$ “covers” at least as much as $A$ does, so its probability cannot be smaller.
+
+<Callout type="proof">
+Let $A, B \in \mathcal{F}$ with $A \subseteq B$. The set $B$ can be written as the union of two **disjoint** sets:
+
+```math
+B = A \cup (B \setminus A)
+```
+
+By countable additivity,
+
+```math
+\P(B) = \P(A) + \P(B \setminus A)
+```
+
+Since probabilities are always non-negative,
+
+```math
+\P(B \setminus A) \geq 0
+```
+
+we have
+
+```math
+P(A) \leq \P(B)
+```
+</Callout>
+
+We can derive a useful property for the union of two events. If we have two events $A$ and $B$, then the probability of their union can be expressed as:
+
+```math
+\P(A \cup B) = \P(A) + \P(B) - \P(A \cap B)
+```
+
+However, we can also just take a loose upper bound by ignoring the intersection term:
+
+```math
+\P(A \cup B) \leq \P(A) + \P(B)
+```
+
+This holds because probabilities are non-negative, so the intersection term $\P(A \cap B)$ is always non-negative. This means that the probability of the union of two events is at most the sum of their individual probabilities (when they are disjoint, this is actually an equality). This property is often referred to as the **subadditivity** of probability measures.
+
+We can now extend this idea to the case of a finite or countably infinite collection of events which may not be disjoint. This then leads to **Boole's Inequality**. Which states that the probability of the union of a collection of events is at most the sum of their individual probabilities. So for any collection of events $A\_1, A\_2, \ldots \in \mathcal{F}$,
+
+```math
+\P\left(\bigcup_{i=1}^{\infty} A_i\right) \leq \sum_{i=1}^{\infty} \P(A_i)
+```
+
+This is also called the **union bound** as it provides an upper bound on the probability of the union of events. This property also holds for a finite number of events as it can be seen as a special case of the infinite case.
+
+```math
+\P\left(\bigcup_{i=1}^{n} A_i\right) = \P\left(\bigcup_{i=1}^{\infty} A_i\right)
+```
+
+where for $i > n$, we set $A\_i = \emptyset$. Since $\P(\emptyset) = 0$, the sum remains unchanged.
+
+<Callout type="proof">
+Let's prove the union bound by induction. Base case for $n = 1$:
+
+```math
+\P(A_1) \leq \P(A_1)
+```
+
+which is trivially true. So we now assume the union bound holds for $n$ events as our **induction hypothesis**:
+
+```math
+\P\left(\bigcup_{i=1}^n A_i\right) \leq \sum_{i=1}^n \P(A_i)
+```
+
+and we want to prove it for $n+1$ events. So we want to show:
+
+```math
+\P\left(\bigcup_{i=1}^{n+1} A_i\right) \leq \sum_{i=1}^{n+1} \P(A_i)
+```
+
+First, observe that
+
+```math
+\bigcup_{i=1}^{n+1} A_i = \left(\bigcup_{i=1}^{n} A_i\right) \cup A_{n+1}
+```
+
+By subadditivity (from the axioms),
+
+```math
+\P\left(\left(\bigcup_{i=1}^{n} A_i\right) \cup A_{n+1}\right) \leq \P\left(\bigcup_{i=1}^{n} A_i\right) + \P(A_{n+1})
+```
+
+By the **induction hypothesis**,
+
+```math
+\P\left(\bigcup_{i=1}^{n} A_i\right) \leq \sum_{i=1}^{n} \P(A_i)
+```
+
+Therefore,
+
+```math
+\P\left(\bigcup_{i=1}^{n+1} A_i\right)
+\leq \sum_{i=1}^{n} \P(A_i) + \P(A_{n+1})
+= \sum_{i=1}^{n+1} \P(A_i)
+```
+
+Thus, the statement holds for $n+1$, completing the induction.
+</Callout>
+
+<Callout type="example">
+Suppose we throw a die $n \geq 2$ times. We want to prove that the probability of seeing more than $\ell = \lceil 7 \log n \rceil$ successive 1's is small when $n$ is large. We can use the **union bound** to estimate this probability.
+
+To do this, define the event $A$ as "there exist $\ell$ consecutive 1's in the sequence of outcomes." We can express this event as a union of events $A_k$, where each $A_k$ represents the event that the sequence from positions $k$ to $k+\ell-1$ (that is, the $\ell$ throws starting at throw $k$) are all 1's.
+
+For a fixed $k \in {1, 2, \ldots, n - \ell + 1}$, define
+
+```math
+A_k = \left\{ \omega : \omega_{k} = \omega_{k+1} = \dots = \omega_{k+\ell-1} = 1 \right\}
+```
+
+where $\omega$ is a sequence of length $n$ representing the outcomes of the die throws.
+
+For example:
+
+- $A_1$ is the event that the **first** $\ell$ throws are all 1's,
+- $A_2$ is the event that the **second to $(\ell+1)$-th** throws are all 1's,
+- $A_{n-\ell+1}$ is the event that the **last** $\ell$ throws are all 1's.
+
+We subtract $\ell-1$ from $n$ so that the last block of $\ell$ consecutive throws fits within the $n$ throws. Thus, the event $A$ can be written as the union:
+
+```math
+A = \bigcup_{k=1}^{n-\ell+1} A_k
+```
+
+The events $A_k$ are **not disjoint**—for example, a sequence like $(1, 1, 1, \dots)$ will be in multiple $A_k$. Therefore, we cannot simply sum their probabilities directly. Instead, we use the **union bound**:
+
+```math
+\P(A) = \P\left( \bigcup_{k=1}^{n-\ell+1} A_k \right) \leq \sum_{k=1}^{n-\ell+1} \P(A_k)
+```
+
+Each $A_k$ is the event that a specific block of $\ell$ throws are all 1's. Since each die throw is independent and the probability of rolling a $1$ is $\frac{1}{6}$, we have:
+
+```math
+\P(A_k) = \left(\frac{1}{6}\right)^{\ell}
+```
+
+for every $k$. So,
+
+```math
+\P(A) \leq (n - \ell + 1) \left( \frac{1}{6} \right)^{\ell}
+```
+
+If we now plug in $\ell = \lceil 7 \log n \rceil$, we get (using $n-\ell+1 \leq n$ for a rough upper bound):
+
+```math
+\P(A) \leq n \left( \frac{1}{6} \right)^{7 \log n}
+```
+
+Recall that $a^{b \log n} = n^{b \log a}$, so:
+
+```math
+\left( \frac{1}{6} \right)^{7 \log n} = n^{7 \log(1/6)} = n^{-7 \log 6} \implies \P(A) \leq n \cdot n^{-7 \log 6}
+```
+
+As $n$ grows, this exponent is negative, and so this probability approaches $0$. That is, the probability of observing more than $7 \log n$ consecutive 1's becomes **vanishingly small** as $n$ becomes large. 
+</Callout>
+
+## Continuity of Probability Measure
+
+When we work with probability, we often need to deal not just with single events, but with sequences of events that gradually "grow" or "shrink" toward something more complex. This happens especially in real-world situations. For example, in many problems, we approximate complicated events using simpler ones: for example, we might define an event as "something eventually happens," which we can express as the limit of a sequence of simpler events.
+
+The continuity property of the probability measure is what lets us make rigorous statements about such limits: it tells us that if we take a sequence of events that approach a final event in a natural way, the probability of the sequence also approaches the probability of the final event. In other words, probability behaves well under limits. Specifically we have two important cases:
+
+- **Increasing sequence:** If $A\_1 \subseteq A\_2 \subseteq \ldots$, then
+
+```math
+\lim_{n \to \infty} \P(A_n) = \P\left(\bigcup_{n=1}^\infty A_n\right)
+```
+
+- **Decreasing sequence:** If $B\_1 \supseteq B\_2 \supseteq \ldots$, then
+
+```math
+  \lim_{n \to \infty} \P(B_n) = \P\left(\bigcap_{n=1}^\infty B_n\right)
+```
+
+The intuition behind these results is as follows:
+- **Increasing:** As we take bigger and bigger events (each containing the last), the probability grows. Eventually, it matches the probability of the "ultimate" event (the union of all). Think of $A_1 \subseteq A_2 \subseteq ...$ as a sequence of "growing regions" in your sample space. The probability measure follows the growth, never skipping or overshooting, and matches the total region in the end.
+- **Decreasing:** As we shrink the events, the probability gets smaller. In the limit, it matches the probability of what's left after all the shrinkage (the intersection). Each $B_n$ shrinks, and the limit is the "core" that never gets removed, the intersection.
 
 <Callout type="todo">
-This is kind of weird and is the part where the events are monotonic.
+Add the images for intuition
+</Callout>
+
+<Callout type="proof">
+Like many proofs in probability, the key is to break down complex events into simpler, disjoint pieces. This is crucial because the probability measure is additive on disjoint sets, allowing us to apply the countable additivity axiom directly.
+
+For **increasing sequences**, we decompose the $A_n$ into **disjoint pieces**. So we set $\tilde{A}_1 = A_1$ and $\tilde{A}_n = A_n \setminus A_{n-1}$ for $n \geq 2$. Each $\tilde{A}_n$ contains what is new in $A_n$ compared to $A_{n-1}$. Because the $A_n$ are increasing, the $\tilde{A}_n$ are disjoint and cover the entire union of the $A_n$:
+
+```math
+\bigcup_{n=1}^\infty A_n = \bigcup_{n=1}^\infty \tilde{A}_n
+```
+
+By additivity and the definition of limits we can write:
+
+```math
+\P\left(\bigcup_{n=1}^{\infty} A_n\right) = \sum_{n=1}^{\infty} \P(\tilde{A}_n) = \lim_{N \to \infty} \sum_{n=1}^{N} \P(\tilde{A}_n) = \lim_{N \to \infty} \P(A_N)
+```
+
+This shows that as you add more and more of the $A_n$, you approach the full union's probability.
+
+For **decreasing sequences**, we use complements and the result from the increasing case. We define $B_n^c = B_n^c \cup B_{n+1}^c \cup \ldots$ as the complement of $B_n$. The complements $B_n^c$ form an **increasing sequence**:
+
+```math
+B_1^c \subseteq B_2^c \subseteq \ldots
+```
+
+This means we can apply the previous result to $B_n^c$:
+
+```math
+\P\left(\bigcap_{n=1}^{\infty} B_n\right) = 1 - \P\left(\bigcup_{n=1}^{\infty} B_n^c\right) = 1 - \lim_{n \to \infty} \P(B_n^c) = \lim_{n \to \infty} \P(B_n)
+```
+</Callout>
+
+### Inclusion-Exclusion Principle
+
+<Callout type="todo">
+This is also more a property of combinatorics. But is worth showing especially how to use. 
+But what if the event is not mutually exclusive? Inclusion-exclusion principle.
+
+In algorithms and probability this came up a lot in the exercises as programming it needs to be done using dynamic programming and isn't as simple as just using the formula. 
 </Callout>
 
 ## Laplace Experiments
@@ -314,7 +534,18 @@ Another common experiment is the **Bernoulli experiment**. A Bernoulli experimen
 
 The most simple Bernoulli experiment is flipping a coin. The two possible outcomes are heads or tails. We can also interpret this as a success if we get heads and a failure if we get tails. Another example is rolling a die. We can interpret this as a success if we roll a 6 and a failure if we roll any other number.
 
-Importantly, unlike a Laplace experiment, the probabilities of the outcomes do not necessarily have to be equal. In the the case of flipping a coin this holds and is a laplace experiment if the coin is fair. But if we have a biased coin then the probabilities of the outcomes are not equal. The same goes for rolling a 6. With a fair die the probability of rolling a 6 and therefore having a "success" is $\frac{1}{6}$. The probability of rolling a failure, i.e not rolling a 6 is then $\frac{5}{6}$.
+Importantly, unlike a Laplace experiment, the probabilities of the outcomes do not necessarily have to be equal. In the the case of flipping a coin this holds and is a laplace experiment if the coin is fair. But if we have a biased coin then the probabilities of the outcomes are not equal. 
+
+
+<Callout type="example">
+We can define a Bernoulli experiment as a random experiment with two possible outcomes, which we can denote as "success" and "failure".
+
+For example, flipping a coin can be a Bernoulli experiment where we define heads as a "success" and tails as a "failure". If the coin is fair, the probability of getting heads (success) is $\frac{1}{2}$ and the probability of getting tails (failure) is also $\frac{1}{2}$. So it is a Laplace experiment as well.
+
+Another example is rolling a die and defining rolling a 6 as a "success" and rolling any other number as a "failure". If the die is fair, the probability of rolling a 6 (success) is $\frac{1}{6}$ and the probability of rolling any other number (failure) is $\frac{5}{6}$. So this is not a Laplace experiment as the probabilities are not equal.
+
+Another example is where an old british lady says that she can taste the difference between whether the milk was poured before the tea or vice versa. She then has some probabilistic model that she can taste the difference with a probability of $p$ and that she can not taste the difference with a probability of $1-p$. This is also a Bernoulli experiment as there are only two possible outcomes, tasting the difference or not tasting the difference.
+</Callout>
 
 ## Why use Sigma Algebras?
 

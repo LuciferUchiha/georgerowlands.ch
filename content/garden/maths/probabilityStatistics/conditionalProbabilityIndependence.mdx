@@ -13,7 +13,10 @@ Formally we want to know the probability of an event $A$ given that another even
 \P(A | B) = \frac{\P(A \cap B)}{\P(B)}
 ```
 
-Importantly to avoid division by 0, we need to have $\P(B) \neq 0$. These formula makes sense and can also be intuitively understood. Let's look at this in the case of the die example. We have the following events in a laplace
+Importantly to avoid division by 0, we need to have $\P(B) \neq 0$. These formula makes sense and can also be intuitively understood. 
+
+<Callout type="example">
+Let's look at this in the case of the die example. We have the following events in a laplace
 - $A$: Die shows 6, so $A=\{6\}$
 - $B$: Die shows an even number, so $B=\{2,4,6\}$
 - $A \cap B$: Die shows 6 and an even number, so $A \cap B=\{6\}$
@@ -28,6 +31,7 @@ This means that the probability of the die showing a 6 given that it shows an ev
 
 <Callout type="todo">
 This can also be nicely be shown with a Venn diagram
+</Callout>
 </Callout>
 
 If it turns out that the prior information we are given happens to be the exact same as the event we are interested in, so $A=B$, then we know that the event $A$ will surely happen and we get the following:
@@ -108,9 +112,20 @@ Because we know coin tosses are indepdent of each other we can then also easily 
 ```
 </Callout>
 
+### Probabilistic vs Stochastic
+
+<Callout type="todo">
+What is the the difference between probability and stochastic. So saying something is probabilist or something is stochastic. I think Probabilistic just means that there is some form of randomness involved so it is random or not deterministic. Stochastic on the other hand refers to processes that are random, so multiple steps. So in the case of stochastic independence we are talking about multiple steps, so multiple events that are independent of each other. So in other words stochastic independence is a special case of probabilistic independence.
+
+Hence we say we have stochastic processes rather than probabilistic processes. However, this is not always the case and sometimes we use the terms interchangeably.
+</Callout>
+
 ### Physical Independence vs Stochastic Independence
 
-It is important to note that stochastic independence does not have to mean that the events are physically independent of each other. Two events can be indepdent of each other despite the experiment only being conducted once physically. An interesting example of this is if we throw two dice at the same time. The two dice are physically independent of each other. Now we have the following events:
+It is important to note that stochastic independence does not have to mean that the events are physically independent of each other. Two events can be indepdent of each other despite the experiment only being conducted once physically. 
+
+<Callout type="example">
+An interesting example of this is if we throw two dice at the same time. The two dice are physically independent of each other. Now we have the following events:
 - $A$: The first die is even, so $A=$\{(2,1),(2,2),(2,3),(2,4),(2,5),(2,6),(4,1),(4,2),(4,3),(4,4),(4,5),(4,6),(6,1),(6,2),(6,3),(6,4),(6,5),(6,6)\}. So $A$ has 18 outcomes out of 36 possible outcomes.
 - $B$: The second die has a sum of 7, so $B=$\{(1,6),(2,5),(3,4),(4,3),(5,2),(6,1)\}. So $B$ has 6 outcomes out of 36 possible outcomes.
 - $A \cap B$: The first die is even and the second die has a sum of 7, so $A \cap B=\{(2,5),(4,3),(6,1)\}$. So $A \cap B$ has 3 outcomes out of 36 possible outcomes.
@@ -133,8 +148,40 @@ Now we have:
 ```
 
 So now clearly the two events are not independent of each other. What is happening here? The reason for this is that within event $B$ the number of outcomes where the event $A$ has an influence is the same as for the ones it doesn't. In other words the number of outcomes where the first die is even is 3 and the number of outcomes where the first die is odd is also 3. So the event has no influence. However, in event $C$ the number of outcomes where the first die is even is 2 and the number of outcomes where the first die is odd is 3. So the parity of the first die matters.
+</Callout>
 
 ### Independence of Multiple Events
+
+A set of events $(A_i)_{i \in I}$ is called **stochastically independent** if $I$ is finite and for all $J \subseteq I$ we have:
+
+```math
+\P\left(\bigcap_{i \in J} A_i\right) = \prod_{i \in J} \P(A_i)
+```
+
+So any subset of the events is independent of each other. This means that the events do not influence each other and can be done independently of each other. Simply checking all the pairs of events is not enough to establish independence. So if we have three events $A$, $B$, and $C$, we need to check all the dependencies between them to be able to say that they are independent of each other:
+
+```math
+\begin{align*}
+\P(A \cap B) &= \P(A) \cdot \P(B) \\
+\P(A \cap C) &= \P(A) \cdot \P(C) \\
+\P(B \cap C) &= \P(B) \cdot \P(C) \\
+\P(A \cap B \cap C) &= \P(A) \cdot \P(B) \cdot \P(C)
+\end{align*}
+```
+
+<Callout type="todo">
+This was shown in algorithms and probability. We need to check all the dependencies to be able to say that the events are independent of each other. This becomes computationaly very expensive as the number of events increases. Can this also be done more efficiently with dp?
+</Callout>
+
+<Callout type="example">
+Lets consider the example of us throwing two dice and the following events:
+
+- $A$: The first die is even, $\{\omega | \omega_1 \in \{2,4,6\}\}$
+- $B$: The second die is odd, $\{\omega | \omega_2 \in \{1,3,5\}\}$
+- $C$: Both dice are smaller then or equal to 2, $\{\omega | \omega_1 \leq 2 \land \omega_2 \leq 2\}$
+
+Check all the dependencies (suprisngly A and C are independent)
+</Callout>
 
 ## Multiplication Rule
 
@@ -165,15 +212,19 @@ We define the following rules:
 1. The probabilities along a path are multiplied together.
 2. If multiple paths lead to the same final outcome, their probabilities are added.
 
-A good video explanation can be found [here](https://studyflix.de/statistik/baumdiagramm-1107).
+<Callout type="todo">
+Explain this in more detail and link it to the multiplication rule and countable additivity. As to why we multiply things or add things together.
+</Callout>
 
 <Callout type="info">
 An important note is that for a probabilistic model the difference between throwing two coins and throwing one coin twice is or two coins one after another is not important. This is because we do not model any dependence between the two coins, so for example the first coin influencing the second coin, which could in practice be the case as the two coins hit each other in the air. So in other words the two events are independent of each other so it does not matter if we throw them at the same time or one after another. This is important to keep in mind as it can lead to confusion.
-If you still find it confussing think of the possible tree diagrams and you will see that they are the same.
+If you still find it confusing think of the possible tree diagrams and you will see that they are the same.
 </Callout>
 
 <Callout type="example" title="Independent Stages">
-
+<Callout type="todo">
+This needs to be completed with an equally simple example using the balls for example
+</Callout>
 </Callout>
 
 <Callout type="example" title="Dependent Stages">
@@ -212,7 +263,12 @@ P(A)=P(WS) + P(SW) = {1 \over 3} \cdot {4 \over 5} + {2 \over 3} \cdot {2 \over 
 </Callout>
 
 <Callout type="example" title="Birthday Problem">
-The birthday paradox is an example of how certain probabilities are often misestimated intuitively.
+
+<Callout type="todo">
+This is in exercise sheet 2 and is a very common example of how certain probabilities are often misestimated intuitively.
+
+Write this better and show the solutions and proof clearly.
+</Callout>
 
 We ask: "What is the probability that at least two people in a group of $k$ people share the same birthday?"
 
@@ -308,6 +364,6 @@ No, you are not seeing that wrong. Despite the test being 99% accurate, the prob
 Given that the test is positive, it is much more likely that you are in the second group than in the first group. This is because the test is so accurate, but the sickness is so rare. This is a common example of how Bayes' theorem can lead to counter intuitive results and it is important to keep this in mind when interpreting test results.
 </Callout>
 
-<Callout type="example" title="Breast Cancer Test">
-
+<Callout type="example" title="Simpson's Paradox">
+This was also discussed in the second exercise sheet. With regard to bias towards male or female students in the admission process of a university. Does this belong in this section or further up?
 </Callout>
