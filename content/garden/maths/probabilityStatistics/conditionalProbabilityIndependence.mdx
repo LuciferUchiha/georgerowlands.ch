@@ -21,7 +21,7 @@ Let's look at this in the case of the die example. We have the following events 
 - $B$: Die shows an even number, so $B=\{2,4,6\}$
 - $A \cap B$: Die shows 6 and an even number, so $A \cap B=\{6\}$
 
-Because we have a laplace space, the proabilities are simple. But what is the conditional probability actually telling us. In the numerator we have the outcomes that are in both $A$ and $B$, so these are the events that interest us and can happen. In the denominator we have the outcomes that are in $B$, so these are the events that will happen. So the conditional probability is the ratio of the events that interest us and can happen to the events that will happen. For the die example we then get:
+Because we have a laplace space, the probabilities are simple. But what is the conditional probability actually telling us. In the numerator we have the outcomes that are in both $A$ and $B$, so these are the events that interest us and can happen. In the denominator we have the outcomes that are in $B$, so these are the events that will happen. So the conditional probability is the ratio of the events that interest us and can happen to the events that will happen. For the die example we then get:
 
 ```math
 \P(A | B) = \frac{\P(A \cap B)}{\P(B)} = \frac{1/6}{3/6} = \frac{1}{3}
@@ -62,16 +62,62 @@ Therefore in general we have that $\P(A | B) \neq \P(B | A)$. This is important 
 
 ## Conditional Probability as a Probability Measure
 
-By our [definition of a probability meassure](/maths/probabilityStatistics/probabilitySpaces#probability-measure), it turns out that the conditional probability is also a probability meassure. More precisely, if $B$ is an event with $\P(B) \neq 0$, then we can define the conditional probability as a probability meassure on the event space $\mathcal{F}$ of the sample space $\Omega$ as follows:
+By our [definition of a probability measure](/maths/probabilityStatistics/probabilitySpaces#probability-measure), it turns out that the conditional probability is also a probability measure. More precisely, if $B$ is an event with $\P(B) \neq 0$, then we can define the conditional probability as a probability measure on the event space $\mathcal{F}$ of the sample space $\Omega$ as follows:
 
 ```math
-\P( \cdot | B) : \mathcal{F} \to [0,1] \text{ with } \P(A | B) = \frac{\P(A \cap B)}{\P(B)}
+\P(\cdot \mid B): \mathcal{F} \to [0,1] \quad \text{with} \quad \P(A \mid B) = \frac{\P(A \cap B)}{\P(B)}
 ```
 
-To show it is a probability meassure we need to show that it satisfies the three properties of a probability meassure:
-1. Countable additivity: $\P(\bigcup_{i=1}^{\infty} A_i | B) = \sum_{i=1}^{\infty} \P(A_i | B)$ for disjoint events $A_i$. ----------------TODOO------------- 
-2. $\P(\emptyset | B) = 0$. We have already seen this above in one of the example and it is rather simple. We have $\emptyset \cap B = \emptyset$ and $\P(B) \neq 0$, so we have $\P(\emptyset | B) = \frac{\P(\emptyset)}{\P(B)} = \frac{0}{\P(B)} = 0$.
-3. $\P(\Omega | B) = 1$. This is also simple as we have $\Omega \cap B = B$ and $\P(B) \neq 0$, so we have $\P(\Omega | B) = \frac{\P(B)}{\P(B)} = 1$.
+Intuitively this makes sense as conditional probability is a way to "restrict" the universe of discourse to the outcomes where $B$ has occurred. In other words, we are only considering the outcomes that are in $B$, and then calculating the probability of $A$ within that restricted universe. 
+
+To show that $\P(\cdot \mid B)$ is a probability measure, we need to check that it satisfies the Kolmogorov axioms:
+
+- **Non-negativity**: For any event $A \in \mathcal{F}$, we have $\P(A \cap B) \geq 0$ (since probabilities are non-negative), and $\P(B) > 0$ (by assumption). Thus conditional probability is non-negative:
+
+```math
+\P(A \mid B) = \frac{\P(A \cap B)}{\P(B)} \geq 0
+```
+
+- **Probability of the sample space**: The probability of the sample space $\Omega$ given $B$ must equal 1. This means we need to show $\P(\Omega \mid B) = 1$. Since $\Omega \cap B = B$ we have:
+
+```math
+\P(\Omega \mid B) = \frac{\P(\Omega \cap B)}{\P(B)} = \frac{\P(B)}{\P(B)} = 1
+```
+- **Probability of the Empty Set**: Because the empty set $\emptyset$ is disjoint from any event and its probability is 0, we have:
+
+```math
+\P(\emptyset \mid B) = \frac{\P(\emptyset \cap B)}{\P(B)} = \frac{\P(\emptyset)}{\P(B)} = 0
+```
+
+- **Countable Additivity**: For any **countable collection** of pairwise disjoint events $(A_i)_{i=1}^\infty$ in $\mathcal{F}$ (i.e., $A_i \cap A_j = \emptyset$ for $i \neq j$), we need to show:
+
+```math
+\P\left( \bigcup_{i=1}^{\infty} A_i \mid B \right) = \sum_{i=1}^{\infty} \P(A_i \mid B)
+```
+
+First, note that for all $i \neq j$, $(A_i \cap B) \cap (A_j \cap B) = (A_i \cap A_j) \cap B = \emptyset \cap B = \emptyset$, so the events $A_i \cap B$ are also pairwise disjoint. Therefore,
+
+```math
+\P\left( \bigcup_{i=1}^{\infty} A_i \mid B \right)
+= \frac{\P\left( \left( \bigcup_{i=1}^{\infty} A_i \right) \cap B \right)}{\P(B)}
+= \frac{\P\left( \bigcup_{i=1}^{\infty} (A_i \cap B) \right)}{\P(B)}
+```
+
+But by countable additivity of the original probability measure $\P$:
+
+```math
+\P\left( \bigcup_{i=1}^{\infty} (A_i \cap B) \right) = \sum_{i=1}^{\infty} \P(A_i \cap B)
+```
+
+So,
+
+```math
+\begin{align*}
+\P\left( \bigcup_{i=1}^{\infty} A_i \mid B \right) &= \frac{ \sum_{i=1}^{\infty} \P(A_i \cap B) }{ \P(B) } \\
+&= \sum_{i=1}^{\infty} \frac{\P(A_i \cap B)}{\P(B)} \\
+&= \sum_{i=1}^{\infty} \P(A_i \mid B)
+\end{align*}
+```
 
 ## Stochastic Independence
 
@@ -87,7 +133,7 @@ Where $\P(B) \neq 0$. This means that the probability of $A$ given $B$ is the sa
 \P(A \cap B) = \P(A) \cdot \P(B)
 ```
 
-This formula is preferred as it avoids the division by 0 and is more intuitive. The probability of $A$ and $B$ happening is the same as the probability of $A$ happening and then times the probability of $B$ happening. From this formula we can also see that independence is symmetric, so if $A$ and $B$ are independent, then $B$ and $A$ are also independent. As if we would devide both sides by $\P(A)$ we would get:
+This formula is preferred as it avoids the division by 0 and is more intuitive. The probability of $A$ and $B$ happening is the same as the probability of $A$ happening and then times the probability of $B$ happening. From this formula we can also see that independence is symmetric, so if $A$ and $B$ are independent, then $B$ and $A$ are also independent. As if we would divide both sides by $\P(A)$ we would get:
 
 ```math
 \frac{\P(A \cap B)}{\P(A)} = \P(B) \Leftrightarrow \P(B | A) = \P(B)
@@ -99,13 +145,13 @@ An example of this would be if we have two coins and we want to know the probabi
 - $B$: Coin 2 shows heads, so $B=\{(H,H),(T,H)\}$
 - $A \cap B$: Coin 1 shows heads and Coin 2 shows heads, so $A \cap B=\{(H,H)\}$
 
-We know that the probability of the second coin showing heads is $\frac{1}{2}$, either it shows heads or tails. If we know that the first coin shows heads, this does not change the probability of the second coin showing heads. intuitively this also makes sense as the two coins are physically indepdent of each other and we model them as such, so we do not somehow inbetween the two coin tosses become a supernatural being and influence the second coin toss. So we have:
+We know that the probability of the second coin showing heads is $\frac{1}{2}$, either it shows heads or tails. If we know that the first coin shows heads, this does not change the probability of the second coin showing heads. intuitively this also makes sense as the two coins are physically independent of each other and we model them as such, so we do not somehow between the two coin tosses become a supernatural being and influence the second coin toss. So we have:
 
 ```math
 \P(A | B) = \frac{\P(A \cap B)}{\P(B)} = \frac{1/4}{1/2} = \frac{1}{2} = \P(A)
 ```
 
-Because we know coin tosses are indepdent of each other we can then also easily calculate the probability of both coins showing heads. This is simply the probability of a coin showing heads times the probability of the other coin showing heads. So we have:
+Because we know coin tosses are independent of each other we can then also easily calculate the probability of both coins showing heads. This is simply the probability of a coin showing heads times the probability of the other coin showing heads. So we have:
 
 ```math
 \P(A \cap B) = \P(A) \cdot \P(B) = \frac{1}{2} \cdot \frac{1}{2} = \frac{1}{4}
@@ -114,9 +160,9 @@ Because we know coin tosses are indepdent of each other we can then also easily 
 
 ### Independence of Multiple Events
 
-When discussing independence, it is important to extend the idea beyond just two events. For a collection of events $(A\_i)\_{i\in I}$, we say they are **stochastically independent** if knowing the outcome of any combination of these events does **not** provide information about the others, no matter how many we choose.
+When discussing independence, it is important to extend the idea beyond just two events. For a collection of events $(A_i)_{i\in I}$, we say they are **stochastically independent** if knowing the outcome of any combination of these events does **not** provide information about the others, no matter how many we choose.
 
-Formally, a finite collection $(A\_1, \ldots, A\_n)$ of events is called **independent** if for **every** subset $J \subseteq {1,\ldots, n}$ (with $|J|\geq 2$), the following holds:
+Formally, a finite collection $(A_1, \ldots, A_n)$ of events is called **independent** if for **every** subset $J \subseteq {1,\ldots, n}$ (with $|J|\geq 2$), the following holds:
 
 ```math
 \P\left(\bigcap_{j\in J} A_j\right) = \prod_{j\in J} \P(A_j)
@@ -138,19 +184,19 @@ Simply checking all pairs is not enough; the joint intersection must also match 
 <Callout type="example">
 Suppose we roll two fair six-sided dice and define the following events:
 
-- $A$: The **first die is even**; i.e., $\omega\_1 \in {2,4,6}$
-- $B$: The **second die is odd**; i.e., $\omega\_2 \in {1,3,5}$
-- $C$: **Both dice show $\leq 2$**; i.e., $\omega\_1 \leq 2$ and $\omega\_2 \leq 2$
+- $A$: The **first die is even**; i.e., $\omega_1 \in {2,4,6}$
+- $B$: The **second die is odd**; i.e., $\omega_2 \in {1,3,5}$
+- $C$: **Both dice show $\leq 2$**; i.e., $\omega_1 \leq 2$ and $\omega_2 \leq 2$
 
 Let's compute all relevant probabilities and check all required conditions for independence. There are $36$ possible outcomes in total, as each die has $6$ outcomes: $|\Omega|=6 \times 6 = 36$.
 
-**Event $A$: First die is even**: Possible values: 2, 4, 6 for $\omega\_1$, any value for $\omega\_2$. Number of favorable outcomes: $3$ (even values) $\times 6 = 18$ so:
+**Event $A$: First die is even**: Possible values: 2, 4, 6 for $\omega_1$, any value for $\omega_2$. Number of favorable outcomes: $3$ (even values) $\times 6 = 18$ so:
 
 ```math
 \P(A) = \frac{18}{36} = \frac{1}{2}
 ```
 
-**Event $B$: Second die is odd**: Possible values: 1, 3, 5 for $\omega\_2$, any value for $\omega\_1$. Number of favorable outcomes: $3 \times 6 = 18$ so:
+**Event $B$: Second die is odd**: Possible values: 1, 3, 5 for $\omega_2$, any value for $\omega_1$. Number of favorable outcomes: $3 \times 6 = 18$ so:
 
 ```math
 \P(B) = \frac{18}{36} = \frac{1}{2}
@@ -162,20 +208,20 @@ Let's compute all relevant probabilities and check all required conditions for i
 \P(C) = \frac{4}{36} = \frac{1}{9}
 ```
 
-Next, we compute the pairwise intersections. **$A \cap B$:** First die even **and** second die odd so $\omega\_1 \in {2,4,6}$ ($3$ options) and $\omega\_2 \in {1,3,5}$ ($3$ options). Number of outcomes: $3 \times 3 = 9$.
+Next, we compute the pairwise intersections. **$A \cap B$:** First die even **and** second die odd so $\omega_1 \in {2,4,6}$ ($3$ options) and $\omega_2 \in {1,3,5}$ ($3$ options). Number of outcomes: $3 \times 3 = 9$.
 
 ```math
 \P(A \cap B) = \frac{9}{36} = \frac{1}{4}
 ```
 
 
-**$A \cap C$:** First die even **and** both dice $\leq 2$ so $\omega\_1 \in {2}$ (since only 2 is even and $\leq 2$) and $\omega\_2 \in {1,2}$. Number of outcomes: $1 \times 2 = 2$ so:
+**$A \cap C$:** First die even **and** both dice $\leq 2$ so $\omega_1 \in {2}$ (since only 2 is even and $\leq 2$) and $\omega_2 \in {1,2}$. Number of outcomes: $1 \times 2 = 2$ so:
 
 ```math
 \P(A \cap C) = \frac{2}{36} = \frac{1}{18}
 ```
 
-**$B \cap C$:** Second die odd **and** both dice $\leq 2$ so $\omega\_2 \in {1}$ (since only 1 is odd and $\leq 2$) and $\omega\_1 \in {1,2}$. Number of outcomes: $2 \times 1 = 2$.
+**$B \cap C$:** Second die odd **and** both dice $\leq 2$ so $\omega_2 \in {1}$ (since only 1 is odd and $\leq 2$) and $\omega_1 \in {1,2}$. Number of outcomes: $2 \times 1 = 2$.
 
 ```math
 \P(B \cap C) = \frac{2}{36} = \frac{1}{18}
@@ -183,7 +229,7 @@ Next, we compute the pairwise intersections. **$A \cap B$:** First die even **an
 
 Lastly we compute the triple intersection
 
-**$A \cap B \cap C$:** First die even, second die odd, both dice $\leq 2$ so $\omega\_1 = 2$ (only value both even and $\leq 2$) and $\omega\_2 = 1$ (only value both odd and $\leq 2$). Only 1 outcome: $(2,1)$
+**$A \cap B \cap C$:** First die even, second die odd, both dice $\leq 2$ so $\omega_1 = 2$ (only value both even and $\leq 2$) and $\omega_2 = 1$ (only value both odd and $\leq 2$). Only 1 outcome: $(2,1)$
 
 ```math
 \P(A \cap B \cap C) = \frac{1}{36}
@@ -201,7 +247,23 @@ Now we can summarize the probabilities and check independence:
 | $B \cap C$        | $\frac{1}{18}$ | $\frac{1}{2}\cdot\frac{1}{9}$                 | Yes          |
 | $A \cap B \cap C$ | $\frac{1}{36}$ | $\frac{1}{2}\cdot\frac{1}{2}\cdot\frac{1}{9}$ | Yes          |
 
-So $A$, $B$, and $C$ are all independent events. By intuiton you wouldn't think that $A$ and $C$ are independent, or that $B$ and $C$ are independent, but they are. This is because there is an equally likely chance of the first die being even and the second die being odd, regardless of whether both dice are $\leq 2$. 
+So $A$, $B$, and $C$ are all independent events. By intuition you wouldn't think that $A$ and $C$ are independent, or that $B$ and $C$ are independent, but they are. This is because there is an equally likely chance of the first die being even and the second die being odd, regardless of whether both dice are $\leq 2$. 
+
+If we also added the event $D$ for the sum of the two dice being at most 3 we would have the tuples
+
+```math
+D = \{(1,1),(1,2),(2,1)\} \text{ with } \P(D) = \frac{3}{36} = \frac{1}{12}
+```
+
+If we then check the independence of $D$ with the other events we would get:
+
+| Events              | Probability      | Product of Probabilities                        | Independent? |
+| ------------------- | ---------------- | ----------------------------------------------- | ------------ |
+| $A \cap D$        | $\frac{1}{36}$ | $\frac{1}{2}\cdot\frac{1}{12}$                 | No           |
+| $B \cap D$        | $\frac{1}{36}$ | $\frac{1}{2}\cdot\frac{1}{12}$                 | No           |
+| $C \cap D$        | $\frac{3}{36}$ | $\frac{1}{9}\cdot\frac{1}{12}$                 | No           |
+
+So the events $A$, $B$, and $C$ are independent of each other, but the event $D$ is not independent of any of them. 
 </Callout>
 
 ### Probabilistic vs Stochastic
@@ -215,7 +277,7 @@ Stochastic independence is thus a special, more precise term: it means that, in 
 
 ### Physical Independence vs Stochastic Independence
 
-It is important to note that stochastic independence does not have to mean that the events are physically independent of each other. Two events can be indepdent of each other despite the experiment only being conducted once physically. 
+It is important to note that stochastic independence does not have to mean that the events are physically independent of each other. Two events can be independent of each other despite the experiment only being conducted once physically. 
 
 <Callout type="example">
 An interesting example of this is if we throw two dice at the same time. The two dice are physically independent of each other. Now we have the following events:
@@ -263,18 +325,43 @@ So from this we can see that the multiplication rule is symmetric or more formal
 \P(A \cap B) = \P(A | B) \cdot \P(B) = \P(B | A) \cdot \P(A)
 ```
 
+<Callout type="example">
+Suppose we have a standard deck of 52 playing cards. We draw two cards from the deck one after the other, without replacement. What is the probability that both cards are aces?
+
+Let $A$ be the event "the first card is an ace" and $B$ be the event "the second card is an ace given that the first card was an ace". There are 4 aces in the deck so the probability that the **first card** is an ace is $\P(A) = \frac{4}{52}$.
+
+If the first card is an ace, there are now 3 aces left out of 51 cards. So, the probability that the **second card** is an ace given the first was an ace is $\P(B \mid A) = \frac{3}{51}$.
+
+By the multiplication rule the probability that both cards drawn are aces is:
+
+```math
+\P(\text{first card is ace} \cap \text{second card is ace})
+= \P(A \cap B) = \P(A) \cdot \P(B \mid A)
+= \frac{4}{52} \cdot \frac{3}{51} = \frac{12}{2652} = \frac{1}{221} \approx 0.45\%
+```
+</Callout>
+
 ### Multi-Stage Random Experiments
 
-In a multi-stage random experiment, multiple random experiments are conducted sequentially. These are often represented using tree diagrams (event trees), distinguishing between final outcomes and intermediate outcomes.
+A **multi-stage random experiment** consists of several random steps performed in sequence. Each step can depend on the outcomes of previous steps. These can be visualized with **tree diagrams** (or event trees), where each branch represents a possible outcome at a given stage, and each full path represents a sequence of outcomes leading to a final event. We can then use 2 simple rules to calculate the probabilities of events in these multi-stage experiments:
 
-We define the following rules:
+1. **Multiplication Rule:**
+   The probability of a specific path (sequence of outcomes) is the **product** of the conditional probabilities along the path. This is because each stage's outcome is "conditioned" on the previous outcomes so it follows directly from the multiplication rule for conditional probabilities:
 
-1. The probabilities along a path are multiplied together.
-2. If multiple paths lead to the same final outcome, their probabilities are added.
+    ```math
+    \P(A_1 \cap A_2 \cap \ldots \cap A_n) = \P(A_1)\cdot\P(A_2|A_1)\cdot\P(A_3|A_1\cap A_2)\cdots\P(A_n|A_1\cap\cdots\cap A_{n-1})
+    ```
 
-<Callout type="todo">
-Explain this in more detail and link it to the multiplication rule and countable additivity. As to why we multiply things or add things together.
-</Callout>
+2. **Additivity Rule (Countable Additivity):**
+   If several different paths lead to the same final event, the **probability of the event** is the **sum** of the probabilities of those paths. This comes from the axiom of countable additivity, since the different paths are disjoint as they represent distinct sequences of outcomes.
+
+We can summarize the process for constructing a multi-stage experiment as follows:
+
+1. **Model each stage**: Identify all possible outcomes at each step.
+2. **Draw the tree**: Each node splits into branches for the possible next outcomes.
+3. **Label probabilities**: Assign the correct (possibly conditional) probability to each branch.
+4. **Compute path probabilities**: Multiply along the branches for each complete path.
+5. **Add if needed**: If an event can happen through several paths, sum their probabilities.
 
 <Callout type="info">
 An important note is that for a probabilistic model the difference between throwing two coins and throwing one coin twice is or two coins one after another is not important. This is because we do not model any dependence between the two coins, so for example the first coin influencing the second coin, which could in practice be the case as the two coins hit each other in the air. So in other words the two events are independent of each other so it does not matter if we throw them at the same time or one after another. This is important to keep in mind as it can lead to confusion.
@@ -282,72 +369,68 @@ If you still find it confusing think of the possible tree diagrams and you will 
 </Callout>
 
 <Callout type="example" title="Independent Stages">
-<Callout type="todo">
-This needs to be completed with an equally simple example using the balls for example
-</Callout>
+Suppose we draw two balls **with replacement** from an urn containing 3 red and 2 blue balls. So after each draw, we put the ball back into the urn. We want to find the probability of drawing two red balls. There are two stages in this experiment: the first draw and the second draw.
+
+- **Stage 1**: We have two possible outcomes, we either draw a red ball or a blue ball. The probabilities are $P(R_1) = \frac{3}{5}$, $P(B_1) = \frac{2}{5}$.
+- **Stage 2**: Because we replace the ball, the probabilities for the second draw are the same: $P(R_2|R_1) = P(R_2|B_1) = \frac{3}{5}$, etc.
+
+The probability of getting two reds can then just be multiplied together.
+
+```math
+\P(R_1 \cap R_2) = \P(R_1)\cdot\P(R_2) = \frac{3}{5}\cdot\frac{3}{5} = \frac{9}{25}
+```
+
+Here the stages are independent (replacement resets the urn each time) So it is a simple example without any conditions as the second stage does not depend on the first stage. To show the additivity rule, we can also calculate the probability of getting at least one red ball in two draws. This can happen in three ways: 
+
+1. First red, second blue $\P(R_1 \cap B_2) &= \P(R_1)\cdot\P(B_2) = \frac{3}{5}\cdot\frac{2}{5} = \frac{6}{25}$
+2. First blue, second red $\P(B_1 \cap R_2) &= \P(B_1)\cdot\P(R_2) = \frac{2}{5}\cdot\frac{3}{5} = \frac{6}{25}$
+3. Both red $\P(R_1 \cap R_2) &= \P(R_1)\cdot\P(R_2) = \frac{3}{5}\cdot\frac{3}{5} = \frac{9}{25}$
+
+The total probability of getting at least one red ball is then:
+
+```math
+\P(\text{at least one red}) = \P(R_1 \cap B_2) + \P(B_1 \cap R_2) + \P(R_1 \cap R_2) = \frac{6}{25} + \frac{6}{25} + \frac{9}{25} = \frac{21}{25}
+```
 </Callout>
 
 <Callout type="example" title="Dependent Stages">
-An urn contains 6 balls: 2 white and 4 black. We randomly draw 2 balls one after another without replacement, meaning 2 stages. We ask: What is the probability of drawing 2 balls of the same color ($A$) or 2 balls of different colors ($B$)?
+Suppose we draw two balls **without replacement** from an urn containing 2 white and 4 black balls. We want to find the probability of drawing two drawing 2 balls of the same color ($A$) or 2 balls of different colors ($B$)?
 
-**Stage 1:**
+- **Stage 1:** We have two possible outcomes, we either draw a white ball or a black ball. The probabilities are:
+$P(W_1) = {2 \over 6} = {1 \over 3}$, $P(S_1) = {4 \over 6} = {2 \over 3}$.
 
-- $P(W) = {2 \over 6} = {1 \over 3}$
-- $P(S) = {4 \over 6} = {2 \over 3}$
+- **Stage 2:** After the first draw, only 5 balls remain. So if a white ball was drawn in the first stage we have the following probabilities for the second draw: $P(W|W) = {1 \over 5}$ and $P(S|W) = {4 \over 5}$, and if a black ball was drawn in the first stage we have: $P(W|S) = {2 \over 5}$ and $P(S|S) = {3 \over 5}$.
 
-**Stage 2:**
-After the first draw, only 5 balls remain. If a white ball was drawn:
-
-- $P(W|W) = {1 \over 5}$
-- $P(S|W) = {4 \over 5}$
-
-If a black ball was drawn:
-
-- $P(W|S) = {2 \over 5}$
-- $P(S|S) = {3 \over 5}$
-
-The results are:
-
-For same-colored balls:
+The probability of drawing two balls of the same color ($A$) can be calculated as follows:
 
 ```math
 P(A)=P(WW) + P(SS) = {1 \over 3} \cdot {1 \over 5} + {2 \over 3} \cdot {2 \over 5} = {7 \over 15}
 ```
 
-For differently-colored balls:
-```math
-P(A)=P(WS) + P(SW) = {1 \over 3} \cdot {4 \over 5} + {2 \over 3} \cdot {2 \over 5} = {8 \over 15}
-```
-
-![multi-stage-random-experiment](/maths/mehrstufigeZufallsexperimente.png)
-</Callout>
-
-<Callout type="example" title="Birthday Problem">
-
-<Callout type="todo">
-This is in exercise sheet 2 and is a very common example of how certain probabilities are often misestimated intuitively.
-
-Write this better and show the solutions and proof clearly.
-</Callout>
-
-We ask: "What is the probability that at least two people in a group of $k$ people share the same birthday?"
-
-To answer this, we first consider the probability that **no** two people share a birthday:
-
-For 2 people: ${365 \over 365} \cdot {364 \over 365}$  
-For 3 people: ${365 \over 365} \cdot {364 \over 365} \cdot {363 \over 365}$  
-etc.  
-
-This probability approaches 0 as $k$ increases. Thus, we can answer our question as follows:
+For different colored balls:
 
 ```math
-P(\text{same})=1-P(\text{different}) \Leftrightarrow P(A)=1- \frac{365 \cdot (365-1)\cdot...\cdot (365-n+1)}{365^n}
+P(B)=P(WS) + P(SW) = {1 \over 3} \cdot {4 \over 5} + {2 \over 3} \cdot {2 \over 5} = {8 \over 15}
 ```
+
+Because drawing two different colored balls is actually the complement of drawing two balls of the same color, we can also write this as:
+
+```math
+P(B) = 1 - P(A) = 1 - {7 \over 15} = {8 \over 15}
+```
+
+The tree diagram for this experiment would look like this:
+
+<Image 
+    src="/maths/mehrstufigeZufallsexperimente.png"
+    caption="Tree diagram for a multi-stage random experiment with dependent stages"
+    width={400}
+/>
 </Callout>
 
 ## Law of Total Probability
 
-In some cases we may have a bunch of conditional probailities so, the proabilities of an event $A$ given that another event $B$ has already occurred but we actually want to know the total probability of $A$. This leads to the **law of total probability**. 
+In some cases we may have a bunch of conditional probabilities so, the probabilities of an event $A$ given that another event $B$ has already occurred but we actually want to know the total probability of $A$. This leads to the **law of total probability**. 
 
 More precisely, if we have the exhaustive mutually exclusive events $B_1, B_2, \ldots, B_n$ so in other words $B_1 \cup B_2 \cup \ldots \cup B_n = \Omega$ and $B_i \cap B_j = \emptyset$ for $i \neq j$. You can also think of these events $B_i$ as [partitions](/maths/discrete/setTheory#partitions) of the sample space $\Omega$. Then we can write the total probability of an event $A$ as follows:
 
@@ -374,7 +457,7 @@ As an example for the law of total probability, let's consider a football match.
 - $B^c$: The team plays away.
 
 Now if we wanted to know the probability of the team winning, we could use the law of total probability. For this we need to know the probability of the team winning at home and away and the probability of the team playing at home and away. So for example we could have:
-- $P(A | B) = 0.8$ for the proability of the team winning at home.
+- $P(A | B) = 0.8$ for the probability of the team winning at home.
 - $P(A | B^c) = 0.3$ for the probability of the team winning away.
 - $P(B) = 0.6$ for the probability of the team playing at home.
 - $P(B^c) = 1 - P(B) = 0.4$ for the probability of the team playing away.
@@ -390,13 +473,13 @@ This means that the probability of the team winning is 0.6 or 60% with the given
 
 ## Bayes' Theorem
 
-Another common case is we are given a conditional proability and we want to know the reverse of the conditional probability. So we have the probability of an event $B$ given that another event $A$ has already occurred, so $\P(B | A)$ and we want to know the probability of $A$ given that $B$ has already occurred, so $\P(A | B)$. This is called **Bayes' theorem**. Bayes' theorem follows from the multiplication rule and the law of total probability. More formally if we again have the events $B_1, B_2, \ldots, B_n$ which partition the sample space $\Omega$ then we can write Bayes' theorem as follows for the events $A$ and $B_i$:
+Another common case is we are given a conditional probability and we want to know the reverse of the conditional probability. So we have the probability of an event $B$ given that another event $A$ has already occurred, so $\P(B | A)$ and we want to know the probability of $A$ given that $B$ has already occurred, so $\P(A | B)$. This is called **Bayes' theorem**. Bayes' theorem follows from the multiplication rule and the law of total probability. More formally if we again have the events $B_1, B_2, \ldots, B_n$ which partition the sample space $\Omega$ then we can write Bayes' theorem as follows for the events $A$ and $B_i$:
 
 ```math
 \P(B_i | A) = \frac{\P(B_i \cap A)}{\P(A)} = \frac{\P(A | B_i) \cdot \P(B_i)}{\sum_{j=1}^{n} \P(A | B_j) \cdot \P(B_j)}
 ```
 
-Importantly we need to have $\P(A) \neq 0$ and $\P(B_i) \neq 0$. This is also called the **inverse probability** as we are looking for inverse of the conditional proability that we already have.
+Importantly we need to have $\P(A) \neq 0$ and $\P(B_i) \neq 0$. This is also called the **inverse probability** as we are looking for inverse of the conditional probability that we already have.
 
 <Callout type="example" title="Sickness Test">
 One of the most common examples of Bayes' theorem is the test for a sickness as it can be quiet counter intuitive and paradoxical/scary. We want to develop a test for a rare sickness. We know that the sickness occurs in 0.01% of the population so $\frac{1}{10000}$ people have the sickness. We also know that the test very accurate. If the person really is sick, the test will show positive with a probability of 99%. So we can model this experiment. 
@@ -423,6 +506,34 @@ No, you are not seeing that wrong. Despite the test being 99% accurate, the prob
 
 Given that the test is positive, it is much more likely that you are in the second group than in the first group. This is because the test is so accurate, but the sickness is so rare. This is a common example of how Bayes' theorem can lead to counter intuitive results and it is important to keep this in mind when interpreting test results.
 </Callout>
+
+## Birthday Paradox
+
+<Callout type="example" title="Birthday Problem">
+<Callout type="todo">
+This is in exercise sheet 2 and is a very common example of how certain probabilities are often misestimate intuitively.
+
+Write this better and show the solutions and proof clearly.
+</Callout>
+
+We ask: "What is the probability that at least two people in a group of $k$ people share the same birthday?"
+
+To answer this, we first consider the probability that **no** two people share a birthday:
+
+For 2 people: ${365 \over 365} \cdot {364 \over 365}$  
+For 3 people: ${365 \over 365} \cdot {364 \over 365} \cdot {363 \over 365}$  
+etc.  
+
+This probability approaches 0 as $k$ increases. Thus, we can answer our question as follows:
+
+```math
+P(\text{same})=1-P(\text{different}) \Leftrightarrow P(A)=1- \frac{365 \cdot (365-1)\cdot...\cdot (365-n+1)}{365^n}
+```
+
+for a class of 23 people this is already above 50%.
+</Callout>
+
+## Simpson's Paradox
 
 <Callout type="example" title="Simpson's Paradox">
 This was also discussed in the second exercise sheet. With regard to bias towards male or female students in the admission process of a university. Does this belong in this section or further up?
