@@ -3,7 +3,9 @@ import Image from "@components/Image/Image";
 
 # Random Variables
 
-So far we have seen how to work with probabilities of events and how to calculate them. However, we are often interested in quantifying outcomes of random experiments. This is where **random variables** come into play. A random variable is a function that assigns a numerical value to each outcome of a random experiment. More formally we define a random variable (r.v. or RV) $X$ as a function as follows:
+So far, we have learned to describe and calculate the probability of events. But in practice, we often want to **quantify the outcomes of random experiments**, not just talk about whether an event happens or not. For example, we might care about "the number of heads" in a sequence of coin tosses, or "the profit" in a gambling game.
+
+This is where **random variables** come in: they provide a systematic way to assign numbers to random outcomes, allowing us to model, analyze, and compute probabilities for quantitative questions. More formally we define a random variable (r.v. or RV) $X$ as a function as follows:
 
 ```math
 \begin{align*}
@@ -57,7 +59,7 @@ So we notice that the random variable is not well defined for $\mathcal{F}_2$ as
 </Callout>
 
 <Callout type="example" title="Indicator Variables">
-If we have a specific event $A$ in our sample space $\Omega$, we can also define a special random variable called an **indicator variable**. The indicator variable is defined as follows:
+If we have a specific event $A$ in our sample space $\Omega$, we can also define a special random variable called an **indicator variable**. This variable "indicates" if an outcome belongs to an event: 1 for "yes", 0 for "no". The indicator variable is defined as follows:
 
 ```math
 \forall \omega \in \Omega: 1_A(\omega) = \begin{cases}
@@ -81,13 +83,13 @@ So we notice that for the indicator variable to be well defined we need to have 
 
 ## Probability of Random Variables
 
-We have seen that a random variable is a function that assigns a numerical value to each outcome of a random experiment and we have seen that we can assign a probability to an event. In this section we want to combine these two concepts and assign a probability to a random variable. We have already seen that for all values $a \in \mathbb{R}$ of a random variable $X$ we can define the following set:
+So far, we have defined what a random variable is. Next, we'll see how we use random variables to define probabilities and distributions. Specifically we have seen that a random variable is a function that assigns a numerical value to each outcome of a random experiment and we have seen that we can assign a probability to an event. In this section we want to combine these two concepts and assign a probability to a random variable. We have already seen that for all values $a \in \mathbb{R}$ of a random variable $X$ we can define the following set:
 
 ```math
 \{\omega \in \Omega | X(\omega) \leq a\} \in \mathcal{F}
 ```
 
-This set contains all the outcomes of the random experiment for which the random variable $X$ takes on a value less than or equal to $a$. Because it is a set of outcomes it means that we can assign a probability to it. We can do this by using the probability measure $P$ of the sigma-algebra $\mathcal{F}$. More specifically the probability of the random variable $X$ taking on a value less than or equal to $a$ is defined as follows:
+This set contains all the outcomes of the random experiment for which the random variable $X$ takes on a value less than or equal to $a$. Because it is a set of outcomes, i.e. an event it means we can assign a probability to it. We can do this by using the probability measure $P$ of the sigma-algebra $\mathcal{F}$. More specifically the probability of the random variable $X$ taking on a value less than or equal to $a$ is defined as follows:
 
 ```math
 \P(\{\omega \in \Omega | X(\omega) \leq a\})
@@ -114,6 +116,8 @@ Or also more rarely used to the case where the random variable $X$ takes on a va
 <Callout type="todo">
 Are these valid definitions of the probability of a random variable?
 What about equals, less than, greater than, etc?
+
+Are the examples below correct?
 </Callout>
 
 <Callout type="example">
@@ -142,16 +146,15 @@ Because when throwing a die we have a laplace experiment we know that the probab
 
 ```math
 \begin{align*}
-\P(X \leq -1) &= \P(\{1, 2, 3\}) = \frac{3}{6} = \frac{1}{2} \\
-\P(X \leq 0) &= \P(\{1, 2, 3, 4\}) = \frac{4}{6} = \frac{2}{3} \\
-\P(X \leq 2) &= \P(\{1, 2, 3, 4, 5, 6\}) = \frac{6}{6} = 1 \\
+\P(X < -1) &= \P(\emptyset) = 0 \\
+\P(-1 \leq X < 0) &= \P(\{1, 2, 3\}) = \frac{3}{6} = \frac{1}{2} \\
+\P(0 \leq X < 2) &= \P(\{1, 2, 3, 4\}) = \frac{4}{6} = \frac{2}{3} \\
+\P(X \geq 2) &= \P(\{1, 2, 3, 4, 5, 6\}) = \frac{6}{6} = 1 \\
 \end{align*}
 ```
-
-What about less than 1 or positive? etc?
 </Callout>
 <Callout type="example">
-We can also do the same and define the proability of an indicator variable for an event $A$. 
+We can also do the same and define the probability of an indicator variable for an event $A$. 
 
 ```math
 \begin{align*}
@@ -160,8 +163,6 @@ We can also do the same and define the proability of an indicator variable for a
 \P(1_A \leq 2) = \P(\{\omega \in \Omega | 1_A(\omega) \leq 2\}) = 1 \\
 \end{align*}
 ```
-
-Is this correct?
 </Callout>
 
 ### Almost Sure Events
@@ -172,20 +173,50 @@ So far we have said that an event $A$ is a sure event if it contains all the out
 \P(A) = 1
 ```
 
-Therfore an equivalent definition of an almost sure event $A$ is also if the complementary event $A^c$ has the following proability:
+Therefore an equivalent definition of an almost sure event $A$ is also if the complementary event $A^c$ has the following probability:
 
 ```math
 \P(A^c) = 0
 ```
 
-Now you might be thinking well what is the difference between a sure event and an almost sure event? The difference is that a sure event contains all the outcomes of the sample space $\Omega$ and therefore has the probability $\P(A) = 1$. An almost sure event on the other hand does not contain all the outcomes of the sample space $\Omega$ but has the probability $\P(A) = 1$. This means that an almost sure event can be a subset of the sample space $\Omega$ but still have the probability $\P(A) = 1$.
+Now you might be thinking well what is the difference between a sure event and an almost sure event? The difference is that a sure event contains all the outcomes of the sample space $\Omega$ and therefore has the probability $\P(A) = 1$. An almost sure event on the other hand does not contain all the outcomes of the sample space $\Omega$ but has the probability $\P(A) = 1$. This means that an almost sure event can be a subset of the sample space $\Omega$ but still have the probability $\P(A) = 1$. All the outcomes that are not in the event $A$ then just have a probability of 0. Another way you can think about it is that in an infinite sample spaces, events of probability zero can still be possible, but just extremely unlikely (e.g., picking a single real number at random from [0,1]: the chance of hitting any particular number is zero, but it's not impossible). So picking a single outcome from an infinite sample space is almost surely not going to happen, but it is still possible.
 
-<Callout type="example">
-Tossing a coin infinitely many times
+<Callout type="example" title="Tossing a Coin Infinitely Many Times">
+Suppose we flip a fair coin infinitely many times and we consider the event $A$ that "at least one head appears" in the sequence of tosses.
+
+Let's compute the probability of the complementary event $A^c$: the event that "no heads ever appear" (i.e., we get only tails forever). For each toss, the probability of getting tails is $\frac{1}{2}$, so for $n$ tosses in a row, the probability of getting all tails is $\left(\frac{1}{2}\right)^n$. In the limit as $n \to \infty$, the probability of getting only tails forever is:
+
+```math
+\lim_{n \to \infty} \left(\frac{1}{2}\right)^n = 0
+```
+
+Therefore, the probability of getting at least one head at some point is:
+
+```math
+\P(\text{at least one head appears}) = 1 - 0 = 1
+```
+
+So, **almost surely** we will see at least one head in an infinite sequence of tosses, even though there is technically one outcome (all tails) with probability zero where this does not happen. So in infinite sequences, it's possible (but with probability zero) that no head ever appears, but in practice, we are "certain" to see at least one head if we keep tossing forever. This is an almost sure event. 
 </Callout>
 
 <Callout type="example" title="Infinite Monkey Theorem">
-Monkey typing shakespeare.
+The **Infinite Monkey Theorem** says that if a monkey randomly hits keys on a typewriter for an infinite amount of time, then almost surely the monkey will eventually type out the complete works of Shakespeare (or any given text).
+
+Suppose the keyboard has $k$ possible symbols (e.g., $k=26$ for just lowercase English letters). Suppose the text we want to see is $n$ characters long. The probability that the monkey types the target text in a particular sequence of $n$ keystrokes is $\frac{1}{k^n}$ as each character has a $\frac{1}{k}$ chance of being correct and he needs to get all $n$ characters right.
+
+Suppose $A$ be the event that the monkey types the target text **at least once** somewhere in the infinite sequence. Then:
+* The probability that the monkey does **not** type the text in the first $n$ positions is $1 - \frac{1}{k^n}$.
+* The probability that the monkey does **not** type the text in the first $m$ blocks of length $n$ is $\left(1 - \frac{1}{k^n}\right)^m$. The idea here is that each block of $n$ characters is independent, so we multiply the probabilities.
+
+As $m \to \infty$, this probability goes to 0:
+
+```math
+\lim_{m \to \infty} \left(1 - \frac{1}{k^n}\right)^m = 0
+```
+
+So the probability that the monkey never types the target text is 0. Therefore, the probability that the monkey does type the text at least once (at some point in the infinite sequence) is 1. This is an **almost sure event**.
+
+Even though it is staggeringly unlikely for a monkey to type Shakespeare in any finite period, if you give infinite time, the probability becomes 1 (almost sure), except for a set of probability zero where the monkey never produces the text. 
 </Callout>
 
 Because of this definition on some event we can also extend the idea to random variables. We can for example say that $X \leq a$ almost surely if the following holds:
@@ -214,30 +245,58 @@ If the random variable is discrete, so in other words the range of the random va
 
 ```math
 \begin{align*}
-p_X: \mathbb{R} &\to [0, 1] \\
+p_X: W &\to [0, 1] \\
 a &\mapsto p_X(a)
 \end{align*}
 ```
 
-The PMF is defined as for all discrete values $a$ of the random variable $X$ and is defined as follows:
+The PMF is defined for all values in the countable range $a \in W$ of the random variable $X$ and is defined as follows:
 
 ```math
 p_X(a) = \P(X = a) = \P(\{\omega \in \Omega | X(\omega) = a\}) = \P(X \in \{a\})
 ```
     
-where $a$ is a value of the random variable $X$. Sometimes we also write $f_X(a)$ instead of $p_X(a)$ or if the random variable is clear from the context we just write $p(a)$ or $f(a)$. Because the PMF is a probability meassure, it must satisfy the matching properties, one of which is that the sum of all probabilities must be equal to 1 so we have:
+where $a$ is a value of the random variable $X$. Sometimes if the random variable is clear from the context we just write $p(a)$. Notice that we orignally defined the random variable $X$ to have a range $a \in \mathbb{R}$, but now we are defining the PMF to only assign probabilities to values in finite or countable sets $W$. This is because the PMF is only defined for discrete random variables, so it only assigns probabilities to values that the random variable can take on. You can think of the PMF as a function that is also defiend for all values in the range of the random variable $X$, but it only assigns a nonzero probability to values that are actually in the range of $X$. In other words, if $a$ is not in the range of $X$, then $p_X(a) = 0$.
+
+Because the PMF is a function that assigns probabilities, it has very similar properties to a probability measure, one of which is that the sum of all probabilities is equal to 1 so we have:
 
 ```math
 \sum_{a \in X} p_X(a) = 1
 ```
 
-It is important to remember that the PMF is only defined for discrete random variables. For continuous random variables we will define a different function called the **probability density function** (PDF) which we will see later. Because it is discrete the graph of the PMF is a series of discrete points, this is commonly shown using a table or a bar graph. 
+<Callout type="proof">
+Let $W$ be the (at most countable) set of all values that $X$ can take. For each $a \in W$, we define the event:
 
-<Image 
-    src="/maths/verteilungsFunktion.png" 
-    caption="The table containing the values of the random variable $X$ and the corresponding probabilities."
-    width={500} 
-/>
+```math
+A_a := \{\omega \in \Omega \mid X(\omega) = a\}
+```
+
+This is the set of all outcomes $\omega$ in the sample space $\Omega$ such that the random variable $X$ takes the value $a$. These events are **pairwise disjoint** because if we take two different values $a$ and $b$ in $W$ then the events $A_a$ and $A_b$ are disjoint:
+
+```math
+A_a \cap A_b = \emptyset \quad \text{for } a \neq b
+```
+
+This is because if $X(\omega) = a$ for some outcome $\omega$, then $X(\omega)$ cannot simultaneously equal $b$ if. Moreover, since $W$ is the range of $X$, the union of all these events covers the entire sample space:
+
+```math
+\bigcup_{a\in W} A_a = \Omega
+```
+
+because for every $\omega \in \Omega$, $X(\omega) = a$ for exactly one $a \in W$. By **countable additivity** of the probability measure we then have:
+
+```math
+\P(\Omega) = \P\left(\bigcup_{a\in W} A_a\right) = \sum_{a\in W} \P(A_a)
+```
+
+But by definition, $\P(A\_a) = \P(X = a) = p\_X(a)$. Thus,
+
+```math
+1 = \sum_{a\in W} p_X(a)
+```
+</Callout>
+
+Because it is discrete the graph of the PMF is a series of discrete points, this is commonly shown using a table or a bar graph. 
 
 <Image
     src="/maths/stabdiagram.png" 
@@ -245,10 +304,12 @@ It is important to remember that the PMF is only defined for discrete random var
     width={500} 
 />
 
-<Callout type="note">
-You might be thinking why does this not work for continuous random variables? The reason is rather simple and comes from the definition of a proability meassure and the behaviour of summing over an uncountable set. 
+<Callout type="info">
+It is important to remember that the PMF is only defined for discrete random variables. For continuous random variables we will define a different function called the **probability density function** (PDF) which we will see later. You might be thinking why does this not work for continuous random variables? The reason is rather simple and comes from the definition of a probability measure and the behavior of summing over an uncountable set. 
 
 This has briefly been hit on when we [discuss why we need a sigma-algebra](/maths/probabilityStatistics/probabilitySpaces#sigma-algebras) and the fact that we can not assign a probability to an uncountable set.
+
+We will also see this in more detail when we discuss the PDF and the CDF of continuous random variables.
 </Callout>
 
 ### Cumulative Distribution Function (CDF)
@@ -276,13 +337,44 @@ We will first focus on the case where the random variable is discrete. In this c
 
 Where we sum the probabilities over all values of the random variable $X$ that are less than or equal to $a$. Intuitively this makes sense.
 
-Because probabilities are also always between 0 and 1, the CDF is a non-decreasing function or in other words monotonically increasing. This means that the CDF is a function that is always increasing or constant, but never decreasing. This comes from the fact that if $a \leq b$ then $\{\omega \in \Omega | X(\omega) \leq a\} \subseteq \{\omega \in \Omega | X(\omega) \leq b\}$, so we have:
+<Callout type="proof"> 
+We want to show that the CDF can be expressed as a sum of the PMF over all values less than or equal to $a$.
+Let $X$ be a discrete random variable with range $W$. By definition, $F_X(a) = \P(X \leq a)$. Let's express this probability as a sum over the values of $X$: 
+
+```math
+\begin{align*}
+F_X(a) &= \P(X \leq a) \\
+&= \P(\{\omega \in \Omega \mid X(\omega) \leq a\}) \\
+&= \P\left(\bigcup_{y \in W,\, y \leq a} \{\omega \mid X(\omega) = y\}\right)
+\end{align*}
+```
+
+The sets $\{\omega \mid X(\omega) = y\}$ for different $y \in W$ are **disjoint** (since $X$ can only take one value at a time). By countable additivity,
+
+```math
+\begin{align*}
+F_X(a) &= \P\left(\bigcup_{y \in W,\, y \leq a} \{\omega \mid X(\omega) = y\}\right) \\
+&= \sum_{y \in W,\, y \leq a} \P(X = y) \\
+&= \sum_{y \in W,\, y \leq a} p_X(y)
+\end{align*}
+```
+</Callout>
+
+<Image 
+    src="/maths/verteilungsFunktion.png" 
+    caption="The CDF of the random variable $X$."
+    width={500} 
+/>
+
+We can see that the CDF is a step function that increases at the points where the random variable $X$ takes on a value. This is because the CDF is defined as the sum of the probabilities of all values less than or equal to $a$. You can think of the CDF as the accumulated height of the PMF. 
+
+Because it is a step function the CDF is a non-decreasing function, meaning that it can only stay the same or increase as $a$ increases.This comes from the fact that if $a \leq b$ then $\{\omega \in \Omega | X(\omega) \leq a\} \subseteq \{\omega \in \Omega | X(\omega) \leq b\}$, so we have:
 
 ```math
 \P(X \leq a) \leq \P(X \leq b)
 ```
 
-If we have $a < b$ then we also have the following:
+If we have $a < b$ then we can also combine this to get the probability of the random variable $X$ taking on a value in the interval $(a, b]$:
 
 ```math
 \P(a < X \leq b) = F_X(b) - F_X(a)
@@ -335,37 +427,177 @@ F_X(a) = \begin{cases}
 ```
 </Callout>
 
-From the example above and the plot we notice that for a function to be a CDF it must fullfill three properties:
+From the example above and the plot we notice that for a function to be a CDF it fulfills three properties:
 1. $F_X(a)$ is a non-decreasing function. 
 2. $F_X(a)$ is a right-continuous function.
 3. As the variable value $a$ goes to infinity the CDF goes to 1 and as $a$ goes to minus infinity the CDF goes to 0. 
 
+The first property is rather trivial and comes from the fact that probabilities are always between 0 and 1 and that we are looking at values less than or equal to $a$. 
 
-The first property is rather trivial and comes from the fact that probabilities are always between 0 and 1 and that we are looking at values less than or equal to $a$. There are many ways to prove this but one is by monotonicity of the probability measure. If $a \leq b$ we have $\{\omega \in \Omega | X(\omega) \leq a\} \subseteq \{\omega \in \Omega | X(\omega) \leq b\}$, so we have:
+<Callout type="proof">
+There are many ways to prove this but one is by monotonicity of the probability measure. If $a \leq b$ we have $\{\omega \in \Omega | X(\omega) \leq a\} \subseteq \{\omega \in \Omega | X(\omega) \leq b\}$, so we have:
 
 ```math
 \P(X \leq a) \leq \P(X \leq b) \iff F_X(a) \leq F_X(b)
 ```
+</Callout>
 
-The second property is important because it means that the CDF is continuous from the right. This means it can have jumps but that the limits from the right exist and are equal to the value of the function at that point. A CDF can also be continuous from the left, but this is not required. more formally we can say that for all $a \in \mathbb{R}$:
+The second property is important because it means that the CDF is continuous from the right. This means it can have jumps but that the limits from the right exist and are equal to the value of the function at that point, more formally we can say that for all $a \in \mathbb{R}$ and $b \geq a$ we have:
 
 ```math
 F_X(a) = \lim_{b \to a^+} F_X(b)
 ```
 
-The last property in a way is like with the PMF, to garantee that the CDF is a valid probability measure. For this to be the case the values of the CDF must be between 0 and 1. In other words, the CDF must be bounded between 0 and 1. This means that the CDF must go to 1 as $a$ goes to infinity and to 0 as $a$ goes to minus infinity. This is important so it can be used to assign probabilities to events.
+<Callout type="proof">
+Let $X$ be any random variable and $F_X(a) = \P(X \leq a)$. We claim that for any $a \in \mathbb{R}$, the CDF is right-continuous:
 
-<Callout type="todo">
-Proofs of property 2 and 3.
+```math
+F_X(a) = \lim_{h \to 0} F_X(a + h)
+```
+
+Let $h \to 0^+$, then we can write:
+
+```math
+\{X \leq a\} = \bigcap_{n=1}^{\infty} \{X \leq a + h\}
+```
+
+since as $h \to 0$, the sets on the right "shrink" to exactly ${X \leq a}$.
+
+By the **continuity from above** property of probability measures (for decreasing sequences of sets) we have:
+
+```math
+\P\left(\bigcap_{n=1}^\infty A_n\right) = \lim_{n \to \infty} \P(A_n)
+```
+
+So putting this together, we get:
+
+```math
+F_X(a) = \lim_{h \to 0^+} F_X(a + h) = \lim_{h \to 0^+} \P(X \leq a + h) = \P(X \leq a)
+```
+
+So the CDF is right-continuous at every point $a$. But for discrete random variables, this means that the CDF is constant (flat) between the jumps at points $a \in W$, and jumps by $p_X(a)$ at $a$. These jumps correspond to the PMF values at those points.
 </Callout>
+
+The last property in a way is like with the PMF, to guarantee that the CDF is a valid probability measure. For this to be the case the values of the CDF must be bounded between 0 and 1. This means that the CDF must go to 1 as $a$ goes to infinity and to 0 as $a$ goes to minus infinity. This is important so it can be used to assign probabilities to events.
+
+<Callout type="proof">
+We want to show that the CDF approaches 0 as $a \to -\infty$ and approaches 1 as $a \to \infty$. First let's consider the limit as $a \to -\infty$. For any $\omega \in \Omega$, $X(\omega) \leq a$ is **never true** for $a$ less than the minimum value in $W$. Thus,
+
+```math
+F_X(a) = 0 \text{ for } a < \min W
+```
+
+So as $a \to -\infty$, we have:
+
+```math
+\lim_{a \to -\infty} F_X(a) = 0
+```
+
+As $a \to \infty$ for large enough $a$, $X(\omega) \leq a$ is **always true** (for all $X(\omega)$), so $F\_X(a) = \P(\Omega) = 1$ for $a$ greater than the maximum value in $W$. So,
+
+```math
+\lim_{a \to \infty} F_X(a) = 1
+```
+
+So the CDF "starts" at 0 (for very small $a$) and "ends" at 1 (for very large $a$), as the probability that $X$ is less than or equal to $a$ transitions from impossible to certain. 
+</Callout>
+
+## Properties of Random Variables
 
 ### Conditional Random Variables
 
-Is the same but on a restricted domain, i.e. set of outcomes that match the condition.
+Just as we can talk about the probability of an event given another event (i.e., [conditional probability]()), we can also consider the probability distribution of a random variable given that some event has occurred. This leads us to the idea of a **conditional random variable**. Think of this as "restricting our attention" to a subset of the sample space: only those outcomes that make $B$ true. We then ask: "within that world, how does $X$ behave?"
+
+
+More formally we can define a conditional random variable $X$ given an event $B$. The idea is that we are looking at the distribution of $X$ but only considering the outcomes where $B$ occurs. So given an event $B$ with $\P(B) > 0$, we can define the **conditional probability** of $X$ taking a value $a$, given $B$:
+
+```math
+\P(X = a \mid B) = \frac{\P(X = a \cap B)}{\P(B)}
+```
+
+Alternatively, in terms of the PMF, the **conditional PMF** of $X$ given $B$ is:
+
+```math
+p_{X|B}(a) = \P(X = a \mid B) = \frac{\P(X = a \text{ and } B)}{\P(B)}
+```
+
+This describes the "new" probability distribution of $X$ if we know that $B$ occurred. You can think of this as a new random variable, but with the probability measure changed to reflect the conditioning on $B$.
+
+<Callout type="example">
+Suppose we go back to our gambling game example with the random variable $X$ defined as:
+
+```math
+\forall \omega \in \Omega: X(\omega) = \begin{cases}
+-1 & \text{if } \omega = 1, 2, 3 \\
+0 & \text{if } \omega = 4 \\
+2 & \text{if } \omega = 5, 6
+\end{cases}
+```
+
+Let $B$ be the event "the die roll is even" ($B = {2, 4, 6}$). Then what is the conditional distribution of $X$ given $B$? The event $B$ has outcomes $\omega = 2, 4, 6$, so $\P(B) = \frac{3}{6} = \frac{1}{2}$.
+
+Now, let's compute the conditional PMF:
+
+- $\P(X = -1 \mid B)$: Only $\omega = 2$ contributes (since $2 \in B$ and $X(2) = -1$), so
+
+  ```math
+  \P(X = -1 \mid B) = \frac{\P(\{2\})}{\P(B)} = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
+  ```
+
+- $\P(X = 0 \mid B)$: Only $\omega = 4$ (since $4 \in B$ and $X(4) = 0$):
+
+  ```math
+  \P(X = 0 \mid B) = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
+  ```
+
+- $\P(X = 2 \mid B)$: Only $\omega = 6$ (since $6 \in B$ and $X(6) = 2$):
+
+  ```math
+  \P(X = 2 \mid B) = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
+  ```
+
+So, conditional on rolling an even number, the random variable $X$ is equally likely to be $-1$, $0$, or $2$.
+
+Similarly, we can define the **conditional cumulative distribution function** (CDF):
+
+```math
+F_{X|B}(a) = \P(X \leq a \mid B)
+```
+
+For our example, for $a = 0$ the outcomes in $B$ where $X \leq 0$ are $\omega = 2$ ($X = -1$) and $\omega = 4$ ($X = 0$), so:
+
+```math
+F_{X|B}(0) = \P(X \leq 0 \mid B) = \frac{\P(\{2, 4\})}{\P(B)} = \frac{2/6}{1/2} = \frac{2}{3}
+```
+
+This means that given we rolled an even number, the probability that $X$ is less than or equal to 0 is $\frac{2}{3}$.
+</Callout>
 
 ### Transforming Random Variables
 
 we can remap random variables to new random variables, or create a new random variable from multiple random variables. This is commonly done by using a function $g$ that maps the random variable to a new random variable. More formally we can define a new mapping.
+
+applying exponential to a random variable $X$ to create a new random variable $Y$ as follows:
+
+or adding two random variables $X$ and $Y$ to create a new random variable $Z$ as follows:
+
+formally if $X$ is a random variable and $g: \mathbb{R} \to \mathbb{R}$ is a function, we can define a new random variable $Y$ as follows:
+
+```math
+Y = g(X) = g(\omega) \text{ for all } \omega \in \Omega
+```
+
+We can also define functions of multiple random variables. For example, if we have two random variables $X$ and $Y$ and a function $g: \mathbb{R}^2 \to \mathbb{R}$, we can define a new random variable $Z$ as follows:
+
+```math
+Z = g(X, Y) = g(\omega) \text{ for all } \omega \in \Omega
+```
+
+Why can we do this? Is there some sort of proof?
+
+<Callout type="example">
+
+</Callout>
 
 ### Independent Random Variables
 
@@ -437,7 +669,17 @@ and convolutions if X+Y
 
 If $X_1, X_2, \ldots, X_n$ are independent random variables then so is some subset of them, for example $X_1, X_2$ or $X_1, X_2, X_3$. 
 
-Can also split them into groups and then apply a function to each group and they are still independent. Doesn't make a lot of sense surely the function can be dependent on the random variables?
+Can also split them into disjoint groups and then apply a function to each group and they are still independent. 
+
+<Callout type="proof">
+
+</Callout>
+
+<Callout type="example">
+
+</Callout>
+
+## Examples of Discrete Random Variables
 
 ### Bernoulli Distribution
 
@@ -492,31 +734,60 @@ multiple choice exam with 10 questions and 4 possible answers. What is the proba
 
 ### Geometric Distribution
 
+absence of memory (markov property)
+
+Something with infinitely many independent Bernoulli When saying that T is a geometric random variable, we make a slight
+abuse: indeed, the random variable T may take the value +∞ if all the random variables
+Xi’s are equal to 0. Nevertheless, this is not a problem for the calculations because one
+can check that P[T = ∞] = 0.
+
+### Poisson Distribution
+
+show that it really is 1.
+
+Poisson approximation to the binomial distribution?
+
 ### Negative Binomial Distribution
 
 ### Hypergeometric Distribution
 
 ### Coupon Collector Problem
 
-### Poisson Distribution
-
 ## Continuous Random Variables
 
-CDF is always left continous with if also right continous then it is continuous. 
+CDF is always left continous with if it is also right continous then it is continuous. 
 
 ### Probability Density Function (PDF)
 
+is non-negative
+
 ### Cumulative Distribution Function (CDF)
+
+integral of the pdf.
+
+going from pdf to cdf and vice versa.
+
+construct if cdf is piecewise continuous so C1? we can integrate each piece to get the pdf? Why not just say continous and therfore differentiable.
+
+## Examples of Continuous Random Variables
 
 ### Uniform Distribution
 
+only depends on the length if we fall in interval or not.
+
 ### Exponential Distribution
 
+analog to the geometric distribution but for continuous random variables? So also has the memoryless property.
+
 ### Normal Distribution
+
+what is phi and phi inverse?
 
 #### Standard Normal Distribution
 
 #### Quantiles
+
+#### Three Sigma Rule
 
 #### Z-Score
 
