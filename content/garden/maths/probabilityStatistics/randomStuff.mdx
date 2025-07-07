@@ -1,51 +1,5 @@
 # Grenzwertsätze
 
-## Gesetz der grossen Zahlen
-
-Wir wissen wenn wir eine Zufallsvariable $X_i$ mit einer Bernoulli Verteilung haben also $X_i \sim B(p)$ dann ist $\sum_{i=1}^{n}{X_i} \sim Bin(n,p)$. Die relative Häufigkeit ist wie wir wissen die Anzahl des Eintreffen eines Ereignis $X$ durch die anzahl unabhängige Ausführungen des Experiments $n$ dann gilt folgendes
-
-```math\lim_{n \to \infty}{P(|\frac{X}{n} - p| \geq e)} = 0```
-
-Was so viel heisst wie wenn desto mehr unabhängige Experimente wir ausführen desto besser stabilisiert sich die relative Häufigkeit um den Erwartungswert.
-
-Mehr dazu findest du [hier](https://studyflix.de/statistik/gesetz-der-grosen-zahlen-2053)
-
-## Zentraler Grenzwertsatz
-
-Der zentrale Grenzwertsatz liefert die Begründung für das Phänomen, dass sich bei der additiven Überlagerung vieler kleiner unabhängiger Zufallsexperiment approximativ zu einer Normalverteilung wird.
-
-Wenn wir also eine Folge von unabhängigen Zufallsvariablen $X_1,X_2,...$vom gleichen Wahrscheinlichkeitsraum haben welche alle dieselbe Verteilung mit Erwartungswert $\mu$ und Varianz $\sigma^2$ haben dann gilt für $n$ die Anzahl Zufallsvariablen und die Summe $S_n=X_1+...+X_n$. Dann hat die Summe approximative die Normalverteilung $N(\mu n, \sigma n)$ wobei $\mu n = n \cdot \mu$ und $\sigma n = \sqrt{n} \cdot \sigma$.
-
-Diese Verteilung kann dann natürlich auch noch standardisiert werden.
-
-```math\frac{S_n -\mu n}{\sqrt{n}\cdot \sigma}\sim N(0,1)```
-
-## Satz von Moivre-Laplace
-
-Weil eine Binomialverteilte Zufallsvariable $X \sim Bin(n,p)$ als Summe von $n$ Bernoulliverteilte Zufallsvariablen interpretiert werden kann und wir sie mit der Normalverteilung annähern können mit $N(np, \sqrt{np(1-p)})$ können wir ein paar Approximationen machen. Wobei $normcdf(x)$ die Verteilungsfunktion der standardisierten Normalverteilung ist.
-
-Mit dem Satz können wir für $n > \frac{9}{p(1-p)}$ folgendes gut approximieren
-
-```mathP(a \leq X \leq b) \approx normcdf(\frac{b-np}{\sqrt{np(1-p)}})-normcdf(\frac{a-np}{\sqrt{np(1-p)}})```
-
-Genauer wird es dann mit der Stetigkeitskorrektur
-
-```mathP(a \leq X \leq b) \approx normcdf(\frac{b+\frac{1}{2}-np}{\sqrt{np(1-p)}})-normcdf(\frac{a-\frac{1}{2}-np}{\sqrt{np(1-p)}})```
-
-:::note Beispiel Satz von Moivre-Laplace
-
- Ein fairer Würfel wirf 1000 mal geworfen. Wie hoch ist die Wahrscheinlichkeit, dass wir zwischen 150 und 200 sechs würfeln?
-
- Genau:
-
- ```mathbinocdf(200,1000,1/6)-bincdf(149,1000,1/6)=0.9265```
-
- Mit Satz von Moivre-Laplace:
-
- ```mathnormcdf(\frac{200+\frac{1}{2}-\frac{1000}{6}}{\sqrt{1000\cdot \frac{5}{36}}}) - normcdf(\frac{150-\frac{1}{2}-\frac{1000}{6}}{\sqrt{1000\cdot \frac{5}{36}}})=0.9253```
-
-:::
-
 ## Simulation von Zufallsvariablen
 
 Manchmal ist es nur mit grossem Aufwand Wahrscheinlichkeiten zu exakt berechnen. Eine Lösung für dieses Problem ist die Zufallsvariable zu simulieren, also Zahlen zu erzeugen die korrekt verteilt sind und dann schauen, welcher Prozentsatz dieser Zahlen im gesuchten Ereignis liegen. Dank dem Gesetz der grossen Zahlen wird diese Wahrscheinlichkeit genauer mit wachsender Anzahl an Wiederholungen.

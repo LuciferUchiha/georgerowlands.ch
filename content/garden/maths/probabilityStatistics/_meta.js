@@ -1,5 +1,3 @@
-import { join } from "path";
-
 export default {
   combinatorics: "",
   probabilitySpaces: "",
@@ -7,6 +5,7 @@ export default {
   randomVariables: "",
   expectationVarianceCovariance: "",
   jointDistributions: "",
+  largeSamples: "",
   estimators: "",
   confidenceIntervals: "",
   hypothesisTests: "",

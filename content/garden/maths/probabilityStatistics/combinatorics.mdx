@@ -1,131 +1,207 @@
 import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
 
 # Combinatorics
 
-<Callout type="todo">
-This needs to be translated into English and made more complete as it is missing some important topics such as the pigeonhole principle, inclusion-exclusion principle, derangements. It also isn't very well structured and easy to understand. De morgans law probably also makes sense to include here as it is a combinatorial principle.
+Combinatorics is all about counting: how many ways can you arrange, select, or group objects under certain rules? This sounds simple, but surprisingly subtle patterns and formulas arise. The best way to master combinatorics is to focus on **why the formulas make sense**, not just memorize them.
+
+Let's start by seeing how the fundamental principles work and how each formula is **built from scratch**.
+
+## Fundamental Counting Principles
+
+Before we jump into fancy formulas, we need two basic ideas: the **Multiplication Principle** and the **Addition Principle**.
+
+### Multiplication Principle
+
+Suppose you want to perform several actions in sequence, and each step is independent of the previous ones. This independence means the choices for each step do not affect the others. Then by the multiplication principle we can count the total number of ways to perform the sequence.
+
+If the first action can be done in $n_1$ ways, and the second in $n_2$ ways (regardless of how you did the first),
+then the whole sequence can be done in $n_1 \cdot n_2$ ways.
+
+Imagine picking a shirt (3 options) and then pants (2 options). For every shirt, you can pick any pants:
+3 shirts times 2 pants equals 6 different combinations.
+
+We can generalize this to multiple actions where if you have $k$ choices, each with $n\_i$ options, we can simply multiply them to get the total number of different combinations:
+
+```math
+n_1 \cdot n_2 \cdot \dots \cdot n_k
+```
+
+### Addition Principle
+
+If there are several different ways to do something, and you **can only do one at a time** (the sets of options don't overlap) or more formally, if tasks A and B are mutually exclusive, then if task A can be done in $n_1$ ways and task B in $n_2$ ways, there are $n\_1 + n\_2$ possible outcomes.
+
+Imagine you can take bus (3 routes) or train (2 routes) to work, but not both: $3+2=5$ options to get to work.
+
+<Callout type="example">
+You have 2 hats (black, blue) and 3 scarves (red, green, yellow). 
+
+Then how many ways to choose **either** a hat **or** a scarf? There are two ways to choose a hat and three ways to choose a scarf. So by the Addition Principle we have a total of $2 + 3 = 5$ ways. 
+
+What if you want to choose a **hat and a scarf**? Then by the Multiplication Principle, you have $2 \cdot 3 = 6$ combinations of hats and scarves.
 </Callout>
-
-Die Kombinatorik ist ein Bereich der Mathematik, der sich mit der Anzahl der Möglichkeiten befasst, wie man Objekte auf
-verschiedene Arten auswählen, ordnen oder gruppieren kann.
-
-Zum Beispiel, wenn man aus einer Gruppe von 5 Personen 2 auswählt, gibt es insgesamt 10 Möglichkeiten, dies zu tun.
-
-Die Kombinatorik hilft uns, die Anzahl der möglichen Ergebnisse zu berechnen, während die Wahrscheinlichkeitsrechnung
-uns sagt, wie wahrscheinlich es ist, dass bestimmte Ergebnisse eintreten. Wenn man die Anzahl der möglichen Ergebnisse
-kennt, kann man die Wahrscheinlichkeit eines bestimmten Ergebnisses berechnen.
-
-## Combinatorial Principles
-
-Combinatorial principles, addition, multiplication, piegonhole principle, inclusion-exclusion principle
 
 ## Permutations
 
-### With Repetition
+The idea of a **permutation** is about rearranging objects in some order. Commonly, we just want this to be some random order. We denote such a random permutation of a set with $n$ objects as:
 
-### Partial Permutations
+```math
+\pi(\{1, 2, \ldots, n\})
+```
 
-Variationen?
+However, in combinatorics we want to count how many different ways we can arrange the objects. So note, we care about the **order** of the objects, which is why we call it a permutation. Suppose you have $n$ **distinct** objects, and you want to arrange all of them in a row. Then the first question is how many different arrangements (or permutations) are possible? This is commonly also called a **full permutation**.
+
+We can build an arrangement step-by-step:
+- The first spot: $n$ choices (any object).
+- Second spot: $n-1$ choices (one is used up).
+- Third spot: $n-2$ choices.
+- ...
+- Last spot: $1$ choice (only one object remains).
+
+Obviously as we take each object, the number of choices shrinks by 1 each time as we do not allow for any repeated objects. So the total number of arrangements is:
+
+```math
+n \cdot (n-1) \cdot (n-2) \cdots 2 \cdot 1 = n!
+```
+
+This follows from the multiplication principle, since each choice is independent of the others.
+
+<Callout type="example">
+How many ways can you arrange 4 books on a shelf?
+
+$4 \cdot 3 \cdot 2 \cdot 1 = 24$ ways
+</Callout>
+
+### Partial Permutations 
+
+Partial permutations are when you want to arrange only a subset of the objects, not all of them. This is useful when you have more objects than spots to fill. This is sometimes also referred to as a **k-permutation** where $k$ is the number of spots you want to fill. Suppose you have $n$ distinct objects, but want to arrange only $k$ of them in some order. We can derive the formula step-by-step just like before:
+
+- First spot: $n$ choices
+- Second spot: $n-1$ (since we can’t repeat)
+- ...
+- $k$-th spot: $n - (k-1)$ choices
+
+So, here our reordering is just cut short at $k$ spots instead of $n$. The total arrangements are then again by the multiplication principle:
+
+```math
+n \cdot (n-1) \cdots (n-k+1)
+```
+
+This is just the first $k$ factors of $n!$, so we want to express this in terms of factorials and remove the unnecessary terms. The last term is $(n-k)!$, which is the product of all the numbers from $1$ to $n-k$. So we can write:
+
+```math
+P(n, k) = \frac{n!}{(n-k)!}
+```
+
+<Callout type="example">
+In a race there are 10 runners, and you want to award medals for the top 3 (gold, silver, bronze). How many ways can you award these medals?
+
+You can choose the gold medal winner in 10 ways, the silver in 9 ways (since one is already chosen), and the bronze in 8 ways. So:
+
+```math
+P(10, 3) = 10 \cdot 9 \cdot 8 = 720
+```
+
+Or using the formula:
+
+```math
+P(10, 3) = \frac{10!}{(10-3)!} = \frac{10!}{7!} = \frac{10 \cdot 9 \cdot 8 \cdot 7!}{7!} = 10 \cdot 9 \cdot 8 = 720
+```
+</Callout>
+
+<Callout type="example" title="Beispiel Variation ohne zurücklegen">
+Beim Pferdewetten muss in der sogenannten "Dreierwette" die Reihenfolge der ersten 3 Pferde die ins Ziel laufen
+korrekt
+angegeben werden. Die Frage ist nun wie viele Dreierwetten gibt es wenn das Rennen 10 Pferde hat.
+
+Es gibt also $\frac{10!}{(10 - 3)!} = \frac{10!}{7!} = 8 \cdot 9 \cdot 10 = 720$ verschiedene Dreierwetten.
+</Callout>
+
+### Permutations With Repetition
+
+What if you can use the same object **multiple times** in your arrangement? This is called **permutations with repetition** as we allow for repetitions. Here's how to think about it:
+
+- For each spot: $n$ choices (since after picking, you "replace" it).
+- $k$ spots: $n \cdot n \cdot \dots \cdot n = n^k$
+
+<Callout type="example">
+How many 4-digit codes can you make using digits 0-9, allowing repeats such as for a lock?
+
+For each of the 4 digits, you have 10 choices (0-9). So:
+
+```math
+10^4 = 10,000
+```
+</Callout>
+
+### Permutations of Indistinguishable Objects
+
+Suppose that rather then all objects being distinct like in a set, some objects are **indistinguishable**, so like in a multiset. This means that swapping two identical objects does not create a new arrangement. For example the word "BALLOON" has 7 letters, but the two L's and two O's are indistinguishable swapping them does not create a new arrangement (word).
+
+We can still count the arrangements, but we need to adjust our formula to account for these indistinguishable objects. In general if you have $n$ objects, divided into groups $k$ of indistinguishable objects of sizes $n_1, n_2, \ldots, n_k$, where $n_1 + n_2 + \ldots + n_k = n$. To count the arrangements, we can think of it like this:
+
+- We start with $n$ objects, and arrange them as if they were all distinct: $n!$.
+- But then we have to account for the indistinguishable groups. For each group of size $n_i$, swapping those objects does not create a new arrangement, so we divide by $n_i!$ for each group.
+
+This results in the formula where $S$ is the multiset of objects and $k$ is the number of distinct groups:
+
+```math
+P(S, k) = \frac{n!}{n_1! n_2! \cdots n_k!}
+```
+
+<Callout type="example">
+Consider the word "BALLOON" which has 7 letters, with 2 indistinguishable L's and 2 indistinguishable O's.
+
+To find the number of distinct arrangements of letters we use the formula:
+
+```math
+P(\text{BALLOON}) = \frac{7!}{2!2!} = \frac{5040}{4} = 1260
+```
+</Callout>
+
+<Callout type="todo">
+Can somehow get better intuition for showing the derivation of this formula.
+
+Also what is if we only 4 letters, so like "BALO"?
+</Callout>
 
 ## Combinations
 
-### Without Repetition
-
-## Stars and Bars
-
-## Derangements
-
-## Urnenmodel
-
-Das Urnenmodell ist eine verbreitete Veranschaulichung, um viele Probleme der Wahrscheinlickeitsrechnung zu lösen.
-Dafür stellen wir uns vor wir haben eine Urne mit $n$ **verschiedene** Kugeln, die sich z.B. in ihrer Farbe oder einer
-Beschriftung unterscheiden und ziehen dann davon $k$ Kugeln. Dabei wird noch unterschieden, ob wir nach dem Ziehen einer
-Kugel, die Kugel wieder zurücklegen oder nicht.
-
-Oftmals wird auch das zufällige Ziehen der Kugeln eine **Stichprobe** genannt.
-
-![urnenModell](/maths/combinatoricsUrnenModell.png)
-
-## Permutation
-
-Jede mögliche **Anordnung** von $n$ Kugeln heisst eine **Permutation** der $n$ Kugeln. Die Anzahl der Permutationen
-hängt noch davon ab, ob alle Kugeln verschieden sind (Ohne Wiederholung), oder ob es gewisse Kugeln mehrmals hat
-(Mit Wiederholung). Diese Unterscheidung macht man, weil die Permutationen nicht verschieden sind, wenn man die Kugeln
-die gleich sind vertauscht.
-
-![permutationMitWiederholung](/maths/combinatoricsPermutationMitWiederholung.png)
-
-### Ohne Wiederholung
-
-Sind alle Kugeln verschieden, also gibt es keine Wiederholungen, dann ist die Anzahl der verschiedenen möglichen
-Permutationen, und somit auch Anordnungen
-
-```math
-Per(n)=n!
-```
-
-Wir ziehen also aus einer Urne mit $n$ Kugeln $n$-mal eine Kugel daraus. Wir können uns also vorstellen das wir für den
-ersten Zug $n$ mögliche Kugeln, weil sich noch alle in der Urne befinden. Danach für den zweiten Zug gibt es nur noch
-$n-1$ mögliche Kugeln, die wir aus der Urne ziehen können, weil wir eine schone herausgenommen haben. Das geht weiter so
-bis keine Kugel mehr in der Urne sind. Am Schluss wird dann alles multipliziert was dann
-$n \cdot (n-1) \cdot (n-2)\cdot ... \cdot 2 \cdot 1 = n!$ ergibt.
-
-Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/permutation-ohne-wiederholung-1071).
-
-<Callout type="example" title="Beispiel Permutation ohne Wiederholung">
-Auf einem Regal sollen 3 verschiedene Bücher, $b_1, b_2, b_3$ angeordnet werden.
-
-Es gibt dann $3!=6$ verschiedene Anordnungen.
-$(b_1,b_2,b_3),(b_1,b_3,b_2),(b_2,b_1,b_3),(b_2,b_3,b_1),(b_3,b_1,b_2),(b_3,b_2,b_1)$
+<Callout type="todo">
+For combinations do we care about the objects being distinct or not? I think we do, but we can also have combinations with indistinguishable objects.
 </Callout>
 
-### Mit Wiederholung
+For permutations, we cared about **order**: how many ways to arrange objects. But what if we just want to **select** objects, and order doesn't matter? This is where combinations come in. 
 
-Wenn sich unter den Kugeln $n_1,n_2,...,n_k$ gleiche Kugeln befinden, also es Wiederholungen hat, so ist die Anzahl der
-verschiedenen Anordnungsmöglichkeiten
+Suppose you have $n$ distinct objects, and you want to select $k$ of them, with **no repeats**, and the **order is irrelevant**. So the arrangement "ABC" is considered the same as "CAB".
+
+To count combinations, we can use the idea of **partial permutations** but adjust for the fact that order doesn’t matter.
+
+- We start by counting all the ways to arrange $k$ of them in order: $P(n, k) = \frac{n!}{(n-k)!}$.
+- But for combinations, order doesn't matter! Every group of $k$ elements can be arranged among themselves in $k!$ ways, but all those are really the same selection. Or in other words, every unique group is counted $k!$ times (one for each order).
+
+So, to count each group once, we must divide by $k!$:
 
 ```math
-Per(n;n_1,n_2,...,n_k) = \frac{n!}{n_1!n_2!...n_k!}
+C(n, k) = \frac{P(n,k)}{k!} = \frac{n!}{k!(n-k)!} = \binom{n}{k}
 ```
 
-Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/permutation-mit-wiederholung-1070).
+This results in the **binomial coefficient**, often read as "n choose k" or $\binom{n}{k}$ as we are choosing $k$ objects from $n$ and we don't care about the order. You can find out more about the binomial coefficient on the [binomial coefficient page](/garden/maths/commonFunctions/binomialCoefficient).
 
-<Callout type="example" title="Beispiel Permutation mit Wiederholung">
-In einer Urne befinden sich 6 Kugeln, darunter sind 3 weisse, 2 graue und 1 schwarz. Die gleichfarbigen Kugeln sind
-nicht von einander unterscheidbar.
+<Callout type="example">
+We want to choose 3 students from a class of 10 to form a committee. How many ways can we do this?
+We can use combinations since order doesn't matter:
 
-Es gibt dann $\frac{6!}{3!2!1!} = \frac{6!}{3!2!} = 60$ verschiedene Anordnungsmöglichkeiten.
+```math
+C(10, 3) = \frac{10!}{3!(10-3)!} = \frac{10!}{3!7!} = \frac{10 \cdot 9 \cdot 8}{3 \cdot 2 \cdot 1} = 120
+```
+
+We can also think of this step-by-step:
+- Choose the first student: 10 options.
+- Choose the second: 9 options (one is already chosen).
+- Choose the third: 8 options (two are already chosen).
+- But since order doesn't matter, we divide by the 6 arrangements of those 3 students (3! = 6) as it doesn't matter who is first, second, or third in the committee.
 </Callout>
-
-## Kombination
-
-Bei der **Kombination** werden nacheinander $k$ Kugeln aus einer Urne mit $n$ Kugeln gezogen. Dabei schauen wir nicht
-auf die Reihenfolge, in der wir die Kugeln ziehen, dass heisst, wenn wir 2 Kugeln ziehen und wir zuerst eine Schwarze und
-dann eine Weisse ziehen zählen wir als das gleiche Resultate wie wenn wir zuerst eine Weisse und dann eine Schwarze
-gezogen hätten.
-
-Hier unterscheiden wir auch wieder zwischen 2 Fälle, ob wir nach dem Ziehen die Kugel wieder in die Urne zurücklegen
-oder nicht.
-
-### Ohne Zurücklegen
-
-Hier lautet also die genaue Fragestellung "Auf wie vielen verschiedenen Arten können wir $k$ Kugeln aus einer Urne mit $n$
-verschiedenen Kugeln ziehen, ohne sie nach dem Ziehen zurückzulegen und ohne die Reihenfolge in der wir die Kugeln
-ziehen, zu beachten."
-
-Dieses Problem lässt sich ziemlich gut zu einer Permutation umwandeln. Wir können uns vorstellen, dass wir jede gezogene
-Kugel als 1 markieren und die anderen als 0. So bekommen wir zum Schluss eine Binärzahl mit $k$ mal eine 0 und $n-k$
-mal eine 1.
-Wir können uns nun die Frage stellen, wie viele verschiedene Anordnungsmöglichkeiten gibt es für die $n$ Zahlen mit
-$k$ und $n-k$ gleiche Zahlen.
-
-```math
-C(n;k) = Per(n;k,(n-k)) = \frac{n!}{k!(n-k)!} = \binom{n}{k}
-```
-
-Was genau dem Binomialkoeffizienten entspricht.
-
-Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/ziehen-ohne-zuruecklegen-1077).
 
 <Callout type="example" title="Beispiel Kombination ohne zurücklegen">
 Im Lotto gibt es 49 Zahlen, davon werden 6 ohne wiederholung gezogen und die Reihenfolge der Zahlen wird nicht
@@ -145,16 +221,45 @@ $\binom{8}{3}=56$ verschiedene Kombinationen
 Wie man sieht Steigt die Zahl drastisch wenn man mehr Rotoren zur Auswahl hat.
 </Callout>
 
-### Mit Zurücklegen
+### Combinations With Repetition
 
-Wenn wir nach dem Ziehen die Kugeln wieder zurücklegen, dann kann es sein, dass eine Kugel mehrmals verwendet wird.
-Dabei kommen wir auf
+Suppose you can select **distinct** objects **with replacement** (each object can be chosen multiple times), and order still doesn't matter. This is a bit tricker but the idea is similar to combinations without replacement. Think of it as having 3 chores for students to do after school, and you have 10 students to choose from. Each student can do any number of chores, including none. If you are very unlucky, you might end up with all 3 chores assigned to the same student.
+
+So if you have $n$ distinct objects and want to choose $k$ of them, allowing repeats, we can use a classic combinatorial trick called the **stars and bars** method.
+
+The idea is to think of the $k$ selections as $k$ indistinguishable stars, and we need to place them into $n$ distinguishable boxes (the objects). The key is that we can have empty boxes (some objects may not be chosen). We can think of it as having $k$ stars (choices) and $n-1$ bars (dividers between boxes). Arranging the stars and bars in a line gives a unique selection. So there are $k + n - 1$ positions and we choose $k$ of them to put stars (or equivalently, $n-1$ to put bars):
 
 ```math
-C_w(n;k) = \frac{(n+k-1)!}{k!(n-k)!} = \binom{n+k-1}{k}
+C^* (n, k) = \binom{n + k - 1}{k} = \frac{(n + k - 1)!}{k!(n - 1)!} = \frac{(n + k - 1)!}{(n - 1)!k!}
 ```
 
-Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/ziehen-mit-zurucklegen-ohne-reihenfolge-1074).
+<Callout type="example">
+How many ways to choose 3 scoops of ice cream from 5 flavors. The order of scoops doesn't matter, and you can have multiple scoops of the same flavor if you are not feeling adventurous.
+
+You can think of it as having 3 indistinguishable scoops (stars) and 4 dividers (bars) to separate the flavors. So we have:
+
+```math
+C^*(5, 3) = \binom{5 + 3 - 1}{3} = \binom{7}{3} = \frac{7!}{3!4!} = 35
+```
+
+So if we had the flavors as A, B, C, D, E, we could have the arrangement like:
+
+```text
+A A B | C | D | E
+```
+
+Where the first two scoops are flavor A, one scoop is flavor B, and no scoops of C, D, or E. Or another arrangement could be:
+
+```text
+A | B B C | D | E
+```
+
+Where one scoop is flavor A, two scoops are flavor B, one scoop is flavor C, and no scoops of D or E.
+
+<Callout type="todo">
+This is a bit confusing, can we get a better example?
+</Callout>
+</Callout>
 
 <Callout type="example" title="Beispiel Kombination mit zurücklegen">
 Wie viele Kombinationsmöglichkeiten gibt es beim dreimaligen Würfeln?
@@ -179,47 +284,147 @@ wie viele Farbkombinationen kann man ziehen.
 ```
 </Callout>
 
-## Variation
+## Inclusion-Exclusion Principle
 
-Bei der **Variation** haben wir genau die gleichen Überlegungen wie bei der Kombination, nur berücksichtigen wir jetzt
-die Reihenfolge, in der wir die Kugeln ziehen.
+<Callout type="todo">
+Add venn diagrams to help visualize the principle.
 
-### Ohne Zurücklegen
-
-Da wir $k$-mal aus einer Urne mit $n$ Kugeln ziehen und sie nicht zurücklegen haben wir eigentlich eine Kombination.
-Nur berücksichtigen wir jetzt die Reihenfolge. Also kommt die Frage noch auf wie viele Arten können wit $k$ Kugeln
-anordnen, eine Permutation mit $k!$  verschiedene Anordnungen. Somit kommen wir auf
-
-```math
-V(n;k) = k! \cdot C(n;k) = k! \cdot \frac{n!}{k!(n-k)!} = \frac{n!}{(n-k)!}
-```
-
-Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/ziehen-ohne-zurucklegen-mit-reihenfolge-1073).
-
-<Callout type="example" title="Beispiel Variation ohne zurücklegen">
-Beim Pferdewetten muss in der sogenannten "Dreierwette" die Reihenfolge der ersten 3 Pferde die ins Ziel laufen
-korrekt
-angegeben werden. Die Frage ist nun wie viele Dreierwetten gibt es wenn das Rennen 10 Pferde hat.
-
-Es gibt also $\frac{10!}{(10 - 3)!} = \frac{10!}{7!} = 8 \cdot 9 \cdot 10 = 720$ verschiedene Dreierwetten.
+Also add the algorithm to calculate the inclusion-exclusion principle. How do we implement this effieciently?
 </Callout>
 
-### Mit Zurücklegen
+When you want to count the number of elements in the union of overlapping sets, you can't just add the sizes of the sets as there is an overlap that gets counted more than once for the objects that belong to both sets. The **inclusion-exclusion principle** corrects this.
 
-Da wir $k$-mal ziehen können wir uns vorstellen, dass wir $k$ Stellen haben und weil wir nach jeder Ziehung die Kugel
-wieder in die Urne legen haben wie bei jeder Ziehung $n$ mögliche Kugeln, die wir ziehen könnten. Daraus lässt sich folgen
+For two sets:
 
 ```math
-{V_w(n;k)} = {n \cdot n ... \cdot n = n^k}
+|A \cup B| = |A| + |B| - |A \cap B|
 ```
 
-Eine gute Videoerklärung dazu gibt es auch [hier](https://studyflix.de/statistik/ziehen-mit-zurucklegen-mit-reihenfolge-1072).
+Adding $|A|$ and $|B|$ counts any element in both sets **twice**—so subtract $|A \cap B|$ once. We call it the inclusion-exclusion principle because we include the sizes of both sets, then exclude the size of their intersection to avoid double-counting. We can also extend this to three sets and more. For three sets:
 
-<Callout type="example" title="Beispiel Variation mit zurücklegen">
-Bei einem Zahlenschloss hat es vier Ringe die je Zehn Ziffern haben. So gibt es $10^4=10000$ verschiedene
-Variationen, die Zahlen 0000 bis 9999.
+```math
+|A \cup B \cup C| = |A| + |B| + |C| - |A \cap B| - |A \cap C| - |B \cap C| + |A \cap B \cap C|
+```
+
+We first add the sizes of all three sets, then subtract the sizes of each pairwise intersection (since they were counted twice), and finally add back the size of the triple intersection (since it was subtracted too many times). For $n$ sets, the formula generalizes to:
+
+```math
+|A_1 \cup A_2 \cup \ldots \cup A_n| = \sum_{i=1}^n |A_i| - \sum_{1 \leq i < j \leq n} |A_i \cap A_j| + \sum_{1 \leq i < j < k \leq n} |A_i \cap A_j \cap A_k| - \ldots + (-1)^{n+1} |A_1 \cap A_2 \cap \ldots \cap A_n|
+```
+
+This alternating sum accounts for overlaps at all levels, correcting for double-counting. This formula is often also referred to as the **sieve** method, as it "sieves out" the overlaps to get the correct count.
+
+<Callout type="example">
+Suppose in a class of 30 students we have the following groups:
+
+- 20 play football
+- 15 play basketball
+- 10 play both
+
+And now we want to know how many play at least one sport. For this we can use the inclusion-exclusion principle. The 10 students who play both sports are counted in both groups, so we need to subtract them once to avoid double counting:
+
+```math
+$20 + 15 - 10 = 25$
+```
+
+So, 25 students play at least one sport.
 </Callout>
 
-## Zusammenfassung
+## Pigeonhole Principle
 
-![kombinatorikUebersicht](/maths/combinatoricsUebersicht.png)
+The piegonhole principle is a simple but powerful counting argument that is used in many proofs. It states that if you have more items than containers, at least one container must hold more than one item. The reasoning is straightforward: if you try to put $n$ items into $k$ containers and $n > k$, then at least one container must contain at least $\lceil n/k \rceil$ items, because if each container could hold at most one item, you would only be able to place $k$ items in total.
+
+The name comes from the idea of pigeons and pigeonholes: if you have 10 pigeons and only 9 pigeonholes, at least one pigeonhole must contain at least 2 pigeons.
+
+<Callout type="example">
+Suppose you have 13 people in a room each with a birthday in one of the 12 months of the year. By the pigeonhole principle, at least two people must share a birth month.
+If you try to assign each person to a month, you can only assign 12 people to 12 months. But with 13 people, you have to put at least one month with at least 2 people, since there are not enough months to give each person a unique month.
+</Callout>
+
+## Derangements
+
+A **derangement** is a permutation where no object appears in its original position. So in a way you can think of it as a very specific type of permutation where we want to avoid any objects being in their original place. This is often denoted as $!n$ for $n$ objects.
+
+Suppose you want to count the number of ways $n$ letters can be placed into $n$ addressed envelopes so that **no letter is in the correct envelope**.
+
+Let $A_i$ be the set of arrangements where letter $i$ is in the right envelope. We want the total number **not in any $A_i$** (i.e., in none of the $A_i$).
+
+By inclusion-exclusion:
+
+```math
+!n = n! \sum_{k=0}^n \frac{(-1)^k}{k!}
+```
+
+where $n!$ is the total number of permutations and the sum accounts for the overlaps of arrangements where at least one letter is in the correct envelope by alternating adding and subtracting the arrangements that fix at least one letter in its correct position matching the principle of inclusion-exclusion.
+
+<Callout type="example">
+If we have 3 letters A, B, C and their envelopes, the total number of derangements is:
+
+```math
+\begin{align*}
+!3 &= 3! \left( \frac{1}{0!} - \frac{1}{1!} + \frac{1}{2!} - \frac{1}{3!} \right) \\
+&= 6 \left( 1 - 1 + \frac{1}{2} - \frac{1}{6} \right) \\
+&= 6 \left( 0 + 0.5 - 0.1667 \right) \\
+&= 6 \cdot 0.3333 \\
+&= 2
+\end{align*}
+```
+
+So there are 2 derangements of 3 letters, which are: (B, C, A) and (C, A, B).
+</Callout>
+
+## De Morgan's Laws for Counting
+
+De'Morgan's Laws are common rules in set theory that help us understand how to manipulate unions and intersections of sets. They are particularly useful when dealing with complements of sets:
+
+```math
+(A \cup B)^c = A^c \cap B^c \quad \text{and} \quad (A \cap B)^c = A^c \cup B^c
+```
+
+With regards to counting these laws help us calculate the number of outcomes **not** in a union or intersection. This is often handy with inclusion-exclusion.
+
+<Callout type="example">
+Suppose we have a total of $N$ people, and we want to count how many do not drink coffee or tea. Let $A$ be the set of people who drink coffee, and $B$ be the set of people who drink tea. So let's say we have $N = 70$ total people, and we know:
+- $|A| = 30$ (people who drink coffee)
+- $|B| = 20$ (people who drink tea)
+- $|A \cap B| = 10$ (people who drink both coffee and tea)
+
+The number of people who have neither coffee nor tea is then:
+
+```math
+|A^c \cap B^c| = N - |A \cup B| = N - (|A| + |B| - |A \cap B|)
+```
+
+or more concretely:
+
+```math
+|A^c \cap B^c| = 70 - (30 + 20 - 10) = 70 - 40 = 30
+```
+
+So there are 30 people who neither drink coffee nor tea.
+</Callout>
+
+## Urn Model
+
+The **urn model** is a metaphor for almost every combinatorics scenario. It helps visualize how to count arrangements, selections, and distributions of objects. Think of an urn containing $n$ distinct balls, and you want to draw $k$ balls under various conditions such as with or without replacement, and whether order matters or not etc. This is also a very useful model to visualize basic probability theory concepts as drawing balls from an urn behaves just like drawing a sample from a laplace distribution if the balls are drawn with with replacement.
+
+![urnenModell](/maths/combinatoricsUrnenModell.png)
+
+We can then summarize the 4 main cases in a table:
+
+| Selection Type | With Replacement     | Without Replacement             |
+| -------------- | -------------------- | ------------------------------- |
+| Ordered        | $n^k$              | $P(n, k) = \frac{n!}{(n-k)!}$ |
+| Unordered      | $\binom{n+k-1}{k}$ | $\binom{n}{k}$                |
+
+Or we can summarize the different types of combinatorial problems in a table:
+
+| Problem Type                              | Formula                                   | Why/When                                                         |
+| ----------------------------------------- | ----------------------------------------- | ---------------------------------------------------------------- |
+| **Permutations** (all $n$)              | $n!$                                    | Arrange all $n$ objects in order, no repeats                   |
+| **Partial Permutations** ($k$ of $n$) | $P(n, k) = \frac{n!}{(n-k)!}$           | Arrange $k$ out of $n$ in order, no repeats                  |
+| **Permutations with Repeats**             | $n^k$                                   | Arrange $k$ objects with $n$ choices each (with replacement) |
+| **Combinations**                          | $\binom{n}{k}$                          | Select $k$ from $n$, order doesn’t matter, no repeats        |
+| **Combinations with Repeats**             | $\binom{n+k-1}{k}$                      | Select $k$ from $n$, order doesn’t matter, with replacement  |
+| **Multiset Permutations**                 | $\frac{n!}{n\_1!n\_2!\cdots n\_r!}$     | $n$ objects, $n\_i$ of each type                             |
+| **Derangements**                          | $!n = n!\sum\_{k=0}^n\frac{(-1)^k}{k!}$ | No object in original place                                      |
