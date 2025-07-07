@@ -21,7 +21,8 @@ const withNextra = nextra({
             P: '\\mathbb{P}',
             F: '\\mathcal{F}', // sigma-algebra
             E: '\\mathbb{E}', // expectation
-            V: '\\text{Var}', // variance
+            Var: '\\text{Var}', // variance
+            Cov: '\\text{Cov}', // covariance
             L: '\\mathcal{L}', // likelihood
           }
         }

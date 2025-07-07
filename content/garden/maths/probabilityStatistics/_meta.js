@@ -5,7 +5,7 @@ export default {
   probabilitySpaces: "",
   conditionalProbabilityIndependence: "",
   randomVariables: "",
-  expectedVariance: "",
+  expectationVarianceCovariance: "",
   jointDistributions: "",
   estimators: "",
   confidenceIntervals: "",
@@ -16,6 +16,5 @@ export default {
   independentRandomVariables: "",
   markovChains: "",
   queueingTheory: "",
-  stdVarianceCovariance: "",
   randomStuff: ""
 }

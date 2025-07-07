@@ -1,31 +1,5 @@
 # Grenzwertsätze
 
-## Ungleichung von Tschebyscheff
-
-Wenn $X$ eine Zufallsvariable ist mit einem Erwartungswert von $\mu$ und eine Varianz $\sigma^2$ dann kann man die Wahrscheinlichkeit die folgende Wahrscheinlichkeit abschätzen für jede mögliche Verteilung von $X$
-
-```mathP(|X-\mu|\geq k) \leq \frac{\sigma^2}{k^2}, \text{ für k > 0}```
-
-daraus folgt dann auch
-
-```mathP(|X-\mu| < k) \leq 1 - \frac{\sigma^2}{k^2}```
-
-:::note Beispiel Ungleichung von Tschebyscheff
-
- Für die Grösse einer erwachsenen Personen haben wir einen Erwartungswert von 175cm und eine Standardabweichung von 10cm. Was ist die Wahrscheinlichkeit, dass eine Person kleiner als 160cm oder grösser als 190cm ist.
-
- Abschätzung mit Tschebyscheff:
-
- ```mathP(|X -175cm| \geq 15) \leq \frac{100}{15^2} \approx 44.4 \%```
-
- Tatsächlich mit Normalverteilung:
-
- ```mathP(|X -175cm| \geq 15) = 1- (normcdf(190,175,10) - normcdf(160,175,10)) \approx 13.4 \%```
-
-:::
-
-Mehr dazu findest du [hier](https://studyflix.de/statistik/tschebyscheff-ungleichung-1546)
-
 ## Gesetz der grossen Zahlen
 
 Wir wissen wenn wir eine Zufallsvariable $X_i$ mit einer Bernoulli Verteilung haben also $X_i \sim B(p)$ dann ist $\sum_{i=1}^{n}{X_i} \sim Bin(n,p)$. Die relative Häufigkeit ist wie wir wissen die Anzahl des Eintreffen eines Ereignis $X$ durch die anzahl unabhängige Ausführungen des Experiments $n$ dann gilt folgendes
