@@ -575,28 +575,116 @@ This means that given we rolled an even number, the probability that $X$ is less
 
 ### Transforming Random Variables
 
-we can remap random variables to new random variables, or create a new random variable from multiple random variables. This is commonly done by using a function $g$ that maps the random variable to a new random variable. More formally we can define a new mapping.
+Often we want to study **functions of random variables**. This might be to rescale, shift, combine, or otherwise manipulate random variables. The resulting object is always **another random variable**. This is very useful for example to model **functions** of measurements (e.g., profit as a function of quantity sold), to construct new statistics (e.g., the sample mean is a function of several $X\_i$ or to analyze joint behavior (e.g., sums of random variables). This becomes especially clear in the [estimator](/garden/maths/probabilityStatistics/estimators) section.
 
-applying exponential to a random variable $X$ to create a new random variable $Y$ as follows:
 
-or adding two random variables $X$ and $Y$ to create a new random variable $Z$ as follows:
-
-formally if $X$ is a random variable and $g: \mathbb{R} \to \mathbb{R}$ is a function, we can define a new random variable $Y$ as follows:
+So suppose $X: \Omega \to W$ is a random variable and $g:W \to \mathbb{R}$ is a (measurable) function. Then $Y = g(X)$ is a new random variable defined by:
 
 ```math
-Y = g(X) = g(\omega) \text{ for all } \omega \in \Omega
+Y(\omega) = g(X(\omega)) \qquad \text{for all } \omega \in \Omega
 ```
 
-We can also define functions of multiple random variables. For example, if we have two random variables $X$ and $Y$ and a function $g: \mathbb{R}^2 \to \mathbb{R}$, we can define a new random variable $Z$ as follows:
+The range of $Y$ is $g$ applied to the range of $X$. So in other words the possible values of $Y$ are $g(a)$ for all $a$ in the range of $X$. The probability distribution of $Y$ can be derived from the distribution of $X$ by summing over all values of $X$ that map to a given value of $Y$. So for a discrete random variable $X$ and $Y = g(X)$, for any $b$ in the range of $Y$ we can define the probability mass function (PMF) of $Y$ as follows:
 
 ```math
-Z = g(X, Y) = g(\omega) \text{ for all } \omega \in \Omega
+\P(Y = b) = \sum_{a: g(a) = b} \P(X = a)
 ```
 
-Why can we do this? Is there some sort of proof?
+The idea is that we sum over all values $a$ in the range of $X$ that map to the value $b$ under the function $g$. This gives us the total probability of $Y$ taking on the value $b$.
+
+<Callout type="proof">
+Let $X$ be a discrete random variable i.e., $X$ maps each $\omega \in \Omega$ to one of the countable values in $W$ (or in the continuous case $W = \mathbb{R}$), and let $g: W \to \mathbb{R}$ be any function. Define $Y = g(X)$, i.e., $Y(\omega) = g(X(\omega))$. To show $Y$ is a random variable, recall a function $Y: \Omega \to \mathbb{R}$ is a random variable if, for every $a \in \mathbb{R}$, the set ${\omega \in \Omega : Y(\omega) \leq a}$ is a valid event (i.e., is in $\mathcal{F}$). For discrete $Y$, this set can be written as:
+
+```math
+\{\omega \in \Omega : Y(\omega) \leq a\} = \{\omega : g(X(\omega)) \leq a\}
+```
+
+But $g(X(\omega))$ only takes values in the (at most countable) set $V = {g(w) : w \in W}$. Thus:
+
+```math
+\{\omega : g(X(\omega)) \leq a\} = \bigcup_{b \in V,\, b \leq a} \{\omega : g(X(\omega)) = b\}
+```
+
+But ${\omega : g(X(\omega)) = b} = {\omega : X(\omega) = c}$ for all $c \in W$ with $g(c) = b$. So:
+
+```math
+\{\omega : Y(\omega) \leq a\} = \bigcup_{\substack{c \in W\\g(c) \leq a}} \{\omega : X(\omega) = c\}
+```
+
+But for any $c \in W$, the set ${\omega : X(\omega) = c}$ is in $\mathcal{F}$ (since $X$ is a random variable and $W$ is countable). Therefore, the union is in $\mathcal{F}$ as sigma-algebras are closed under countable unions.
+
+Therefore $Y = g(X)$ is a (discrete) random variable. 
+</Callout>
 
 <Callout type="example">
+Suppose $X$ is the number on a die, and $Y = X \bmod 2$ (i.e., whether the number is odd or even). Then $Y$ takes values $0$ (even) or $1$ (odd).  
 
+- $\P(Y = 0) = \P(X = 2) + \P(X = 4) + \P(X = 6) = \frac{3}{6} = \frac{1}{2}$
+- $\P(Y = 1) = \P(X = 1) + \P(X = 3) + \P(X = 5) = \frac{1}{2}$
+
+So, $Y$ is a random variable indicating whether the die is even or odd, and its distribution is derived from $X$. 
+</Callout>
+
+<Callout type="example">
+Suppose $X$ is the number shown on a die, and let $Y = X^2$. $Y$ is a new random variable:
+
+* For $\omega = 1$, $Y(1) = 1$
+* For $\omega = 2$, $Y(2) = 4$
+* For $\omega = 3$, $Y(3) = 9$
+* etc.
+
+The PMF of $Y$ is given by:
+
+```math
+\P(Y = y) = \sum_{x: g(x) = y} \P(X = x)
+```
+
+For example, $\P(Y = 4) = \P(X = 2) = \frac{1}{6}$.
+</Callout>
+
+Just as we can apply a function to a single random variable to create a new one, we can also apply a function of **several random variables** to create a new random variable. 
+
+Suppose we have two (or more) random variables $X$ and $Y$ on the same probability space, and we have a function $g: \mathbb{W}^2 \to \mathbb{R}$ (or in general $g: \mathbb{R}^n \to \mathbb{R}$). We define a new random variable $Z$ by:
+
+```math
+Z(\omega) = g(X(\omega), Y(\omega)) \qquad \text{for all } \omega \in \Omega
+```
+
+The possible values of $Z$ are given by all values $g(a, b)$ where $a$ is in the range of $X$ and $b$ in the range of $Y$. $Z$ is a random variable because, for any $c \in \mathbb{R}$, the set ${\omega \mid Z(\omega) \leq c} = {\omega \mid g(X(\omega), Y(\omega)) \leq c}$ can be written in terms of the events associated with $X$ and $Y$.
+
+So for example, we could take:
+
+- $g(x, y) = x + y$ (sum)
+- $g(x, y) = \max(x, y)$ (maximum)
+- $g(x, y) = x \cdot y$ (product)
+- or any other function that takes two numbers and produces another.
+
+This construction allows us to create new random variables out of existing ones, and analyze things like the sum, difference, or maximum of two measurements.
+
+<Callout type="example">
+Suppose $X$ and $Y$ are the outcomes of two independent dice. We can define a new random variable $Z = X + Y$. For every outcome $(x, y)$, $Z(x, y) = x + y$. This random variable represents the sum of the dice. The PMF of $Z$ is computed by considering all pairs $(x, y)$ such that $x + y = z$:
+
+```math
+p_Z(z) = \P(X + Y = z) = \sum_{\substack{x, y\\ x + y = z}} \P(X = x)\P(Y = y)
+```
+
+We can compute this for each possible value of $z$, which ranges from 2 (1+1) to 12 (6+6):
+```math
+p_Z(z) = \begin{cases}
+0 & \text{if } z < 2 \text{ or } z > 12 \\
+\frac{1}{36} & \text{if } z = 2 \text{ (1,1)} \\
+\frac{2}{36} & \text{if } z = 3 \text{ (1,2), (2,1)} \\
+\frac{3}{36} & \text{if } z = 4 \text{ (1,3), (2,2), (3,1)} \\
+\vdots & \\
+\frac{6}{36} & \text{if } z = 7 \text{ (1,6), (2,5), (3,4), (4,3), (5,2), (6,1)} \\
+\vdots & \\
+\frac{3}{36} & \text{if } z = 10 \text{ (4,6), (5,5), (6,4)} \\
+\frac{2}{36} & \text{if } z = 11 \text{ (5,6), (6,5)} \\
+\frac{1}{36} & \text{if } z = 12 \text{ (6,6)}
+\end{cases}
+```
+
+So we can see the most likely outcome when rolling two dice is 7, which has the highest probability of occurring.
 </Callout>
 
 ### Independent Random Variables
@@ -604,7 +692,7 @@ Why can we do this? Is there some sort of proof?
 Just like with events, we can also define the concept of independence for random variables. We say that $X_1, X_2, \ldots, X_n$ are independent random variables if the following holds:
 
 ```math
-\forall a_1, a_2, \ldots, a_n \in \mathbb{R} \P(X_1 \leq a_1, X_2 \leq a_2, \ldots, X_n \leq a_n) = \P(X_1 \leq a_1) \cdot \P(X_2 \leq a_2) \cdots \P(X_n \leq a_n) = \prod_{i=1}^n \P(X_i \leq a_i)
+\P(X_1 \leq a_1, X_2 \leq a_2, \ldots, X_n \leq a_n) = \prod_{i=1}^n \P(X_i \leq a_i) \quad \forall a_1, a_2, \ldots, a_n \in \mathbb{R}
 ```
 
 This is very similar to the definition of independence for events. The only difference is that we are looking at the joint probability of the random variables taking on a value less than or equal to their respective values $a_i$. We discuss [joint distributions](/maths/probabilityStatistics/jointDistributions) here in more detail. 
@@ -612,7 +700,7 @@ This is very similar to the definition of independence for events. The only diff
 It actually turns out that the random variables $X_1, X_2, \ldots, X_n$ are independent if and only if for any choice of Intervals $I_1, I_2, \ldots, I_n$ the probability that each random variable $X_i$ takes on a value in the interval $I_i$ is equal to the product of the probabilities of each random variable taking on a value in their respective intervals. More formally we can say that:
 
 ```math
-\forall I_1, I_2, \ldots, I_n \subseteq \mathbb{R} \P(X_1 \in I_1, X_2 \in I_2, \ldots, X_n \in I_n) = \P(X_1 \in I_1) \cdot \P(X_2 \in I_2) \cdots \P(X_n \in I_n) = \prod_{i=1}^n \P(X_i \in I_i)
+\P(X_1 \in I_1, X_2 \in I_2, \ldots, X_n \in I_n) = \prod_{i=1}^n \P(X_i \in I_i) \quad \forall I_1, I_2, \ldots, I_n \subseteq \mathbb{R}
 ```
 
 <Callout type="example">
@@ -665,18 +753,42 @@ Also breaking it down using marginal distribuations
 and convolutions if X+Y 
 </Callout>
 
-#### Grouping Random Variables
+### Grouping Random Variables
 
-If $X_1, X_2, \ldots, X_n$ are independent random variables then so is some subset of them, for example $X_1, X_2$ or $X_1, X_2, X_3$. 
+Up to now, we've considered the independence of individual random variables. But sometimes, we want to combine variables into groups, apply functions to each group, and ask: are the results still independent? For instance, imagine we split a collection of independent random variables into several disjoint subgroups and define new random variables by applying (possibly different) functions to each group. Intuitively, the answer is yes and this is a powerful and frequently used property in probability theory. This property is particularly useful because it allows us to break problems into smaller, independent parts which can simplify analysis in statistics or make algorithms more efficient.
 
-Can also split them into disjoint groups and then apply a function to each group and they are still independent. 
+Let $X_1, X_2, \ldots, X_n$ be independent random variables. Suppose we partition the indices ${1, \ldots, n}$ into $k$ disjoint, non-overlapping groups:
 
-<Callout type="proof">
+```math
+\begin{align*}
+G_1 &= \{i_1, \ldots, i_{m_1}\} \\
+G_2 &= \{j_1, \ldots, j_{m_2}\} \\
+&\vdots \\
+G_k &= \{\ell_1, \ldots, \ell_{m_k}\}
+\end{align*}
+```
 
-</Callout>
+so that every index appears in exactly one group, and the groups are disjoint. Now, let $g\_1, \ldots, g\_k$ be arbitrary (measurable) functions, and define new random variables:
+
+```math
+\begin{align*}
+Y_1 = g_1(X_{i_1}, \ldots, X_{i_{m_1}}) \\
+Y_2 = g_2(X_{j_1}, \ldots, X_{j_{m_2}}) \\
+\vdots \\
+Y_k = g_k(X_{\ell_1}, \ldots, X_{\ell_{m_k}})
+\end{align*}
+```
+Then the new random variables $Y_1, Y_2, \ldots, Y_k$ are independent. That is, functions of disjoint groups of independent random variables are themselves independent, no matter which (measurable) functions you use. The key intuition is that **independence is preserved under grouping**: If variables are independent, then anything you do to a group of them (as long as you don't "mix" the groups) can't introduce dependence between the groups. You can think of each group as an "island". Whatever happens within a group is independent of what happens in the other groups. Even if you apply complicated, nonlinear, or even random functions inside the group, as long as the groups don't overlap, the results remain independent.
 
 <Callout type="example">
+Suppose you throw three independent dice, and let $X_1$, $X_2$, $X_3$ be the outcomes.
 
+- **Group 1:** $G_1 = {1, 2}$. Let $Y_1 = X_1 + X_2$ (the sum of the first two dice).
+- **Group 2:** $G_2 = {3}$. Let $Y_2 = X_3$ (the third die).
+
+Then $Y_1$ and $Y_2$ are independent random variables. In other words, knowing the sum of the first two dice gives you no information about the value of the third die.
+
+More generally, if you split the dice into two non-overlapping groups and take any function of each group (for example, $Y_1 = \max(X_1, X_2)$ and $Y_2 = X_3^2 + 5$), the resulting variables $Y_1$ and $Y_2$ will still be independent. Intuitively, this makes sense because the groups do not share any common variables, and the functions applied to each group do not introduce any new dependencies.
 </Callout>
 
 ## Examples of Discrete Random Variables
@@ -688,6 +800,35 @@ We have already seen [bernoulli experiments](/maths/probabilityStatistics/probab
 ```math
 \P(X = 0) = 1 - p \text{ and } \P(X = 1) = p
 ```
+
+So the PMF of a Bernoulli random variable is given by:
+
+```math
+p_X(a) = \begin{cases}
+1 - p & \text{if } a = 0 \\
+p & \text{if } a = 1 \\
+0 & \text{otherwise}
+\end{cases}
+```
+
+and the CDF is given by:
+
+```math
+F_X(a) = \begin{cases}
+0 & \text{if } a < 0 \\
+1 - p & \text{if } 0 \leq a < 1 \\
+p & \text{if } 1 \leq a < 2 \\
+1 & \text{if } a \geq 2
+\end{cases}
+```
+
+The expectation and variance of a Bernoulli random variable are given by:
+
+```math
+\E(X) = p \text{ and } \Var(X) = p(1 - p)
+```
+
+The [derivation of the expectation]() and [variance]() can be seen in the section on [expectation, variance and covariance](/garden/maths/probabilityStatistics/expectationVariancCovariance).
 
 <Callout type="todo">
 Plots of the PMF and CDF for the Bernoulli distribution.
@@ -706,40 +847,385 @@ X \sim \text{Ber}(p) = \begin{cases}
 where $p$ is the probability of scoring the penalty. So if we have a penalty taker that scores 80% of the time, we can define the random variable as $X \sim \text{Ber}(0.8)$
 </Callout>
 
+<Callout type="example" title="Radamacher Distribution">
+There is also the Radamacher distribution which is a special case of the Bernoulli distribution with $p = 0.5$. It takes the values -1 and 1 with equal probability
+</Callout>
+
 ### Binomial Distribution
 
-We have already seen [bernoulli experiments](/maths/probabilityStatistics/probabilitySpaces#bernoulli-experiments) as a special case of a random experiment and the corresponding random variable $X \sim \text{Ber}(p)$ that defines the Bernoulli distribution. 
+We have already seen [Bernoulli experiments](/maths/probabilityStatistics/probabilitySpaces#bernoulli-experiments) and the Bernoulli random variable $X \sim \text{Ber}(p)$, which models the outcome of a single experiment with two possible results: "success" (with probability $p$) and "failure" (with probability $1-p$).
 
-The idea of the binomial distribution is to extend the Bernoulli distribution to a sequence of $n$ independent Bernoulli experiments. We can define a random variable $X$ as a binomial random variable with parameters $n$ and $p$ as $X \sim \text{Bin}(n, p)$, where $n$ is the number of experiments and $p$ is the probability of success. The range of the binomial random variable is the set of integers from 0 to $n$ so it takes values from the set $W=\{0, 1, 2, \ldots, n\}$ and represents the number of successes in $n$ independent Bernoulli experiments. So if we have a sequence of $n$ independent Bernoulli experiments with probability of success $p$, we can define probability to have exactly $k$ successes as follows:
+The **binomial distribution** extends this idea to a sequence of $n$ independent Bernoulli experiments, each with the same success probability $p$. The binomial random variable counts the total number of successes in these $n$ trials. 
+
+Let $X$ be the random variable representing the **number of successes** in $n$ independent Bernoulli trials, each with success probability $p$. We write:
 
 ```math
-\P(X = k) = \binom{n}{k} p^k (1 - p)^{n - k}
+X \sim \mathrm{Bin}(n, p)
 ```
 
-where $\binom{n}{k}$ is the [binomial coefficient](/maths/commonFunctions/binomialCoefficient).
+where $n$ = number of trials (fixed, known in advance) and $p$ = probability of success on each trial. The possible values of $X$ are $W = {0, 1, 2, ..., n}$: from zero successes (all failures) up to $n$ successes (all successes). So you can also think of a Bernoulli random variable as just a special case of the binomial with $n=1$:
 
-<Callout type="todo">
-Derivation of the formula using combinatorics.
+```math
+X \sim \mathrm{Bin}(1, p) \equiv \mathrm{Ber}(p)
+```
 
-Also show that sum of 0 to n of the binomial formula is 1.
+The probability of observing exactly $k$ successes ($k \in {0, 1, ..., n}$) in $n$ independent trials is given by:
 
-Proof that binomial is the sum of independent Bernoulli random variables. In particular if n=1 then we have the Bernoulli distribution. 
+```math
+\P(X = k) = p_X(k) = \binom{n}{k} p^k (1-p)^{n-k} 
+```
 
-We can also show that two binomial random variables added together is also a binomial random variable. 
+where $\binom{n}{k}$ is the [binomial coefficient](/maths/commonFunctions/binomialCoefficient), which counts the number of different ways to choose $k$ trials (out of $n$) to be successes. The intuition behind this formula is to have exactly $k$ we need to know the number of ways to choose which $k$ trials are successes, multiplied by the probability of those trials being successes, and the remaining trials being failures. So we get:
+
+- $\binom{n}{k}$ counts the number of different ways $k$ successes could be distributed among the $n$ trials.
+- $p^k$ is the probability that $k$ specific trials are all successes,
+- $(1-p)^{n-k}$ is the probability that the remaining $n-k$ trials are all failures,
+
+So in a way we choose which $k$ trials out of $n$ will be successes out of the $\binom{n}{k}$ ways. Then the probability of one specific arrangement of successes and failures is given by $p^k (1-p)^{n-k}$ (since each trial is independent) and we need to get $k$ successes and $n-k$ failures. 
+
+The CDF of the binomial is then:
+
+```math
+F_X(a) = \P(X \leq a) = \sum_{k = 0}^{\lfloor a \rfloor} \binom{n}{k} p^k (1-p)^{n-k}
+```
+
+The expectation and variance of the binomial random variable $X \sim \text{Bin}(n, p)$ are:
+
+```math
+\E[X] = n p \text{ and } \Var(X) = n p (1-p)
+```
+
+This matches the intuition that for a fair coin in 10 coin flips, you expect 5 heads. The derivation of these formulas can be found in the section on [expectation, variance and covariance](/garden/maths/probabilityStatistics/expectationVariancCovariance).
+
+<Callout type="proof" title="PMF Sums to 1">
+First let's check that the PMF sums to 1, which is a requirement for any probability mass function (PMF). So we need to show that the sum of the probabilities over all possible values of $k$ (from 0 to $n$) equals 1:
+
+```math
+\sum_{k=0}^n \P(X = k) = \sum_{k=0}^n \binom{n}{k} p^k (1-p)^{n-k} = 1
+```
+
+For this we use the [binomial theorem](/maths/commonFunctions/binomialCoefficient):
+
+```math
+(a + b)^n = \sum_{k=0}^n \binom{n}{k} a^k b^{n-k}
+```
+
+Notice the patterns match up:
+
+```math
+\begin{align*}
+(a + b)^n &= \sum_{k=0}^n \binom{n}{k} a^k b^{n-k} \\
+(p + (1-p))^n &= \sum_{k=0}^n \binom{n}{k} p^k (1-p)^{n-k}
+&= 1^n = 1
+\end{align*}
+```
+</Callout>
+
+<Callout type="proof">
+Next let's prove that the Binomial Distribution is a sum of independent Bernoulli trials. So suppose $X\_1, X\_2, ..., X\_n$ are i.i.d. Bernoulli($p$) random variables (representing each individual trial: 1 = success, 0 = failure). Then
+
+```math
+S_n = X_1 + X_2 + ... + X_n \sim \text{Bin}(n, p)
+```
+
+First we check that $S_n$ takes values in $\{0, 1, \ldots, n\}$. This is clear since each $X_i$ can only be 0 or 1, so their sum can only range from 0 (all failures) to $n$ (all successes).
+
+Next we can split the set $\{S_n = k\}$ into all possible combinations of successes and failures:
+
+```math
+\{S_n = k\} = \bigcup_{x_1, x_2, \ldots, x_n \in \{0, 1\}, \sum_{i=1}^n x_i = k} \{X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n\}
+```
+
+Because each of these combinations is disjoint, we can sum the probabilities:
+
+```math
+\begin{align*}
+\P(S_n = k) &= \sum_{x_1, x_2, \ldots, x_n \in \{0, 1\}, \sum_{i=1}^n x_i = k} \P(X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n) \\
+&= \sum_{x_1, x_2, \ldots, x_n \in \{0, 1\}, \sum_{i=1}^n x_i = k} \P(X_1 = x_1) \P(X_2 = x_2) \ldots \P(X_n = x_n) \\
+&= \sum_{x_1, x_2, \ldots, x_n \in \{0, 1\}, \sum_{i=1}^n x_i = k} p^{\sum_{i=1}^n x_i} (1-p)^{n - \sum_{i=1}^n x_i} \\
+&= \binom{n}{k} p^k (1-p)^{n-k}
+\end{align*}
+```
+
+Key here is that the independence of the $X_i$ allows us to factor the joint probability into a product of individual probabilities, and then we count how many ways we can choose $k$ successes from $n$ trials using the binomial coefficient.
+</Callout>
+
+The binomial distribution is also additive. So if you have two independent binomial random variables with the same success probability $p$, you can add them together to get another binomial random variable with the sum of the number of trials. Intuitively this makes sense as all the trials are independent and the success probability is the same, so you can just combine them into one larger set of trials. So more formally if $X \sim \text{Bin}(n_1, p)$ and $Y \sim \text{Bin}(n_2, p)$ are independent random variables, then their sum $Z = X + Y$ is also a binomial random variable:
+
+```math
+Z \sim \text{Bin}(n_1 + n_2, p)
+```
+
+<Callout type="proof" title="Sum of Independent Binomial Random Variables">
+Let's prove that the sum of two independent binomial random variables (with the **same** $p$) is again binomial. So suppose $X \sim \text{Bin}(n_1, p)$ and $Y \sim \text{Bin}(n_2, p)$, and $X$ and $Y$ are independent.
+Let $Z = X + Y$. We want to show $Z \sim \text{Bin}(n_1 + n_2, p)$.
+
+Let $j$ be the number of successes in the first $n_1$ trials ($X = j$), and $k-j$ the number in the next $n_2$ trials ($Y = k-j$) so the missing success such that we have $k$ total successes. So we then just need to sum over all possible values of $j$ that can occur in the first $n_1$ trials. Specifically $j$ must be at least $0$ (since you can't have negative successes in $X$), but also $Y = k-j$ must be at least $0$, i.e., $j \leq k$. Also $j$ can't be more than $n_1$, and $k-j$ can't be more than $n_2$ (since $Y$ can't have more than $n_2$ successes).
+
+So putting this together, we have:
+
+```math
+\P(Z = k) = \sum_{j = \max(0, k-n_2)}^{\min(k, n_1)} \P(X = j) \P(Y = k - j)
+```
+
+Using the PMF of the binomial distribution, we can write:
+
+```math
+\begin{align*}
+\P(X = j) &= \binom{n_1}{j} p^j (1-p)^{n_1 - j} \\
+\P(Y = k - j) &= \binom{n_2}{k-j} p^{k-j} (1-p)^{n_2 - (k-j)}
+\end{align*}
+```
+
+So,
+
+```math
+\P(Z = k) = \sum_{j} \binom{n_1}{j} p^j (1-p)^{n_1 - j} \cdot \binom{n_2}{k-j} p^{k-j} (1-p)^{n_2 - (k-j)}
+```
+
+We can combine the powers of $p$ and $(1-p)$ as $p^j \cdot p^{k-j} = p^k$ and $(1-p)^{n_1 - j} \cdot (1-p)^{n_2 - (k-j)} = (1-p)^{n_1 + n_2 - k}$. Resulting in:
+
+```math
+\P(Z = k) = p^k (1-p)^{n_1 + n_2 - k} \sum_{j = \max(0, k-n_2)}^{\min(k, n_1)} \binom{n_1}{j} \binom{n_2}{k-j}
+```
+
+Lastly we use [Vandermonde's identity]() to simplify the sum:
+
+```math
+\sum_{j=0}^k \binom{n_1}{j} \binom{n_2}{k-j} = \binom{n_1 + n_2}{k}
+```
+
+the sum from 0 to $k$ counts all ways to choose $k$ successes from $n_1 + n_2$ trials, which is the same as our limits just in a different way of writing it. So we can rewrite the probability as:
+
+```math
+\P(Z = k) = \binom{n_1 + n_2}{k} p^k (1-p)^{n_1 + n_2 - k}
+```
+
+Therefore $Z = X + Y \sim \text{Bin}(n\_1 + n\_2, p)$
 </Callout>
 
 <Callout type="example">
-multiple choice exam with 10 questions and 4 possible answers. What is the probability of getting exactly 6 questions right?
+Suppose you are answering a multiple-choice exam with $n = 10$ questions, each with 4 possible answers (only one correct), and you guess randomly. What is the probability of getting exactly 6 correct (so in Switzerland a passing grade of a 4 (60% correct))?
+
+Let $X$ be the number of correct answers. Each question is a Bernoulli($p$) trial with $p = \frac{1}{4}$.
+
+```math
+X \sim \text{Bin}(10, 0.25)
+```
+
+The probability of getting exactly 6 correct is:
+
+```math
+\P(X = 6) = \binom{10}{6} (0.25)^6 (0.75)^4 = 210 \cdot 0.00024414 \cdot 0.31640625 \approx 0.0162
+```
+
+So, there is about a 1.62% chance to get exactly 6 right by guessing. So make sure to study! This actually does not include the fact that you might guess more than 6 questions right, so the actual chance of passing is higher. But this is a good lower bound.
+</Callout>
+<Callout type="example">
+Suppose you flip a fair coin ($p=0.5$) $n=8$ times. What is the probability of getting exactly 3 heads?
+
+```math
+\P(X = 3) = \binom{8}{3} (0.5)^3 (0.5)^{5} = 56 \times (0.5)^8 = 56 \times \frac{1}{256} \approx 0.21875
+```
+
+So, about a 21.9% chance. What about getting at least 3 heads?
+
+```math
+\begin{align*}
+\P(X \geq 3) &= P(X = 3) + P(X = 4) + \ldots + P(X = 8) \\
+&= \sum_{k=3}^{8} \binom{8}{k} (0.5)^k (0.5)^{8-k}
+\end{align*}
+```
+
+Or alternatively, using the complement:
+```math
+\begin{align*}
+\P(X \geq 3) &= 1 - \P(X < 3) \\
+&= 1 - (\P(X = 0) + \P(X = 1) + \P(X = 2))
+\end{align*}
+```
 </Callout>
 
 ### Geometric Distribution
 
-absence of memory (markov property)
+```math
+P(T = k) = p(1-p)^{k-1}
+```
 
-Something with infinitely many independent Bernoulli When saying that T is a geometric random variable, we make a slight
+Think of it as k-1 failures and then a success on the k-th trial. So it models the number of trials until the first success in a sequence of independent Bernoulli trials, each with success probability $p$.
+
+
+for all k > 0. For p=1 and k=1 we get the term 0^0 by convention is 1.
+
+Show it sums to 1 as it goes to infinity.
+
+first success in an infinite sequence of Bernoulli trials. The geometric distribution models the number of trials until the first success in a sequence of independent Bernoulli trials, each with success probability $p$.
+
+```math
+T = min{n : X_n = 1}
+```
+
+T is a geometric random variable with parameter $p$. When saying that T is a geometric random variable, we make a slight
 abuse: indeed, the random variable T may take the value +∞ if all the random variables
 Xi’s are equal to 0. Nevertheless, this is not a problem for the calculations because one
 can check that P[T = ∞] = 0.
+
+proof:
+
+```math
+\{T = k} = \{X_1 = 0, X_2 = 0, \ldots, X_{k-1} = 0, X_k = 1\}
+```
+
+and then to all probabilites
+
+
+```math
+\P(T > n) = (1-p)^n
+```
+
+We know first n trials are failures, so we can use the complement to get the probability of the first success occurring after $n$ trials.
+
+absence of memory (markov property) with proof.
+
+<Callout type="example">
+
+</Callout>
+
+## Geometric Distribution
+
+We've seen how the Bernoulli and Binomial distributions model the number of successes in a fixed number of independent trials. But what if we flip the question to "how many trials will it take to get the **first** success?" This leads us to the **geometric distribution**
+
+Suppose we let $X_1, X_2, \ldots$ be independent random variables with $X_i \sim \mathrm{Ber}(p)$. Then let $T$ be the random variable representing the **trial number on which the first success occurs**. So we define $T$ as:
+
+```math
+T = \min \{ n \in \mathbb{N}: X_n = 1 \}
+```
+
+We say $T$ is a geometric random variable with parameter $p$:
+
+```math
+T \sim \text{Geom}(p)
+```
+
+The **probability mass function** (PMF) of $T$ is given by:
+
+```math
+\P(T = k) = p_T(k) = (1-p)^{k-1} \cdot p
+```
+
+for $k \in \mathbb{N}^+$. The intuition behind this is that think of flipping a coin over and over: what is the probability that you get your first heads exactly on the $k$th flip? To do this, you must have gotten $k-1$ tails (failures) in a row, followed by a heads (success) on the $k$th flip. Each outcome is independent, so the probability multiplies. This is why the geometric distribution is sometimes called the "waiting time" distribution as it tells you how long you'll wait for the first success.
+
+You can also think of the event as follows:
+
+```math
+\{T = k\} = \{X_1 = 0, X_2 = 0, \ldots, X_{k-1} = 0, X_k = 1\}
+```
+
+where each $X_i \sim \mathrm{Ber}(p)$ is the indicator of success on trial $i$. Technically, it's possible (though with probability zero) that we never see a success, i.e., $T=+\infty$. But
+
+```math
+\P(T = +\infty) = \lim_{k \to \infty} (1-p)^k = 0
+```
+
+so for all practical purposes, $T$ takes finite values with probability 1. So we say it is **almost surely finite**.
+
+<Callout type="proof">
+Let's check the PMF sums to 1:
+
+```math
+\sum_{k=1}^\infty \P(T = k) = \sum_{k=1}^\infty p(1-p)^{k-1} = p \sum_{k=0}^\infty (1-p)^k
+```
+
+This is a geometric series with ratio $r = 1-p < 1$ so we can use the formula for the sum of an infinite geometric series:
+
+```math
+\sum_{k=0}^\infty r^k = \frac{1}{1 - r}
+```
+
+So,
+
+```math
+p \cdot \frac{1}{1 - (1-p)} = p \cdot \frac{1}{p} = 1
+```
+</Callout>
+
+The CDF of $T$ is the probability that the first success happens by trial $k$:
+
+```math
+F_T(k) = \P(T \leq k) = \sum_{j=1}^k p (1-p)^{j-1} = 1 - (1-p)^k
+```
+
+notice again that this uses the formula for the sum of a geometric series, this is also the reason why the geometric distribution is called "geometric" as it is related to the geometric series. We can alternatively also get the **probability that you have not yet succeeded after $n$ trials** is, i.e. the survival function
+
+```math
+\P(T > k) = 1 - F_T(k) = 1 - (1 - (1-p)^k) = (1-p)^k
+```
+
+This makes sense because you need $k$ consecutive failures.
+
+<Callout type="proof">
+We can derive this CDF using the PMF. First we calculate that we have $k-1$ failures and then a success on the $k$th trial. So we can write again using the formula for the sum of a geometric series:
+
+```math
+\sum_{j=0}^{k-1} (1-p)^j = \frac{1 - (1-p)^k}{1 - (1-p)} = \frac{1 - (1-p)^k}{p}
+```
+
+Multiplying by $p$:
+
+```math
+F_T(k) = 1 - (1-p)^k
+```
+
+Notice that for $k=1$, we have $F_T(1) = p$, which is the probability of success on the first trial. 
+
+For $k=0$ so we have $F_T(0) = 0$, which is the probability of never seeing a success which again shows that at least one success will happen with probability 1 so almost surely.
+</Callout>
+
+The geometric random variable $T$ has the following **expectation** and **variance**:
+
+```math
+\E[T] = \frac{1}{p} \text{ and } \Var(T) = \frac{1-p}{p^2}
+```
+
+Intuitively: if the chance of success is small, you expect to wait longer. If $p = 0.2$, you expect to wait $1/0.2 = 5$ trials for a success. If $p = 0.5$, you expect to wait $1/0.5 = 2$ trials. The proof and derivation for these can be found in the [expectation and variance section](/garden/maths/probabilityStatistics/expectationVariancCovariance).
+
+One of the key properties of the geometric distribution is that it is **memoryless**, also known as the **markov property**. This means that the probability of waiting for $m$ more trials for a success does not depend on how many trials have already been conducted. In other words, if you have already waited $n$ trials without success, the probability of needing $m$ more trials to get a success is the same as if you had just started fresh. So in a way as soon as a trial is conducted it "forgets" it and therefore does not change the probability of success in the next trial.Formally for all $m, n \in \mathbb{N}$:
+
+```math
+\P(T > m + n \mid T > n) = \P(T > m)
+```
+
+<Callout type="proof">
+To prove this, we can use the definition of conditional probability:
+
+```math
+\begin{align*}
+\P(T > m + n \mid T > n) &= \frac{\P(T > m + n)}{\P(T > n)} \\
+&= \frac{(1-p)^{m+n}}{(1-p)^n} \\
+&= (1-p)^m = \P(T > m)
+\end{align*}
+```
+
+It doesn't matter how many failures you've already seen. The probability you have to wait $m$ more trials for a success is always the same.
+</Callout>
+
+<Callout type="example">
+Suppose a basketball player has a $p = 0.3$ chance of making a free throw. What is the probability they make their first free throw on their 4th attempt?
+
+We are looking for:
+
+```math
+\P(T = 4) = (1-0.3)^{4-1} \cdot 0.3 = (0.7)^3 \cdot 0.3 = 0.343 \cdot 0.3 = 0.1029
+```
+
+So about a 10.3% chance. What is the expected number of shots until the first make?
+
+```math
+\E[T] = \frac{1}{0.3} \approx 3.33
+```
+
+So on average, it will take just over 3 attempts to make a shot. 
+</Callout>
 
 ### Poisson Distribution
 
