@@ -323,7 +323,7 @@ a &\mapsto F_X(a)
 \end{align*}
 ```
 
-Importantly the difference between the PMF and the CDF is that the CDF assings a probability to the random variable $X$ taking on a value less than or equal to $a$ and not just equal to $a$. This also means that it assigns a probability to the entire range of the random variable $X$ and not just to a single value. More formally we can define the CDF as follows:
+Importantly the difference between the PMF and the CDF is that the CDF assigns a probability to the random variable $X$ taking on a value less than or equal to $a$ and not just equal to $a$. This also means that it assigns a probability to the entire range of the random variable $X$ and not just to a single value. More formally we can define the CDF as follows:
 
 ```math
 F_X(a) = \P(X \leq a) = \P(\{\omega \in \Omega | X(\omega) \leq a\})
@@ -447,6 +447,14 @@ The second property is important because it means that the CDF is continuous fro
 ```math
 F_X(a) = \lim_{b \to a^+} F_X(b)
 ```
+
+<Callout type="todo">
+Show in a better way that the CDF is right-continuous and that at the jumps the CDF is equal to the PMF.
+
+This helps us to understand the behavior of the CDF at points where the random variable has a probability mass. For discrete random variables, this means that the CDF is constant (flat) between the jumps at points $a \in W$, and jumps by $p_X(a)$ at $a$. These jumps correspond to the PMF values at those points.
+
+For a continous random variable, the CDF is continuous everywhere and does not have jumps, but it still fulfills the right-continuity property. This is then why at a single point is zero and the CDF is continuous everywhere else.
+</Callout>
 
 <Callout type="proof">
 Let $X$ be any random variable and $F_X(a) = \P(X \leq a)$. We claim that for any $a \in \mathbb{R}$, the CDF is right-continuous:
@@ -1048,69 +1056,24 @@ Or alternatively, using the complement:
 
 ### Geometric Distribution
 
-```math
-P(T = k) = p(1-p)^{k-1}
-```
-
-Think of it as k-1 failures and then a success on the k-th trial. So it models the number of trials until the first success in a sequence of independent Bernoulli trials, each with success probability $p$.
-
-
-for all k > 0. For p=1 and k=1 we get the term 0^0 by convention is 1.
-
-Show it sums to 1 as it goes to infinity.
-
-first success in an infinite sequence of Bernoulli trials. The geometric distribution models the number of trials until the first success in a sequence of independent Bernoulli trials, each with success probability $p$.
-
-```math
-T = min{n : X_n = 1}
-```
-
-T is a geometric random variable with parameter $p$. When saying that T is a geometric random variable, we make a slight
-abuse: indeed, the random variable T may take the value +∞ if all the random variables
-Xi’s are equal to 0. Nevertheless, this is not a problem for the calculations because one
-can check that P[T = ∞] = 0.
-
-proof:
-
-```math
-\{T = k} = \{X_1 = 0, X_2 = 0, \ldots, X_{k-1} = 0, X_k = 1\}
-```
-
-and then to all probabilites
-
-
-```math
-\P(T > n) = (1-p)^n
-```
-
-We know first n trials are failures, so we can use the complement to get the probability of the first success occurring after $n$ trials.
-
-absence of memory (markov property) with proof.
-
-<Callout type="example">
-
-</Callout>
-
-## Geometric Distribution
-
 We've seen how the Bernoulli and Binomial distributions model the number of successes in a fixed number of independent trials. But what if we flip the question to "how many trials will it take to get the **first** success?" This leads us to the **geometric distribution**
 
-Suppose we let $X_1, X_2, \ldots$ be independent random variables with $X_i \sim \mathrm{Ber}(p)$. Then let $T$ be the random variable representing the **trial number on which the first success occurs**. So we define $T$ as:
+Suppose we let $X_1, X_2, \ldots$ be independent random variables with $X_i \sim \mathrm{Ber}(p)$. Then let $X$ be the random variable representing the **trial number on which the first success occurs**. So we define $X$ as:
 
 ```math
-T = \min \{ n \in \mathbb{N}: X_n = 1 \}
+X = \min \{ n \in \mathbb{N}: X_n = 1 \}
 ```
 
-We say $T$ is a geometric random variable with parameter $p$:
+We say $X$ is a geometric random variable with parameter $p$:
 
 ```math
-T \sim \text{Geom}(p)
+X \sim \text{Geom}(p)
 ```
 
-The **probability mass function** (PMF) of $T$ is given by:
+The PMF of $X$ is given by:
 
 ```math
-\P(T = k) = p_T(k) = (1-p)^{k-1} \cdot p
+\P(X = k) = p_X(k) = (1-p)^{k-1} \cdot p
 ```
 
 for $k \in \mathbb{N}^+$. The intuition behind this is that think of flipping a coin over and over: what is the probability that you get your first heads exactly on the $k$th flip? To do this, you must have gotten $k-1$ tails (failures) in a row, followed by a heads (success) on the $k$th flip. Each outcome is independent, so the probability multiplies. This is why the geometric distribution is sometimes called the "waiting time" distribution as it tells you how long you'll wait for the first success.
@@ -1118,22 +1081,22 @@ for $k \in \mathbb{N}^+$. The intuition behind this is that think of flipping a 
 You can also think of the event as follows:
 
 ```math
-\{T = k\} = \{X_1 = 0, X_2 = 0, \ldots, X_{k-1} = 0, X_k = 1\}
+\{X = k\} = \{X_1 = 0, X_2 = 0, \ldots, X_{k-1} = 0, X_k = 1\}
 ```
 
-where each $X_i \sim \mathrm{Ber}(p)$ is the indicator of success on trial $i$. Technically, it's possible (though with probability zero) that we never see a success, i.e., $T=+\infty$. But
+where each $X_i \sim \mathrm{Ber}(p)$ is the indicator of success on trial $i$. Technically, it's possible (though with probability zero) that we never see a success, i.e., $X=+\infty$. But
 
 ```math
-\P(T = +\infty) = \lim_{k \to \infty} (1-p)^k = 0
+\P(X = +\infty) = \lim_{k \to \infty} (1-p)^k = 0
 ```
 
-so for all practical purposes, $T$ takes finite values with probability 1. So we say it is **almost surely finite**.
+so for all practical purposes, $X$ takes finite values with probability 1. So we say it is **almost surely finite**.
 
 <Callout type="proof">
 Let's check the PMF sums to 1:
 
 ```math
-\sum_{k=1}^\infty \P(T = k) = \sum_{k=1}^\infty p(1-p)^{k-1} = p \sum_{k=0}^\infty (1-p)^k
+\sum_{k=1}^\infty \P(X = k) = \sum_{k=1}^\infty p(1-p)^{k-1} = p \sum_{k=0}^\infty (1-p)^k
 ```
 
 This is a geometric series with ratio $r = 1-p < 1$ so we can use the formula for the sum of an infinite geometric series:
@@ -1149,16 +1112,16 @@ p \cdot \frac{1}{1 - (1-p)} = p \cdot \frac{1}{p} = 1
 ```
 </Callout>
 
-The CDF of $T$ is the probability that the first success happens by trial $k$:
+The CDF of $X$ is the probability that the first success happens by trial $k$:
 
 ```math
-F_T(k) = \P(T \leq k) = \sum_{j=1}^k p (1-p)^{j-1} = 1 - (1-p)^k
+F_X(k) = \P(X \leq k) = \sum_{j=1}^k p (1-p)^{j-1} = 1 - (1-p)^k
 ```
 
 notice again that this uses the formula for the sum of a geometric series, this is also the reason why the geometric distribution is called "geometric" as it is related to the geometric series. We can alternatively also get the **probability that you have not yet succeeded after $n$ trials** is, i.e. the survival function
 
 ```math
-\P(T > k) = 1 - F_T(k) = 1 - (1 - (1-p)^k) = (1-p)^k
+\P(X > k) = 1 - F_X(k) = 1 - (1 - (1-p)^k) = (1-p)^k
 ```
 
 This makes sense because you need $k$ consecutive failures.
@@ -1173,18 +1136,18 @@ We can derive this CDF using the PMF. First we calculate that we have $k-1$ fail
 Multiplying by $p$:
 
 ```math
-F_T(k) = 1 - (1-p)^k
+F_X(k) = 1 - (1-p)^k
 ```
 
-Notice that for $k=1$, we have $F_T(1) = p$, which is the probability of success on the first trial. 
+Notice that for $k=1$, we have $F_X(1) = p$, which is the probability of success on the first trial.
 
-For $k=0$ so we have $F_T(0) = 0$, which is the probability of never seeing a success which again shows that at least one success will happen with probability 1 so almost surely.
+For $k=0$ so we have $F_X(0) = 0$, which is the probability of never seeing a success which again shows that at least one success will happen with probability 1 so almost surely.
 </Callout>
 
-The geometric random variable $T$ has the following **expectation** and **variance**:
+The geometric random variable $X$ has the following **expectation** and **variance**:
 
 ```math
-\E[T] = \frac{1}{p} \text{ and } \Var(T) = \frac{1-p}{p^2}
+\E[X] = \frac{1}{p} \text{ and } \Var(X) = \frac{1-p}{p^2}
 ```
 
 Intuitively: if the chance of success is small, you expect to wait longer. If $p = 0.2$, you expect to wait $1/0.2 = 5$ trials for a success. If $p = 0.5$, you expect to wait $1/0.5 = 2$ trials. The proof and derivation for these can be found in the [expectation and variance section](/garden/maths/probabilityStatistics/expectationVariancCovariance).
@@ -1192,7 +1155,7 @@ Intuitively: if the chance of success is small, you expect to wait longer. If $p
 One of the key properties of the geometric distribution is that it is **memoryless**, also known as the **markov property**. This means that the probability of waiting for $m$ more trials for a success does not depend on how many trials have already been conducted. In other words, if you have already waited $n$ trials without success, the probability of needing $m$ more trials to get a success is the same as if you had just started fresh. So in a way as soon as a trial is conducted it "forgets" it and therefore does not change the probability of success in the next trial.Formally for all $m, n \in \mathbb{N}$:
 
 ```math
-\P(T > m + n \mid T > n) = \P(T > m)
+\P(X > m + n \mid X > n) = \P(X > m)
 ```
 
 <Callout type="proof">
@@ -1200,9 +1163,9 @@ To prove this, we can use the definition of conditional probability:
 
 ```math
 \begin{align*}
-\P(T > m + n \mid T > n) &= \frac{\P(T > m + n)}{\P(T > n)} \\
+\P(X > m + n \mid X > n) &= \frac{\P(X > m + n)}{\P(X > n)} \\
 &= \frac{(1-p)^{m+n}}{(1-p)^n} \\
-&= (1-p)^m = \P(T > m)
+&= (1-p)^m = \P(X > m)
 \end{align*}
 ```
 
@@ -1215,13 +1178,13 @@ Suppose a basketball player has a $p = 0.3$ chance of making a free throw. What 
 We are looking for:
 
 ```math
-\P(T = 4) = (1-0.3)^{4-1} \cdot 0.3 = (0.7)^3 \cdot 0.3 = 0.343 \cdot 0.3 = 0.1029
+\P(X = 4) = (1-0.3)^{4-1} \cdot 0.3 = (0.7)^3 \cdot 0.3 = 0.343 \cdot 0.3 = 0.1029
 ```
 
 So about a 10.3% chance. What is the expected number of shots until the first make?
 
 ```math
-\E[T] = \frac{1}{0.3} \approx 3.33
+\E[X] = \frac{1}{0.3} \approx 3.33
 ```
 
 So on average, it will take just over 3 attempts to make a shot. 
@@ -1229,9 +1192,159 @@ So on average, it will take just over 3 attempts to make a shot.
 
 ### Poisson Distribution
 
-show that it really is 1.
+So far, we've seen discrete random variables such as the Bernoulli, Binomial, and Geometric distributions, which model processes based on repeated, independent trials. But what if we want to model the **number of times an event happens in a fixed interval of time or space**, especially when the probability of an individual event is very small so it is a **rare event** but there are **many opportunities** for it to occur, so the interval is large? This leads us to the **Poisson distribution**.
 
-Poisson approximation to the binomial distribution?
+Think about how many typos you find on a single printed page, the number of emails you receive in one hour, or how many buses arrive at a stop in 10 minutes. Each possible typo, email, or bus is a "rare" event (unlikely per opportunity), but there are lots of chances for it to occur.
+
+The Poisson distribution answers the question: **If events happen at an average rate $\lambda$ per interval (time, space, etc.), what is the probability that we observe exactly $k$ events in that interval?** Formally, we write:
+
+```math
+X \sim \mathrm{Poi}(\lambda)
+```
+
+where $\lambda > 0$ is the **rate parameter**: the expected number of occurrences in the interval. The PMF of the Poisson distribution is given by:
+
+```math
+\P(X = k) = p_X(k) = \frac{\lambda^k}{k!}e^{-\lambda}
+```
+
+where $k \in \mathbb{N}_0 = {0, 1, 2, \ldots}$ is the number of occurrences. 
+
+This formula comes from the following idea. We use the poisson distribution as follows. Suppose we want to model how many events happen in a fixed interval (say 1 hour), where each possible opportunity for an event (say each minute) has a small probability $p$ of an event. Then we have a large number $n$ of such opportunities (n=60 for 1 hour). The average total number of events we expect in the interval is the rate parameter $\lambda = np$ (so as $n$ increases, $p$ decreases). Notice this is exactly the same as the binomial distribution, where we have $n$ independent trials with success probability $p$ which is $\lambda/n$ in this case. The idea is now that we can think of the Poisson distribution as a limit of the binomial distribution as we split the interval to infinitely many small intervals. Because as $n$ increases, the probability of an event in each small interval becomes very small, but the total number of intervals increases, so we can still expect a fixed number of events $\lambda$ in the whole interval. 
+
+So let $X_n \sim \mathrm{Bin}(n, \frac{\lambda}{n})$ be the binomial random variable counting the number of successes in $n$ independent trials, each with success probability $\frac{\lambda}{n}$ such that over the whole interval we expect $\lambda$ successes. Then as $n \to \infty$ we get the PMF of the Poisson distribution:
+
+```math
+\begin{align*}
+\P(X_n = k) &= \binom{n}{k} \left(\frac{\lambda}{n}\right)^k \left(1-\frac{\lambda}{n}\right)^{n-k} \\
+&= \underbrace{\frac{n!}{k!(n-k)!} \cdot \frac{1}{n^k}}_{\to \frac{1}{k!} \text{ as } n \to \infty}
+\cdot \lambda^k
+\cdot \underbrace{\left(1-\frac{\lambda}{n}\right)^n}_{\to e^{-\lambda}}
+\cdot \underbrace{\left(1-\frac{\lambda}{n}\right)^{-k}}_{\to 1} \\
+&= \frac{\lambda^k}{k!}
+\cdot
+\underbrace{\frac{n(n-1)\cdots(n-k+1)}{n^k}}_{\to 1}
+\cdot e^{-\lambda}
+\cdot 1 \\
+&\xrightarrow{n \to \infty} \frac{\lambda^k}{k!} e^{-\lambda}
+\end{align*}
+```
+
+So we have:
+
+```math
+\lim_{n \to \infty} \binom{n}{k}
+\left(\frac{\lambda}{n}\right)^k
+\left(1-\frac{\lambda}{n}\right)^{n-k}
+=
+\frac{\lambda^k}{k!} e^{-\lambda}
+```
+
+<Callout type="proof">
+Let's check that the Poisson PMF is a valid probability mass function (PMF) by showing that it sums to 1 over all possible values of $k$:
+
+```math
+\sum_{k=0}^\infty \frac{\lambda^k}{k!}e^{-\lambda} = e^{-\lambda} \sum_{k=0}^\infty \frac{\lambda^k}{k!}
+```
+
+The sum inside is the Taylor series for $e^{\lambda}$, so:
+
+```math
+e^{-\lambda} \cdot e^{\lambda} = 1
+```
+
+So, the total probability is 1, as required. 
+</Callout>
+
+As mentioned you can think of the Poisson distribution as a limit of the binomial distribution as $n \to \infty$ and $p = \frac{\lambda}{n} \to 0$, while keeping $\lambda = np$ constant. The binomial distribution was additive, meaning that if you have two independent binomial random variables with the same success probability $p$, you can add them together to get another binomial random variable with the sum of the number of trials. The Poisson distribution is also additive, but in a different way. Suppose we observe two independent Poisson processes such as the number of emails from Alice ($X \sim \mathrm{Poi}(\lambda_1)$) and from Bob ($Y \sim \mathrm{Poi}(\lambda_2)$) in an hour. If we then wanted to know the total number of emails received in that hour, we can add the two independent Poisson random variables together:
+
+```math
+Z = X + Y \sim \mathrm{Poi}(\lambda_1 + \lambda_2)
+```
+
+Intuitively this makes sense as over the interval we have two independent sources of events, each with their own rate, and the total number of events is just the sum of the two independent sources.
+
+<Callout type="proof">
+Since $X$ and $Y$ are independent we have:
+
+```math
+\P(Z = k) = \sum_{j=0}^k \P(X = j)\P(Y = k-j)
+```
+
+If we then plug in the PMFs of the Poisson distributions we get:
+```math
+\begin{align*}
+\P(Z = k) &= \sum_{j=0}^k \frac{\lambda_1^j}{j!}e^{-\lambda_1} \cdot \frac{\lambda_2^{k-j}}{(k-j)!}e^{-\lambda_2} \\
+&= e^{-(\lambda_1 + \lambda_2)} \sum_{j=0}^k \frac{\lambda_1^j}{j!}\frac{\lambda_2^{k-j}}{(k-j)!}
+\end{align*}
+```
+
+Notice that by the binomial theorem we can rewrite the sum as:
+
+```math
+\begin{align*}
+\sum_{j=0}^k \frac{\lambda_1^j}{j!}\frac{\lambda_2^{k-j}}{(k-j)!}
+&= \frac{1}{k!} \sum_{j=0}^k \binom{k}{j} \lambda_1^j \lambda_2^{k-j} \\
+= \frac{(\lambda_1 + \lambda_2)^k}{k!}
+\end{align*}
+```
+
+So putting it all together we have:
+
+```math
+\P(Z = k) = e^{-(\lambda_1 + \lambda_2)} \frac{(\lambda_1 + \lambda_2)^k}{k!}
+```
+
+which is the PMF of $\mathrm{Poi}(\lambda_1 + \lambda_2)$. 
+</Callout>
+
+<Callout type="todo">
+Derivation of the expectation and variance.
+* **Mean (Expectation):** $\E[X] = \lambda$
+* **Variance:** $\Var(X) = \lambda$
+</Callout>
+
+<Callout type="example">
+Suppose a page of a newspaper contains $n = 10^4$ characters, and each character has a chance $p = \frac{10}{n} = 0.001$ of being misprinted. What is the probability there are exactly $k$ misprints on the page?
+
+Let $M$ be the number of misprints, so $M \sim \mathrm{Bin}(n, p)$. For $n$ large, $p$ small, $np = 10$. So the probability of exactly $k$ misprints is given by the Poisson PMF with $\lambda = 10$.
+
+By the Poisson approximation $M \sim \mathrm{Poi}(10)$, we have:
+
+```math
+\P(M = k) = \frac{10^k}{k!} e^{-10} \approx 0.0378
+```
+
+So there is about a **3.78% chance** of seeing exactly 10 misprints on the page.
+</Callout>
+<Callout type="example">
+Suppose a radioactive material emits particles at a known average rate of $\lambda = 4$ decays per second. What is the probability that exactly 7 particles decay in a single second? Let $X$ be the number of decays in one second. Then $X \sim \mathrm{Poi}(4)$. The probability of exactly 7 decays is:
+
+```math
+\P(X = 7) = \frac{4^7}{7!} e^{-4} \approx 0.0595
+```
+
+So there is about a **5.95% chance** of seeing exactly 7 decays in one second.
+</Callout>
+<Callout type="example">
+Suppose customers arrive at a bakery at an average rate of $\lambda = 3$ per 10 minutes. What is the probability that **no customers arrive** in a particular 10-minute interval?
+
+Let $X \sim \mathrm{Poi}(3)$, and we want $\P(X = 0)$:
+
+```math
+\P(X = 0) = \frac{3^0}{0!}e^{-3} = 1 \cdot e^{-3} \approx 0.0498
+```
+
+So, there is about a **4.98% chance** that no one comes in during a 10-minute period.
+
+What about the probability that 3 appear in the next 20 minutes? Since the rate is 3 per 10 minutes, in 20 minutes we expect $\lambda = 6$ customers. So we can use the Poisson PMF:
+
+```math
+\P(X = 3) = \frac{6^3}{3!} e^{-6} \approx 0.0892
+```
+
+So, there is about an **8.92% chance** that exactly 3 customers arrive in the next 20 minutes.
+</Callout>
 
 ### Negative Binomial Distribution
 
@@ -1241,53 +1354,639 @@ Poisson approximation to the binomial distribution?
 
 ## Continuous Random Variables
 
-CDF is always left continous with if it is also right continous then it is continuous. 
+Recall that a **random variable** is a function that assigns a real number to each outcome in a sample space. We can have two types of random variables: **discrete** and **continuous**. In the discrete case the image of the random variable is a countable set, while in the continuous case it is an uncountable set (like an interval on the real line).
 
-### Probability Density Function (PDF)
+We also defined that a **cumulative distribution function (CDF)** $F_X$ of a random variable $X$ is defined as:
 
-is non-negative
+```math
+F_X(a) = \P(X \leq a)
+```
 
-### Cumulative Distribution Function (CDF)
+where $a$ is a real number and the CDF $F_X$ is left continuous. The probabilites of a discrete random variable are given by the **probability mass function (PMF)** $p_X(a)$ which are non-zero at the countable set of points where the cdf has jumps. For a continuous random variable the CDF is continous so not just left continuous but also right continuous. Because the CDF is continous there exists a PDF $f\_X$ such that:
 
-integral of the pdf.
+```math
+\P(X \leq a) = F_X(a) = \int_{-\infty}^{a} f_X(x)\,dx
+```
 
-going from pdf to cdf and vice versa.
+and the probabilities are given by the probability density function (PDF) $f_X(a)$ which is non-negative and integrates to 1 over the whole space.
 
-construct if cdf is piecewise continuous so C1? we can integrate each piece to get the pdf? Why not just say continous and therfore differentiable.
+```math
+\int_{-\infty}^{\infty} f_X(x) \, dx = 1
+```
+
+By the **fundamental theorem of calculus**, we can also go from the PDF to the CDF:
+
+```math
+\P(a < X \leq b) = \P(X \leq b) - \P(X \leq a) = F_X(b) - F_X(a) = \int_{a}^{b} f_X(x)\,dx
+```
+
+We can also define the **probability of a single point** for a random variable $X$ at a point $a$ as:
+
+```math
+\P(X = a) = F_X(a) - \lim_{h \to 0^+} F_X(a-h)
+```
+
+In the case of a continuous random variable, this probability is always zero because the CDF is continuous at every point, meaning there are no jumps. In the case of a discrete random variable, this probability can be non-zero if there is a jump in the CDF at that point. This also becomes clear when you look at the following integral:
+
+```math
+\P(X = a) = \int_{a}^{a} f_X(x) \, dx = 0
+```
+
+The intuition behind this is imagine we have the interval between $a$ and $a + h$, then the probability of the random variable being exactly at $a$ is 0 because inbetween $a$ and $a + h$ there are infinitely many points, so the probability of hitting exactly one point is 0. This is why we say that for continuous random variables, the probability of a single point is always 0.
+
+If we are given just the PDF $f_X(a)$, we can also define the CDF by taking the integral of the PDF:
+
+```math
+F_X(a) = \int_{-\infty}^{a} f_X(x) \, dx
+```
+
+We can also define the **survival function** $S_X(a)$ which is the probability that the random variable $X$ is greater than $a$:
+
+```math
+S_X(a) = \P(X > a) = 1 - F_X(a) = \int_{a}^{\infty} f_X(x) \, dx
+```
+
+Alternatively, we can also go from the CDF to the PDF by taking the derivative in general:
+
+```math
+f_X(a) = (F_X(a))'
+```
 
 ## Examples of Continuous Random Variables
 
 ### Uniform Distribution
 
-only depends on the length if we fall in interval or not.
+We have already seen the **discrete uniform distribution** as a model where all outcomes are equally likely among a finite number of values, such as when throwing a fair die. We call this a [laplace space]().
+
+We now extend this idea to the continuous case, where the random variable takes values in a real interval. For example, a time chosen uniformly at random in the interval $[a, b]$. This gives us the **continuous uniform distribution**.
+
+The intuition is the same, each subinterval of equal length within $[a, b]$ is equally likely to contain the outcome. So, we are modeling complete uncertainty over an interval. We know the outcome lies somewhere in $[a, b]$, but we assume no preference for any subinterval over another. The resulting distribution is flat, or **uniform**, over the interval.
+
+Let $X$ be a continuous random variable defined on the interval $[a, b]$. Then $X$ is said to have a **uniform distribution on $[a, b]$** if its **probability density function (PDF)** is given by:
+
+```math
+f_X(x) = \begin{cases}
+\frac{1}{b-a} & \text{if } x \in [a, b] \\
+0 & \text{otherwise}
+\end{cases}
+```
+
+We write:
+
+```math
+X \sim \text{Uniform}(a, b)
+```
+
+The PDF is zero outside $[a, b]$, meaning the random variable cannot take values outside this range.
+
+<Callout type="proof">
+We check that the PDF integrates to 1 as it is trivially non-negative because $a < b$:
+
+```math
+\int_{-\infty}^{\infty} f_X(x) \, dx = \int_a^b \frac{1}{b-a} dx = \frac{1}{b-a}(b - a) = 1
+```
+</Callout>
+
+The PDF is constant over the interval $[a, b]$, reflecting the fact that all values in this range are equally likely (in terms of density). However, since the distribution is continuous, the probability of hitting any exact point $x$ is still zero:
+
+```math
+\P(X = x) = \int_x^x f_X(t) dt = 0
+```
+
+So instead we compute probabilities over intervals using the **cumulative distribution function**. The CDF $F_X(x)$ for a uniform distribution on $[a, b]$ is obtained by integrating the PDF:
+
+```math
+F_X(x) = \int_{-\infty}^x f_X(t)\,dt = \begin{cases}
+0 & \text{if } x < a \\
+\frac{x - a}{b - a} & \text{if } a \leq x \leq b \\
+1 & \text{if } x > b
+\end{cases}
+```
+
+This function smoothly increases from 0 to 1 as $x$ goes from $a$ to $b$, and is **continuous** and **strictly increasing** on $[a, b]$. It is flat (zero) before $a$, and reaches 1 after $b$.
+
+<Callout type="proof">
+The middle case comes from integrating the constant PDF:
+
+```math
+F_X(x) = \int_a^x \frac{1}{b-a} dt = \frac{x-a}{b-a}
+\quad \text{for } x \in [a, b]
+```
+</Callout>
+
+For continuous random variables, we compute probabilities by integrating the PDF or using the CDF. For the uniform distribution, we get fo any interval $[c, d]$ within $[a, b]$:
+
+```math
+\P(c \leq X \leq d) = \int_c^d f_X(x) dx = F_X(d) - F_X(c) = \frac{d - c}{b - a}\quad \text{for } a \leq c < d \leq b
+```
+
+So the probability is **proportional to the length** of the interval $[c, d]$ with respect to the total length of $[a, b]$. This reflects the uniform nature of the distribution: longer intervals have higher probabilities. We can also use the CDF to compute intervals:
+
+```math
+\P(X \leq x) = F_X(x), \quad
+\P(X > x) = 1 - F_X(x), \quad
+\P(c < X \leq d) = F_X(d) - F_X(c)
+```
+
+The expectation of a uniform random variable $X \sim \text{Uniform}(a, b)$ is simply the midpoint:
+
+```math
+\E[X] = \frac{a + b}{2}
+```
+
+and the variance is given by:
+
+```math
+\Var(X) = \frac{(b - a)^2}{12}
+```
+
+<Callout type="proof" title="Derivation of the expectation">
+We compute the expectation as:
+
+```math
+\E[X] = \int_a^b x \cdot \frac{1}{b - a} dx = \frac{1}{b-a} \cdot \left[\frac{x^2}{2}\right]_a^b = \frac{1}{b-a} \cdot \frac{b^2 - a^2}{2}
+```
+
+Simplify using the identity $b^2 - a^2 = (b-a)(b+a)$:
+
+```math
+\E[X] = \frac{1}{b-a} \cdot \frac{(b-a)(b+a)}{2} = \frac{a + b}{2}
+```
+</Callout>
+
+<Callout type="proof" title="Derivation of the variance">
+We compute $\E[X^2]$:
+
+```math
+\E[X^2] = \int_a^b x^2 \cdot \frac{1}{b-a} dx = \frac{1}{b-a} \left[ \frac{x^3}{3} \right]_a^b = \frac{1}{b-a} \cdot \frac{b^3 - a^3}{3}
+```
+
+Then the variance is:
+
+```math
+\Var(X) = \E[X^2] - (\E[X])^2 = \frac{b^3 - a^3}{3(b - a)} - \left( \frac{a + b}{2} \right)^2
+```
+
+After simplifying, we find:
+
+```math
+\Var(X) = \frac{(b - a)^2}{12}
+```
+</Callout>
+
+<Callout type="example">
+Suppose we pick a random time $X$ between 2pm and 4pm (i.e. $X \sim \text{Uniform}(2, 4)$). Then:
+
+- The PDF is $f_X(x) = \frac{1}{2}$ for $x \in [2, 4]$
+- The CDF is $F_X(x) = \frac{x - 2}{2}$ for $x \in [2, 4]$
+- The mean time is $\E[X] = 3$pm
+- The variance is $\Var(X) = \frac{(4 - 2)^2}{12} = \frac{1}{3}$
+
+Probability that we arrive between 2:30 and 3:30pm:
+
+```math
+\P(2.5 \leq X \leq 3.5) = \frac{3.5 - 2.5}{2} = \frac{1}{2}
+```
+
+So there's a 50% chance of arriving in that hour-long interval. 
+</Callout>
 
 ### Exponential Distribution
 
-analog to the geometric distribution but for continuous random variables? So also has the memoryless property.
+We've seen how the geometric distribution models the number of Bernoulli trials until the first success, and how the Poisson distribution models the number of events in a fixed interval, given a constant event rate. Now what if, instead of counting the number of events, we want to model **how long we wait** until the first event occurs in a continuous-time process? This leads us to the **exponential distribution**.
 
-### Normal Distribution
+Suppose we have a Poisson process, so events happen randomly, independently, and at a constant average rate in time (for example, arrivals of buses, radioactive decays, phone calls, or failures of light bulbs). If we fix a starting point, the **time we must wait until the next event** is an **exponentially distributed random variable**. So the exponential is to the geometric what the Poisson is to the binomial.
 
-what is phi and phi inverse?
+Let $X$ be a continuous random variable modeling the **waiting time until the first event** in a process where events occur at a constant average rate $\lambda > 0$ per unit time. So for example if $\lambda = 2$, we expect 2 events per interval. We write:
 
-#### Standard Normal Distribution
+```math
+X \sim \mathrm{Exp}(\lambda)
+```
 
-#### Quantiles
+The **probability density function (PDF)** is:
 
-#### Three Sigma Rule
+```math
+f_X(x) = \begin{cases}
+\lambda e^{-\lambda x} & x \geq 0 \\
+0 & x < 0
+\end{cases}
+```
 
-#### Z-Score
+Where the rate parameter $\lambda > 0$ controls the average waiting time until the first event occurs. And the **support** of $X$ is $x \in [0, \infty)$ as we can't have a negative waiting time but we can have a waiting time of 0 (the event happens immediately) or infinite (the event never happens).
+
+Intuitively, the chance you're still waiting after some time $t$ decays **exponentially** fast as $t$ increases. This is the origin of the name. This follows from the poisson distribution where the PDF for a poisson random variable $X$ is given by:
+
+```math
+\P(X = k) = \frac{\lambda^k}{k!} e^{-\lambda}
+```
+
+Where $k$ is the number of events that have happened in the interval. Then the probability that no event has happened in the interval is given by:
+
+```math
+\P(X = 0) = \frac{\lambda^0}{0!} e^{-\lambda} = e^{-\lambda}
+```
+
+This leads us to the PDF of the exponential distribution as the first event happening after some interval is the same as no events happening in that interval, so we can think of the exponential distribution as the time until the first event in a Poisson process.
+
+<Callout type="proof">
+Let's check the PDF integrates to 1, which is a requirement for it to be a valid probability density function (PDF):
+
+```math
+\begin{align*}
+\int_{-\infty}^{\infty} f_X(x)\,dx &= \int_0^\infty \lambda e^{-\lambda x} dx \\
+&= \lambda \left[ -\frac{1}{\lambda} e^{-\lambda x} \right]_0^\infty \\
+&= (0 - (-1)) = 1
+\end{align*}
+```
+</Callout>
+
+The CDF gives the probability that the event has occurred by time $x$. Importantly for $x < 0$, the CDF is $F_X(x) = 0$ since we can't have a negative waiting time. For $x \geq 0$, we compute the CDF as follows:
+
+```math
+F_X(x) = \P(X \leq x) = \int_0^x \lambda e^{-\lambda t} dt = 1 - e^{-\lambda x}, \quad x \geq 0
+```
+
+As $x \to \infty$, $F_X(x) \to 1$ the event will eventually occur almost surely, with probability 1:
+
+```math
+\lim_{x \to \infty} F_X(x) = \lim_{x \to \infty} (1 - e^{-\lambda x}) = 1
+```
+
+For any $0 \leq a < b$,
+
+```math
+\P(a < X \leq b) = F_X(b) - F_X(a) = (1 - e^{-\lambda b}) - (1 - e^{-\lambda a}) = e^{-\lambda a} - e^{-\lambda b}
+```
+
+So, the probability the waiting time is between $a$ and $b$ is simply the difference between the survival probabilities at those two times.
+
+Just like the geometric distribution, the exponential distribution is **memoryless**. This means that the probability of waiting an additional $t$ units of time, given that you have already waited $s$ units, is the same as if you had just started waiting. In other words, the process does not "remember" how long you have already waited. Formally, for all $s, t \geq 0$:
+
+```math
+\P(X > s + t \mid X > s) = \P(X > t)
+```
+
+Intuitively you can think of this as saying that the waiting time until the next event is independent of how long you have already waited as you don't know when the last event happened, so you can only expect to wait the same amount of time as you would if you just started waiting.
+
+<Callout type="proof">
+By definition of conditional probability:
+
+```math
+\P(X > s + t \mid X > s) = \frac{\P(X > s + t)}{\P(X > s)}
+```
+
+Recall that $\P(X > x) = 1 - F_X(x) = e^{-\lambda x}$, so:
+
+```math
+\frac{e^{-\lambda(s + t)}}{e^{-\lambda s}} = e^{-\lambda t} = \P(X > t)
+```
+</Callout>
+
+The expectation and variance of an exponentially distributed random variable $X \sim \mathrm{Exp}(\lambda)$ are given by:
+
+```math
+\E[X] = \frac{1}{\lambda} \text{ and } \Var(X) = \frac{1}{\lambda^2}
+```
+
+<Callout type="proof" title="Derivation of the expectation">
+Compute the expectation:
+```math
+\E[X] = \int_0^\infty x \lambda e^{-\lambda x} dx
+```
+Integrate by parts, let $u = x$, $dv = \lambda e^{-\lambda x} dx$. Then $du = dx$, $v = -e^{-\lambda x}$:
+```math
+\E[X] = \left. -x e^{-\lambda x} \right|_0^\infty + \int_0^\infty e^{-\lambda x} dx = 0 + \frac{1}{\lambda} = \frac{1}{\lambda}
+```
+</Callout>
+
+<Callout type="proof" title="Derivation of the variance">
+Similarly, $\E[X^2] = \frac{2}{\lambda^2}$, so:
+
+```math
+\Var(X) = \E[X^2] - (\E[X])^2 = \frac{2}{\lambda^2} - \left(\frac{1}{\lambda}\right)^2 = \frac{1}{\lambda^2}
+```
+</Callout>
+
+<Callout type="example">
+Buses arrive at a stop at an average rate of $\lambda = 6$ per hour (i.e., one every 10 minutes on average).  
+What is the probability you wait **more than 15 minutes** for the next bus? First we need to convert the time to hours, since our rate is in hours. So $\lambda = 6$ per hour means we expect one bus every $\frac{1}{6}$ hours, or 10 minutes and 15 minutes is $\frac{15}{60} = 0.25$ hours.
+
+```math
+\P(X > 0.25) = e^{-\lambda \cdot 0.25} = e^{-6 \times 0.25} = e^{-1.5} \approx 0.2231
+```
+
+So, **about a 22.3% chance** of waiting more than 15 minutes. The expected waiting time for the first bus is:
+
+```math
+\E[X] = \frac{1}{\lambda} = \frac{1}{6} \text{ hr} \approx 10 \text{ minutes}
+```
+
+Which would match our average. The idea here is that say you arrive 5 minutes after the last bus left, then you would expect to wait 5 minutes for the next bus, but because the process is memoryless, the expected waiting time is still 10 minutes, because you don't know when the last bus left, so you can only expect to wait 10 minutes on average. 
+</Callout>
+
+## Normal Distribution
+
+One of the most important continuous random variables in probability theory and statistics is the **normal distribution** (also called the **Gaussian distribution**, named after Carl Friedrich Gauss who defined the standardized form). Because of the shape of the function graph it is often also referred to as the **bell curve**.
+
+The normal distribution plays a central role in statistics and probability. It is the chosen model for a huge variety of real-world phenomena, especially when these phenomena result from the accumulation of many small, independent effects such as physical measurements, noise, heights, test scores, and many natural quantities. The reason why it is so prevalent is due to the [Central Limit Theorem](), which states that the sum (or average) of a large number of independent and identically distributed random variables will be approximately normally distributed, regardless of the original distribution of the variables. This is a fundamental result in probability theory and underpins many statistical methods.
+
+Let's now formally define the normal distribution. The random variable $X$ is said to have a **normal distribution** with **mean** $\mu$ and **variance** $\sigma^2$ denoted as:
+
+```math
+X \sim \mathcal{N}(\mu, \sigma^2)
+```
+
+if its **probability density function (PDF)** is given by:
+
+```math
+f_{X}(x) = \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)
+```
+
+
+The expectation and variance of a normal random variable are the parameters $\mu$ and $\sigma^2$ respectively:
+
+```math
+\E[X] = \mu, \quad \Var(X) = \sigma^2
+```
+
+So the distribution is completely characterized by its mean and variance. From the graph and definition we can see that the normal distribution is symmetric around the mean $\mu$, and the spread of the distribution is controlled by the standard deviation $\sigma$. The PDF is bell-shaped, with the highest point at $x = \mu$ and tails that approach zero as $x$ moves away from $\mu$. Unlike other distributions, the normal distribution is defined for all real numbers, meaning it has infinite support. The interpretation of the graph is if you **measure the same physical quantity repeatedly**, the errors you get will, under mild conditions, look normal—most values are close to the "true" mean, with fewer large deviations, and very rare extreme deviations. Intuitively as the variance $\sigma^2$ increases, the distribution becomes wider and flatter, while as $\sigma^2$ decreases, it becomes narrower and taller as the values cluster more closely around the mean $\mu$ by the definition of variance.
+
+The **cumulative distribution function (CDF)** of a normal random variable $X \sim \mathcal{N}(\mu, \sigma^2)$ is given by:
+
+```math
+F_X(a) = \mathbb{P}(X \leq a) = \int_{-\infty}^a f_X(x)\,dx
+```
+
+There is **no closed form** for this integral in terms of elementary functions, but it is tabulated and implemented in all statistical packages.
+
+<Callout type="example" title="Probability of Student Height">
+Suppose the heights of students in a class are normally distributed with mean $\mu = 175$ cm and standard deviation $\sigma = 10$ cm. What is the probability that a randomly chosen student is shorter than 170 cm?
+
+Let $X \sim \mathcal{N}(175, 10^2)$. We want $\mathbb{P}(X < 170)$.
+
+
+```math
+\mathbb{P}(X < 170) = F_X(170) \approx 0.3085
+```
+
+(Using a standard normal table or calculator.) So about **31%** of students are shorter than 170 cm. 
+</Callout>
+
+Another reason why the normal distribution is so common is that it is **closed under linear transformations**. This means that if you apply a linear transformation to a normally distributed random variable, the result is still normally distributed. So if $X \sim \mathcal{N}(\mu, \sigma^2)$, then for any constant $c$:
+
+```math
+X + c \sim \mathcal{N}(\mu + c, \sigma^2)
+```
+
+So adding a constant shifts the mean, but does not affect the variance. This is intuitive if you think of just shifting the entire distribution left or right by $c$ as the PDF is just the PDF of $X$ shifted by $c$.
+
+<Callout type="proof">
+Because the normal distribution is characterized by its mean and variance, we can show this property easily. Using the definition and properties of expectation and variance. Let $Y = X + c$. Then,
+
+```math
+\E[Y] = \E[X] + c = \mu + c \qquad \Var(Y) = \Var(X) = \sigma^2
+```
+</Callout>
+
+<Callout type="example">
+Suppose all the students in the previous example were measured with their shoes on, and the shoes add exactly 4 cm to everyone's height. So to correct for this, we subtract 4 cm from each measurement. Then the new variable $Y = X - 4 \sim \mathcal{N}(171, 10^2)$. 
+
+The mean is now 171 cm rather than 175 cm. But because we subtracted everyone's height by the same amount, the variance (spread) is unchanged.
+</Callout>
+
+We can also **scale** the normal distribution. This means multiplying the random variable by a constant $a$. If $X \sim \mathcal{N}(\mu, \sigma^2)$ and $a \in \mathbb{R}$:
+
+```math
+a X \sim \mathcal{N}(a\mu, a^2 \sigma^2)
+```
+
+That is, **scaling** by $a$ multiplies the mean by $a$ and the variance by $a^2$.
+
+<Callout type="proof">
+Again, this follows from the properties of expectation and variance. If $Y = aX$, then:
+
+```math
+\E[Y] = a\E[X] = a\mu
+\qquad \Var(Y) = a^2 \Var(X) = a^2 \sigma^2
+```
+
+So we have $Y \sim \mathcal{N}(a\mu, a^2 \sigma^2)$. The PDF stretches or compresses according to $a$.
+</Callout>
+
+<Callout type="example">
+Suppose the heights of parents are $X \sim \mathcal{N}(180, 10^2)$, but the students are, on average, 80% of their parents' heights. Then $Y = 0.8 X \sim \mathcal{N}(0.8 \times 180, 0.8^2 \times 100) = \mathcal{N}(144, 64)$.
+</Callout>
+
+We have seen for the binomial and poisson distributions that we can add independent random variables together, and the result is also a random variable of the same type. The same holds for the normal distribution. Specifically if $X_1 \sim \mathcal{N}(\mu_1, \sigma_1^2)$ and $X_2 \sim \mathcal{N}(\mu_2, \sigma_2^2)$ are **independent**, then:
+
+```math
+X_1 + X_2 \sim \mathcal{N}(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)
+```
+
+That is, **the sum of independent normals is again normal**, with the mean and variances adding.
+
+<Callout type="proof">
+Again this follows from the properties of expectation and variance. If $Y = X_1 + X_2$, where $X_1$ and $X_2$ are independent normal random variables, then:
+
+```math
+\E[Y] = \E[X_1] + \E[X_2] = \mu_1 + \mu_2
+\qquad
+\Var(Y) = \Var(X_1) + \Var(X_2) = \sigma_1^2 + \sigma_2^2
+```
+</Callout>
+
+<Callout type="example">
+Suppose the heights of boys and girls in a school are independent and normally distributed:
+- Boys: $X_1 \sim \mathcal{N}(175, 9^2)$
+- Girls: $X_2 \sim \mathcal{N}(165, 8^2)$
+
+Then you could model the total height of a pair of a boy and a girl as $Y = X_1 + X_2$. Then the sum $Y = X_1 + X_2 \sim \mathcal{N}(340, 145)$. 
+</Callout>
+
+Combining the above properties we can see that **any linear combination** of independent normal random variables is again normal:
+
+If $X_1, \ldots, X_n$ are independent, and $Y = c_0 + \lambda_1 X_1 + \cdots + \lambda_n X_n$:
+
+```math
+Y \sim \mathcal{N}\left( c_0 + \sum_{i=1}^n \lambda_i \mu_i,\, \sum_{i=1}^n \lambda_i^2 \sigma_i^2 \right)
+```
+
+This is the **stability property** of the normal distribution, and is one of the reasons for its fundamental importance.
+
+<Callout type="proof">
+Let $Y = c_0 + \sum_{i=1}^n \lambda_i X_i$. Then we have by the properties of expectation and variance:
+- Mean: $\E[Y] = c_0 + \sum_{i=1}^n \lambda_i \E[X_i] = c_0 + \sum_{i=1}^n \lambda_i \mu_i$
+- Variance: $\Var(Y) = \sum_{i=1}^n \lambda_i^2 \Var(X_i) = \sum_{i=1}^n \lambda_i^2 \sigma_i^2$
+</Callout>
+
+### Standard Normal Distribution
+
+Because we can scale and shift the normal distribution, we can always reduce any normal distribution to the **standard normal distribution**. This is a special case of the normal distribution where the mean is 0 and the variance is 1, often denoted as $Z$:
+
+```math
+Z \sim \mathcal{N}(0, 1)
+```
+
+We standardize it using the so-called **z-score transformation**:
+
+```math
+Z = \frac{X - \mu}{\sigma}
+```
+
+This transformation centers the distribution at 0 and rescales the variance to 1. The result is the standard normal distribution. The **probability density function (PDF)** of the standard normal distribution is denoted as $\varphi(z)$ and is given by:
+
+```math
+\varphi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)
+```
+
+The **cumulative distribution function (CDF)** is denoted as $\Phi(z)$:
+
+```math
+\Phi(z) = \mathbb{P}(Z \leq z) = \int_{-\infty}^z \varphi(t) dt
+```
+
+In practice, **any normal probability can be reduced to a standard normal calculation** using this standardization. That is,
+
+```math
+\mathbb{P}(X \leq a) = \mathbb{P}\left( \frac{X - \mu}{\sigma} \leq \frac{a - \mu}{\sigma} \right) = \Phi\left( \frac{a - \mu}{\sigma} \right)
+```
+
+This is actually the key to using the normal distribution in practice: we can always convert any normal random variable to a standard normal variable, compute probabilities using the standard normal CDF, and then interpret those results in terms of the original variable.
+
+<Callout type="proof">
+Let $X \sim \mathcal{N}(\mu, \sigma^2)$ and $Z = \frac{X-\mu}{\sigma}$ then we have:
+- $\E[Z] = \frac{\E[X] - \mu}{\sigma} = 0$
+- $\Var(Z) = \frac{\Var(X)}{\sigma^2} = 1$
+
+Thus, $Z \sim \mathcal{N}(0,1)$, and we can write $\mathbb{P}(X \leq a) = \Phi\left( \frac{a - \mu}{\sigma} \right)$ as above. 
+</Callout>
+
+<Callout type="example" title="Standardizing Student Heights">
+Suppose the heights of students are $X \sim \mathcal{N}(175, 10^2)$. What is the probability that a student is shorter than 170 cm? First, standardize:
+
+```math
+z = \frac{170 - 175}{10} = -0.5
+```
+
+Then we look up $\Phi(-0.5) \approx 0.3085$. So about 31% of students are shorter than 170 cm. 
+</Callout>
+
+#### Quantiles of the Normal Distribution
+
+Using the CDF, we can find the probability that a random variable $X$ takes on a value less than or equal to $a$. The **quantile function** (or inverse CDF) allows us to do the opposite: given a probability $a$, it gives us the value $c$ such that:
+
+```math
+\mathbb{P}(X \leq c) = a
+```
+
+This is written as:
+
+```math
+c = \mu + \sigma \Phi^{-1}(a)
+```
+
+What is the derivation of this? Because it is symmetric? 
+
+where $\Phi^{-1}$ is the **inverse** of the standard normal CDF. For the standard normal distribution with mean $\mu = 0$ and standard deviation $\sigma = 1$, the quantile function is simply:
+
+```math
+c = \Phi^{-1}(a)
+```
+
+For example for the **median** (50th percentile), we have:
+
+```math
+c = \mu + \sigma \Phi^{-1}(0.5) = \mu
+```
+
+Quantiles are important for all distributions, but the normal distribution is so central to statistics where we often want to find a threshold for some sort of percentage such as for [hypothesis tests]() or [confidence intervals](). They are also useful for setting cutoffs, such as in outlier detection or acceptance intervals.
+
+<Callout type="example">
+Suppose we want to know the minimum height needed to be in the top 5% of students in the class ($X \sim \mathcal{N}(175, 10^2)$).
+
+We want $c$ such that $\mathbb{P}(X > c) = 0.05$, or $\mathbb{P}(X \leq c) = 0.95$:
+
+```math
+c = 175 + 10 \cdot \Phi^{-1}(0.95) \approx 175 + 10 \times 1.645 = 191.45
+```
+
+So a student must be at least **191.5 cm** tall to be in the top 5% of the class. 
+</Callout>
+
+### Three Sigma Rule
+
+One of the most important practical properties of the normal distribution is the **three sigma rule**:
+
+- About **68%** of values lie within **1 standard deviation** ($\mu \pm \sigma$)
+- About **95%** within **2 standard deviations** ($\mu \pm 2\sigma$)
+- About **99.7%** within **3 standard deviations** ($\mu \pm 3\sigma$)
+
+Formally,
+
+```math
+\mathbb{P}(|X - \mu| < k \sigma) = 2\Phi(k) - 1
+```
+
+for $k = 1, 2, 3$.
+
+For example, for $k = 3$:
+
+```math
+\mathbb{P}(|X - \mu| \geq 3\sigma) = 1 - \mathbb{P}(|X - \mu| < 3\sigma) \approx 0.0027
+```
+
+So, the probability of being "more than three sigmas away" is about 0.27%, which is why "three sigma events" are considered extremely rare. This fact is used, for example, in quality control, where measurements outside $\mu \pm 3\sigma$ are flagged as anomalies.
+
+Surprisingly, this rule does not depend on the mean $\mu$ or variance $\sigma^2$ as can be seen from the formula above. This is a consequence of the symmetry and shape of the normal distribution, which is why it is so widely used in statistics.
 
 ## Constructing Random Variables
 
-We have seen that a CDF is a function that assigns a probability to the random variable $X$ taking on a value less than or equal to $a$ and fulfills the following 3 properties:
-- $F_X(a)$ is a non-decreasing function.
-- $F_X(a)$ is a right-continuous function.
-- $\lim_{a \to -\infty} F_X(a) = 0$ and $\lim_{a \to +\infty} F_X(a) = 1$.
+Up to now, we have talked about random variables as **functions defined on some probability space** and described their **distribution** via the cumulative distribution function (CDF), $F_X(a) = \mathbb{P}(X \leq a)$. But you might wonder: given any function $F: \mathbb{R} \to [0,1]$ that looks like a "CDF", does there actually exist a random variable $X$ (possibly on some probability space) whose distribution function is exactly $F$? And how could we construct such an $X$ in practice or in simulations?
 
-The question is now if we are given some function $F:\mathbb{R} \to [0, 1]$ that fulfills these properties, does a random variable $X$ exist such that $F_X(a) = F(a)$? The practical consequence would be that we can then simulate an arbitrary random variable $X$ given only the CDF.
+This question lies at the heart of probability theory: it tells us that we can focus on the distribution of random variables—meaning their PMF, PDF, or CDF, without needing to worry about the detailed structure of the underlying probability space. 
 
-First bernoulli?
+Recall that for a function $F: \mathbb{R} \to [0,1]$ to be the CDF of some random variable, it must satisfy three properties:
 
-Then uniform?
+1. **Non-decreasing:** $F(a_1) \leq F(a_2)$ whenever $a_1 < a_2$.
+2. **Right-continuity:** For all $a$, $\lim_{x \to a^+} F(x) = F(a)$.
+3. **Limits at infinity:** $\lim_{a \to -\infty} F(a) = 0$ and $\lim_{a \to +\infty} F(a) = 1$.
 
-Then an arbitrary CDF?
+These are exactly the properties that arise from the definitions and basic results about probability measures. 
+
+The question now is for any function $F$ with these properties, does there exist a random variable $X$ such that $F_X(a) = F(a)$ for all $a$? The answer is yes. For any function $F$ with these properties, there exists a probability space $(\Omega, \mathcal{F}, \mathbb{P})$ and a random variable $X: \Omega \to \mathbb{R}$ with $F_X(a) = \mathbb{P}(X \leq a) = F(a)$ for all $a$.
+
+This is often called the **Kolmogorov existence theorem**. In practice, this means that when defining or analyzing a random variable, we can simply specify its distribution function (or PMF or PDF), and be assured that a corresponding random variable does exist.
+
+This is useful because in applications (especially in statistics and simulation), we then do not need to describe the probability space $(\Omega, \mathcal{F}, \mathbb{P})$ explicitly. Instead, we work directly with the distributions of random variables. 
+
+The idea of kolmogorov's theorem is as follows. Consider the "canonical" probability space: the infinite product space $\Omega = {0,1}^{\mathbb{N}}$, i.e., all infinite sequences of independent coin flips (where 0 = tails, 1 = heads) and the probability measure $\mathbb{P}$ is defined so that the coordinates are i.i.d. Bernoulli(1/2) random variables. We can now use such sequences to construct a wide variety of random variables, in particular the uniform distribution on $[0,1]$ which, in turn, can be used to generate any other desired distribution.
+
+Let's generate a uniform random variable on $[0,1]$ using this framework, and then show how to use it to construct any other distribution. Suppose $X_1, X_2, \dots$ are i.i.d. Bernoulli(1/2) random variables (i.e., independent fair coin flips):
+
+```math
+U(\omega) = \sum_{n=1}^{\infty} \frac{X_n(\omega)}{2^n}
+```
+
+You can think of this as a binary expansion of a number in the interval $[0,1]$. Each $X_n$ contributes either $0$ or $\frac{1}{2^n}$ to the sum, depending on whether the $n$-th coin flip is tails (0) or heads (1) which corresponds to the binary digit at position $n$ in the expansion. So for each $\omega \in \Omega$, this sum converges to a real number in $[0,1]$, whose binary expansion is given by the sequence $X_1, X_2, \dots$. So each binary digit is determined by a fair coin, and the resulting distribution is uniform.
+
+Now, suppose we want to construct a random variable $X$ with any given distribution function $F$ (satisfying the three properties above). The key idea is to use **inverse transform sampling**.
+
+Let $U$ be a uniform random variable on $[0,1]$. Define
+
+```math
+X = F^{-1}(U)
+```
+
+where $F^{-1}$ is the **generalized inverse** (sometimes called the quantile function). We know this inverse exists because $F$ is non-decreasing and continuous. The generalized inverse is defined as:
+
+```math
+F^{-1}(a) = \inf \{ x \in \mathbb{R} : F(x) \geq a \}, \quad a \in [0,1]
+```
+
+Then $X$ has distribution function $F$:
+
+```math
+\mathbb{P}(X \leq x) = \mathbb{P}(F^{-1}(U) \leq x) = \mathbb{P}(U \leq F(x)) = F(x)
+```
+
+This construction works for any CDF, whether $F$ is continuous or has jumps (discrete points). If $F$ is strictly increasing and continuous, $F^{-1}$ is the usual inverse function. The idea is that we are transforming a uniform random variable into one with the desired distribution by mapping the uniform probabilities to the quantiles of the target distribution.
