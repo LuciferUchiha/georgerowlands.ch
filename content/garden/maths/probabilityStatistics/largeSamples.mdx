@@ -1,36 +1,262 @@
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
+
 # Large Samples
+
+In probability theory, one of the most powerful ideas is to **study what happens when we repeat a random experiment many times**. That is, to analyze the behavior of sums and averages of large numbers of independent random variables. The idea here is similar to machine learning, where we often want to understand how our model behaves as we gather more data.
+
+Suppose we have a sequence of i.i.d. (independent and identically distributed) random variables $X_1, X_2, \ldots$ all defined on the same probability space. Then we can define the sum of the first $n$ random variables as:
+
+```math
+S_n = \sum_{i=1}^{n} X_i
+```
+
+By dividing by $n$, we obtain the **empirical average** (sample mean):
+
+```math
+\bar{S}_n = \frac{1}{n}\sum_{i=1}^{n} X_i
+```
+
+Now the question is: **What can we say about the behavior of these sums and averages as the number of samples increases?** Does it fluctuate or converge to some predictable value?
 
 ## Law of Large Numbers
 
-### Monte-Carlo Integration
+Intuitively, if we perform a random experiment many times, the outcomes individually remain unpredictable. However, the average outcome becomes much more stable and predictable. This is a manifestation of the **law of large numbers (LLN)**:
 
-## Convergent Distributions
+> The empirical average of i.i.d. samples converges to the expected value as the number of samples grows.
 
-## Central Limit Theorem
+So despite the individual outcomes being random, their average stabilizes around the true mean and we could use this to make predictions about the system or about future observations. For example, flipping a biased coin ($p = 0.7$ for heads) only once tells us little; flipping it 1000 times gives us a lot more data and we should notice that the proportion of heads is close to $0.7$ and therefore the coin is not fair.
+
+There are two formal definitions of the Law of large numbers:: the **Weak Law of Large Numbers (WLLN)** and the **Strong Law of Large Numbers (SLLN)**. Let's first look at the **Weak Law of Large Numbers**.
+
+Let $X_1, X_2, \ldots$ be i.i.d. random variables with finite mean $\mu = \E[X_1] < \infty $. Then for every $\varepsilon > 0$ we have:
+
+```math
+\lim_{n \to \infty} \P \left( |\bar{S}_n - \mu| \geq \varepsilon \right) = 0
+```
+
+That is, the probability that the sample mean deviates from the true mean by at least $\varepsilon$ becomes arbitrarily small as $n$ increases. Notice we only require the first random variable $X_1$ to have a finite expectation, this is because the samples are i.i.d. random variables, meaning they all have the same distribution and are independent of each other so they automatically have the same expectation $\mu$.
+
+The **Strong Law of Large Numbers (SLLN)** is very similar. However rather than just saying that the average is likely to be close to the mean for large $n$, it states that the average will actually converge to the mean almost surely so with probability 1. Formally, we say:
+
+```math
+\lim_{n \to \infty} \bar{S}_n = \mu
+
+So in other words if we consider the set of outcomes where the average converges to the mean, we have:
+
+```math
+E = \{\omega \in \Omega : \lim_{n \to \infty} \bar{S}_n(\omega) = \mu\}
+```
+
+Then the set of outcomes if of course an event, as it is a subset of the sample space. Thus we can assign a probability to it, i.e. $\P(E)$. The SLLN states that this probability is $1$:
+
+```math
+\P(E) = 1
+```
+
+<Callout type="proof">
+Let's show this is true for the Bernoulli case, which is a common example of the law of large numbers.
+Let $X_1, ..., X_n$ be i.i.d. Bernoulli($p$) random variables (so $X_i = 1$ for success, $0$ otherwise).
+
+The sample mean is the relative frequency of successes:
+
+```math
+\bar{S}_n = \frac{1}{n}\sum_{i=1}^{n} X_i
+```
+
+The expectation is $\mu = p$, variance $\sigma^2 = p(1-p)$. We can then use [Chebyshev's Inequality]() to bound the probability of deviation from the mean:
+
+```math
+\P(|\bar{S}_n - p| \geq \varepsilon)
+\leq \frac{\text{Var}(\bar{S}_n)}{\varepsilon^2}
+= \frac{p(1-p)}{n \varepsilon^2}
+```
+
+As $n \to \infty$, the right-hand side goes to $0$. Thus, with high probability, $\bar{S}_n$ is close to $p$ for large $n$ which is exactly what the WLLN states. This also matches our intuition when comparing it to a binomial distribution.
+</Callout>
+
+<Callout type="proof">
+Borel-Cantelli Lemma
+</Callout>
+
+<Callout type="example">
+Suppose you flip a biased coin ($p = 0.7$) $n$ times. Let $X_i$ be the indicator of a head on trial $i$. The sample mean $\bar{S}_n$ is the proportion of heads. We could then ask ourselves, how many flips do we need to be confident that the observed frequency is within 0.05 of the true value (0.7)? By the WLLN and Chebyshev's Inequality:
+
+```math
+\P(|\bar{S}_n - 0.7| \geq 0.05) \leq \frac{0.7 \times 0.3}{n \times 0.05^2}
+```
+
+For $n = 1000$, this is about $0.084$, meaning there's less than a 10% chance the observed frequency is off by more than $0.05$ from the true value. 
+</Callout>
+
+<Callout type="todo">
+The exponential distribution converges to the mean as well. Suppose $X_1, X_2, \ldots$ are i.i.d. exponential random variables with mean $\mu = 1/\lambda$. Then:
+
+```math
+\lim_{n \to \infty} \bar{S}_n = \mu
+```
+</Callout>
+
+### Monte Carlo Integration
+
+<Callout type="todo">
+We will actually look at monte carlo and las vegas methods more in detail in algorithms section.
+
+This still doesn't quite make sense to me. and seems a bit incomplete to me.
+</Callout>
+
+**Monte Carlo methods** use random sampling to approximate mathematical quantities—most commonly, integrals. This is especially useful when the integral cannot be computed analytically. Suppose we want to compute:
+
+```math
+I = \int_0^1 g(x) dx < \infty
+```
+
+but $g(x)$ is complicated. A key insight of the law of large numbers is that we can interpret this as the expected value of $g(X)$ where $X$ is a uniform random variable on $[0, 1]$ because the integral is also just a weighted average of $g(x)$ over the interval $[0, 1]$. So we can just easily sample random points from the uniform distribution and average the results to approximate the integral. Specifically we generate independent samples $U_1, U_2, \ldots, U_n$ uniformly distributed on $[0, 1]$ and compute:
+
+```math
+\frac{1}{n}\sum_{i=1}^n g(U_i)
+```
+
+By the Law of Large Numbers, as $n \to \infty$, this average converges (almost surely) to $I$:
+
+```math
+\lim_{n \to \infty} \frac{1}{n}\sum_{i=1}^n g(U_i) = \int_0^1 g(x) dx = I
+```
+
+<Callout type="example" title="Approximating $\pi$ with Monte Carlo">
+Suppose we wish to estimate the area of a unit circle, which is $\pi$. Imagine drawing random points in the square $[-1, 1] \times [-1, 1]$ and counting the fraction that fall inside the circle $x^2 + y^2 \leq 1$. This fraction, multiplied by $4$ (the area of the square), estimates $\pi$.
+
+<Callout type="todo">
+I get the idea but im not seeing the integral
+</Callout>
+
+As the number of points increases, this approximation converges to the true value of $\pi$ by the law of large numbers. 
+</Callout>
+
+## Convergence for Random Variables
+
+<Callout type="todo">
+I don't quiet understand these and the differences between them but they seem important.
+
+Also maybe it would be smart to move this to the beginning of the section? before the law of large numbers as it is a more general concept and is used in the law of large numbers?
+</Callout>
+
+We have seen that the empirical average of i.i.d. random variables converges almost surely to the mean. But in probability theory, there are multiple notions of convergence for sequences of random variables.
+
+Recall: For sequences of real numbers, we can define convergence using the $\varepsilon$-definition or the Cauchy criterion. For random variables, we have analogous definitions, but in the context of probability.
+
+A sequence of random variables $X_n$ converges in probability to $X$ if, for all $\varepsilon > 0$
+
+```math
+\lim_{n \to \infty} \P(|X_n - X| \geq \varepsilon) = 0
+```
+
+So we write $X_n \xrightarrow{P} X$. The intuition is that for large $n$, $X_n$ is likely to be close to $X$ with high probability, but it does not guarantee that it will be close for every single outcome.
+
+Another common mode of convergence is **almost sure convergence**. This form of convergence is stronger then convergence in probability: If $X_n \to X$ almost surely, then $X_n \to X$ in probability. We say that a sequence of random variables $X_n$ converges almost surely to $X$ written as $X_n \xrightarrow{\text{a.s.}} X$ if:
+
+```math
+\P\left(\lim_{n \to \infty} X_n = X\right) = 1
+```
+
+The idea here is that for almost every possible outcome $\omega$, the sequence $X\_n(\omega)$ converges to $X(\omega)$. This is the "pointwise" convergence for random variables?
+
+Lastly we have **convergence in distribution**. We say that a sequence of random variables $X_n$ converges in distribution to $X$ written as $X\_n \xrightarrow{d} X$ if the cumulative distribution functions (CDFs) converge at all continuity points of the CDF of $X$. Formally, this means we have for all continuity points $x$ of $F_X$:
+
+```math
+\lim_{n \to \infty} \P(X_n \leq x) = \P(X \leq x)
+```
+
+The idea here is that the distribution (the "shape" of the CDF) of $X_n$ approaches that of $X$—even if the random variables themselves do not converge for any $\omega$. This is the weakest form of convergence and is often used in the context of the central limit theorem?
+
+## Central Limit Theorem (CLT)
+
+The law of large numbers tells us that the sample mean $\bar{S}\_n$ stabilizes near the expectation $\mu$ for large $n$. But how close is it, typically? How do the fluctuations behave as $n$ grows?
+
+The answer is given by the **central limit theorem** (CLT) which can be summarized as:
+
+> The properly normalized sum of i.i.d. random variables converges in distribution to a normal distribution, regardless of the original distribution of the $X_i$ (as long as they have finite mean and variance).
+
+First let us look at the easiest case where the $X_i$ are normally distributed. Suppose $X_1, X_2, \ldots, X_n$ are i.i.d. random variables with mean $\mu$ and variance $\sigma^2$. The sum of these random variables is by the definition of the normal distribution and properties of expectation and variance:
+
+```math
+S_n = X_1 + \cdots + X_n \sim \mathcal{N}(n\mu, n\sigma^2)
+```
+
+The sample mean is then:
+
+```math
+\bar{S}_n = \frac{S_n}{n} \sim \mathcal{N}(\mu, \frac{\sigma^2}{n})
+```
+
+So by taking the square root of the variance, we can see that the **standard deviation** of $\bar{S}_n$ is $\frac{\sigma}{\sqrt{n}}$. This means that as $n$ increases, the fluctuations around the mean become smaller and smaller. Specifically because they are i.i.d so the variance is constant the typical distance between the empirical average $\bar{S}_n$ and the expectation $\mu$ shrinks like $1/\sqrt{n}$. Concretely, let $\sigma = 1$ then if we have $n = 100$, the standard deviation of the sample mean is $\frac{1}{10} = 0.1$, if we have $n = 10000$, the standard deviation is $\frac{1}{100} = 0.01$. So the fluctuations around the mean shrink as we increase the number of samples.
+
+<Callout type="todo">
+This part I dont get: why do we do this and what does it mean? 
+To get a **non-trivial limit**, we “rescale” the fluctuations:
+
+```math
+Z_n = \frac{\sqrt{n}}{\sigma} (\bar{S}_n - \mu) = \frac{S_n - n\mu}{\sqrt{n}\sigma}
+```
+
+For normal variables, $Z\_n \sim \mathcal{N}(0, 1)$ for all $n$!
+But **here’s the amazing thing**: *the same is true, asymptotically, for any i.i.d. sequence with finite mean and variance.*
+
+By centering at $n\mu$ (subtracting the mean) and dividing by $\sqrt{n}\sigma$ (the standard deviation of the sum), we “zoom in” on the typical fluctuations, which are of size $\sigma\sqrt{n}$.
+
+* The **expectation** of $Z\_n$ is $0$ (by linearity of expectation)
+* The **variance** is $1$ (by properties of variance for i.i.d. sums)
+
+**Thus, $Z\_n$ is standardized for comparison to the standard normal distribution.**
+</Callout>
+
+Now let us look at the general case where the $X_i$ are not normally distributed. The central limit theorem states that even if the $X_i$ are not normally distributed, the sum of these random variables will still converge to a normal distribution as $n$ increases. Let $X_1, X_2, ...$ be i.i.d. random variables with $\E[X_1] = \mu$ and $\text{Var}(X_1) = \sigma^2 < \infty$. Let $S_n = X_1 + \cdots + X_n$. Then we can define the normalized sum:
+
+```math
+Z_n = \frac{S_n - n\mu}{\sqrt{n}\sigma}
+```
+
+Then as we increase $n$, the distribution of $Z_n$ converges in distribution to the standard normal distribution $\mathcal{N}(0, 1)$:
+
+```math
+\P(Z_n \leq x) \to \Phi(x)
+```
+
+for every $x \in \mathbb{R}$, where
+
+```math
+\Phi(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^x e^{-t^2/2} dt
+```
+
+is the standard normal cumulative distribution function. So in other words:
+
+```math
+Z_n \xrightarrow{d} Z \sim \mathcal{N}(0, 1)
+```
+
+So the normalized sum $Z_n$ converges in distribution to a standard normal distribution as $n \to \infty$ despite the original distribution of the $X_i$ being arbitrary (as long as it has finite mean and variance). This is the essence of the central limit theorem. This is why the normal distribution is so prevalent in statistics and probability theory: it describes the behavior of sums of random variables, even when those variables themselves are not normally distributed. Hence we use it for physical phenomena, measurement errors, and many other applications where we deal with sums of random effects.
+
+<Callout type="example">
+<Callout type="todo">
+I dont get the point of this? what does it mean and what is its application?
+</Callout>
+
+Suppose $Z \sim \mathcal{N}(0, 1)$. It is known that:
+
+```math
+\P(Z \in [-2, 2]) \approx 0.954
+```
+
+By the CLT,
+
+```math
+\lim_{n\to\infty} \P(n\mu - 2\sigma\sqrt{n} \leq S_n \leq n\mu + 2\sigma\sqrt{n}) \approx 95.4\%
+```
+
+So, for large $n$, the sum $S_n$ almost always falls in an interval of width $4\sigma\sqrt{n}$ centered at $n\mu$. 
+</Callout>
 
 ### Moiver-Laplace Theorem
-
-## Gesetz der grossen Zahlen
-
-Wir wissen wenn wir eine Zufallsvariable $X_i$ mit einer Bernoulli Verteilung haben also $X_i \sim B(p)$ dann ist $\sum_{i=1}^{n}{X_i} \sim Bin(n,p)$. Die relative Häufigkeit ist wie wir wissen die Anzahl des Eintreffen eines Ereignis $X$ durch die anzahl unabhängige Ausführungen des Experiments $n$ dann gilt folgendes
-
-```math\lim_{n \to \infty}{P(|\frac{X}{n} - p| \geq e)} = 0```
-
-Was so viel heisst wie wenn desto mehr unabhängige Experimente wir ausführen desto besser stabilisiert sich die relative Häufigkeit um den Erwartungswert.
-
-Mehr dazu findest du [hier](https://studyflix.de/statistik/gesetz-der-grosen-zahlen-2053)
-
-## Zentraler Grenzwertsatz
-
-Der zentrale Grenzwertsatz liefert die Begründung für das Phänomen, dass sich bei der additiven Überlagerung vieler kleiner unabhängiger Zufallsexperiment approximativ zu einer Normalverteilung wird.
-
-Wenn wir also eine Folge von unabhängigen Zufallsvariablen $X_1,X_2,...$vom gleichen Wahrscheinlichkeitsraum haben welche alle dieselbe Verteilung mit Erwartungswert $\mu$ und Varianz $\sigma^2$ haben dann gilt für $n$ die Anzahl Zufallsvariablen und die Summe $S_n=X_1+...+X_n$. Dann hat die Summe approximative die Normalverteilung $N(\mu n, \sigma n)$ wobei $\mu n = n \cdot \mu$ und $\sigma n = \sqrt{n} \cdot \sigma$.
-
-Diese Verteilung kann dann natürlich auch noch standardisiert werden.
-
-```math\frac{S_n -\mu n}{\sqrt{n}\cdot \sigma}\sim N(0,1)```
-
-## Satz von Moivre-Laplace
 
 Weil eine Binomialverteilte Zufallsvariable $X \sim Bin(n,p)$ als Summe von $n$ Bernoulliverteilte Zufallsvariablen interpretiert werden kann und wir sie mit der Normalverteilung annähern können mit $N(np, \sqrt{np(1-p)})$ können wir ein paar Approximationen machen. Wobei $normcdf(x)$ die Verteilungsfunktion der standardisierten Normalverteilung ist.
 

@@ -1714,7 +1714,7 @@ So the distribution is completely characterized by its mean and variance. From t
 The **cumulative distribution function (CDF)** of a normal random variable $X \sim \mathcal{N}(\mu, \sigma^2)$ is given by:
 
 ```math
-F_X(a) = \mathbb{P}(X \leq a) = \int_{-\infty}^a f_X(x)\,dx
+F_X(a) = \P(X \leq a) = \int_{-\infty}^a f_X(x)\,dx
 ```
 
 There is **no closed form** for this integral in terms of elementary functions, but it is tabulated and implemented in all statistical packages.
@@ -1722,11 +1722,11 @@ There is **no closed form** for this integral in terms of elementary functions, 
 <Callout type="example" title="Probability of Student Height">
 Suppose the heights of students in a class are normally distributed with mean $\mu = 175$ cm and standard deviation $\sigma = 10$ cm. What is the probability that a randomly chosen student is shorter than 170 cm?
 
-Let $X \sim \mathcal{N}(175, 10^2)$. We want $\mathbb{P}(X < 170)$.
+Let $X \sim \mathcal{N}(175, 10^2)$. We want $\P(X < 170)$.
 
 
 ```math
-\mathbb{P}(X < 170) = F_X(170) \approx 0.3085
+\P(X < 170) = F_X(170) \approx 0.3085
 ```
 
 (Using a standard normal table or calculator.) So about **31%** of students are shorter than 170 cm. 
@@ -1842,13 +1842,13 @@ This transformation centers the distribution at 0 and rescales the variance to 1
 The **cumulative distribution function (CDF)** is denoted as $\Phi(z)$:
 
 ```math
-\Phi(z) = \mathbb{P}(Z \leq z) = \int_{-\infty}^z \varphi(t) dt
+\Phi(z) = \P(Z \leq z) = \int_{-\infty}^z \varphi(t) dt
 ```
 
 In practice, **any normal probability can be reduced to a standard normal calculation** using this standardization. That is,
 
 ```math
-\mathbb{P}(X \leq a) = \mathbb{P}\left( \frac{X - \mu}{\sigma} \leq \frac{a - \mu}{\sigma} \right) = \Phi\left( \frac{a - \mu}{\sigma} \right)
+\P(X \leq a) = \P\left( \frac{X - \mu}{\sigma} \leq \frac{a - \mu}{\sigma} \right) = \Phi\left( \frac{a - \mu}{\sigma} \right)
 ```
 
 This is actually the key to using the normal distribution in practice: we can always convert any normal random variable to a standard normal variable, compute probabilities using the standard normal CDF, and then interpret those results in terms of the original variable.
@@ -1858,7 +1858,7 @@ Let $X \sim \mathcal{N}(\mu, \sigma^2)$ and $Z = \frac{X-\mu}{\sigma}$ then we h
 - $\E[Z] = \frac{\E[X] - \mu}{\sigma} = 0$
 - $\Var(Z) = \frac{\Var(X)}{\sigma^2} = 1$
 
-Thus, $Z \sim \mathcal{N}(0,1)$, and we can write $\mathbb{P}(X \leq a) = \Phi\left( \frac{a - \mu}{\sigma} \right)$ as above. 
+Thus, $Z \sim \mathcal{N}(0,1)$, and we can write $\P(X \leq a) = \Phi\left( \frac{a - \mu}{\sigma} \right)$ as above. 
 </Callout>
 
 <Callout type="example" title="Standardizing Student Heights">
@@ -1876,7 +1876,7 @@ Then we look up $\Phi(-0.5) \approx 0.3085$. So about 31% of students are shorte
 Using the CDF, we can find the probability that a random variable $X$ takes on a value less than or equal to $a$. The **quantile function** (or inverse CDF) allows us to do the opposite: given a probability $a$, it gives us the value $c$ such that:
 
 ```math
-\mathbb{P}(X \leq c) = a
+\P(X \leq c) = a
 ```
 
 This is written as:
@@ -1904,7 +1904,7 @@ Quantiles are important for all distributions, but the normal distribution is so
 <Callout type="example">
 Suppose we want to know the minimum height needed to be in the top 5% of students in the class ($X \sim \mathcal{N}(175, 10^2)$).
 
-We want $c$ such that $\mathbb{P}(X > c) = 0.05$, or $\mathbb{P}(X \leq c) = 0.95$:
+We want $c$ such that $\P(X > c) = 0.05$, or $\P(X \leq c) = 0.95$:
 
 ```math
 c = 175 + 10 \cdot \Phi^{-1}(0.95) \approx 175 + 10 \times 1.645 = 191.45
@@ -1924,7 +1924,7 @@ One of the most important practical properties of the normal distribution is the
 Formally,
 
 ```math
-\mathbb{P}(|X - \mu| < k \sigma) = 2\Phi(k) - 1
+\P(|X - \mu| < k \sigma) = 2\Phi(k) - 1
 ```
 
 for $k = 1, 2, 3$.
@@ -1932,7 +1932,7 @@ for $k = 1, 2, 3$.
 For example, for $k = 3$:
 
 ```math
-\mathbb{P}(|X - \mu| \geq 3\sigma) = 1 - \mathbb{P}(|X - \mu| < 3\sigma) \approx 0.0027
+\P(|X - \mu| \geq 3\sigma) = 1 - \P(|X - \mu| < 3\sigma) \approx 0.0027
 ```
 
 So, the probability of being "more than three sigmas away" is about 0.27%, which is why "three sigma events" are considered extremely rare. This fact is used, for example, in quality control, where measurements outside $\mu \pm 3\sigma$ are flagged as anomalies.
@@ -1941,7 +1941,7 @@ Surprisingly, this rule does not depend on the mean $\mu$ or variance $\sigma^2$
 
 ## Constructing Random Variables
 
-Up to now, we have talked about random variables as **functions defined on some probability space** and described their **distribution** via the cumulative distribution function (CDF), $F_X(a) = \mathbb{P}(X \leq a)$. But you might wonder: given any function $F: \mathbb{R} \to [0,1]$ that looks like a "CDF", does there actually exist a random variable $X$ (possibly on some probability space) whose distribution function is exactly $F$? And how could we construct such an $X$ in practice or in simulations?
+Up to now, we have talked about random variables as **functions defined on some probability space** and described their **distribution** via the cumulative distribution function (CDF), $F_X(a) = \P(X \leq a)$. But you might wonder: given any function $F: \mathbb{R} \to [0,1]$ that looks like a "CDF", does there actually exist a random variable $X$ (possibly on some probability space) whose distribution function is exactly $F$? And how could we construct such an $X$ in practice or in simulations?
 
 This question lies at the heart of probability theory: it tells us that we can focus on the distribution of random variables—meaning their PMF, PDF, or CDF, without needing to worry about the detailed structure of the underlying probability space. 
 
@@ -1953,13 +1953,13 @@ Recall that for a function $F: \mathbb{R} \to [0,1]$ to be the CDF of some rando
 
 These are exactly the properties that arise from the definitions and basic results about probability measures. 
 
-The question now is for any function $F$ with these properties, does there exist a random variable $X$ such that $F_X(a) = F(a)$ for all $a$? The answer is yes. For any function $F$ with these properties, there exists a probability space $(\Omega, \mathcal{F}, \mathbb{P})$ and a random variable $X: \Omega \to \mathbb{R}$ with $F_X(a) = \mathbb{P}(X \leq a) = F(a)$ for all $a$.
+The question now is for any function $F$ with these properties, does there exist a random variable $X$ such that $F_X(a) = F(a)$ for all $a$? The answer is yes. For any function $F$ with these properties, there exists a probability space $(\Omega, \mathcal{F}, \P)$ and a random variable $X: \Omega \to \mathbb{R}$ with $F_X(a) = \P(X \leq a) = F(a)$ for all $a$.
 
 This is often called the **Kolmogorov existence theorem**. In practice, this means that when defining or analyzing a random variable, we can simply specify its distribution function (or PMF or PDF), and be assured that a corresponding random variable does exist.
 
-This is useful because in applications (especially in statistics and simulation), we then do not need to describe the probability space $(\Omega, \mathcal{F}, \mathbb{P})$ explicitly. Instead, we work directly with the distributions of random variables. 
+This is useful because in applications (especially in statistics and simulation), we then do not need to describe the probability space $(\Omega, \mathcal{F}, \P)$ explicitly. Instead, we work directly with the distributions of random variables. 
 
-The idea of kolmogorov's theorem is as follows. Consider the "canonical" probability space: the infinite product space $\Omega = {0,1}^{\mathbb{N}}$, i.e., all infinite sequences of independent coin flips (where 0 = tails, 1 = heads) and the probability measure $\mathbb{P}$ is defined so that the coordinates are i.i.d. Bernoulli(1/2) random variables. We can now use such sequences to construct a wide variety of random variables, in particular the uniform distribution on $[0,1]$ which, in turn, can be used to generate any other desired distribution.
+The idea of kolmogorov's theorem is as follows. Consider the "canonical" probability space: the infinite product space $\Omega = {0,1}^{\mathbb{N}}$, i.e., all infinite sequences of independent coin flips (where 0 = tails, 1 = heads) and the probability measure $\P$ is defined so that the coordinates are i.i.d. Bernoulli(1/2) random variables. We can now use such sequences to construct a wide variety of random variables, in particular the uniform distribution on $[0,1]$ which, in turn, can be used to generate any other desired distribution.
 
 Let's generate a uniform random variable on $[0,1]$ using this framework, and then show how to use it to construct any other distribution. Suppose $X_1, X_2, \dots$ are i.i.d. Bernoulli(1/2) random variables (i.e., independent fair coin flips):
 
@@ -1986,7 +1986,7 @@ F^{-1}(a) = \inf \{ x \in \mathbb{R} : F(x) \geq a \}, \quad a \in [0,1]
 Then $X$ has distribution function $F$:
 
 ```math
-\mathbb{P}(X \leq x) = \mathbb{P}(F^{-1}(U) \leq x) = \mathbb{P}(U \leq F(x)) = F(x)
+\P(X \leq x) = \P(F^{-1}(U) \leq x) = \P(U \leq F(x)) = F(x)
 ```
 
 This construction works for any CDF, whether $F$ is continuous or has jumps (discrete points). If $F$ is strictly increasing and continuous, $F^{-1}$ is the usual inverse function. The idea is that we are transforming a uniform random variable into one with the desired distribution by mapping the uniform probabilities to the quantiles of the target distribution.
