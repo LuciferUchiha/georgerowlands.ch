@@ -494,8 +494,17 @@ This means we can apply the previous result to $B_n^c$:
 ### Inclusion-Exclusion Principle
 
 <Callout type="todo">
-This is also more a property of combinatorics. But is worth showing especially how to use. 
-But what if the event is not mutually exclusive? Inclusion-exclusion principle.
+This is basically a generalization of countable additivity without the need for disjoint events. It is also a very important principle in combinatorics and probability theory. It is often used to calculate the probability of the union of multiple events when they are not disjoint.
+
+If the probabalities are all the same i.e. we have a Laplace experiment then we can use the formula:
+
+```math
+|\bigcup_{i=1}^{n} A_i| = |A_1| + |A_2| + \ldots + |A_n| - \sum_{i < j} |A_i \cap A_j| + \sum_{i < j < k} |A_i \cap A_j \cap A_k| - \ldots + (-1)^{n+1} |A_1 \cap A_2 \cap \ldots \cap A_n| = \sum_{k=1}^{n} (-1)^{k+1} \sum_{1 \leq i_1 < i_2 < \ldots < i_k \leq n} |A_{i_1} \cap A_{i_2} \cap \ldots \cap A_{i_k}|
+```
+
+meaning and interpreataion? Show the basic idea for n=2 and n=3.
+
+For larger cases this becomes annoying which is why we then just use booles inquality as an upper bound.
 
 In algorithms and probability this came up a lot in the exercises as programming it needs to be done using dynamic programming and isn't as simple as just using the formula. 
 </Callout>

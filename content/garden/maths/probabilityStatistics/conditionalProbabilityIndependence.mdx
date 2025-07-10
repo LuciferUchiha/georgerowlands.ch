@@ -325,6 +325,26 @@ So from this we can see that the multiplication rule is symmetric or more formal
 \P(A \cap B) = \P(A | B) \cdot \P(B) = \P(B | A) \cdot \P(A)
 ```
 
+This can be extended to more than two events. For $n$ events $A_1, A_2, \ldots, A_n$ we have:
+
+```math
+\P(A_1 \cap A_2 \cap \ldots \cap A_n) = \P(A_1) \cdot \P(A_2 | A_1) \cdot \P(A_3 | A_1 \cap A_2) \cdots \P(A_n | A_1 \cap A_2 \cap \ldots \cap A_{n-1})
+```
+
+<Callout type="proof">
+The proof of the above is rather simple if we use the definition of conditional probability we get:
+
+```math
+\begin{align*}
+\P(A_1 \cap A_2 \cap \ldots \cap A_n) &= \P(A_1) \cdot \P(A_2 | A_1) \cdot \P(A_3 | A_1 \cap A_2) \cdots \P(A_n | A_1 \cap A_2 \cap \ldots \cap A_{n-1}) \\
+&= \frac{\P(A_1)}{1} \cdot \frac{\P(A_1 \cap A_2)}{\P(A_1)} \cdot \frac{\P(A_1 \cap A_2 \cap A_3)}{\P(A_1 \cap A_2)} \cdots \frac{\P(A_1 \cap A_2 \cap \ldots \cap A_n)}{\P(A_1 \cap A_2 \cap \ldots \cap A_{n-1})} \\
+&= \P(A_1 \cap A_2 \cap \ldots \cap A_n)
+\end{align*}
+```
+
+The multiplications become a telescoping product, where each term cancels with the denominator of the next term, leaving us with the original intersection probability.
+</Callout>
+
 <Callout type="example">
 Suppose we have a standard deck of 52 playing cards. We draw two cards from the deck one after the other, without replacement. What is the probability that both cards are aces?
 
