@@ -1,6 +1,4 @@
-# Grenzwertsätze
-
-## Simulation von Zufallsvariablen
+# Simulating Random Variables
 
 Manchmal ist es nur mit grossem Aufwand Wahrscheinlichkeiten zu exakt berechnen. Eine Lösung für dieses Problem ist die Zufallsvariable zu simulieren, also Zahlen zu erzeugen die korrekt verteilt sind und dann schauen, welcher Prozentsatz dieser Zahlen im gesuchten Ereignis liegen. Dank dem Gesetz der grossen Zahlen wird diese Wahrscheinlichkeit genauer mit wachsender Anzahl an Wiederholungen.
 
@@ -8,7 +6,7 @@ In den meisten Programmiersprachen ist der sogenannte lineare Kongruenzgenerator
 
 Für kryptographische Zwecke wie Schlüsselerzeugung sind Pseudozufallszahlengenerator nicht geeinigt, weil mit wenigen Werten kann man die verwendete Parameter berechnen und kann dann die Zufallsvariablen voraus sehen.
 
-### Linearer Kongruenzgenerator
+## Linearer Kongruenzgenerator
 
 Beim linearen Kongruenzgenerator haben wir ein sogenanntes modul $m >1$ und  einen Anfangswert (der Seed) $x_0$ und zwei weitere Werte $a$ und $b$. Wichtig dabei ist, dass $a,b,x_0 \in \{0,1,...,m-1\}$ sind. Dann können wir eine Zufallszahl wie gefolgt berechnen
 
@@ -28,7 +26,7 @@ Durch eine Transformation bekommen wir auch nur noch Werte im Intervall $[a,b]$.
 
 Die Werte $U$ die wir erhalten sind im Intervall $[a,b]$ gleich verteilt.
 
-### Inversionsmethode
+## Inversionsmethode
 
 Wir können nun unsere Zufallszahlen auf eine bestimmte Verteilung abbilden mit der Inversionsmethode.
 

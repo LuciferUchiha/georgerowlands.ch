@@ -10,10 +10,7 @@ export default {
   confidenceIntervals: "",
   hypothesisTests: "",
   algorithms: "",
-  discreteRandomVariables: "",
-  continuousRandomVariables: "",
-  independentRandomVariables: "",
   markovChains: "",
   queueingTheory: "",
-  randomStuff: ""
+  simulating: ""
 }

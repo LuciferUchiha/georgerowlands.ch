@@ -1350,6 +1350,34 @@ So, there is about an **8.92% chance** that exactly 3 customers arrive in the ne
 
 ### Hypergeometric Distribution
 
+Die Hypergeometrische Verteilung der Zufallsvariable $X$ ist die Verteilung, die beim $n$-maligen Ziehen ohne
+Zurücklegen und ohne Reihenfolge aus einer Urne mit $N$ Kugeln, von denen $M$ eine spezielle Eigenschaft haben und wo
+die Anzahl der gezogenen Kugeln mit dieser speziellen Eigenschaft gezählt werden.
+
+- Wir schreiben dann $X \sim Hyp(N,M,n)$
+- Die Dichtefunktion von $X$ ist $f(k)=\binom{M}{k} \cdot \frac{\binom{N-M}{n-k}}{ \binom{N}{n}}$ wobei $N$ die
+  Gesamtanzahl der Kugeln ist, $M$ die Anzahl mit der speziellen Eigenschaft. $n$ ist dann der Umfang der Stichprobe also
+  die Anzahl der entnommenen Kugeln und $k$ die Anzahl angestrebte Kugeln mit der speziellen Eigenschaft.
+- $E(X) = n \cdot \frac{M}{N}$
+- $V(X) = n \cdot \frac{M}{N} \cdot (1 - \frac{M}{N}) \cdot \frac{N-n}{N-1}$
+
+In Matlab haben wir die Funktionen:
+
+- Dichtefunktion: $hygepdf(k,N,M,n)$
+- Verteilungsfunktion $hygecdf(k,N,M,n)$
+
+mehr dazu findest du [hier](https://www.youtube.com/watch?v=BoPYslAe8sg).
+
+<Callout type="example" title="Beispiel Hypergeometrische Verteilung">
+Das perfekte Beiepiel dafür ist Lotto, wobei wir 49 nummerierte Kugeln haben, 6 davon werden gezogen, welche in diesem
+Falle unsere spezielle Kugeln sind. Wir dürfen 6 Zahlen aufschreiben, also sind das unsere Kugeln die wir
+herausnehmen ohne zurücklegen oder die Reihenfolge zu beachten. Was ist nun die Wahrscheinlichkeit das wir 4 von
+den 6 richtig haben?
+
+$X \sim Hyp(49,6,6)$
+$hygepdf(4,49,6,6) = \frac{645}{665896} \approx 0.09686$%
+</Callout>
+
 ### Coupon Collector Problem
 
 ## Continuous Random Variables
@@ -1833,7 +1861,13 @@ We standardize it using the so-called **z-score transformation**:
 Z = \frac{X - \mu}{\sigma}
 ```
 
-This transformation centers the distribution at 0 and rescales the variance to 1. The result is the standard normal distribution. The **probability density function (PDF)** of the standard normal distribution is denoted as $\varphi(z)$ and is given by:
+This transformation centers the distribution at 0 and rescales the variance to 1. By removing the mean we center the distribution around 0, and by dividing by the standard deviation we ensure that the spread of the distribution is 1 because the variance of $Z$ is:
+
+```math
+\Var(Z) = \Var\left(\frac{X - \mu}{\sigma}\right) = \frac{\Var(X)}{\sigma^2} = \frac{\sigma^2}{\sigma^2} = 1
+```
+
+The result is the standard normal distribution. The **probability density function (PDF)** of the standard normal distribution is denoted as $\varphi(z)$ and is given by:
 
 ```math
 \varphi(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)
