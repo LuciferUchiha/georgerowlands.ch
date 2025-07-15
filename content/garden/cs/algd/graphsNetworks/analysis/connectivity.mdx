@@ -15,46 +15,22 @@ of a graph, that is what we will analyze in this section.
     caption="Which graph is more connected?"
 />
 
-We have already seen an idea of how to measure the connectivity of a graph with the concept of [graph density](/garden/cs/algd/graphsNetworks/graphs#graph-density). 
-There the idea is to compare the number of edges in the graph with the maximum number of edges that the graph could have, 
-i.e. the number of edges in a complete graph. But this is not a very good measure of connectivity because it does not 
-take into account the structure of the graph. 
+We have already seen an idea of how to measure the connectivity of a graph with the concept of [graph density](/garden/cs/algd/graphsNetworks/graphs#graph-density). There the idea is to compare the number of edges in the graph with the maximum number of edges that the graph could have, i.e. the number of edges in a complete graph. But this is not a very good measure of connectivity because it does not take into account the structure of the graph. 
 
-Instead a different approach is to analyze the connectivity of a graph by looking at how many vertices or edges have to be 
-removed to disconnect the graph. This measure directly looks at the structure of the graph. This technique also tells us 
-how robust a graph is, i.e. how well it can handle failures. For example in a communication network we want to know how 
-many communication lines can fail before the network becomes disconnected. This is also why graph connectivity is also 
-commonly referred to as graph resilience as it measures how resilient a graph is to failures. 
+Instead a different approach is to analyze the connectivity of a graph by looking at how many vertices or edges have to be removed to disconnect the graph. This measure directly looks at the structure of the graph. This technique also tells us how robust a graph is, i.e. how well it can handle failures. For example in a communication network we want to know how many communication lines can fail before the network becomes disconnected. This is also why graph connectivity is also commonly referred to as graph resilience as it measures how resilient a graph is to failures. 
 
 ## K-Connected Graphs
 
-Let's first look at the case where we want to measure the connectivity of a graph by looking at how many vertices have to 
-be removed to disconnect the graph, often referred to as vertex connectivity.
-We say that a graph is $k$-connected or $k$-vertex-connected if it has at least $k+1$ 
-vertices and at least $k$ vertices have to be removed to disconnect the graph. We require at least $k+1$ vertices because 
-otherwise we would be removing all vertices and the graph would be disconnected by definition. The above definition is 
-a bit unclear for example does it mean that if a graph is 2-connected? To clarify this we define the connectivity of a graph 
-more formally as follows:
+Let's first look at the case where we want to measure the connectivity of a graph by looking at how many vertices have to be removed to disconnect the graph, often referred to as vertex connectivity. We say that a graph is $k$-connected or $k$-vertex-connected if it has at least $k+1$ vertices and at least $k$ vertices have to be removed to disconnect the graph. We require the graph to have at least $k+1$ vertices because otherwise we would be removing all vertices and the graph would be disconnected by definition. So we define the connectivity of a graph more formally as follows:
 
 > A graph $G = (V, E)$ is $k$-connected if $|V| \geq k+1$ and for every set $X \subseteq V$ with $|X| < k$ the graph 
 $G[V \setminus X]$ is connected.
 
-This definition is a bit more strict than the previous one because it requires that for every set of vertices of size less 
-than $k$ the graph is connected. It can be a bit hard to understand at first because we are coming from "the other side" 
-where we are looking at how many vertices can we remove without disconnecting the graph. But it is the same idea.
+This definition is a bit more precise than the previous one because it requires that after removing any set of vertices of size less than $k$ the graph is still connected. Notice that if a graph is $k$-connected then it is also $(k-1)$-connected because if we remove any set of vertices of size less than $k$ then we can also remove any set of vertices of size less than $k-1$. However, the converse is not true, i.e. a graph can be $(k-1)$-connected but not $k$-connected. It can be a bit confussing because if we say that a graph is $k$-connected then we for a fact know that it is also $(k-1)$-connected. However, if we say that a graph is $(k-1)$-connected then we do not know if it is $k$-connected or not, but it could be. So it is often good practice to specify the highest $k$ for which we know that the graph is $k$-connected.
 
-<Callout type="info">
-In some literature if a graph is 2-connected then it is also 3-connected and 4-connected and so on. This can be a bit confusing 
-because it is not clear what the smallest number of vertices that have to be removed to disconnect the graph is. This comes from 
-the fact of saying that at least $k$ vertices have to be removed to disconnect the graph. So if we then know that a graph with 5 
-vertices is at least 2-connected then we can also say that it is 3-connected because if we remove even more vertices then the graph will just become even more 
-disconnected. The same applies to 4-connected, however not 5-connected because then we would be removing all vertices and we 
-require at least one vertex to remain in the graph. Our formal definition is more strict and does not allow for this kind of 
-confusion.
-</Callout>
+So for example the complete graph $K_n$ with $n$ vertices is $(k-1)$-connected because removing any set of vertices of size less than $k$ will still leave us with a connected graph. However, the complete graph $K_n$ is not $k$-connected for $k \geq n$ because we would be removing all vertices and the graph would be disconnected by definition. 
 
-So for example the graph below is 2-connected because if we remove the vertices $4$ and $2$ the graph
-becomes disconnected but if we only remove any one vertex the graph stays connected.
+Another example is the graph below, which is 2-connected because if we remove the vertices $4$ and $2$ the graph becomes disconnected but if we only remove any one vertex the graph stays connected.
 
 export const vertexConnectedGraph = {
     nodes: [
@@ -93,18 +69,14 @@ export const vertexConnectedGraph = {
     zoomable={false}
 />
 
-If we find a set $X \subseteq V$ from the definition of $k$-connectedness that disconnects the graph then we call this set 
-a separator. So as the name suggests a separator is a set of vertices that separates the graph into two or more connected 
-components. This also gives us a different way of defining $k$-connectedness, where we say that a graph is $k$-connected if 
-the size of the smallest separator is $k$. This is a bit more intuitive because it directly tells us how many vertices we 
-have to remove to disconnect the graph. 
+If we find a set $X \subseteq V$ from the definition of $k$-connectedness that disconnects the graph then we call this set a **separator**. So as the name suggests a separator is a set of vertices that separates the graph into two or more connected components. This also gives us a different way of defining $k$-connectedness:
 
-If we fix two vertices $u$ and $v$ in a graph where $u \neq v$ then the separator that disconnects $u$ and $v$ is called a $u-v$ separator. 
+> A graph is $k$-connected if every separator has size at least $k$.
 
-But how do we actually find $k$? The idea is that we need to find the number of paths between $u$ and $v$ that do not share any 
-vertices. If we then remove one vertex from each of these paths we will disconnect $u$ and $v$.
-This is also called **internally disjoint paths**. If we can find $k$ internally disjoint paths between $u$ and $v$ then 
-the smallest $u-v$ separator is $k$. 
+If we fix two vertices $u$ and $v$ in a graph where $u \neq v$ then the separator that disconnects $u$ and $v$ is called a **$u-v$ separator**.
+
+But how do we actually find $k$? The idea is that we need to find the number of paths between $u$ and $v$ that do not share any vertices. If we then remove one vertex from each of these paths we will disconnect $u$ and $v$.
+This is also called **internally disjoint paths**. If we can find $k$ internally disjoint paths between $u$ and $v$ then the smallest $u-v$ separator is $k$. 
 
 <Image 
     src="/cs/graphsInternallyDisjointPaths.png"
@@ -114,17 +86,16 @@ the smallest $u-v$ separator is $k$.
 />
 
 To then find this for the whole graph we need to find the smallest $u-v$ separator for all 
-pairs of vertices $u$ and $v$ in the graph. This leads us **Menger's Theorem** which states the following:
+pairs of vertices $u$ and $v$ in the graph. This leads us to **Menger's Theorem** which states the following:
 
-> Let $u$ and $v$ be two vertices in a graph $G$ and $u \neq v$. Then it holds that:
-"Every $u-v$ separator has size at least $k$ $\iff$ there are at least $k$ internally disjoint paths between $u$ and $v$."
+> Let $u$ and $v$ be two vertices in a graph $G$ and $u \neq v$. Then it holds that: "Every $u-v$ separator has size at least $k$ $\iff$ there are at least $k$ internally disjoint paths between $u$ and $v$."
+
+The reason we say at least because adding other vertices to the separator will not change the fact that it is a separator. So we can also say that the size of the smallest $u-v$ separator is equal to the maximum number of internally disjoint paths between $u$ and $v$.
 
 ### K-Edge-Connected Graphs
 
-The same idea as for vertex connectivity also applies to edge connectivity. A graph is $k$-edge-connected if at least $k$ edges have 
-to be removed to disconnect the graph. Notice that we don't require that the graph has at least 
-$k+1$ edges because we can remove all edges and still have vertices in the graph. The formal definition of edge connectivity
-is as follows:
+The same idea as for vertex connectivity also applies to edge connectivity. A graph is $k$-edge-connected if at least $k$ edges have to be removed to disconnect the graph. Notice that we don't require that the graph has at least 
+$k+1$ edges because we can remove all edges and still have vertices in the graph. The formal definition of edge connectivity is as follows:
 
 > A graph $G = (V, E)$ is $k$-edge-connected if $|E| \geq k$ and for every set $X \subseteq E$ with $|X| < k$ the graph
 $G[E \setminus X]$ is connected.
@@ -167,24 +138,24 @@ export const edgeConnectedGraph = {
     }
 />
 
-Just like for vertex connectivity we can also define edge connectivity in terms of separators. An edge separator is a set of 
-edges that separates the graph into two or more connected components. The size of the smallest edge separator is then the
-edge connectivity of the graph. We can also define a $u-v$ edge separator in the same way as for vertices, i.e. the set of 
+Just like for vertex connectivity we can also define edge connectivity in terms of separators. An **edge separator* is a set of edges that separates the graph into two or more connected components. 
+
+> A graph is $k$-edge-connected if every edge separator has size at least $k$.
+
+We can also define a $u-v$ edge separator in the same way as for vertices, i.e. the set of 
 edges that separates the vertices $u$ and $v$. 
 
-So to then find the edge connectivity of a graph we need to find the smallest $u-v$ edge separator for all pairs of vertices. 
-This is equivalent to finding the smallest number of edge disjoint paths between some pair of vertices $u$ and $v$. Again 
-this leads us to an adaptation of Menger's Theorem for edge connectivity:
+So to then find the edge connectivity of a graph we need to find the smallest $u-v$ edge separator for all pairs of vertices. This is equivalent to finding the smallest number of edge disjoint paths between some pair of vertices $u$ and $v$. Again this leads us to an adaptation of Menger's Theorem for edge connectivity:
 
-> Let $u$ and $v$ be two vertices in a graph $G$ and $u \neq v$. Then it holds that:
-"Every $u-v$ edge separator has size at least $k$ $\iff$ there are at least $k$ edge disjoint paths between $u$ and $v$."
+> Let $u$ and $v$ be two vertices in a graph $G$ and $u \neq v$. Then it holds that: "Every $u-v$ edge separator has size at least $k$ $\iff$ there are at least $k$ edge disjoint paths between $u$ and $v$."
 
-We can quickly see that the edge connectivity of a graph is always less than or equal to the minimum degree of the graph. 
-This is quiet intuitive because if we remove all edges from a vertex with the minimum degree then the vertex will be disconnected
-from the rest of the graph. We can also come to the conclusion that the vertex connectivity of a graph is always less than or 
-equal to the edge connectivity of the graph. The intuition behind this is that if we remove a vertex from the graph then we
-also remove all edges connected to that vertex. So the internal vertex disjoint paths between two vertices will always be less 
-than or equal to the edge disjoint paths between the same two vertices. This leads us to the following inequality:
+We can quickly see that **the edge connectivity of a graph is always less than or equal to the minimum degree** of the graph. This is quiet intuitive because if we remove all edges from a vertex with the minimum degree then the vertex will be disconnected from the rest of the graph.
+
+```math
+\text{edge connectivity} \leq \min_{v \in V} \text{deg}(v)
+```
+
+We can also come to the conclusion that the vertex connectivity of a graph is always less than or equal to the edge connectivity of the graph. The intuition behind this is that if we remove a vertex from the graph then we also remove all edges connected to that vertex. So the internal vertex disjoint paths between two vertices will always be less than or equal to the edge disjoint paths between the same two vertices. This leads us to the following inequality:
 
 ```math	
 \text{vertex connectivity} \leq \text{edge connectivity} \leq \min_{v \in V} \text{deg}(v)
@@ -192,9 +163,7 @@ than or equal to the edge disjoint paths between the same two vertices. This lea
 
 ## Bridges
 
-If a graph is 1-edge-connected so when $k=1$ then there is at least one edge that if removed would disconnect the graph. This edge is
-called a bridge or sometimes also cut-edge. So in other words a bridge is an edge that if removed would increase the number of connected components in 
-the graph. In the graph below you can quiet clearly see that the edge between vertices $3$ and $4$ marked in red is a bridge.
+If a graph is 1-edge-connected so when $k=1$ then there is at least one edge that if removed would disconnect the graph. This edge is called a bridge or sometimes also cut-edge. So in other words a bridge is an edge that if removed would increase the number of connected components in the graph. In the graph below you can quiet clearly see that the edge between vertices $3$ and $4$ marked in red is a bridge.
 
 export const bridgeGraph = {
     nodes: [
@@ -227,26 +196,15 @@ export const bridgeGraph = {
     }
 />
 
-A naive way of finding bridges in a graph is to remove each edge one by one and check if the graph is still connected. This
-is not a very efficient way of finding bridges because it requires $O(m(mn))$ time where $m$ is the number of edges and $n$ 
-is the number of vertices.
+A naive way of finding bridges in a graph is to remove each edge one by one and check if the graph is still connected. This is not a very efficient way of finding bridges because it requires $O(m(n + m))$ time where $m$ is the number of edges and $n$ is the number of vertices (we check if the graph is connected by doing a depth-first search which takes $O(n + m)$ time).
 
-However, finding such bridges can be done with a modified [depth-first search](/garden/cs/algd/graphsNetworks/dfs) algorithm. This algorithm 
-is called Tarjan's bridge-finding algorithm. The idea is that if we look at the depth-first search tree of the graph then if there is no way 
-to reach the ancestors of a vertex from the descendants of that vertex then the edge connecting the vertex to its child. In an undirected 
-graph this is equivalent to saying that if there is no back edge to the ancestors of a vertex then the edge connecting the vertex to its child
-is a bridge. In the undirected case we do not need to look at the forward or cross edges because they are not relevant for finding bridges.
+However, finding such bridges can be done with a modified [depth-first search](/garden/cs/algd/graphsNetworks/dfs) algorithm in $O(n + m)$ time. This algorithm is called **Tarjan's bridge-finding algorithm**. The idea is that if we look at the depth-first search tree of the graph then if there is no way to reach the ancestors of a vertex from the descendants of that vertex then the edge connecting the vertex to its child. In an undirected graph this is equivalent to saying that if there is no back edge to the ancestors of a vertex then the edge connecting the vertex to its child is a bridge. In the undirected case we do not need to look at the forward or cross edges because they are not relevant for finding bridges.
 
-To be able to see if there are back edges in the graph we keep track of the time when a node is first visited, the pre-value, and then the so 
-called low-value which is the smallest pre-value of the nodes that can be reached from that node except for the parent it was visited from. 
-The low-value is simply initialized to the pre-value of the node. When backtracking we can then do the following checks after updating the low-value of the 
-node:
-- If the low-value of any of the children of the node is smaller or equal to the pre-value of the node. If this is the case then there 
-is a back edge and the edge connecting the node to the child is not a bridge. 
+To be able to see if there are back edges in the graph we keep track of the time when a node is first visited, the pre-value, and then the so-called low-value which is the smallest pre-value of the nodes that can be reached from that node except for the parent it was visited from. The low-value is simply initialized to the pre-value of the node. When backtracking we can then do the following checks after updating the low-value of the node:
+- If the low-value of any of the children of the node is smaller or equal to the pre-value of the node. If this is the case then there is a back edge and the edge connecting the node to the child is not a bridge.
 - If the low-value of any of the children is greater than the pre-value of the node then the edge connecting the node to the child is a bridge.
 
-There is a great video on this algorithm [here](https://www.youtube.com/watch?v=qrAub5z8FeA). This then leads to the following 
-algorithm:
+There is a great video on this algorithm [here](https://www.youtube.com/watch?v=qrAub5z8FeA). This then leads to the following algorithm:
 
 ```java
 public int countBridges(List<List<Integer>> adj) {
@@ -285,9 +243,7 @@ private int dfs(int node, int parent, boolean[] visited, List<List<Integer>> adj
 
 ## Articulation Points
 
-The same idea as a bridge also applies to vertices. A vertex is an articulation point or cut vertex if removing it would increase 
-the number of connected components in the graph. In the graph below you can quiet clearly see that the vertices $3$ and $4$ are cut
-vertices. These cut vertices are very important vertices as they are brokers between different parts of the graph.
+The same idea as a bridge also applies to vertices. If we are given a graph that is 1-connected, a vertex is an articulation point or cut vertex if removing it would increase the number of connected components in the graph. In the graph below you can quiet clearly see that the vertices $3$ and $4$ are cut vertices.
 
 export const cutVerticesGraph = {
     nodes: [
@@ -320,31 +276,21 @@ export const cutVerticesGraph = {
     }
 />
 
-The idea of finding articulation points is very similar to finding bridges. We can use Tarjan's algorithm to find articulation points. 
-We again keep track of the pre and low values of the nodes. However, we need make some modifications to the algorithm we used 
-to find bridges. 
+The idea of finding articulation points is very similar to finding bridges. We can again just use Tarjan's algorithm to find articulation points. We again keep track of the pre and low values of the nodes. However, we need make some modifications to the algorithm we used to find bridges.
 
-Firstly we need to slightly modify the calculation of the low-value of the node. When we can't go any further down the tree 
-we don't take the minimum of the low-value of the neighbours except for the parent. Instead we take the minimum of the pre-value. We 
-do this because we want to see if we can get to the ancestors of the node without going through the node itself. However, if we 
-are backtracking then we can as normal take the minimum of the low-value of the neighbours except for the parent.
+Firstly we need to slightly modify the calculation of the low-value of the node. When we can't go any further down the tree we don't take the minimum of the low-value of the neighbors except for the parent. Instead we take the minimum of the pre-value. We do this because we want to see if we can get to the ancestors of the node without going through the node itself. However, if we are backtracking then we can as normal take the minimum of the low-value of the neighbors except for the parent.
 
 Secondly in the bridges case we allowed for backedges to the node itself because we were looking for bridges. However, 
-in the case of articulation points we do not want to allow for backedges to the node itself because that node will be removed, 
-instead we want to see if we can get to the ancestors of the node without going through the node itself. This means that we need to 
-check if the low value of the child is smaller than the pre value of the node for it to be an articulation point.
+in the case of articulation points we do not want to allow for backedges to the node itself because that node will be removed, instead we want to see if we can get to the ancestors of the node without going through the node itself. This means that we need to check if the low value of the child is smaller than the pre value of the node for it to be an articulation point.
 
-Lastly we need to handle the root node separately. This is rather simple as the root node is an articulation point if it has more 
-than one child in the DFS tree. This is because if we remove the root node then the children will be disconnected from the rest of 
-the graph.
+Lastly we need to handle the root node separately. This is rather simple as the root node is an articulation point if it has more than one child in the DFS tree. This is because if we remove the root node then the children will be disconnected from the rest of the graph.
 
 <Image 
     src="/cs/graphsArticulationPoints.png"
     caption="Visualization of the possible pre and low values of the nodes in the graph and how to find articulation points."
 />
 
-Again there is a great video on this algorithm [here](https://www.youtube.com/watch?v=j1QDfU21iZk). This then leads to the following 
-algorithm:
+Again there is a great video on this algorithm [here](https://www.youtube.com/watch?v=j1QDfU21iZk). This then leads to the following algorithm:
 
 ```java
 public int countArticulationPoints(List<List<Integer>> adj) {
@@ -403,18 +349,13 @@ private void dfs(int node, int parent, boolean[] visited, List<List<Integer>> ad
 ## Blocks
 
 Apart from knowing where there are failure points in a graph there are also other practical applications of knowing the 
-articulation points and bridges in a graph. One such concept is the concept of blocks. A block is an [equivalence relation](/garden/maths/discrete/relationsFunctions/equivalenceRelations) 
-on the edges of a graph. Two edges are in the same block if they are the same or if they are both part of a cycle in the graph. More formally 
-for two edges $e$ and $f$ in a graph $G = (V, E)$ we say:
+articulation points and bridges in a graph. One such concept is the concept of blocks. A block is an [equivalence relation](/garden/maths/discrete/relationsFunctions/equivalenceRelations) on the edges of a graph. Two edges are in the same block if they are the same or if they are both part of a cycle in the graph. More formally for two edges $e$ and $f$ in a graph $G = (V, E)$ we say:
 
 ```math	
 e \sim f \iff e = f \text{ or there is a cycle in } G \text{ that contains both } e \text{ and } f.
 ```
 
-The reflexivity and symmetry of the relation is quiet clear. The transitivity of the relation is a bit more complicated then you might expect 
-but can be proven using Mengar's theorem. The blocks of a graph are then the equivalence classes of this relation. Blocks are also 
-sometimes called biconnected components as they are always 2-connected. This is because if we remove a vertex from a block then the 
-block itself will still be connected. 
+The reflexivity and symmetry of the relation is quiet clear. The transitivity of the relation is a bit more complicated then you might expect but can be proven using Mengar's theorem. The blocks of a graph are then the equivalence classes of this relation. Blocks are also sometimes called bi-connected components as they are always 2-connected. This is because if we remove a vertex from a block then the block itself will still be connected. 
 
 <Image 
     src="/cs/graphsBlocks.svg"
@@ -422,23 +363,11 @@ block itself will still be connected.
     width={500}
 />
 
-We can quickly notice that the points where blocks overlap are the articulation points of the graph. We can then also create a 
-block-cut tree of the graph. This is a tree which by definition is bipartite. The vertices of the tree are $V = A \uplus B$ where 
-$A$ is the set of articulation points and $B$ is the set of blocks. The edges are given by the articulation points and the blocks 
-they are connected to. The reason why it is a tree is also quiet clear as if there was a cycle in the tree then that would mean that 
-there is a cycle in the graph which would mean that the edges are in the same block.
+We can quickly notice that the points where blocks overlap are the articulation points of the graph. We can then also create a block-cut tree of the graph. This is a tree which by definition is bipartite. The vertices of the tree are $V = A \uplus B$ where $A$ is the set of articulation points and $B$ is the set of blocks. The edges are given by the articulation points and the blocks they are connected to. The reason why it is a tree is also quiet clear as if there was a cycle in the tree then that would mean that there is a cycle in the graph which would mean that the edges are in the same block.
 
 <Image 
     src="/cs/graphsBlockCutTree.png"
     caption="The blocks of a graph and its block-cut tree."
 />
 
-If we know we can split up a graph into blocks then this can make many graph algorithms more efficient. We already know that 
-we can find the blocks of a graph by finding the articulation points in $O(n+m)$ time. One example of applying this is to shortest 
-path in a dynamic graph. Imagine we have a graph representing a road network and we are google maps trying to find the shortest 
-path between two points. We know that roads open and close all the time due to accidents, construction or other reasons. If we 
-know the blocks of the graph then we don't need to recalculate the shortest path for the whole graph every time a road opens or 
-closes. Instead we can just recalculate the shortest path for the block that the road is in as the rest of the graph will not be 
-affected as we have to go through the articulation point to get to the other blocks. This can save a lot of time in the long run. 
-However, such nice examples are rare in practice. The only articulation point in switzerland for traffic I can think of is the 
-Gotthard tunnel.
+If we know we can split up a graph into blocks then this can make many graph algorithms more efficient. We already know that we can find the blocks of a graph by finding the articulation points in $O(n+m)$ time. One example of applying this is to shortest path in a dynamic graph. Imagine we have a graph representing a road network and we are google maps trying to find the shortest path between two points. We know that roads open and close all the time due to accidents, construction or other reasons. If we know the blocks of the graph then we don't need to recalculate the shortest path for the whole graph every time a road opens or closes. Instead we can just recalculate the shortest path for the block that the road is in as the rest of the graph will not be affected as we have to go through the articulation point to get to the other blocks. This can save a lot of time in the long run. However, such nice examples are rare in practice. The only articulation point in switzerland for traffic I can think of is the Gotthard tunnel.

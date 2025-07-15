@@ -3,106 +3,390 @@ import Image from "@components/Image/Image";
 
 # Eulerian and Hamiltonian Graphs
 
-<Callout type="todo">
-    Seven Bridges of Königsberg history blabla
-</Callout>
+Eulerian walks and tours are foundational concepts in graph theory, tracing their roots to one of the most famous historical problems in mathematics: the Seven Bridges of Königsberg. Euler was challenged to find a walk through the city that would cross each of its bridges exactly once without repetition. In tackling this, Euler laid the groundwork for graph theory and the modern concept of Eulerian walks.
 
-This type of walk we now call an Eulerian walk or Eulerian trail (incorrectly called Eulerian path as the vertices can repeat) and is defined as a 
-walk that visits every edge exactly once, hence why it is also called a trail as all edges are unique.
+A walk that visits every edge of a graph exactly once is now known as an Eulerian walk or Eulerian trail (sometimes imprecisely called an “Eulerian path”—but the term “path” is reserved for walks that do not repeat vertices). If such a walk also starts and ends at the same vertex, it is called a closed Eulerian walk, Eulerian tour, or Eulerian circuit (again, sometimes imprecisely called a “cycle,” though cycles, strictly speaking, should not repeat vertices).
 
-If the walk also starts and ends at the same vertex we call it a closed Eulerian walk, Eulerian tour or Eulerian circuit (incorrectly called Eulerian cycle as the vertices can repeat) 
-where a circuit is just a closed trail.
+These concepts provide a natural way to reason about traversing networks, whether they represent bridges, roads, or abstract systems, and they have far-reaching applications in both theoretical and practical computer science.
 
 <Image 
     src="/cs/graphsEulerian.png"
     caption="Two Eulerian graphs. Note that the arrows indicate the direction of the walk and not the direction of the edges."
+    width={400}
 />
 
 From the example above and through some logical reasoning we can derive the following properties of Eulerian graphs:
-- For a graph to be Eulerian it must be connected.
-- For a graph to have a Eulerian walk there can either be 0 or 2 vertices with an odd degree (1 vertex with an odd degree is not possible due to 
-the handshake lemma). If there are 0 vertices with an odd degree then the walk can start and end at any vertex. If there are 2 vertices with an odd degree 
-then the walk must start at one of the odd vertices and end at the other. The intuition behind this is that when you enter a vertex you must also leave it 
-and if you have an odd degree then you will have one more edge entering than leaving or vice versa.
-- For a directed graph to have a Eulerian walk all vertices must have the same in-degree as out-degre, except for 2 vertices where one has an in-degree 
-one greater than the out-degree and the other has an out-degree one greater than the in-degree. This is intuitivly the same as the above point but for 
-directed graphs.
-- For a graph to have a Eulerian tour all vertices must have an even degree. The intuition follows from the above point where you must enter and leave 
-a vertex the same number of times.
-- For a directed graph to have a Eulerian tour all vertices must have the same in-degree as out-degree.
+- **For a graph to be Eulerian it must be connected**.
+- For a graph to have a **Eulerian walk there can either be 0 or 2 vertices with an odd degree** (1 vertex with an odd degree is not possible due to the handshake lemma). If there are 0 vertices with an odd degree then the walk can start and end at any vertex. If there are 2 vertices with an odd degree then the walk must start at one of the odd vertices and end at the other. The intuition behind this is that when you enter a vertex you must also leave it and if you have an odd degree then you will have one more edge entering than leaving or vice versa. Therefore in general a pre-condition for a graph to have a Eulerian walk is that all vertices must have an even degree.
+- For a graph to have a **Eulerian tour all vertices must have an even degree**. This is because if all vertices have an even degree then we can always leave the vertex we just entered and therefore we can return to the starting vertex.
+- For a **directed graph to have a Eulerian walk all vertices must have the same in-degree as out-degree, except for 2 vertices where one has an in-degree one greater than its out-degree and the other has an out-degree one greater than the in-degree.** This is intuitively the same as the above point but for directed graphs. As the one with the in-degree one greater than its out-degree must be the start vertex and the one with the out-degree one greater than its in-degree must be the end vertex.
+- For a **directed graph to have a Eulerian tour all vertices must have the same in-degree as out-degree**. This is because if all vertices have the same in-degree and out-degree then we can always leave the vertex we just entered and therefore we can return to the starting vertex.
 
-To find an Eulerian walk or tour we could try all possible walks but this would result in a time complexity of $O(n!)$ which is obviously not feasible. 
-So instead we need to come up with a better way. This algorithms is an adaptation of [depth-first search](/garden/cs/algd/graphsNetworks/depthFirstSearch). 
-The idea of the algorithm is to start at a vertex and then follow edges until we reach a vertex where we can't go any further. 
-Depending on the type of graph and the degrees we find when analyzing the graph we should start at a specific vertex, one with odd degree if we have a 
-directed graph and the one with more outgoing edges if we have an undirected graph. 
-When we reach a vertex where we can't go any further we backtrack to the last vertex where we had other options and continue from there and repeat 
-this process until we have visited all edges. To be able to quickly find the next vertex that still has unvisited edges we can decrease the out-degree 
-every time we take an edge, then when backtracking we just need to check if the out-degree is 0 and if it is we know that we have visited all edges.
-Everytime we can't go any further we add the vertex to the front of the walk. Because we only ever visit every edge once but certain vertices multiple
-times the time complexity of this algorithm is $O(|V| + |E|)$.
+```java
+public boolean isEulerianUndirected(List<List<Integer>> graph) {
+    int oddCount = 0; // if it stays 0 then could be Eulerian tour, if it is 2 then could be Eulerian walk
+    for (List<Integer> neighbors : graph) {
+        if (neighbors.size() % 2 == 1) {
+            oddCount++;
+        }
+    }
 
-The below version is the same but slightly different by just marking all the edges visited but it works the same way. The reason why these algorithms 
-work is that at the of the first DFS before backtracking we will either be at the end vertex or the start vertex of the Eulerian walk. Due to not being able 
-to go anywhere further and the even degree of the vertices. We then just need to fill in all the "holes".
-Does the algorithm have to pick the alphabetically first edge when there are multiple options? Probaly not but it's a simple way to make the algorithm 
-deterministic.
+    return oddCount == 0 || oddCount == 2;
+}
+
+public boolean isEulerianDirected(List<List<Integer>> graph) {
+    int n = graph.size();
+    int[] inDegree = new int[n];
+    int[] outDegree = new int[n];
+
+    for (int u = 0; u < n; u++) {
+        for (int v : graph.get(u)) {
+            outDegree[u]++;
+            inDegree[v]++;
+        }
+    }
+
+    // if one vertex has in-degree one greater than out-degree and another has out-degree one greater than in-degree then it is a Eulerian walk, if all vertices have the same in-degree and out-degree then it is a Eulerian tour
+    int oddIn = 0, oddOut = 0;
+    for (int i = 0; i < n; i++) {
+        if (inDegree[i] != outDegree[i]) {
+            if (inDegree[i] == outDegree[i] + 1) oddIn++;
+            else if (outDegree[i] == inDegree[i] + 1) oddOut++;
+            else return false; // More than one vertex with odd degree
+        }
+    }
+
+    return (oddIn == 0 && oddOut == 0) || (oddIn == 1 && oddOut == 1);
+}
+```
+
+To find an Eulerian walk or tour we could try all possible walks. Because a graph with $n$ vertices has up to $n^2$ edges we could try all possible permutations of edges which would result in a time complexity of $O(n^2!)$ which is the same as $O(n!)$ as the factorial grows much faster than the polynomial. This is obviously not feasible for large graphs.
+
+So instead we need to come up with a better way. first we can quickly check if the graph can even have a Eulerian walk or tour by checking the degree of the vertices and if the graph is connected. This can be done in $O(n + m)$ time where $n$ is the number of vertices and $m$ is the number of edges.
+
+If the graph fulfils the pre-conditions we can use **Hierholzer's algorithm** to find the Eulerian walk or tour which is an adapted depth-first search (DFS). The idea is like sending ahead a rabbit that marks all the edges it visits and then when it can't go any further it stops. Then if there are still edges left to visit we set off a turtle at the vertices where there are still unvisited edges and it will mark all the edges it visits until returns to where it started, forming a cycle, if it ends at a dead end then the graph can't be eulerian. This way we can visit all edges exactly once. Another way to think of this is that we are combining cycles in the graph to build the Eulerian walk. If in our pre-condition checks we found that the graph has 2 vertices with an odd degree then we can start the algorithm at one of those vertices and end at the other. If we found that all vertices have an even degree then we can start and end at any vertex.
+
+To quickly find the next edge to start a new cycle rather then marking the edges we can also just decrease the out-degree of the vertex every time we take an edge. This way we can quickly check if a vertex has any unvisited edges by checking if the out-degree is greater than 0. This algorithm is very efficient and has a time complexity of $O(n + m)$ where $n$ is the number of vertices and $m$ is the number of edges. 
 
 <Image 
     src="/cs/graphsHierholzer.png"
     caption="The recursion tree of the Hierholzer's algorithm. The pink path is not the same as the recursion tree but is also a valid Eulerian walk."
 />
 
-The algorithm below is Hierholzer's algorithm. By using a stack or doubly linked list we can also code the algorithm iteratively.
+The algorithm below is Hierholzer's algorithm. By using a stack for the DFS we can also code the algorithm iteratively.
 
-```pseudocode
-Euler(G):
-    Empty list Z of Edges
-    EulerWalk(G, L, s) // s is the starting vertex
-    return Z reversed
+```java
+public List<Integer> eulerianWalkUndirected(List<List<Integer>> graph) {
+    int n = graph.size();
+    int oddCount = 0, start = 0;
+    // Find a start vertex: either a vertex with odd degree, or any if all have even degree
+    for (int i = 0; i < n; i++) {
+        if (graph.get(i).size() % 2 == 1) {
+            oddCount++;
+            start = i;
+        }
+    }
+    // Eulerian path: 0 or 2 vertices of odd degree
+    if (oddCount != 0 && oddCount != 2)
+        throw new IllegalArgumentException("Graph does not have an Eulerian walk.");
 
-EulerWalk(G, Z, v):
-    for each edge e not marked in G leaving v to u do
-        mark the edge e
-        EulerWalk(G, Z, u)
-    add v to Z // could also prepend v to Z and then not reverse
+    // Create a copy of adjacency lists to modify them (so input isn't mutated)
+    // Use Deque for efficient edge removal on both ends
+    List<Deque<Integer>> adj = new ArrayList<>();
+    for (List<Integer> nbrs : graph)
+        adj.add(new ArrayDeque<>(nbrs));
+
+    Stack<Integer> stack = new Stack<>();
+    List<Integer> path = new ArrayList<>();
+    stack.push(start);
+
+    while (!stack.isEmpty()) {
+        int u = stack.peek(); // Current vertex
+        if (!adj.get(u).isEmpty()) {
+            int v = adj.get(u).pollFirst(); // Remove edge u-v
+            adj.get(v).remove(u); // Remove edge v-u from the neighbor as well (if undirected)
+            stack.push(v); // Continue to the neighbor
+        } else {
+            path.add(stack.pop()); // Backtrack: add to path when no more unused edges
+        }
+    }
+
+    // Eulerian path must use all edges
+    int edgeCount = 0;
+    for (List<Integer> l : graph) edgeCount += l.size();
+    if (path.size() != edgeCount / 2 + 1) // Each edge counted twice in undirected graph
+        throw new IllegalArgumentException("Graph is not connected or has unused edges.");
+
+    Collections.reverse(path);
+    return path;
+}
+
 ```
 
 ## Hamiltonian Graphs
 
-The idea of a Hamiltonian path or Hamiltonian cycle Have the same idea as the Eulerian walk or Eulerian tour but instead of visiting every edge once 
-we visit every vertex once. Unfortunatly finding a Hamiltonian path or cycle is NP-complete and can only be solved by brute force. 
-So we would have to try all possible paths or cycles which would result in a time complexity of $O(n!)$ which is obviously not feasible. 
+<Callout type="todo">
+Hypercubes have a Hamiltonian cycle.
+The Petersen graph is an example of a non-Hamiltonian graph.
+</Callout>
 
-This problem is NP-complete. Another popular version of this problem is the Traveling Salesman Problem (TSP) which is very similar and can be easily reduced to each other. Proper definition of the TSP problem with it being a complete graph and the goal is to find the shortest Hamiltonian cycle. The complete graph is okay as all edges that do not exist can be given a weight of infinity or the maximum weight of the graph plus one.
+The idea of a Hamiltonian path or Hamiltonian cycle (this time an actual cycle) is the same idea as the Eulerian walk or Eulerian tour but instead of wanting to visit every edge once we want to visit every vertex once. Unfortunately determining whether a graph is Hamiltonian path is a lot harder then for a eulerian graph. In fact the problem is NP-complete meaning if we had a polynomial time algorithm to solve this problem we could also solve all NP-complete problems in polynomial time. Intuitively, a Hamiltonian cycle represents a perfect round trip through all vertices—no vertex revisited except the start/end. In network design or scheduling, finding such cycles is crucial but notoriously hard. The most famous application is the Traveling Salesman Problem (TSP) where given a list of cities (vertices) and routes (edges), we want to find a route that visits each city once and returns to the start.
 
-To check if a graph has a Hamiltonian cycle we can generate all possible hamiltonian cycles which for n vertices is 
-$\frac{1}{2}(n-1)!$ and then check if all the edges also exist in the graph. This is obviously not feasible for large graphs as it would result in a time complexity of $O(n!)$. 
+The first approach would be brute force. So we would want to try all possible permutations of vertices and check if the edges exist in the graph. This would result in a time complexity of $O(n!)$ which is obviously not feasible for large graphs. For $n=20$ this would already take more time than the number of seconds in the age of the universe.
 
-Can show that for n=20 is more time then the age of the universe?
+The precise number of possible Hamiltonian cycles is derived from the fact that for a complete graph with $n$ vertices, the number of distinct Hamiltonian cycles is given by $\frac{(n-1)!}{2}$. This accounts for the fact that each cycle can be traversed in two directions (clockwise and counterclockwise), hence the division by 2 and because we can start the cycle at any vertex, reducing the number of unique cycles by a factor of $n$.
 
-Using bellman-held-karp algorithm we can solve the problem in $O(n^2*2^n)$ which is still exponential but much better than $O(n!)$. This difference can also be shown. And uses dynamic programming and $O(n * 2^n)$ space.
+Instead of trying all possible permutations we can use a dynamic programming approach to solve the problem. This is called the **Bellman-Held-Karp algorithm**. The idea is to slowly build up the solution by considering subsets of vertices and finding paths that visit all vertices in the subset. Specifically imagine we had the vertices $1, 2, \ldots, n$ and we want to find a Hamiltonian cycle that starts at vertex $1$. It is then rather obvious that if there some vertex $x$ that is a neighbor of $1$ and the path from $1$ to $x$ contains all vertices then we can just return the path from $1$ to $x$ as the Hamiltonian cycle. If there is no such neighbor then there is no Hamiltonian cycle.
 
-We can improve this algorithm by using the inclusion-exclusion principle. We basically count all the walks of length n that start and end at a specific vertex. We then sum all these walks and subtract the walks that visit a specific vertex twice. This reuqires only $O(n^2)$ memory but $O(n^{2.81} \log n \cdot 2^n)$ time. If we use strassens matrix 
-multiplication to find the walks of length n and iterative squaring. counting the number of Hamiltonian cycles 
-maybe monte carlo algorithm? Is probably not very relevant.
+
+So we define the following for some subset $S \subseteq V$ of the graph vertices and a vertex $x$:
+
+```math
+P_{S,x} = \begin{cases}
+1 & \text{if there exists a path from } s \text{ to } x \text{ that contains all vertices in } S \\
+0 & \text{otherwise}
+\end{cases}
+```
+
+So then we have a hamiltonian cycle if and only if there exists a vertex $x$ such that $P_{V, x} = 1$ where $V$ is the set of all vertices in the graph. The question is how do we calculate this? We do this with a dynamic programm that reuses previously calculated values. In this case of a smaller subset $S$ of vertices. For the case $S = \{1, x\}$ where $x \in N(1)$ we set $P_{S, x} = 1$ if there is an edge from $1$ to $x$. This is the initialization step. For the case where we $|S| = 3$ so $S = \{1, x, y\}$ where $x \in N(1)$ and $y \in N(x)$ we can set $P_{S, x} = 1$ if we have $P_{S \setminus \{x\}, y} = 1$ where $S \setminus \{x\}$ is the set of vertices without $x$. This means that we can reach $y$ from $1$ and because $y$ is a neighbor of $x$ we can also reach $x$ from $1$. So we can reach all vertices in $S$ from $1$ through $x$.
+
+We can then generalize this to larger subsets of vertices. For a subset $S$ of vertices and a vertex $x$ that is a neighbor of $1$ we can calculate the value of $P_{S, x}$ as follows:
+
+```math
+P_{S, x} = \max_{y \in S \cap N(x) \setminus \{s\}} P_{S \setminus \{x\}, y}
+```
+
+```pseudocode
+for x in N(1):
+    P_{S, x} = 1 if there is an edge from 1 to x
+
+for k = 3 to n:
+    for each subset S containing 1 and size k:
+        for x in S not equal to 1:
+            P_{S, x} = max(P_{S \setminus \{x\}, y}) for y in S intersect N(x) excluding 1
+
+if there exists x in N(1) such that P_{V, x} = 1:
+    return true
+else:
+    return false
+```
+
+Because of the three nested loops this algorithm has a time complexity of $O(n^2 \cdot 2^n)$ and a space complexity of $O(n \cdot 2^n)$ as we need to store the values of $P_{S, x}$ for all subsets $S$ and vertices $x$. The prices calculation of the time complexity is as follows:
+
+```math
+\sum_{k=3}^{n}\sum_{S \subseteq V, |S| = k, 1 \in S} \sum_{x \in S, x \neq 1} O(n) = \sum_{k=3}^{n} \binom{n-1}{k-1} \cdot (k-1) \cdot O(n) = O(n^2 \cdot 2^n)
+```
+
+where we approximate the number of subsets of size $k$ containing vertex $1$ $\binom{n-1}{k-1}$ as $2^{n-1}$ for large $n$ and the number of vertices in the subset $S$ is at most $n$.
+
+<Callout type="todo">
+Something with bitmasks to improve the space complexity?
+</Callout>
+
+We can improve this algorithm by using the inclusion-exclusion principle. The [inclusion exclusion principle]() is a powerful combinatorial technique that allows us to count the number of elements in the union of overlapping sets without double-counting those elements that belong to multiple sets. More precisely we can count the following:
+
+```math
+|A \cup B \cup C| = |A| + |B| + |C| - |A \cap B| - |A \cap C| - |B \cap C| + |A \cap B \cap C|
+```
+
+which can be generalized to $n$ sets as follows:
+
+```math
+|A_1 \cup A_2 \cup \ldots \cup A_n| = \sum_{i=1}^n |A_i| - \sum_{1 \leq i < j \leq n} |A_i \cap A_j| + \sum_{1 \leq i < j < k \leq n} |A_i \cap A_j \cap A_k| - \ldots + (-1)^{n+1} |A_1 \cap A_2 \cap \ldots \cap A_n|
+```
+
+The idea of the using this to find out if a graph has a Hamiltonian cycle is to count the number of hamiltonian cycles and if there is at least one then the graph has a Hamiltonian cycle. We first choose some arbitrary starting vertex $s$ and then define for all subsets $S \subseteq V \setminus \{1\}$ of the vertices without $1$ the following:
+
+```math
+W_S = \{\text{walks of length } n {\text{ that start and end at } 1 \text{ and doesn't visit any vertex in } S}\}
+```
+
+The idea is then that $|W_\emptyset|$ contains the number of walks length $n$ that start and end at $1$. To get the number of Hamiltonian cycles we just need to remove the walks that don't visit all vertices. We can denote these walks we want to remove as follows:
+
+```math
+\Bigunion_{i=1}^{n} W_{\{i\}}
+```
+
+as the set $W_{\{i\}}$ contains all walks that don't visit vertex $i$. So the number of Hamiltonian cycles is then given by:
+
+```math
+\frac{1}{2} \left( |W_\emptyset| - \Bigunion_{i=1}^{n} |W_{\{i\}}| \right)
+```
+
+the number of walks to remove can be calculated using the inclusion-exclusion principle as follows:
+
+```math
+\Bigunion_{i=1}^{n} |W_{\{i\}}| = \sum_{k=1}^{n} (-1)^{k} \sum_{1 \leq i_1 < i_2 < \ldots < i_k \leq n} |W_{\{i_1\}} \cup \{i_2\} \cup \ldots \cup \{i_k\}| = \sum_{k=1}^{n} (-1)^{k} |W_{\{i_1, i_2, \ldots, i_k\}}|
+```
+
+where $|W_{\{i_1, i_2, \ldots, i_k\}}|$ is the number of walks of length $n$ that start and end at $1$ and don't visit any vertex in the set $\{i_1, i_2, \ldots, i_k\}$. To actually calculate these values we can use the iterative squaring method of the adjacency matrix of the graph. Specifically we can find the value of $|W_S|$ by [iteratively squaring]() the induced subgraph $G_S[V \setminus S]$ of the graph $G$ and then taking the $(1, 1)$ entry of the $(A_S)^n$th power of the adjacency matrix $A_S$ of the subgraph $G_S$. To get the induced subgraph we just set all the edges of the vertices in $S$ to zero in the adjacency matrix of the graph. This means that we only consider the edges between the vertices in $V \setminus S$ and the vertex $1$.
+
+This process can be done in $O(n^3 \log n)$ time or even $O(n^{2.81} \log n)$ time using iterative squaring and [Strassen's algorithm for matrix multiplication](). The space complexity is only $O(n^2)$ as we need to store the adjacency matrix of the subgraph.
+
+```pseudocode
+Z = |W_\emptyset| = (A^n)[1][1]
+for all S subsets of V excluding 1 and S not empty:
+    Z += (-1)^{|S|} * (A_S^n)[1][1]
+return Z / 2 > 0
+```
+
+Because the for loop iterates over all subsets of $V \setminus \{1\}$ the time complexity is $O(2^n)$ as there are $2^{n-1}$ subsets of $V \setminus \{1\}$. The overall time complexity is then $O(n^3 \log n + 2^n)$ which is still exponential but the space complexity is only $O(n^2)$ which is a significant improvement over the previous algorithm.
 
 ### Grid and Bipartite Graphs
 
-for grid graphs there is a hamiltonian cycle if and only if the grid is at least 2x2 and m*n is even. This then also leads to the conclusion that bipartite graphs where the disjoint sets have different sizes can't have a Hamiltonian cycle.
+We have seen that to determine whether a graph has a Hamiltonian cycle is rather hrd. However, there are some special cases where we can determine whether a graph has a Hamiltonian cycle in polynomial time. One of these cases is the grid graph. 
+
+A grid graph is a graph that is formed by the vertices of a grid and the edges are the connections between the vertices. For example, a 2x2 grid graph has 4 vertices and 4 edges. A 3x3 grid graph has 9 vertices and 12 edges etc. We denote the grid graph with $m$ rows and $n$ columns as $M_{m,n}$. Visually finding a Hamiltonian cycle can be seen by trying to "snake" through the grid without revisiting any vertex and returning to the start. However, this is not always possible. Specifically for a grid graph we have the following criteria for the existence of a Hamiltonian cycle:
+
+> A grid graph $M_{m,n}$ has a Hamiltonian cycle if and only if either $m$ or $n$ is even.
+
+<Callout type="proof">
+To prove this we use a so-called **parity argument**. We look at an arbitrary pair of vertices $(x_1, y_1)$ and $(x_2, y_2)$ in the grid. The distance between these two vertices is given by the Manhattan distance $|x_1 - x_2| + |y_1 - y_2|$. If the two vertices are neighbors then the distance is 1. We also notice that for them to be neighbors it follows from this that $x_1 + x_2 \mod 2 = 1$ must hold. We call this the **parity of the vertices**. 
+
+Now for a path of even length to exist the start and end vertices must have the same parity. This is because every time we move to a neighbor we change the parity of the vertex. So if we start at a vertex with parity 0 then after an even number of steps we will end at a vertex with parity 0 and after an odd number of steps we will end at a vertex with parity 1. 
+
+We know that the hamiltonian cycle must visit every vertex exactly once therefore the hamiltonian cycle must have length $mn$. Because it is a cycle the parity of the start and end vertex must be the same. Meaning the path must have an even length and an even length can only be achieved if the number of vertices is even. This means that either $m$ or $n$ must be even.
+</Callout>
+
+From this it also follows that if the graph is a [bipartite graph]() then the hamiltonian graph always goes from one group of vertices to the other group of vertices. This is because in a bipartite graph the vertices can be divided into two groups such that no two vertices in the same group are connected by an edge. So if we have a Hamiltonian cycle in a bipartite graph then it must alternate between the two groups of vertices. This means that both groups must have the same number of vertices. However, this does not guarantee that the graph has a Hamiltonian cycle. So specifically we can say that:
+
+> If graph $G(V,E)$ is a bipartite graph with the two groups of vertices $A$ and $B$ then if $|A| \neq |B|$ then the graph does not have a Hamiltonian cycle.    
 
 ### Hypercubes
 
-Hypercubes have a Hamiltonian cycle.
+Another special case of a graph that has a Hamiltonian cycle is the hypercube graph. A hypercube is a generalization of a cube to higher dimensions. The hypercube graph $Q_D$ in dimension $D$ has $2^D$ vertices and each vertex is connected to $D$ other vertices. The vertices can be represented as binary strings of length $D$. For example, the hypercube in dimension 3 has 8 vertices represented by the binary strings `000`, `001`, `010`, `011`, `100`, `101`, `110`, and `111`. The vertices are then connected if their binary strings differ by exactly one bit. We can quickly see that the hypercube in dimension 2 is just a cycle of length 4 so it has a Hamiltonian cycle. For higher dimensions, it turns out we have the following property:
+
+> The hypercube graph $Q_D$ has a Hamiltonian cycle for all dimensions $D > 1$.
+
+<Callout type="proof">
+We can prove this by induction on the dimension $D$. For the base case $D = 2$ we have already seen that the hypercube graph is just a cycle of length 4. 
+
+For our induction hypothesis we assume that the hypercube graph $Q_{K}$ has a Hamiltonian cycle for some $K \geq 2$. We then want to show that the hypercube graph $Q_{K+1}$ also has a Hamiltonian cycle. We do this by constructing the Hamiltonian cycle in $Q_{K+1}$ from the Hamiltonian cycle in $Q_{K}$:
+
+Lets focus on the vertices of $Q_{K+1}$ that have the first bit set to 0. These vertices are exactly the vertices of $Q_{K}$. So we can take the Hamiltonian cycle in $Q_{K}$ and add the edges that connect the vertices with the first bit set to 0 to the vertices with the first bit set to 1. This gives us a Hamiltonian cycle in $Q_{K+1}$ as we can just traverse the vertices with the first bit set to 0 and then traverse the vertices with the first bit set to 1.
+</Callout>
+
+<Image 
+    src="/cs/algdHyperCubeHamiltonian.png"
+    caption="Idea of how to construct Q_{3} from Q_{2}."
+    width={500}
+/>
 
 ### Diracs Theorem
 
-If a graph has at least 3 vertices and every vertex has a degree of at least n/2 then the graph has a Hamiltonian cycle. The proof of this is rather lengthy but intuitive.
+Similarly to the above special cases we can also come up with a criteria for graphs with many vertices to have a Hamiltonian cycle. Intuitively you could think that if a graph is connected the more vertices it has the more likely it is to have a Hamiltonian cycle. This is indeed the case and leads to **Dirac's theorem** which states that:
+
+> If a graph has at least 3 vertices and every vertex has a degree of at least $n/2$ then the graph has a Hamiltonian cycle.
+
+This minimum degree threshold is sharp, meaning that if the degree of a vertex is less than $n/2$ then the graph may not have a Hamiltonian cycle. Dirac's condition essentially says: if every person knows at least half of the people in the room, then it's possible for everyone to sit around a table so that each person sits next to people they know, and everyone is included exactly once.
+
+<Callout type="proof">
+Suppose $G$ is a simple graph on $n \geq 3$ vertices, each with degree at least $n/2$, but $G$ does not have a Hamiltonian cycle.
+
+First we can check that it is connected. For this we pick an arbitrary pair of vertices $x, y \in V$ and $x \neq y$. If there is an edge between $x$ and $y$ then we are done. If there is no edge between $x$ and $y$ then we can look at the neighbors of $x$ and $y$. For this we know $\deg(x) \geq n/2$ and $\deg(y) \geq n/2$. Meaning there must be at least one vertex $z$ that is a neighbor of both $x$ and $y$. This is because if there was no such vertex then the number of vertices that are not neighbors of $x$ or $y$ would be at most $n - \deg(x) - \deg(y) = n - n/2 - n/2 = 0$. So we have shown that the graph is connected.
+
+Now lets show that $G$ has a Hamiltonian cycle by assuming that it does not. Let $P = (v\_1, v\_2, ..., v\_k)$ be a **longest path** in $G$. Since $G$ is simple and does not have a Hamiltonian cycle, $k < n$ (i.e., $P$ does not visit every vertex). Then all neighbors of $v\_1$ and $v\_k$ must be among the vertices of $P$, otherwise $P$ could be extended. 
+
+By Dirac's condition we also have that $\deg(v\_1) \geq n/2$ and $\deg(v\_k) \geq n/2$. Then if $v\_1$ is adjacent to $v\_k$, $P$ forms a cycle of length $k$. If this cycle is Hamiltonian ($k = n$), we are done. Otherwise, it is not a Hamiltonian cycle, so $k < n$.
+
+Suppose $v\_1$ and $v\_k$ are not adjacent. Since all neighbors of $v\_1$ and $v\_k$ are in $P$ (as argued above), and $|V(P)| = k$, it follows that:
+
+- $v\_1$ has at least $n/2$ neighbors among $v\_2, ..., v\_k$.
+- $v\_k$ has at least $n/2$ neighbors among $v\_1, ..., v\_{k-1}$.
+
+The total number of vertices in $P$ is $k$. Since $k < n$, $n - k$ vertices are outside $P$. Therefore, the set of neighbors for $v\_1$ and $v\_k$ in $P$ **must overlap** significantly, because $n/2 + n/2 = n > k$ (since $k < n$). Formally, among $v\_2, ..., v\_k$, and $v\_1, ..., v\_{k-1}$, by the pigeonhole principle, there exists at least one $i$ such that:
+
+- $v\_1$ is adjacent to $v\_i$ (for some $2 \leq i \leq k$)
+- $v\_k$ is adjacent to $v\_{i-1}$ (for the same $i$)
+
+Now, construct the following cycle:
+
+$$
+(v_1, v_2, \ldots, v_{i-1}, v_k, v_{k-1}, ..., v_i, v_1)
+$$
+
+This uses every vertex of $P$ exactly once. If $k = n$, then this is a Hamiltonian cycle, contradicting our assumption. Therefore, either $P$ could have been extended (contradicting maximality), or $P$ already contains every vertex (contradicting the assumption that $G$ has no Hamiltonian cycle).
+
+Thus, our assumption must be false, and **$G$ contains a Hamiltonian cycle**.
+</Callout>
+
+Based on Dirac's theorem, we can devise the following high-level algorithm to find a Hamiltonian cycle in such graphs:
+
+1. **Initialization:** Start with any path of length 1 (single vertex).
+2. **Path Extension:** At each step, try to extend the current path by adding a neighbor not already on the path.
+3. **Cycle Closing:** Once the path covers all vertices, check for an edge between the endpoints to close the cycle.
+4. **Backtracking:** If unable to extend, backtrack to previous extensions.
+
+Since the minimum degree is high, the number of possible extensions at each step is also high, making the process efficient, specifically we can find a Hamiltonian cycle in $O(n^2)$.
+
+https://www.youtube.com/watch?v=S7bORlkfwsA
+https://www.youtube.com/watch?v=pXpnelzaRyI
+
+### Traveling Salesman Problem (TSP)
+
+The Traveling Salesman Problem (TSP) is a classic optimization problem in computer science and operations research. It asks for the shortest possible route that visits each city (vertex) exactly once and returns to the origin city. This is in a way a more general version of the Hamiltonian cycle problem. It can be shown that this is also NP-complete and that the two problems can be reduced to each other. Specifically we define the TSP as follows. We are given a complete graph $K_n$ with $n$ vertices and a cost function $c: V \times V \to \mathbb{R}$ that assigns a cost or distance to each edge. The goal is to find a Hamiltonian cycle that minimizes the total cost of the edges:
+
+```math
+C^* = \operatorname{arg min}_{C \text{ is a Hamiltonian cycle}} \sum_{e \in C} c(e)
+```
+
+where $C$ is the set of edges in the Hamiltonian cycle. The cost of the optimal solution is then defined as:
+
+```math
+opt(K_n, c) = \min_{C \text{ is a Hamiltonian cycle}} \sum_{e \in C} c(e)
+```
+
+We can easily reduce this problem to the Hamiltonian cycle problem by taking a complete graph with the same number of vertices and then setting the cost of the edges to 0 if they are in the original graph and to 1 or some large number if they are not. Any hamiltonian cycle in the original graph will have a cost of 0 and any Hamiltonian cycle in the complete graph will have a cost of at least 1. So if we can find a Hamiltonian cycle in the complete graph with a cost of 0 then we can also find a Hamiltonian cycle in the original graph.
+
+The difference between the Hamiltonian cycle problem and the TSP is that the TSP is an optimization problem rather than a decision problem. This means that we can talk about how good our solution is compared to the optimal solution. In the Hamiltonian cycle problem we just want to know if there is a Hamiltonian cycle or not. 
+
+But because the TSP problem is so hard we are often satisfied with an approximation of the optimal solution.
+This leads to so-called approximation algorithms where we say an algorithm is a $k$-approximation algorithm if it returns a solution that is at most $k$ times the optimal solution. So the algorithm would also find a Hamiltonian cycle $C$ but the cost of the cycle would be at most $k$ times the cost of the optimal solution:
+
+```math
+\sum_{e \in C} c(e) \leq k \cdot opt(K_n, c)
+```
+
+So if we have an algorithm that is a 2-approximation algorithm then it will return a Hamiltonian cycle with a cost that is at most twice the cost of the optimal solution.
+
+It quickly follows that if we have a k-approximation algorithm with $k > 1$ that solves the TSP problem in $O(f(n))$ time then we can also solve the Hamiltonian cycle problem in $O(f(n))$ time by just running the algorithm on the complete graph with the same number of vertices and the cost function as described above. This is because if the algorithm returns a Hamiltonian cycle with a cost of at most $k$ times the optimal solution then we can just check if the cost is 0 or not because the optimal solution in the complete graph is 0 and $k \cdot 0 = 0$. 
 
 ### Metric TSP
 
-Is TSP with the additional constraint that the distances between the vertices are a metric. This means that the distance between two vertices is the same in both directions and the triangle inequality holds. 
+Problems like the TSP are often encountered in real-world applications, such as logistics and routing. Luckily these problems often have additional constraints that make them easier to solve. One such constraint is the **metric TSP** which introduces the following constraints on the cost function $c$:
 
-For this problem there exists a 2-approximation algorithm in $O(n^2)$. A 2-approximation means that the solution is at most twice the optimal solution. So if the optimal solution is a cycle of cost 100 then the algorithm will return a cycle of cost at most 200. The algorithm uses the minimum spanning tree. Double-Tree Algorithm.
+- The cost function is symmetric: 
+
+```math
+c(x, y) = c(y, x)
+```
+
+- The cost function is non-negative: 
+
+```math
+c(x, y) \geq 0
+```
+
+- The cost function satisfies the triangle inequality:
+
+```math
+c(x, z) \leq c(x, y) + c(y, z)
+```
+
+For the metric TSP, there is a simple and elegant $2$-approximation algorithm known as the **Double-Tree algorithm (sometimes "twice-around-the-tree")**. The idea is to first find a [minimum spanning tree (MST)]() of the complete graph $K_n$ with the cost function $c$. The MST is a subgraph that connects all vertices with the minimum total edge weight while ensuring no cycles. This can be done using algorithms like Prim's or Kruskal's. The idea is then to walk around the edges of the MST twice, effectively creating a cycle that visits each edge twice. Hence the name Double-Tree algorithm. We do this by duplicating all edges of the MST, which gives us an Eulerian tour (a cycle that visits every edge exactly once as the degrees are all even). To then get a Hamiltonian cycle, we can skip vertices that have already been visited. This works because of the triangle inequality: skipping a vertex does not increase the total cost of the cycle.
+
+So we have an algorithm that finds a Hamiltonian cycle in the metric TSP now we just need to show that the cost of the cycle is at most twice the cost of the optimal solution. Since removing any edge from a Hamiltonian cycle leaves a spanning tree, the cost of the MST is at most that of any Hamiltonian cycle:
+
+```math
+mst(K_n, c) \leq opt(K_n, c)
+```
+
+Doubling every edge in the MST gives a walk of total cost $2 \cdot mst(K_n, c)$, visiting every vertex at least once. Because we are taking shortcuts in the Eulerian tour, the total cost of the Hamiltonian cycle is less due to the triangle inequality. Putting this all together, we have:
+
+```math
+\sum_{e \in C} c(e) \leq 2 \cdot mst(K_n, c) \leq 2 \cdot opt(K_n, c)
+```
+
+The runtime of the Double-Tree algorithm is dominated by the MST computation, which is $O(n^2)$ where $n$ is the number of vertices. Finding the eulerian tour and skipping vertices can be done in linear time, so the overall time complexity is $O(n^2)$.
 
 There is also a 1.5-approximation algorithm that uses the minimum spanning tree and matchings. Christofides algorithm.
