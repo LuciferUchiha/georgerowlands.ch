@@ -4,10 +4,10 @@ import Callout from '@components/Callout/Callout';
 
 The hadamard product is how some people might first think matrix multiplication works, which is wrong.
 
-The hadamard product is denoted using $\boldsymbol{A} \odot \boldsymbol{B}$ and is also commonly known as the element-wise matrix multiplication which perfectly describes how it works. It is defined for two matrices $\boldsymbol{A}$ and $\boldsymbol{B}$ of the same dimensions and results in another matrix $\boldsymbol{C}$ that has the same dimension as the two input matrices so $\boldsymbol{A, B, C} \in \mathbb{R}^{N \times M}$. So each element at $i,j$ in the resulting matrix is the product of the elements at $i,j$ of the two input matrices.
+The hadamard product is denoted using $\mathbf{A} \odot \mathbf{B}$ and is also commonly known as the element-wise matrix multiplication which perfectly describes how it works. It is defined for two matrices $\mathbf{A}$ and $\mathbf{B}$ of the same dimensions and results in another matrix $\mathbf{C}$ that has the same dimension as the two input matrices so $\mathbf{A, B, C} \in \mathbb{R}^{N \times M}$. So each element at $i,j$ in the resulting matrix is the product of the elements at $i,j$ of the two input matrices.
 
 ```math
-\boldsymbol{A} \odot \boldsymbol{B}=
+\mathbf{A} \odot \mathbf{B}=
 \begin{bmatrix}
     a_{11} & a_{12} & a_{13} \\
     a_{21} & a_{22} & a_{23} \\
@@ -63,7 +63,7 @@ A * B
 ```
 </div>
 
-But as might notice this is the hadamard product/element-wise multiplication. You would get the same result if you used the [`np.multiply(A,B)`](https://numpy.org/doc/stable/reference/generated/numpy.multiply.html) function as this is the function that is called under the hood when using the `*` operator. If you really did want to multiply $\boldsymbol{A}$ with $\boldsymbol{B}$ you would need to use the `@` operator or [`np.matmul(A,B)`](https://numpy.org/doc/stable/reference/generated/numpy.matmul.html) function.
+But as might notice this is the hadamard product/element-wise multiplication. You would get the same result if you used the [`np.multiply(A,B)`](https://numpy.org/doc/stable/reference/generated/numpy.multiply.html) function as this is the function that is called under the hood when using the `*` operator. If you really did want to multiply $\mathbf{A}$ with $\mathbf{B}$ you would need to use the `@` operator or [`np.matmul(A,B)`](https://numpy.org/doc/stable/reference/generated/numpy.matmul.html) function.
 
 If you try to calculate a hadamard product in numpy where the matrices do not have the same shape you will probably get the following error:
 

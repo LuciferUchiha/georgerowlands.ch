@@ -3,24 +3,24 @@
 The eigendecomposition only works for square matrices, the singular value decomposition, short SVD, is a generalization of the eigendecomposition allowing it to be used for rectangular matrices. Singular value decomposition uses 3 matrices just like the eigendecomposition.
 
 ```math
-\boldsymbol{A}=\boldsymbol{U}\Sigma\boldsymbol{V}^T
+\mathbf{A}=\mathbf{U}\Sigma\mathbf{V}^T
 ```
 
-The first matrix $\boldsymbol{U}$ is the so-called left singular value matrix which is an orthogonal matrix meaning $\boldsymbol{UU}^T=\boldsymbol{I}$, the second matrix $\Sigma$ is the singular value matrix which is very just like the matrix containing the eigenvalues in the eigendecomposition a diagonal matrix. The last matrix $\boldsymbol{V}^T$ is the right singular value matrix which is also an orthogonal matrix. To find the values we can do the following transformations which make it very similar to the eigendecomposition.
+The first matrix $\mathbf{U}$ is the so-called left singular value matrix which is an orthogonal matrix meaning $\mathbf{UU}^T=\mathbf{I}$, the second matrix $\Sigma$ is the singular value matrix which is very just like the matrix containing the eigenvalues in the eigendecomposition a diagonal matrix. The last matrix $\mathbf{V}^T$ is the right singular value matrix which is also an orthogonal matrix. To find the values we can do the following transformations which make it very similar to the eigendecomposition.
 
 ```math
 \begin{align*}
-    \boldsymbol{A}^T\boldsymbol{A}=\boldsymbol{V}\Sigma^T\boldsymbol{U}^T\boldsymbol{U}\Sigma\boldsymbol{V}^T \\
-    \boldsymbol{A}^T\boldsymbol{A}=\boldsymbol{V}(\Sigma^T\Sigma)\boldsymbol{V}^T
+    \mathbf{A}^T\mathbf{A}=\mathbf{V}\Sigma^T\mathbf{U}^T\mathbf{U}\Sigma\mathbf{V}^T \\
+    \mathbf{A}^T\mathbf{A}=\mathbf{V}(\Sigma^T\Sigma)\mathbf{V}^T
 \end{align*}
 ```
 
-Because $\Sigma$ is a diagonal matrix the multiplication with its transpose results again in a diagonal matrix. Which gives it the same form as the eigendecomposition. To get the matrix $\boldsymbol{U}$ we can do something very similar.
+Because $\Sigma$ is a diagonal matrix the multiplication with its transpose results again in a diagonal matrix. Which gives it the same form as the eigendecomposition. To get the matrix $\mathbf{U}$ we can do something very similar.
 
 ```math
 \begin{align*}
-    \boldsymbol{A}\boldsymbol{A}^T=\boldsymbol{U}\Sigma\boldsymbol{V}^T\boldsymbol{V}\Sigma^T\boldsymbol{U}^T \\
-    \boldsymbol{A}\boldsymbol{A}^T=\boldsymbol{U}(\Sigma\Sigma^T)\boldsymbol{U}^T
+    \mathbf{A}\mathbf{A}^T=\mathbf{U}\Sigma\mathbf{V}^T\mathbf{V}\Sigma^T\mathbf{U}^T \\
+    \mathbf{A}\mathbf{A}^T=\mathbf{U}(\Sigma\Sigma^T)\mathbf{U}^T
 \end{align*}
 ```
 

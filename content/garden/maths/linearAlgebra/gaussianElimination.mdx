@@ -252,32 +252,44 @@ The process of transforming the augmented matrix into row echelon form is called
 the second row. We repeat the process of finding the pivot element and eliminating the elements below it until we have reached the second to last column.
 
 <Callout type="example">
+We want to solve the following system of linear equations:
+
+```math
+\begin{vmatrix}
+2x + 3y + 4z = 19 \\
+5y + 6z = 17 \\
+8y + 17z = 50
+\end{vmatrix}
+```
+
+We can write the augmented matrix for this system of linear equations and start the elimination process:
+
 ```math
 \begin{align*}
     \left[\begin{array}{ccc|c}
-    \bold{2} & 3 & 4 & 19 \\
+    \mathbf{2} & 3 & 4 & 19 \\
     \textcolor{red}{1} & 11 & 14 & 55 \\
     \textcolor{red}{2} & \textcolor{red}{8} & 17 & 50
     \end{array}\right] & \rightarrow R_2 = R_2 - 2R_1 \\
     \rightarrow \left[\begin{array}{ccc|c}
-    \bold{2} & 3 & 4 & 19 \\
+    \mathbf{2} & 3 & 4 & 19 \\
     \textcolor{green}{0} & 5 & 6 & 17 \\
     \textcolor{red}{2} & \textcolor{red}{8} & 17 & 50
     \end{array}\right] & \rightarrow R_3 = R_3 - R_1 \\
     \rightarrow \left[\begin{array}{ccc|c}
-    \bold{2} & 3 & 4 & 19 \\
-    \textcolor{green}{0} & \bold{5} & 6 & 17 \\
+    \mathbf{2} & 3 & 4 & 19 \\
+    \textcolor{green}{0} & \mathbf{5} & 6 & 17 \\
     \textcolor{green}{0} & \textcolor{red}{5} & 13 & 31
     \end{array}\right] & \rightarrow R_3 = R_3 - R_2 \\
     \rightarrow \left[\begin{array}{ccc|c}
-    \bold{2} & 3 & 4 & 19 \\
-    \textcolor{green}{0} & \bold{5} & 6 & 17 \\
-    \textcolor{green}{0} & \textcolor{green}{0} & \bold{7} & 14
+    \mathbf{2} & 3 & 4 & 19 \\
+    \textcolor{green}{0} & \mathbf{5} & 6 & 17 \\
+    \textcolor{green}{0} & \textcolor{green}{0} & \mathbf{7} & 14
     \end{array}\right]
 \end{align*}
 ```
 
-We might have a case where have to swap rows to get the pivot element in the correct position:
+It can also be the case that the pivot element is not in the next row, in this case we can swap the rows to get the pivot element in the correct row.
 </Callout>
 
 ### Solving a System of Linear Equations
@@ -287,7 +299,42 @@ last variable and then substituting the found value into the previous row to sol
 as we are substituting the found values back into the previous rows.
 
 <Callout type="example">
+Let us continue with the example from above. We have the following row echelon form of the augmented matrix:
 
+```math
+\begin{bmatrix}
+2 & 3 & 4 & 19 \\
+0 & 5 & 6 & 17 \\
+0 & 0 & 7 & 14
+\end{bmatrix}
+```
+
+We can see that the last row gives us the equation $7z = 14$, so we can solve for $z = 2$. Now we can substitute this value into the second row to solve for $y$:
+
+```math
+\begin{align*}
+5y + 6z &= 17 \\
+5y + 6 \cdot 2 &= 17 \\
+5y + 12 &= 17 \\
+5y &= 5 \\
+y &= 1
+\end{align*}
+```
+
+Now we can substitute the values for $y$ and $z$ into the first row to solve for $x$:
+
+```math
+\begin{align*}
+2x + 3y + 4z &= 19 \\
+2x + 3 \cdot 1 + 4 \cdot 2 &= 19 \\
+2x + 3 + 8 &= 19 \\
+2x + 11 &= 19 \\
+2x &= 8 \\
+x &= 4
+\end{align*}
+```
+
+So the solution to the system of linear equations is $x = 4$, $y = 1$ and $z = 2$.
 </Callout>
 
 However, the gaussian elimination algorithm doesn't always work. There are cases where the algorithm fails. For example 
@@ -304,7 +351,7 @@ To make it easier to work with large matrices, it can be useful to compact the m
 Each row operation that is performed in the gaussian elimination algorithm can be represented as a matrix multiplication. We know that if we 
 multiply a matrix by an identity matrix we get the same matrix. We also seen permutation matrices that can be used to swap rows which is one 
 of the operations that can be performed in the gaussian elimination algorithm. The other operations can be summarized to adding a multiple of one 
-row to another row. This operation can also be represented as a matrix multiplication. For a matrix $\boldsymbol{A}\in \mathbb{R}^{3 \times 3}$ we 
+row to another row. This operation can also be represented as a matrix multiplication. For a matrix $\mathbf{A}\in \mathbb{R}^{3 \times 3}$ we 
 can add a $c_1$ times the first row to the second row by multiplying the matrix with the following matrix:
 
 ```math
@@ -335,10 +382,10 @@ a_{31} & a_{32} & a_{33}
 
 This is the same as adding a negative multiple of the first row to the third row. We can apply these operations one after another to in the end 
 get the upper triangular matrix that we get from the gaussian elimination algorithm. If we denote these elimination matrices that we multiply with as 
-$\boldsymbol{E}_1, \boldsymbol{E}_2, \ldots, \boldsymbol{E}_n$ and the resulting matrix as $\boldsymbol{U}$ we can write the following: 
+$\mathbf{E}_1, \mathbf{E}_2, \ldots, \mathbf{E}_n$ and the resulting matrix as $\mathbf{U}$ we can write the following: 
 
 ```math
-E_n \ldots E_2 E_1 \boldsymbol{A} = \boldsymbol{U}
+E_n \ldots E_2 E_1 \mathbf{A} = \mathbf{U}
 ```
 
 So if we always had to subtract some value from the rows we would get something like this:
@@ -357,12 +404,12 @@ So if we always had to subtract some value from the rows we would get something 
 1 & 0 & 0 \\
 -c_{21} & 1 & 0 \\
 0 & 0 & 1
-\end{bmatrix} \boldsymbol{A} &= \boldsymbol{U}
+\end{bmatrix} \mathbf{A} &= \mathbf{U}
 \begin{bmatrix}
 1 & 0 & 0 \\
 -c_{21} & 1 & 0 \\
 c_{32}c_{21}-c_{31} & -c_{32} & 1
-\end{bmatrix} \boldsymbol{A} = \boldsymbol{U}
+\end{bmatrix} \mathbf{A} = \mathbf{U}
 \end{align*}
 ```
 
@@ -371,29 +418,29 @@ we come to the following:
 
 ```math
 \begin{align*}
-\boldsymbol{A} =
+\mathbf{A} =
 \begin{bmatrix}
 1 & 0 & 0 \\
 c_{21} & 1 & 0 \\
 c_{31} & c_{32} & 1
-\end{bmatrix} \boldsymbol{U}
+\end{bmatrix} \mathbf{U}
 \end{align*}
 ```
 
 Where $c_{21}$ etc. are the multipliers that we use to subtract the multiple of the first row from the other rows (if we have to add a multiple of the first row we would have a 
 negative multiplier). Notice that the matrix that we multiply with is a lower triangular matrix. This is the idea of the LU decomposition where 
-the matrix $\boldsymbol{A}$ is factorized into a product of a lower triangular matrix $\boldsymbol{L}$ and an upper triangular matrix $\boldsymbol{U}$:
+the matrix $\mathbf{A}$ is factorized into a product of a lower triangular matrix $\mathbf{L}$ and an upper triangular matrix $\mathbf{U}$:
 
 ```math
-\boldsymbol{A} = \boldsymbol{LU}
+\mathbf{A} = \mathbf{LU}
 ```
 
-But what is the advantage of this factorization? The advantage is that we can solve the system of linear equations $\boldsymbol{A}\boldsymbol{x} = \boldsymbol{b}$ 
-very efficiently for any $\boldsymbol{b}$. First we calculate the two matrices using the gaussian elimination algorithm. For this we just focus on the coefficent 
+But what is the advantage of this factorization? The advantage is that we can solve the system of linear equations $\mathbf{A}\mathbf{x} = \mathbf{b}$ 
+very efficiently for any $\mathbf{b}$. First we calculate the two matrices using the gaussian elimination algorithm. For this we just focus on the coefficent 
 matrix and not the augmented matrix. The operations that we perform we store/memorize by storing the multipliers in the lower triangular matrix. 
 
-We first solve $\boldsymbol{L}\boldsymbol{y} = \boldsymbol{b}$ for $\boldsymbol{y}$ with forward substitution because $\boldsymbol{L}$ is a lower triangular matrix. 
-Then we solve $\boldsymbol{U}\boldsymbol{x} = \boldsymbol{y}$ for $\boldsymbol{x}$ with back substitution because $\boldsymbol{U}$ is an upper triangular matrix.
+We first solve $\mathbf{L}\mathbf{y} = \mathbf{b}$ for $\mathbf{y}$ with forward substitution because $\mathbf{L}$ is a lower triangular matrix. 
+Then we solve $\mathbf{U}\mathbf{x} = \mathbf{y}$ for $\mathbf{x}$ with back substitution because $\mathbf{U}$ is an upper triangular matrix.
 
 ### Partial Pivoting
 
@@ -495,26 +542,26 @@ Consistency conditions
 ## Calculating the Inverse via Gaussian Elimination
 
 The gaussian elimination method can be extended to calculate the inverse of a matrix. Because the inverse of a matrix is only defined for square matrices, 
-this algorithm only works for square matrices such as $2 \times 2$ matrices, $3 \times 3$ matrices, $\boldsymbol{A} \in \mathbb{R}^{n \times n}$.
+this algorithm only works for square matrices such as $2 \times 2$ matrices, $3 \times 3$ matrices, $\mathbf{A} \in \mathbb{R}^{n \times n}$.
 
 Just like when solving a system of linear equations, we first transform the matrix into an augmented matrix. However, instead of having the constants on the right side 
-of the vertical line we add the identity matrix $\boldsymbol{I}$ of the same size as the matrix on the right side of the vertical line.
+of the vertical line we add the identity matrix $\mathbf{I}$ of the same size as the matrix on the right side of the vertical line.
 
 <Callout type="example">
 Given the matrix:
 
 ```math
-\boldsymbol{A} = \begin{bmatrix}
+\mathbf{A} = \begin{bmatrix}
 2 & 4 & -2 \\
 4 & 9 & -3 \\
 -2 & -3 & 7
 \end{bmatrix}
 ```
 
-We can calculate the inverse of $\boldsymbol{A}$ by transforming it into the following augmented matrix:
+We can calculate the inverse of $\mathbf{A}$ by transforming it into the following augmented matrix:
 
 ```math
-[\boldsymbol{A}|\boldsymbol{I}] =\left[\begin{array}{ccc|ccc}
+[\mathbf{A}|\mathbf{I}] =\left[\begin{array}{ccc|ccc}
 2 & 4 & -2 & 1 & 0 & 0 \\
 4 & 9 & -3 & 0 & 1 & 0 \\
 -2 & -3 & 7 & 0 & 0 & 1
@@ -523,7 +570,7 @@ We can calculate the inverse of $\boldsymbol{A}$ by transforming it into the fol
 
 </Callout>
 
-The goal of the algorithm is now to transform the left side of the augmented matrix into the identity matrix $\boldsymbol{I}$. We are still only allowed to perform 
+The goal of the algorithm is now to transform the left side of the augmented matrix into the identity matrix $\mathbf{I}$. We are still only allowed to perform 
 the same operations as before:
 
 - Swapping two rows
@@ -533,22 +580,22 @@ the same operations as before:
 Important it is important that when we perform an operation on the left side of the augmented matrix, we also perform the same operation on the right side!
 
 By then transforming the left hand side firts into row echelon form and then into reduced row echelon form and then lastly performing back substitution 
-we should get on the left hand side the identity matrix $\boldsymbol{I}$ and on the right hand side the inverse of the matrix $\boldsymbol{A}$ so that we have:
+we should get on the left hand side the identity matrix $\mathbf{I}$ and on the right hand side the inverse of the matrix $\mathbf{A}$ so that we have:
 
 ```math
-[\boldsymbol{I}|\boldsymbol{A}^{-1}]
+[\mathbf{I}|\mathbf{A}^{-1}]
 ```
 
 Which fullfills the definition of the inverse of a matrix:
 
 ```math
-\boldsymbol{A} \boldsymbol{A}^{-1} = \boldsymbol{I}
+\mathbf{A} \mathbf{A}^{-1} = \mathbf{I}
 ```
 
 <Callout type="example">
 ```math
 \begin{align}
-[\boldsymbol{A}|\boldsymbol{I}]= \left[\begin{array}{ccc|ccc}
+[\mathbf{A}|\mathbf{I}]= \left[\begin{array}{ccc|ccc}
 2 & 4 & -2 & 1 & 0 & 0 \\
 4 & 9 & -3 & 0 & 1 & 0 \\
 -2 & -3 & 7 & 0 & 0 & 1
@@ -604,10 +651,10 @@ Which fullfills the definition of the inverse of a matrix:
 \end{align}
 ```
 
-This gives us the inverse of the matrix $\boldsymbol{A}$:
+This gives us the inverse of the matrix $\mathbf{A}$:
 
 ```math
-\boldsymbol{A}^{-1} = \begin{bmatrix}
+\mathbf{A}^{-1} = \begin{bmatrix}
 \frac{27}{4} & -\frac{11}{4} & \frac{3}{4} \\
 -\frac{11}{4} & \frac{5}{4} & -\frac{1}{4} \\
 \frac{3}{4} & -\frac{1}{4} & \frac{1}{4}
@@ -644,17 +691,17 @@ gcd(1001, 2002) = 7 \cdot 11 \cdot 13 = 1001
 ```
 
 The idea of decomposing a matrix into other matrices is similar, it can reveal a lot about the matrix. Our first decomposition is the CR-decomposition, 
-where the idea is as follows. Given a matrix $\boldsymbol{A} \in \mathbb{R}^{m \times n}$ of rank $r$, we can decompose it into two matrices $\boldsymbol{C} \in \mathbb{R}^{m \times r}$ and 
-$\boldsymbol{R} \in \mathbb{R}^{r \times n}$ such that:
+where the idea is as follows. Given a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ of rank $r$, we can decompose it into two matrices $\mathbf{C} \in \mathbb{R}^{m \times r}$ and 
+$\mathbf{R} \in \mathbb{R}^{r \times n}$ such that:
 
 ```math
-\boldsymbol{A} = \boldsymbol{C} \boldsymbol{R}
+\mathbf{A} = \mathbf{C} \mathbf{R}
 ```
 
-If we look at an example we might get an idea of how we find the matrices $\boldsymbol{C}$ and $\boldsymbol{R}$. Let's say we have the following matrix:
+If we look at an example we might get an idea of how we find the matrices $\mathbf{C}$ and $\mathbf{R}$. Let's say we have the following matrix:
 
 ```math
-\boldsymbol{A} = \begin{bmatrix}
+\mathbf{A} = \begin{bmatrix}
 1 & 2 & 0 & 3 \\
 2 & 4 & 1 & 4 \\
 3 & 6 & 2 & 5
@@ -665,17 +712,17 @@ We can see that the matrix has rank 3, as the second column is just double the f
 So we know we can create all the columns from the first and the third column, the independent columns. So let's add them all to make a matrix.
 
 ```math
-\boldsymbol{C} = \begin{bmatrix}
+\mathbf{C} = \begin{bmatrix}
 1 & 0 \\
 2 & 1 \\
 3 & 2
 \end{bmatrix}
 ```
 
-Now the question is with what can be multiply the matrix $\boldsymbol{C}$ to get the matrix $\boldsymbol{A}$. We know that the matrix vector product 
+Now the question is with what can be multiply the matrix $\mathbf{C}$ to get the matrix $\mathbf{A}$. We know that the matrix vector product 
 is a linear combination of the columns of the matrix. So the $i$-th entry of the vector is the weight of the $i$-th column of the matrix. We also know 
-that the matrix multiplication is like creating multiple linear combinations of the columns of the matrix. So we can see that the matrix $\boldsymbol{R}$ 
-is the matrix that contains the weights of the independent columns to create all the columns of the matrix $\boldsymbol{A}$. For the example above 
+that the matrix multiplication is like creating multiple linear combinations of the columns of the matrix. So we can see that the matrix $\mathbf{R}$ 
+is the matrix that contains the weights of the independent columns to create all the columns of the matrix $\mathbf{A}$. For the example above 
 this looks like this: 
 
 <Image
@@ -683,14 +730,14 @@ this looks like this:
     width={500}
 />
 
-You might notice something about the matrix $\boldsymbol{R}$, it is the exact matrix that we get when we perform the gauss-jordan algorithm after 
+You might notice something about the matrix $\mathbf{R}$, it is the exact matrix that we get when we perform the gauss-jordan algorithm after 
 removing the zero rows at the bottom so the reduced row echelon form of the matrix. Why is this?
 
 <Callout type="todo">
 Precise explanation as to why this is the case, has to do with the fact of the row operations
 </Callout>
 
-So after performing the gauss-jordan algorithm on the matrix $\boldsymbol{A}$ we can easily find the matrices $\boldsymbol{C}$ and $\boldsymbol{R}$. 
-The matrix $\boldsymbol{C}$ is the matrix that contains the independent columns which are the columns that have a pivot element. 
-The matrix $\boldsymbol{R}$ is the matrix that contains the weights of the independent columns to create all the columns of the matrix $\boldsymbol{A}$ 
+So after performing the gauss-jordan algorithm on the matrix $\mathbf{A}$ we can easily find the matrices $\mathbf{C}$ and $\mathbf{R}$. 
+The matrix $\mathbf{C}$ is the matrix that contains the independent columns which are the columns that have a pivot element. 
+The matrix $\mathbf{R}$ is the matrix that contains the weights of the independent columns to create all the columns of the matrix $\mathbf{A}$ 
 which corresponds to the reduced row echelon form of the matrix that we get after performing the gauss-jordan algorithm.

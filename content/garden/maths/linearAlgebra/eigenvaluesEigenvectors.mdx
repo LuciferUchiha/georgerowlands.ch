@@ -48,18 +48,18 @@ Or we can use a matrix to scale a vector:
     width={300}
 />
 
-Now let us go back to eigenvalues and eigenvectors. An eigenvector $\boldsymbol{v}$ of a square matrix $\boldsymbol{A}$ is defined as a non-zero vector such that the multiplication with $\boldsymbol{A}$ only changes the scale of the vector it does not change the direction. The scalar $\lambda$ is called the eigenvalue.
+Now let us go back to eigenvalues and eigenvectors. An eigenvector $\mathbf{v}$ of a square matrix $\mathbf{A}$ is defined as a non-zero vector such that the multiplication with $\mathbf{A}$ only changes the scale of the vector it does not change the direction. The scalar $\lambda$ is called the eigenvalue.
 
 ```math
-\boldsymbol{Av}=\lambda \boldsymbol{v}
+\mathbf{Av}=\lambda \mathbf{v}
 ```
 
-Because there would be an infinite amount of solutions we limit the magnitude of the vector to $\parallel\boldsymbol{v}\parallel_2=1$.
+Because there would be an infinite amount of solutions we limit the magnitude of the vector to $\parallel\mathbf{v}\parallel_2=1$.
 
 Let us look at an example of how to calculate the eigenvector and eigenvalue of
 
 ```math
-\boldsymbol{A}=
+\mathbf{A}=
 \begin{bmatrix}
   0 & 1 \\
   -2 & -3 \\
@@ -70,18 +70,18 @@ For this we can rewrite the problem and solve the following equations:
 
 ```math
 \begin{align*}
-\boldsymbol{Av}=\lambda \boldsymbol{v} \\
-\boldsymbol{Av} - \lambda \boldsymbol{v} = 0 \\
-\boldsymbol{Av} - \lambda \boldsymbol{Iv} = 0
-(\boldsymbol{A} - \lambda \boldsymbol{I})\boldsymbol{v} = 0
+\mathbf{Av}=\lambda \mathbf{v} \\
+\mathbf{Av} - \lambda \mathbf{v} = 0 \\
+\mathbf{Av} - \lambda \mathbf{Iv} = 0
+(\mathbf{A} - \lambda \mathbf{I})\mathbf{v} = 0
 \end{align*}
 ```
 
-For there to be a solution where $\boldsymbol{v}$ is non-zero then the following must be true and which then must lead to the characteristic polynomial of $\boldsymbol{A}$. Solving the characteristic polynomial equaling 0 we can get between 0 and $n$ eigenvalues with $n$ being the number of dimensions of $\boldsymbol{A} \in \mathbb{R}^{n \times n}$:
+For there to be a solution where $\mathbf{v}$ is non-zero then the following must be true and which then must lead to the characteristic polynomial of $\mathbf{A}$. Solving the characteristic polynomial equaling 0 we can get between 0 and $n$ eigenvalues with $n$ being the number of dimensions of $\mathbf{A} \in \mathbb{R}^{n \times n}$:
 
 ```math
 \begin{align*}
-det(\boldsymbol{A}-\lambda\boldsymbol{I}) &= 0 \\
+det(\mathbf{A}-\lambda\mathbf{I}) &= 0 \\
 det\big(
     \begin{bmatrix}
       0 & 1 \\
@@ -106,7 +106,7 @@ Now that we have the eigenvalues all we need to do is calculate the eigenvectors
 
 ```math
 \begin{align*}
-(\boldsymbol{A} - \lambda \boldsymbol{I})\boldsymbol{v} &= 0 \\
+(\mathbf{A} - \lambda \mathbf{I})\mathbf{v} &= 0 \\
 \big(\begin{bmatrix}
       0 & 1 \\
       -2 & -3 \\
@@ -138,7 +138,7 @@ Now that we have the eigenvalues all we need to do is calculate the eigenvectors
 So we know $v_1 = -v_2$ since we constrict ourselves to vectors with a magnitude of 1 so $\sqrt{v_1^2 + (-v_1)^2}=1$ we get for eigenvalue $\lambda_1=-1$ the eigenvector
 
 ```math
-\boldsymbol{v}=
+\mathbf{v}=
 \begin{bmatrix}
       0.707107 \\
       -0.707107 \\
@@ -166,11 +166,11 @@ print(f"Eigenvectors: {e_vectors}")
 
 ## Properties
 
-We can use the eigenvalues and eigenvectors of the matrix $\boldsymbol{A}$ to find out a lot about it
+We can use the eigenvalues and eigenvectors of the matrix $\mathbf{A}$ to find out a lot about it
 
-- The trace of $\boldsymbol{A}$ is the sum of its eigenvalues $tr(\boldsymbol{A})=\sum_{i=1}^{n}{\lambda_i}$.
-- The determinant of $\boldsymbol{A}$ is the product of its eigenvalues $det(\boldsymbol{A})=\prod_{i=1}^{n}{\lambda_i}$.
-- The rank of $\boldsymbol{A}$ is amount of non-zero eigenvalues.
+- The trace of $\mathbf{A}$ is the sum of its eigenvalues $tr(\mathbf{A})=\sum_{i=1}^{n}{\lambda_i}$.
+- The determinant of $\mathbf{A}$ is the product of its eigenvalues $det(\mathbf{A})=\prod_{i=1}^{n}{\lambda_i}$.
+- The rank of $\mathbf{A}$ is amount of non-zero eigenvalues.
 
 
 
@@ -187,7 +187,7 @@ print(f"Rank: {np.linalg.matrix_rank(A)}")
 ```
 </div>
 
-If $\boldsymbol{A}$ is a diagonal matrix then the eigenvalues are just the diagonal elements.
+If $\mathbf{A}$ is a diagonal matrix then the eigenvalues are just the diagonal elements.
 
 
 
@@ -208,10 +208,10 @@ print(f"Eigenvectors: {e_vectors}")
 
 ## Trick for 2 by 2 Matrices
 
-As presented in this [video by 3Blue1Brown](https://www.youtube.com/watch?v=e50Bj7jn9IQ) there is a cool formula that can be used to calculate the eigenvalues of a $2 \times 2$ matrix such as $\boldsymbol{A}=\begin{bmatrix}a & b \\ c & d\end{bmatrix}$. It rests upon two properties that have already been mentioned above:
+As presented in this [video by 3Blue1Brown](https://www.youtube.com/watch?v=e50Bj7jn9IQ) there is a cool formula that can be used to calculate the eigenvalues of a $2 \times 2$ matrix such as $\mathbf{A}=\begin{bmatrix}a & b \\ c & d\end{bmatrix}$. It rests upon two properties that have already been mentioned above:
 
-- The trace of $\boldsymbol{A}$ is the sum of its eigenvalues $tr(\boldsymbol{A})=\sum_{i=1}^{n}{\lambda_i}$. So in other words $a + d = \lambda_1 + \lambda_2$. We can also reform this to get the mean value of the two eigenvalues: $\frac{1}{2}tr(\boldsymbol{A})=\frac{a+d}{2}=\frac{\lambda_1 + \lambda_2}{2}=m$
-- The determinant of $\boldsymbol{A}$ is the product of its eigenvalues $det(\boldsymbol{A})=\prod_{i=1}^{n}{\lambda_i}$. So in other words $ad - bc = \lambda_1 \cdot \lambda_2 = p$.
+- The trace of $\mathbf{A}$ is the sum of its eigenvalues $tr(\mathbf{A})=\sum_{i=1}^{n}{\lambda_i}$. So in other words $a + d = \lambda_1 + \lambda_2$. We can also reform this to get the mean value of the two eigenvalues: $\frac{1}{2}tr(\mathbf{A})=\frac{a+d}{2}=\frac{\lambda_1 + \lambda_2}{2}=m$
+- The determinant of $\mathbf{A}$ is the product of its eigenvalues $det(\mathbf{A})=\prod_{i=1}^{n}{\lambda_i}$. So in other words $ad - bc = \lambda_1 \cdot \lambda_2 = p$.
 
 ```math
 \lambda_1, \lambda_2 = m \pm \sqrt{m^2 - p}
@@ -223,10 +223,10 @@ The eigendecomposition is a way to split up **square** matrices into 3 matrices 
 
 ```math
 \begin{align*}
-    \boldsymbol{A}= \begin{bmatrix}5 & 2 & 0\\ 2 & 5 & 0\\ 4 & -1 & 4\end{bmatrix} \\
-    \boldsymbol{A}\begin{bmatrix}1\\ 1\\ 1\end{bmatrix} = 7 \cdot \begin{bmatrix}1\\ 1\\ 1\end{bmatrix} \\
-    \boldsymbol{A}\begin{bmatrix}0\\ 0\\ 1\end{bmatrix} = 4 \cdot \begin{bmatrix}0\\ 0\\ 1\end{bmatrix} \\
-    \boldsymbol{A}\begin{bmatrix}-1\\ 1\\ 5\end{bmatrix} = 3 \cdot \begin{bmatrix}-1\\ 1\\ 5\end{bmatrix}
+    \mathbf{A}= \begin{bmatrix}5 & 2 & 0\\ 2 & 5 & 0\\ 4 & -1 & 4\end{bmatrix} \\
+    \mathbf{A}\begin{bmatrix}1\\ 1\\ 1\end{bmatrix} = 7 \cdot \begin{bmatrix}1\\ 1\\ 1\end{bmatrix} \\
+    \mathbf{A}\begin{bmatrix}0\\ 0\\ 1\end{bmatrix} = 4 \cdot \begin{bmatrix}0\\ 0\\ 1\end{bmatrix} \\
+    \mathbf{A}\begin{bmatrix}-1\\ 1\\ 5\end{bmatrix} = 3 \cdot \begin{bmatrix}-1\\ 1\\ 5\end{bmatrix}
 \end{align*}
 ```
 
@@ -234,7 +234,7 @@ Instead of holding this information in three separate equations we can combine t
 
 ```math
 \begin{align*}
-    \boldsymbol{A}\begin{bmatrix}
+    \mathbf{A}\begin{bmatrix}
         1 & 0 & -1 \\
         1 & 0 & 1 \\
         1 & 1 & 5
@@ -250,15 +250,15 @@ Instead of holding this information in three separate equations we can combine t
         0 & 0 & 3
     \end{bmatrix}
 \end{align*} \\
-\boldsymbol{AX}=\boldsymbol{X}\Lambda \\
-\boldsymbol{AXX}^{-1}=\boldsymbol{X}\Lambda\boldsymbol{X}^{-1} \\
-\boldsymbol{A}=\boldsymbol{X}\Lambda\boldsymbol{X}^{-1}
+\mathbf{AX}=\mathbf{X}\Lambda \\
+\mathbf{AXX}^{-1}=\mathbf{X}\Lambda\mathbf{X}^{-1} \\
+\mathbf{A}=\mathbf{X}\Lambda\mathbf{X}^{-1}
 ```
 
-If $\boldsymbol{A}$ is a symmetric matrix then $\boldsymbol{Q}$ is guaranteed to be an orthogonal matrix because it is the eigenvectors of $\boldsymbol{A}$ concatenated. Because $\boldsymbol{Q}$ is orthogonal $\boldsymbol{Q}^{-1} = \boldsymbol{Q}^T$ which leads to the formula being simplified to 
+If $\mathbf{A}$ is a symmetric matrix then $\mathbf{Q}$ is guaranteed to be an orthogonal matrix because it is the eigenvectors of $\mathbf{A}$ concatenated. Because $\mathbf{Q}$ is orthogonal $\mathbf{Q}^{-1} = \mathbf{Q}^T$ which leads to the formula being simplified to 
 
 ```math
-\boldsymbol{A}=\boldsymbol{X}\Lambda\boldsymbol{X}^T
+\mathbf{A}=\mathbf{X}\Lambda\mathbf{X}^T
 ```
 
 

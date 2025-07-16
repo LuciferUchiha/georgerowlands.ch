@@ -288,11 +288,11 @@ The Image below summarizes all the centrality measures we have seen so far and c
 Before I start explaining the eigenvector centrality, I describe what an eigenvector is. An eigenvector is a
 vector that does not change its direction when multiplied by a square matrix, only its magnitude changes, i.e. it is only 
 scaled. Because a matrix can have multiple eigenvectors, the solution is to allow for only eigenvectors with a magnitude of 
-1, i.e. $||\boldsymbol{v}||_2 = 1$, i.e. the normalized eigenvector. The scaling factor is then called the eigenvalue, 
+1, i.e. $||\mathbf{v}||_2 = 1$, i.e. the normalized eigenvector. The scaling factor is then called the eigenvalue, 
 denoted by $\lambda$. The formula for the eigenvector is as follows:
 
 ```math
-\boldsymbol{Av}=\lambda \boldsymbol{v}
+\mathbf{Av}=\lambda \mathbf{v}
 ```
 
 The eigenvector centrality is the eigenvector corresponding to the largest eigenvalue of the adjacency matrix of the
@@ -328,12 +328,12 @@ iteration method.
 
 The power iteration method is a simple iterative method to calculate the eigenvector corresponding to the largest eigenvalue.
 
-The idea is to start with an initial vector $\boldsymbol{b_0}$ and then multiply it with the adjacency matrix $\boldsymbol{A}$.
-Then we normalize the resulting vector $\boldsymbol{b_1}$ and repeat the process until the vector converges. Most often to 
+The idea is to start with an initial vector $\mathbf{b_0}$ and then multiply it with the adjacency matrix $\mathbf{A}$.
+Then we normalize the resulting vector $\mathbf{b_1}$ and repeat the process until the vector converges. Most often to 
 check for convergence we calculate the difference between the two vectors and check if it is smaller than a threshold.
 
 ```math
-\boldsymbol{b_{i+1}} = \frac{\boldsymbol{Ab_i}}{||\boldsymbol{Ab_i}||_2}
+\mathbf{b_{i+1}} = \frac{\mathbf{Ab_i}}{||\mathbf{Ab_i}||_2}
 ```
 
 <Callout type="info">

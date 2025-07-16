@@ -3,7 +3,7 @@ import Image from '@components/Image/Image';
 
 # Linear Transformations
 
-A linear transformation also often called linear map is a function between two vector spaces which we will come to later. For now you can think of a linear transformation as a function that takes in a vector and outputs a vector. The vectors can have the same dimension or different dimensions.
+A linear transformation also often called linear map is a function between two vector spaces which we will come to later. For now you can think of a linear transformation as a function that takes in a vector and outputs a vector. The vectors can have the same dimension or different dimensions. We can write a linear transformation as:
 
 ```math
 T: R^N \rightarrow R^M
@@ -11,12 +11,21 @@ T: R^N \rightarrow R^M
 
 Where $T$ is the transformation, $R^N$ is the input vector space so vectors of dimension $N$ and $R^M$ is the output vector space so vectors of dimension $M$.
 
-Importantly a linear transformation is operation preserving, meaning that it preserves the operations of addition and scalar multiplication. More formally the following two conditions must be satisfied for a function to be a linear transformation:
-- **Additivity**: $T(\boldsymbol{u} + \boldsymbol{v}) = T(\boldsymbol{u}) + T(\boldsymbol{v})$
-- **Homogeneity**: $T(c\boldsymbol{u}) = cT(\boldsymbol{u})$
+Importantly a linear transformation is as the name suggest linear, meaning that it preserves the operations of addition and scalar multiplication. More formally the following two conditions must be satisfied for a function to be a linear transformation of a vector $\mathbf{u}$ and $\mathbf{v}$ and a scalar $c$:
+- **Additivity**: $T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v})$
+- **Scalar Multiplication**: $T(c\mathbf{u}) = cT(\mathbf{u})$
 
-linearTransformationAddition.png
-linearTransformationScaling.png
+<Image
+    src="/maths/linearTransformationAddition.png"
+    caption="A visual representation of preserving addition in a linear transformation."
+    width={600}
+/>
+
+<Image
+    src="/maths/linearTransformationScaling.png"
+    caption="A visual representation of preserving scalar multiplication in a linear transformation."
+    width={600}
+/>
 
 <Callout type="example" title="Valid Linear Transformation">
 Let's first look at an examples of a valid linear transformations where the vectors have the same dimension.
@@ -25,25 +34,25 @@ Let's first look at an examples of a valid linear transformations where the vect
 T: R^2 \rightarrow R^2, T \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 2x \\ 3y \end{bmatrix}
 ```
 
-To show that this is a linear transformation we need to show that it satisfies the two conditions. Firstly we can show that it satisfies additivity:
+To show that this is a linear transformation we need to show that it satisfies the two conditions. Firstly we can show that it preserves additivity:
 
 ```math
 \begin{align*}
-T(\boldsymbol{u} + \boldsymbol{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix} \\
-T(\boldsymbol{u}) + T(\boldsymbol{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix}
+T(\mathbf{u} + \mathbf{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix} \\
+T(\mathbf{u}) + T(\mathbf{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix}
 \end{align*}
 ```
 
-So we can see that $T(\boldsymbol{u} + \boldsymbol{v}) = T(\boldsymbol{u}) + T(\boldsymbol{v})$ so the transformation satisfies additivity. Now we can check that it satisfies homogeneity:
+So we can see that $T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v})$ so the transformation preserves additivity. Now we can check that it preserves scalar multiplication:
 
 ```math
 \begin{align*}
-T(c\boldsymbol{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix} \\
-cT(\boldsymbol{u}) &= c \begin{bmatrix} 2x \\ 3y \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix}
+T(c\mathbf{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix} \\
+cT(\mathbf{u}) &= c \begin{bmatrix} 2x \\ 3y \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix}
 \end{align*}
 ```
 
-Because $T(c\boldsymbol{u}) = cT(\boldsymbol{u})$ the transformation satisfies homogeneity. Therefore the transformation is a linear transformation.
+Because $T(c\mathbf{u}) = cT(\mathbf{u})$ the transformation preserves scalar multiplication. Therefore the transformation is a linear transformation.
 </Callout>
 
 <Callout type="example" title="Linear Transformation with Different Dimensions">
@@ -57,15 +66,15 @@ This transformation is still linear because it satisfies the two conditions. The
 
 ```math
 \begin{align*}
-T(\boldsymbol{u} + \boldsymbol{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \\ 0 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \\ 0 \end{bmatrix} \\
-T(\boldsymbol{u}) + T(\boldsymbol{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \\ 0 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \\ 0 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \\ 0 \end{bmatrix}
+T(\mathbf{u} + \mathbf{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \\ 0 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \\ 0 \end{bmatrix} \\
+T(\mathbf{u}) + T(\mathbf{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \\ 0 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \\ 0 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \\ 0 \end{bmatrix}
 \end{align*}
 ```
 
 ```math
 \begin{align*}
-T(c\boldsymbol{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \\ 0 \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \\ 0 \end{bmatrix} \\
-cT(\boldsymbol{u}) &= c \begin{bmatrix} 2x \\ 3y \\ 0 \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \\ 0 \end{bmatrix}
+T(c\mathbf{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \\ 0 \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \\ 0 \end{bmatrix} \\
+cT(\mathbf{u}) &= c \begin{bmatrix} 2x \\ 3y \\ 0 \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \\ 0 \end{bmatrix}
 \end{align*}
 ```
 
@@ -79,15 +88,15 @@ This transformation is still linear because it satisfies the two conditions. The
 
 ```math
 \begin{align*}
-T(\boldsymbol{u} + \boldsymbol{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \\ z_1 + z_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix} \\
-T(\boldsymbol{u}) + T(\boldsymbol{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix}
+T(\mathbf{u} + \mathbf{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \\ z_1 + z_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix} \\
+T(\mathbf{u}) + T(\mathbf{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix}
 \end{align*}
 ```
 
 ```math
 \begin{align*}
-T(c\boldsymbol{u}) &= T \begin{bmatrix} cx \\ cy \\ cz \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix} \\
-cT(\boldsymbol{u}) &= c \begin{bmatrix} 2x \\ 3y \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix}
+T(c\mathbf{u}) &= T \begin{bmatrix} cx \\ cy \\ cz \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix} \\
+cT(\mathbf{u}) &= c \begin{bmatrix} 2x \\ 3y \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix}
 \end{align*}
 ```
 </Callout>
@@ -103,17 +112,17 @@ This transformation is not linear because it doesn't satisfy the additivity cond
 
 ```math
 \begin{align*}
-T(\boldsymbol{u} + \boldsymbol{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} (x_1 + x_2)^2 \\ (y_1 + y_2)^2 \end{bmatrix} = \begin{bmatrix} x_1^2 + 2x_1x_2 + x_2^2 \\ y_1^2 + 2y_1y_2 + y_2^2 \end{bmatrix} \\
-T(\boldsymbol{u}) + T(\boldsymbol{v}) &= \begin{bmatrix} x_1^2 \\ y_1^2 \end{bmatrix} + \begin{bmatrix} x_2^2 \\ y_2^2 \end{bmatrix} = \begin{bmatrix} x_1^2 + x_2^2 \\ y_1^2 + y_2^2 \end{bmatrix}
+T(\mathbf{u} + \mathbf{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} (x_1 + x_2)^2 \\ (y_1 + y_2)^2 \end{bmatrix} = \begin{bmatrix} x_1^2 + 2x_1x_2 + x_2^2 \\ y_1^2 + 2y_1y_2 + y_2^2 \end{bmatrix} \\
+T(\mathbf{u}) + T(\mathbf{v}) &= \begin{bmatrix} x_1^2 \\ y_1^2 \end{bmatrix} + \begin{bmatrix} x_2^2 \\ y_2^2 \end{bmatrix} = \begin{bmatrix} x_1^2 + x_2^2 \\ y_1^2 + y_2^2 \end{bmatrix}
 \end{align*}
 ```
 
-It also doesn't satisfy the homogeneity condition:
+It also doesn't satisfy the scalar multiplication condition:
 
 ```math
 \begin{align*}
-T(c\boldsymbol{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} (cx)^2 \\ (cy)^2 \end{bmatrix} = \begin{bmatrix} c^2x^2 \\ c^2y^2 \end{bmatrix} \\
-cT(\boldsymbol{u}) &= c \begin{bmatrix} x^2 \\ y^2 \end{bmatrix} = \begin{bmatrix} cx^2 \\ cy^2 \end{bmatrix}
+T(c\mathbf{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} (cx)^2 \\ (cy)^2 \end{bmatrix} = \begin{bmatrix} c^2x^2 \\ c^2y^2 \end{bmatrix} \\
+cT(\mathbf{u}) &= c \begin{bmatrix} x^2 \\ y^2 \end{bmatrix} = \begin{bmatrix} cx^2 \\ cy^2 \end{bmatrix}
 \end{align*}
 ```
 </Callout>
@@ -131,13 +140,13 @@ linearTransformationVisual.png
 The image of a transformation is defiend just as with functions, it is the set of all possible outputs of the transformation. the null vector is always in the image of a transformation.
 
 ```math
-\operatorname{Im}(A) = \{ A\boldsymbol{x} \in R^M \mid \boldsymbol{x} \in R^N \}
+\operatorname{Im}(A) = \{ A\mathbf{x} \in R^M \mid \mathbf{x} \in R^N \}
 ```
 
 The kernel of a transformation is the set of all inputs that map to the zero vector. This has a special name, the null space.
 
 ```math
-\operatorname{Ker}(A) = \{ \boldsymbol{x} \in R^N \mid A\boldsymbol{x} = \boldsymbol{o} \}
+\operatorname{Ker}(A) = \{ \mathbf{x} \in R^N \mid A\mathbf{x} = \mathbf{o} \}
 ```
 
 dimension of the domain = dimension of the kernel + dimension of the image

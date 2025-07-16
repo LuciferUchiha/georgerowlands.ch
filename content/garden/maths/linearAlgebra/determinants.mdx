@@ -173,16 +173,16 @@ ce + dg & cf + dh
 We can now also use this to argue why the determinant of an invertible matrix cannot be 0. So we want to prove the following statement:
 
 ```math
-\boldsymbol{A} \text{ is invertible} \iff det(\boldsymbol{A}) \neq 0
+\mathbf{A} \text{ is invertible} \iff det(\mathbf{A}) \neq 0
 ```
 
-So let's start with the forward direction. If the matrix $\boldsymbol{A}$ is invertible then $\boldsymbol{AA}^{-1} = I$ and so $det(\boldsymbol{A})det(\boldsymbol{A}^{-1}) = det(\boldsymbol{I}) = 1$. Therefore $det(\boldsymbol{A}) \neq 0$.
+So let's start with the forward direction. If the matrix $\mathbf{A}$ is invertible then $\mathbf{AA}^{-1} = I$ and so $det(\mathbf{A})det(\mathbf{A}^{-1}) = det(\mathbf{I}) = 1$. Therefore $det(\mathbf{A}) \neq 0$.
 
-Now we need to show the backwards direction, so that if $det(\boldsymbol{A}) \neq 0$, then $\boldsymbol{A}$ is invertible. So, let us assume that $det(\boldsymbol{A}) \neq 0$. For a $2 \times 2$ matrix 
-this implies that $ad - bc \neq 0$ which also implies that $a \neq 0$ or $d \neq 0$. So we can now construct the inverse of the matrix $\boldsymbol{A}$:
+Now we need to show the backwards direction, so that if $det(\mathbf{A}) \neq 0$, then $\mathbf{A}$ is invertible. So, let us assume that $det(\mathbf{A}) \neq 0$. For a $2 \times 2$ matrix 
+this implies that $ad - bc \neq 0$ which also implies that $a \neq 0$ or $d \neq 0$. So we can now construct the inverse of the matrix $\mathbf{A}$:
 
 ```math
-\boldsymbol{A}^{-1} = 
+\mathbf{A}^{-1} = 
 \begin{bmatrix}
 w & x \\
 y & z
@@ -192,7 +192,7 @@ y & z
 such that 
 
 ```math
-\boldsymbol{A}\boldsymbol{A}^{-1} = 
+\mathbf{A}\mathbf{A}^{-1} = 
 \begin{bmatrix}
 a & b \\
 c & d
@@ -228,21 +228,21 @@ w = \frac{d}{ad - bc}, \quad x = \frac{-b}{ad - bc}, \quad y = \frac{-c}{ad - bc
 We notice that the denominator is always the same so when we enter the terms back into the matrix we can simplify the matrix to:
 
 ```math
-\boldsymbol{A}^{-1} = \frac{1}{ad - bc}
+\mathbf{A}^{-1} = \frac{1}{ad - bc}
 \begin{bmatrix}
 d & -b \\
 -c & a
 \end{bmatrix}
 ```
 
-This formula for the inverse of a $2 \times 2$ matrix is valid as long as $det(\boldsymbol{A}) = ad - bc \neq 0$ as otherwise we would be dividing by 0 which is not allowed. 
+This formula for the inverse of a $2 \times 2$ matrix is valid as long as $det(\mathbf{A}) = ad - bc \neq 0$ as otherwise we would be dividing by 0 which is not allowed. 
 
 Now, we can use this result to examine the determinant of the inverse matrix. Recall that the determinant of a scalar multiple of a matrix scales by that scalar. 
-Therefore, using the formula for $\boldsymbol{A}^{-1}$ the determinant of $\boldsymbol{A}^{-1}$ is given by:
+Therefore, using the formula for $\mathbf{A}^{-1}$ the determinant of $\mathbf{A}^{-1}$ is given by:
 
 ```math
 \begin{align*}
-det(\boldsymbol{A}^{-1}) &= det\left(\frac{1}{ad - bc}
+det(\mathbf{A}^{-1}) &= det\left(\frac{1}{ad - bc}
 \begin{bmatrix}
 d & -b \\
 -c & a
@@ -253,7 +253,7 @@ d & -b \\
 \end{bmatrix} \\
 &= \frac{1}{(ad - bc)^2} (ad - bc) \\
 &= \frac{1}{ad - bc} \\
-&= \frac{1}{det(\boldsymbol{A})}
+&= \frac{1}{det(\mathbf{A})}
 \end{align*}
 ```
 
@@ -276,20 +276,20 @@ So now if $d = g = h = 0$ then the determinant simplifies to just the product of
 can be seen for a lower triangular matrix so where $b = c = f = 0$ then the determinant is just the product of the diagonal elements $adi$. So we then have:
 - $det(\text{upper/lower triangular matrix}) = aei$
 - $det(\text{diagonal matrix}) = aei$
-- $det(\boldsymbol{I}) = 1$
+- $det(\mathbf{I}) = 1$
 
 ### Determinant of Orthogonal Matrices
 
 If we have an orthogonal matrix then the we already know the following holds:
 
 ```math
-\boldsymbol{A}^T\boldsymbol{A} = \boldsymbol{I}
+\mathbf{A}^T\mathbf{A} = \mathbf{I}
 ```
 
 And because we know that the determinant of the identity matrix is 1 we can then come to the conclusion that the determinant of an orthogonal matrix is either 1 or -1.
 
 ```math
-1 = det(\boldsymbol{I}) = det(\boldsymbol{A}^T\boldsymbol{A}) = det(\boldsymbol{A}^T)det(\boldsymbol{A}) = det(\boldsymbol{A})^2 \implies det(\boldsymbol{A}) = \pm 1
+1 = det(\mathbf{I}) = det(\mathbf{A}^T\mathbf{A}) = det(\mathbf{A}^T)det(\mathbf{A}) = det(\mathbf{A})^2 \implies det(\mathbf{A}) = \pm 1
 ```
 
 ## Co-Factor Expansion for NxN Matrices
@@ -366,26 +366,26 @@ So we can actually calculate the determinant of a $3 \times 3$ matrix using the 
 higher dimensions so we could calculate the determinant of a $4 \times 4$ matrix using the formula for the determinant of a $3 \times 3$ matrix and so on. 
 
 From the above example we can actually see a pattern. We are always multiplying an element $a_ij$ with the determinant of the smaller matrix where the row $i$ and column $j$ 
-have been removed. So if we are given a matrix $\boldsymbol{A} \in \mathbb{R}^{n \times n}$ then we define the matrix without the $i$-th row and $j$-th column as 
-$\mathscr{A}_{ij} \in \mathbb{R}^{(n-1) \times (n-1)}$. We can then define a new matrix $\boldsymbol{C}$ the so-called co-factor matrix where the element $c_{ij}$ is 
+have been removed. So if we are given a matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ then we define the matrix without the $i$-th row and $j$-th column as 
+$\mathscr{A}_{ij} \in \mathbb{R}^{(n-1) \times (n-1)}$. We can then define a new matrix $\mathbf{C}$ the so-called co-factor matrix where the element $c_{ij}$ is 
 defined as:
 
 ```math
 c_{ij} = (-1)^{i+j} det(\mathscr{A}_{ij})
 ```
 
-We can then calculate the determinant of the matrix $\boldsymbol{A}$ using the co-factor expansion recursively. We choose some $i \in \{1, 2, 3, \ldots, n\}$ and then 
-calculate the determinant of the matrix $\boldsymbol{A}$ as:
+We can then calculate the determinant of the matrix $\mathbf{A}$ using the co-factor expansion recursively. We choose some $i \in \{1, 2, 3, \ldots, n\}$ and then 
+calculate the determinant of the matrix $\mathbf{A}$ as:
 
 ```math
-det(\boldsymbol{A}) = \sum_{j=1}^n a_{ij} c_{ij}
+det(\mathbf{A}) = \sum_{j=1}^n a_{ij} c_{ij}
 ```
 
 <Callout type="example">
 Let's calculate the co-factor matrix for the following matrix and then calculate the determinant of the matrix using the co-factor expansion:
 
 ```math
-\boldsymbol{A} = \begin{bmatrix}
+\mathbf{A} = \begin{bmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6 \\
 7 & 8 & 9
@@ -410,34 +410,34 @@ c_{11} = (-1)^{1+1} \cdot det(\mathscr{A}_{11}) = 1 \cdot -3 = -3
 If we continue this process for all the co-factors we get the following co-factor matrix:
 
 ```math
-\boldsymbol{C} = \begin{bmatrix}
+\mathbf{C} = \begin{bmatrix}
 -3 & 6 & -3 \\
 6 & -12 & 6 \\
 -3 & 6 & -3
 \end{bmatrix}
 ```
 
-The determinant of the matrix $\boldsymbol{A}$ is then depending on the row we choose:
+The determinant of the matrix $\mathbf{A}$ is then depending on the row we choose:
 
 ```math
 \begin{align*}
-det(\boldsymbol{A}) &= \sum_{j=1}^3 a_{1j} c_{1j} \\
+det(\mathbf{A}) &= \sum_{j=1}^3 a_{1j} c_{1j} \\
 &= 1 \cdot -3 + 2 \cdot 6 + 3 \cdot -3 = -3 + 12 - 9 = 0
 \text{or} \\
-det(\boldsymbol{A}) &= \sum_{j=1}^3 a_{2j} c_{2j} \\
+det(\mathbf{A}) &= \sum_{j=1}^3 a_{2j} c_{2j} \\
 &= 4 \cdot 6 + 5 \cdot -12 + 6 \cdot 6 = 24 - 60 + 36 = 0
 \text{or} \\
-det(\boldsymbol{A}) &= \sum_{j=1}^3 a_{3j} c_{3j} \\
+det(\mathbf{A}) &= \sum_{j=1}^3 a_{3j} c_{3j} \\
 &= 7 \cdot -3 + 8 \cdot 6 + 9 \cdot -3 = -21 + 48 - 27 = 0
 \end{align*}
 ```
 
-So we can see that the determinant of the matrix $\boldsymbol{A}$ is 0, which means that the matrix is singular and does not have an inverse. We can also compare this 
+So we can see that the determinant of the matrix $\mathbf{A}$ is 0, which means that the matrix is singular and does not have an inverse. We can also compare this 
 to the formula for the determinant of a $3 \times 3$ matrix that we derived earlier and see that it is the same.
 
 ```math
 \begin{align*}
-det(\boldsymbol{A}) &= aei + bfg + cdh - ceg - bdi - afh \\
+det(\mathbf{A}) &= aei + bfg + cdh - ceg - bdi - afh \\
 &= (1 \cdot 5 \cdot 9) + (2 \cdot 6 \cdot 7) + (3 \cdot 4 \cdot 8) - (3 \cdot 5 \cdot 7) - (2 \cdot 4 \cdot 9) - (1 \cdot 6 \cdot 8) \\
 &= 45 + 84 + 96 - 105 - 72 - 48 = 0
 \end{align*}
@@ -485,22 +485,22 @@ b_3 & a_{32} & a_{33}
 ```
 
 We can then see that the middle matrix is a triangular matrix and so the determinant is the product of the diagonal elements, which in this case is just $x_1$. So if we denote the 
-special matrix on the right where the $i$-th column is replaced by the vector $\boldsymbol{b}$ as $\mathscr{B}_i$ and use the fact that the determinant of a matrix multiplied by 
+special matrix on the right where the $i$-th column is replaced by the vector $\mathbf{b}$ as $\mathscr{B}_i$ and use the fact that the determinant of a matrix multiplied by 
 another matrix is the product of the determinants of the two matrices we get:
 
 ```math
 \begin{align*}
-det(\boldsymbol{A}) \cdot x_1 = det(\mathscr{B}_1) \\
-x_1 = \frac{det(\mathscr{B}_1)}{det(\boldsymbol{A})}
+det(\mathbf{A}) \cdot x_1 = det(\mathscr{B}_1) \\
+x_1 = \frac{det(\mathscr{B}_1)}{det(\mathbf{A})}
 \end{align*}
 ```
 
-In the same way we can then also calculate $x_2$ and $x_3$ by replacing the $i$-th column of the matrix $\boldsymbol{A}$ with the vector $\boldsymbol{b}$ and then calculating the 
+In the same way we can then also calculate $x_2$ and $x_3$ by replacing the $i$-th column of the matrix $\mathbf{A}$ with the vector $\mathbf{b}$ and then calculating the 
 determinant of the resulting matrix. So more generally we can solve a system of linear equations using Cramer's rule as:
 
 ```math
-x_i = \frac{det(\mathscr{B}_i)}{det(\boldsymbol{A})}
+x_i = \frac{det(\mathscr{B}_i)}{det(\mathbf{A})}
 ```
 
-We can also see that if the system is not solvable, i.e the matrix $\boldsymbol{A}$ isn't full rank and doesn't have an inverse, then the determinant of the matrix is also 0 
+We can also see that if the system is not solvable, i.e the matrix $\mathbf{A}$ isn't full rank and doesn't have an inverse, then the determinant of the matrix is also 0 
 and we wouldn't be able to do the division. So solving a system of linear equations using Cramer's rule stays consistent with our other methods.

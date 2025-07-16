@@ -4,10 +4,10 @@ import Image from "@components/Image/Image";
 # Moore-Penrose Pseudoinverse
 
 In linear algebra, the concept of an inverse is fundamental for solving systems of equations and performing matrix manipulations. However, 
-not all matrices have an inverse. For example a square matrix $\boldsymbol{A} \in \mathbb{R}^{n \times n}$ has an inverse if and only if:
-- $\boldsymbol{A}$ is full rank, so $\text{rank}(\boldsymbol{A}) = n$
-- This means that the columns of $\boldsymbol{A}$ are linearly independent and so are the rows of $\boldsymbol{A}$.
-- The determinant of $\boldsymbol{A}$ is non-zero, so $\text{det}(\boldsymbol{A}) \neq 0$
+not all matrices have an inverse. For example a square matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ has an inverse if and only if:
+- $\mathbf{A}$ is full rank, so $\text{rank}(\mathbf{A}) = n$
+- This means that the columns of $\mathbf{A}$ are linearly independent and so are the rows of $\mathbf{A}$.
+- The determinant of $\mathbf{A}$ is non-zero, so $\text{det}(\mathbf{A}) \neq 0$
 
 If a matrix is not square or does not satisfy these conditions, it does not have an inverse. 
 
@@ -16,29 +16,29 @@ All of the following matrices do not have an inverse:
 
 1. A square matrix that is not full rank:
 ```math
-\boldsymbol{A} = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}
+\mathbf{A} = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}
 ```
 
 Here, the second column is a multiple of the first column, so the columns are linearly dependent and the matrix only has rank 1 which 
 is less than the size of the matrix, so it is not full rank.
 
 2. A tall matrix, which can be thought of as an overdetermined system of equations such as in the least squares problem, so 
-there is no solution to $A\boldsymbol{x} = \boldsymbol{b}$ for all $\boldsymbol{b}$:
+there is no solution to $A\mathbf{x} = \mathbf{b}$ for all $\mathbf{b}$:
 ```math
-\boldsymbol{A} = \begin{bmatrix} 1 & 2 \\ 3 & 4 \\ 5 & 6 \end{bmatrix}
+\mathbf{A} = \begin{bmatrix} 1 & 2 \\ 3 & 4 \\ 5 & 6 \end{bmatrix}
 ```
 
 3. A wide matrix, which can be thought of as an underdetermined system of equations, so there are many solutions to 
-$A\boldsymbol{x} = \boldsymbol{b}$ for all $\boldsymbol{b}$:
+$A\mathbf{x} = \mathbf{b}$ for all $\mathbf{b}$:
 
 ```math
-\boldsymbol{A} = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}
+\mathbf{A} = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}
 ```
 </Callout>
 
 So in such case where a matrix does not have an inverse, we want to construct a so called pseudoinverse, a generalization of the concept of an inverse that 
 can be applied to any matrix. This pseudoinverse is also known as the Moore-Penrose pseudoinverse. The Moore-Penrose pseudoinverse has important 
-applications in solving systems of linear equations of the form $A\boldsymbol{x} = \boldsymbol{b}$, where $A$ is a matrix that does not have an inverse, 
+applications in solving systems of linear equations of the form $A\mathbf{x} = \mathbf{b}$, where $A$ is a matrix that does not have an inverse, 
 so there is either no solution or many solutions to the system of equations. For these cases we want to find the best approximate solution. We 
 have already seen such a case where we have an overdetermined system of equations in the least squares problem and find the solution 
 that minimizes the squared error. 
@@ -56,43 +56,43 @@ matrices that have full column rank and full row rank and then just multiplying 
 
 Let's start with the case where the matrix $A$ has full column rank. This means that the columns of $A$ are linearly independent. 
 So we are given a tall/underdetermined matrix $A \in \mathbb{R}^{m \times n}$ with $m > n$. In this case there may not be a 
-solution to the system of equations $A\boldsymbol{x} = \boldsymbol{b}$ for all $\boldsymbol{b}$ as $\boldsymbol{b}$ is in $\mathbb{R}^m$ 
-and the column space of $\boldsymbol{A}$ can only span $\mathbb{R}^n$. This is what leads us to the least squares problem where 
+solution to the system of equations $A\mathbf{x} = \mathbf{b}$ for all $\mathbf{b}$ as $\mathbf{b}$ is in $\mathbb{R}^m$ 
+and the column space of $\mathbf{A}$ can only span $\mathbb{R}^n$. This is what leads us to the least squares problem where 
 we want to find the solution that minimizes the squared error:
 
 ```math
-\min_{\boldsymbol{x}} ||\boldsymbol{A}\boldsymbol{x} - \boldsymbol{b}||^2
+\min_{\mathbf{x}} ||\mathbf{A}\mathbf{x} - \mathbf{b}||^2
 ```
 
 We have seen that the solution to this problem is given by the normal equations:
 
 ```math
-\hat{\boldsymbol{x}} = (\boldsymbol{A}^T\boldsymbol{A})^{-1}\boldsymbol{A}^T\boldsymbol{b}
+\hat{\mathbf{x}} = (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b}
 ```
 
-Which comes from the fact that the solution to the least squares problem is the projection of $\boldsymbol{b}$ onto the column space of 
-$\boldsymbol{A}$. This solution relies on the fact that the columns of $\boldsymbol{A}$ are linearly independent and so 
-$\boldsymbol{A}^T\boldsymbol{A} \in \mathbb{R}^{n \times n}$ becomes full rank and invertible. We can then construct the pseudoinverse 
-of $\boldsymbol{A}$ as:
+Which comes from the fact that the solution to the least squares problem is the projection of $\mathbf{b}$ onto the column space of 
+$\mathbf{A}$. This solution relies on the fact that the columns of $\mathbf{A}$ are linearly independent and so 
+$\mathbf{A}^T\mathbf{A} \in \mathbb{R}^{n \times n}$ becomes full rank and invertible. We can then construct the pseudoinverse 
+of $\mathbf{A}$ as:
 
 ```math
 \begin{align*}
-\boldsymbol{Ax} &= \boldsymbol{b} \\
-\boldsymbol{A}\hat{\boldsymbol{x}} &= \boldsymbol{b} \\
-\boldsymbol{A}(\boldsymbol{A}^T\boldsymbol{A})^{-1}\boldsymbol{A}^T\boldsymbol{b} &= \boldsymbol{b} \\
-\boldsymbol{A}\boldsymbol{A}^\dagger\boldsymbol{b} &= \boldsymbol{b} \\
-\boldsymbol{A}^\dagger &= (\boldsymbol{A}^T\boldsymbol{A})^{-1}\boldsymbol{A}^T 
+\mathbf{Ax} &= \mathbf{b} \\
+\mathbf{A}\hat{\mathbf{x}} &= \mathbf{b} \\
+\mathbf{A}(\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b} &= \mathbf{b} \\
+\mathbf{A}\mathbf{A}^\dagger\mathbf{b} &= \mathbf{b} \\
+\mathbf{A}^\dagger &= (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T 
 \end{align*}
 ```
 
-So the pseudoinverse of a matrix with full column rank is given by the formula above. Importantly $\boldsymbol{AA}^\dagger$ 
-is the projection matrix onto the column space of $\boldsymbol{A}$, not the identity matrix. However, we can show that the pseudoinverse
-is a left inverse of the matrix with the knowledge that $\boldsymbol{A}^T\boldsymbol{A}$ is invertible.
+So the pseudoinverse of a matrix with full column rank is given by the formula above. Importantly $\mathbf{AA}^\dagger$ 
+is the projection matrix onto the column space of $\mathbf{A}$, not the identity matrix. However, we can show that the pseudoinverse
+is a left inverse of the matrix with the knowledge that $\mathbf{A}^T\mathbf{A}$ is invertible.
 
 ```math
 \begin{align*}
-\boldsymbol{A}^\dagger\boldsymbol{A} &= (\boldsymbol{A}^T\boldsymbol{A})^{-1}\boldsymbol{A}^T\boldsymbol{A} \\
-&= \boldsymbol{I}
+\mathbf{A}^\dagger\mathbf{A} &= (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{A} \\
+&= \mathbf{I}
 \end{align*}
 ```
 
@@ -100,43 +100,43 @@ is a left inverse of the matrix with the knowledge that $\boldsymbol{A}^T\boldsy
 
 Next we look at the case where the matrix $A$ has full row rank. This means that the rows of $A$ are linearly independent. However, 
 the columns of $A$ are not linearly independent. So we are given a wide/overdetermined matrix $A \in \mathbb{R}^{m \times n}$ with $m < n$. 
-In this case there are many solutions to the system of equations $A\boldsymbol{x} = \boldsymbol{b}$ for all $\boldsymbol{b}$ as the null space 
-of $\boldsymbol{A}$ is non-trivial. 
+In this case there are many solutions to the system of equations $A\mathbf{x} = \mathbf{b}$ for all $\mathbf{b}$ as the null space 
+of $\mathbf{A}$ is non-trivial. 
 
-This happens because there are linearly dependent columns in $\boldsymbol{A}$, meaning that some combinations of columns add up to the 
-zero vector. Consequently, there exist non-zero vectors $\boldsymbol{z}$ such that $\boldsymbol{A} \boldsymbol{z} = \boldsymbol{0}$.
+This happens because there are linearly dependent columns in $\mathbf{A}$, meaning that some combinations of columns add up to the 
+zero vector. Consequently, there exist non-zero vectors $\mathbf{z}$ such that $\mathbf{A} \mathbf{z} = \mathbf{0}$.
 
 We can express a solution to the system of equations as: 
 
 ```math
-\boldsymbol{x} = \boldsymbol{x}_p + \boldsymbol{z},
+\mathbf{x} = \mathbf{x}_p + \mathbf{z},
 ```
 
 where:
-- $\boldsymbol{x}_p$ is a particular solution that satisfies $\boldsymbol{A} \boldsymbol{x}_p = \boldsymbol{b}$.
-- $\boldsymbol{z} \in N(\boldsymbol{A})$ is any vector in the null space of $\boldsymbol{A}$.
+- $\mathbf{x}_p$ is a particular solution that satisfies $\mathbf{A} \mathbf{x}_p = \mathbf{b}$.
+- $\mathbf{z} \in N(\mathbf{A})$ is any vector in the null space of $\mathbf{A}$.
 
 The null space represents the "freedom" in the solution space: we can add any vector from the null space to 
-$\boldsymbol{x}_p$, and it will still satisfy $\boldsymbol{A} \boldsymbol{x} = \boldsymbol{b}$.
+$\mathbf{x}_p$, and it will still satisfy $\mathbf{A} \mathbf{x} = \mathbf{b}$.
 The shift needs to be orthogonal to the null space, as otherwise it would not be a valid solution. Hence the 
-vector $\boldsymbol{x}_p$ comes from the row space of $\boldsymbol{A}$ as the row space is orthogonal to the null space, 
-$R(\boldsymbol{A}^T) \perp N(\boldsymbol{A})$.
+vector $\mathbf{x}_p$ comes from the row space of $\mathbf{A}$ as the row space is orthogonal to the null space, 
+$R(\mathbf{A}^T) \perp N(\mathbf{A})$.
 
 Because there are infinitely many solutions to the system of equations, we want to find the solution with the smallest norm. So we 
 want the following solution:
 
 ```math
-\min_{\boldsymbol{x}} ||\boldsymbol{x}|| \quad \text{so that} \quad A\boldsymbol{x} = \boldsymbol{b}
+\min_{\mathbf{x}} ||\mathbf{x}|| \quad \text{so that} \quad A\mathbf{x} = \mathbf{b}
 ```
 
 I don't know how but minimizing this leads us to the following solution:
 
 ```math
-\hat{\boldsymbol{x}} = A^T(AA^T)^{-1}\boldsymbol{b}
+\hat{\mathbf{x}} = A^T(AA^T)^{-1}\mathbf{b}
 ```
 
 ```math
-\boldsymbol{A}^\dagger = A^T(AA^T)^{-1}
+\mathbf{A}^\dagger = A^T(AA^T)^{-1}
 ```
 
 This results in the following calculations here it is correctly a right inverse above but above it was also done this way? 
@@ -144,11 +144,11 @@ Is this correct?
 
 ```math
 \begin{align*}
-\boldsymbol{Ax} &= \boldsymbol{b} \\
-\boldsymbol{A}\hat{\boldsymbol{x}} &= \boldsymbol{b} \\
-\boldsymbol{AA}^T(\boldsymbol{AA}^T)^{-1}\boldsymbol{b} &= \boldsymbol{b} \\
-\boldsymbol{AA}^\dagger\boldsymbol{b} &= \boldsymbol{b} \\
-\boldsymbol{A}^\dagger &= \boldsymbol{A}^T(\boldsymbol{AA}^T)^{-1}
+\mathbf{Ax} &= \mathbf{b} \\
+\mathbf{A}\hat{\mathbf{x}} &= \mathbf{b} \\
+\mathbf{AA}^T(\mathbf{AA}^T)^{-1}\mathbf{b} &= \mathbf{b} \\
+\mathbf{AA}^\dagger\mathbf{b} &= \mathbf{b} \\
+\mathbf{A}^\dagger &= \mathbf{A}^T(\mathbf{AA}^T)^{-1}
 \end{align*}
 ```
 
@@ -158,34 +158,34 @@ it is a right inverse of $A$:
 
 ```math
 \begin{align*}
-\boldsymbol{A}\boldsymbol{A}^\dagger &= \boldsymbol{A}A^T(AA^T)^{-1} \\
-&= \boldsymbol{A}A^T(AA^T)^{-1} \\
-&= \boldsymbol{I}
+\mathbf{A}\mathbf{A}^\dagger &= \mathbf{A}A^T(AA^T)^{-1} \\
+&= \mathbf{A}A^T(AA^T)^{-1} \\
+&= \mathbf{I}
 \end{align*}
 ```
 
 ## General Case
 
-In the general case, $\boldsymbol{A} \in \mathbb{R}^{m \times n}$ is neither full column rank nor full row rank. Using the **CR decomposition**:
+In the general case, $\mathbf{A} \in \mathbb{R}^{m \times n}$ is neither full column rank nor full row rank. Using the **CR decomposition**:
 
 ```math
-\boldsymbol{A} = \boldsymbol{C}\boldsymbol{R},
+\mathbf{A} = \mathbf{C}\mathbf{R},
 ```
 
-where $\boldsymbol{C} \in \mathbb{R}^{m \times n}$ has full column rank and $\boldsymbol{R} \in \mathbb{R}^{n \times n}$ is upper triangular, so 
-it has full row rank. We can then construct the pseudoinverse of $\boldsymbol{A}$ as: 
+where $\mathbf{C} \in \mathbb{R}^{m \times n}$ has full column rank and $\mathbf{R} \in \mathbb{R}^{n \times n}$ is upper triangular, so 
+it has full row rank. We can then construct the pseudoinverse of $\mathbf{A}$ as: 
 
 ```math
-\boldsymbol{A}^\dagger = \boldsymbol{R}^\dagger \boldsymbol{C}^\dagger.
+\mathbf{A}^\dagger = \mathbf{R}^\dagger \mathbf{C}^\dagger.
 ```
 
-This is the expected behaviour as if we had the invertable matrix $\boldsymbol{A}=\boldsymbol{XY}$ we would get:
+This is the expected behaviour as if we had the invertable matrix $\mathbf{A}=\mathbf{XY}$ we would get:
 
 ```math
 \begin{align*}
-\boldsymbol{A} = (\boldsymbol{XY}) \\
-\boldsymbol{A}^{-1} = (\boldsymbol{XY})^{-1} \\
-\boldsymbol{A}^{-1} = \boldsymbol{Y}^{-1}\boldsymbol{X}^{-1} 
+\mathbf{A} = (\mathbf{XY}) \\
+\mathbf{A}^{-1} = (\mathbf{XY})^{-1} \\
+\mathbf{A}^{-1} = \mathbf{Y}^{-1}\mathbf{X}^{-1} 
 \end{align*}
 ```
 
@@ -193,26 +193,26 @@ this results in the general form of the pseudoinverse:
 
 ```math
 \begin{align*}
-\boldsymbol{A}^\dagger &= \boldsymbol{R}^T(\boldsymbol{RR}^T)^{-1}(\boldsymbol{C}^T\boldsymbol{C})^{-1}\boldsymbol{C}^T \\
-&= \boldsymbol{R}^T(\boldsymbol{C}^T\boldsymbol{CRR}^T)^{-1}\boldsymbol{C}^T \\
-&= \boldsymbol{R}^T(\boldsymbol{C}^T \boldsymbol{AR}^T)^{-1}\boldsymbol{C}^T 
+\mathbf{A}^\dagger &= \mathbf{R}^T(\mathbf{RR}^T)^{-1}(\mathbf{C}^T\mathbf{C})^{-1}\mathbf{C}^T \\
+&= \mathbf{R}^T(\mathbf{C}^T\mathbf{CRR}^T)^{-1}\mathbf{C}^T \\
+&= \mathbf{R}^T(\mathbf{C}^T \mathbf{AR}^T)^{-1}\mathbf{C}^T 
 \end{align*}
 ```
 
 So now we have defined the pseudoinverse for the general case of a matrix that is not full column rank and not full row rank. 
 The pseudoinverse also has the following properties:
-- $\boldsymbol{AA}^\dagger\boldsymbol{A} = \boldsymbol{A}$
-- $\boldsymbol{A}^\dagger\boldsymbol{A}\boldsymbol{A}^\dagger = \boldsymbol{A}^\dagger$
-- $(\boldsymbol{A}^T)^\dagger = (\boldsymbol{A}^\dagger)^T$
-- $\boldsymbol{AA}^\dagger$ and $\boldsymbol{A}^\dagger\boldsymbol{A}$ are symmetric
+- $\mathbf{AA}^\dagger\mathbf{A} = \mathbf{A}$
+- $\mathbf{A}^\dagger\mathbf{A}\mathbf{A}^\dagger = \mathbf{A}^\dagger$
+- $(\mathbf{A}^T)^\dagger = (\mathbf{A}^\dagger)^T$
+- $\mathbf{AA}^\dagger$ and $\mathbf{A}^\dagger\mathbf{A}$ are symmetric
 
 We can show these properties by substituting the pseudoinverse into the equations and simplifying for example for the first property we 
 get:
 
 ```math
-\boldsymbol{A}\boldsymbol{A}^\dagger\boldsymbol{A} 
-= \boldsymbol{C}\boldsymbol{R} (\boldsymbol{R}^\dagger \boldsymbol{C}^\dagger) \boldsymbol{C}\boldsymbol{R}
-= \boldsymbol{C}\boldsymbol{R} = \boldsymbol{A}
+\mathbf{A}\mathbf{A}^\dagger\mathbf{A} 
+= \mathbf{C}\mathbf{R} (\mathbf{R}^\dagger \mathbf{C}^\dagger) \mathbf{C}\mathbf{R}
+= \mathbf{C}\mathbf{R} = \mathbf{A}
 ```
 
 We could also do this by writing out the formulas for the pseudoinverse.
@@ -220,7 +220,7 @@ We could also do this by writing out the formulas for the pseudoinverse.
 For the second property we get:
 
 ```math
-\boldsymbol{A}^\dagger\boldsymbol{A}\boldsymbol{A}^\dagger 
-= (\boldsymbol{R}^\dagger \boldsymbol{C}^\dagger) \boldsymbol{C}\boldsymbol{R} (\boldsymbol{R}^\dagger \boldsymbol{C}^\dagger)
-= \boldsymbol{R}^\dagger \boldsymbol{C}^\dagger = \boldsymbol{A}^\dagger
+\mathbf{A}^\dagger\mathbf{A}\mathbf{A}^\dagger 
+= (\mathbf{R}^\dagger \mathbf{C}^\dagger) \mathbf{C}\mathbf{R} (\mathbf{R}^\dagger \mathbf{C}^\dagger)
+= \mathbf{R}^\dagger \mathbf{C}^\dagger = \mathbf{A}^\dagger
 ```
