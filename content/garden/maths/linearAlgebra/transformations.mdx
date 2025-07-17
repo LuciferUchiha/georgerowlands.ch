@@ -9,11 +9,17 @@ A linear transformation also often called linear map is a function between two v
 T: R^N \rightarrow R^M
 ```
 
-Where $T$ is the transformation, $R^N$ is the input vector space so vectors of dimension $N$ and $R^M$ is the output vector space so vectors of dimension $M$.
+Where $T$ is the transformation, $R^N$ is the input vector space so vectors of dimension $N$ and $R^M$ is the output vector space so vectors of dimension $M$. If the input and output vector spaces have different dimensions, we call the transformation a projection or a mapping (orthogonal?) as for example a projection from $R^3$ to $R^2$ can be thought of like looking at a cube from above and projecting it onto a 2D plane to get a square.
 
 Importantly a linear transformation is as the name suggest linear, meaning that it preserves the operations of addition and scalar multiplication. More formally the following two conditions must be satisfied for a function to be a linear transformation of a vector $\mathbf{u}$ and $\mathbf{v}$ and a scalar $c$:
 - **Additivity**: $T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v})$
 - **Scalar Multiplication**: $T(c\mathbf{u}) = cT(\mathbf{u})$
+
+This can also be generalized to a set of vectors, where the transformation preserves the operations for all vectors in the set. Let $\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n$ be vectors in $R^N$ and $\lambda_1, \lambda_2, \ldots, \lambda_n$ be scalars. Then the transformation $T$ is linear if:
+
+```math
+T\left(\sum_{i=1}^{n} \lambda_i \mathbf{x}_i\right) = \sum_{i=1}^{n} \lambda_i T(\mathbf{x}_i)
+```
 
 <Image
     src="/maths/linearTransformationAddition.png"
@@ -129,30 +135,183 @@ cT(\mathbf{u}) &= c \begin{bmatrix} x^2 \\ y^2 \end{bmatrix} = \begin{bmatrix} c
 
 ## Matrices as Transformations
 
-Also relates back to inverse matrices, as the inverse of a matrix is the matrix that undoes the transformation of the original matrix.
+Remember when discussing the matrix-vector product we said that a matrix can be thought of transforming a vector from one vector space to another. So we could think that a matrix is a linear transformation. This is indeed the case, and we can represent a linear transformation as a matrix. More formally if $T: \mathbb{R}^N \rightarrow \mathbb{R}^M$ is a linear transformation, then there exists a unique matrix $\mathbf{A}$ such that $T(\mathbf{x}) = \mathbf{A}\mathbf{x}$ for all $\mathbf{x} \in \mathbb{R}^N$. This matrix $\mathbf{A}$ is called the matrix representation of the linear transformation $T$.
 
-so linear maps are bijective, and thus invertible.
+For $T(\mathbf{x}) = \mathbf{A}\mathbf{x}$ to hold we must have $T(\mathbf{e}_i) = \mathbf{A}\mathbf{e}_i$ for each standard basis vector $\mathbf{e}_i$ in $\mathbb{R}^N$. But because $\mathbf{A}\mathbf{e}_j$ is just the $j$-th column of $\mathbf{A}$, we can see that the $j$-th column of $\mathbf{A}$ is just $T(\mathbf{e}_j)$. So the matrix representation of a linear transformation is simply the matrix whose columns are the images of the standard basis vectors under the transformation:
 
-linearTransformationVisual.png
+```math
+\mathbf{A} = \begin{bmatrix} T(\mathbf{e}_1) & T(\mathbf{e}_2) & \cdots & T(\mathbf{e}_N) \end{bmatrix}
+```
+
+Importantly because the output vector size is $M$ and the input vector size is $N$, the matrix $\mathbf{A}$ will have dimensions $M \times N$. This means that we need to look at the first $N$ standard basis vectors in $\mathbb{R}^M$ to get the $N$ columns of the matrix $\mathbf{A}$. Putting this all together we get:
+
+```math
+T(\mathbf{x}) = \mathbf{A}\mathbf{x} = \sum_{i=1}^{N} x_i T(\mathbf{e}_i) = T\left(\sum_{i=1}^{N} x_i \mathbf{e}_i\right) = T(\mathbf{x})
+```
+
+So every linear transformation can be represented by a matrix, and is completely determined by its behavior on the standard unit vectors and every matrix can be seen as a linear transformation. 
+
+Notice that if we also look at a set of vectors that form a shape like a square, to transform this shape we can just apply the transformation to the corners of the square and then connect the dots. This is because linear transformations preserve the operations of addition and scalar multiplication, so the transformation will also apply to any linear combination of the vectors defining the shape.
+
+<Image
+    src="/maths/linearTransformationsMatrix1.png"
+    caption="Mirroring and stretching a shape using a matrix as a linear transformation."
+    width={600}
+/>
+
+<Image
+    src="/maths/linearTransformationsMatrix2.png"
+    caption="Rotating and shearing a shape using a matrix as a linear transformation."
+    width={600}
+/>
+
+<Callout type="todo">
+Imagine we are given the following results of a linear transformation and are asked to reconstruct the linear transformation. How would we do this? What information do we need? How can we find the matrix representation of the linear transformation? Suppose we are given the following results of a linear transformation:
+
+```math
+T\left(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right) = \begin{bmatrix} 1 \\ 1 \\ 2 \end{bmatrix}, \quad T\left(\begin{bmatrix} 1 \\ 1 \end{bmatrix}\right) = \begin{bmatrix} 2 \\ 3 \\ 2 \end{bmatrix}
+```
+
+First we notice that the input vectors are in $\mathbb{R}^2$ and the output vectors are in $\mathbb{R}^3$. So we need a matrix with dimensions $3 \times 2$ (3 rows and 2 columns) to represent the linear transformation. Ideally if we had the results for all standard basis vectors in $\mathbb{R}^2$, we could just take those as the columns of the matrix. However, we only have the result of the first standard basis vector. We somehow need to find the result of the second standard basis vector in $\mathbb{R}^2$ to complete the matrix. For this we can use the fact that linear transformations preserve the operations of addition and scalar multiplication. We can express the second standard basis vector as a linear combination of the second standard basis vector and the vector we have already:
+
+```math
+\begin{bmatrix} 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 \\ 1 \end{bmatrix} - \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+```
+
+This means that we can find the result of the second standard basis vector by applying the transformation to the second standard basis vector and subtracting the result of the first standard basis vector:
+
+```math
+T\left(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\right) = T\left(\begin{bmatrix} 1 \\ 1 \end{bmatrix}\right) - T\left(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right) = \begin{bmatrix} 2 \\ 3 \\ 2 \end{bmatrix} - \begin{bmatrix} 1 \\ 1 \\ 2 \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \\ 0 \end{bmatrix}
+```
+
+Now we can construct the matrix representation of the linear transformation:
+
+```math
+\mathbf{A} = \begin{bmatrix} 1 & 1 \\ 1 & 2 \\ 2 & 0 \end{bmatrix}
+```
+
+We can also get the general formula for the linear transformation using linearity:
+
+```math
+T(\begin{bmatrix} x \\ y \end{bmatrix}) = x T\left(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right) + y T\left(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\right) = x \begin{bmatrix} 1 \\ 1 \\ 2 \end{bmatrix} + y \begin{bmatrix} 1 \\ 2 \\ 0 \end{bmatrix} = \begin{bmatrix} x + y \\ x + 2y \\ 2x \end{bmatrix}
+```
+</Callout>
 
 ## Kernel and Image
 
-The image of a transformation is defiend just as with functions, it is the set of all possible outputs of the transformation. the null vector is always in the image of a transformation.
+Because linear transformations are defined as functions, we can also talk about the kernel and image of a linear transformation just like for normal functions. The image of a transformation is the set of all possible outputs of the transformation. 
 
 ```math
 \operatorname{Im}(A) = \{ A\mathbf{x} \in R^M \mid \mathbf{x} \in R^N \}
 ```
 
-The kernel of a transformation is the set of all inputs that map to the zero vector. This has a special name, the null space.
+However, because linear transformations can also be seen as matrices, the image of a linear transformation is also the column space of the matrix. This is because the resulting vectors is just a linear combination of the columns of the matrix where the coefficients are the components of the input vector $\mathbf{x}$:
 
 ```math
-\operatorname{Ker}(A) = \{ \mathbf{x} \in R^N \mid A\mathbf{x} = \mathbf{o} \}
+\operatorname{Im}(A) = C(A)
 ```
 
-dimension of the domain = dimension of the kernel + dimension of the image
+where $C(A)$ is the column space of the matrix $A$. Importantly, we also always have that the zero vector $\mathbf{o}$ is in the image of the transformation, as $A\mathbf{0} = \mathbf{0}$ for any matrix $A$.
+
+The kernel of a transformation is the set of all inputs that map to the zero vector. In terms of matrices, this is the null space of the matrix, which is the set of all vectors $\mathbf{x}$ such that $A\mathbf{x} = \mathbf{o}$:
+
+```math
+\operatorname{Ker}(A) = \{ \mathbf{x} \in R^N \mid A\mathbf{x} = \mathbf{o} \} = N(A)
+```
+
+Where $N(A)$ is the null space of the matrix $A$. 
+
+<Callout type="example">
+So for example if have the the transformation $T(\mathbf{x}) = \mathbf{x}$, for all $\mathbf{x} \in \mathbb{R}^N$, then we have:
+
+```math
+\operatorname{Im}(T) = \mathbb{R}^N \quad \text{and} \quad \operatorname{Ker}(T) = \{\mathbf{0}\}
+```
+
+As each vector is mapped to itself, the image is the whole space and the only vector that maps to the zero vector is the zero vector itself. We can define the opposite transformation $T'(\mathbf{x}) = \mathbf{o}$, which maps every vector to the zero vector, then we have:
+
+```math
+\operatorname{Im}(T') = \{\mathbf{0}\} \quad \text{and} \quad \operatorname{Ker}(T') = \mathbb{R}^N
+```
+</Callout>
+
+<Callout type="todo">
+dimension of the domain = dimension of the kernel + dimension of the image why? meanining?
+</Callout>
+
+## Composition of Linear Transformations
+
+We have seen linear transformations as functions and also that they can be represented by matrices. Because they are functions, we could also compose/chain them, so apply one transformation after another. If we have two linear transformations $T_1: \mathbb{R}^N \rightarrow \mathbb{R}^M$ and $T_2: \mathbb{R}^M \rightarrow \mathbb{R}^P$, we can compose them to get a new transformation $S: \mathbb{R}^N \rightarrow \mathbb{R}^P$ defined as:
+
+```math
+S(\mathbf{x}) = T_2(T_1(\mathbf{x}))
+```
+
+The question is now, is this new transformation also linear? The answer is yes, because we can show that it satisfies the two conditions of additivity and scalar multiplication: 
+
+```math
+\begin{align*}
+S(\mathbf{u} + \mathbf{v}) &= T_2(T_1(\mathbf{u} + \mathbf{v})) = T_2(T_1(\mathbf{u}) + T_1(\mathbf{v})) = T_2(T_1(\mathbf{u})) + T_2(T_1(\mathbf{v})) = S(\mathbf{u}) + S(\mathbf{v}) \\
+S(c\mathbf{u}) &= T_2(T_1(c\mathbf{u})) = T_2(cT_1(\mathbf{u})) = cT_2(T_1(\mathbf{u})) = cS(\mathbf{u})
+\end{align*}
+```
+
+This means that the composition of two linear transformations is also a linear transformation. Now we can also ask ourselves what the matrix representation of this new transformation is. This is rather simple, because we can just multiply the matrices representing the two transformations. If $A_1$ is the matrix representation of $T_1$ and $A_2$ is the matrix representation of $T_2$, then the matrix representation $A_S$ of $S$ is given by:
+
+```math
+A_S = A_2 A_1
+```
+
+This is rather easily seen and follows from the associativity of matrix multiplication and is also the reason why matrix multiplication is defined the way it is, so that it corresponds to the composition of linear transformations:
+
+```math
+S(\mathbf{x}) = T_2(T_1(\mathbf{x})) = T_2(A_1 \mathbf{x}) = A_2 (A_1 \mathbf{x}) = (A_2 A_1) \mathbf{x} = A_S \mathbf{x}
+```
+
+This of course also generalizes to the composition of multiple linear transformations due to the associativity of matrix multiplication, we just need to make sure that the dimensions match up, so that the output dimension of one transformation matches the input dimension of the next transformation. So the placement of brackets when multiplying matrices does not necessarily matter, as long as the dimensions are compatible:
+
+```math
+T_{(AB)(CD)} = T_{AB}(T_{CD}) = T_{AB}(T_C(T_D)) = T_A(T_B(T_C(T_D)))
+```
+
+It is just important to note that matrix multiplication is not commutative, meaning that the order of the transformations matters. So in general:
+
+```math
+T_{(AB)(CD)} \neq T_{(CD)(AB)}
+```
+
+which can be seen as the order of applying the transformations matters, as they are not necessarily the same transformation:
+
+```math
+T_{(CD)(AB)}(\mathbf{x}) = T_D(T_C(T_A(T_B(\mathbf{x})))) \neq T_A(T_B(T_C(T_D(\mathbf{x})))) = T_{(AB)(CD)}(\mathbf{x})
+```
+
+To find the best placement of brackets we can use the algoirthm discussed in the [Matrix Chain Multiplication]() section, which will give us the optimal order of multiplication to minimize the number of operations needed to compute the product as depending on the order of multiplication, the number of operations can vary significantly.
+
+## Rotation Matrices
+
+<Callout type="todo">
+Finish this.
+
+Is it clockwise or counter-clockwise? Does it matter?
+What is the derivation of this matrix?
+
+What happens if we rotate and then rotate again. obviously the rotation is then the sum of the two angles and the matrix is the product of the two matrices.
+
+Logically if we can rotate a vector we can also rotate it back so an inverse rotation matrix exists.
+</Callout>
+
+We can rotate a vector $\mathbf{x} \in \mathbb{R}^2$ clockwise by the degree $\theta$ by multiplying it with the rotation matrix:
+
+```math
+R(\theta) = \begin{bmatrix}
+\cos(\theta) & -\sin(\theta) \\
+\sin(\theta) & \cos(\theta)
+\end{bmatrix}
+```
 
 ## Bijective Linear Transformations
 
 are invertible, and thus have a unique inverse.
 
-## Composition of Linear Transformations
+Also relates back to inverse matrices, as the inverse of a matrix is the matrix that undoes the transformation of the original matrix.

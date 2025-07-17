@@ -463,8 +463,48 @@ src="/maths/vectorRowPicture.png"
 caption="The row view of the two vectors in the $\mu$-$\lambda$ plane."
 width={500}
 />
+</Callout>
+<Callout type="example">
+Rather then looking at two specific vectors, we can also look at the general case of two vectors $\mathbf{v}$ and $\mathbf{w}$ in 2D space and see if we can construct the vector $\mathbf{u}$ with the scalars $\mu$ and $\lambda$. So we want to solve the following system of equations:
 
-However, if we try and do the same for the following two vectors we will find that we cannot create all vectors in 2D space because the system of equations will not have a solution:
+```math
+\begin{vmatrix}
+\mu \cdot v_1 + \lambda \cdot w_1 = u_1 \\
+\mu \cdot v_2 + \lambda \cdot w_2 = u_2
+\end{vmatrix}
+```
+
+We assume that $\mathbf{v} \neq \mathbf{o}$ as then the system would only be solvable if the vector $\mathbf{u}$ is a multiple of $\mathbf{w}$, which would mean that we can only create vectors that lie on the line defined by $\mathbf{w}$. 
+
+So let's first solve the first equation for $\lambda$:
+
+```math
+\lambda = \frac{u_1 - \mu \cdot w_1}{v_1}
+```
+
+This is okay as long as $v_1 \neq 0$ (otherwise we take the other equation and solve for $\lambda$ as either $v_1 \neq 0$ or $v_2 \neq 0$). Now we can substitute this into the second equation and solve for $\mu$:
+
+```math
+\begin{align*}
+v_2\left(\frac{u_1 - \mu \cdot w_1}{v_1}\right) + \mu \cdot w_2 &= u_2 \\
+\frac{v_2 \cdot u_1}{v_1} - \frac{v_2 \cdot \mu \cdot w_1}{v_1} + \mu \cdot w_2 &= u_2 \\
+\frac{v_2 \cdot u_1}{v_1} + \mu\left(w_2 - \frac{v_2 \cdot w_1}{v_1}\right) &= u_2 \\
+\mu(w_2 - \frac{v_2 \cdot w_1}{v_1}) &= u_2 - \frac{u_1 \cdot w_2}{v_1} \\
+\mu &= \frac{u_2 - \frac{u_1 \cdot w_2}{v_1}}{w_2 - \frac{v_2 \cdot w_1}{v_1}}
+\end{align*}
+```
+
+However notice for this to hold the denominator must not be zero, i.e. $w_2 - \frac{v_2 \cdot w_1}{v_1} \neq 0$. Only then can we find $\lambda$ and $\mu$ such that we can create the vector $\mathbf{u}$ with the two vectors $\mathbf{v}$ and $\mathbf{w}$. Let's see when the denominator is zero to build a condition for the two vectors to be able to create all vectors in 2D space. If we set the denominator to zero, we get:
+
+```math
+w_2 - \frac{v_2 \cdot w_1}{v_1} = 0 \implies w_2 = \frac{v_2 \cdot w_1}{v_1} \text{ and } w_1 = \frac{v_1 \cdot w_2}{v_2}
+```
+
+So this means that the ratios of the components of the two vectors must be equal, i.e. $\frac{w_1}{v_1} = \frac{w_2}{v_2}$, which means that there exists some $k$ such that $w_1 = k \cdot v_1$ and $w_2 = k \cdot v_2$. This means that the two vectors are linearly dependent, i.e. they are multiples of each other.
+
+So in other words we can create all vectors in 2D space with two vectors $\mathbf{v}$ and $\mathbf{w}$ as long as they are not multiples of each other, i.e. they are not linearly dependent. This means that the two vectors are independent and span the whole space, so we can create any vector in 2D space by combining them with the right scalars.
+
+So for example if we try and create every vector in 2D space with the following two vectors we notice that we cannot create all vectors in 2D space:
 
 ```math
 \mathbf{v} = \begin{bmatrix}
@@ -476,13 +516,7 @@ However, if we try and do the same for the following two vectors we will find th
 \end{bmatrix}
 ```
 
-This is because notice that the second vector is just a multiple of the first vector, i.e. $\mathbf{w} = 2\mathbf{v}$. This means that the two vectors are not independent and do not span the whole space. In fact, they only span a line in 2D space, so we can only create vectors that lie on that line. This is also why we cannot create all vectors in 2D space with just one vector, as it would only span a line in 2D space.
-
-<Callout type="todo">
-Show for general vectors v,w and u what criteria needs to be met for the system of equations to have a solution or not. (independence without actually using the term)
-</Callout>
-
-However, not any two vectors can be used to create all vectors in 2D space, the two vectors must form a basis for the space. In other words they must be linearly independent and span the space. We will go into more detail about this later.
+This is because notice that the second vector is just a multiple of the first vector, i.e. $\mathbf{w} = 2\mathbf{v}$. This means that the two vectors are not independent and do not span the whole space. In fact, they only span a line in 2D space, so we can only create vectors that lie on that line. This is also why we cannot create all vectors in 2D space with just one vector, as it would only span a line in 2D space. For them to span the entire space they need to form a basis for the space (this is discussed in more detail in other sections).
 </Callout>
 
 ### Special Combinations
@@ -499,7 +533,11 @@ combination can be rewritten as follows: $s_1\mathbf{v}_1 + s_2\mathbf{v}_2= s_1
     src="/maths/vectorCombinationTypes.png"
     caption="The yellow are represent the vectors that can be created by the combinations of the two vectors."
     width={700}
-    />
+/>
+
+<Callout type="todo">
+Add the example with the cocktail mixing.
+</Callout>
     
 ## Multiplication between Vectors and Matrices
 
@@ -808,7 +846,6 @@ and the $L_\infty$ norm of $\mathbf{x}$ is:
 ```
 </Callout>
 
-
 ## Normalization
 
 Normalizing means to bring something into some sort of normal or standard state. In the case of vectors, normalizing means to scale the vector in a way that it's length is equal to one. Often we denote a normalized vector by adding a hat to the vector, e.g. $\hat{\mathbf{x}}$ is the normalized vector of $\mathbf{x}$. So we can say if $\|\mathbf{x}\| = 1$, then $\mathbf{x}$ is normalized. From this definition we can see that to normalize a vector, we simply divide the vector by it's length, i.e. we divide the vector by a scalar. So if we have a vector $\mathbf{x}$, then we can normalize it as follows:
@@ -858,7 +895,6 @@ It is quite easy to see that the standard unit vectors are orthonormal, because 
 />
 
 ## Angle between Vectors
-
 
 The question now is: What does the dot product actually measure? It turns out that the dot product is not just a formula—it encodes geometric information about how two vectors point relative to each other. In particular, the dot product is a measure of the similarity of the directions of two vectors. To really understand this, let's derive the relationship between the dot product and the angle between two vectors.
 
