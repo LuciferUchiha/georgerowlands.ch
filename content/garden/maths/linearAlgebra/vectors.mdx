@@ -862,38 +862,6 @@ This normalized vector will have the same direction as the original vector, but 
     width={400}
     />
 
-### Orthonormal Vector
-
-We can now combine the idea of orthogonal vectors and normalized vectors to get orthonormal vectors. Orthonormal vectors are vectors that are orthogonal to each other and have a length of one. 
-
-<Image
-    src="/maths/vectorOrthonormal.png"
-    caption="The difference between orthogonal and orthonormal vectors."
-    width={500}
-    />
-
-### Standard Unit Vectors
-
-An example of orthonormal vectors are the standard unit vectors. The standard unit vectors can be thought of as the vectors that correspond to the axes of a coordinate system. Later on we will see that these vectors can be used to span any vector space and form the standard basis of the vector space. The standard unit vectors are denoted as $\mathbf{e}_i$ where $i$ is the index of the vector. The $i$ also corresponds to the index of the component that is one, while all other components are zero. The dimensionality of the vector is inferred from the index, so $\mathbf{e}_1$ is a 1D vector, $\mathbf{e}_2$ is a 2D vector, $\mathbf{e}_3$ is a 3D vector depending on the context.
-
-```math
-\mathbf{e}_i = \begin{bmatrix}
-    0 \\
-    \vdots \\
-    1 \\
-    \vdots \\
-    0
-\end{bmatrix}
-```
-
-It is quite easy to see that the standard unit vectors are orthonormal, because they are orthogonal to each other and have a length of one. It also easy to see that any vector can be written as a linear combination of the standard unit vectors, this is why they are so useful and will become an important concept later on when discussing vector spaces and bases.
-
-<Image
-    src="/maths/vectorsStandardUnitVectors.png"
-    caption="The standard unit vectors here in 3D space are i, j, and k. We can see how the vector a can be written as a linear combination of the standard unit vectors." 
-    width={700}
-/>
-
 ## Angle between Vectors
 
 The question now is: What does the dot product actually measure? It turns out that the dot product is not just a formula—it encodes geometric information about how two vectors point relative to each other. In particular, the dot product is a measure of the similarity of the directions of two vectors. To really understand this, let's derive the relationship between the dot product and the angle between two vectors.
@@ -976,8 +944,32 @@ then the angle between $\mathbf{x}$ and $\mathbf{y}$ is:
 We call two vectors orthogonal if the angle between them is 90 degrees, i.e. they are perpendicular to each other. If two vectors are orthogonal, then their dot product is zero, because $\cos(90) = 0$. So if we have two vectors $\mathbf{x}$ and $\mathbf{y}$, then we can check if they are orthogonal as follows:
 
 ```math
-\mathbf{x} \cdot \mathbf{y} = 0
+\mathbf{x} \cdot \mathbf{y} = \cos(90) = 0
 ```
+
+<Callout type="example">
+```math
+\begin{bmatrix}
+    1 \\
+    2
+\end{bmatrix} \cdot \begin{bmatrix}
+    -2 \\
+    1
+\end{bmatrix} = 1 \cdot (-2) + 2 \cdot 1 = -2 + 2 = 0
+```
+
+Or
+
+```math
+\begin{bmatrix}
+    4 \\
+    2 
+\end{bmatrix} \cdot \begin{bmatrix}
+    -1 \\
+    2
+\end{bmatrix} = 4 \cdot (-1) + 2 \cdot 2 = -4 + 4 = 0
+```
+</Callout>
 
 ## Cauchy-Schwarz Inequality
 
@@ -1102,3 +1094,36 @@ So we can rewrite the norm of the sum of two vectors squared and take the square
 <Callout type="todo">
 We can also prove the cauchy schwarz inequality using the triangle inequality.
 </Callout>
+
+
+### Orthonormal Vector
+
+We can now combine the idea of orthogonal vectors and normalized vectors to get orthonormal vectors. Orthonormal vectors are vectors that are orthogonal to each other and have a length of one. 
+
+<Image
+    src="/maths/vectorOrthonormal.png"
+    caption="The difference between orthogonal and orthonormal vectors."
+    width={500}
+    />
+
+### Standard Unit Vectors
+
+An example of orthonormal vectors are the standard unit vectors. The standard unit vectors can be thought of as the vectors that correspond to the axes of a coordinate system. Later on we will see that these vectors can be used to span any vector space and form the standard basis of the vector space. The standard unit vectors are denoted as $\mathbf{e}_i$ where $i$ is the index of the vector. The $i$ also corresponds to the index of the component that is one, while all other components are zero. The dimensionality of the vector is inferred from the index, so $\mathbf{e}_1$ is a 1D vector, $\mathbf{e}_2$ is a 2D vector, $\mathbf{e}_3$ is a 3D vector depending on the context.
+
+```math
+\mathbf{e}_i = \begin{bmatrix}
+    0 \\
+    \vdots \\
+    1 \\
+    \vdots \\
+    0
+\end{bmatrix}
+```
+
+It is quite easy to see that the standard unit vectors are orthonormal, because they are orthogonal to each other and have a length of one. It also easy to see that any vector can be written as a linear combination of the standard unit vectors, this is why they are so useful and will become an important concept later on when discussing vector spaces and bases.
+
+<Image
+    src="/maths/vectorsStandardUnitVectors.png"
+    caption="The standard unit vectors here in 3D space are i, j, and k. We can see how the vector a can be written as a linear combination of the standard unit vectors." 
+    width={700}
+/>

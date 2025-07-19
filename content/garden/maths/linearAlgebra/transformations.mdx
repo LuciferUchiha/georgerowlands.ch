@@ -9,7 +9,11 @@ A linear transformation also often called linear map is a function between two v
 T: R^N \rightarrow R^M
 ```
 
-Where $T$ is the transformation, $R^N$ is the input vector space so vectors of dimension $N$ and $R^M$ is the output vector space so vectors of dimension $M$. If the input and output vector spaces have different dimensions, we call the transformation a projection or a mapping (orthogonal?) as for example a projection from $R^3$ to $R^2$ can be thought of like looking at a cube from above and projecting it onto a 2D plane to get a square.
+Where $T$ is the transformation, $R^N$ is the input vector space so vectors of dimension $N$ and $R^M$ is the output vector space so vectors of dimension $M$. If the input and output vector spaces have different dimensions, we call the transformation a projection or a mapping as for example a projection from $R^3$ to $R^2$ can be thought of looking at a cube from above and projecting it onto a 2D plane to get a square.
+
+<Callout type="todo">
+Technically are these actually projections? What is the difference of them being orthogonal projections? 
+</Callout>
 
 Importantly a linear transformation is as the name suggest linear, meaning that it preserves the operations of addition and scalar multiplication. More formally the following two conditions must be satisfied for a function to be a linear transformation of a vector $\mathbf{u}$ and $\mathbf{v}$ and a scalar $c$:
 - **Additivity**: $T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v})$
@@ -133,6 +137,10 @@ T(c\mathbf{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} (cx
 cT(\mathbf{u}) &= c \begin{bmatrix} x^2 \\ y^2 \end{bmatrix} = \begin{bmatrix} cx^2 \\ cy^2 \end{bmatrix}
 \end{align*}
 ```
+
+<Callout type="todo">
+Add the non linear transformation of summing the absolute values of the components, i.e the first norm of a vector.
+</Callout>
 </Callout>
 
 ## Matrices as Transformations

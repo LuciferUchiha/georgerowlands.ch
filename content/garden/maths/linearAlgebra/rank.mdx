@@ -18,7 +18,7 @@ this can also be written as:
 ```
 
 where $\mathbf{0}$ is the zero vector. This means that the vectors $\mathbf{a}$ and $\mathbf{b}$ are linearly dependent 
-if they are collinear, i.e. they lie on the same line. The two equations above can also be used to define linear independence, we just replace the equal sign with a not equal sign. So the vectors $\mathbf{a}$ and $\mathbf{b}$ are linearly independent if:
+if they are **collinear**, i.e. they lie on the same line. The two equations above can also be used to define linear independence, we just replace the equal sign with a not equal sign. So the vectors $\mathbf{a}$ and $\mathbf{b}$ are linearly independent if:
 
 ```math
 \mathbf{a} - c\mathbf{b} \neq \mathbf{0} \quad \text{for all } c \in \mathbb{R}
@@ -86,11 +86,13 @@ More formally, a set of vectors $\{\mathbf{v_1}, \mathbf{v_2}, \ldots, \mathbf{v
 c_1\mathbf{v_1} + c_2\mathbf{v_2} + \ldots + c_n\mathbf{v_n} = \mathbf{0}
 ```
 
-If the only solution to this equation is the trivial solution where all scalars are zero, then the set of vectors is linearly independent. From this it obviously follows that the null vector is always linearly dependent as we can creat it by multiplying any vector by zero.
+If the only solution to this equation is the trivial solution where all scalars are zero, then the set of vectors is linearly independent. From this it obviously follows that the **null vector even on it's own is always linearly dependent** as we can create it by multiplying any vector by zero.
 
 ## Rank of a Matrix
 
-The rank of a matrix is a key measurement of a matrix and has many important properties such as that **only full rank matrices can be inverted**. However, for now we will just define it as the number of linearly independent rows or columns in the matrix. This can intuitively be interpreted as the amount of information contained in the matrix, as each linearly independent row or column adds new information that cannot be derived from the others. Later on we will see that the rank also corresponds to the number of pivots in the reduced row echelon form of the matrix, which is a more practical way to compute the rank and that it also corresponds to the dimension of the row space or column space of the matrix. We commonly denote the rank of a matrix $A$ as follows:
+The rank of a matrix is a key measurement of a matrix and has many important properties such as that **only full rank matrices can be inverted**. However, for now we will just define it as the number of linearly independent rows or columns in the matrix. The number of linearly independent rows is also often called the **row rank** and the number of linearly independent columns is called the **column rank**. 
+
+This can intuitively be interpreted as the amount of information contained in the matrix, as each linearly independent row or column adds new information that cannot be derived from the others. Later on we will see that the rank also corresponds to the number of pivots in the reduced row echelon form of the matrix, which is a more practical way to compute the rank and that it also corresponds to the dimension of the row space or column space of the matrix. We commonly denote the rank of a matrix $A$ as follows:
 
 ```math
 r = \text{rank}(\mathbf{A})
@@ -106,10 +108,33 @@ Because the rank is defined as the number of linearly independent rows or column
 
 For a square matrix with $n$ rows and $n$ columns, the rank can therefore be at most $n$. If the rank is equal to $n$, then the matrix is said to be **full rank**, meaning that all rows and columns are linearly independent. If matrix is tall so that $m > n$, then the rank can be at most $n$, but if all the columns are linearly independent, then the rank is $n$ and the matrix is said to be **column full rank**. If the matrix is wide so that $m < n$, then the rank can be at most $m$, but if all the rows are linearly independent, then the rank is $m$ and the matrix is said to be **row full rank**.
 
-<Callout type="example">
-This example will be very simple to give some intuiton of the rank as calculating the rank of a matrix is discussed in the other sections.
+For a matrix $\mathbf{A}$ to have $\text{rank}(\mathbf{A}) = 0$, it must be the zero matrix, i.e. all entries are zero. This is because the only linear combination of the rows or columns that can equal the zero vector is the trivial solution where all scalars are zero as if you have a non-zero row or column, then you automatically have at least one linearly independent row or column.
 
-First let us start with some simple matrices:
+We have also already seen how to construct a matrix $\mathbf{B}$ with $\text{rank}(\mathbf{B}) = 1$ by taking the outer product of two vectors $\mathbf{u}$ and $\mathbf{v}$, i.e. $\mathbf{B} = \mathbf{u}\mathbf{v}^T$. This is because the resulting matrix will have all rows as scalar multiples of the first row, hence it has only one linearly independent row:
+
+```math
+\begin{bmatrix}
+u_1 \\
+u_2 \\
+\vdots \\
+u_m
+\end{bmatrix}
+\begin{bmatrix}
+v_1 & v_2 & \ldots & v_n
+\end{bmatrix}
+=
+\begin{bmatrix}
+u_1 v_1 & u_1 v_2 & \ldots & u_1 v_n \\
+u_2 v_1 & u_2 v_2 & \ldots & u_2 v_n \\
+\vdots & \vdots & \ddots & \vdots \\
+u_m v_1 & u_m v_2 & \ldots & u_m v_n
+\end{bmatrix}
+```
+
+Another way of describing the rank of a matrix is as the dimension of the row space or column space of the matrix. The row space is the subspace spanned by the rows of the matrix, while the column space is the subspace spanned by the columns of the matrix. The rank is then equal to the dimension of these subspaces, which is the number of linearly independent vectors needed to span the subspace. This means that the rank of a matrix is also equal to the number of pivots in the reduced row echelon form of the matrix, which is a practical way to compute the rank.
+
+<Callout type="example">
+This example will be very simple to give some intuition of the rank as calculating the rank of a matrix is discussed in the other sections. First let us start with some simple matrices:
 
 ```math
 \begin{align*}

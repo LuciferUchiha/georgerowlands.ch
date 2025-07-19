@@ -343,10 +343,28 @@ the constant is not zero. This would be an unsolvable equation as we can not mak
 
 ### Compacted Form
 
+<Callout type="todo">
 When working with large matrices, having to write out all the rows and columns for each operation can be cumbersome. 
 To make it easier to work with large matrices, it can be useful to compact the matrix by only looking at the columns that still need to be processed.
 
+This was shown in the old script.
+</Callout>
+
 ## LU Decomposition
+
+<Callout type="todo">
+Each operation first can be seen as a linear transformation that is applied to each column. Hence matrix multiplication can be used to represent the operations.
+
+Each operation is an elimination matrix. First row subtraction then row addition and then row multiplication.
+
+Show that the results to Ax = b is the same after multiplying by the elimination matrix.
+
+We then chain the elimination matrices. The final matrix is then all the elimanation matrices multiplied together.
+
+We can then also sprinkle in the permutation matrices to swap rows if needed.
+
+gauss elimination is done in O(n^3)
+</Callout>
 
 Each row operation that is performed in the gaussian elimination algorithm can be represented as a matrix multiplication. We know that if we 
 multiply a matrix by an identity matrix we get the same matrix. We also seen permutation matrices that can be used to swap rows which is one 
@@ -427,6 +445,10 @@ c_{31} & c_{32} & 1
 \end{align*}
 ```
 
+<Callout type="todo"> 
+Show that this times the above is the idenitity matrix so it is actually the inverse of the elimination matrix.
+</Callout>
+
 Where $c_{21}$ etc. are the multipliers that we use to subtract the multiple of the first row from the other rows (if we have to add a multiple of the first row we would have a 
 negative multiplier). Notice that the matrix that we multiply with is a lower triangular matrix. This is the idea of the LU decomposition where 
 the matrix $\mathbf{A}$ is factorized into a product of a lower triangular matrix $\mathbf{L}$ and an upper triangular matrix $\mathbf{U}$:
@@ -439,10 +461,22 @@ But what is the advantage of this factorization? The advantage is that we can so
 very efficiently for any $\mathbf{b}$. First we calculate the two matrices using the gaussian elimination algorithm. For this we just focus on the coefficent 
 matrix and not the augmented matrix. The operations that we perform we store/memorize by storing the multipliers in the lower triangular matrix. 
 
+Then just need O(n^2) operations to solve the system of linear equations for any $\mathbf{b}$.
+
 We first solve $\mathbf{L}\mathbf{y} = \mathbf{b}$ for $\mathbf{y}$ with forward substitution because $\mathbf{L}$ is a lower triangular matrix. 
 Then we solve $\mathbf{U}\mathbf{x} = \mathbf{y}$ for $\mathbf{x}$ with back substitution because $\mathbf{U}$ is an upper triangular matrix.
 
 ### Partial Pivoting
+
+We would have:
+
+```math
+U = E_{m-1}P_{m-2} \ldots P_1 \mathbf{A}
+```
+
+Where $P_i$ are the permutation matrices that swap rows. The $E_i$ are the elimination matrices that we multiply with to get the upper triangular matrix $\mathbf{U}$.
+
+We can actually move all the permutation matrices to the left side of the equation and summarize them to then get below. The proof that this is okay is very lengthy and will be skipped.
 
 The matrix A can be permuted with a permutation matrix P to swap rows.
 
@@ -454,7 +488,22 @@ Where P is a permutation matrix, A is the matrix we want to factorize, L is the 
 
 This is called partial pivoting because we only swap rows.
 
-What is the optimal strategy for choosing the pivot element? Maybe this should actually be written in the gaussian elimination method.
+We can multiply with inverse of P, i.e the transpose to then get:
+
+```math
+A = P^T LU
+```
+
+Where $P^T$ is the transpose of the permutation matrix $P$. So we can write:
+```math
+Ax = b \rightarrow P^TLUx = b
+```
+
+We first solve P^Tz = b for z. In fact, there’s nothing to solve: z = Pb, so we permute
+b in the same way we have permuted the rows of A. After this, we proceed as before:
+we solve Ly = z for y using forward substitution and then solve Ux = y for x, with
+back substitution. All this can be done in O(m2) time, so again much faster than solving
+Ax = b from scratch using Gauss elimination.
 
 ### Full Pivoting
 
@@ -482,12 +531,26 @@ What are the advantages?
 
 ## Gauss-Jordan Elimination
 
+gives the direct solution and more standardized form? Also results in the CR decomposetion of the matrix.
+
 The Gaussian Elimination Algorithm above was only defined for linear systems of equations with the same number of equations as variables. 
 The Gauss-Jordan Elimination Algorithm is an extension of the Gaussian Elimination Algorithm that can be used to solve linear systems of equations 
 with $m$ equations and $n$ variables. The Gauss-Jordan Elimination Algorithm is used to find the reduced row echelon form of a matrix. The idea is 
 very much the same as the gaussian elimination however we do a bit more work to learn more about the matrix.
 
 ### Reduced Row Echelon Form
+
+<Callout type="todo">
+relation to rank. 
+For i = 1, 2,...,r, we have riji = 1.
+For all i, j, we have rij = 0 whenever i>r or j< ji or j = jk for some k>i.
+Row i only has 0s if i>r
+easistes to understand when just looking at the matrix.
+
+To transform b into c, we apply the same row operations. One elegant way of doing this is to directly work with the
+extended matrix Ab that has b as an extra column.
+</Callout>
+
 
 Reduced row echelon form is a stricter form of row echelon form. A matrix is in reduced row echelon form if it satisfies the following conditions:
 
@@ -523,6 +586,10 @@ This matrix is in reduced row echelon form.
 
 ### The Algorithm
 
+Basically very similar to the gaussian elimination algorithm. The goal is to transform the augmented matrix into reduced row echelon form.
+
+First get it into REF, and then RREF. the resulta of the gauss jordan elimination algorithem containing the zero rows still is denoted as R0. There exists some invertable matrix M such that R0 = MA. is invertable because it is a product of invertable matrices.
+
 ### Solving a System of Linear Equations
 
 #### Free Variables
@@ -540,6 +607,10 @@ Also something about homogenous systems and non-homogenous systems. Trivial solu
 Consistency conditions
 
 ## Calculating the Inverse via Gaussian Elimination
+
+<Callout type="todo">
+Above we showed that we can undo a previous row operation with of a matrix so MA = A' then M'A' = A where M' is the inverse of M operation. From this we can then derive the below process?
+</Callout>
 
 The gaussian elimination method can be extended to calculate the inverse of a matrix. Because the inverse of a matrix is only defined for square matrices, 
 this algorithm only works for square matrices such as $2 \times 2$ matrices, $3 \times 3$ matrices, $\mathbf{A} \in \mathbb{R}^{n \times n}$.
@@ -698,6 +769,15 @@ $\mathbf{R} \in \mathbb{R}^{r \times n}$ such that:
 \mathbf{A} = \mathbf{C} \mathbf{R}
 ```
 
+<Callout type="todo">
+First example should be a rank 1 matrix showing that it just ends up being a vector times a vector, i.e the outer product of two vectors.
+
+The R matrix is just the reduced row echelon form of the matrix A, so it is the matrix that contains the weights of the independent columns to create all the columns of the matrix A.
+The C matrix is the matrix that contains the independent columns of the matrix A, so it is the matrix that contains the columns that have a pivot element.
+
+R0 = MCR
+</Callout>
+
 If we look at an example we might get an idea of how we find the matrices $\mathbf{C}$ and $\mathbf{R}$. Let's say we have the following matrix:
 
 ```math
@@ -734,7 +814,9 @@ You might notice something about the matrix $\mathbf{R}$, it is the exact matrix
 removing the zero rows at the bottom so the reduced row echelon form of the matrix. Why is this?
 
 <Callout type="todo">
-Precise explanation as to why this is the case, has to do with the fact of the row operations
+Precise explanation as to why this is the case, has to do with the fact of the row operations.
+
+Move over the proof that this decomposition exists, using the fact that the matrix A and C have the same column space.
 </Callout>
 
 So after performing the gauss-jordan algorithm on the matrix $\mathbf{A}$ we can easily find the matrices $\mathbf{C}$ and $\mathbf{R}$. 
