@@ -2,9 +2,12 @@ export default {
   equations: "",
   vectors: "",
   matrices: "Matrices",
+  hadamardProduct: "",
+  crossProduct: "",
+  broadcasting: "",
+  transformations: "",
   rank: "",
   inverse: "",
-  transformations: "",
   gaussianElimination: "",
   vectorMatrixSpaces: "",
   orthogonality: "",
@@ -18,7 +21,4 @@ export default {
   quadraticForms: "",
   definiteness: "",
   pca: "",
-  hadamardProduct: "",
-  crossProduct: "",
-  broadcasting: ""
 }

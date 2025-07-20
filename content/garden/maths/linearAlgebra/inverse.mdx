@@ -2,27 +2,94 @@ import Callout from "@components/Callout/Callout";
 
 # Matrix inverse
 
-must be square
+first for 1x1 matrix i.e a normal number.
 
-must be full rank otherwise only a left inverse or right inverse
+Show why it is useful for solving linear equations.
 
-definition without how to get it.
+Derive formulas for 2x2 case. Show that if rank 0 or 1 then no inverse satisifes the formula.
 
-It is generally true for two mxm matrices A and B that AB = I implies BA = I? How good does generally mean. This then means inverse of A is B and vice versa.
+generlalize as to why it must be full rank, this also means that it must be square.
 
-Derive formulas for 1x1 and 2x2 case
+can put inverse on either side, why?
 
-Show that the inverse is unique.
+It is generally true for two mxm matrices A and B that AB = I implies BA = I? How good does generally mean. This then means inverse of A is B and vice versa. 
+
+If a matrix is invertible then the inverse is unique, i.e. there is only one inverse for a matrix.
+
+<Callout type="proof">
+Let's prove that the inverse of a matrix is unique. We assume we have two inverses $\mathbf{A}^{-1}$ and $\mathbf{B}^{-1}$ for the matrix $\mathbf{A}$. Then we can see that:
+
+```math
+\begin{align*}
+\mathbf{A} \cdot \mathbf{A}^{-1} &= \mathbf{I} \\
+\mathbf{A} \cdot \mathbf{B}^{-1} &= \mathbf{I}
+\end{align*}
+```
+
+Now we can multiply both sides of the second equation by $\mathbf{A}^{-1}$:
+
+```math
+\begin{align*}
+\mathbf{A} \cdot \mathbf{B}^{-1} \cdot \mathbf{A}^{-1} &= \mathbf{I} \cdot \mathbf{A}^{-1} \\
+\mathbf{B}^{-1} &= \mathbf{A}^{-1}
+\end{align*}
+```
+
+So we can see that the two inverses are equal and thus the inverse of a matrix is unique.
+</Callout>
+
+Some other properties:
+
+```math
+\begin{align*}
+(\mathbf{A}^{-1})^{-1} &= \mathbf{A} \\
+(\mathbf{A} \cdot \mathbf{B})^{-1} &= \mathbf{B}^{-1} \cdot \mathbf{A}^{-1} \\
+(\mathbf{A} + \mathbf{B})^{-1} &\neq \mathbf{A}^{-1} + \mathbf{B}^{-1}
+\end{align*}
+```
 
 Derive (AB)^-1 using linear transoformations?
 
 inverse of transpose is transpose of inverse?
 
-Inverse theorem: If A is invertable then the columns are linearly independent and the rows are linearly independent, so we have full rank, for every Ax=b there is a unique solution x = A^-1b, and the inverse is unique.
+inverse of symmetric matrix is also symmetric?
+
+inverse of diagonal matrix is reciprical of diagonal elements?
+
+Similarly to the transpose of a matrix the inverse of a matrix has some properties that are worth remembering:
+
+```math
+\begin{align*}
+(\mathbf{A}^{-1})^{-1} &= \mathbf{A} \\
+(\mathbf{A} \cdot \mathbf{B})^{-1} &= \mathbf{B}^{-1} \cdot \mathbf{A}^{-1} \\
+(\mathbf{A} + \mathbf{B})^{-1} &\neq \mathbf{A}^{-1} + \mathbf{B}^{-1}
+\end{align*}
+```
+
+In summary:
+Inverse theorem: If A is invertable then matrix is square, the columns are linearly independent and the rows are linearly independent, so we have full rank, for every Ax=b there is a unique solution x = A^-1b, and the inverse is unique.
 
 ## Left and Right Inverse
 
+not two-sided like normal inverse, only one sided 
+
+if matrix is Tall then we can have a left inverse, if matrix is Wide then we can have a right inverse.
+
+```math
+(T^TT)^{-1}T^TT=I
+```
+
+T^TT needs to be full rank, this is the case if T has full column rank. Show why.
+
+right inverse is similiar for wide matrices:
+
+```math
+WW^T(WW^T)^{-1} = I
+```
+
 ## Inverse via Cofactor Matrix
+
+MCA algorithm to compute inverse of a matrix?
 
 ## Inverse via Gaussian Elimination
 

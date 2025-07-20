@@ -52,8 +52,7 @@ A matrix with only one row is called a row vector or [n-tuple](/garden/maths/cal
     ```
 </Callout>
 
-
-#### Outer Product
+## Outer Product
 
 We can actually construct a matrix from two vectors. This is called the outer product of two vectors. The outer product is different from the dot product which results in a scalar. Where the dot product is multiply a row vector with a column vector, the outer product is multiplying a column vector with a row vector. The result of the outer product is a matrix where each element is the product of the corresponding elements in the two vectors.
 
@@ -761,6 +760,96 @@ The same is true for the other way around:
 \end{bmatrix}
 ```
 </Callout>
+  
+#### Multiply Vector and Matrix
+
+Because a vector is a special case of a matrix, we can also multiply vectors with matrices. A vector can be thought of as a matrix with either one row or one column. This means that the multiplication between a vector and a matrix is defined in the same way as the multiplication between two matrices so the dimensions of the two must be compatible. If we have a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ and a column vector $\mathbf{x} \in \mathbb{R}^{n \times 1}$, then we can multiply them together as follows:
+
+```math
+\begin{align*}
+\mathbf{A}\mathbf{x} &= \begin{bmatrix}
+    a_{11} & a_{12} & \dots & a_{1n} \\
+    a_{21} & a_{22} & \dots & a_{2n} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{m1} & a_{m2} & \dots & a_{mn}
+\end{bmatrix} \begin{bmatrix}
+    x_1 \\
+    x_2 \\
+    \vdots \\
+    x_n
+\end{bmatrix} \\
+&= \begin{bmatrix}
+    a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n \\
+    a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n \\
+    \vdots \\
+    a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n
+\end{bmatrix} = \begin{bmatrix}
+    y_1 \\
+    y_2 \\
+    \vdots \\
+    y_m
+\end{bmatrix}
+\end{align*}
+```
+
+As we can see from the definition above, the result is another column vector with $m$ components. We can also see that the resulting vector is a linear combination of the columns of the matrix $\mathbf{A}$ where the weights are the components of the vector $\mathbf{x}$. This is why when the matrix is square the multiplication is often called a linear transformation, because it transforms the vector into another vector. If the matrix is not square, then the multiplication is still a linear transformation but the resulting vector will have a different number of components (dimension) than the original vector. This is why it is called a projection rather than a transformation as it projects the vector onto a lower or higher dimensional space (specifically the column space of the matrix).
+
+If the vector is on the left side of the matrix, then the vector needs to be transposed for the multiplication to work, i.e. the dimensions of the vector must be compatible with the matrix. So if we have a row vector $\mathbf{x}^T \in \mathbb{R}^{1 \times n}$ and a matrix $\mathbf{A} \in \mathbb{R}^{n \times m}$, then we can multiply them together as follows:
+
+```math
+\begin{align*}
+\mathbf{x}^T\mathbf{A} &= \begin{bmatrix}
+    x_1 & x_2 & \dots & x_n
+\end{bmatrix} \begin{bmatrix}
+    a_{11} & a_{12} & \dots & a_{1m} \\
+    a_{21} & a_{22} & \dots & a_{2m} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    a_{n1} & a_{n2} & \dots & a_{nm}
+\end{bmatrix} \\
+&= \begin{bmatrix}
+    x_1a_{11} + x_2a_{21} + \dots + x_na_{n1} & \dots & x_1a_{1m} + x_2a_{2m} + \dots + x_na_{nm}
+\end{bmatrix} = \begin{bmatrix}
+    y_1 & y_2 & \dots & y_m
+\end{bmatrix}
+\end{align*}
+```
+
+Just like when right multiplying a vector by a matrix, the result is a row vector with $m$ components. We can also see that the resulting vector is a linear combination of the rows of the matrix $\mathbf{A}$ where the weights are the components of the vector $\mathbf{x}$. So the multiplication is also a linear transformation but this time it transforms the vector into another vector by projecting it onto the row space of the matrix.
+
+<Callout type="example">
+A right multiplication of a matrix and a vector:
+
+```math
+\begin{bmatrix}
+    1 & 2 \\
+    3 & 4
+\end{bmatrix} \begin{bmatrix}
+    5 \\
+    6
+\end{bmatrix} = \begin{bmatrix}
+    1 \cdot 5 + 2 \cdot 6 \\
+    3 \cdot 5 + 4 \cdot 6
+\end{bmatrix} = \begin{bmatrix}
+    17 \\
+    39
+\end{bmatrix}
+```
+
+A left multiplication of a matrix and a vector:
+
+```math
+\begin{bmatrix}
+    5 & 6
+\end{bmatrix} \begin{bmatrix}
+    1 & 2 \\
+    3 & 4
+\end{bmatrix} = \begin{bmatrix}
+    5 \cdot 1 + 6 \cdot 3 & 5 \cdot 2 + 6 \cdot 4
+\end{bmatrix} = \begin{bmatrix}
+    23 & 34
+\end{bmatrix}
+```
+</Callout>
 
 #### Multiply Triangular Matrices
 
@@ -826,62 +915,6 @@ When you want to multiply multiple matrices the number of multiplications can qu
 Show example with 3 matrices of dimensions $k \times 1$, $1 \times k$ and $k \times 1$. Results in either $O(k)$ or $O(k^2)$ multiplications.
 
 We can write a dynamic programming algorithm to find the optimal way to multiply the matrices. The algorithm is called the **Matrix Chain Multiplication** algorithm. and runs in $O(n^3)$ time which is anyway the time complexity of multiplying one matrix with another matrix.
-
-#### Permutation Matrix
-
-We have seen that the identity matrix is a special matrix that functions as the multiplicative identity for matrix multiplication and can be used to select the corresponding row/column in another matrix. A permutation matrix commonly denoted as $\mathbf{P}$ is a matrix that can be used to permute the rows or columns of another matrix. A permutation matrix is a square matrix where each row and column contains exactly one 1 and all the other elements are 0. Depending on if you want to permute the rows or the columns you can use the permutation matrix as the left or right matrix in the multiplication.
-
-To permute the rows of a matrix you can use the permutation matrix as the left matrix in the multiplication. By swapping the rows of the identity matrix you can permute the rows of the matrix.
-
-<Callout type="example">
-We can swap the first and second row of the matrix $\mathbf{A}$:
-
-```math
-\mathbf{P} \mathbf{A} = \begin{bmatrix}
-0 & 1 & 0 \\
-1 & 0 & 0 \\
-0 & 0 & 1
-\end{bmatrix} \begin{bmatrix}
-1 & 2 & 3 \\
-4 & 5 & 6 \\
-7 & 8 & 9
-\end{bmatrix} = \begin{bmatrix}
-4 & 5 & 6 \\
-1 & 2 & 3 \\
-7 & 8 & 9
-\end{bmatrix}
-```
-</Callout>
-
-To permute the columns of a matrix you can use the permutation matrix as the right matrix in the multiplication. By swapping the columns of the identity matrix you can permute the columns of the matrix.
-
-<Callout type="example">
-We can swap the first and second column of the matrix $\mathbf{A}$:
-
-```math
-\mathbf{A} \mathbf{P} = \begin{bmatrix}
-1 & 2 & 3 \\
-4 & 5 & 6 \\
-7 & 8 & 9
-\end{bmatrix} \begin{bmatrix}
-0 & 1 & 0 \\
-1 & 0 & 0 \\
-0 & 0 & 1
-\end{bmatrix} = \begin{bmatrix}
-2 & 1 & 3 \\
-5 & 4 & 6 \\
-8 & 7 & 9
-\end{bmatrix}
-```
-</Callout>
-
-<Callout type="todo">
-Permutation and then doing another permuation results in another permutation. This is not yet complete and needs to be written.
-
-The inverse of a permutation matrix is the transpose of the matrix. This kind of makes sense but is not immediately obvious.
-
-Because of this it is also orthogonal
-</Callout>
 
 #### Strassen's Algorithm
 
@@ -1077,42 +1110,10 @@ The inverse of a matrix is a very important and special matrix that when multipl
 \mathbf{A} \cdot \mathbf{A}^{-1} = \mathbf{A}^{-1} \cdot \mathbf{A} = \mathbf{I}
 ```
 
-Not all matrices have an inverse. A matrix that has an inverse is called an regular/invertible/non-singular matrix. A matrix that does not have an inverse is called a degenerate/singular/non-invertible matrix. If a matrix is invertible then the inverse is unique, i.e. there is only one inverse for a matrix. For now we will not discuss how to calculate the inverse of a matrix or when a matrix is invertible but we will do so later on in the corresponding sections for [matrix rank](), [determinant]() and [matrix inversion]().
-
-Similarly to the transpose of a matrix the inverse of a matrix has some properties that are worth remembering:
-
-```math
-\begin{align*}
-(\mathbf{A}^{-1})^{-1} &= \mathbf{A} \\
-(\mathbf{A} \cdot \mathbf{B})^{-1} &= \mathbf{B}^{-1} \cdot \mathbf{A}^{-1} \\
-(\mathbf{A} + \mathbf{B})^{-1} &\neq \mathbf{A}^{-1} + \mathbf{B}^{-1}
-\end{align*}
-```
-
-<Callout type="proof">
-Let's prove that the inverse of a matrix is unique. We assume we have two inverses $\mathbf{A}^{-1}$ and $\mathbf{B}^{-1}$ for the matrix $\mathbf{A}$. Then we can see that:
-
-```math
-\begin{align*}
-\mathbf{A} \cdot \mathbf{A}^{-1} &= \mathbf{I} \\
-\mathbf{A} \cdot \mathbf{B}^{-1} &= \mathbf{I}
-\end{align*}
-```
-
-Now we can multiply both sides of the second equation by $\mathbf{A}^{-1}$:
-
-```math
-\begin{align*}
-\mathbf{A} \cdot \mathbf{B}^{-1} \cdot \mathbf{A}^{-1} &= \mathbf{I} \cdot \mathbf{A}^{-1} \\
-\mathbf{B}^{-1} &= \mathbf{A}^{-1}
-\end{align*}
-```
-
-So we can see that the two inverses are equal and thus the inverse of a matrix is unique.
-</Callout>
+Not all matrices have an inverse. A matrix that has an inverse is called an regular/invertible/non-singular matrix. A matrix that does not have an inverse is called a degenerate/singular/non-invertible matrix. For now we will not discuss how to calculate the inverse of a matrix or when a matrix is invertible but we will do so later on in the corresponding sections for [matrix rank](), [determinant]() and [matrix inversion]().
 
 <Callout type="example">
-The following matrix is invertible:
+Whether a matrix is invertible or not is visually not very obvious as for example the following random looking matrix is invertible:
 
 ```math
 \mathbf{A} = \begin{bmatrix}
@@ -1126,7 +1127,7 @@ The following matrix is invertible:
 \end{bmatrix}
 ```
 
-The following simple matrix is not invertible:
+But the following simple matrix is not invertible:
 
 ```math
 \mathbf{A} = \begin{bmatrix}
@@ -1136,8 +1137,257 @@ The following simple matrix is not invertible:
 ```
 </Callout>
 
-<Callout type="todo">
-    Parts below here are still a work in progress and might not belong here.
+#### Permutation Matrix
+
+A **permutation matrix** is a special type of square matrix that rearranges (permutes) the rows or columns of another matrix or vector. Permutations themselves are simply reorderings of elements. We can formally define a permutation as a function $\pi$ that maps the set ${1, 2, \dots, n}$ onto itself, i.e., $\pi: {1, 2, \dots, n} \to {1, 2, \dots, n}$, where each number appears exactly once as an output.
+
+<Callout type="example">
+For example, the permutation $\pi$ defined by $\pi(1) = 2$, $\pi(2) = 1$, $\pi(3) = 3$ swaps the first two elements and leaves the third unchanged. 
+
+Because a permutation is just a reordering, we can also "reorder" the elements back to their original positions using the inverse permutation. Another way of thinking about this is that notice that a permutation is bijective, meaning it has a one-to-one correspondence between the input and output. So by definition some inverse function $ \pi^{-1} $ exists such that $\pi^{-1}(\pi(i)) = i$ for all $i$. In our example, the inverse permutation $\pi^{-1}$ would be defined as $\pi^{-1}(1) = 2$, $\pi^{-1}(2) = 1$, and $\pi^{-1}(3) = 3$.
+</Callout>
+
+Permutations are also composable, meaning you can apply one permutation after another. If you have two permutations $\pi_1$ and $\pi_2$, their composition is defined as:
+
+```math
+(\pi_2 \circ \pi_1)(i) = \pi_2(\pi_1(i))
+```
+
+Again because we are just reordering elements, the composition of two permutations is also a permutation. The inverse of a composition is simply the composition of the inverses in reverse order as we first want to undo the last permutation applied:
+
+```math
+(\pi_2 \circ \pi_1)^{-1} = \pi_1^{-1} \circ \pi_2^{-1}
+```
+
+So if we want to undo the effect of applying $\pi_1$ followed by $\pi_2$, we first apply $\pi_2^{-1}$ and then $\pi_1^{-1}$:
+
+```math
+(\pi_2 \circ \pi_1)^{-1}(i) = \pi_1^{-1}(\pi_2^{-1}(i))
+```
+
+We can also extend this idea to permuting the components of a vector. For this we represent the permutation as a matrix as remember that we can transform vectors into other vectors by multiplying them with matrices. A **permutation matrix** $\mathbf{P} \in \mathbb{R}^{n \times n}$ is obtained by permuting the rows of the identity matrix $\mathbf{I}\_n$ according to a permutation $\pi$. Formally, the entries of a permutation matrix are defined as:
+
+```math
+P_{ij} = \begin{cases}
+1 & \text{if } j = \pi(i) \\
+0 & \text{otherwise}
+\end{cases}
+```
+
+This means each row and each column has exactly one entry equal to $1$, and all other entries are $0$. We can interpret this as follows: In the $i$th row, the position of the $1$ tells you where the $i$th row of the identity matrix (or an input vector) is being sent in the output. Alternatively, in the $j$th column, the $1$ tells you that the $j$th column of the identity is moved to the row where that $1$ appears.
+
+<Callout type="example">
+Let's use a $3 \times 3$ permutation matrix:
+
+```math
+\mathbf{P} = \begin{bmatrix}
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 0 & 0
+\end{bmatrix}
+```
+
+Suppose we apply $\mathbf{P}$ to the vector $\mathbf{x} = \begin{bmatrix} x\_1 \ x\_2 \ x\_3 \end{bmatrix}$ then the following happens:
+
+- The first row of $\mathbf{P}$ is $(0\ 1\ 0)$:
+  This means the first entry of the output vector is $0 \cdot x\_1 + 1 \cdot x\_2 + 0 \cdot x\_3 = x\_2$.
+  So, the $1$ in column 2 means “place $x\_2$ into the first position”.
+- The second row is $(0\ 0\ 1)$:
+  The output's second entry is $x\_3$ (the $1$ in column 3).
+- The third row is $(1\ 0\ 0)$:
+  The output's third entry is $x\_1$ (the $1$ in column 1).
+
+```math
+\mathbf{P}\mathbf{x} = \begin{bmatrix} x_2 \\ x_3 \\ x_1 \end{bmatrix}
+```
+</Callout>
+
+The properties of the normal permutation function above also apply to permutation matrices. So composing two permutation matrices corresponds to composing the permutations they represent. If $\mathbf{P}_{\pi_1}$ and $\mathbf{P}_{\pi_2}$ are permutation matrices for permutations $\pi_1$ and $\pi_2$, then their product is a permutation matrix for the composition of the two permutations:
+
+```math
+\mathbf{P}_{\pi_2} \mathbf{P}_{\pi_1} = \mathbf{P}_{\pi_2 \circ \pi_1}
+```
+
+And the inverse of a permutation matrix is simply the permutation matrix for the inverse permutation:
+
+```math
+\mathbf{P}_{\pi}^{-1} = \mathbf{P}_{\pi^{-1}}
+```
+
+<Callout type="example">
+Suppose you have $\mathbf{P}$ as above, which permutes $(x\_1, x\_2, x\_3) \to (x\_2, x\_3, x\_1)$.
+How do we undo this? We need a permutation matrix $\mathbf{Q}$ such that:
+
+```math
+\mathbf{Q}\mathbf{P}\mathbf{x} = \mathbf{x}
+```
+
+Let's work this out explicitly:
+
+$\mathbf{P}\mathbf{x} = \begin{bmatrix} x\_2 \ x\_3 \ x\_1 \end{bmatrix}$
+
+We want $\mathbf{Q}$ so that:
+
+```math
+\mathbf{Q} \begin{bmatrix} x_2 \\ x_3 \\ x_1 \end{bmatrix} = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}
+```
+
+So, what must $\mathbf{Q}$ do? It must move $x\_2$ (currently in position 1) back to position 2, $x\_3$ (currently in position 2) back to position 3, $x\_1$ (currently in position 3) back to position 1.
+
+So, the inverse permutation matrix $\mathbf{Q}$ will have $1$s in the following places:
+
+- Row 1: column 3 (to put $x\_1$ in position 1),
+- Row 2: column 1 (to put $x\_2$ in position 2),
+- Row 3: column 2 (to put $x\_3$ in position 3):
+
+```math
+\mathbf{Q} = \begin{bmatrix}
+0 & 0 & 1 \\
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{bmatrix}
+```
+
+we can check that this works:
+
+```math
+\mathbf{Q} \begin{bmatrix}
+x_2 \\ x_3 \\ x_1
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 0 & 1 \\
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{bmatrix}
+\begin{bmatrix}
+x_2 \\ x_3 \\ x_1
+\end{bmatrix}
+=
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3
+\end{bmatrix}
+```
+
+If you compare the inverse matrix $\mathbf{Q}$ to the original $\mathbf{P}$, we notice that they are related:
+
+```math
+\mathbf{P} = \begin{bmatrix}
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 0 & 0
+\end{bmatrix}
+\qquad
+\mathbf{Q} = \begin{bmatrix}
+0 & 0 & 1 \\
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{bmatrix}
+```
+
+Specifically, $\mathbf{Q}$ is the transpose of $\mathbf{P}$:
+
+```math
+\mathbf{P}^T = \begin{bmatrix}
+0 & 0 & 1 \\
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{bmatrix}
+= \mathbf{Q}
+```
+
+This is always true for permutation matrices, their inverse is just their transpose.
+</Callout>
+<Callout type="example">
+Let's see this with a $4 \times 4$ permutation matrix. Suppose $\pi(1) = 3$, $\pi(2) = 1$, $\pi(3) = 4$, $\pi(4) = 2$. Then
+
+```math
+\mathbf{P} = \begin{bmatrix}
+0 & 0 & 1 & 0 \\
+1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 1 & 0 & 0
+\end{bmatrix}
+```
+
+Applying $\mathbf{P}$ to a column vector:
+
+```math
+\mathbf{P} \begin{bmatrix}
+a \\ b \\ c \\ d
+\end{bmatrix} = \begin{bmatrix}
+c \\ a \\ d \\ b
+\end{bmatrix}
+```
+
+The inverse permutation is $\pi^{-1}(1) = 2$, $\pi^{-1}(2) = 4$, $\pi^{-1}(3) = 1$, $\pi^{-1}(4) = 3$, and:
+
+```math
+\mathbf{P}^{-1} = \mathbf{P}^T = \begin{bmatrix}
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 0 \\
+0 & 0 & 1 & 0
+\end{bmatrix}
+```
+
+Multiplying back:
+
+```math
+\mathbf{P}^T \begin{bmatrix}
+c \\ a \\ d \\ b
+\end{bmatrix} = \begin{bmatrix}
+a \\ b \\ c \\ d
+\end{bmatrix}
+```
+
+So applying $\mathbf{P}^T$ undoes the permutation applied by $\mathbf{P}$.
+</Callout>
+
+From the definition of the matrix multiplication we noticed that multiplying a matrix with another matrix from the left was like applying a linear transformation to the rows of the matrix and multiplying a matrix with another matrix from the right was like applying a linear transformation to the columns of the matrix. This means that multiplying a permutation matrix with another matrix from the left permutes the rows of that matrix and multiplying a permutation matrix with another matrix from the right permutes the columns of that matrix.
+
+<Callout type="example">
+Suppose we want to swap the first and second rows of the matrix $\mathbf{A}$:
+
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+```
+
+The corresponding permutation matrix is:
+
+```math
+\mathbf{P} = \begin{bmatrix}
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+```
+
+Multiplying on the left swaps the first and second rows:
+
+```math
+\mathbf{P}\mathbf{A} = \begin{bmatrix}
+4 & 5 & 6 \\
+1 & 2 & 3 \\
+7 & 8 & 9
+\end{bmatrix}
+```
+
+Similarly, multiplying on the right swaps the first and second columns:
+
+```math
+\mathbf{A}\mathbf{P} = \begin{bmatrix}
+2 & 1 & 3 \\
+5 & 4 & 6 \\
+8 & 7 & 9
+\end{bmatrix}
+```
 </Callout>
 
 ### Frobenius Norm
@@ -1149,7 +1399,6 @@ The Frobenius norm is a way to measure the size of a matrix. It is defined as th
 ```
 
 You can also think of it as just taking the matrix and flattening it into a vector and then calculating the length of that vector, i.e. the Euclidean/L2 norm of the vector.
-
 
 <Callout type="example">
 If we define the matrix $\mathbf{A}$:
@@ -1190,12 +1439,16 @@ The trace of a matrix is the sum of all the diagonal elements in the matrix and 
     Add properties of the trace. and proof that it is the sum of the eigenvalues.
 </Callout>
 
+<Callout type="todo">
+    Parts below here are still a work in progress and might not belong here.
+</Callout>
+
 ## Orthogonal / Orthonormal Matrix
 
 Very unclear what the difference is between these two. I think an orthogonal matrix is a matrix where the columns are orthogonal to each other but don't have to be normalized. And an orthonormal matrix is a matrix where the columns are orthogonal to each other and are normalized, i.e. have a length of $1$.
 
 <Callout type="todo">
-    This section is still a work in progress!
+    Add more to this section such as examples etc. these are later on very important.
 </Callout>
 
 ## Householder Matrix

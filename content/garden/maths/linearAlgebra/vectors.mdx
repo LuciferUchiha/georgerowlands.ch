@@ -538,100 +538,6 @@ combination can be rewritten as follows: $s_1\mathbf{v}_1 + s_2\mathbf{v}_2= s_1
 <Callout type="todo">
 Add the example with the cocktail mixing.
 </Callout>
-    
-## Multiplication between Vectors and Matrices
-
-<Callout type="todo">
-This belongs in the matrix section.
-</Callout>
-
-A vector can be left or right multiplied by a matrix. The multiplication between a vector and a matrix is defined just as the matrix multiplication so the dimensions of the two must be compatible. If we have a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ and a column vector $\mathbf{x} \in \mathbb{R}^{n \times 1}$, then we can multiply them together as follows:
-
-```math
-\begin{align*}
-\mathbf{A}\mathbf{x} &= \begin{bmatrix}
-    a_{11} & a_{12} & \dots & a_{1n} \\
-    a_{21} & a_{22} & \dots & a_{2n} \\
-    \vdots & \vdots & \ddots & \vdots \\
-    a_{m1} & a_{m2} & \dots & a_{mn}
-\end{bmatrix} \begin{bmatrix}
-    x_1 \\
-    x_2 \\
-    \vdots \\
-    x_n
-\end{bmatrix} \\
-&= \begin{bmatrix}
-    a_{11}x_1 + a_{12}x_2 + \dots + a_{1n}x_n \\
-    a_{21}x_1 + a_{22}x_2 + \dots + a_{2n}x_n \\
-    \vdots \\
-    a_{m1}x_1 + a_{m2}x_2 + \dots + a_{mn}x_n
-\end{bmatrix} = \begin{bmatrix}
-    y_1 \\
-    y_2 \\
-    \vdots \\
-    y_m
-\end{bmatrix}
-\end{align*}
-```
-
-As we can see from the definition above, the result is another column vector with $m$ components. We can also see that the resulting vector is a linear combination of the columns of the matrix $\mathbf{A}$ where the weights are the components of the vector $\mathbf{x}$. This is why when the matrix is square the multiplication is often called a linear transformation, because it transforms the vector into another vector. If the matrix is not square, then the multiplication is still a linear transformation but the resulting vector will have a different number of components (dimension) than the original vector. This is why it is called a projection rather than a transformation as it projects the vector onto a lower or higher dimensional space (specifically the column space of the matrix).
-
-If the vector is on the left side of the matrix, then the vector needs to be transposed for the multiplication to work, i.e. the dimensions of the vector must be compatible with the matrix. So if we have a row vector $\mathbf{x}^T \in \mathbb{R}^{1 \times n}$ and a matrix $\mathbf{A} \in \mathbb{R}^{n \times m}$, then we can multiply them together as follows:
-
-```math
-\begin{align*}
-\mathbf{x}^T\mathbf{A} &= \begin{bmatrix}
-    x_1 & x_2 & \dots & x_n
-\end{bmatrix} \begin{bmatrix}
-    a_{11} & a_{12} & \dots & a_{1m} \\
-    a_{21} & a_{22} & \dots & a_{2m} \\
-    \vdots & \vdots & \ddots & \vdots \\
-    a_{n1} & a_{n2} & \dots & a_{nm}
-\end{bmatrix} \\
-&= \begin{bmatrix}
-    x_1a_{11} + x_2a_{21} + \dots + x_na_{n1} & \dots & x_1a_{1m} + x_2a_{2m} + \dots + x_na_{nm}
-\end{bmatrix} = \begin{bmatrix}
-    y_1 & y_2 & \dots & y_m
-\end{bmatrix}
-\end{align*}
-```
-
-Just like when right multiplying a vector by a matrix, the result is a row vector with $m$ components. We can also see that the resulting vector is a linear combination of the rows of the matrix $\mathbf{A}$ where the weights are the components of the vector $\mathbf{x}$. So the multiplication is also a linear transformation but this time it transforms the vector into another vector by projecting it onto the row space of the matrix.
-
-<Callout type="example">
-A right multiplication of a matrix and a vector:
-
-```math
-\begin{bmatrix}
-    1 & 2 \\
-    3 & 4
-\end{bmatrix} \begin{bmatrix}
-    5 \\
-    6
-\end{bmatrix} = \begin{bmatrix}
-    1 \cdot 5 + 2 \cdot 6 \\
-    3 \cdot 5 + 4 \cdot 6
-\end{bmatrix} = \begin{bmatrix}
-    17 \\
-    39
-\end{bmatrix}
-```
-
-A left multiplication of a matrix and a vector:
-
-```math
-\begin{bmatrix}
-    5 & 6
-\end{bmatrix} \begin{bmatrix}
-    1 & 2 \\
-    3 & 4
-\end{bmatrix} = \begin{bmatrix}
-    5 \cdot 1 + 6 \cdot 3 & 5 \cdot 2 + 6 \cdot 4
-\end{bmatrix} = \begin{bmatrix}
-    23 & 34
-\end{bmatrix}
-```
-</Callout>
 
 ## Dot Product
 
@@ -752,7 +658,7 @@ The Manhattan norm or $L_1$ norm is defined as the sum of the [absolute values](
 <Image
     src="/maths/vectorManhattenNorm.png"
     caption="No matter how we move along the roads of Manhattan, the distance between two points is always the same."
-    width={400}
+    width={350}
     />
 
 <Callout type="example">
@@ -816,7 +722,7 @@ In other words, the $L_\infty$ norm is vector component with the largest absolut
 <Image
     src="/maths/vectorNorms.png"
     caption="The different norms in 2D space."
-    width={400}
+    width={550}
 />
 
 <Callout type="todo">
@@ -890,7 +796,7 @@ So the dot product of two unit vectors $\mathbf{v}$ and $\mathbf{w}$ if we place
 <Image
     src="/maths/vectorDotProductAngle.png"
     caption="Calculating the angle between two vectors using the dot product."
-    width={400}
+    width={600}
 />
 
 This means that the dot product can be used to calculate the angle between any two vectors. Because the angle does not depend on the length of the vectors we can just normalize the vectors to unit vectors and then calculate the angle between them. Because the vectors anyway describe a direction their tails don't need to be at the same point, we can just place them at the origin. This then gives us the following formula for the dot product of two vectors $\mathbf{x}$ and $\mathbf{y}$:
@@ -1060,6 +966,7 @@ This can also visually be seen in the 2D case, where the direct path from one po
 
 <Image
     src="/maths/vectorTriangleInequality.png"
+    caption="Visualizing the triangle inequality in 2D space."
     width={400}
     />
 
@@ -1103,7 +1010,7 @@ We can now combine the idea of orthogonal vectors and normalized vectors to get 
 <Image
     src="/maths/vectorOrthonormal.png"
     caption="The difference between orthogonal and orthonormal vectors."
-    width={500}
+    width={450}
     />
 
 ### Standard Unit Vectors
@@ -1125,5 +1032,5 @@ It is quite easy to see that the standard unit vectors are orthonormal, because 
 <Image
     src="/maths/vectorsStandardUnitVectors.png"
     caption="The standard unit vectors here in 3D space are i, j, and k. We can see how the vector a can be written as a linear combination of the standard unit vectors." 
-    width={700}
+    width={400}
 />
