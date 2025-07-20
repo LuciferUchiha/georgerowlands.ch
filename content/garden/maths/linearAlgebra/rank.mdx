@@ -1,94 +1,7 @@
 import Callout from '@components/Callout/Callout';
 import Image from '@components/Image/Image';
 
-# Linear Independence and Rank
-
-## Linear Independence
-
-Two vectors are linearly independent if neither of them can be written as a linear combination of the other. In other words, two vectors are linearly independent if they are not scalar multiples of each other. It is however easier to define and check for linear dependence. The vectors $\mathbf{a}$ and $\mathbf{b}$ are linearly dependent if they are scalar multiples of each other, i.e. if there exists a scalar $c$ such that:
-
-```math
-\mathbf{a} = c\mathbf{b} \quad \text{for some } c \in \mathbb{R}
-```
-
-this can also be written as:
-
-```math
-\mathbf{a} - c\mathbf{b} = \mathbf{0}
-```
-
-where $\mathbf{0}$ is the zero vector. This means that the vectors $\mathbf{a}$ and $\mathbf{b}$ are linearly dependent 
-if they are **collinear**, i.e. they lie on the same line. The two equations above can also be used to define linear independence, we just replace the equal sign with a not equal sign. So the vectors $\mathbf{a}$ and $\mathbf{b}$ are linearly independent if:
-
-```math
-\mathbf{a} - c\mathbf{b} \neq \mathbf{0} \quad \text{for all } c \in \mathbb{R}
-```
-
-<Image
-    src="/maths/vectorLinearDependence2D.png"
-    caption="The left two vectors are linearly independent, while the right two vectors are linearly dependent."
-    width={400}
-    />
-
-<Callout type="example">
-If $\mathbf{a}$ and $\mathbf{b}$ are defined as:
-
-```math
-\mathbf{a} = \begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} \quad \text{and} \quad \mathbf{b} = \begin{bmatrix}
-    2 \\
-    4 \\
-    6
-\end{bmatrix}
-```
-
-then $\mathbf{a}$ and $\mathbf{b}$ are linearly dependent because:
-
-```math
-\mathbf{a} = 2\mathbf{b}
-```
-
-However, if $\mathbf{a}$ and $\mathbf{b}$ are defined as:
-
-```math
-\mathbf{a} = \begin{bmatrix}
-    1 \\
-    2 \\
-    3
-\end{bmatrix} \quad \text{and} \quad \mathbf{b} = \begin{bmatrix}
-    2 \\
-    3 \\
-    4
-\end{bmatrix}
-```
-
-then $\mathbf{a}$ and $\mathbf{b}$ are linearly independent because no scalar multiple of $\mathbf{b}$ can be equal to $\mathbf{a}$.
-</Callout>
-
-<Callout type="todo">
-Show more why these are equivalent and the derivations
-</Callout>
-
-This idea can then be extended to a set of vectors, looking at a sequence of vectors doesn't make a lot of sense as 
-the same vector is obviously linearly dependent on itself. 
-
-A set is linearly dependent:
-- If one of the vectors in the set can be written as a linear combination of the others
-- At least one of the vectors in the set can be written as a linear combination of the previous vectors.
-- There is a non-trivial solution to make the linear combination equal to the zero vector 
-
-More formally, a set of vectors $\{\mathbf{v_1}, \mathbf{v_2}, \ldots, \mathbf{v_n}\}$ is linearly dependent if there exist scalars $c_1, c_2, \ldots, c_n$, not all zero, such that:
-
-```math
-c_1\mathbf{v_1} + c_2\mathbf{v_2} + \ldots + c_n\mathbf{v_n} = \mathbf{0}
-```
-
-If the only solution to this equation is the trivial solution where all scalars are zero, then the set of vectors is linearly independent. From this it obviously follows that the **null vector even on it's own is always linearly dependent** as we can create it by multiplying any vector by zero.
-
-## Rank of a Matrix
+# Rank of a Matrix
 
 The rank of a matrix is a key measurement of a matrix and has many important properties such as that **only full rank matrices can be inverted**. However, for now we will just define it as the number of linearly independent rows or columns in the matrix. The number of linearly independent rows is also often called the **row rank** and the number of linearly independent columns is called the **column rank**. 
 
@@ -230,7 +143,9 @@ And then some less obvious ones:
 
 - the rank of the above are also the same as the rank of $A^T A$ and $A A^T$.
 
-rank nullity theorem?
+## Rank-Nullity Theorem
+
+## Regularization
 
 We can make a matrix full rank by adding some scaled identity matrix to it, this is called regularization. This is often used in machine learning to prevent overfitting, as it adds some noise to the data and makes the model more robust. The regularization parameter $\lambda$ controls the amount of noise added to the data, and can be tuned to achieve the desired level of robustness?
 
