@@ -709,6 +709,103 @@ This can be seen in the image below.
 What about when we have no solution? This is the case for when the null space is empty. This can only happen if the vector $\mathbf{b}$ is not in the column space of the matrix. So for example 
 if we have the zero matrix but are looking for a solution that is not the null vector then we can't find a solution. 
 
+## Rank-Nullity Theorem
+
+<Callout type="todo">
+One of the most important results in linear algebra relating the rank to the solution space of linear systems is the **Rank-Nullity Theorem**.
+
+The **nullity** of a matrix $\mathbf{A}$, denoted as $\text{nullity}(\mathbf{A})$, is the dimension of its **null space** (also called the kernel). The null space is the set of all vectors $\mathbf{x}$ such that $\mathbf{A}\mathbf{x} = \mathbf{0}$.
+
+* If $\mathbf{A} \in \mathbb{R}^{m \times n}$, then the null space is a subspace of $\mathbb{R}^n$.
+
+For any matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$,
+
+```math
+\text{rank}(\mathbf{A}) + \text{nullity}(\mathbf{A}) = n
+```
+
+where $n$ is the number of columns.
+
+**Intuition:**
+
+* The rank tells you how many directions in the input space $\mathbb{R}^n$ are mapped to something nonzero (the "image" of the transformation).
+* The nullity tells you how many directions are "collapsed" to zero by $\mathbf{A}$.
+
+Example: Nullity and Rank
+
+Let
+
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6
+\end{bmatrix}
+```
+
+Row 2 is just 2 times row 1, so $\text{rank}(\mathbf{A}) = 1$.
+
+* $n = 3$ (three columns).
+* By the rank-nullity theorem, $\text{nullity}(\mathbf{A}) = 3 - 1 = 2$.
+
+Let us find the null space explicitly:
+Solve $\mathbf{A}\mathbf{x} = \mathbf{0}$:
+
+```math
+\begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\ x_2 \\ x_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\ 0
+\end{bmatrix}
+```
+
+Gives two equations:
+
+```math
+1x_1 + 2x_2 + 3x_3 = 0 \\
+2x_1 + 4x_2 + 6x_3 = 0
+```
+
+But the second equation is just twice the first, so we only need to solve the first.
+Let $x\_2 = s$, $x\_3 = t$ be free parameters. Then
+
+```math
+x_1 = -2s - 3t
+```
+
+So the general solution is
+
+```math
+\begin{bmatrix}
+x_1 \\ x_2 \\ x_3
+\end{bmatrix}
+= s \begin{bmatrix}
+-2 \\ 1 \\ 0
+\end{bmatrix}
++ t \begin{bmatrix}
+-3 \\ 0 \\ 1
+\end{bmatrix}
+```
+
+which forms a 2-dimensional subspace—confirming the nullity is 2.
+
+Given a linear transformation $T: \mathbb{R}^n \to \mathbb{R}^m$ represented by the matrix $\mathbf{A}$:
+
+* The **image** (or column space) of $T$ is the set of all vectors in $\mathbb{R}^m$ that can be written as $\mathbf{A}\mathbf{x}$ for some $\mathbf{x} \in \mathbb{R}^n$. Its dimension is the **rank**.
+* The **kernel** (or null space) of $T$ is the set of all vectors $\mathbf{x} \in \mathbb{R}^n$ such that $\mathbf{A}\mathbf{x} = \mathbf{0}$. Its dimension is the **nullity**.
+
+The rank-nullity theorem says that
+
+> **The dimension of the domain = dimension of the image + dimension of the kernel.**
+
+This is a fundamental result, and you will see it everywhere in linear algebra, from solving systems of equations to understanding decompositions and projections.
+</Callout>
+
 ## Orthogonal Subspaces and Complements
 
 ## Spaces of Functions

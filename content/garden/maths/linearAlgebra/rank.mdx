@@ -3,7 +3,7 @@ import Image from '@components/Image/Image';
 
 # Rank of a Matrix
 
-The rank of a matrix is a key measurement of a matrix and has many important properties such as that **only full rank matrices can be inverted**. However, for now we will just define it as the number of linearly independent rows or columns in the matrix. The number of linearly independent rows is also often called the **row rank** and the number of linearly independent columns is called the **column rank**. 
+The rank of a matrix is a key measurement of a matrix and has many important properties such as that **only full rank matrices can be inverted**. However, for now we will just define it as the number of linearly independent rows or columns in the matrix. The number of linearly independent rows is also often called the **row rank** and the number of linearly independent columns is called the **column rank**.
 
 This can intuitively be interpreted as the amount of information contained in the matrix, as each linearly independent row or column adds new information that cannot be derived from the others. Later on we will see that the rank also corresponds to the number of pivots in the reduced row echelon form of the matrix, which is a more practical way to compute the rank and that it also corresponds to the dimension of the row space or column space of the matrix. We commonly denote the rank of a matrix $A$ as follows:
 
@@ -11,7 +11,7 @@ This can intuitively be interpreted as the amount of information contained in th
 r = \text{rank}(\mathbf{A})
 ```
 
-Determining the rank of a matrix can be done easily by hand by transforming the [matrix into its reduced row echelon form (RREF) with gaussian elimination and counting the number of non-zero rows](). The rank can also be computed using various algorithms or [singular value decomposition (SVD)](), which are more efficient for larger matrices.
+Determining the rank of a matrix can be done easily by hand by transforming the [matrix into its reduced row echelon form (RREF) with Gaussian elimination and counting the number of non-zero rows](). The rank can also be computed using various algorithms or [singular value decomposition (SVD)](), which are more efficient for larger matrices.
 
 Because the rank is defined as the number of linearly independent rows or columns, it is important to note that the rank of a matrix is always less than or equal to the minimum of the number of rows and columns in the matrix. In other words, if a matrix has $m$ rows and $n$ columns, then:
 
@@ -19,7 +19,7 @@ Because the rank is defined as the number of linearly independent rows or column
 \text{rank}(\mathbf{A}) \leq \min(m, n)
 ```
 
-For a square matrix with $n$ rows and $n$ columns, the rank can therefore be at most $n$. If the rank is equal to $n$, then the matrix is said to be **full rank**, meaning that all rows and columns are linearly independent. If matrix is tall so that $m > n$, then the rank can be at most $n$, but if all the columns are linearly independent, then the rank is $n$ and the matrix is said to be **column full rank**. If the matrix is wide so that $m < n$, then the rank can be at most $m$, but if all the rows are linearly independent, then the rank is $m$ and the matrix is said to be **row full rank**.
+For a square matrix with $n$ rows and $n$ columns, the rank can therefore be at most $n$. If the rank is equal to $n$, then the matrix is said to be **full rank**, meaning that all rows and columns are linearly independent. If a matrix is tall so that $m > n$, then the rank can be at most $n$, but if all the columns are linearly independent, then the rank is $n$ and the matrix is said to be **column full rank**. If the matrix is wide so that $m < n$, then the rank can be at most $m$, but if all the rows are linearly independent, then the rank is $m$ and the matrix is said to be **row full rank**.
 
 For a matrix $\mathbf{A}$ to have $\text{rank}(\mathbf{A}) = 0$, it must be the zero matrix, i.e. all entries are zero. This is because the only linear combination of the rows or columns that can equal the zero vector is the trivial solution where all scalars are zero as if you have a non-zero row or column, then you automatically have at least one linearly independent row or column.
 
@@ -85,6 +85,7 @@ This example will be very simple to give some intuition of the rank as calculati
 ```
 
 And then some less obvious ones:
+
 ```math
 \begin{align*}
 &\begin{bmatrix}
@@ -110,7 +111,7 @@ And then some less obvious ones:
 6 & 6 & 1 \\
 4 & 2 & 0
 \end{bmatrix} \\
-&r=3
+&r=2
 \,
 &r=1
 \,
@@ -121,29 +122,238 @@ And then some less obvious ones:
 ```
 </Callout>
 
-- rank of scalar multiplied matrix
+Let's explore some fundamental properties of matrix rank, each with an explanation and example. The first property is that the rank of a matrix is invariant under certain operations, which means that the rank does not change when we perform these operations on the matrix.
+
+A first example would be swapping rows or columns, which does not change the rank of the matrix. This is because swapping rows or columns does not affect the linear independence of the rows or columns. 
+
+Another example is multiplying a matrix by a **nonzero scalar**. This operation does not change its rank:
 
 ```math
-\text{rank}(c\mathbf{A}) = \text{rank}(\mathbf{A}) \quad \text{for } c \in \mathbb{R} \setminus \{0\}
+\text{rank}(c\mathbf{A}) = \text{rank}(\mathbf{A}), \quad \text{for } c \in \mathbb{R} \setminus \{0\}
 ```
 
-- rank of sum of matrices
+The intuition is that multiplying all elements of the matrix by $c$ does not change the linear relationships between the rows or columns. If a set of rows is linearly independent, multiplying them by a nonzero scalar keeps them linearly independent. Importantly, if $c = 0$, then the matrix becomes the zero matrix, which has rank 0, hence the condition that $c \neq 0$.
+
+<Callout type="proof">
+Suppose we have a matrix $\mathbf{A}$ with rank $r$. This means there are $r$ linearly independent columns (or rows) $\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_r$ such that we have non-zero scalars $\lambda_1, \lambda_2, \ldots, \lambda_r$ for which:
+
+```math
+\lambda_1 \mathbf{v}_1 + \lambda_2 \mathbf{v}_2 + \ldots + \lambda_r \mathbf{v}_r = \mathbf{o}
+```
+
+If we multiply the entire matrix by a nonzero scalar $c$, then all the vectors become $c\mathbf{v}_1, c\mathbf{v}_2, \ldots, c\mathbf{v}_r$. The linear combination becomes:
+
+```math
+\lambda_1 (c\mathbf{v}_1) + \lambda_2 (c\mathbf{v}_2) + \ldots + \lambda_r (c\mathbf{v}_r) = c(\lambda_1 \mathbf{v}_1 + \lambda_2 \mathbf{v}_2 + \ldots + \lambda_r \mathbf{v}_r) = c \cdot \mathbf{o} = \mathbf{o}
+```
+
+So the set of vectors $c\mathbf{v}_1, c\mathbf{v}_2, \ldots, c\mathbf{v}_r$ is still linearly independent, and thus the rank remains $r$. 
+</Callout>
+
+<Callout type="example">
+```math
+c\mathbf{A} = 5 \cdot \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 5 & 10 \\ 15 & 20 \end{bmatrix}
+```
+
+Both $\mathbf{A}$ and $c\mathbf{A}$ have rank 2, since both rows (and columns) are linearly independent.
+</Callout>
+
+The rank of the sum of two matrices satisfies:
 
 ```math
 \text{rank}(\mathbf{A} + \mathbf{B}) \leq \text{rank}(\mathbf{A}) + \text{rank}(\mathbf{B})
 ```
 
-- rank of product of matrices
+The intuition here is that when you add two matrices, the resulting matrix cannot have more independent rows or columns than the total number of independent rows or columns in the two original matrices as by adding them together, you are essentially combining their information and creating linear combinations of their rows and columns.
+
+Remember that we said the rank is also the same as the the dimension of the row space or column space of the matrix. When you add two matrices, the resulting matrix's column (or row) space is spanned by the union of the column (or row) spaces of the two matrices. The maximum number of linearly independent vectors in this union cannot exceed the sum of the independent vectors in each individual matrix. Thus we have:
+
+```math
+C_{\matbf{A} + \mathbf{B}} \subseteq C_{\mathbf{A}} + C_{\mathbf{B}}
+```
+
+where $C_{\mathbf{A}}$, $C_{\mathbf{B}$ and $C_{\mathbf{A} + \mathbf{B}}$ are the column spaces of the matrices. And then bringing it back to the rank, we have:
+
+```math
+\text{rank}(\mathbf{A} + \mathbf{B}) \leq \text{dim}(C_{\mathbf{A}}) + \text{dim}(C_{\mathbf{B}}) = \text{rank}(\mathbf{A}) + \text{rank}(\mathbf{B})
+```
+
+Notice that the equality only holds if the column spaces of $\mathbf{A}$ and $\mathbf{B}$ do not overlap (are disjoint), meaning they do not share any linearly independent vectors. If they do share some vectors, then the rank of the sum will be less than the sum of the ranks.
+
+<Callout type="example">
+Let
+
+```math
+\mathbf{A} = \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix},\quad \mathbf{B} = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}
+```
+
+Both have rank 1. But
+
+```math
+\mathbf{A} + \mathbf{B} = \begin{bmatrix} 1 & 1 \\ 0 & 0 \end{bmatrix}
+```
+
+This matrix still has rank 1 (the second column is a scalar multiple of the first), so in this case,
+
+```math
+\text{rank}(\mathbf{A} + \mathbf{B}) = 1 \leq 1 + 1 = 2
+```
+
+If you try with
+
+```math
+\mathbf{A} = \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix},\quad \mathbf{B} = \begin{bmatrix} 0 & 0 \\ 0 & 1 \end{bmatrix}
+```
+
+where the first column of $\mathbf{A}$ and the second column of $\mathbf{B}$ are linearly independent, so they have disjoint column spaces, then:
+
+```math
+\mathbf{A} + \mathbf{B} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}
+```
+
+which is the identity matrix of rank 2, and so
+
+```math
+\text{rank}(\mathbf{A} + \mathbf{B}) = 2 = 1 + 1
+```
+</Callout>
+
+Another very important property of the rank of a matrix is that the rank of a matrix and its transpose are always equal:
+
+```math
+\text{rank}(\mathbf{A}^T) = \text{rank}(\mathbf{A})
+```
+
+This then has an important implication that the row rank (number of linearly independent rows) is equal to the column rank (number of linearly independent columns) for any matrix. It might seem like, for a rectangular or even a square matrix, you could pick three independent columns, but the rows are forced into dependencies. However, this cannot actually happen, so we have:
+
+```math
+\text{column rank}(\mathbf{A}) = \text{row rank}(\mathbf{A}) = \text{rank}(\mathbf{A})
+```
+
+Proving this is a bit tricky but remember that after transforming a matrix into its reduced row echelon form (RREF), the number of leading 1s (pivots) in the rows is equal to the number of independent columns and therefore the dimension of the column space. And that the number of non-zero rows in the RREF is equal to the number of independent rows, which is the dimension of the row space. Since both these dimensions are equal and both define the rank we have that that the number of independent rows is equal to the number of independent columns. If we then transpose the matrix in RREF, the rows become columns and the columns become rows, so the number of independent rows in the original matrix is equal to the number of independent columns in the transposed matrix, and vice versa. 
+
+<Callout type="example">
+Let
+
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix}
+```
+
+the row rank is 2 (the two rows are not multiples of each other) and the column rank is also 2 (the first two columns are not multiples of each other). If we then transpose the matrix:
+
+```math
+\mathbf{A}^T = \begin{bmatrix}
+1 & 4 \\
+2 & 5 \\
+3 & 6
+\end{bmatrix}
+```
+
+Column rank of $\mathbf{A}^T$ is also 2 (no column is a scalar multiple of another) and the row rank is also 2 (the two rows are not multiples of each other). So, rank$(\mathbf{A}^T) = $rank$(\mathbf{A})$.
+
+If we perform Gauss-Jordan elimination on $\mathbf{A}$ to get it into RREF, we get the following:
+
+```math
+RREF(\mathbf{A}) = \begin{bmatrix}
+1 & 0 & -1 \\
+0 & 1 & 2
+\end{bmatrix}
+```
+
+which has 2 leading 1s, so the column rank is 2. The two non-zero rows also indicate that the row rank is 2. If we then transpose the matrix and perform Gauss-Jordan elimination again, we get:
+
+```math
+RREF(\mathbf{A}^T) = \begin{bmatrix}
+1 & 0 \\
+0 & 1 \\
+0 & 0
+\end{bmatrix}
+```
+
+which also has 2 leading 1s, so the column rank is 2. The two non-zero rows also indicate that the row rank is 2. So we have shown that the rank of a matrix and its transpose are equal.
+</Callout>
+
+We also have that the rank of the product of two matrices is at most the minimum of their ranks:
 
 ```math
 \text{rank}(\mathbf{A}\mathbf{B}) \leq \min(\text{rank}(\mathbf{A}), \text{rank}(\mathbf{B}))
 ```
 
-- rank of $A^T$ this should show that column rank = row rank always
+So intuitively, multiplying the matrix $\mathbf{B}$ by $\mathbf{A}$ cannot create more independent rows or columns than either matrix already has. Remember when defining the matrix multiplication we said that the columns of the product matrix are linear combinations of the columns of the first matrix, and the rows of the product matrix are linear combinations of the rows of the second matrix. This means that the column space of the product is contained within the column space of $\mathbf{A}$, and the row space is contained within the row space of $\mathbf{B}$ and because these dimensions need to be equal and corresponds to the rank, we have that the rank of the product is at most the minimum of the ranks of the two matrices.
 
-- the rank of the above are also the same as the rank of $A^T A$ and $A A^T$.
+<Callout type="example">
+Let
 
-## Rank-Nullity Theorem
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & 0 \\
+0 & 0
+\end{bmatrix},\quad
+\mathbf{B} = \begin{bmatrix}
+1 & 2 \\
+3 & 6
+\end{bmatrix}
+```
+
+$\text{rank}(\mathbf{A}) = 1$, $\text{rank}(\mathbf{B}) = 1$ (second column of $\mathbf{B}$ is twice the first). Their product is then:
+
+```math
+\mathbf{A}\mathbf{B} = \begin{bmatrix}
+1 & 2 \\
+0 & 0
+\end{bmatrix}
+```
+
+and has rank 1, which is less than or equal to the minimum of the ranks of $\mathbf{A}$ and $\mathbf{B}$. Notice that the first row is a linear combination of the first row of $\mathbf{A}$ and the first column of $\mathbf{B}$, and the second row is just zero, so it does not add any new information.
+</Callout>
+
+Lastly probably one of the most important properties of the rank is that the rank of the product of a matrix and its transpose is equal to the rank of the original matrix. This property is very useful and important as we will see later in the context of singular value decomposition (SVD) and other applications. The property can be stated as follows:
+
+```math
+\text{rank}(\mathbf{A}) = \text{rank}(\mathbf{A}^T\mathbf{A}) = \text{rank}(\mathbf{A}\mathbf{A}^T)
+```
+
+To see why this is the case I suggest you check the other sections out which show the following:
+- The column space of $\mathbf{A}$ is the same as the column space of $\mathbf{A}^T\mathbf{A}$. This is shown [here](), and because the rank is the dimension of the column space, we have that the rank of $\mathbf{A}$ is equal to the rank of $\mathbf{A}^T\mathbf{A}$.
+- The row space of $\mathbf{A}$ is the same as the row space of $\mathbf{A}\mathbf{A}^T$. This is shown [here](), and because the rank is the dimension of the row space, we have that the rank of $\mathbf{A}$ is equal to the rank of $\mathbf{A}\mathbf{A}^T$.
+
+<Callout type="example">
+Let
+
+```math
+\mathbf{A} = \begin{bmatrix} 1 & 2 \\ 3 & 6 \end{bmatrix}
+```
+
+Clearly, the second column is twice the first, so rank is 1.
+
+Compute $\mathbf{A}^T\mathbf{A}$:
+
+```math
+\mathbf{A}^T = \begin{bmatrix} 1 & 3 \\ 2 & 6 \end{bmatrix}
+```
+
+So
+
+```math
+\mathbf{A}^T\mathbf{A} = \begin{bmatrix}
+1 & 3 \\ 2 & 6
+\end{bmatrix} \begin{bmatrix}
+1 & 2 \\ 3 & 6
+\end{bmatrix}
+= \begin{bmatrix}
+1\cdot1 + 3\cdot3 & 1\cdot2 + 3\cdot6 \\
+2\cdot1 + 6\cdot3 & 2\cdot2 + 6\cdot6
+\end{bmatrix}
+= \begin{bmatrix}
+10 & 20 \\ 20 & 40
+\end{bmatrix}
+```
+
+Second column is twice the first, so the rank is still 1.
+</Callout>
 
 ## Regularization
 
