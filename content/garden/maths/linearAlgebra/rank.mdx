@@ -161,7 +161,7 @@ Both $\mathbf{A}$ and $c\mathbf{A}$ have rank 2, since both rows (and columns) a
 The rank of the sum of two matrices satisfies:
 
 ```math
-\text{rank}(\mathbf{A} + \mathbf{B}) \leq \text{rank}(\mathbf{A}) + \text{rank}(\mathbf{B})
+\text{rank}(\mathbf{A + B}) \leq \text{rank}(\mathbf{A}) + \text{rank}(\mathbf{B})
 ```
 
 The intuition here is that when you add two matrices, the resulting matrix cannot have more independent rows or columns than the total number of independent rows or columns in the two original matrices as by adding them together, you are essentially combining their information and creating linear combinations of their rows and columns.
@@ -172,7 +172,7 @@ Remember that we said the rank is also the same as the the dimension of the row 
 C_{\matbf{A} + \mathbf{B}} \subseteq C_{\mathbf{A}} + C_{\mathbf{B}}
 ```
 
-where $C_{\mathbf{A}}$, $C_{\mathbf{B}$ and $C_{\mathbf{A} + \mathbf{B}}$ are the column spaces of the matrices. And then bringing it back to the rank, we have:
+where $C_{\mathbf{A}}$, $C_{\mathbf{B}}$ and $C_{\mathbf{A} + \mathbf{B}}$ are the column spaces of the matrices. And then bringing it back to the rank, we have:
 
 ```math
 \text{rank}(\mathbf{A} + \mathbf{B}) \leq \text{dim}(C_{\mathbf{A}}) + \text{dim}(C_{\mathbf{B}}) = \text{rank}(\mathbf{A}) + \text{rank}(\mathbf{B})

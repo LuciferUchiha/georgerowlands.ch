@@ -208,47 +208,7 @@ An identity matrix sometimes also called unit matrix or identity of order $n$ is
 ```
 </Callout>
 
-## Triangular Matrix
-
-A triangular matrix is a square matrix where all the elements above or below the main diagonal are $0$. If all the elements above the diagonal are $0$ it is called a **lower triangular matrix** becuase it only has elements below the diagonal that are non-zero:
-
-```math
-(\mathbf{L})_{ij} = 0 \text{ for all } i < j
-```
-
-If all the elements below the diagonal are $0$ it is called a **upper triangular matrix** because it only has elements above the diagonal that are non-zero:
-
-```math
-(\mathbf{U})_{ij} = 0 \text{ for all } i > j
-```
-
-<Callout type="example">
-A lower triangular matrix $\mathbf{L}$:
-
-```math
-\mathbf{L} =
-\begin{bmatrix}
-1 & 0 & 0 \\
-2 & 3 & 0 \\
-4 & 5 & 6
-\end{bmatrix}
-```
-
-An upper triangular matrix $\mathbf{U}$:
-
-```math
-\mathbf{U} =
-\begin{bmatrix}
-1 & 2 & 3 \\
-0 & 4 & 5 \\
-0 & 0 & 6
-\end{bmatrix}
-```
-</Callout>
-
-## Matrix Operations
-
-### Matrix Addition
+## Matrix Addition
 
 Two matrices can be added together if they have the same dimensions, i.e. $\mathbf{A} \in \mathbb{R}^{m \times n}$ and $\mathbf{B} \in \mathbb{R}^{m \times n}$. The addition of two matrices is defined as the element-wise addition of the matrices:
 
@@ -282,7 +242,7 @@ Or more formally:
 ```
 </Callout>
 
-#### Additive Identity
+### Additive Identity
 
 As you can expect the addition of any matrix with the null matrix results in the original matrix:
 
@@ -290,7 +250,7 @@ As you can expect the addition of any matrix with the null matrix results in the
 \mathbf{A} + \mathbf{O} = \mathbf{A}
 ```
 
-#### Additive Inverse
+### Additive Inverse
 
 We can also expect to find a matrix $\mathbf{B}$ that when added to $\mathbf{A}$ results in the null matrix:
 
@@ -328,7 +288,7 @@ By using the additive inverse we can also subtract two matrices. The subtraction
 ```
 </Callout>
 
-### Scalar Multiplication
+## Scalar Multiplication
 
 A matrix can be multiplied by a scalar, i.e. a constant. This is defined as the element-wise multiplication of the matrix with the scalar:
 
@@ -362,7 +322,7 @@ s \cdot \mathbf{A} = (s \cdot \mathbf{A})_{ij} = s \cdot (\mathbf{A})_{ij}
 ```
 </Callout>
 
-### Matrix Multiplication
+## Matrix Multiplication
 
 Matrix multiplication is a bit more complex than addition and scalar multiplication. One would think that multiplying two matrices together would be as simple as multiplying each element of the first matrix with the corresponding element in the second matrix and would therefore just like addition be an element-wise operation and only defined for matrices with the same dimensions. However, this is not the case, this would be the [Hadamard product](/garden/maths/linearAlgebra/hadamardProduct) of two matrices. The reason for a more complex definition is due to relationship that the matrix multiplication has with linear transformations to which we will come later.
 
@@ -522,7 +482,7 @@ The matrix multiplication of two matrices $\mathbf{A}$ and $\mathbf{B}$ can be w
 ```
 </Callout>
 
-#### Commutative Property
+### Commutative Property
 
 Matrix multiplication is not commutative so:
 
@@ -651,7 +611,7 @@ We can see that the matrices $\mathbf{A}$ and $\mathbf{C}$ commute to each other
 ```
 </Callout>
 
-#### Associative Property
+### Associative Property
 
 Matrix multiplication is associative so:
 
@@ -684,7 +644,7 @@ Then we can see that the following two equations become the same:
 ```
 </Callout>
 
-#### Distributive Property
+### Distributive Property
 
 The matrix multiplication is left distributive over addition and right distributive over addition so:
 
@@ -713,7 +673,7 @@ Then we can see that the following two equations become the same:
 ```
 </Callout>
 
-#### Multiplicative Identity
+### Multiplicative Identity
 
 With regards to matrix multiplication the identity matrix is a special matrix. The identity matrix functions as the multiplicative identity or also called the neutral element for matrix multiplication. Meaning that if you multiply any matrix with the identity matrix you get the same matrix back. The identity matrix is also commute to any matrix. 
 
@@ -760,8 +720,16 @@ The same is true for the other way around:
 \end{bmatrix}
 ```
 </Callout>
+
+### Multiplying Diagonal Matrices
+
+<Callout type="todo">
+This is basically scaling/picking rows or columns of the other matrix. 
+
+diagonal times diagonal is diagonal?
+</Callout>
   
-#### Multiply Vector and Matrix
+### Mixing Vectors and Matrices
 
 Because a vector is a special case of a matrix, we can also multiply vectors with matrices. A vector can be thought of as a matrix with either one row or one column. This means that the multiplication between a vector and a matrix is defined in the same way as the multiplication between two matrices so the dimensions of the two must be compatible. If we have a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ and a column vector $\mathbf{x} \in \mathbb{R}^{n \times 1}$, then we can multiply them together as follows:
 
@@ -851,17 +819,7 @@ A left multiplication of a matrix and a vector:
 ```
 </Callout>
 
-#### Multiply Triangular Matrices
-
-<Callout type="todo">
-Show that upper times upper triangular matrices result in an upper triangular matrix and lower times lower triangular matrices result in a lower triangular matrix.
-
-What about upper times lower triangular matrices? What about lower times upper triangular matrices?
-
-What about normal times triangular matrices?
-</Callout>
-
-#### Matrix Exponentiation by Squaring
+### Matrix Exponentiation by Squaring
 
 Using exponentiation by squaring you can quickly calculate the power of any number. The idea is to make use of the fact that multiplication is associative so:
 
@@ -904,7 +862,7 @@ This can also be applied to matrices. The matrix exponentiation by squaring is d
 
 This results in a time complexity of $O(\log k)$ for calculating the power of a matrix. This is much faster than the naive approach which would take $O(k)$ time.
 
-#### Matrix Chain Multiplication
+### Matrix Chain Multiplication
 
 <Callout type="todo">
 This is not yet complete and is just a rough scribbling
@@ -916,7 +874,7 @@ Show example with 3 matrices of dimensions $k \times 1$, $1 \times k$ and $k \ti
 
 We can write a dynamic programming algorithm to find the optimal way to multiply the matrices. The algorithm is called the **Matrix Chain Multiplication** algorithm. and runs in $O(n^3)$ time which is anyway the time complexity of multiplying one matrix with another matrix.
 
-#### Strassen's Algorithm
+### Strassen's Algorithm
 
 <Callout type="todo">
 This needs to be written. We use $O(n^{\log_2 7}) \approx O(n^{2.81})$ time to multiply two matrices using Strassen's algorithm. This is faster than the naive algorithm which uses $O(n^3)$ time. The algorithm works by reducing the number of arithmetic operations needed to multiply two matrices by breaking them down into smaller subproblems. It does this by recursively dividing the matrices into smaller matrices and combining the results in a clever way.
@@ -924,13 +882,65 @@ This needs to be written. We use $O(n^{\log_2 7}) \approx O(n^{2.81})$ time to m
 The reduction in the number of arithmetic operations however comes at the price of a somewhat reduced numerical stability, and the algorithm also requires significantly more memory compared to the naive algorithm. Both initial matrices must have their dimensions expanded to the next power of 2, which results in storing up to four times as many elements, and the seven auxiliary matrices each contain a quarter of the elements in the expanded ones.
 </Callout>
 
-#### Winograd's Algorithm
+### Winograd's Algorithm
 
 <Callout type="todo">
 This needs to be written. further improves this to $O(n^{2.37})$ time?
 </Callout>
 
-### Transpose
+## Triangular Matrices
+
+A triangular matrix is a square matrix where all the elements above or below the main diagonal are $0$. If all the elements above the diagonal are $0$ it is called a **lower triangular matrix** because it only has elements below the diagonal that are non-zero:
+
+```math
+(\mathbf{L})_{ij} = 0 \text{ for all } i < j
+```
+
+If all the elements below the diagonal are $0$ it is called a **upper triangular matrix** because it only has elements above the diagonal that are non-zero:
+
+```math
+(\mathbf{U})_{ij} = 0 \text{ for all } i > j
+```
+
+<Callout type="example">
+A lower triangular matrix $\mathbf{L}$:
+
+```math
+\mathbf{L} =
+\begin{bmatrix}
+1 & 0 & 0 \\
+2 & 3 & 0 \\
+4 & 5 & 6
+\end{bmatrix}
+```
+
+An upper triangular matrix $\mathbf{U}$:
+
+```math
+\mathbf{U} =
+\begin{bmatrix}
+1 & 2 & 3 \\
+0 & 4 & 5 \\
+0 & 0 & 6
+\end{bmatrix}
+```
+</Callout>
+
+### Multiply Triangular Matrices
+
+<Callout type="todo">
+Show that upper times upper triangular matrices result in an upper triangular matrix and lower times lower triangular matrices result in a lower triangular matrix.
+
+What about upper times lower triangular matrices? What about lower times upper triangular matrices?
+
+What about normal matrix times triangular matrices?
+
+The sum of two upper triangular matrices is upper triangular.
+The product of two upper triangular matrices is upper triangular.
+The inverse of an upper triangular matrix, if it exists, is upper triangular
+</Callout>
+
+## Transpose
 
 The transpose of a matrix is a matrix where the rows and columns are swapped. The transpose of the matrix $\mathbf{A}$ is written as $\mathbf{A}^T$. Formally the element in the $i$-th row and $j$-th column in the matrix $\mathbf{A}$ becomes the element in the $j$-th row and $i$-th column in the matrix $\mathbf{A}^T$. 
 
@@ -1025,7 +1035,7 @@ Another important property is that when you apply a transpose to some expression
 \end{align*}
 ```
 
-#### Symmetric Matrix
+### Symmetric Matrices
 
 If a matrix is equal to its transpose it is called a symmetric matrix. So $\mathbf{A} = \mathbf{A}^T$ and for each element in the matrix $a_{ij} = a_{ji}$. As you can quite easily imagine a prerequisite for a matrix to be symmetric is that it is a square matrix as otherwise the transpose of the matrix would have different dimensions.
 
@@ -1061,7 +1071,7 @@ A diagonal matrix is also symmetric:
 ```
 </Callout>
 
-##### Skew-Symmetric Matrix
+### Skew-Symmetric Matrix
 
 A skew-symmetric matrix is a matrix where the elements of the matrix are equal to the negative of the elements in the transpose of the matrix. So $\mathbf{A} = -\mathbf{A}^T$ and for each element in the matrix $a_{ij} = -a_{ji}$.
 
@@ -1079,7 +1089,7 @@ A skew-symmetric matrix is a matrix where the elements of the matrix are equal t
 ```
 </Callout>
 
-#### Transposing on a Computer
+### Transposing on a Computer
 
 When you want the transpose of a matrix you don't actually need to perform any operations. You can just change the way you access the elements of the matrix. Rather than accessing the elements row by row you can access them column by column. 
 
@@ -1102,7 +1112,7 @@ for (int i = 0; i < n; i++) {
 
 For a non-square matrix you need to use a slightly more complex algorithm.
 
-### Inverse
+## Inverse
 
 The inverse of a matrix is a very important and special matrix that when multiplied with the original matrix results in the identity matrix. So in other words this special matrix is the multiplicative inverse of the original matrix. The inverse of a matrix is denoted as $\mathbf{A}^{-1}$.
 
@@ -1137,7 +1147,7 @@ But the following simple matrix is not invertible:
 ```
 </Callout>
 
-#### Permutation Matrix
+### Permutation Matrix
 
 A **permutation matrix** is a special type of square matrix that rearranges (permutes) the rows or columns of another matrix or vector. Permutations themselves are simply reorderings of elements. We can formally define a permutation as a function $\pi$ that maps the set ${1, 2, \dots, n}$ onto itself, i.e., $\pi: {1, 2, \dots, n} \to {1, 2, \dots, n}$, where each number appears exactly once as an output.
 
@@ -1390,7 +1400,7 @@ Similarly, multiplying on the right swaps the first and second columns:
 ```
 </Callout>
 
-### Frobenius Norm
+## Frobenius Norm
 
 The Frobenius norm is a way to measure the size of a matrix. It is defined as the square root of the sum of the squares of all the elements in the matrix. So for a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ the Frobenius norm is defined as follows:
 
@@ -1417,7 +1427,7 @@ Then the Frobenius norm of $\mathbf{A}$ is:
 ```
 </Callout>
 
-### Trace
+## Trace
 
 The trace of a matrix is the sum of all the diagonal elements in the matrix and is denoted as $\text{tr}(\mathbf{A})$. Because it is the sum of the diagonal elements it is only defined for square matrices, i.e. $\mathbf{A} \in \mathbb{R}^{n \times n}$:
 

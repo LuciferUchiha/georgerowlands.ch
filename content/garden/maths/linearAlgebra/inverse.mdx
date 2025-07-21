@@ -2,19 +2,25 @@ import Callout from "@components/Callout/Callout";
 
 # Matrix inverse
 
-first for 1x1 matrix i.e a normal number.
+We have already briefly defined that the inverse of a matrix $\mathbf{A}$ is denoted as $\mathbf{A}^{-1}$ and satisfies the equation:
 
-Show why it is useful for solving linear equations Ax=b
+```math
+\mathbf{A}\mathbf{A}^{-1} = \mathbf{I}
+```
 
-Derive formulas for 2x2 case. Show that if rank 0 or 1 then no inverse satisifes the formula because division by zero.
+where $\mathbf{I}$ is the identity matrix. This means that when we multiply a matrix by its inverse, we get the identity matrix, so it acts like the multiplicative inverse. Why do we care about the inverse of a matrix? The inverse is useful for solving linear equations of the form $\mathbf{A}\mathbf{x} = \mathbf{b}$, where $\mathbf{A}$ is an $n \times n$ square matrix, $\mathbf{x}$ is a column vector of unknowns, and $\mathbf{b}$ is a column vector. If $A$ is invertible (i.e., has an inverse), we can "divide both sides" by $A$ by multiplying both sides by $A^{-1}$:
 
-generlalize as to why it must be full rank, this also means that it must be square.
+```math
+\mathbf{A}^{-1}\mathbf{A}\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}
+```
 
-can put inverse on either side, why? So we can write $A^{-1}Ax = A^{-1}b$ or $xA^{-1}A = bA^{-1}$, so we can multiply by the inverse on either side?
+Since $A^{-1}A = I$, the identity matrix, this simplifies to
 
-It is generally true for two mxm matrices A and B that AB = I implies BA = I? How good does generally mean. This then means inverse of A is B and vice versa. 
+```math
+\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}
+```
 
-If a matrix is invertible then the inverse is unique, i.e. there is only one inverse for a matrix.
+So the inverse gives us a direct formula for solving $A\mathbf{x} = \mathbf{b}$, provided the inverse exists. However, if the inverse exists, then it must be unique.
 
 <Callout type="proof">
 Let's prove that the inverse of a matrix is unique. We assume we have two inverses $\mathbf{A}^{-1}$ and $\mathbf{B}^{-1}$ for the matrix $\mathbf{A}$. Then we can see that:
@@ -38,38 +44,381 @@ Now we can multiply both sides of the second equation by $\mathbf{A}^{-1}$:
 So we can see that the two inverses are equal and thus the inverse of a matrix is unique.
 </Callout>
 
-Some other properties:
+Now the question is when does the inverse exist? For this let's take a step back and start with a simple $1 \times 1$ matrix, which is just a normal number, say $a \in \mathbb{R}$. The inverse of $a$ is the number $a^{-1}$ such that:
+
+```math
+a \cdot a^{-1} = a^{-1} \cdot a = 1
+```
+
+The only way this is possible is if $a \neq 0$, and in that case $a^{-1} = \frac{1}{a}$. If $a = 0$, then there is no inverse because $0 \cdot x = 0$ for any $x$.
+
+So we have a condition for when the inverse of a $1 \times 1$ matrix exists: it must be non-zero. Now let's derive a similar condition for $2 \times 2$ matrices. So let's consider the following general $2 \times 2$ matrix:
+
+```math
+\mathbf A=\begin{bmatrix}a & b\\ c & d\end{bmatrix}
+```
+
+We want $\mathbf A^{-1}$ such that $\mathbf A\mathbf A^{-1}=\mathbf I$. So in other words, we want to find a matrix that satisfies the following:
+
+```math
+\mathbf{A}\mathbf{A}^{-1} = \begin{bmatrix}a & b\\ c & d\end{bmatrix}\begin{bmatrix}w & x\\ y & z\end{bmatrix} = 
+\begin{bmatrix}aw +by & ax+bz\\ cw+dy & cx+dz\end{bmatrix} = \begin{bmatrix}1 & 0\\ 0 & 1\end{bmatrix}
+```
+
+Calculating out the multiplications and equating to the identity matrix gives us the following system of equations:
+
+$$
+\begin{vmatrix}
+aw + by = 1 \\
+ax + bz = 0 \\
+cw + dy = 0 \\
+cx + dz = 1
+\end{vmatrix}
+$$
+
+This system of equations can be solved using various methods, such as substitution or elimination. We will first use the first and third equation to solve for $w$ and $y$:
 
 ```math
 \begin{align*}
-(\mathbf{A}^{-1})^{-1} &= \mathbf{A} \\
-(\mathbf{A} \cdot \mathbf{B})^{-1} &= \mathbf{B}^{-1} \cdot \mathbf{A}^{-1} \\
-(\mathbf{A} + \mathbf{B})^{-1} &\neq \mathbf{A}^{-1} + \mathbf{B}^{-1}
+cw + dy &= 0 \\
+dy &= -cw \\
+y &= -\frac{c}{d}w \quad (\text{assuming } d \neq 0) \\
+aw + b\left(-\frac{c}{d}w\right) &= 1 \\
+aw - \frac{bc}{d}w &= 1 \\
+w\left(a - \frac{bc}{d}\right) &= 1 \\
+w\left(ad - bc\right) &= d \\
+w &= \frac{d}{ad - bc} \quad (\text{assuming } ad - bc \neq 0)
 \end{align*}
 ```
 
-Derive (AB)^-1 using linear transformations?
-
-inverse of transpose is transpose of inverse?
-
-inverse of symmetric matrix is also symmetric?
-
-inverse of diagonal matrix is reciprical of diagonal elements?
-
-Similarly to the transpose of a matrix the inverse of a matrix has some properties that are worth remembering:
+Now we can substitute $w$ back into the equations to find $y$:
 
 ```math
 \begin{align*}
-(\mathbf{A}^{-1})^{-1} &= \mathbf{A} \\
-(\mathbf{A} \cdot \mathbf{B})^{-1} &= \mathbf{B}^{-1} \cdot \mathbf{A}^{-1} \\
-(\mathbf{A} + \mathbf{B})^{-1} &\neq \mathbf{A}^{-1} + \mathbf{B}^{-1}
+y &= -\frac{c}{d}w \\
+y &= -\frac{c}{d}\left(\frac{d}{ad - bc}\right) \\
+y &= -\frac{c}{ad - bc} \quad (\text{assuming } ad - bc \neq 0)
 \end{align*}
 ```
 
-In summary:
-Inverse theorem: If A is invertable then matrix is square, the columns are linearly independent and the rows are linearly independent, so we have full rank, for every Ax=b there is a unique solution x = A^-1b, and the inverse is unique.
+So we have $w$ and $y$ in terms of $a, b, c, d$. Now we can use the second and fourth equations to find $x$ and $z$:
 
-## Left and Right Inverse
+```math
+\begin{align*}
+ax + bz = 0 \\
+bz = -ax \\
+z = -\frac{a}{b}x \quad (\text{assuming } b \neq 0) \\
+cx + dz = 1 \\
+cx + d\left(-\frac{a}{b}x\right) = 1 \\
+cx - \frac{da}{b}x = 1 \\
+x\left(c - \frac{da}{b}\right) = 1 \\
+x\left(cb - da\right) = b \\
+x = \frac{b}{ad - bc} \quad (\text{assuming } ad - bc \neq 0)
+\end{align*}
+```
+
+Now substituting $x$ back into the equation for $z$ gives us:
+
+```math
+\begin{align*}
+z &= -\frac{a}{b}x \\
+z &= -\frac{a}{b}\left(\frac{b}{ad - bc}\right) \\
+z &= -\frac{a}{ad - bc} \quad (\text{assuming }ad - bc \neq 0)
+\end{align*}
+```
+
+Notice that we can factor out $ad - bc$ from the denominators of $w, x, y, z$. This leads us to the final formula for the inverse of a $2 \times 2$ matrix:
+
+```math
+\mathbf A^{-1} = \begin{bmatrix} w & x\\ y & z\end{bmatrix} = \begin{bmatrix} \frac{d}{ad - bc} & -\frac{b}{ad - bc}\\ -\frac{c}{ad - bc} & \frac{a}{ad - bc}\end{bmatrix} =
+\frac{1}{ad - bc}\begin{bmatrix} d & -b\\ -c & a\end{bmatrix}
+```
+
+where $ad - bc$ is the so-called **determinant** of the $2 \times 2$ matrix $\mathbf A$. So the determinant must be non-zero for the inverse to exist. If the rank of the matrix is $0$ then we have the zero matrix and the inverse does not exist because we have $ad - bc = 0$. If the rank is $1$, so their is some linear dependence between the rows or columns, then we also have $ad - bc = 0$ because of the following:
+
+```math
+\begin{align*}
+b = \lambda a \\
+d = \lambda c \\
+ad - bc &= a(\lambda c) - (\lambda a)c \\
+&= \lambda ac - \lambda ac \\
+&= 0
+\end{align*}
+```
+
+So for the inverse to exist, the matrix must be **full rank** (rank 2) and **square** (2x2). This generalizes to larger matrices as well, where **the inverse exists if and only if the matrix is square and has full rank, which also means that the determinant is non-zero, so $\operatorname{det}(\mathbf A) \neq 0$**.
+
+<Callout type="todo">
+Above is a special case of MCA algorithm?
+
+How can we generalize this to larger matrices? The key is that the inverse exists if and only if the matrix is square and has full rank, which means that the determinant is non-zero. We will explore this in more detail in the next sections?
+</Callout>
+
+We have seen that in general the matrix multiplication is not commutative, i.e., $\mathbf A\mathbf B \neq \mathbf B\mathbf A$, but it is associative, i.e., $\mathbf A(\mathbf B\mathbf C) = (\mathbf A\mathbf B)\mathbf C$. However, the inverse of a matrix has some special properties that we will explore in the next sections, one of which is that the inverse can be multiplied on either side of the equation so we have:
+
+```math
+\mathbf{A}^{-1}\mathbf{A} = \mathbf{I} = \mathbf{A}\mathbf{A}^{-1}
+```
+
+<Callout type="proof">
+This follows from the proof that the matrix inverse is unique. Let's assume we have two inverses $\mathbf{B}$ and $\mathbf{C}$ for the matrix $\mathbf{A}$ such that:
+
+```math
+\mathbf{A}\mathbf{B} = \mathbf{I} = \mathbf{C}\mathbf{A}
+```
+
+Then we can get the following using the associative property of matrix multiplication:
+
+```math
+\begin{align*}
+\mathbf{AB} = \mathbf{I} \\
+\mathbf{C}(\mathbf{AB}) &= \mathbf{C}\mathbf{I} \\
+(\mathbf{C}\mathbf{A})\mathbf{B} &= \mathbf{C} \\
+\mathbf{IB} = \mathbf{C} \\
+\mathbf{B} &= \mathbf{C}
+\end{align*}
+```
+</Callout>
+
+Another key property is that the inverse of the inverse is the original matrix, i.e.,
+
+```math
+(\mathbf{A}^{-1})^{-1} = \mathbf{A}
+```
+
+<Callout type="proof">
+So we want to find a matrix $\mathbf{B}$ such that:
+
+```math
+\mathbf{A}^{-1}\mathbf{B} = \mathbf{I} = \mathbf{B}\mathbf{A}^{-1}
+```
+
+However, by definition of the inverse and showing that the inverse can be multiplied on either side, we have:
+
+```math
+\begin{align*}
+\mathbf{A}^{-1}(\mathbf{A}^{-1})^{-1} &= \mathbf{I} \\
+\mathbf{A}^{-1}\mathbf{B} &= \mathbf{I} \\
+\mathbf{A}^{-1}\mathbf{A} &= \mathbf{I} \\
+\mathbf{B} &= \mathbf{A}
+\end{align*}
+```
+
+We can show the same for the right side. Which means that the inverse of the inverse is the original matrix.
+</Callout>
+
+Another simple but useful property, especially when working with symmetric matrices, is that the transpose of the inverse is the inverse of the transpose:
+
+```math
+(\mathbf{A}^T)^{-1} = (\mathbf{A}^{-1})^T
+```
+
+<Callout type="proof">
+First let's start with the definition and take the transpose of both sides:
+
+```math
+\begin{align*}
+\mathbf{A}\mathbf{A}^{-1} &= \mathbf{I} \\
+(\mathbf{A}\mathbf{A}^{-1})^T &= \mathbf{I}^T
+\end{align*}
+```
+
+the transpose of the identity matrix is itself, and using the property of the transpose of a product where we have to reverse the order of multiplication, we get:
+
+```math
+\begin{align*}
+(\mathbf{A}\mathbf{A}^{-1})^T &= \mathbf{I}^T \\
+(\mathbf{A}^{-1})^T\mathbf{A}^T &= \mathbf{I} \\
+\end{align*}
+```
+
+So $(\mathbf{A}^{-1})^T$ is a right inverse of $\mathbf{A}^T$. But we can also show that it is a left inverse and therefore the inverse of the transpose is two-sided:
+
+```math
+\begin{align*}
+(A^{-1}A)^T &= I \\
+(\mathbf{A}^{-1})^T\mathbf{A}^T &= \mathbf{I} \\
+\mathbf{A}^T(\mathbf{A}^{-1})^T &= \mathbf{I}
+\end{align*}
+```
+
+So we have shown that $(\mathbf{A}^T)^{-1} = (\mathbf{A}^{-1})^T$. In other words the inverse of the transpose is the transpose of the inverse.
+</Callout>
+
+For the transpose of a product, we have the property that:
+
+```math
+(\mathbf{A}\mathbf{B})^T = \mathbf{B}^T\mathbf{A}^T
+```
+
+For the inverse of a product, we also have a similar property, so the inverse of a product is the product of the inverses in reverse order:
+
+```math
+(\mathbf{A}\mathbf{B})^{-1} = \mathbf{B}^{-1}\mathbf{A}^{-1}
+```
+
+<Callout type="proof">
+We can show this using associative property of matrix multiplication. Let's assume we have two matrices $\mathbf{A}$ and $\mathbf{B}$ that are invertible, so they have inverses $\mathbf{A}^{-1}$ and $\mathbf{B}^{-1}$. We can then verify that the inverse of the product is the product of the inverses in reverse order:
+
+```math
+\begin{align*}
+\mathbf{I} &= (\mathbf{A}\mathbf{B})(\mathbf{B}^{-1}\mathbf{A}^{-1}) \\
+&= \mathbf{A}(\mathbf{B}\mathbf{B}^{-1})\mathbf{A}^{-1} \\
+&= \mathbf{A}\mathbf{I}\mathbf{A}^{-1} \
+&= \mathbf{A}\mathbf{A}^{-1} \\
+&= \mathbf{I}
+\end{align*}
+```
+
+Similarly for the other side:
+
+```math
+\begin{align*}
+\mathbf{I} &= (\mathbf{B}^{-1}\mathbf{A}^{-1})(\mathbf{A}\mathbf{B}) \\
+&= \mathbf{B}^{-1}(\mathbf{A}^{-1}\mathbf{A})\mathbf{B} \\
+&= \mathbf{B}^{-1}\mathbf{I}\mathbf{B} \\
+&= \mathbf{B}^{-1}\mathbf{B} \\
+&= \mathbf{I}
+\end{align*}
+```
+</Callout>
+<Callout type="todo">
+We can also derive this property from linear transformations.
+</Callout>
+
+The last property to show is that the inverse of a sum of matrices is not equal to the sum of the inverses, i.e.,
+
+```math
+(\mathbf{A} + \mathbf{B})^{-1} \neq \mathbf{A}^{-1} + \mathbf{B}^{-1}
+```
+
+<Callout type="proof">
+To prove this statement, we can use a simple counterexample with two invertible matrices:
+
+$$
+\mathbf{A} = \begin{bmatrix} 1 & 0 \\ 0 & 2 \end{bmatrix}, \quad
+\mathbf{B} = \begin{bmatrix} 3 & 0 \\ 0 & 4 \end{bmatrix}
+$$
+
+Compute their inverses:
+
+$$
+\mathbf{A}^{-1} = \begin{bmatrix} 1 & 0 \\ 0 & \frac{1}{2} \end{bmatrix}, \quad
+\mathbf{B}^{-1} = \begin{bmatrix} \frac{1}{3} & 0 \\ 0 & \frac{1}{4} \end{bmatrix}
+$$
+
+Compute the sum of inverses:
+
+$$
+\mathbf{A}^{-1} + \mathbf{B}^{-1} =
+\begin{bmatrix} 1 + \frac{1}{3} & 0 \\ 0 & \frac{1}{2} + \frac{1}{4} \end{bmatrix} =
+\begin{bmatrix} \frac{4}{3} & 0 \\ 0 & \frac{3}{4} \end{bmatrix}
+$$
+
+Now compute the sum $\mathbf{A} + \mathbf{B}$ and its inverse:
+
+$$
+\begin{align*}
+\mathbf{A} + \mathbf{B} = \begin{bmatrix} 1 + 3 & 0 \\ 0 & 2 + 4 \end{bmatrix} = \begin{bmatrix} 4 & 0 \\ 0 & 6 \end{bmatrix} \\
+(\mathbf{A} + \mathbf{B})^{-1} = \begin{bmatrix} \frac{1}{4} & 0 \\ 0 & \frac{1}{6} \end{bmatrix}
+\end{align*}
+$$
+
+Clearly,
+
+$$
+(\mathbf{A} + \mathbf{B})^{-1} = \begin{bmatrix} \frac{1}{4} & 0 \\ 0 & \frac{1}{6} \end{bmatrix} \neq \begin{bmatrix} \frac{4}{3} & 0 \\ 0 & \frac{3}{4} \end{bmatrix} = \mathbf{A}^{-1} + \mathbf{B}^{-1}
+$$
+
+Thus, in general the inverse of the sum is not equal to the sum of the inverses.
+
+</Callout>
+
+## Inverse Theorem
+
+We can summarize the above conditions for the existence of an inverse in the so-called **Inverse Theorem**.  This theorem states that for an $n\times n$ matrix $\mathbf{A}$ the following statements are **equivalent**:
+
+1. $\mathbf{A}$ is invertible ($\exists\,\mathbf{A}^{-1}$).
+2. $\operatorname{rank}(\mathbf{A})=n$ (full rank).
+3. The columns of $\mathbf{A}$ are linearly independent.
+4. The rows of $\mathbf{A}$ are linearly independent.
+5. For every $\mathbf{b}\in\mathbb{R}^n$ the system $\mathbf{A}\mathbf{x}=\mathbf{b}$ has a **unique** solution $\mathbf{x}=\mathbf{A}^{-1}\mathbf{b}$.
+6. The linear transformation $\mathbf{A}:\mathbb{R}^n\to\mathbb{R}^n$ is a **bijection** (one-to-one and onto).
+
+## Inverse of Diagonal Matrices
+
+We know that the inverse of the identity matrix is itself, i.e., $\mathbf{I}^{-1} = \mathbf{I}$. For a diagonal matrix, the inverse is almost just as easy as if we look at the multiplication of a diagonal matrix with an arbitrary matrix then the result is just the columns of the arbitrary matrix scaled by the diagonal elements. So to get the identity matrix we just need to have columns that once scaled become the identity matrix. Let's look at the $3 \times 3$ diagonal matrix:
+
+```math
+\begin{bmatrix} d_1 & 0 & 0 \\ 0 & d_2 & 0 \\ 0 & 0 & d_3 \end{bmatrix}\begin{bmatrix} x_1 & x_2 & x_3 \\ y_1 & y_2 & y_3 \\ z_1 & z_2 & z_3 \end{bmatrix} = \begin{bmatrix} d_1x_1 & d_1x_2 & d_1x_3 \\ d_2y_1 & d_2y_2 & d_2y_3 \\ d_3z_1 & d_3z_2 & d_3z_3 \end{bmatrix} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+```
+
+From this we get the following equations:
+
+```math
+\begin{vmatrix}
+d_1x_1 = 1 \\
+d_2y_2 = 1 \\
+d_3z_3 = 1 \\
+d_1x_2 = 0 \\
+\vdots \\
+d_3z_2 = 0
+\end{vmatrix}
+```
+
+To solve the equations where we need a zero we can just set the corresponding variable to zero, e.g., $x_2 = 0$, $y_1 = 0$, etc. For the equations where we need a one, we can solve for the variable in terms of the diagonal elements, e.g., $x_1 = \frac{1}{d_1}$, $y_2 = \frac{1}{d_2}$, etc. This gives us the inverse of the diagonal matrix:
+
+```math
+\begin{bmatrix} d_1 & 0 & 0 \\ 0 & d_2 & 0 \\ 0 & 0 & d_3 \end{bmatrix}^{-1} = \begin{bmatrix} \frac{1}{d_1} & 0 & 0 \\ 0 & \frac{1}{d_2} & 0 \\ 0 & 0 & \frac{1}{d_3} \end{bmatrix}
+```
+
+So the inverse of a diagonal matrix is simply the diagonal matrix with the reciprocal of the diagonal elements. However, this only works if all diagonal elements are non-zero, otherwise the inverse does not exist as we would have division by zero.
+
+## Inverse of Symmetric Matrices
+
+Apart from diagonal matrices we also seen symmetric matrices as a special case of matrices. A matrix is symmetric if it is equal to its transpose, i.e., $\mathbf{A} = \mathbf{A}^T$. This already has a good precondition for the inverse, because for this to hold the matrix must be square, so it has the same number of rows and columns. 
+
+Let's assume the matrix is symmetric and has an inverse, then it turns out that the inverse is also symmetric. So in other words, if $\mathbf{A}$ is a symmetric matrix and $\mathbf{A}^{-1}$ exists, then:
+
+```math
+(\mathbf{A}^{-1})^T = \mathbf{A}^{-1}
+```
+
+<Callout type="proof">
+To show this we can use the properties of the inverse and the transpose that we have already established. Specifically, we have already shown that the inverse of the transpose is the transpose of the inverse:
+
+```math
+(\mathbf{A}^{-1})^T = (\mathbf{A}^T)^{-1}
+```
+
+Since $\mathbf{A}$ is symmetric, we have $\mathbf{A}^T = \mathbf{A}$. Therefore, we can substitute this into the equation and get:
+
+```math
+(\mathbf{A}^{-1})^T = (\mathbf{A})^{-1}
+```
+</Callout>
+
+However, not every symmetric matrix is invertible. For a symmetric matrix to be invertible, it must also be full rank. If the matrix is symmetric and has full rank, then it has an inverse that is also symmetric. 
+
+<Callout type="example">
+The following symmetric matrix is not full rank and therefore not invertible:
+
+```math
+\begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}
+```
+
+As we can see that the second row is a multiple of the first row, so the matrix is not full rank and the transpose of the matrix is:
+
+```math
+\begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}^T = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}
+```
+</Callout>
+
+## Inverse of Triangular Matrices
+
+Is also triangular because?
+
+## Left and Right Inverse for Non-Square Matrices
 
 not two-sided like normal inverse, only one sided 
 
