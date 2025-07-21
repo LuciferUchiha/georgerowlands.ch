@@ -499,7 +499,7 @@ Where $P^T$ is the transpose of the permutation matrix $P$. So we can write:
 Ax = b \rightarrow P^TLUx = b
 ```
 
-We first solve P^Tz = b for z. In fact, there’s nothing to solve: z = Pb, so we permute
+We first solve P^Tz = b for z. In fact, there's nothing to solve: z = Pb, so we permute
 b in the same way we have permuted the rows of A. After this, we proceed as before:
 we solve Ly = z for y using forward substitution and then solve Ux = y for x, with
 back substitution. All this can be done in O(m2) time, so again much faster than solving

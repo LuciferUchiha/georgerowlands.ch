@@ -165,7 +165,7 @@ val inverseFuture : Future[Matrix] = Future {
 }
 ```
 
-Let’s assume we want to fetch a list of recent posts and display them. We can register a callback by using the `onComplete[U](f: Try[A] => U]): Unit` method, where Try is very similar to `Option` and can have the value of type `Success[T]` if the future completes successfully, or a value of type `Failure[T]` otherwise.
+Let's assume we want to fetch a list of recent posts and display them. We can register a callback by using the `onComplete[U](f: Try[A] => U]): Unit` method, where Try is very similar to `Option` and can have the value of type `Success[T]` if the future completes successfully, or a value of type `Failure[T]` otherwise.
 
 ```scala
 val f: Future[List[String]] = Future {
@@ -207,7 +207,7 @@ purchase foreach { amount =>
 }
 ```
 
-But what happens if isProfitable returns false, hence causing an exception to be thrown? In that case purchase fails with that exception. Furthermore, imagine that the connection was broken and that getCurrentValue threw an exception, failing rateQuote. In that case we’d have no value to map, so the purchase would automatically be failed with the same exception as rateQuote.
+But what happens if isProfitable returns false, hence causing an exception to be thrown? In that case purchase fails with that exception. Furthermore, imagine that the connection was broken and that getCurrentValue threw an exception, failing rateQuote. In that case we'd have no value to map, so the purchase would automatically be failed with the same exception as rateQuote.
 
 In conclusion, if the original future is completed successfully then the returned future is completed with a mapped value from the original future. If the mapping function throws an exception the future is completed with that exception. If the original future fails with an exception then the returned future also contains the same exception.
 

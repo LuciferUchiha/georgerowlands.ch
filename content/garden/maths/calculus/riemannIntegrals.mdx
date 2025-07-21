@@ -858,7 +858,7 @@ The intuition behind defining the antiderivative as the integral of the function
 
 The intuition defining the antiderivative as the integral of the function $f$ from a fixed point $a$ to a variable upper limit $x$ is that we are accumulating the values of the function $f$ over the interval $[a,x]$ like a sliding window. As that window slides, you keep a running total of the area between the graph of $f(t)$ and the t-axis.
 
-So if we then take a tiny step from $x$ to $x + h$ then our sliding window scoops up a thin vertical strip whose width is approximately $h$ and whose height is approximately $f(x)$ (the function’s value doesn’t change much over such a small span). So the extra area you gain is roughly the rectangle's area, $f(x) h$. If we then let that step size $h$ go to zero, the rate at which $F$ grew over that tiny move is:
+So if we then take a tiny step from $x$ to $x + h$ then our sliding window scoops up a thin vertical strip whose width is approximately $h$ and whose height is approximately $f(x)$ (the function's value doesn't change much over such a small span). So the extra area you gain is roughly the rectangle's area, $f(x) h$. If we then let that step size $h$ go to zero, the rate at which $F$ grew over that tiny move is:
 
 ```math
 \lim_{h\to 0}\frac{F(x+h) - F(x)}{h} = \lim_{h\to 0}\frac{\int_{a}^{x+h}f(t)\,dt - \int_{a}^{x}f(t)\,dt}{h} = \lim_{h\to 0}\frac{\int_{x}^{x+h}f(t)\,dt}{h}.

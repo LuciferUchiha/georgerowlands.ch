@@ -22,7 +22,7 @@ In C# almost everything is PascalCase. However, use camelCasing when naming `pri
 `protected`The code is accessible within the same class, or in a class that inherits the class containing the protected
 `internal`The code is only accessible within its own assembly, not from any other assembly.
 `protected internal` The code can be accessed by any code in the assembly in which it's declared, or from within a derived class in another assembly.
-`readonly` This prevents a field from being modified after construction. A read-only field can be assigned only in its declaration or within the enclosing type’s constructor.
+`readonly` This prevents a field from being modified after construction. A read-only field can be assigned only in its declaration or within the enclosing type's constructor.
 `const` A constant is evaluated statically at compile time and the compiler literally substitutes its value whenever used. A constant can be any of the built-in numeric types, bool, char, string, or an enum type.
 
 ## Aliasing
@@ -206,7 +206,7 @@ class Test
  static void Foo (StringBuilder fooSB)
  {
   fooSB.Append ("test");
-  fooSB = null; // copy of reference, doesn’t make sb null.
+  fooSB = null; // copy of reference, doesn't make sb null.
  }
  static void Main()
  {
@@ -442,16 +442,16 @@ object o = "ecnf"
 switch(o)
 {
  case byte b:
-  Console .WriteLine($"I’m a byte with value {b});
+  Console .WriteLine($"I'm a byte with value {b});
   break;
  case string s when s == "ecnf"
-  Console .WriteLine("I’m THE ecnf string");
+  Console .WriteLine("I'm THE ecnf string");
   break;
  case string s:
-  Console .WriteLine("I’m a string that contains {0}", s);
+  Console .WriteLine("I'm a string that contains {0}", s);
   break;
  default:
-  Console.WriteLine("Don’t know anything");
+  Console.WriteLine("Don't know anything");
   break;
 }
 ```
@@ -462,15 +462,15 @@ Switches can also switch on multiple values.
 
 ```csharp
 string module = "ecnf";
-char grade = ‘B’;
+char grade = ‘B';
 string msg= (module, grade) switch
 {
- ("ecnf",’A’) => "Congrats, regards Yves Senn",
- ("ecnf",’B’) => "Very good, regards Yves Senn",
- ("ecnf",’C’) => "Good job, regards Yves Senn",
- ("oop1",’A’) => "Nice one, regards Dieter Holz",
- ("oop1",’B’) => "Well done, regards Dieter Holz",
- ("oop1",’C’) => "Good job, regards Dieter Holz",
+ ("ecnf",'A') => "Congrats, regards Yves Senn",
+ ("ecnf",'B') => "Very good, regards Yves Senn",
+ ("ecnf",'C') => "Good job, regards Yves Senn",
+ ("oop1",'A') => "Nice one, regards Dieter Holz",
+ ("oop1",'B') => "Well done, regards Dieter Holz",
+ ("oop1",'C') => "Good job, regards Dieter Holz",
  _ => throw new InvalidArgumentException() // equivalent to default
 }
 ```

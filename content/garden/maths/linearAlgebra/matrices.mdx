@@ -17,39 +17,39 @@ a_{m1} & a_{m2} & \cdots & a_{mn}
 The elements of a matrix are indexed by their row and then there column. So $a_{ij}$ or sometimes also $(\mathbf{A})_{ij}$ is the element in the $i$th row and $j$th column. This means that a matrix can also be defined as $\mathbf{A} = [a_{ij}]_{1 \leq i \leq m, 1 \leq j \leq n}$.
 
 <Callout type="example">
-    ```math 
-    \begin{align*}
-    \mathbf{A} = \begin{bmatrix}1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} \\
-    \mathbf{B} = \begin{bmatrix}1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \end{bmatrix}
-    \end{align*}
-    ```
+```math 
+\begin{align*}
+\mathbf{A} = \begin{bmatrix}1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix} \\
+\mathbf{B} = \begin{bmatrix}1 & 1 & 1 \\ 1 & 1 & 1 \\ 1 & 1 & 1 \end{bmatrix}
+\end{align*}
+```
 </Callout>
 
 <Callout type="warning">
-    The number of rows and columns of a matrix are always written in the order of rows first and columns second! So a matrix with 2 rows and 3 columns is written 
-    as a $2 \times 3$ matrix, not a $3 \times 2$ matrix, so $\mathbf{A} \in \mathbb{R}^{2 \times 3}$.
+The number of rows and columns of a matrix are always written in the order of rows first and columns second! So a matrix with 2 rows and 3 columns is written 
+as a $2 \times 3$ matrix, not a $3 \times 2$ matrix, so $\mathbf{A} \in \mathbb{R}^{2 \times 3}$.
 </Callout>
 
 A matrix with only one row is called a row vector or [n-tuple](/garden/maths/calculus/sequencesAndSeries/sequences#n-tuple) and a matrix with only one column is called a column vector. When talking about vectors we usually refer to column vectors. A matrix that only has one row and one column can be thought of as a normal number and is called a scalar and therefore we omit the matrix brackets. To differentiate between the three types of matrices we usually use bold capital letters for matrices, bold lower case letters for column vectors and normal lower case letters for scalars.
 
 <Callout type="example">
-    A column vector, i.e. ur usual vector, can be written as follows:
+A column vector, i.e. ur usual vector, can be written as follows:
 
-    ```math
-    \mathbf{v} \in \mathbb{R}^{n \times 1} = \begin{bmatrix}v_1 \\ v_2 \\ \vdots \\ v_n \end{bmatrix}
-    ```
+```math
+\mathbf{v} \in \mathbb{R}^{n \times 1} = \begin{bmatrix}v_1 \\ v_2 \\ \vdots \\ v_n \end{bmatrix}
+```
 
-    A row vector can be written as follows:
+A row vector can be written as follows:
 
-    ```math
-    \mathbf{v} \in \mathbb{R}^{1 \times n} = \begin{bmatrix}v_1 & v_2 & \cdots & v_n \end{bmatrix}
-    ```
+```math
+\mathbf{v} \in \mathbb{R}^{1 \times n} = \begin{bmatrix}v_1 & v_2 & \cdots & v_n \end{bmatrix}
+```
 
-    A scalar can be written as follows:
+A scalar can be written as follows:
 
-    ```math
-    \mathbf{v} \in \mathbb{R}^{1 \times 1} = \begin{bmatrix}v \end{bmatrix} = v
-    ```
+```math
+\mathbf{v} \in \mathbb{R}^{1 \times 1} = \begin{bmatrix}v \end{bmatrix} = v
+```
 </Callout>
 
 ## Outer Product
@@ -694,14 +694,19 @@ The reason as to why the identity matrix functions as the multiplicative identit
 1 & 2 & 3 \\
 4 & 5 & 6 \\
 7 & 8 & 9
-\end{bmatrix} = \begin{bmatrix}
+\end{bmatrix} =
+\begin{bmatrix}
+(1 \cdot 1 + 0 \cdot 4 + 0 \cdot 7) & (1 \cdot 2 + 0 \cdot 5 + 0 \cdot 8) & (1 \cdot 3 + 0 \cdot 6 + 0 \cdot 9) \\
+(0 \cdot 1 + 1 \cdot 4 + 0 \cdot 7) & (0 \cdot 2 + 1 \cdot 5 + 0 \cdot 8) & (0 \cdot 3 + 1 \cdot 6 + 0 \cdot 9) \\
+(0 \cdot 1 + 0 \cdot 4 + 1 \cdot 7) & (0 \cdot 2 + 0 \cdot 5 + 1 \cdot 8) & (0 \cdot 3 + 0 \cdot 6 + 1 \cdot 9)
+= \begin{bmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6 \\
 7 & 8 & 9
 \end{bmatrix}
 ```
 
-The same is true for the other way around:
+The same is true for the other way around but the identity matrix selects the columns of the first matrix instead of the rows:
 
 ```math
 \mathbf{A} \cdot {I} =
@@ -713,7 +718,12 @@ The same is true for the other way around:
 1 & 0 & 0 \\
 0 & 1 & 0 \\
 0 & 0 & 1
-\end{bmatrix} = \begin{bmatrix}
+\end{bmatrix} =
+\begin{bmatrix}
+(1 \cdot 1 + 2 \cdot 0 + 3 \cdot 0) & (1 \cdot 0 + 2 \cdot 1 + 3 \cdot 0) & (1 \cdot 0 + 2 \cdot 0 + 3 \cdot 1) \\
+(4 \cdot 1 + 5 \cdot 0 + 6 \cdot 0) & (4 \cdot 0 + 5 \cdot 1 + 6 \cdot 0) & (4 \cdot 0 + 5 \cdot 0 + 6 \cdot 1) \\
+(7 \cdot 1 + 8 \cdot 0 + 9 \cdot 0) & (7 \cdot 0 + 8 \cdot 1 + 9 \cdot 0) & (7 \cdot 0 + 8 \cdot 0 + 9 \cdot 1)
+= \begin{bmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6 \\
 7 & 8 & 9
@@ -723,10 +733,196 @@ The same is true for the other way around:
 
 ### Multiplying Diagonal Matrices
 
-<Callout type="todo">
-This is basically scaling/picking rows or columns of the other matrix. 
+We have seen that multiplying matrices can be quite complex, but diagonal matrices have a very simple multiplication rule. This simplicity arises because the only non-zero elements are on the main diagonal, which makes calculations straightforward. The most obvious case of this is when multiplying a matrix by the identity matrix (also a diagonal matrix). Here we saw that the identity matrix acts as if it selects the corresponding rows or columns of the other matrix. If we change one of the values on the diagonal of the identity matrix to a different value, we can see that it also selects the corresponding rows or columns of the other matrix but scales them by that value (for the identity matrix this value is always 1):
 
-diagonal times diagonal is diagonal?
+```math
+\begin{bmatrix}
+a & 0 & 0 \\
+0 & b & 0 \\
+0 & 0 & c
+\end{bmatrix} \cdot \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix} =
+\begin{bmatrix}
+(a \cdot 1 + 0 \cdot 4 + 0 \cdot 7) & (a \cdot 2 + 0 \cdot 5 + 0 \cdot 8) & (a \cdot 3 + 0 \cdot 6 + 0 \cdot 9) \\
+(0 \cdot 1 + b \cdot 4 + 0 \cdot 7) & (0 \cdot 2 + b \cdot 5 + 0 \cdot 8) & (0 \cdot 3 + b \cdot 6 + 0 \cdot 9) \\
+(0 \cdot 1 + 0 \cdot 4 + c \cdot 7) & (0 \cdot 2 + 0 \cdot 5 + c \cdot 8) & (0 \cdot 3 + 0 \cdot 6 + c \cdot 9)
+= \begin{bmatrix}
+a & 2a & 3a \\
+4b & 5b & 6b \\
+7c & 8c & 9c
+\end{bmatrix}
+```
+
+Or for the other way around:
+
+```math
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix} \cdot \begin{bmatrix}
+a & 0 & 0 \\
+0 & b & 0 \\
+0 & 0 & c
+\end{bmatrix} =
+\begin{bmatrix}
+(1 \cdot a + 2 \cdot 0 + 3 \cdot 0) & (1 \cdot 0 + 2 \cdot b + 3 \cdot 0) & (1 \cdot 0 + 2 \cdot 0 + 3 \cdot c) \\
+(4 \cdot a + 5 \cdot 0 + 6 \cdot 0) & (4 \cdot 0 + 5 \cdot b + 6 \cdot 0) & (4 \cdot 0 + 5 \cdot 0 + 6 \cdot c) \\
+(7 \cdot a + 8 \cdot 0 + 9 \cdot 0) & (7 \cdot 0 + 8 \cdot b + 9 \cdot 0) & (7 \cdot 0 + 8 \cdot 0 + 9 \cdot c)
+= \begin{bmatrix}
+a & 2b & 3c \\
+4a & 5b & 6c \\
+7a & 8b & 9c
+\end{bmatrix}
+```
+
+We can also write this in a more general and formal way. Let $\mathbf{D} = \operatorname{diag}(d\_{11}, \ldots, d\_{nn})$ be a diagonal matrix of size $n \times n$, and $\mathbf{A} \in \mathbb{R}^{n \times m}$ is any $n \times m$ matrix. Then the product $\mathbf{D}\mathbf{A}$ is:
+
+```math
+(\mathbf{D}\mathbf{A})_{ij} = \sum_{k=1}^n d_{ik} a_{kj}
+```
+
+But since $d\_{ik} = 0$ for $i \neq k$, only $k = i$ contributes:
+
+```math
+(\mathbf{D}\mathbf{A})_{ij} = d_{ii} a_{ij}
+```
+
+So, **multiplying from the left scales the $i$-th row of $\mathbf{A}$ by $d\_{ii}$**. And then the product for the other side, $\mathbf{A}\mathbf{D}$, is:
+
+```math
+(\mathbf{A}\mathbf{D})_{ij} = \sum_{k=1}^n a_{ik} d_{kj}
+```
+
+But again, $d\_{kj} = 0$ for $k \neq j$, so only $k = j$ contributes:
+
+```math
+(\mathbf{A}\mathbf{D})_{ij} = a_{ij} d_{jj}
+```
+
+So, **multiplying from the right scales the $j$-th column of $\mathbf{A}$ by $d\_{jj}$**.
+
+<Callout type="example">
+Let
+
+```math
+\mathbf{D} = \operatorname{diag}(2, 0, 3) = \begin{bmatrix}
+2 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & 3
+\end{bmatrix}
+\quad
+\mathbf{A} = \begin{bmatrix}
+1 & 2 \\
+3 & 4 \\
+5 & 6
+\end{bmatrix}
+```
+
+Then
+
+```math
+\mathbf{D}\mathbf{A} =
+\begin{bmatrix}
+2 \cdot 1 & 2 \cdot 2 \\
+0 \cdot 3 & 0 \cdot 4 \\
+3 \cdot 5 & 3 \cdot 6
+\end{bmatrix}
+=
+\begin{bmatrix}
+2 & 4 \\
+0 & 0 \\
+15 & 18
+\end{bmatrix}
+```
+
+Or an example where we multiply from the right:
+
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6
+\end{bmatrix}
+\quad
+\mathbf{D} = \operatorname{diag}(10, 0, -1) = \begin{bmatrix}
+10 & 0 & 0 \\
+0 & 0 & 0 \\
+0 & 0 & -1
+\end{bmatrix}
+```
+
+Then
+
+```math
+\mathbf{A}\mathbf{D} =
+\begin{bmatrix}
+1 \cdot 10 & 2 \cdot 0 & 3 \cdot (-1) \\
+4 \cdot 10 & 5 \cdot 0 & 6 \cdot (-1)
+\end{bmatrix}
+=
+\begin{bmatrix}
+10 & 0 & -3 \\
+40 & 0 & -6
+\end{bmatrix}
+```
+</Callout>
+
+We can also look at the case where both matrices are diagonal. In this case, the multiplication is even simpler because the only non-zero elements are on the diagonal. The product of two diagonal matrices is another diagonal matrix where each diagonal element is the product of the corresponding diagonal elements of the two matrices. This again can be quickly seen when looking at an example:
+
+```math
+\begin{bmatrix}
+d_1 & 0 & 0 \\
+0 & d_2 & 0 \\
+0 & 0 & d_3
+\end{bmatrix} \cdot \begin{bmatrix}
+e_1 & 0 & 0 \\
+0 & e_2 & 0 \\
+0 & 0 & e_3
+\end{bmatrix} =
+\begin{bmatrix}
+(d_1 \cdot e_1 + 0 \cdot 0 + 0 \cdot 0) & (0 \cdot e_1 + d_2 \cdot e_2 + 0 \cdot 0) & (0 \cdot e_1 + 0 \cdot e_2 + d_3 \cdot e_3) \\
+(0 \cdot e_1 + 0 \cdot e_2 + 0 \cdot e_3) & (d_1 \cdot 0 + d_2 \cdot e_2 + 0 \cdot 0) & (0 \cdot e_1 + d_2 \cdot 0 + d_3 \cdot e_3) \\
+(0 \cdot e_1 + 0 \cdot e_2 + d_3 \cdot 0) & (d_1 \cdot 0 + d_2 \cdot 0 + d_3 \cdot e_3) & (0 \cdot e_1 + 0 \cdot e_2 + d_3 \cdot e_3)
+= \begin{bmatrix}
+(d_1 e_1) & 0 & 0 \\
+0 & (d_2 e_2) & 0 \\
+0 & 0 & (d_3 e_3)
+\end{bmatrix}
+```
+
+This then becomes equivialent to the [elementwise product (Hadamard product)() of the diagonal elements of the two matrices. Formally, if $\mathbf{D} = \operatorname{diag}(d_1, \ldots, d_n)$ and $\mathbf{E} = \operatorname{diag}(e_1, \ldots, e_n)$, then:
+
+```math
+(\mathbf{D}\mathbf{E})_{ij} = \sum_{k=1}^n d_{ik} e_{kj}
+```
+
+But $d\_{ik} = 0$ unless $i = k$, and $e\_{kj} = 0$ unless $k = j$, so the only nonzero term is when $i = k = j$:
+
+```math
+(\mathbf{D}\mathbf{E})_{ij} = d_{ii} e_{ii} \text{ if } i = j, \text{ else } 0
+```
+
+Thus,
+
+```math
+\mathbf{D}\mathbf{E} = \operatorname{diag}(d_1 e_1, \ldots, d_n e_n)
+```
+
+<Callout type="example">
+Let
+
+```math
+\mathbf{D} = \operatorname{diag}(2, 3, 4),\quad \mathbf{E} = \operatorname{diag}(7, 8, 9)
+```
+
+Then
+
+```math
+\mathbf{D}\mathbf{E} = \operatorname{diag}(2 \cdot 7,\, 3 \cdot 8,\, 4 \cdot 9) = \operatorname{diag}(14,\, 24,\, 36)
+```
 </Callout>
   
 ### Mixing Vectors and Matrices
@@ -760,7 +956,7 @@ Because a vector is a special case of a matrix, we can also multiply vectors wit
 \end{align*}
 ```
 
-As we can see from the definition above, the result is another column vector with $m$ components. We can also see that the resulting vector is a linear combination of the columns of the matrix $\mathbf{A}$ where the weights are the components of the vector $\mathbf{x}$. This is why when the matrix is square the multiplication is often called a linear transformation, because it transforms the vector into another vector. If the matrix is not square, then the multiplication is still a linear transformation but the resulting vector will have a different number of components (dimension) than the original vector. This is why it is called a projection rather than a transformation as it projects the vector onto a lower or higher dimensional space (specifically the column space of the matrix).
+As we can see from the definition above, the result is another column vector with $m$ components. We can also see that the resulting vector is a linear combination of the columns of the matrix $\mathbf{A}$ where the weights are the components of the vector $\mathbf{x}$. This is why when the matrix is square the multiplication can often be called a [linear transformation](), because it transforms the vector into another vector (under certain conditions). If the matrix is not square, then the multiplication can still be a linear transformation but the resulting vector will have a different number of components (dimension) than the original vector. This is why it is sometimes also called a projection rather than a transformation as it projects the vector onto a lower or higher dimensional space (specifically the column space of the matrix).
 
 If the vector is on the left side of the matrix, then the vector needs to be transposed for the multiplication to work, i.e. the dimensions of the vector must be compatible with the matrix. So if we have a row vector $\mathbf{x}^T \in \mathbb{R}^{1 \times n}$ and a matrix $\mathbf{A} \in \mathbb{R}^{n \times m}$, then we can multiply them together as follows:
 
@@ -926,19 +1122,314 @@ An upper triangular matrix $\mathbf{U}$:
 ```
 </Callout>
 
-### Multiply Triangular Matrices
+It is rather obvious that adding two triangular matrices of the same type results in a triangular matrix of the same type. So adding two lower triangular matrices results in a lower triangular matrix and adding two upper triangular matrices results in an upper triangular matrix. However, what about multiplying triangular matrices? Let's first look at the multiplication of triangular matrices of the same type, starting with lower triangular matrices. Let's first look at it visually:
 
-<Callout type="todo">
-Show that upper times upper triangular matrices result in an upper triangular matrix and lower times lower triangular matrices result in a lower triangular matrix.
+```math
+\begin{bmatrix}
+1 & 0 & 0 \\
+2 & 3 & 0 \\
+4 & 5 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+a & 0 & 0 \\
+b & c & 0 \\
+d & e & f
+\end{bmatrix} =
+\begin{bmatrix}
+(1 \cdot a + 0 \cdot b + 0 \cdot d) & (1 \cdot 0 + 0 \cdot c + 0 \cdot e) & (1 \cdot 0 + 0 \cdot 0 + 0 \cdot f) \\
+(2 \cdot a + 3 \cdot b + 0 \cdot d) & (2 \cdot 0 + 3 \cdot c + 0 \cdot e) & (2 \cdot 0 + 3 \cdot 0 + 0 \cdot f) \\
+(4 \cdot a + 5 \cdot b + 6 \cdot d) & (4 \cdot 0 + 5 \cdot c + 6 \cdot e) & (4 \cdot 0 + 5 \cdot 0 + 6 \cdot f)
+\end{bmatrix} =
+\begin{bmatrix}
+a & 0 & 0 \\
+(2a + 3b) & (3c) & 0 \\
+(4a + 5b + 6d) & (5c + 6e) & (6f)
+\end{bmatrix}
+```
 
-What about upper times lower triangular matrices? What about lower times upper triangular matrices?
+So we can see that the product of two lower triangular matrices is also a lower triangular matrix. We can also look at this more formally. Let $\mathbf{L}_1$ and $\mathbf{L}_2$ be $n \times n$ lower triangular matrices:
 
-What about normal matrix times triangular matrices?
+```math
+(\mathbf{L}_1)_{ij} = 0 \text{ for } i < j
+\qquad
+(\mathbf{L}_2)_{ij} = 0 \text{ for } i < j
+```
 
-The sum of two upper triangular matrices is upper triangular.
-The product of two upper triangular matrices is upper triangular.
-The inverse of an upper triangular matrix, if it exists, is upper triangular
+The product $\mathbf{L}\_1\mathbf{L}\_2$ is then given by:
+
+```math
+(\mathbf{L}_1\mathbf{L}_2)_{ij} = \sum_{k=1}^n (\mathbf{L}_1)_{ik} (\mathbf{L}_2)_{kj}
+```
+
+The question is then which entries $(\mathbf{L}_1\mathbf{L}_2)_{ij}$ can be nonzero? If $i < j$, then for all $k$:
+- In $(\mathbf{L}*2)*{kj}$, $k < j \implies (\mathbf{L}*2)*{kj} = 0$.
+- But $k$ runs from $1$ to $n$, and for a fixed $i < j$, for $k \leq i$, $k < j$, so all such terms vanish.
+- For $k > i$, $(\mathbf{L}*1)*{ik} = 0$.
+
+So putting all this together, we see that **$(\mathbf{L}_1\mathbf{L}_2)_{ij} = 0$ for $i < j$** which is again the definition of a lower triangular matrix, so the product is lower triangular.
+
+<Callout type="example">
+Let
+
+```math
+\mathbf{L}_1 = \begin{bmatrix}
+1 & 0 & 0 \\
+2 & 3 & 0 \\
+4 & 5 & 6
+\end{bmatrix},\quad
+\mathbf{L}_2 = \begin{bmatrix}
+7 & 0 & 0 \\
+8 & 9 & 0 \\
+10 & 11 & 12
+\end{bmatrix}
+```
+
+Then
+
+```math
+\mathbf{L}_1\mathbf{L}_2 =
+\begin{bmatrix}
+1\cdot 7 & 0 & 0 \\
+2\cdot 7 + 3\cdot 8 & 3\cdot 9 & 0 \\
+4\cdot 7 + 5\cdot 8 + 6\cdot 10 & 5\cdot 9 + 6\cdot 11 & 6\cdot 12
+\end{bmatrix}
+=
+\begin{bmatrix}
+7 & 0 & 0 \\
+14 + 24 & 27 & 0 \\
+28 + 40 + 60 & 45 + 66 & 72
+\end{bmatrix}
+=
+\begin{bmatrix}
+7 & 0 & 0 \\
+38 & 27 & 0 \\
+128 & 111 & 72
+\end{bmatrix}
+```
 </Callout>
+
+We can also look at the case of multiplying two upper triangular matrices. Again, we can see this visually:
+
+```math
+\begin{bmatrix}
+1 & 2 & 3 \\
+0 & 4 & 5 \\
+0 & 0 & 6
+\end{bmatrix} \cdot \begin{bmatrix}
+a & b & c \\
+0 & d & e \\
+0 & 0 & f
+\end{bmatrix} =
+\begin{bmatrix}
+(1 \cdot a + 2 \cdot 0 + 3 \cdot 0) & (1 \cdot b + 2 \cdot d + 3 \cdot 0) & (1 \cdot c + 2 \cdot e + 3 \cdot f) \\
+(0 \cdot a + 4 \cdot 0 + 5 \cdot 0) & (0 \cdot b + 4 \cdot d + 5 \cdot 0) & (0 \cdot c + 4 \cdot e + 5 \cdot f) \\
+(0 \cdot a + 0 \cdot b + 6 \cdot 0) & (0 \cdot d + 6 \cdot e) & (0 \cdot f)
+\end{bmatrix} =
+\begin{bmatrix}
+a & (b + 2d) & (c + 2e + 3f) \\
+0 & 4d & (5e + 6f) \\
+0 & 0 & 6f
+\end{bmatrix}
+```
+
+Or formally, let $\mathbf{U}\_1$ and $\mathbf{U}\_2$ be $n \times n$ upper triangular matrices:
+
+```math
+(\mathbf{U}_1)_{ij} = 0 \text{ for } i > j
+\qquad
+(\mathbf{U}_2)_{ij} = 0 \text{ for } i > j
+```
+
+And then in the product $\mathbf{U}\_1\mathbf{U}\_2$, if $i > j$, then for any $k$:
+
+- $(\mathbf{U}*1)*{ik} = 0$ unless $i \leq k$.
+- $(\mathbf{U}*2)*{kj} = 0$ unless $k \leq j$.
+- Thus, both $i \leq k \leq j$; but if $i > j$, there is no $k$ satisfying this.
+
+So, **$(\mathbf{U}\_1\mathbf{U}*2)*{ij} = 0$ for $i > j$** which again by the definition of upper triangular matrices means the product is upper triangular.
+
+<Callout type="example">
+Let
+
+```math
+\mathbf{U}_1 = \begin{bmatrix}
+1 & 2 & 3 \\
+0 & 4 & 5 \\
+0 & 0 & 6
+\end{bmatrix},\quad
+\mathbf{U}_2 = \begin{bmatrix}
+7 & 8 & 9 \\
+0 & 10 & 11 \\
+0 & 0 & 12
+\end{bmatrix}
+```
+
+Then
+
+```math
+\mathbf{U}_1\mathbf{U}_2 =
+\begin{bmatrix}
+1\cdot 7 + 2\cdot 0 + 3\cdot 0 & 1\cdot 8 + 2\cdot 10 + 3\cdot 0 & 1\cdot 9 + 2\cdot 11 + 3\cdot 12 \\
+0\cdot 7 + 4\cdot 0 + 5\cdot 0 & 0\cdot 8 + 4\cdot 10 + 5\cdot 0 & 0\cdot 9 + 4\cdot 11 + 5\cdot 12 \\
+0 & 0 & 6\cdot 12
+\end{bmatrix}
+=
+\begin{bmatrix}
+7 & 8 + 20 & 9 + 22 + 36 \\
+0 & 40 & 44 + 60 \\
+0 & 0 & 72
+\end{bmatrix}
+=
+\begin{bmatrix}
+7 & 28 & 67 \\
+0 & 40 & 104 \\
+0 & 0 & 72
+\end{bmatrix}
+```
+</Callout>
+
+Now what about multiplying a lower triangular matrix with an upper triangular matrix? Or vice versa? Let's look at this case. Unfortunately, the product of a lower triangular matrix and an upper triangular matrix is **not** triangular in general, only if one of them is diagonal. It just results in a normal matrix. If one of them is diagonal, then remember that multiplying a diagonal matrix with any matrix results in scaling the rows or columns of the other matrix, so it will stay the same type of triangular matrix.
+
+<Callout type="example">
+Let
+```math
+\mathbf{U} = \begin{bmatrix}
+1 & 2 \\
+0 & 3
+\end{bmatrix},\quad
+\mathbf{L} = \begin{bmatrix}
+4 & 0 \\
+5 & 6
+\end{bmatrix}
+```
+Then
+```math
+\mathbf{U}\mathbf{L} =
+\begin{bmatrix}
+1\cdot 4 + 2\cdot 5 & 1\cdot 0 + 2\cdot 6 \\
+0\cdot 4 + 3\cdot 5 & 0\cdot 0 + 3\cdot 6
+\end{bmatrix}
+=
+\begin{bmatrix}
+4 + 10 & 0 + 12 \\
+0 + 15 & 0 + 18
+\end{bmatrix}
+=
+\begin{bmatrix}
+14 & 12 \\
+15 & 18
+\end{bmatrix}
+```
+</Callout>
+
+Lastly we can also look at the case of multiplying a triangular matrix with a general matrix. This is where the triangular matrix "mixes" the rows or columns of the general matrix, depending on whether we multiply from the left or right. To see this let's first look at the case of multiplying a lower triangular matrix with a general matrix from the left:
+
+```math
+\begin{bmatrix}
+a & 0 & 0 \\
+b & c & 0 \\
+d & e & f
+\end{bmatrix} \cdot \begin{bmatrix}
+x_1 & y_1 & z_1 \\
+x_2 & y_2 & z_2 \\
+x_3 & y_3 & z_3
+\end{bmatrix} =
+\begin{bmatrix}
+(a \cdot x_1 + 0 \cdot x_2 + 0 \cdot x_3) & (a \cdot y_1 + 0 \cdot y_2 + 0 \cdot y_3) & (a \cdot z_1 + 0 \cdot z_2 + 0 \cdot z_3) \\
+(b \cdot x_1 + c \cdot x_2 + 0 \cd x_3) & (b \cdot y_1 + c \cdot y_2 + 0 \cdot y_3) & (b \cdot z_1 + c \cdot z_2 + 0 \cdot z_3) \\
+(d \cdot x_1 + e \cdot x_2 + f \cdot x_3) & (d \cdot y_1 + e \cdot y_2 + f \cdot y_3) & (d \cdot z_1 + e \cdot z_2 + f \cdot z_3)
+\end{bmatrix} =
+\begin{bmatrix}
+a x_1 & a y_1 & a z_1 \\
+(b x_1 + c x_2) & (b y_1 + c y_2) & (b z_1 + c z_2) \\
+(d x_1 + e x_2 + f x_3) & (d y_1 + e y_2 + f y_3) & (d z_1 + e z_2 + f z_3)
+\end{bmatrix}
+```
+
+We can notice that each row of the resulting matrix is a linear combination of the rows above it in the original matrix, where the coefficients are the rows of the lower triangular matrix. Formally, if $\mathbf{L}$ is lower triangular, then $(\mathbf{L}\mathbf{A})_{ij}$ depends only on rows $1, 2, \ldots, i$ of $\mathbf{A}$.
+
+If we multiply a lower triangular matrix from the right, we can see the following:
+
+```math
+\begin{bmatrix}
+x_1 & y_1 & z_1 \\
+x_2 & y_2 & z_2 \\
+x_3 & y_3 & z_3
+\end{bmatrix} \cdot \begin{bmatrix}
+a & 0 & 0 \\
+b & c & 0 \\
+d & e & f
+\end{bmatrix} =
+\begin{bmatrix}
+(x_1 \cdot a + y_1 \cdot b + z_1 \cdot d) & (x_1 \cdot 0 + y_1 \cdot c + z_1 \cdot e) & (x_1 \cdot 0 + y_1 \cdot 0 + z_1 \cdot f) \\
+(x_2 \cdot a + y_2 \cdot b + z_2 \cdot d) & (x_2 \cdot 0 + y_2 \cdot c + z_2 \cdot e) & (x_2 \cdot 0 + y_2 \cdot 0 + z_2 \cdot f) \\
+(x_3 \cdot a + y_3 \cdot b + z_3 \cdot d) & (x_3 \cdot 0 + y_3 \cdot c + z_3 \cdot e) & (x_3 \cdot 0 + y_3 \cdot 0 + z_3 \cdot f)
+\end{bmatrix} =
+\begin{bmatrix}
+(x_1 a + y_1 b + z_1 d) & (y_1 c + z_1 e) & (z_1 f) \\
+(x_2 a + y_2 b + z_2 d) & (y_2 c + z_2 e) & (z_2 f) \\
+(x_3 a + y_3 b + z_3 d) & (y_3 c + z_3 e) & (z_3 f)
+\end{bmatrix}
+```
+
+Here we can see that each column of the resulting matrix is a linear combination of the columns to the right of it in the original matrix, where the coefficients are the columns of the corresponding lower triangular matrix. Formally, if $\mathbf{L}$ is lower triangular, then $(\mathbf{A}\mathbf{L})_{ij}$ depends only on columns $j, \ldots, n$ of $\mathbf{A}$, where $n$ is the number of columns in $\mathbf{A}$.
+
+Now let's look at the case of multiplying an upper triangular matrix with a general matrix from the left:
+
+```math
+\begin{bmatrix}
+a & b & c \\
+0 & d & e \\
+0 & 0 & f
+\end{bmatrix} \cdot \begin{bmatrix}
+x_1 & y_1 & z_1 \\
+x_2 & y_2 & z_2 \\
+x_3 & y_3 & z_3
+\end{bmatrix} =
+\begin{bmatrix}
+(a \cdot x_1 + b \cdot x_2 + c \cdot x_3) & (a \cdot y_1 + b \cdot y_2 + c \cdot y_3) & (a \cdot z_1 + b \cdot z_2 + c \cdot z_3) \\
+(0 \cdot x_1 + d \cdot x_2 + e \cdot x_3) & (0 \cdot y_1 + d \cdot y_2 + e \cdot y_3) & (0 \cdot z_1 + d \cdot z_2 + e \cdot z_3) \\
+(0 \cdot x_1 + 0 \cdot x_2 + f \cdot x_3) & (0 \cdot y_1 + 0 \cdot y_2 + f \cdot y_3) & (0 \cdot z_1 + 0 \cdot z_2 + f \cdot z_3) 
+\end{bmatrix} =
+\begin{bmatrix}
+(a x_1 + b x_2 + c x_3) & (a y_1 + b y_2 + c y_3) & (a z_1 + b z_2 + c z_3) \\
+(d x_2 + e x_3) & (d y_2 + e y_3) & (d z_2 + e z_3) \\
+(f x_3) & (f y_3) & (f z_3)
+\end{bmatrix}
+```
+
+In this case we can see that each row of the resulting matrix is a linear combination of the rows below it in the original matrix, where the coefficients are the rows of the upper triangular matrix. Formally, if $\mathbf{U}$ is upper triangular, then $(\mathbf{U}\mathbf{A})_{ij}$ depends only on rows $i, \ldots, n$ of $\mathbf{A}$, where $n$ is the number of rows in $\mathbf{A}$.
+
+If we multiply an upper triangular matrix from the right, we can see the following:
+
+```math
+\begin{bmatrix}
+x_1 & y_1 & z_1 \\
+x_2 & y_2 & z_2 \\
+x_3 & y_3 & z_3
+\end{bmatrix} \cdot \begin{bmatrix}
+a & b & c \\
+0 & d & e \\
+0 & 0 & f
+\end{bmatrix} =
+\begin{bmatrix}
+(x_1 \cdot a + y_1 \cdot 0 + z_1 \cdot 0) & (x_1 \cdot b + y_1 \cdot d + z_1 \cdot 0) & (x_1 \cdot c + y_1 \cdot e + z_1 \cdot f) \\
+(x_2 \cdot a + y_2 \cdot 0 + z_2 \cdot 0) & (x_2 \cdot b + y_2 \cdot d + z_2 \cdot 0) & (x_2 \cdot c + y_2 \cdot e + z_2 \cdot f) \\
+(x_3 \cdot a + y_3 \cdot 0 + z_3 \cdot 0) & (x_3 \cdot b + y_3 \cdot d + z_3 \cdot 0) & (x_3 \cdot c + y_3 \cdot e + z_3 \cdot f)
+\end{bmatrix} =
+\begin{bmatrix}
+(x_1 a) & (x_1 b + y_1 d) & (x_1 c + y_1 e + z_1 f) \\
+(x_2 a) & (x_2 b + y_2 d) & (x_2 c + y_2 e + z_2 f) \\
+(x_3 a) & (x_3 b + y_3 d) & (x_3 c + y_3 e + z_3 f)
+\end{bmatrix}
+```
+
+So each column of the resulting matrix is a linear combination of the columns to the right of it in the original matrix, where the coefficients are the columns of the upper triangular matrix. Formally, if $\mathbf{U}$ is upper triangular, then $(\mathbf{A}\mathbf{U})_{ij}$ depends only on columns $j, \ldots, n$ of $\mathbf{A}$, where $n$ is the number of columns in $\mathbf{A}$.
+
+So in summary we have:
+- Adding two triangular matrices of the same type results in a triangular matrix of the same type. Adding a lower triangular matrix with an upper triangular matrix results in a general matrix.
+- Multiplying two triangular matrices of the same type results in a triangular matrix of the same type. Multiplying a lower triangular matrix with an upper triangular matrix results in a general matrix.
+- Multiplying a lower triangular matrix with a general matrix from the left results in a matrix where each row is a linear combination of the rows above it in the original matrix, where the coefficients are the rows of the lower triangular matrix. Multiplying a lower triangular matrix with a general matrix from the right results in a matrix where each column is a linear combination of the columns to the right of it in the original matrix, where the coefficients are the columns of the lower triangular matrix.
+- Multiplying an upper triangular matrix with a general matrix from the left results in a matrix where each row is a linear combination of the rows below it in the original matrix, where the coefficients are the rows of the upper triangular matrix. Multiplying an upper triangular matrix with a general matrix from the right results in a matrix where each column is a linear combination of the columns to the right of it in the original matrix, where the coefficients are the columns of the upper triangular matrix.
 
 ## Transpose
 
@@ -966,41 +1457,40 @@ Or also more formally:
 
 This results in the transpose of a row vector being a column vector and the transpose of a column vector being a row vector. The same goes for a matrix where the transpose of a matrix results in a matrix with its dimensions swapped. So the transpose of a $m \times n$ matrix is a $n \times m$ matrix.
 
-
 <Callout type="example">
-    Transposing a matrix:
+Transposing a matrix:
 
-    ```math
-    \mathbf{A} = \begin{bmatrix}
-    1 & 2 & 3 \\ 
-    4 & 5 & 6 
-    \end{bmatrix} \Rightarrow \mathbf{A}^T = \begin{bmatrix}
-    1 & 4 \\
-    2 & 5 \\
-    3 & 6
-    \end{bmatrix}
-    ```
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & 2 & 3 \\ 
+4 & 5 & 6 
+\end{bmatrix} \Rightarrow \mathbf{A}^T = \begin{bmatrix}
+1 & 4 \\
+2 & 5 \\
+3 & 6
+\end{bmatrix}
+```
 
-    Transposing a column vector is very useful when you want to write vectors in a readable way in a text,
-    as you can see. Most commonly in textbooks when a vector is defined it is defined as a transposed column vector.
+Transposing a column vector is very useful when you want to write vectors in a readable way in a text,
+as you can see. Most commonly in textbooks when a vector is defined it is defined as a transposed column vector.
 
-    ```math
-    \mathbf{v} = \begin{bmatrix}
-    v_1 \\ v_2 \\ \vdots \\ v_n 
-    \end{bmatrix} \Rightarrow \mathbf{v}^T = \begin{bmatrix}
-    v_1 & v_2 & \cdots & v_n 
-    \end{bmatrix}
-    ```
+```math
+\mathbf{v} = \begin{bmatrix}
+v_1 \\ v_2 \\ \vdots \\ v_n 
+\end{bmatrix} \Rightarrow \mathbf{v}^T = \begin{bmatrix}
+v_1 & v_2 & \cdots & v_n 
+\end{bmatrix}
+```
 
-    Transposing a row vector: 
+Transposing a row vector: 
 
-    ```math
-    \mathbf{v} = \begin{bmatrix}
-    v_1 & v_2 & \cdots & v_n 
-    \end{bmatrix} \Rightarrow \mathbf{v}^T = \begin{bmatrix}
-    v_1 \\ v_2 \\ \vdots \\ v_n 
-    \end{bmatrix}
-    ```
+```math
+\mathbf{v} = \begin{bmatrix}
+v_1 & v_2 & \cdots & v_n 
+\end{bmatrix} \Rightarrow \mathbf{v}^T = \begin{bmatrix}
+v_1 \\ v_2 \\ \vdots \\ v_n 
+\end{bmatrix}
+```
 </Callout>
 
 There are a few useful properties of the transpose of a matrix that are worth remembering. The first it that if a matrix is transposed twice it is the same as the original matrix:

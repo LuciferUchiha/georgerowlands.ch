@@ -26,7 +26,7 @@ The file descriptors are unique to a process but the integers may by reused by a
 
 ### Opening and closing
 
-You can open a file with `int open(const char *pathname, int flags, mode_t mode` from `fcntl.h` which will return the smallest int that’s not used in by the current processor as the file descriptor. Once you are done with the file you can `int close(int fd)` it which will detach the use of the file descriptor for a process. When a process terminates any open file descriptors are automatically closed by the kernel. If something goes wrong with opening a file it will return -1 and you can find the error saved under errno, a global variable.
+You can open a file with `int open(const char *pathname, int flags, mode_t mode` from `fcntl.h` which will return the smallest int that's not used in by the current processor as the file descriptor. Once you are done with the file you can `int close(int fd)` it which will detach the use of the file descriptor for a process. When a process terminates any open file descriptors are automatically closed by the kernel. If something goes wrong with opening a file it will return -1 and you can find the error saved under errno, a global variable.
 
 Possible errors:
 

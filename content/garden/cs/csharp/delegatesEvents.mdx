@@ -1,7 +1,7 @@
 # Delegates and Events
 
 A delegate is an object that knows how to call a method.
-A delegate type defines the kind of method that delegate instances can call. Specifically, it defines the method’s return type and its parameter types.
+A delegate type defines the kind of method that delegate instances can call. Specifically, it defines the method's return type and its parameter types.
 
 ```csharp
 
@@ -22,7 +22,7 @@ class Test
 
 ## Using Delegate as utility functions
 
-In this example, we have a utility method named Transform that applies a transform to each element in an integer array. Our Transform method is a higher-order function because it’s a function that takes a function as an argument.
+In this example, we have a utility method named Transform that applies a transform to each element in an integer array. Our Transform method is a higher-order function because it's a function that takes a function as an argument.
 
 ```csharp
 public delegate int Transformer (int x);
@@ -140,7 +140,7 @@ void Main() {
 ## Events
 
 When using delegates, two emergent roles commonly appear: broadcaster and
-subscriber. Broadcaster is a type that contains a delegate field and decides when to invoke the delegate. A subscriber decides when to start and stop listening by calling += and -= on the broadcaster’s delegate.
+subscriber. Broadcaster is a type that contains a delegate field and decides when to invoke the delegate. A subscriber decides when to start and stop listening by calling += and -= on the broadcaster's delegate.
 
 ```csharp
 using System;
