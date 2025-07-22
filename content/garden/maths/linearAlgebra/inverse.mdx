@@ -416,8 +416,31 @@ As we can see that the second row is a multiple of the first row, so the matrix 
 
 ## Inverse of Triangular Matrices
 
-<Callout type="todo">
-Prove that the inverse of any lower triangular matrix, if it exists, is lower triangular itself same for upper triangular matrices. This is probably related to the way traingular matrices interact with matrix multiplication we get for a lower triangular matrix $\mathbf{L}$:
+Let's now look at the inverse of triangular matrices. As with diagonal matrices, triangular matrices (if invertible) have a particularly nice structure for their inverse. Let $\mathbf{L}$ be an $n\times n$ **lower triangular** matrix with entries $l\_{ij}$, that is,
+
+```math
+l_{ij} = 0 \qquad \text{if } i < j.
+```
+
+Suppose that $\mathbf{L}$ is invertible, and denote its inverse by $\mathbf{M} = \mathbf{L}^{-1}$, with entries $m\_{ij}$. Then it turns out that $\mathbf{M}$ is also lower triangular. To see this let us look at a explicit calculation:
+
+```math
+\mathbf{L} =
+\begin{bmatrix}
+a & 0 & 0 \\
+b & c & 0 \\
+d & e & f
+\end{bmatrix}
+\quad
+\mathbf{M} =
+\begin{bmatrix}
+m_{11} & 0 & 0 \\
+m_{21} & m_{22} & 0 \\
+m_{31} & m_{32} & m_{33}
+\end{bmatrix}
+```
+
+We solve $\mathbf{L}\mathbf{M} = \mathbf{I}$. We can do this step by step by writing out the equations for each column of $\mathbf{M}$. The first column of $\mathbf{M}$ must satisfy:
 
 ```math
 \begin{bmatrix}
@@ -426,46 +449,293 @@ b & c & 0 \\
 d & e & f
 \end{bmatrix}
 \begin{bmatrix}
-x_1 & x_2 & x_3 \\
-y_1 & y_2 & y_3 \\
-z_1 & z_2 & z_3
-\end{bmatrix} = \begin{bmatrix}
-1 & 0 & 0 \\
-0 & 1 & 0 \\
-0 & 0 & 1
+m_{11} \\
+m_{21} \\
+m_{31}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 \\ 
+0 \\ 
+0
 \end{bmatrix}
 ```
 
-So we have the following equations:
+We then can write out the equations for each row of the first column:
+- Row 1: $a m\_{11} = 1 \implies m\_{11} = \frac{1}{a}$
+- Row 2: $b m\_{11} + c m\_{21} = 0 \implies m\_{21} = -\frac{b}{c} m\_{11} = -\frac{b}{a c}$
+- Row 3: $d m\_{11} + e m\_{21} + f m\_{31} = 0 \implies m\_{31} = -\frac{d m\_{11} + e m\_{21}}{f} = -\frac{d/a + e \cdot (-b/(a c))}{f} = -\frac{d}{a f} + \frac{e b}{a c f}$
+
+And so on for the other columns. We can always solve the system by back substitution for triangular matrices. For the second column, we have:
+- Row 1: $a m\_{12} = 0 \implies m\_{12} = 0$
+- Row 2: $b m\_{12} + c m\_{22} = 1 \implies m\_{22} = \frac{1}{c}$
+- Row 3: $d m\_{12} + e m\_{22} + f m\_{32} = 0 \implies m\_{32} = -\frac{e}{c f}$
+
+And for the third column:
+- Row 1: $a m\_{13} = 0 \implies m
+\_{13} = 0$
+- Row 2: $b m\_{13} + c m\_{23} = 0 \implies m\_{23} = 0$
+- Row 3: $d m\_{13} + e m\_{23} + f m\_{33} = 1 \implies m\_{33} = \frac{1}{f}$
+
+Thus, we can see that the inverse $\mathbf{M}$ is also lower triangular and for the $3 \times 3$ case we have:
 
 ```math
-\begin{vmatrix}
-ax_1 = 1 \\
-bx_2 + cy_2 = 1 \\
-dx_3 + ey_3 + fz_3 = 1 \\
-ax_2 = 0 \\
-bx_1 + cy_1 = 0 \\
-\vdots \\
-dx_2 + ey_2 + fz_2 = 0
-\end{vmatrix}
+\mathbf{M} =
+\begin{bmatrix}
+\frac{1}{a} & 0 & 0 \\
+-\frac{b}{a c} & \frac{1}{c} & 0 \\
+-\frac{d}{a f} + \frac{e b}{a c f} & -\frac{e}{c f} & \frac{1}{f}
+\end{bmatrix}
+$$
+
+Notice that, when solving for $m\_{ii}$, we get the equation:
+
+```math
+l_{ii} m_{ii} = 1 \implies m_{ii} = \frac{1}{l_{ii}}
 ```
 
-does this help us?
+Therefore, if any of the diagonal elements $l\_{ii} = 0$, then the fraction is not defined and $\mathbf{L}$ is not invertible. If all $l\_{ii} \neq 0$, then $\mathbf{L}$ is invertible and its inverse is also lower triangular. Later on this will also match our intuition that [the determinant of a triangular matrix is the product of its diagonal elements](https://en.wikipedia.org/wiki/Determinant#Properties_of_the_determinant) and if the determinant is zero (so one of the diagonal elements is zero), then the matrix is not invertible.
 
-Prove that a square lower triangular matrix is invertible if and only if all its diagonal entries
-are non-zero. I thought by definition that the diagonal couldn't have zeros?
+We can also show that the inverse of an **upper triangular** matrix is also upper triangular. The proof is similar to the one above:
 
-Find the inverse of 4x4 lower triangular matrix with all 1s. Then for the same but general mxm.
-</Callout>
+```math
+\mathbf{U} =
+\begin{bmatrix}
+a & b & c \\
+0 & d & e \\
+0 & 0 & f
+\end{bmatrix}
+\begin{bmatrix}
+m_{11} \\
+m_{21} \\
+m_{31}
+\end{bmatrix} = 
+\begin{bmatrix}
+1 \\
+0 \\
+0
+\end{bmatrix}
+```
+
+which leads to the equations (here starting with the last row makes it easier):
+- Row 3: $f m\_{31} = 0 \implies m\_{31} = 0$
+- Row 2: $d m\_{21} + e m\_{31} = 0 \implies m\_{21} = 0$
+- Row 1: $a m\_{11} + b m\_{21} + c m\_{31} = 1 \implies m\_{11} = \frac{1}{a}$
+
+etc. for the other columns. Putting this all together, we get:
+
+```math
+\mathbf{M} =
+\begin{bmatrix}
+\frac{1}{a} & -\frac{b}{a d} & -\frac{c}{a f} + \frac{b e}{a d f} \\
+0 & \frac{1}{d} & -\frac{e}{d f} \\
+0 & 0 & \frac{1}{f}
+\end{bmatrix}
+```
+
+This shows that the inverse of an upper triangular matrix is also upper triangular. So the key takeaway is that if a triangular matrix is invertible, then its inverse is also triangular (of the same type) and that a triangular matrix is invertible if and only if all its diagonal elements are non-zero.
 
 ## Nilpotent Matrices
 
-<Callout type="todo">
-prove that if A has inverse then $A^k$ has inverse for all $k \geq 1$. with induction
+We know that from the properties of the rank that the rank of a product of two matrices is at most the minimum of the ranks of the two matrices:
 
-If some power of a matrix is the zero matrix, i.e., $A^k = 0$ for some $k \geq 1$, then the matrix is called **nilpotent**. Nilpotent matrices do not have an inverse prove why by contradiction.
+```math
+\operatorname{rank}(\mathbf{A}\mathbf{B}) \leq \min(\operatorname{rank}(\mathbf{A}), \operatorname{rank}(\mathbf{B}))
+```
 
-Find 2x2 A neq I such that A^k = I for even $k$ and A^k = A for odd $k$. 1x1 wouldve just been -1?
+But what if we know rather than taking a different matrix, we take the same matrix multiple times, so what is the rank of $\mathbf{A}^2$. From the property of it would follow that the rank either stays the same or decreases, i.e.,
+
+```math
+\operatorname{rank}(\mathbf{A}^2) \leq \operatorname{rank}(\mathbf{A})
+```
+
+An interesting case is when the matrix is full rank, so in other words, the matrix is invertible. In this case, we can show that inverse of the power of the matrix is the power of the inverse of the matrix, i.e.,
+
+```math
+(\mathbf{A}^k)^{-1} = (\mathbf{A}^{-1})^k
+```
+
+this would mean that if the matrix is full rank we have equality as for a matrix to be invertible it must be full rank, i.e.,
+
+```math
+\operatorname{rank}(\mathbf{A}^k) = \operatorname{rank}(\mathbf{A})
+```
+
+<Callout type="proof">
+We can prove this by induction, for $k=1$ the case is obvious as we have $(\mathbf{A}^1)^{-1} = \mathbf{A}^{-1}$. We then assume that the statement holds for some $i \geq 1$ as our induction hypothesis, i.e.,
+
+```math
+(\mathbf{A}^i)^{-1} = (\mathbf{A}^{-1})^i
+```
+
+Now we want to show that the statement holds for $i+1$, so we have:
+
+```math
+\mathbf{A}^{i+1} = \mathbf{A} \cdot \mathbf{A}^i
+```
+
+Both $\mathbf{A}$ and $\mathbf{A}^i$ are invertible by our base case and induction hypothesis, so we can take the inverse of the product:
+
+```math
+(\mathbf{A}^{i+1})^{-1} = (\mathbf{A}^i)^{-1} \cdot \mathbf{A}^{-1} = (\mathbf{A}^{-1})^i \mathbf{A}^{-1} = (\mathbf{A}^{-1})^{i+1}
+```
+
+Thus, by induction, $\mathbf{A}^k$ is invertible for all $k \geq 1$.
+</Callout>
+<Callout type="example">
+Let's take a simple example of a $2 \times 2$ matrix:
+
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix}
+```
+
+The inverse of this matrix is:
+
+```math
+\mathbf{A}^{-1} = \frac{1}{ad - bc} \begin{bmatrix}
+d & -b \\
+-c & a
+\end{bmatrix} = \frac{1}{-2} \begin{bmatrix}
+4 & -2 \\
+-3 & 1
+\end{bmatrix} = \begin{bmatrix}
+-2 & 1 \\
+1.5 & -0.5
+\end{bmatrix}
+```
+
+Now, let's compute the power of the matrix:
+
+```math
+\mathbf{A}^2 = \begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix} \begin{bmatrix}
+1 & 2 \\
+3 & 4
+\end{bmatrix} = \begin{bmatrix}
+7 & 10 \\
+15 & 22
+\end{bmatrix}
+```
+
+The inverse of this matrix is:
+
+```math
+\mathbf{A}^{-2} = \left(\mathbf{A}^2\right)^{-1} = \frac{1}{7 \cdot 22 - 10 \cdot 15} \begin{bmatrix}
+22 & -10 \\
+-15 & 7
+\end{bmatrix} = \begin{bmatrix}
+5.5 & -2.5 \\
+-3.75 & 1.75
+\end{bmatrix}
+```
+
+Now, let's compute the inverse of the original matrix raised to the power of 2:
+
+```math
+(\mathbf{A}^{-1})^2 = \begin{bmatrix}-2 & 1 \\
+1.5 & -0.5
+\end{bmatrix} \begin{bmatrix}-2 & 1 \\
+1.5 & -0.5
+\end{bmatrix} = \begin{bmatrix}
+4 + 1.5 & -2 - 0.5 \\
+-3 - 0.75 & 1.5 + 0.25
+\end{bmatrix} = \begin{bmatrix}
+3.5 & -2.5 \\
+-3.75 & 1.75
+\end{bmatrix}
+```
+
+So as we can see, the inverse of the power of the matrix is equal to the power of the inverse of the matrix.
+</Callout>
+
+So once a matrix is invertible, it stays invertible for all powers $k \geq 1$, and the inverse of the power is the power of the inverse. However, on the other side if a matrix is not invertible, then taking the power of the matrix will never make it invertible, it will either stay not invertible or become even less invertible, i.e., the rank will decrease or stay the same.
+
+Intuitively, you can think of this as the matrix being "stuck" in a state where it cannot be inverted, and taking powers of it will not change that state, only make it "more stuck" in a sense, as the rank will decrease or stay the same. Some matrices are so "stuck" that they will eventually become the zero matrix so have a rank of zero, this is called a **nilpotent matrix**. We define a nilpotent matrix as a square matrix $\mathbf{A}$ such that for some positive integer $k$,
+
+```math
+\mathbf{A}^k = \mathbf{O}
+```
+
+where $\mathbf{O}$ is the zero matrix. We already know that a nilpotent matrix is not invertible, but let's prove this formally.
+
+<Callout type="proof">
+Suppose $\mathbf{A}$ is nilpotent, so $\mathbf{A}^k = \mathbf{0}$ for some $k \geq 1$. We claim $\mathbf{A}$ is not invertible. We do this by contradiction. Let's assume that $\mathbf{A}$ is invertible. Then by the result above, $\mathbf{A}^k$ is also invertible. However, we have:
+
+```math
+\mathbf{A}^k = \mathbf{0}
+```
+
+So the zero matrix is invertible, i.e., there exists $\mathbf{B}$ such that
+
+```math
+\mathbf{0} \mathbf{B} = \mathbf{I}
+```
+
+But this is impossible, since $\mathbf{0} \mathbf{B} = \mathbf{0}$ for any $\mathbf{B}$, and $\mathbf{0} \neq \mathbf{I}$. So we have a contradiction, which means our assumption that $\mathbf{A}$ is invertible must be false and it is therefore not invertible.
+</Callout>
+<Callout type="example">
+Let
+
+```math
+\mathbf{A} = \begin{bmatrix}
+0 & 1 \\
+0 & 0
+\end{bmatrix}
+```
+
+Then
+
+```math
+\mathbf{A}^2 = \begin{bmatrix}
+0 & 1 \\
+0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+0 & 1 \\
+0 & 0
+\end{bmatrix}
+= \begin{bmatrix}
+0 \cdot 0 + 1 \cdot 0 & 0 \cdot 1 + 1 \cdot 0 \\
+0 & 0
+\end{bmatrix}
+= \begin{bmatrix}
+0 & 0 \\
+0 & 0
+\end{bmatrix}
+```
+
+So $\mathbf{A}$ is nilpotent ($\mathbf{A}^2 = 0$).
+</Callout>
+
+<Callout type="warning">
+However, don't think now that all matrices that are not invertible are nilpotent, this is not the case. A matrix can be not invertible and not nilpotent! Intuitively you can quickly come up with an example of a matrix that is not nilpotent, but not invertible, the most simple example could be:
+
+```math
+\begin{bmatrix}
+1 & 0 \\
+0 & 0
+\end{bmatrix}
+```
+
+This matrix is not inveratable as it is not full rank, but it is also not nilpotent as it does not become the zero matrix for any power $k \geq 1$ as it always stays the same:
+
+```math
+\begin{bmatrix}
+1 & 0 \\
+0 & 0
+\end{bmatrix} \begin{bmatrix}
+1 & 0 \\
+0 & 0
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 \\
+0 & 0
+\end{bmatrix}
+```
 </Callout>
 
 ## Left and Right Inverse for Non-Square Matrices
