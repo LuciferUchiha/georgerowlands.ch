@@ -417,7 +417,55 @@ As we can see that the second row is a multiple of the first row, so the matrix 
 ## Inverse of Triangular Matrices
 
 <Callout type="todo">
-Is also triangular because? why?
+Prove that the inverse of any lower triangular matrix, if it exists, is lower triangular itself same for upper triangular matrices. This is probably related to the way traingular matrices interact with matrix multiplication we get for a lower triangular matrix $\mathbf{L}$:
+
+```math
+\begin{bmatrix}
+a & 0 & 0 \\
+b & c & 0 \\
+d & e & f
+\end{bmatrix}
+\begin{bmatrix}
+x_1 & x_2 & x_3 \\
+y_1 & y_2 & y_3 \\
+z_1 & z_2 & z_3
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+```
+
+So we have the following equations:
+
+```math
+\begin{vmatrix}
+ax_1 = 1 \\
+bx_2 + cy_2 = 1 \\
+dx_3 + ey_3 + fz_3 = 1 \\
+ax_2 = 0 \\
+bx_1 + cy_1 = 0 \\
+\vdots \\
+dx_2 + ey_2 + fz_2 = 0
+\end{vmatrix}
+```
+
+does this help us?
+
+Prove that a square lower triangular matrix is invertible if and only if all its diagonal entries
+are non-zero. I thought by definition that the diagonal couldn't have zeros?
+
+Find the inverse of 4x4 lower triangular matrix with all 1s. Then for the same but general mxm.
+</Callout>
+
+## Nilpotent Matrices
+
+<Callout type="todo">
+prove that if A has inverse then $A^k$ has inverse for all $k \geq 1$. with induction
+
+If some power of a matrix is the zero matrix, i.e., $A^k = 0$ for some $k \geq 1$, then the matrix is called **nilpotent**. Nilpotent matrices do not have an inverse prove why by contradiction.
+
+Find 2x2 A neq I such that A^k = I for even $k$ and A^k = A for odd $k$. 1x1 wouldve just been -1?
 </Callout>
 
 ## Left and Right Inverse for Non-Square Matrices

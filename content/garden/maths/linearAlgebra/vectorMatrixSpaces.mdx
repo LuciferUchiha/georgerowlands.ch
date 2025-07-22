@@ -3,6 +3,17 @@ import Image from '@components/Image/Image';
 
 # Vector and Matrix Spaces
 
+<Callout type="todo">
+Let V be a vector space, G a subset of V . Every linear combination of G is again in V . so we can't leave vector spaces
+
+zero vector is always in the vector space. it is never empty set?
+
+intersection of two vector spaces is a vector space?
+union of two vector spaces is not a vector space?
+vector spaces minus a vector is not a vector space?
+element addition of vector space with another vector space is a vector space?
+</Callout>
+
 ## Fields
 
 Before we talk about vector spaces I want to talk about a similar concept you have already been using a lot called fields.
@@ -41,7 +52,14 @@ of vector addition and scalar multiplication is a vector space, the so called re
 extended to create a vector space where the elements of the vectors are complex numbers or functions or other mathematical objects.
 
 <Callout type="todo">
-Show example of vector space using polynomials or matrices.
+Show example of vector space using polynomials.
+matrices are also vector spaces, so we can have a vector space of matrices. 
+Here, we first observe that this is not really a new breed of vectors spaces, as Rmxn is iso￾morphic to Rmn: an m↙n matrix is one way of grouping mn numbers, an mn-dimensional
+vector is another way. In both cases, vector addition and scalar-multiplication are defined
+entry-wise, so it doesn’t really matter how we group the numbers.
+The difference is really in how we think about vectors and matrices. A vector in Rmn
+is a “flat” 1-dimensional array, while a matrix in Rm↗n is a 2-dimensional array of rows
+and columns
 </Callout>
 
 An equivalent definition of a vector space can be given, which is much more concise but uses lots of fancy words from abstract algebra.
@@ -60,11 +78,14 @@ linear combinations of a set of vectors.
 The ambient space is the vector space that contains the subspace so the vector space $\it{V}$ in the example above. The ambient space is also called the parent space.
 If the subset is the whole vector space then it is the ambient space itself.
 
+<Callout type="todo">
+What is this with regards to polynomials. clearly say when we are talking about a "real vector space" not just a general vector space.
+</Callout>
+
 Think of it this way. We can have a 3-dimensional ambient space, so a room. In this room we can then add a wall, or a plane which is a 2-dimensional subspace. 
 This plane is then a vector space itself, but it is contained in the 3-dimensional ambient space. However, the room itself can also be a vector space equal to the ambient space.
 
-Lets look at some examples of subspaces:
-- Think of a vector $\mathbf{v}$ in 2-dimensional space. Now we can obtain a set of vectors that are all multiples of the vector $\mathbf{v}$. If 
+Lets look at some examples of subspaces: Think of a vector $\mathbf{v}$ in 2-dimensional space. Now we can obtain a set of vectors that are all multiples of the vector $\mathbf{v}$. If 
 we then think of all the points we can reach we get a infinitely long line through the origin. This line is a 1-dimensional subspace of the 2-dimensional ambient space.
 We can then then take another vector $\mathbf{w}$ and do the same thing. This will give us another line through the origin and another 1-dimensional subspace. If we now 
 combine these two vectors and the 2 lines are not parallel, i.e the vectors are not multiples of each other and are not collinear, we will get a plane through the origin. This plane is a 
@@ -152,6 +173,20 @@ Some non-trivial basis for the 2-dimensional real vector space $\mathbb{R}^2$:
 - $B_3 = \{\begin{bmatrix} 1 \\ 1 \end{bmatrix}, \begin{bmatrix} 0 \\ 2 \end{bmatrix}\}$
 </Callout>
 
+<Callout type="todo">
+What are the basis of a vector space of polynomials or of matrices?
+
+what dimension to the following polynomials span:
+- p = x^3 + x
+- q = x^2 + 1
+- r = x^2 + x + 1
+
+If we have the following vectors v1 = (1,2,3,4) and v_2 = (7,6,5,4) then what are the dimensions of the following spaces combined with these:
+- (1,0,-2,0), (0,1,2,0), (0,0,0,1)
+- (0,1,0,0), (0,0,0,0)
+- (1,0,0,0), (0,1,0,0)
+</Callout>
+
 #### Orthogonal and Orthonormal Basis
 
 Certain bases are better then others as they make calculations easier and have nice properties. 
@@ -164,7 +199,19 @@ inner/dot product of a vector with itself is 1 because the length of a vector is
 
 #### Change of Basis
 
+<Callout type="todo">
+This is a much more complicated subject.
+</Callout>
+
 ### Steinitz Exchange Lemma
+
+<Callout type="todo">
+Let $V$ be a vector space and $F \subseteq V$ be a finite set of linearly independent vectors and $G \subseteq V$ be a finite set of vectors that spans $V$, so $F \subseteq G$. Then the steinizt excahnge lemma states the following:
+- $|F| \leq |G|$, so the number of vectors in $F$ is less than or equal to the number of vectors in $G$.
+- There exists a subset $E \subseteq G$ such that $F \cup E$ is a basis of $V$ and $|E| = |F| - |G|$.
+
+Meaning interpretation etc?
+</Callout>
 
 ### Coordinate Vectors
 
@@ -210,6 +257,16 @@ Now if we have the basis $B=\{\begin{bmatrix} 1 \\ 1 \end{bmatrix}, \begin{bmatr
 In some cases it is useful to think of a matrix as a collection of vectors. Using the different vectors of a matrix we can then define different subspaces.
 
 ### Column Space
+
+<Callout type="todo">
+If A is square then are the following statements true?
+- C(A) = C(2A)
+- C(A) = C(A^T)
+- C(A) = C(A + I)
+- C(A) = C(A^2)
+
+then the same for the null space
+</Callout>
 
 A matrix can be thought of as a collection of column vectors. So a matrix with $n$ columns can be thought of as $n$ column vectors stuck together. 
 If we then take the span of the columns we get a subspace. This subspace is called the **column space of a matrix**. We denote the column 

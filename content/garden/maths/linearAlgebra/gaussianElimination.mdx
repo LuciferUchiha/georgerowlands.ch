@@ -364,6 +364,9 @@ We then chain the elimination matrices. The final matrix is then all the elimana
 We can then also sprinkle in the permutation matrices to swap rows if needed.
 
 gauss elimination is done in O(n^3)
+
+If A is square symmetric then we can find a diagonal matrix D such that A = LDL^T where L is a lower triangular matrix and D is a diagonal matrix. first why is L^T invertable.
+we define D = U(L^T)^{-1} prove that D is upper triangular. prove that D satisfies the above. prove that it is symmetric, which then implies it is diagonal.
 </Callout>
 
 Each row operation that is performed in the gaussian elimination algorithm can be represented as a matrix multiplication. We know that if we 
