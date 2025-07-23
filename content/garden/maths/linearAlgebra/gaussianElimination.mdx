@@ -3,19 +3,16 @@ import Image from '@components/Image/Image';
 
 # Gaussian Elimination
 
-The gaussian elimination algorithm, sometimes called the row reduction algorithm, is an algorithm that only uses certain elementary operations 
-to solve a system of linear equations. The elementary operations are:
+The gaussian elimination algorithm, sometimes called the row reduction algorithm, is an algorithm that only uses certain elementary operations to solve a system of linear equations. The elementary operations are:
 - Swapping two equations
 - Multiplying an equation by a nonzero number, this also means we can divide an equation by a nonzero number as division is the same as multiplication by the reciprocal.
 - Adding a row to another row. This can also be combined with the above operation of multiplying a row to be able to add a multiple of a row to another. 
 The multiple can also be negative resulting in subtracting a multiple of one row from another row.
 
-These operations are enough. When you are actually solving a system of linear equations by hand such as using the substitution method or the 
-addition/subtraction method, you are actually performing exactly these operations.
+These operations are enough. When you are actually solving a system of linear equations by hand such as using the substitution method or the addition/subtraction method, you are actually performing exactly these operations.
 
 <Callout type="info">
-Let's look at an example to show why these operations are allowed and that they are the same as the conventional methods 
-of solving systems of linear equations. We are given the following system of linear equations:
+Let's look at an example to show why these operations are allowed and that they are the same as the conventional methods of solving systems of linear equations. We are given the following system of linear equations:
 
 ```math
 \begin{vmatrix}
@@ -56,8 +53,7 @@ and the third equation:
 \end{align*}
 ```
 
-The above step could also have been achieved by addiding/subtracting the correct multiple of the first equation to the second and third equation, which is what the gaussian elimination algorithm does.
-To remove the $x$ variable from the second equation we could subtract the first equation multiplied by $-\frac{5}{2}$ from the second equation:
+The above step could also have been achieved by adding/subtracting the correct multiple of the first equation to the second and third equation, which is what the gaussian elimination algorithm does. To remove the $x$ variable from the second equation we could subtract the first equation multiplied by $-\frac{5}{2}$ from the second equation:
 
 First we multiply the first equation by $-\frac{5}{2}$:
 
@@ -79,21 +75,16 @@ y + 3z &= 8
 \end{align*}
 ```
 
-And we have the same result as before. This process can be repeated for the third equation to get the same result as before.
-We can then also repeat the process to eliminate the $y$ variable from the third equation by adding/subtracting the correct multiple of the second equation to the third equation.
+And we have the same result as before. This process can be repeated for the third equation to get the same result as before. We can then also repeat the process to eliminate the $y$ variable from the third equation by adding/subtracting the correct multiple of the second equation to the third equation.
 
 Then to finally solve for the variables we can take the found value for $z$ and substitute it into the second equation to solve for $y$ and then substitute the found value for $y$ and $z$ into the first equation to solve for $x$.
 </Callout>
 
 ## The Algorithm
 
-We have seen that the operations are enough to solve a system of linear equations but how do we know that we aren't effecting the solution by 
-performing these operations? 
+We have seen that the operations are enough to solve a system of linear equations but how do we know that we aren't effecting the solution by performing these operations? 
 
-<Callout type="info">
-The gaussian elimination algorithm works because the allowed operations do not change the solution set of the system of linear equations. Simply changing the order 
-of the equations in the system is obvious why it doesn't change the solution set. Adding an equation to another equation is allowed because imagine 
-you have the following system of linear equations:
+The gaussian elimination algorithm works because the allowed operations do not change the solution set of the system of linear equations. Simply changing the order of the equations in the system is obvious why it doesn't change the solution set. Adding an equation to another equation is allowed because imagine you have the following system of linear equations:
 
 ```math
 \begin{vmatrix}
@@ -102,8 +93,7 @@ you have the following system of linear equations:
 \end{vmatrix}
 ```
 
-You can't simple add 100 becuase you have to add the same amount to both sides of the equation and then the equation would no longer be in its standard form and by 
-transforming it into its standard form you would have to subtract 100 from both sides of the equation which would result in a hole lot of nothing.
+You can't simple add 100 because you have to add the same amount to both sides of the equation and then the equation would no longer be in its standard form and by transforming it into its standard form you would have to subtract 100 from both sides of the equation which would result in a hole lot of nothing.
 
 ```math
 \begin{vmatrix}
@@ -112,8 +102,7 @@ transforming it into its standard form you would have to subtract 100 from both 
 \end{vmatrix}
 ```
 
-However, what you can do is add on the right side 100 to the first equation $2x + y$ to left side because it is equal to 100. You can think of it as adding 100 to both sides 
-but whilst keeping the equation in its standard form. 
+However, what you can do is add on the right side 100 to the first equation $2x + y$ to left side because it is equal to 100. You can think of it as adding 100 to both sides but whilst keeping the equation in its standard form. 
 
 ```math
 \begin{vmatrix}
@@ -126,23 +115,13 @@ but whilst keeping the equation in its standard form.
 \end{vmatrix}
 ```
 
-Multiplying an equation by a nonzero number is allowed because it is the same as multiplying both sides of the equation by the same number, it doesn't change the 
-linear equation at all. 
+Multiplying an equation by a nonzero number is allowed because it is the same as multiplying both sides of the equation by the same number, it doesn't change the linear equation at all. 
 
 Combining these two operations, we can see that we can add a multiple of one equation to another equation and it will not change the solution set!
-</Callout>
 
-So now that we are convinced that the operations are allowed and the algorithm should work, let's see what we have to do to use the algorithm and 
-solve a system of linear equations. For now we will only look at systems of linear equations that have the same number of equations as variables. 
-So they are not over or underdetermined.
+So now that we are convinced that the operations are allowed and the algorithm should work, let's see what we have to do to use the algorithm and solve a system of linear equations. For now we will only look at systems of linear equations that have the same number of equations as variables. So they are not over or underdetermined.
 
-Before the algorithm can be used to solve a system of linear equations, the system is transformed into a matrix, to be more specific, an 
-augmented matrix. If we have a system of linear equations with $n$ variables and $n$ equations, we create a matrix with $n$ rows and $n+1$ columns. 
-The first $n$ columns contain the coefficients of the variables in the equations. So the first row of the matrix matches 
-the first equation in the system of linear equations. If in the first equation the first variable has a weight/coefficent of 2, then 
-the first entry in the first row of the matrix is 2. This process is continued for all the variables in the equation. The last column of the matrix 
-contains the constants on the right side of the equations in the general form. For visibility, a vertical line is drawn between the last column of the 
-matrix and the rest of the columns. This vertical line is not part of the matrix, it is just there to show that the last column contains the constants.
+Before the algorithm can be used to solve a system of linear equations, the system is transformed into a matrix, to be more specific, an augmented matrix. If we have a system of linear equations with $n$ variables and $n$ equations (equal numbers as agreed above), we create a matrix with $n$ rows and $n+1$ columns. The first $n$ columns contain the coefficients of the variables in the equations. So the first row of the matrix matches the first equation in the system of linear equations. If in the first equation the first variable has a weight/coefficient of 2, then the first entry in the first row of the matrix is 2. This process is continued for all the variables in the equation. The last column of the matrix contains the constants on the right side of the equations in the general form. For visibility, a vertical line is drawn between the last column of the matrix and the rest of the columns. This vertical line is not part of the matrix, it is just there to show that the last column contains the constants.
 
 <Callout type="example">
 The system of linear equations:
@@ -187,10 +166,9 @@ If you were given the following system of linear equations you would probably be
 \end{vmatrix}
 ```
 
-The reason for this is that the last equation can be solved without any real work for $z = 2$. Then you can substitute 
-this value into the second equation to solve for $y = 1$ and then substitute the values for $y$ and $z$ into the first equation to solve for $x = 4$.
+The reason for this is that the last equation can be solved without any real work for $z = 2$. Then you can substitute this value into the second equation to solve for $y = 1$ and then substitute the values for $y$ and $z$ into the first equation to solve for $x = 4$.
 
-If we look at the coefficent matrix of the system of linear equations we can see that the matrix is an upper triangular matrix. 
+If we look at the coefficient matrix of the system of linear equations we can see that the matrix is an upper triangular matrix. 
 
 ```math
 \begin{bmatrix}
@@ -200,10 +178,7 @@ If we look at the coefficent matrix of the system of linear equations we can see
 \end{bmatrix}
 ```
 
-This is not a coincidence and is the reason why the gaussian elimination algorithm tries to transform the augmented matrix into such a matrix. 
-However, a triangular matrix is only defined for square matrices, so we have to look at a more general form of the matrix, the row echelon form.
-
-For a matrix to be in row echelon form it needs to satisfy the following conditions:
+This is not a coincidence and is the reason why the gaussian elimination algorithm tries to transform the augmented matrix into such a matrix. However, a triangular matrix is only defined for square matrices, so we have to look at a more general form of the matrix, **the row echelon form**. For a matrix to be in row echelon form it needs to satisfy the following conditions:
 - The first nonzero element in each row, called the leading entry or pivot, is to the right of all the pivots of the rows above it.
 - All rows that only contain zeros are at the bottom of the matrix.
 
@@ -237,19 +212,17 @@ Because in the third row, the pivot is not to the right of the pivot in the seco
 
 ### Elimination
 
-The goal of the gaussian elimination algorithm is to transform the augmented matrix into row echelon form. We do this using the allowed operations 
-we have already seen above for normal systems of linear equations, now they are just matrix operations, these can however be thought of as applying 
-the operations to the system of linear equations under the hood. The matrix operations are as follows:
+The goal of the gaussian elimination algorithm is to transform the augmented matrix into row echelon form. We do this using the allowed operations we have already seen above for normal systems of linear equations, now they are just matrix operations, these can however be thought of as applying the operations to the system of linear equations under the hood. The equivalent matrix operations are as follows:
 - Swap two rows
 - Multiply a row by a nonzero number, this also means we can divide a row by a nonzero number
-- Add a multiple of one row to another row, this can also be combined with the above operation of multiplying a row to be able to add a multiple of a row to another row or 
-subtract a multiple of one row from another row.
+- Add a multiple of one row to another row, this can also be combined with the above operation of multiplying a row to be able to add a multiple of a row to another row or subtract a multiple of one row from another row.
 
 The process of transforming the augmented matrix into row echelon form is called elimination. The elimination process is as follows:
-- We start at the first column and find the first nonzero element. This will be our pivot element. If the first row doesn't have a pivot element, we swap the first row with a row that has a pivot element in the first column.
+- We start at the first column and find the first nonzero element. This will be our pivot element. If the first row doesn't have a pivot element, we swap the first row with a row that has a pivot element in the first column. If there is no row with a pivot element in the first column, we can skip this column and move to the next column until we have found a pivot element or reached the last column (in which case the matrix is the zero matrix).
 - Now we want to eliminate all the elements below the pivot element. We do this by subtracting or adding a multiple of the row with the pivot element from the rows below it.
-- Once we have eliminated all the elements below the pivot element, we move to the next column. However, here we only look at the rows below the pivot element of the previous column. So 
-the second row. We repeat the process of finding the pivot element and eliminating the elements below it until we have reached the second to last column.
+- Once we have eliminated all the elements below the pivot element, we move to the next column. However, here we only look at the rows below the pivot element of the previous column. So the second row. We repeat the process of finding the pivot element and eliminating the elements below it until we have reached the second to last column where in the end we will have a pivot element in the last row and all the elements below it are zero. 
+
+Performing the above steps will result in the augmented matrix being in row echelon form. 
 
 <Callout type="example">
 We want to solve the following system of linear equations:
@@ -266,26 +239,26 @@ We can write the augmented matrix for this system of linear equations and start 
 
 ```math
 \begin{align*}
-    \left[\begin{array}{ccc|c}
-    \mathbf{2} & 3 & 4 & 19 \\
-    \textcolor{red}{1} & 11 & 14 & 55 \\
-    \textcolor{red}{2} & \textcolor{red}{8} & 17 & 50
-    \end{array}\right] & \rightarrow R_2 = R_2 - 2R_1 \\
-    \rightarrow \left[\begin{array}{ccc|c}
-    \mathbf{2} & 3 & 4 & 19 \\
-    \textcolor{green}{0} & 5 & 6 & 17 \\
-    \textcolor{red}{2} & \textcolor{red}{8} & 17 & 50
-    \end{array}\right] & \rightarrow R_3 = R_3 - R_1 \\
-    \rightarrow \left[\begin{array}{ccc|c}
-    \mathbf{2} & 3 & 4 & 19 \\
-    \textcolor{green}{0} & \mathbf{5} & 6 & 17 \\
-    \textcolor{green}{0} & \textcolor{red}{5} & 13 & 31
-    \end{array}\right] & \rightarrow R_3 = R_3 - R_2 \\
-    \rightarrow \left[\begin{array}{ccc|c}
-    \mathbf{2} & 3 & 4 & 19 \\
-    \textcolor{green}{0} & \mathbf{5} & 6 & 17 \\
-    \textcolor{green}{0} & \textcolor{green}{0} & \mathbf{7} & 14
-    \end{array}\right]
+\left[\begin{array}{ccc|c}
+\mathbf{2} & 3 & 4 & 19 \\
+\textcolor{red}{1} & 11 & 14 & 55 \\
+\textcolor{red}{2} & \textcolor{red}{8} & 17 & 50
+\end{array}\right] & \rightarrow R_2 = R_2 - 2R_1 \\
+\rightarrow \left[\begin{array}{ccc|c}
+\mathbf{2} & 3 & 4 & 19 \\
+\textcolor{green}{0} & 5 & 6 & 17 \\
+\textcolor{red}{2} & \textcolor{red}{8} & 17 & 50
+\end{array}\right] & \rightarrow R_3 = R_3 - R_1 \\
+\rightarrow \left[\begin{array}{ccc|c}
+\mathbf{2} & 3 & 4 & 19 \\
+\textcolor{green}{0} & \mathbf{5} & 6 & 17 \\
+\textcolor{green}{0} & \textcolor{red}{5} & 13 & 31
+\end{array}\right] & \rightarrow R_3 = R_3 - R_2 \\
+\rightarrow \left[\begin{array}{ccc|c}
+\mathbf{2} & 3 & 4 & 19 \\
+\textcolor{green}{0} & \mathbf{5} & 6 & 17 \\
+\textcolor{green}{0} & \textcolor{green}{0} & \mathbf{7} & 14
+\end{array}\right]
 \end{align*}
 ```
 
@@ -294,9 +267,7 @@ It can also be the case that the pivot element is not in the next row, in this c
 
 ### Solving a System of Linear Equations
 
-Now that we have our augmented matrix in row echelon form, we can solve the system of linear equations by reading the solution directly for the 
-last variable and then substituting the found value into the previous row to solve for the next variable. This process is called back substitution 
-as we are substituting the found values back into the previous rows.
+Now that we have our augmented matrix in row echelon form, we can solve the system of linear equations by reading the solution directly for the last variable and then substituting the found value into the above row to solve for the next variable. This process is called back substitution as we are substituting the found values back into the above rows.
 
 <Callout type="example">
 Let us continue with the example from above. We have the following row echelon form of the augmented matrix:
@@ -337,15 +308,62 @@ x &= 4
 So the solution to the system of linear equations is $x = 4$, $y = 1$ and $z = 2$.
 </Callout>
 
-However, the gaussian elimination algorithm doesn't always work. There are cases where the algorithm fails. For example 
-if the matrix can not be transformed into row echelon form. This can also happen if we have rows with only zeros in the coefficient matrix but 
-the constant is not zero. This would be an unsolvable equation as we can not make the left side of the equation equal to the right side of the equation.
+However, the gaussian elimination algorithm doesn't always work. There are cases where the algorithm fails. For example if the matrix can not be transformed into row echelon form. This can happen if we have rows with only zeros in the coefficient matrix but the constant is not zero. This would be an unsolvable equation as we can not make the left side of the equation equal to the right side of the equation.
+
+<Callout type="example">
+The following matrix is in row echelon form but doesn't have a solution:
+
+```math
+\left[\begin{array}{cc|c}
+3 & 0 & 9 \\
+0 & 0 & 1 \\ 
+\end{array}\right]
+```
+
+This is because this would equate to the following equations
+
+```math
+3x + 0y = 9 \\
+0x + 0y = 1
+```
+
+So $x = 3$ but the second equation is $0 = 1$ which is never true. So the system of linear equations has no solution.
+</Callout>
+
+Another possible scenario is that the matrix can be transformed into row echelon form but the last row is all zeros. This means that the system of linear equations has infinitely many solutions. This is because the last row doesn't give us any information about the variables, so we can choose any value for the variable corresponding to the last row and then substitute it into the above rows to get a solution.
+
+<Callout type="example">
+The following matrix is in row echelon form but has infinitely many solutions:
+
+```math
+\left[\begin{array}{cc|c}
+3 & 0 & 9 \\
+0 & 0 & 0 \\
+\end{array}\right]
+```
+
+This is because this would equate to the following equations
+
+```math
+3x + 0y = 9 \\
+0x + 0y = 0
+```
+
+So any value for $y$ will give us a solution. 
+</Callout>
+
+Notice that the for all the examples where there isn't a unique solution, the matrix in row reduced echelon form is not full rank and where their is a unique solution the matrix is full rank. This is because we can think of the gaussian elimination as a process that removes the dependencies between the rows of the matrix, like when solving a system of linear equations, we remove the dependencies between the equations by eliminating the variables. So each pivot corresponds to a variable (i.e) column that cannot be expressed as a linear combination of the other variables. Hence the number of pivots correspond to the independent columns in the matrix and the number of these pivots is the rank of the matrix.
+
+If a column lacks a pivot, it means that the variable corresponding to that column can be expressed as a linear combination of the other variables, indicating that the system has either no solution or infinitely many solutions.
+
+<Callout type="todo"> 
+Why can this be done in O(n^3) time?
+</Callout>
 
 ### Compacted Form
 
 <Callout type="todo">
-When working with large matrices, having to write out all the rows and columns for each operation can be cumbersome. 
-To make it easier to work with large matrices, it can be useful to compact the matrix by only looking at the columns that still need to be processed.
+When working with large matrices, having to write out all the rows and columns for each operation can be cumbersome. To make it easier to work with large matrices, it can be useful to compact the matrix by only looking at the columns that still need to be processed.
 
 This was shown in the old script.
 </Callout>
@@ -354,26 +372,27 @@ This was shown in the old script.
 
 <Callout type="todo">
 Each operation first can be seen as a linear transformation that is applied to each column. Hence matrix multiplication can be used to represent the operations.
-
-Each operation is an elimination matrix. First row subtraction then row addition and then row multiplication.
-
-Show that the results to Ax = b is the same after multiplying by the elimination matrix.
-
-We then chain the elimination matrices. The final matrix is then all the elimanation matrices multiplied together.
-
-We can then also sprinkle in the permutation matrices to swap rows if needed.
-
-gauss elimination is done in O(n^3)
-
-If A is square symmetric then we can find a diagonal matrix D such that A = LDL^T where L is a lower triangular matrix and D is a diagonal matrix. first why is L^T invertable.
-we define D = U(L^T)^{-1} prove that D is upper triangular. prove that D satisfies the above. prove that it is symmetric, which then implies it is diagonal.
 </Callout>
 
-Each row operation that is performed in the gaussian elimination algorithm can be represented as a matrix multiplication. We know that if we 
-multiply a matrix by an identity matrix we get the same matrix. We also seen permutation matrices that can be used to swap rows which is one 
-of the operations that can be performed in the gaussian elimination algorithm. The other operations can be summarized to adding a multiple of one 
-row to another row. This operation can also be represented as a matrix multiplication. For a matrix $\mathbf{A}\in \mathbb{R}^{3 \times 3}$ we 
-can add a $c_1$ times the first row to the second row by multiplying the matrix with the following matrix:
+Just like any natural number can be factored or decomposed into its prime factors, any matrix can also be decomposed into other matrices. For example the number 1001 can be decomposed into its prime factors:
+
+```math
+1001 = 7 \cdot 11 \cdot 13
+```
+
+For natural numbers the prime factorization can reveal a lot about the number, for example, if the number is a prime number or not or if given two numbers the greatest common divisor can be found. For example for the numbers 1001 and 2002:
+
+```math
+\begin{align*}
+1001 &= 7 \cdot 11 \cdot 13 \\
+2002 &= 2 \cdot 7 \cdot 11 \cdot 13
+gcd(1001, 2002) = 7 \cdot 11 \cdot 13 = 1001
+\end{align*}
+```
+
+We can do something similar for matrices. We can decompose a matrix into other matrices that reveal a lot about the matrix. One of the most common decompositions is the LU decomposition. The LU decomposition is a decomposition of a matrix into a lower triangular matrix $\mathbf{L}$ and an upper triangular matrix $\mathbf{U}$. The LU decomposition is useful because it allows us to solve systems of linear equations more efficiently. However, before we look at how to find these matrices, let's take a step back and look at the gaussian elimination algorithm again.
+
+Each row operation that is performed in the gaussian elimination algorithm can be represented as a matrix multiplication. We know that if we multiply a matrix by an identity matrix we get the same matrix. We have also seen permutation matrices that can be used to swap rows which is one of the operations that can be performed in the gaussian elimination algorithm. The other operations can be summarized to adding a multiple of one row to another row. This operation can also be represented as a matrix multiplication. For example for a matrix $\mathbf{A}\in \mathbb{R}^{3 \times 3}$ we can add a $c_1$ times the first row to the second row by multiplying the matrix with the following matrix:
 
 ```math
 \begin{bmatrix}
@@ -401,9 +420,9 @@ a_{31} & a_{32} & a_{33}
 \end{bmatrix}
 ```
 
-This is the same as adding a negative multiple of the first row to the third row. We can apply these operations one after another to in the end 
-get the upper triangular matrix that we get from the gaussian elimination algorithm. If we denote these elimination matrices that we multiply with as 
-$\mathbf{E}_1, \mathbf{E}_2, \ldots, \mathbf{E}_n$ and the resulting matrix as $\mathbf{U}$ we can write the following: 
+This is the same as adding a negative multiple of the first row to the third row. So we can actually represent all the operations that we perform in the gaussian elimination algorithm as matrix multiplications. We call these matrices **elimination matrices**. For now we will ignore the case where we need to swap rows, i.e need permutation matrices. You can think of the elimination matrix as a matrix that stores all the information/memory of the operations that we perform in the gaussian elimination algorithm.
+
+If we denote these elimination matrices that we multiply with as $\mathbf{E}_1, \mathbf{E}_2, \ldots, \mathbf{E}_n$ and the resulting matrix as $\mathbf{U}$ we can write the following: 
 
 ```math
 E_n \ldots E_2 E_1 \mathbf{A} = \mathbf{U}
@@ -434,8 +453,7 @@ c_{32}c_{21}-c_{31} & -c_{32} & 1
 \end{align*}
 ```
 
-This isn't a very nice matrix. However, the inverse of the elimination matrix is nice. By left multiplying the inverse of the elimination matrix 
-we come to the following:
+This isn't a very nice matrix. However notice that all these matrices are lower triangular matrices. We already know that the product of the lower triangular matrices is also a lower triangular matrix, hence as we can see above the Elimination matrix containing all the transformation is also a lower triangular matrix. We also know that the inverse of a lower triangular matrix is also a lower triangular matrix. It turns out that this inverse of the elimination matrix is much nicer. By left multiplying the inverse of the elimination matrix we come to the following:
 
 ```math
 \begin{align*}
@@ -448,123 +466,279 @@ c_{31} & c_{32} & 1
 \end{align*}
 ```
 
-<Callout type="todo"> 
-Show that this times the above is the idenitity matrix so it is actually the inverse of the elimination matrix.
+Where $c_{21}$ etc. are the multipliers that we use to subtract the multiple of the first row from the other rows (if we have to add a multiple of the first row we would have a negative multiplier). 
+
+<Callout type="proof"> 
+We can quickly see that this is the inverse of the elimination matrix by multiplying the two matrices together:
+
+```math
+\begin{bmatrix}
+1 & 0 & 0 \\
+-c_{21} & 1 & 0 \\
+c_{32}c_{21}-c_{31} & -c_{32} & 1
+\end{bmatrix} \begin{bmatrix}
+1 & 0 & 0 \\
+c_{21} & 1 & 0 \\
+c_{31} & c_{32} & 1
+\end{bmatrix} =
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+```
 </Callout>
 
-Where $c_{21}$ etc. are the multipliers that we use to subtract the multiple of the first row from the other rows (if we have to add a multiple of the first row we would have a 
-negative multiplier). Notice that the matrix that we multiply with is a lower triangular matrix. This is the idea of the LU decomposition where 
-the matrix $\mathbf{A}$ is factorized into a product of a lower triangular matrix $\mathbf{L}$ and an upper triangular matrix $\mathbf{U}$:
+The idea of the LU decomposition is exactly that this elimination matrix is a lower triangular matrix. As we are essentially factorizing the matrix $\mathbf{A}$ into a product of a lower triangular matrix $\mathbf{L}$ containing the multipliers and an upper triangular matrix $\mathbf{U}$ that is the result of the elimination process, the matrix in row echelon form:
 
 ```math
 \mathbf{A} = \mathbf{LU}
 ```
 
-But what is the advantage of this factorization? The advantage is that we can solve the system of linear equations $\mathbf{A}\mathbf{x} = \mathbf{b}$ 
-very efficiently for any $\mathbf{b}$. First we calculate the two matrices using the gaussian elimination algorithm. For this we just focus on the coefficent 
-matrix and not the augmented matrix. The operations that we perform we store/memorize by storing the multipliers in the lower triangular matrix. 
+<Callout type="todo">
+This gives us another proof showing that if the linear system has a unique solution, then the gaussian elimination algorithm does not change the unqiue solution as if A has a unqiue solution so it is invertable then the multiplication with the elimination matrix does not change the solution set as they are also invertable.
+</Callout>
 
-Then just need O(n^2) operations to solve the system of linear equations for any $\mathbf{b}$.
+Once we have performed the decomposition such that $\mathbf{A}=\mathbf{LU}$, we can solve the system of linear equations $\mathbf{A}\mathbf{x}=\mathbf{b}$ more efficiently for any right–hand side $\mathbf{b}$. We solve this by first computing $\mathbf{L}\mathbf{y}=\mathbf{b}$ and then $\mathbf{U}\mathbf{x}=\mathbf{y}$. This is called **forward substitution** and **back substitution** respectively and follows from the following equation:
 
-We first solve $\mathbf{L}\mathbf{y} = \mathbf{b}$ for $\mathbf{y}$ with forward substitution because $\mathbf{L}$ is a lower triangular matrix. 
-Then we solve $\mathbf{U}\mathbf{x} = \mathbf{y}$ for $\mathbf{x}$ with back substitution because $\mathbf{U}$ is an upper triangular matrix.
+```math
+\mathbf{A}\mathbf{x}=\mathbf{b} \implies \mathbf{LU}\mathbf{x}=\mathbf{b} \implies \mathbf{L}\mathbf{y}=\mathbf{b} \text{ where } \mathbf{y}=\mathbf{U}\mathbf{x}.
+```
+
+So we break up the calculation into the following steps in order:
+
+```math
+\begin{align*}
+\mathbf{L}\mathbf{y} &= \mathbf{b} \\
+\mathbf{y} &= \mathbf{U}\mathbf{x} \\
+\end{align*}
+```
+
+Because $\mathbf{L}$ is lower triangular we just simply solve for $y_1$ first, then $y_2$ and so on until we have solved for all $y_i$. The same applies to $\mathbf{U}$, where we solve for $x_n$ first, then $x_{n-1}$ and so on until we have solved for all $x_i$.
+
+Because each forward or backward substitution only touches the non.zero triangle, the total cost for each substitution is $\frac{n(n+1)}{2} \in O(n^2)$ which is more efficient than recalculating the LU decomposition for each right–hand side $\mathbf{b}$ in $O(n^3).
+
+<Callout type="example">
+Consider
+
+```math
+\mathbf{A}=\begin{bmatrix} 2 & 3 & 1\\ 
+4 & 7 & 7\\ 
+-2 & 4 & 5 
+\end{bmatrix},\qquad 
+\mathbf{b}=\begin{bmatrix} 
+5\\ 
+19\\ 
+13 
+\end{bmatrix}.
+```
+
+From the LU decomposition we have
+
+```math
+\mathbf{L}=\begin{bmatrix}
+1 & 0 & 0 \\
+2 & 1 & 0 \\
+-1 & 10 & 1
+\end{bmatrix},\qquad
+\mathbf{U}=\begin{bmatrix}
+2 & 3 & 1 \\
+0 & 1 & 5 \\
+0 & 0 & -46
+\end{bmatrix}.
+```
+
+We then first perform forward substitution to solve $\mathbf{L}\mathbf{y}=\mathbf{b}$:
+
+```math
+\begin{align*}
+\mathbf{L}\mathbf{y} &= \mathbf{b} \\
+\begin{bmatrix}
+1 & 0 & 0 \\
+2 & 1 & 0 \\
+-1 & 10 & 1
+\end{bmatrix} \begin{bmatrix}
+y_1 \\
+y_2 \\
+y_3
+\end{bmatrix} &= \begin{bmatrix}
+5 \\
+19 \\
+13
+\end{bmatrix} \\
+\end{align*}
+```
+
+Which results in the following equations:
+
+```math
+\begin{align*}
+1 \cdot y_1 &= 5, \\
+2 \cdot y_1 + 1 \cdot y_2 &= 19, \\
+-1 \cdot y_1 + 10 \cdot y_2 + 1 \cdot y_3 &= 13. \\
+y_1 &= 5\, y_2 = 9\, y_3 = -80.
+\end{align*}
+```
+
+and then back substitution to solve $\mathbf{U}\mathbf{x}=\mathbf{y}$:
+
+```math
+\begin{align*}
+\mathbf{U}\mathbf{x} = \mathbf{y} \\
+\begin{bmatrix}
+2 & 3 & 1 \\
+0 & 1 & 5 \\
+0 & 0 & -46
+\end{bmatrix} \begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3
+\end{bmatrix} = \begin{bmatrix}
+5 \\
+9 \\
+-80
+\end{bmatrix}
+\end{align*}
+```
+
+This results in the following equations:
+
+```math
+\begin{align*}
+-46 \cdot x_3 &= -80, \\
+1 \cdot x_2 + 5 \cdot x_3 &= 9, \\
+2 \cdot x_1 + 3 \cdot x_2 + 1 \cdot x_3 &= 5.\\
+x_3 = \frac{40}{23},\; x_2 = \frac{47}{23},\; x_1 = \frac{1}{23}.
+\end{align*}
+```
+
+Hence which gives the solution $\mathbf{x}=\begin{bmatrix} \frac{1}{23} \\ \frac{47}{23} \\ \frac{40}{23} \end{bmatrix}$.
+</Callout>
 
 ### Partial Pivoting
 
-We would have:
+In some case the gaussian elimination algorithm fails to find a pivot element in the first column. This can happen if the first row has a zero in the first column. In this case we can swap the first row with a row that has a pivot element in the first column. If we need to swap any rows we can use a permutation matrix $\mathbf{P}$ to swap the rows, we call this **partial pivoting** as we only swap rows and not columns. So our gaussian elimination algorithm can be extended to the following:
 
 ```math
-U = E_{m-1}P_{m-2} \ldots P_1 \mathbf{A}
+\mathbf{U} = \mathbf{P}_n \mathbf{E}_n \ldots \mathbf{P}_2 \mathbf{E}_2 \mathbf{P}_1 \mathbf{E}_1 \mathbf{A}
 ```
 
-Where $P_i$ are the permutation matrices that swap rows. The $E_i$ are the elimination matrices that we multiply with to get the upper triangular matrix $\mathbf{U}$.
-
-We can actually move all the permutation matrices to the left side of the equation and summarize them to then get below. The proof that this is okay is very lengthy and will be skipped.
-
-The matrix A can be permuted with a permutation matrix P to swap rows.
+Where $\mathbf{P}_i$ are the permutation matrices that swap rows and $\mathbf{E}_i$ are the elimination matrices that we multiply with to get the upper triangular matrix $\mathbf{U}$. It turns out we can actually move all the permutation matrices to the left side of the equation and summarize them to then get: 
 
 ```math
-PA = LU
+\mathbf{P}\mathbf{A} = \mathbf{L}\mathbf{U}
 ```
 
-Where P is a permutation matrix, A is the matrix we want to factorize, L is the lower triangular matrix and U is the upper triangular matrix.
+where $\mathbf{P}$ is a permutation matrix, $\mathbf{A}$ is the matrix we want to factorize, $\mathbf{L}$ is the lower triangular matrix and $\mathbf{U}$ is the upper triangular matrix. The proof that we can move all the permutation matrices to the left side of the equation is very lengthy but intuitively we can be convinced that this is okay as we may have an oracle that tells us in the beginning which rows to swap in the beginning before we start the elimination process.
 
-This is called partial pivoting because we only swap rows.
-
-We can multiply with inverse of P, i.e the transpose to then get:
+The [inverse of a permutation matrix is its transpose](), so by left multiplying the equation with the transpose of the permutation matrix we get:
 
 ```math
-A = P^T LU
+\mathbf{A} = \mathbf{P}^T\mathbf{L}\mathbf{U}
 ```
 
-Where $P^T$ is the transpose of the permutation matrix $P$. So we can write:
+This is called the LU decomposition with partial pivoting. This now allows us to solve the system of linear equations $\mathbf{A}\mathbf{x} = \mathbf{b}$ even if the first row has a zero in the first column. We can just swap the first row with a row that has a pivot element in the first column and then continue with the gaussian elimination algorithm as before. This now also allows us to factorize any matrix $\mathbf{A}$ into a product of a permutation matrix $\mathbf{P}$, a lower triangular matrix $\mathbf{L}$ and an upper triangular matrix $\mathbf{U}$.
+
+Just like with the LU decomposition without pivoting, we can solve the system of linear equations $\mathbf{A}\mathbf{x}=\mathbf{b}$ more efficiently for any right–hand side $\mathbf{b}$ by first computing $\mathbf{L}\mathbf{y}=\mathbf{P}^T\mathbf{b}$ and then $\mathbf{U}\mathbf{x}=\mathbf{y}$. This is called **forward substitution** and **back substitution** respectively and follows from the following equation:
+
 ```math
-Ax = b \rightarrow P^TLUx = b
+\mathbf{A}\mathbf{x}=\mathbf{b} \implies \mathbf{P}^T\mathbf{L}\mathbf{U}\mathbf{x}=\mathbf{b} \implies \mathbf{L}\mathbf{U}\mathbf{x}=\mathbf{P}\mathbf{b}.
 ```
 
-We first solve P^Tz = b for z. In fact, there's nothing to solve: z = Pb, so we permute
-b in the same way we have permuted the rows of A. After this, we proceed as before:
-we solve Ly = z for y using forward substitution and then solve Ux = y for x, with
-back substitution. All this can be done in O(m2) time, so again much faster than solving
-Ax = b from scratch using Gauss elimination.
+So we can break up the calculation into the following steps in order:
+
+```math
+\begin{align*}
+\mathbf{L}\mathbf{y} &= \mathbf{P}^T\mathbf{b} \\
+\mathbf{y} &= \mathbf{U}\mathbf{x} \\
+\end{align*}
+```
+
+So we first just permute the right-hand side $\mathbf{b}$ with the permutation matrix $\mathbf{P}$ and then proceed as before with forward and back substitution. Which can be done in $O(n^2)$ time, so again much faster than solving $\mathbf{A}\mathbf{x}=\mathbf{b}$ from scratch using Gauss elimination.
 
 ### Full Pivoting
 
-The matrix A can be permuted with permutation matrices P and Q to swap rows and columns.
+<Callout type="todo">
+The matrix $\mathbf{A}$ can be permuted with permutation matrices $\mathbf{P}$ and $\mathbf{Q}$ to swap rows and columns.
 
 ```math
-PAQ = LU
+\mathbf{P}\mathbf{A}\mathbf{Q} = \mathbf{L}\mathbf{U}
 ```
 
-Where P and Q are permutation matrices, A is the matrix we want to factorize, L is the lower triangular matrix and U is the upper triangular matrix.
+Where $\mathbf{P}$ is a permutation matrix that swaps rows and $\mathbf{Q}$ is a permutation matrix that swaps columns. This is called full pivoting as we swap both rows and columns. 
 
-This is called full pivoting because we swap rows and columns.
+To solve the system of linear equations $\mathbf{A}\mathbf{x} = \mathbf{b}$ we can use the same approach as with partial pivoting:
+
+```math
+\mathbf{P}\mathbf{A}\mathbf{Q}\mathbf{x} = \mathbf{b} \implies \mathbf{L}\mathbf{U}\mathbf{Q}\mathbf{x} = \mathbf{P}\mathbf{b}
+```
+
+So we can break up the calculation into the following steps in order:
+
+```math
+\begin{align*}
+\mathbf{L}\mathbf{y} &= \mathbf{P}\mathbf{b} \\
+\mathbf{U}\mathbf{Q}\mathbf{x} &= \mathbf{y} \\
+\end{align*}
+```
+
+So we first permute the right-hand side $\mathbf{b}$ with the permutation matrix $\mathbf{P}$ and then proceed as before with forward substitution. We then permute the solution vector $\mathbf{x}$ and perform back substitution with the upper triangular matrix $\mathbf{U}$ as before.
+</Callout>
 
 ### LDU Decomposition
 
+<Callout type="todo">
 The LU decomposition can be extended to the LDU decomposition where D is a diagonal matrix.
 
 ```math
-A = LDU
+\mathbf{A} = \mathbf{L}\mathbf{D}\mathbf{U}
 ```
 
-Where A is the matrix we want to factorize, L is the lower triangular matrix, D is the diagonal matrix and U is the upper triangular matrix.
+Where $\mathbf{A}$ is the matrix we want to factorize, $\mathbf{L}$ is the lower triangular matrix, $\mathbf{D}$ is the diagonal matrix and $\mathbf{U}$ is the upper triangular matrix. How do we do this? What are the derivations? What are the advantages?
+</Callout>
 
-What are the advantages?
+### LDLT decomposition 
+
+<Callout type="todo">
+If $\mathbf{A}$ is symmetric then use Cholesky algorithm which relates to LDU decomposition.
+
+we can find a diagonal matrix $\mathbf{D}$ such that $\mathbf{A} = \mathbf{L}\mathbf{D}\mathbf{L}^T$ where $\mathbf{L}$ is a lower triangular matrix and $\mathbf{D}$ is a diagonal matrix.
+we define $\mathbf{D} = \mathbf{U}(\mathbf{L}^T)^{-1}$ prove that $\mathbf{D}$ is upper triangular. prove that $\mathbf{D}$ satisfies the above? prove that it is symmetric, which then implies it is diagonal.
+</Callout>
 
 ## Gauss-Jordan Elimination
 
-gives the direct solution and more standardized form? Also results in the CR decomposetion of the matrix.
+The Gaussian Elimination Algorithm above was only defined for linear systems of equations with the same number of equations as variables. The Gauss-Jordan Elimination Algorithm is an extension of the Gaussian Elimination Algorithm that can be used to solve linear systems of equations with $m$ equations and $n$ variables. The idea is very much the same as the gaussian elimination however we do a bit more work to learn more about the matrix. 
 
-The Gaussian Elimination Algorithm above was only defined for linear systems of equations with the same number of equations as variables. 
-The Gauss-Jordan Elimination Algorithm is an extension of the Gaussian Elimination Algorithm that can be used to solve linear systems of equations 
-with $m$ equations and $n$ variables. The Gauss-Jordan Elimination Algorithm is used to find the reduced row echelon form of a matrix. The idea is 
-very much the same as the gaussian elimination however we do a bit more work to learn more about the matrix.
+Where the Gaussian Elimination Algorithm transforms the augmented matrix into row echelon form, the Gauss-Jordan Elimination Algorithm transforms the augmented matrix into reduced row echelon form. This results in us being able to read the solution directly from the matrix without having to perform back substitution, and also easily identifying the independent columns and the rank of the matrix.
 
 ### Reduced Row Echelon Form
 
-<Callout type="todo">
-relation to rank. 
-For i = 1, 2,...,r, we have riji = 1.
-For all i, j, we have rij = 0 whenever i>r or j< ji or j = jk for some k>i.
-Row i only has 0s if i>r
-easistes to understand when just looking at the matrix.
-
-To transform b into c, we apply the same row operations. One elegant way of doing this is to directly work with the
-extended matrix Ab that has b as an extra column.
-</Callout>
-
-
-Reduced row echelon form is a stricter form of row echelon form. A matrix is in reduced row echelon form if it satisfies the following conditions:
+First let's look at the definition of reduced row echelon form. The reduced row echelon form is a stricter form of row echelon form. A matrix is in reduced row echelon form if it satisfies the following conditions:
 
 - It is in row echelon form.
-- The pivot element in each row is equal to 1, called a leading 1.
-- Each column containing a leading 1 has zeros in all other positions, so the column is a standard unit vector.
+- The pivot element in each row is equal to 1, called a **leading 1**.
+- Each column containing a leading 1 has zeros in all other positions, so the column is a standard unit vector. 
+
+<Image
+    src="/maths/reducedRowEchelonForm.png"
+    caption="A matrix in reduced row echelon matches this form."
+    width={400}
+/>
+
+Another way of seeing this is if given a matrix in reduced row echelon form, we can permute the columns such that the leading 1's are in the first, second, third, etc. columns. This means that the leading 1's are in the first $r$ columns where $r$ is the rank of the matrix. The remaining columns are all mixed columns, meaning they could be zero or non-zero. Then we can describe a matrix in reduced row echelon form as:
+
+```math
+\begin{bmatrix}
+\mathbf{I}_r & \mathbf{X} \\
+\mathbf{O} & \mathbf{O}
+\end{bmatrix}
+```
+
+Where $\mathbf{I}_r$ is the $r \times r$ identity matrix, $\mathbf{X}$ is a matrix of size $r \times (n-r)$ and $\mathbf{O}$ is a zero matrix. We can also denote a matrix in reduced row echelon form as $\text{REF}(j_1, j_2, \ldots, j_r)$ where $j_1, j_2, \ldots, j_r$ are the columns that contain the leading 1's. Remember that the gaussian elimination algorithm removed the dependencies between the different columns, making the columns with the pivots, the independent columns of the matrix. The same goes for the reduced row echelon form, where the columns with the leading 1's are the independent columns of the matrix and the other columns are the dependent columns. Hence the number of leading 1's is the rank of the matrix (that why I used $r$ to denote the number of leading 1's). We can also remove the zero rows from the matrix, so we can denote the reduced row echelon form without the zero rows as $\text{RREF}(j_1, j_2, \ldots, j_r)$ where $j_1, j_2, \ldots, j_r$ are the columns that contain the leading 1's. This is just a different view of the same matrix, where we have removed the zero rows. In this view the number of rows is equal to the number of leading 1's, so the number of independent columns of the matrix and therefore also the rank of the matrix. This again shows that the number of independent columns is the same as the number of independent rows in the matrix.
 
 <Callout type="example">
-The previous matrix that was in row echelon form is not in reduced row echelon form. To get it into reduced row echelon form we have to divide the rows by the pivot element so 
-we get leading 1's and then subtract the rows from each other to get zeros in the positions above and below the leading 1's and lastly 
-remove the rows that only contain zeros.
+The previous matrix that was in row echelon form is not in reduced row echelon form. To get it into reduced row echelon form we have to divide the rows by the pivot element so we get leading 1's and then subtract the rows from each other to get zeros in the positions above and below the leading 1's. So:
 
 ```math
 \begin{bmatrix}
@@ -575,51 +749,426 @@ remove the rows that only contain zeros.
 \end{bmatrix}
 ```
 
-This matrix is in reduced row echelon form.
+is in row echelon form but not in reduced row echelon form. To make it into reduced row echelon form we divide the first row by 1, the second row by 2 and the third row by 3. This gives us:
 
 ```math
 \begin{bmatrix}
 1 & 0 & 3 & 0 \\
 0 & 1 & 2 & 0 \\
 0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+```
+
+The above matrix is therefore in $\text{REF}(1,2,4)$ as the leading 1's are in the first, second and fourth columns. If we remove the zero row we get $\text{RREF}(1,2,4)$:
+
+```math
+\begin{bmatrix}
+1 & 0 & 3 & 0 \\
+0 & 1 & 2 & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+```
+
+So the rank of the matrix is 3 and the independent columns are the first, second and fourth columns. The third column is a dependent column as it can be expressed as a linear combination of the first and second columns, specifically it is $3$ times the first column plus $2$ times the second column. The third column is therefore not an independent column and does not contain a leading 1.
+</Callout>
+
+### The Algorithm
+
+The algorithm to transform a matrix into reduced row echelon form is called the Gauss-Jordan elimination algorithm. It is an extension of the Gaussian elimination algorithm and is used to transform the augmented matrix into reduced row echelon form. The idea is the same and we allow for the same operations as in the Gaussian elimination algorithm, but we do a bit more work to get the matrix into reduced row echelon form. Specifically once we have found our pivot in a column and it is in the correct spot we divide the row by the pivot element to get a leading 1 and then we subtract the pivot row from the other rows to get zeros in the positions above and below the leading 1. This is done for each column until we have transformed the matrix into reduced row echelon form.
+
+<Callout type="example">
+Given the matrix:
+
+```math
+\mathbf{A} = \left[\begin{array}{cccc|c}
+2 & 4 & 2 & 2 & -2 \\
+6 & 12 & 6 & 7 & 1 \\
+4 & 8 & 2 & 2 & 6
+\end{array}\right]
+```
+we can apply the Gauss-Jordan elimination algorithm to transform it into reduced row echelon form:
+
+```math
+\begin{align*}
+\left[\begin{array}{cccc|c}
+2 & 4 & 2 & 2 & -2 \\
+6 & 12 & 6 & 7 & 1 \\
+4 & 8 & 2 & 2 & 6
+\end{array}\right] & \rightarrow R_1 = \frac{1}{2} R_1 \\
+\rightarrow \left[\begin{array}{cccc|c}
+1 & 2 & 1 & 1 & -1 \\
+6 & 12 & 6 & 7 & 1 \\
+4 & 8 & 2 & 2 & 6
+\end{array}\right] & \rightarrow R_2 = R_2 - 6R_1 \\
+\rightarrow \left[\begin{array}{cccc|c}
+1 & 2 & 1 & 1 & -1 \\
+0 & 0 & 0 & 1 & 7 \\
+4 & 8 & 2 & 2 & 6
+\end{array}\right] & \rightarrow R_3 = R_3 - 4R_1 \\
+\rightarrow \left[\begin{array}{cccc|c}
+1 & 2 & 1 & 1 & -1 \\
+0 & 0 & 0 & 1 & 7 \\
+0 & 0 & -2 & -2 & 10
+\end{array}\right] & \rightarrow \text{swap } R_2 \text{ and } R_3 \\
+\rightarrow \left[\begin{array}{cccc|c}
+1 & 2 & 1 & 1 & -1 \\
+0 & 0 & -2 & -2 & 10 \\
+0 & 0 & 0 & 1 & 7
+\end{array}\right] & \rightarrow R_2 = -\frac{1}{2} R_2 \\
+\rightarrow \left[\begin{array}{cccc|c}
+1 & 2 & 1 & 1 & -1 \\
+0 & 0 & 1 & 1 & -5 \\
+0 & 0 & 0 & 1 & 7
+\end{array}\right] & \rightarrow R_1 = R_1 - R_2 \\
+\rightarrow \left[\begin{array}{cccc|c}
+1 & 2 & 0 & 0 & 4 \\
+0 & 0 & 1 & 0 & -12 \\
+0 & 0 & 0 & 1 & 7
+\end{array}\right]
+\end{align*}
+```
+
+Now the matrix is in reduced row echelon form. We can see that the leading 1's are in the first, third and fourth columns, so the independent columns are the first, third and fourth columns. The rank of the matrix is 3 as there are 3 leading 1's in the matrix or there are 3 non-zero rows in the reduced row echelon form. In this case we have $\text{REF}(1,3,4) = \text{RREF}(1,3,4)$ as there are no zero rows present.
+
+We denote the result of the Gauss-Jordan elimination algorithm as $\mathbf{R}_0$. So we have:
+
+```math
+\mathbf{R}_0 = \begin{bmatrix}
+1 & 2 & 0 & 0 & 4 \\
+0 & 0 & 1 & 0 & -12 \\
+0 & 0 & 0 & 1 & 7
+\end{bmatrix}
+```
+
+Just like with the Gaussian elimination algorithm, we can also represent the Gauss-Jordan elimination algorithm as a product of elimination matrices. We can write:
+
+```math
+\mathbf{R}_0 = \mathbf{M}_n \ldots \mathbf{M}_2 \mathbf{M}_1 \mathbf{A}
+```
+
+where $\mathbf{M}_i$ are the elimination matrices that we multiply with to get the reduced row echelon form $\mathbf{R}_0$. An important note is that the elimination matrices are still square despite the matrix $\mathbf{A}$ not being square. This is because the elimination matrices are defined as the operations that we perform on the rows of the matrix, so they are still square matrices with regard to the number of rows in the matrix. So if the matrix $\mathbf{A}$ has $m$ rows and $n$ columns, the elimination matrices will be of size $m \times m$ because for the matrix multiplication to be defined the inner dimensions must match, and result is are the outer dimensions which must remain the same so:
+
+```math
+\begin{bmatrix}
+m_{11} & m_{12} & m_{13} \\
+m_{21} & m_{22} & m_{23} \\
+m_{31} & m_{32} & m_{33}
+\end{bmatrix} = \begin{bmatrix}
+a_{11} & a_{12} & a_{13} & a_{14} & a_{15} \\
+a_{21} & a_{22} & a_{23} & a_{24} & a_{25} \\
+a_{31} & a_{32} & a_{33} & a_{34} & a_{35}
+\end{bmatrix} = \begin{bmatrix}
+r_{11} & r_{12} & r_{13} & r_{14} & r_{15} \\
+r_{21} & r_{22} & r_{23} & r_{24} & r_{25} \\
+r_{31} & r_{32} & r_{33} & r_{34} & r_{35}
+\end{bmatrix}
+```
+
+or more generally:
+
+```math
+\color{blue}{m}\cross\color{red}{m} \cdot \color{green}{m}\cross\color{yellow}{n} = \color{blue}{m}\cross\color{yellow}{n}
+```
+
+The elimination matrices are still triangular matrices and work in the same way as the elimination matrices in the Gaussian elimination algorithm. They are just a bit more complex as they also contain the operations to get the leading 1's and zeros in the positions above and below the leading 1's. So we now not only have lower triangular matrices but also upper triangular matrices. So for example to divide the first row by 2 we would have the elimination matrix:
+
+```math
+\mathbf{M}_1 = \begin{bmatrix}
+\frac{1}{2} & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+```
+
+To subtract the first row from the second row we would have the elimination matrix:
+
+```math
+\mathbf{M}_2 = \begin{bmatrix}
+1 & 0 & 0 \\
+-1 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+```
+
+To subtract the second row from the first row we would have the elimination matrix:
+
+```math
+\mathbf{M}_3 = \begin{bmatrix}
+1 & -1 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+```
+
+For the process above we get the following elimination matrix:
+
+```math
+\mathbf{M} = \begin{bmatrix}
+-\frac{1}{2} & 0 & \frac{1}{2} \\
+4 & -1 & -\frac{1}{2} \\
+3 & 1 & 0
+\end{bmatrix}
+```
+
+This matrix is the product of all the elimination matrices that we used to transform the matrix $\mathbf{A}$ into reduced row echelon form $\mathbf{R}_0$. It is no longer just a lower triangular matrix but a more complex matrix that contains the operations to get the leading 1's and zeros in the positions above and below the leading 1's.
+</Callout>
+
+### Solving a System of Linear Equations
+
+The Gauss-Jordan elimination algorithm allows us to solve any system of linear equations, even if the system is not square (i.e., the number of equations $m$ and variables $n$ may differ), or if the matrix is not full rank. The method proceeds by transforming the augmented matrix of the system to reduced row echelon for. Once the matrix is in RREF, we can directly read off the solutions. So given a general system of $m$ linear equations in $n$ variables,
+
+$$
+\begin{cases}
+a_{11}x_1 + a_{12}x_2 + \ldots + a_{1n}x_n = b_1 \\
+a_{21}x_1 + a_{22}x_2 + \ldots + a_{2n}x_n = b_2 \\
+\;\;\vdots \\
+a_{m1}x_1 + a_{m2}x_2 + \ldots + a_{mn}x_n = b_m \\
+\end{cases}
+$$
+
+we write the augmented matrix**:
+
+$$
+\left[
+\begin{array}{cccc|c}
+a_{11} & a_{12} & \cdots & a_{1n} & b_1 \\
+a_{21} & a_{22} & \cdots & a_{2n} & b_2 \\
+\vdots & \vdots &        & \vdots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn} & b_m \\
+\end{array}
+\right]
+$$
+
+then using row operations (swap, scaling, adding multiples of rows), we transform the augmented matrix into reduced row echelon form. To then get the solution there are three possible cases. The first case is that the system has a unique solution, this is only the case when the matrix $\mathbf{A}$ is square and full rank, meaning that the number of equations $m$ is equal to the number of variables $n$ and the rank of the matrix is $n$.
+
+The matrix in reduced row echelon form will then directly give us the unique solutions without having to perform back substitution. 
+<Callout type="example">
+For example, consider following system of equations after applying Gauss-Jordan elimination:
+
+$$
+\left[
+\begin{array}{ccc|c}
+1 & 0 & 0 & 2 \\
+0 & 1 & 0 & -1 \\
+0 & 0 & 1 & 4
+\end{array}
+\right]
+$$
+
+This system corresponds to $x_1=2,; x_2=-1,; x_3=4$ and has a unique solution.
+</Callout>
+
+The second case is where the system has no solution, this is the case when the matrix $\mathbf{A}$ is not full rank and there is a contradictory row in the reduced row echelon form. This means that there is a row in the matrix that has all zero coefficients but a non-zero right-hand side, which means that the system is inconsistent and has no solution. This is the same as for the gaussian elimination algorithm, where we had a row with all zero coefficients and a non-zero right-hand side.
+<Callout type="example">
+For example, consider the following system of equations after applying Gauss-Jordan elimination:
+
+$$
+\left[
+\begin{array}{ccc|c}
+1 & 0 & 0 & 2 \\
+0 & 1 & 0 & -1 \\
+0 & 0 & 0 & 5
+\end{array}
+\right]
+$$
+
+This corresponds to $x_1=2$, $x_2=-1$, and $0=5$ which is a contradiction, hence the system has **no solution**.
+</Callout>
+
+The last scenario is when the system has infinitely many solutions, this is the case when the matrix $\mathbf{A}$ is not full rank and there are columns without pivots in the reduced row echelon form. Each of these columns corresponds 
+to a dependent column/variable. These dependent columns are also called free variables, as they can take any value. The system can then be expressed in terms of the free variables, leading to infinitely many solutions. So if a matrix has $n$ variables/columns and $r$ leading 1's (rank of the matrix), then the number of free variables is:
+
+```math
+\text{number of free variables} = n - r
+```
+
+this is also referred to as the **nullity** of the matrix or the degree of freedom of the system. The general solution can then be expressed in terms of the free variables, leading to infinitely many solutions. So if we pick the values for all the free variables, we can then compute the values for the actual variables in the system.
+
+<Callout type="example">
+Suppose after elimination, we obtain:
+
+$$
+\left[
+\begin{array}{ccc|c}
+1 & 0 & 2 & 3 \\
+0 & 1 & -1 & 4 \\
+0 & 0 & 0 & 0
+\end{array}
+\right]
+$$
+
+The last row is all zeros (no contradiction). The first and second columns have pivots, so $x\_1$ and $x\_2$ are basic variables. The third column does not, so $x\_3$ is a **free variable**. If we let $x\_3 = t$, $t \in \mathbb{R}$) then we can express the basic variables in terms of the free variable:
+
+$$
+\begin{cases}
+x_1 + 2x_3 = 3 \implies x_1 = 3 - 2t \\
+x_2 - x_3 = 4 \implies x_2 = 4 + t \\
+x_3 = t
+\end{cases}
+$$
+
+So **all solutions are**:
+
+$$
+(x_1, x_2, x_3) = (3 - 2t,\, 4 + t,\, t), \quad t \in \mathbb{R}
+$$
+
+This is a straight line in $\mathbb{R}^3$ which corresponds to the one degree of freedom we have due to the free variable $x_3$ and that there are infinitely many solutions along this line.
+</Callout>
+
+So in summary for a system of linear equations, with $m$ equations and $n$ variables, we can summarize the possible outcomes based on the rank of the coefficient matrix and the presence of contradictory rows:
+
+**Summary Table:**
+
+| Rank of coefficient matrix | Contradictory row? | Solution type              |
+| -------------------------- | ------------------ | -------------------------- |
+| $r = n$                  | No                 | Unique solution            |
+| $r < n$                  | No                 | Infinitely many solutions  |
+| $r \leq n$               | Yes                | No solution (inconsistent) |
+
+## CR-Decomposition
+
+We already saw that via the Gauss-Jordan elimination algorithm we can transform a matrix into reduced row echelon form. This is a very useful representation of the matrix as it reveals a lot about the matrix, such as the rank of the matrix, the independent columns and the solution to the system of linear equations. We can also use the reduced row echelon form to decompose the matrix into other matrices, the so-called **CR-decomposition**.
+
+The reduced row echelon form highlights the independent columns of the matrix, which are the columns that contain a pivot element. We know that the other columns are then linear combinations of the independent columns. The CR decomposition is a way to express the matrix as a product of two matrices, one containing the independent columns and the other containing the weights of the independent columns to create all the columns of the matrix. More formally if we are given a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ of rank $r$, we can decompose it into two matrices $\mathbf{C} \in \mathbb{R}^{m \times r}$ and $\mathbf{R} \in \mathbb{R}^{r \times n}$ such that:
+
+```math
+\mathbf{A} = \mathbf{C} \mathbf{R}
+```
+
+We can also look at an example we might get an idea of how we find the matrices $\mathbf{C}$ and $\mathbf{R}$. Let's say we have the following matrix:
+
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & 2 & 0 & 3 \\
+2 & 4 & 1 & 4 \\
+3 & 6 & 2 & 5
+\end{bmatrix}
+```
+
+We can see that the matrix has rank 2, as the second column is just double the first column and the fourth column is a linear combination of the first and third column. So we know we can create all the columns from the first and the third column, the independent columns. So let's concatenate them to make a matrix.
+
+```math
+\mathbf{C} = \begin{bmatrix}
+1 & 0 \\
+2 & 1 \\
+3 & 2
+\end{bmatrix}
+```
+
+Now the question is with what can be multiply the matrix $\mathbf{C}$ to get the matrix $\mathbf{A}$. We know that the matrix vector product is a linear combination of the columns of the matrix. So the $i$-th entry of the vector is the weight of the $i$-th column of the matrix. We also know that the matrix multiplication is like creating multiple linear combinations of the columns of the matrix. So we can see that the matrix $\mathbf{R}$ is the matrix that contains the weights of the independent columns to create all the columns of the matrix $\mathbf{A}$. For the example above this looks like this: 
+
+<Image
+    src="/maths/lagCRDecomposition.png"
+    width={500}
+/>
+
+You might notice something about the matrix $\mathbf{R}$, it is the exact matrix that we get when we perform the gauss-jordan algorithm after removing the zero rows at the bottom so the reduced row echelon form of the matrix. Why is this?
+
+So after performing the gauss-jordan algorithm on the matrix $\mathbf{A}$ we can easily find the matrices $\mathbf{C}$ and $\mathbf{R}$. The matrix $\mathbf{C}$ is the matrix that contains the independent columns which are the columns that have a pivot element. The matrix $\mathbf{R}$ is the matrix that contains the weights of the independent columns to create all the columns of the matrix $\mathbf{A}$ which corresponds to the reduced row echelon form of the matrix that we get after performing the gauss-jordan algorithm.
+
+So we can also rewrite the Gauss-Jordan elimination algorithm as:
+
+```math
+\mathbf{R}_0 = \mathbf{M} \mathbf{A} = \mathbf{M} \mathbf{C} \mathbf{R}
+```
+
+where $\mathbf{R}_0$ is the reduced row echelon form of the matrix $\mathbf{A}$, $\mathbf{M}$ is the product of all the elimination matrices that we used to transform the matrix $\mathbf{A}$ into reduced row echelon form, $\mathbf{C}$ is the matrix that contains the independent columns and $\mathbf{R}$ is the matrix that contains the weights of the independent columns to create all the columns of the matrix $\mathbf{A}$. 
+
+<Callout type="example">
+let's look at an example where the given matrix is of rank 1 such as:
+
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6
+\end{bmatrix}
+```
+
+where the second column is just double the first column and the third column is just triple the first column. So we can see that the matrix has rank 1, as all columns are linear combinations of the first column. If we perform the Gauss-Jordan elimination algorithm on this matrix we get:
+
+```math
+\mathbf{R}_0 = \begin{bmatrix}
+1 & 2 & 3 \\
+0 & 0 & 0
+\end{bmatrix}
+```
+
+So the independent column is the first column, which is the only column that has a pivot element. The matrix $\mathbf{C}$ is then:
+
+```math
+\mathbf{C} = \begin{bmatrix}
+1 \\
+2
+\end{bmatrix}
+```
+
+The matrix $\mathbf{R}$ that contains the weights of the independent columns to create all the columns of the matrix $\mathbf{A}$ is reduced row echelon matrix $\mathbf{R}_0$ without the zero row at the bottom:
+
+```math
+\mathbf{R} = \begin{bmatrix}
+1 & 2 & 3
+\end{bmatrix}
+```
+
+so we have the outer product of the two vectors $\mathbf{C}$ and $\mathbf{R}$ which matches our intuition that matrices of rank 1 can be expressed as the outer product of two vectors. So we can write:
+
+```math
+\mathbf{A} = \mathbf{C} \mathbf{R} = \begin{bmatrix}
+1 \\
+2
+\end{bmatrix} \begin{bmatrix}
+1 & 2 & 3
+\end{bmatrix} = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6
 \end{bmatrix}
 ```
 </Callout>
 
+## Calculating the Inverse via Gauss-Jordan Elimination
 
-### The Algorithm
+The gauss-jordan elimination method can be extended to calculate the inverse of a matrix. Because the inverse of a matrix is only defined for square matrices, this algorithm only works for square matrices such as $2 \times 2$ matrices, $3 \times 3$ matrices, $\mathbf{A} \in \mathbb{R}^{n \times n}$.
 
-Basically very similar to the gaussian elimination algorithm. The goal is to transform the augmented matrix into reduced row echelon form.
+Recall that any sequence of elementary row operations can be encoded as a sequence of **elimination matrices**. Each elimination matrix $\mathbf{E}\_i$ represents a single row operation. If we apply $k$ such operations to $\mathbf{A}$, the cumulative effect is:
 
-First get it into REF, and then RREF. the resulta of the gauss jordan elimination algorithem containing the zero rows still is denoted as R0. There exists some invertable matrix M such that R0 = MA. is invertable because it is a product of invertable matrices.
+```math
+\mathbf{E}_k \cdots \mathbf{E}_2 \mathbf{E}_1 \mathbf{A} = \mathbf{R}
+```
 
-### Solving a System of Linear Equations
+where $\mathbf{R}$ is the final row-reduced matrix. If $\mathbf{A}$ is full rank and square, $\mathbf{R}$ will be the identity $\mathbf{I}$ after reduction. We also remember that each elimination matrix $\mathbf{E}\_i$ is invertible, and its inverse $\mathbf{E}\_i^{-1}$ corresponds to **undoing** the row operation. Thus, to reverse all $k$ operations, we apply the inverses in reverse order (follows from the property of inverting matrices):
 
-#### Free Variables
+```math
+(\mathbf{E}_k \cdots \mathbf{E}_2 \mathbf{E}_1)^{-1}(\mathbf{E}_1 \cdots \mathbf{E}_k)\mathbf{A} = (\mathbf{E}_k \cdots \mathbf{E}_2 \mathbf{E}_1)^{-1}\mathbf{R} 
+```
 
-the columns that do not contain a pivot are called free variables. The number of free variables is equal to the number of columns minus the number of pivots.
+But if $\mathbf{R} = \mathbf{I}$, then:
 
-#### Number of Solutions
+```math
+\mathbf{A} = \mathbf{E}_1^{-1} \cdots \mathbf{E}_k^{-1} \mathbf{I}
+= \mathbf{E}_1^{-1} \cdots \mathbf{E}_k^{-1}
+```
 
-using the rank of the matrix we can determine the number of solutions to a system of linear equations.
+So, the **product of all the inverse row operations** reconstructs $\mathbf{A}$ from $\mathbf{I}$. Thus, to get $\mathbf{A}^{-1}$, we again take the inverse and use the property that the inverse of a product is the product of the inverses in reverse order and the inverse of an inverse is the original matrix:
 
-Meaning of regular and singular matrices???
+```math
+\mathbf{A}^{-1} = \mathbf{E}_k \cdots \mathbf{E}_1
+```
 
-Also something about homogenous systems and non-homogenous systems. Trivial solutions and non-trivial solutions.
+So in other words we apply to $\mathbf{I}$ the same sequence of row operations as we used to reduce $\mathbf{A}$ to $\mathbf{I}$, and the result is $\mathbf{A}^{-1}$. We can also see this from the LU decomposition perspective, where we $\mathbf{A} = \mathbf{LU}$, $\mathbf{U} = \mathbf{I}$, and where $\mathbf{L}$ was the inverse of the elimination matrices applied to $\mathbf{A}$, so $\mathbf{L} = (\mathbf{E}_k \cdots \mathbf{E}_1)^{-1} = \mathbf{E}_1^{-1} \cdots \mathbf{E}_k^{-1}$. Thus, we can express the inverse as:
 
-Consistency conditions
+```math
+\mathbf{A}^{-1} = \mathbf{L}^{-1} \implies \mathbf{A}^{-1} = \mathbf{E}_k^{-1} \cdots \mathbf{E}_1^{-1}
+```
 
-## Calculating the Inverse via Gaussian Elimination
+To do this efficiently we augment the matrix $\mathbf{A}$ with the identity matrix $\mathbf{I}$:
 
-<Callout type="todo">
-Above we showed that we can undo a previous row operation with of a matrix so MA = A' then M'A' = A where M' is the inverse of M operation. From this we can then derive the below process?
-</Callout>
+```math
+[\mathbf{A}|\mathbf{I}]
+```
 
-The gaussian elimination method can be extended to calculate the inverse of a matrix. Because the inverse of a matrix is only defined for square matrices, 
-this algorithm only works for square matrices such as $2 \times 2$ matrices, $3 \times 3$ matrices, $\mathbf{A} \in \mathbb{R}^{n \times n}$.
-
-Just like when solving a system of linear equations, we first transform the matrix into an augmented matrix. However, instead of having the constants on the right side 
-of the vertical line we add the identity matrix $\mathbf{I}$ of the same size as the matrix on the right side of the vertical line.
+Then we perform Gauss-Jordan elimination on this augmented matrix. The left side will be transformed into the identity matrix, and the right side will accumulate the effects of all the row operations, yielding $\mathbf{A}^{-1}$. The right side records the effect of all the same row operations on the identity matrix, which by the derivation above, accumulates to $\mathbf{A}^{-1}$.
 
 <Callout type="example">
 Given the matrix:
@@ -641,29 +1190,17 @@ We can calculate the inverse of $\mathbf{A}$ by transforming it into the followi
 -2 & -3 & 7 & 0 & 0 & 1
 \end{array}\right]
 ```
-
 </Callout>
 
-The goal of the algorithm is now to transform the left side of the augmented matrix into the identity matrix $\mathbf{I}$. We are still only allowed to perform 
-the same operations as before:
-
+We are still only allowed to perform the same operations as before:
 - Swapping two rows
 - Multiplying a row by a nonzero number
 - Adding a multiple of one row to another row, the multiple can also be negative resulting in subtracting a multiple of one row from another row.
 
-Important it is important that when we perform an operation on the left side of the augmented matrix, we also perform the same operation on the right side!
-
-By then transforming the left hand side firts into row echelon form and then into reduced row echelon form and then lastly performing back substitution 
-we should get on the left hand side the identity matrix $\mathbf{I}$ and on the right hand side the inverse of the matrix $\mathbf{A}$ so that we have:
+It is important that when we perform an operation on the left side of the augmented matrix, we also perform the same operation on the right side! By then transforming the left hand side first into row echelon form and then into reduced row echelon form because the matrix is square and full rank we should get on the left hand side the identity matrix $\mathbf{I}$ and on the right hand side the inverse of the matrix $\mathbf{A}$ so that we have:
 
 ```math
 [\mathbf{I}|\mathbf{A}^{-1}]
-```
-
-Which fullfills the definition of the inverse of a matrix:
-
-```math
-\mathbf{A} \mathbf{A}^{-1} = \mathbf{I}
 ```
 
 <Callout type="example">
@@ -743,86 +1280,3 @@ This gives us the inverse of the matrix $\mathbf{A}$:
 \end{bmatrix}
 ```
 </Callout>
-
-## CR-Decomposition
-
-Just like any natural number can be factored or decomposed into its prime factors, any matrix can also be decomposed into other matrices. 
-For example the number 1001 can be decomposed into its prime factors:
-
-```math
-1001 = 7 \cdot 11 \cdot 13
-```
-
-For natural numbers the prime factorization can reveal a lot about the number, for example, if the number is a prime number or not or 
-if given two numbers the greatest common divisor can be found. For example for the numbers 1001 and 2002:
-
-```math
-\begin{align*}
-1001 &= 7 \cdot 11 \cdot 13 \\
-2002 &= 2 \cdot 7 \cdot 11 \cdot 13
-gcd(1001, 2002) = 7 \cdot 11 \cdot 13 = 1001
-\end{align*}
-```
-
-The idea of decomposing a matrix into other matrices is similar, it can reveal a lot about the matrix. Our first decomposition is the CR-decomposition, 
-where the idea is as follows. Given a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ of rank $r$, we can decompose it into two matrices $\mathbf{C} \in \mathbb{R}^{m \times r}$ and 
-$\mathbf{R} \in \mathbb{R}^{r \times n}$ such that:
-
-```math
-\mathbf{A} = \mathbf{C} \mathbf{R}
-```
-
-<Callout type="todo">
-First example should be a rank 1 matrix showing that it just ends up being a vector times a vector, i.e the outer product of two vectors.
-
-The R matrix is just the reduced row echelon form of the matrix A, so it is the matrix that contains the weights of the independent columns to create all the columns of the matrix A.
-The C matrix is the matrix that contains the independent columns of the matrix A, so it is the matrix that contains the columns that have a pivot element.
-
-R0 = MCR
-</Callout>
-
-If we look at an example we might get an idea of how we find the matrices $\mathbf{C}$ and $\mathbf{R}$. Let's say we have the following matrix:
-
-```math
-\mathbf{A} = \begin{bmatrix}
-1 & 2 & 0 & 3 \\
-2 & 4 & 1 & 4 \\
-3 & 6 & 2 & 5
-\end{bmatrix}
-```
-
-We can see that the matrix has rank 3, as the second column is just double the first column and the fourth column is a linear combination of the first and third column. 
-So we know we can create all the columns from the first and the third column, the independent columns. So let's add them all to make a matrix.
-
-```math
-\mathbf{C} = \begin{bmatrix}
-1 & 0 \\
-2 & 1 \\
-3 & 2
-\end{bmatrix}
-```
-
-Now the question is with what can be multiply the matrix $\mathbf{C}$ to get the matrix $\mathbf{A}$. We know that the matrix vector product 
-is a linear combination of the columns of the matrix. So the $i$-th entry of the vector is the weight of the $i$-th column of the matrix. We also know 
-that the matrix multiplication is like creating multiple linear combinations of the columns of the matrix. So we can see that the matrix $\mathbf{R}$ 
-is the matrix that contains the weights of the independent columns to create all the columns of the matrix $\mathbf{A}$. For the example above 
-this looks like this: 
-
-<Image
-    src="/maths/lagCRDecomposition.png"
-    width={500}
-/>
-
-You might notice something about the matrix $\mathbf{R}$, it is the exact matrix that we get when we perform the gauss-jordan algorithm after 
-removing the zero rows at the bottom so the reduced row echelon form of the matrix. Why is this?
-
-<Callout type="todo">
-Precise explanation as to why this is the case, has to do with the fact of the row operations.
-
-Move over the proof that this decomposition exists, using the fact that the matrix A and C have the same column space.
-</Callout>
-
-So after performing the gauss-jordan algorithm on the matrix $\mathbf{A}$ we can easily find the matrices $\mathbf{C}$ and $\mathbf{R}$. 
-The matrix $\mathbf{C}$ is the matrix that contains the independent columns which are the columns that have a pivot element. 
-The matrix $\mathbf{R}$ is the matrix that contains the weights of the independent columns to create all the columns of the matrix $\mathbf{A}$ 
-which corresponds to the reduced row echelon form of the matrix that we get after performing the gauss-jordan algorithm.

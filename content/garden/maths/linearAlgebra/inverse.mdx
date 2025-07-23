@@ -257,6 +257,18 @@ For the inverse of a product, we also have a similar property, so the inverse of
 (\mathbf{A}\mathbf{B})^{-1} = \mathbf{B}^{-1}\mathbf{A}^{-1}
 ```
 
+This also has the key consequence that if we have two invertible matrices $\mathbf{A}$ and $\mathbf{B}$, then their product $\mathbf{A}\mathbf{B}$ is also invertible, and its inverse is given by the product of the inverses in reverse order. This also means that the following rank inequality:
+
+```math
+\operatorname{rank}(\mathbf{A}\mathbf{B}) \leq \min(\operatorname{rank}(\mathbf{A}), \operatorname{rank}(\mathbf{B}))
+```
+
+Is equal if both matrices are invertible, so we have for the $n \times n$ matrices
+
+```math
+\operatorname{rank}(\mathbf{A}\mathbf{B}) = \operatorname{rank}(\mathbf{A}) = \operatorname{rank}(\mathbf{B}) = n
+```
+
 <Callout type="proof">
 We can show this using associative property of matrix multiplication. Let's assume we have two matrices $\mathbf{A}$ and $\mathbf{B}$ that are invertible, so they have inverses $\mathbf{A}^{-1}$ and $\mathbf{B}^{-1}$. We can then verify that the inverse of the product is the product of the inverses in reverse order:
 
@@ -549,7 +561,19 @@ But what if we know rather than taking a different matrix, we take the same matr
 \operatorname{rank}(\mathbf{A}^2) \leq \operatorname{rank}(\mathbf{A})
 ```
 
-An interesting case is when the matrix is full rank, so in other words, the matrix is invertible. In this case, we can show that inverse of the power of the matrix is the power of the inverse of the matrix, i.e.,
+An interesting case is when the matrix is full rank, so in other words, the matrix is invertible. We have already seen that the product of two invertible matrices is also invertible, so we have:
+
+```math
+(\mathbf{A}\mathbf{B})^{-1} = \mathbf{B}^{-1}\mathbf{A}^{-1}
+```
+
+If we know take $\mathbf{B} = \mathbf{A}$, then we have:
+
+```math
+(\mathbf{A}^2)^{-1} = \mathbf{A}^{-1}\mathbf{A}^{-1} = (\mathbf{A}^{-1})^2
+```
+
+However, we can also generalize to higher powers of the matrix, so for any integer $k \geq 1$. In this case, we can show that inverse of the power of the matrix is the power of the inverse of the matrix, i.e.,
 
 ```math
 (\mathbf{A}^k)^{-1} = (\mathbf{A}^{-1})^k
