@@ -918,18 +918,18 @@ This matrix is the product of all the elimination matrices that we used to trans
 
 The Gauss-Jordan elimination algorithm allows us to solve any system of linear equations, even if the system is not square (i.e., the number of equations $m$ and variables $n$ may differ), or if the matrix is not full rank. The method proceeds by transforming the augmented matrix of the system to reduced row echelon for. Once the matrix is in RREF, we can directly read off the solutions. So given a general system of $m$ linear equations in $n$ variables,
 
-$$
+```math
 \begin{cases}
 a_{11}x_1 + a_{12}x_2 + \ldots + a_{1n}x_n = b_1 \\
 a_{21}x_1 + a_{22}x_2 + \ldots + a_{2n}x_n = b_2 \\
 \;\;\vdots \\
 a_{m1}x_1 + a_{m2}x_2 + \ldots + a_{mn}x_n = b_m \\
 \end{cases}
-$$
+```
 
 we write the augmented matrix**:
 
-$$
+```math
 \left[
 \begin{array}{cccc|c}
 a_{11} & a_{12} & \cdots & a_{1n} & b_1 \\
@@ -938,7 +938,7 @@ a_{21} & a_{22} & \cdots & a_{2n} & b_2 \\
 a_{m1} & a_{m2} & \cdots & a_{mn} & b_m \\
 \end{array}
 \right]
-$$
+```
 
 then using row operations (swap, scaling, adding multiples of rows), we transform the augmented matrix into reduced row echelon form. To then get the solution there are three possible cases. The first case is that the system has a unique solution, this is only the case when the matrix $\mathbf{A}$ is square and full rank, meaning that the number of equations $m$ is equal to the number of variables $n$ and the rank of the matrix is $n$.
 
@@ -946,7 +946,7 @@ The matrix in reduced row echelon form will then directly give us the unique sol
 <Callout type="example">
 For example, consider following system of equations after applying Gauss-Jordan elimination:
 
-$$
+```math
 \left[
 \begin{array}{ccc|c}
 1 & 0 & 0 & 2 \\
@@ -954,7 +954,7 @@ $$
 0 & 0 & 1 & 4
 \end{array}
 \right]
-$$
+```
 
 This system corresponds to $x_1=2,; x_2=-1,; x_3=4$ and has a unique solution.
 </Callout>
@@ -963,7 +963,7 @@ The second case is where the system has no solution, this is the case when the m
 <Callout type="example">
 For example, consider the following system of equations after applying Gauss-Jordan elimination:
 
-$$
+```math
 \left[
 \begin{array}{ccc|c}
 1 & 0 & 0 & 2 \\
@@ -971,7 +971,7 @@ $$
 0 & 0 & 0 & 5
 \end{array}
 \right]
-$$
+```
 
 This corresponds to $x_1=2$, $x_2=-1$, and $0=5$ which is a contradiction, hence the system has **no solution**.
 </Callout>
@@ -988,7 +988,7 @@ this is also referred to as the **nullity** of the matrix or the degree of freed
 <Callout type="example">
 Suppose after elimination, we obtain:
 
-$$
+```math
 \left[
 \begin{array}{ccc|c}
 1 & 0 & 2 & 3 \\
@@ -996,23 +996,23 @@ $$
 0 & 0 & 0 & 0
 \end{array}
 \right]
-$$
+```
 
 The last row is all zeros (no contradiction). The first and second columns have pivots, so $x\_1$ and $x\_2$ are basic variables. The third column does not, so $x\_3$ is a **free variable**. If we let $x\_3 = t$, $t \in \mathbb{R}$) then we can express the basic variables in terms of the free variable:
 
-$$
+```math
 \begin{cases}
 x_1 + 2x_3 = 3 \implies x_1 = 3 - 2t \\
 x_2 - x_3 = 4 \implies x_2 = 4 + t \\
 x_3 = t
 \end{cases}
-$$
+```
 
 So **all solutions are**:
 
-$$
+```math
 (x_1, x_2, x_3) = (3 - 2t,\, 4 + t,\, t), \quad t \in \mathbb{R}
-$$
+```
 
 This is a straight line in $\mathbb{R}^3$ which corresponds to the one degree of freedom we have due to the free variable $x_3$ and that there are infinitely many solutions along this line.
 </Callout>
