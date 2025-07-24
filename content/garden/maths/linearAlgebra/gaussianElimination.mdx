@@ -497,6 +497,8 @@ The idea of the LU decomposition is exactly that this elimination matrix is a lo
 
 <Callout type="todo">
 This gives us another proof showing that if the linear system has a unique solution, then the gaussian elimination algorithm does not change the unqiue solution as if A has a unqiue solution so it is invertable then the multiplication with the elimination matrix does not change the solution set as they are also invertable.
+
+How do we get L quickly? Don't we get it from an augmented matrix and then perform row operations to get the left side into row echelon form?
 </Callout>
 
 Once we have performed the decomposition such that $\mathbf{A}=\mathbf{LU}$, we can solve the system of linear equations $\mathbf{A}\mathbf{x}=\mathbf{b}$ more efficiently for any right–hand side $\mathbf{b}$. We solve this by first computing $\mathbf{L}\mathbf{y}=\mathbf{b}$ and then $\mathbf{U}\mathbf{x}=\mathbf{y}$. This is called **forward substitution** and **back substitution** respectively and follows from the following equation:

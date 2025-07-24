@@ -62,7 +62,7 @@ An important consequence of the vector space axioms is that the null vector is a
 Another consequence is that the vector space is closed under addition and scalar multiplication. This means that if we take any two vectors from the vector space and add them together or multiply them with a scalar then the result is also in the vector space. This is important as it means that we can always create new vectors from existing vectors in the vector space. It also means that any linear combination of vectors in the vector space is also in the vector space, so we can never "leave" the vector space by adding or scaling vectors.
 
 <Callout type="proof">
-Let $V$ be a vector space over a field $\mathbb{F}$, and let $G \subseteq V$. We want to show that **any linear combination of finitely many vectors from $G$ is in $V$**. In other words, that $V$ is closed under linear combinations (addition and scalar multiplication), as a consequence of the axioms. Let $\mathbf{v}\_1, \ldots, \mathbf{v}\_k \in G$ and $a\_1, \ldots, a\_k \in \mathbb{F}$. A **linear combination** is any expression of the form
+Let $V$ be a vector space over a field $\mathbb{F}$, and let $G \subseteq V$. We want to show that **any linear combination of finitely many vectors from $G$ is in $V$**. In other words, that $V$ is closed under linear combinations (addition and scalar multiplication), as a consequence of the axioms. Let $\mathbf{v}_1, \ldots, \mathbf{v}_k \in G$ and $a_1, \ldots, a_k \in \mathbb{F}$. A **linear combination** is any expression of the form
 
 ```math
 \mathbf{w} = a_1 \mathbf{v}_1 + a_2 \mathbf{v}_2 + \cdots + a_k \mathbf{v}_k.
@@ -86,7 +86,7 @@ If we define the following vector:
 \mathbf{u} = a_1 \mathbf{v}_1 + \cdots + a_n \mathbf{v}_n
 ```
 
-then by the inductive hypothesis, $\mathbf{u} \in V$. By then again applying the **axiom of scalar multiplication**, we have: $a\_{n+1} \mathbf{v}\_{n+1} \in V$ and by the **axiom of vector addition (closure)**, we have: $\mathbf{u} + a\_{n+1} \mathbf{v}\_{n+1} \in V$. Thus, $\mathbf{w} \in V$ and we have shown that any linear combination of a finite number of vectors from $G$ is in $V$ and that a vector space is closed under linear combinations.
+then by the inductive hypothesis, $\mathbf{u} \in V$. By then again applying the **axiom of scalar multiplication**, we have: $a_{n+1} \mathbf{v}_{n+1} \in V$ and by the **axiom of vector addition (closure)**, we have: $\mathbf{u} + a_{n+1} \mathbf{v}_{n+1} \in V$. Thus, $\mathbf{w} \in V$ and we have shown that any linear combination of a finite number of vectors from $G$ is in $V$ and that a vector space is closed under linear combinations.
 </Callout>
 
 An equivalent definition of a vector space can be given, which is much more concise but uses lots of fancy words from abstract algebra. The first four axioms (related to vector addition) say that a vector space is an abelian/commutative group under addition, and the remaining axioms (related to the scalar multiplication) say that this operation defines a ring homomorphism from a field into the endomorphism ring of this group. Even more concisely, a vector space is a module over a field.
@@ -108,7 +108,7 @@ If we check the vector space axioms for $P_n$:
 
 - The sum of two degree $\leq n$ polynomials is still a degree $\leq n$ polynomial.
 - The scalar multiple of a degree $\leq n$ polynomial is still degree $\leq n$.
-- The zero polynomial $0(x) = 0$ is in $P\_n$.
+- The zero polynomial $0(x) = 0$ is in $P_n$.
 - All other axioms (commutativity, associativity, etc.) are inherited from the field of real numbers.
 
 we notice that all axioms hold. Thus, $P_n$ is closed under addition and scalar multiplication, contains the zero polynomial, and satisfies all other vector space properties. Therefore, $P_n$ is a vector space over $\mathbb{R}$.
@@ -154,7 +154,7 @@ So we can formally define a subspace $\it{S}$ of a vector space $\it{V}$ as a su
 So if we take any two vectors from the subspace and multiply them with any scalar we get a vector that is also in the subspace (this is the closure under addition and scalar multiplication). Additionally the subspace must contain the null vector $\mathbf{o}$. This is because the null vector is always in the subspace as if we take any vector or linear combination of vectors in the subspace and multiply it with 0 we get the null vector.
 
 <Callout type="example">
-For polynomials $p(x)$ of degree at most $n$, the ambient space is $P\_n$.
+For polynomials $p(x)$ of degree at most $n$, the ambient space is $P_n$.
 </Callout>
 
 #### 0-Dimensional Subspace
@@ -172,8 +172,8 @@ We can then first look at the intersection of the two vector spaces $U \cap W$. 
 <Callout type="proof">
 To show that $U \cap W$ is a vector space, we need to show that it satisfies the vector space axioms:
 - **Contains the zero vector:** Since both $U$ and $W$ are vector spaces, $0 \in U$ and $0 \in W$, so $0 \in U \cap W$.
-- **Closed under addition:** If $\mathbf{u}\_1, \mathbf{u}\_2 \in U \cap W$, then $\mathbf{u}\_1, \mathbf{u}\_2 \in U$ and $\mathbf{u}\_1, \mathbf{u}\_2 \in W$. Since $U$ and $W$ are closed under addition, $\mathbf{u}\_1 + \mathbf{u}\_2 \in U$ and $\mathbf{u}\_1 + \mathbf{u}\_2 \in W$, so $\mathbf{u}\_1 + \mathbf{u}\_2 \in U \cap W$.
-- **Closed under scalar multiplication:** For any scalar $a \in \mathbb{F}$, $a\mathbf{u}\_1 \in U$ and $a\mathbf{u}\_1 \in W$, so $a\mathbf{u}\_1 \in U \cap W$.
+- **Closed under addition:** If $\mathbf{u}_1, \mathbf{u}_2 \in U \cap W$, then $\mathbf{u}_1, \mathbf{u}_2 \in U$ and $\mathbf{u}_1, \mathbf{u}_2 \in W$. Since $U$ and $W$ are closed under addition, $\mathbf{u}_1 + \mathbf{u}_2 \in U$ and $\mathbf{u}_1 + \mathbf{u}_2 \in W$, so $\mathbf{u}_1 + \mathbf{u}_2 \in U \cap W$.
+- **Closed under scalar multiplication:** For any scalar $a \in \mathbb{F}$, $a\mathbf{u}_1 \in U$ and $a\mathbf{u}_1 \in W$, so $a\mathbf{u}_1 \in U \cap W$.
 
 Therefore, $U \cap W$ is a vector space.
 </Callout>
@@ -181,9 +181,9 @@ Therefore, $U \cap W$ is a vector space.
 Next we can look at the union of the two vector spaces $U \cup W$. The result of the union is not necessarily a vector space.
 
 <Callout type="proof">
-Consider the following counterexample. Let $U = \text{span}(\begin{bmatrix}1 \ 0\end{bmatrix})$, $W = \text{span}(\begin{bmatrix}0 \ 1\end{bmatrix})$ in $\mathbb{R}^2$. So all vectors in $U$ are of the form $(a, 0)$ and all vectors in $W$ are of the form $(0, b)$ where $a, b \in \mathbb{R}$, which means that $U \cup W$ consists of all vectors of the form $(a, 0)$ or $(0, b)$.
+Consider the following counterexample. Let $U = \text{span}(\begin{bmatrix}1 \\ 0\end{bmatrix})$, $W = \text{span}(\begin{bmatrix}0 \\ 1\end{bmatrix})$ in $\mathbb{R}^2$. So all vectors in $U$ are of the form $(a, 0)$ and all vectors in $W$ are of the form $(0, b)$ where $a, b \in \mathbb{R}$, which means that $U \cup W$ consists of all vectors of the form $(a, 0)$ or $(0, b)$.
 
-Consider $\mathbf{u}\_1 = (1, 0) \in U$ and $\mathbf{u}\_2 = (0, 1) \in W$. Both are in $U \cup W$, but their sum $(1, 0) + (0, 1) = (1, 1)$ is not in $U \cup W$ (since neither entry is zero).
+Consider $\mathbf{u}_1 = (1, 0) \in U$ and $\mathbf{u}_2 = (0, 1) \in W$. Both are in $U \cup W$, but their sum $(1, 0) + (0, 1) = (1, 1)$ is not in $U \cup W$ (since neither entry is zero).
 Therefore, $U \cup W$ is not closed under addition in general, so is not a vector space.
 </Callout>
 
@@ -199,22 +199,22 @@ This is always a vector space.
 
 <Callout type="proof">
 To show that $U + W$ is a vector space, we need to show that it satisfies the vector space axioms:
-- **Contains the zero vector:** $0 = 0\_U + 0\_W \in U + W$.
-- **Closed under addition:** Let $\mathbf{a} = \mathbf{u}\_1 + \mathbf{w}\_1$ and $\mathbf{b} = \mathbf{u}\_2 + \mathbf{w}\_2$ with $\mathbf{u}\_1, \mathbf{u}\_2 \in U$, $\mathbf{w}\_1, \mathbf{w}\_2 \in W$.
+- **Contains the zero vector:** $0 = 0_U + 0_W \in U + W$.
+- **Closed under addition:** Let $\mathbf{a} = \mathbf{u}_1 + \mathbf{w}_1$ and $\mathbf{b} = \mathbf{u}_2 + \mathbf{w}_2$ with $\mathbf{u}_1, \mathbf{u}_2 \in U$, $\mathbf{w}_1, \mathbf{w}_2 \in W$.
 
 ```math
 \mathbf{a} + \mathbf{b} = (\mathbf{u}_1 + \mathbf{w}_1) + (\mathbf{u}_2 + \mathbf{w}_2)
 = (\mathbf{u}_1 + \mathbf{u}_2) + (\mathbf{w}_1 + \mathbf{w}_2)
 ```
 
-Since $U$ and $W$ are vector spaces, $\mathbf{u}\_1 + \mathbf{u}\_2 \in U$, $\mathbf{w}\_1 + \mathbf{w}\_2 \in W$, so their sum is in $U + W$.
+Since $U$ and $W$ are vector spaces, $\mathbf{u}_1 + \mathbf{u}_2 \in U$, $\mathbf{w}_1 + \mathbf{w}_2 \in W$, so their sum is in $U + W$.
 - **Closed under scalar multiplication:** For any scalar $a$,
 
 ```math
 a\mathbf{a} = a(\mathbf{u}_1 + \mathbf{w}_1) = a\mathbf{u}_1 + a\mathbf{w}_1
 ```
 
-Again, $a\mathbf{u}\_1 \in U$, $a\mathbf{w}\_1 \in W$, so $a\mathbf{a} \in U + W$. Therefore, $U + W$ is a vector space.
+Again, $a\mathbf{u}_1 \in U$, $a\mathbf{w}_1 \in W$, so $a\mathbf{a} \in U + W$. Therefore, $U + W$ is a vector space.
 </Callout>
 
 ### Span
@@ -290,10 +290,10 @@ Some non-trivial basis for the 2-dimensional real vector space $\mathbb{R}^2$:
 However, all bases of a subspace have the same number of vectors. This number is called the **dimension of the subspace**. So any linearly independent set of 2 vectors with 2 components will span a 2-dimensional subspace in a 2-dimensional ambient space.
 
 <Callout type="example">
-For our vector space of polynomials $P\_n$ the standard basis is ${1, x, x^2, \ldots, x^n}$. This basis has $n+1$ vectors and spans the space of all polynomials of degree at most $n$. Therefore the dimension of this vector space is $n+1$. 
+For our vector space of polynomials $P_n$ the standard basis is ${1, x, x^2, \ldots, x^n}$. This basis has $n+1$ vectors and spans the space of all polynomials of degree at most $n$. Therefore the dimension of this vector space is $n+1$. 
 </Callout>
 <Callout type="example">
-For our vector space of matrices $M\_{m \times n}(\mathbb{R})$ the standard basis consists of the matrices $E\_{ij}$ where $E\_{ij}$ has a $1$ in position $(i,j)$ and zeros elsewhere. The number of such matrices is $m n$, so the dimension of this vector space is $m n$. For example we could construct the following matrix using the standard basis for $M\_{2 \times 3}(\mathbb{R})$:
+For our vector space of matrices $M_{m \times n}(\mathbb{R})$ the standard basis consists of the matrices $E_{ij}$ where $E_{ij}$ has a $1$ in position $(i,j)$ and zeros elsewhere. The number of such matrices is $m n$, so the dimension of this vector space is $m n$. For example we could construct the following matrix using the standard basis for $M_{2 \times 3}(\mathbb{R})$:
 
 ```math
 \begin{bmatrix}
@@ -345,31 +345,57 @@ Now if we have the basis $B=\{\begin{bmatrix} 1 \\ 1 \end{bmatrix}, \begin{bmatr
 
 ### Steinitz Exchange Lemma
 
-<Callout type="todo">
-Let $V$ be a vector space and $F \subseteq V$ be a finite set of linearly independent vectors and $G \subseteq V$ be a finite set of vectors that spans $V$, so $F \subseteq G$. Then the steinizt excahnge lemma states the following:
-- $|F| \leq |G|$, so the number of vectors in $F$ is less than or equal to the number of vectors in $G$.
-- There exists a subset $E \subseteq G$ such that $F \cup E$ is a basis of $V$ and $|E| = |F| - |G|$.
+The Steinitz Exchange Lemma is a key result in linear algebra that explains why all bases of a finite-dimensional vector space have the same number of elements. It formalizes the idea that "independent vectors can be exchanged into a spanning set". The lemma states the following.
 
-Meaning interpretation etc? Can use it to prove that two finite bases of the same vector space have the same number of vectors.
+Let $V$ be a vector space. Let $F = {\mathbf{f}_1, \ldots, \mathbf{f}_k} \subseteq V$ be a finite set of linearly independent vectors, and let $G = {\mathbf{g}_1, \ldots, \mathbf{g}_n} \subseteq V$ be a finite set of vectors that **spans** $V$ so $G$ form a basis of the vector space. Then the following properties hold:
+- **Size property:** $k \leq n$, i.e., the number of linearly independent vectors of the same space cannot exceed the number of vectors spanning that space.
+* **Exchange Property:** There exists a subset $E \subseteq G$ with $|E| = k$ such that $(G \setminus E) \cup F$ still spans $V$ (or, equivalently, $F \cup (G \setminus E)$ spans $V$). So in other words we can exchange (hence the name) $k$ vectors from $G$ with the $k$ independent vectors in $F$ and still span the same vector space $V$.
+
+This isn't correct but for intuition you can think of the vectors in $E$ with which we exchange the vectors in $F$ as the vectors that have the same "direction" as the vectors in $F$ so we can replace them without changing the span of the vector space.
+
+A key special case is when both $F$ and $G$ are both **bases** of $V$, i.e., both are linearly independent and span $V$. In this case, it follows that $|F| = |G|$, so any two bases of a finite-dimensional vector space have the same number of vectors. For example if $B_1$ and $B_2$ are both bases (i.e., both are linearly independent and spanning), then $|B_1| \leq |B_2|$ and $|B_2| \leq |B_1|$, so $|B_1| = |B_2|$. This number is called the **dimension** of $V$ as already mentioned above.
+
+<Callout type="proof">
+We will prove the first part, $k \leq n$, and show the exchange property by induction on $k$ (the number of independent vectors in $F$).
+
+For our base case where $k = 0$, we have an empty set $F$, which trivially satisfies the condition $0 \leq n$ since $n$ is the number of vectors in $G$ that spans $V$.
+
+Now we assume as our induction hypothesis that the lemma holds for all sets of $k - 1$ linearly independent vectors. We will show it holds for $k$ linearly independent vectors. For our induction step let $F = {\mathbf{f}_1, \ldots, \mathbf{f}_k}$ be linearly independent, and let $G = {\mathbf{g}_1, \ldots, \mathbf{g}_n}$ span $V$. Since $G$ spans $V$, $\mathbf{f}_k$ can be written as a linear combination of the vectors in $G$:
+
+```math
+\mathbf{f}_k = a_1\mathbf{g}_1 + a_2\mathbf{g}_2 + \ldots + a_n\mathbf{g}_n
+```
+
+At least one of the coefficients $a_j$ must be nonzero, without loss of generality, suppose $a_1 \neq 0$. We can then solve for $\mathbf{g}_1$:
+
+```math
+\mathbf{g}_1 = \frac{1}{a_1} \mathbf{f}_k - \frac{a_2}{a_1}\mathbf{g}_2 - \ldots - \frac{a_n}{a_1}\mathbf{g}_n
+```
+
+If we then let $G' = (G \setminus {\mathbf{g}_1}) \cup {\mathbf{f}_k}$. So we exchange one of the basis vectors $\mathbf{g}_1$ in $G$ with the independent vector $\mathbf{f}_k$ from $F$. We claim that $G'$ also spans $V$. Why? Because any vector in $V$ is a linear combination of the vectors $\mathbf{g}_i$, and we can replace every occurrence of $\mathbf{g}_1$ using the expression above in terms of $\mathbf{f}_k$ and the other $\mathbf{g}_i$. Thus, $G'$ spans $V$.
+
+Now, $F' = {\mathbf{f}_1, \ldots, \mathbf{f}_{k-1}}$ is a linearly independent set of $k-1$ vectors, and $G'$ is a spanning set of $n$ vectors (just like $G$). By the induction hypothesis, we can exchange $k-1$ vectors from $G'$ for the $k-1$ vectors in $F'$. This gives us a subset $E' \subseteq G'$, $|E'| = k-1$, so that $F' \cup (G' \setminus E')$ spans $V$.
+
+But $G' \setminus E' = \left( G \setminus ({\mathbf{g}_1} \cup E') \right) \cup {\mathbf{f}_k}$. So, if we set $E = E' \cup {\mathbf{g}_1}$, $|E| = k$, and the set $F \cup (G \setminus E)$ spans $V$.
+
+Thus, we have replaced $k$ vectors in $G$ with $k$ independent vectors $F$, and the resulting set is still a spanning set for $V$. Therefore, $k \leq n$ and the exchange property holds.
 </Callout>
 
-#### Change of Basis
+<Callout type="example">
+Suppose $V = \mathbb{R}^3$ and we have the following sets:
 
-<Callout type="todo">
-This is a much more complicated subject.
+```math
+F = \left\{ \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix} \right\}, \quad G = \left\{ \begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix}, \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} \right\}
+```
+
+So $F$ is a set of 2 linearly independent vectors and $G$ is a set of 3 vectors that spans $V$. By the Steinitz Exchange Lemma we then have:
+- $|F| = 2 \leq 3 = |G|$
+- We can find a subset $E \subseteq G$, $|E| = 2$, such that $F \cup (G \setminus E)$ spans $V$.
+
+For instance, if we replace $\begin{bmatrix} 1 \\ 1 \\ 0 \end{bmatrix}$ and $\begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix}$ in $G$ with the two independent vectors in $F$, then $F \cup \left{ \begin{bmatrix} 1 \\ 0 \\ 1 \end{bmatrix} \right}$ spans $V$.
 </Callout>
 
 ## Column Space
-
-<Callout type="todo">
-If A is square then are the following statements true?
-- C(A) = C(2A)
-- C(A) = C(A^T)
-- C(A) = C(A + I)
-- C(A) = C(A^2)
-
-then the same for the null space
-</Callout>
 
 A matrix can be thought of as a collection of column vectors. So a matrix with $n$ columns can be thought of as $n$ column vectors stuck together. If we then take the span of the columns we get a subspace. This subspace is called the **Column space of a matrix**. We denote the column space of a matrix $\mathbf{A} \in R^{m \times n}$ as $C(\mathbf{A})$. So in other words the column space is the set of all possible linear combinations of the columns of the matrix. This also means that the independent columns of the matrix $\mathbf{A}$ are the basis of the column space. More formally for a matrix $\mathbf{A} \in R^{m \times n}$:
 
@@ -396,11 +422,27 @@ dim(C(\mathbf{A})) = r
 
 If the rank of the matrix is 0 then the matrix is the null matrix and the column space is the 0-dimensional subspace. If the rank of the matrix is the number of rows then the column space is the whole ambient space. 
 
+The column space, as we have seen, is the set of all possible linear combinations of the columns of a matrix $\mathbf{A}$. But there is another perspective on the column space that is both more abstract and more general: the **image of a linear transformation**.
+
+Whenever we represent a linear transformation $T : \mathbb{R}^n \rightarrow \mathbb{R}^m$ by a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$, the action of $T$ on any vector $\mathbf{x} \in \mathbb{R}^n$ is given by matrix multiplication, $T(\mathbf{x}) = \mathbf{A} \mathbf{x}$. The set of all vectors in $\mathbb{R}^m$ that can be reached by applying $T$ to some vector in $\mathbb{R}^n$ is called the **image** of $T$:
+
+```math
+\operatorname{Im}(T) = \{ \mathbf{A}\mathbf{x} \mid \mathbf{x} \in \mathbb{R}^n \} \subseteq \mathbb{R}^m
+```
+
+But this set is precisely the column space of $\mathbf{A}$, because every product $\mathbf{A}\mathbf{x}$ is a linear combination of the columns of $\mathbf{A}$, with the coefficients taken from the components of $\mathbf{x}$. Thus, the column space is also called the **image** of the matrix, and in the language of linear transformations, these terms are often used interchangeably:
+
+```math
+C(\mathbf{A}) = \operatorname{Im}(T)
+```
+
+This provides a conceptual link between algebraic manipulation with matrices and the geometric notion of mapping vectors from one space to another. The column space describes all the possible outputs (images) of the transformation, so understanding the column space tells us everything about the "reach" of the transformation $T$.
+
 <Callout type="example">
 If all of the columns of a square matrix are linearly independent then the column space is the whole space. This is the ambient space and the number of linearly independent columns are the same number. So the independent columns span the whole space and are therefore also the basis of the column space.
 
 ```math
-\C(\begin{bmatrix} 1 & 0 \\ 1 & 2 \end{bmatrix}) = \mathbb{R}^2
+C(\begin{bmatrix} 1 & 0 \\ 1 & 2 \end{bmatrix}) = \mathbb{R}^2
 ```
 
 For other matrices it might be hard to see what the column space is. For this we first figure out what the rank is and which columns are linearly independent using gauss-jordan elimination to get the matrix in reduced row echelon form. Then we can see that the column space is the span of the linearly independent columns.
@@ -410,7 +452,7 @@ For other matrices it might be hard to see what the column space is. For this we
 1 & 2 & 0 & 3 \\
 2 & 4 & 1 & 4 \\
 3 & 6 & 2 & 5 \\
-\end{bmatrix} \rightarrow \text{in row echelon form} \rightarrow \begin{bmatrix}
+\end{bmatrix} \rightarrow \text{in reduced row echelon form} \rightarrow \begin{bmatrix}
 1 & 2 & 0 & 3 \\
 0 & 0 & 1 & -2 \\
 0 & 0 & 0 & 0 \\
@@ -426,53 +468,131 @@ C(\mathbf{A}) = span(\{\begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}, \begin{bmatrix
 Important is that the column space is spanned by the original columns of the matrix and not the columns in the row echelon form. The row echelon form is just a way to find the linearly independent columns!
 </Callout>
 
-### Membership of a Vector in the Column Space
+Now let us consider what happens to the column space when we apply certain operations to a matrix. This is important both for intuition and for practical computation, as not all operations preserve or change the column space in the same way. However, in general the column space is fundamentally tied to the set of linear combinations possible from the columns of a matrix. Operations that do not introduce new linear dependencies or fundamentally change the directions spanned by the columns leave the column space unchanged. In contrast, operations other operations can alter the span, sometimes dramatically. The structure of the column space is thus a powerful tool for understanding what a matrix (or linear transformation) can "do" to vectors, what outputs are possible, and how changes to the matrix affect this capability.
 
-If we have a vector $\mathbf{b}$ and we want to know if it is in the column space of a matrix $\mathbf{A}$ we are actually asking the question of whether the vector $\mathbf{b}$ can be written as a linear combination of the columns of $\mathbf{A}$. This turns into our favorite equation to solve:
+#### Scaling a Matrix
+
+First, consider multiplying the matrix $\mathbf{A}$ by a nonzero scalar $c$. The matrix $c\mathbf{A}$ simply scales every column by $c$. However, the set of all linear combinations of the scaled columns is the same as the set of all linear combinations of the original columns (except that all vectors are now multiplied by $c$), so the column space remains the same up to scaling. In particular, the set of directions (the subspace) does not change, only the "size" of the vectors in the space. For example, the column space of $\mathbf{A}$ is exactly the same as the column space of $2\mathbf{A}$:
 
 ```math
-\mathbf{A}\mathbf{x} = \mathbf{b}
+C(\mathbf{A}) = C(2\mathbf{A})
 ```
 
-Where $\mathbf{x}$ is the vector containing the weights of the linear combination to make $\mathbf{b}$. If we can find a solution for $\mathbf{x}$ then the vector $\mathbf{b}$ is in the column space of $\mathbf{A}$. If there is no solution then the vector $\mathbf{b}$ is not in the column space of $\mathbf{A}$. We have already seen multiple ways to solve this equation, such as the gauss-jordan elimination.
+as long as $c \neq 0$ as multiplying by zero would collapse the column space to just the zero vector making it the 0-dimensional subspace.
 
-A intuitive way to think about a case where a vector is not in the column space of for example $2 \times 2$ matrix which spans a line in 2D space. If the vector is not on the line then it is not in the column space. If the vector is on the line then it is in the column space.
+#### Adding a Matrix
+
+If we take a square matrix $\mathbf{A}$ and consider adding a matrix such as the identity matrix, so $\mathbf{A} + \mathbf{I}$, the resulting matrix has each column of $\mathbf{A}$ with $1$ added to the diagonal entry. The new set of columns is generally different from the set of columns in $\mathbf{A}$, and so the span can change. For instance, if $\mathbf{A}$ is the zero matrix, then $C(\mathbf{A})$ is just the zero vector, while $C(\mathbf{A} + \mathbf{I})$ is the whole space, since the identity matrix is full rank and its columns span the entire ambient space. Thus, in general,
+
+```math
+C(\mathbf{A}) \neq C(\mathbf{A} + \mathbf{I})
+```
+
+This is also the case for full rank matrices, as we can quickly come up with a matrix when added that will kill the entire column space. For example imagine we have the negative identity matrix $-\mathbf{I}$, this matrix is full rank, but if we add the identity matrix to it we get the zero matrix, which has a column space of just the zero vector. 
+
+#### Transposing a Matrix
+
+Taking the transpose of a matrix, that is, forming $\mathbf{A}^T$, swaps rows and columns. The column space of $\mathbf{A}^T$ is then a subspace of a possibly different ambient space. 
+
+For a square matrix, $\mathbf{A}^T$ has the same dimension as $\mathbf{A}$, as we know the dimension of the column space is equal to the rank of the matrix, and the rank is preserved under transposition. The same goes for non-square matrices. However, the column space of $\mathbf{A}^T$ is not the same as the column space of $\mathbf{A}$ in general, since the columns of $\mathbf{A}$ become the rows of $\mathbf{A}^T$ and vice versa. In other words,
+
+```math
+C(\mathbf{A}) \neq C(\mathbf{A}^T)
+```
+
+unless $\mathbf{A}$ is symmetric or has some special property that causes its columns and rows to span the same subspace.
 
 <Callout type="example">
-An example where the vector is in the column space of the matrix:
+For example, consider the following matrix:
+
 ```math
-\begin{align*}
-\begin{bmatrix}
-2 & 1 \\ 
-4 & 4 \\
-0 & 0 \\
-\end{bmatrix} \begin{bmatrix}
-x_1 \\ x_2 \\
-\end{bmatrix} &= \begin{bmatrix}
-4 \\ 12 \\ 0 \\
-\end{bmatrix} \\
-\begin{bmatrix}
-2 & 1 \\
-4 & 4 \\
-0 & 0 \\
-\end{bmatrix} \begin{bmatrix}
-1 \\ 2 \\
-\end{bmatrix} &= \begin{bmatrix}
-4 \\ 12 \\ 0 \\
+\mathbf{A} = \begin{bmatrix}
+1 & 0 \\
+2 & 0 
 \end{bmatrix}
-\end{align*}
 ```
+
+The matrix spans a 1-dimensional subspace in $\mathbb{R}^2$, specifically the line along the vector $\begin{bmatrix} 1 \\ 2 \end{bmatrix}$:
+
+```math
+C(\mathbf{A}) = \operatorname{span}\left(\begin{bmatrix} 1 \\ 2 \end{bmatrix}\right)
+```
+
+The transpose of this matrix is:
+
+```math
+\mathbf{A}^T = \begin{bmatrix}
+1 & 2 \\
+0 & 0
+\end{bmatrix}
+```
+
+This matrix also spans a 1-dimensional subspace, but now a different line along the vector $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$, so the x-axis:
+
+```math
+C(\mathbf{A}^T) = \operatorname{span}\left(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right)
+```
+
+Thus, we see that the column space of $\mathbf{A}$ and $\mathbf{A}^T$ are not the same, as they span different lines in $\mathbb{R}^2$ but have the same dimension (1-dimensional).
 </Callout>
 
-#### Augment-rank Algorithm
+#### Multiplying the Matrix
 
-There is also another way to determine if a vector is in the column space of a matrix. This is the augment-rank algorithm. The idea is very simple and relies on the fact that the rank of a matrix is equivalent to the dimensionality of the spanned space. 
+Now, what about multiplying the matrix, i.e., considering $\mathbf{A}^2$? The product of a matrix with itself may change the column space. If $\mathbf{A}$ is full rank, so invertible, then $\mathbf{A}^2$ is also full rank. Then because they are both full rank they span the same space, so for invertible full rank matrices we have:
 
-We concatenate the matrix $\mathbf{A}$ with the vector $\mathbf{b}$ and calculate the rank of the augmented matrix:
-- If the rank of the augmented matrix is the same as the rank of the original matrix $\mathbf{A}$ without the vector $\mathbf{b}$ then the vector $\mathbf{b}$ is in the column space of the matrix $\mathbf{A}$ as it can be written as a linear combination of the columns of $\mathbf{A}$.
-- If the rank increases then the vector $\mathbf{b}$ is not in the column space of the matrix $\mathbf{A}$ and has added a new dimension to the spanned space. 
+```math
+C(\mathbf{A}^2) = C(\mathbf{A})
+```
 
-### Column Space of AA^T
+However, if $\mathbf{A}$ is not full rank, then we have seen that nilpotent matrices can exist, so that at some point the matrix product $\mathbf{A}^2$ becomes the zero matrix. In this case, the column space of $\mathbf{A}^2$ is just the zero vector, which is a subspace of the column space of $\mathbf{A}$, so in general we have:
+
+```math
+C(\mathbf{A}^2) \subseteq C(\mathbf{A})
+```
+
+So far, we've discussed what happens to the column space when we multiply a matrix by itself, i.e., $\mathbf{A}^2 = \mathbf{A}\mathbf{A}$. But what happens if we **left multiply** a matrix $\mathbf{A}$ by some invertible matrix $\mathbf{M}$, such as when performing Gaussian or Gauss-Jordan elimination? So let $\mathbf{M} \in \mathbb{R}^{m \times m}$ be any invertible matrix and $\mathbf{A} \in \mathbb{R}^{m \times n}$. The matrix product $\mathbf{M}\mathbf{A}$ is another $m \times n$ matrix. **The column space of $\mathbf{M}\mathbf{A}$ is not, in general, the same as the column space of $\mathbf{A}$:**
+
+```math
+C(\mathbf{M}\mathbf{A}) \neq C(\mathbf{A})
+```
+
+By definition of the matrix multiplication the columns of the product $\mathbf{M}\mathbf{A}$ are linear combinations of the columns of $\mathbf{A}$, but they are transformed by the invertible matrix $\mathbf{M}$. This means that the column space of $\mathbf{M}\mathbf{A}$ is generally different from the column space of $\mathbf{A}$. So each column of $\mathbf{M}\mathbf{A}$ is just $\mathbf{M}$ times a column of $\mathbf{A}$:
+
+```math
+(\mathbf{M}\mathbf{A})_j = \mathbf{M} \mathbf{a}_j
+```
+
+where $\mathbf{a}_j$ is the $j$-th column of $\mathbf{A}$. We can also think of this as the columns of $\mathbf{A}$ being transformed by the linear transformation defined by the invertible matrix $\mathbf{M}$. Since $\mathbf{M}$ is invertible, $\mathbf{M}$ defines an invertible (bijective) linear transformation on $\mathbb{R}^m$, so it maps the original columns to new directions. Unless $\mathbf{M}$ is the identity, these images will not generally be the same as the original columns.
+
+<Callout type="example">
+Consider the following example:
+
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & 5 \\
+2 & 10 
+\end{bmatrix}
+```
+
+It's columns space is 1-dimensional, spanned by the vector $\begin{bmatrix} 1 \\ 2 \end{bmatrix}$. After performing the row operation of subtracting 2 times the first row from the second row, we get:
+
+```math
+\mathbf{M}\mathbf{A} = \begin{bmatrix}
+1 & 0 \\
+-2 & 0 
+\end{bmatrix} \begin{bmatrix}
+1 & 5 \\
+2 & 10
+\end{bmatrix} = \begin{bmatrix}
+1 & 5 \\
+0 & 0
+\end{bmatrix}
+```
+
+As we can clearly see the column space has changed, it is now spanned by the vector $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$, which is a different direction than the original column space. So we can see that the column space of the matrix has changed when we left multiply the matrix with an invertible matrix $\mathbf{M}$. This is why we can only use the gauss-jordan elimination to find which columns are linearly independent and then take the original columns of the matrix to form the column space rather than the columns of the matrix in reduced row echelon form!
+</Callout>
+
+#### The Column Space of AA^T
 
 Interestingly the column space of the matrix $\mathbf{A}\mathbf{A}^T$ is the same as the column space of the matrix $\mathbf{A}$. 
 
@@ -533,6 +653,52 @@ If we look at the matrix multiplication we can see the linear combination of the
 ```
 </Callout>
 
+### Membership of a Vector in the Column Space
+
+If we have a vector $\mathbf{b}$ and we want to know if it is in the column space of a matrix $\mathbf{A}$ we are actually asking the question of whether the vector $\mathbf{b}$ can be written as a linear combination of the columns of $\mathbf{A}$. This turns into our favorite equation to solve:
+
+```math
+\mathbf{A}\mathbf{x} = \mathbf{b}
+```
+
+Where $\mathbf{x}$ is the vector containing the weights of the linear combination to make $\mathbf{b}$. If we can find a solution for $\mathbf{x}$ then the vector $\mathbf{b}$ is in the column space of $\mathbf{A}$. If there is no solution then the vector $\mathbf{b}$ is not in the column space of $\mathbf{A}$. We have already seen multiple ways to solve this equation, such as the gauss-jordan elimination.
+
+A intuitive way to think about a case where a vector is not in the column space of for example $2 \times 2$ matrix which spans a line in 2D space. If the vector is not on the line then it is not in the column space. If the vector is on the line then it is in the column space.
+
+<Callout type="example">
+An example where the vector is in the column space of the matrix:
+```math
+\begin{align*}
+\begin{bmatrix}
+2 & 1 \\ 
+4 & 4 \\
+0 & 0 \\
+\end{bmatrix} \begin{bmatrix}
+x_1 \\ x_2 \\
+\end{bmatrix} &= \begin{bmatrix}
+4 \\ 12 \\ 0 \\
+\end{bmatrix} \\
+\begin{bmatrix}
+2 & 1 \\
+4 & 4 \\
+0 & 0 \\
+\end{bmatrix} \begin{bmatrix}
+1 \\ 2 \\
+\end{bmatrix} &= \begin{bmatrix}
+4 \\ 12 \\ 0 \\
+\end{bmatrix}
+\end{align*}
+```
+</Callout>
+
+#### Augment-rank Algorithm
+
+There is also another way to determine if a vector is in the column space of a matrix. This is the augment-rank algorithm. The idea is very simple and relies on the fact that the rank of a matrix is equivalent to the dimensionality of the spanned space. 
+
+We concatenate the matrix $\mathbf{A}$ with the vector $\mathbf{b}$ and calculate the rank of the augmented matrix:
+- If the rank of the augmented matrix is the same as the rank of the original matrix $\mathbf{A}$ without the vector $\mathbf{b}$ then the vector $\mathbf{b}$ is in the column space of the matrix $\mathbf{A}$ as it can be written as a linear combination of the columns of $\mathbf{A}$.
+- If the rank increases then the vector $\mathbf{b}$ is not in the column space of the matrix $\mathbf{A}$ and has added a new dimension to the spanned space. 
+
 ## Row Space
 
 Just like a matrix can be thought of as a collection of column vectors it can also be thought of as a collection of row vectors. If we then take the span of these row vectors we get a subspace of the vector space called the **row space of a matrix**. We denote the row space of a matrix $\mathbf{A} \in R^{m \times n}$ as $R(\mathbf{A})$. So just like for the column space the row space is the set of all possible linear combinations of the rows which again means that the independent rows of the matrix $\mathbf{A}$ are the basis of the row space. Because when we transpose a matrix the rows become the columns we can also say that the row space of a matrix is the same as the column space of the matrix transpose. More formally for a matrix $\mathbf{A} \in R^{m \times n}$:
@@ -563,16 +729,14 @@ dim(C(\mathbf{A}^T)) &= dim(R(\mathbf{A}^T))
 \end{align*}
 ```
 
-However, very importantly the column space and the row space are not the same. The column space is a subspace of the ambient space $\mathbb{R}^m$ and the row space is a subspace of the ambient space $\mathbb{R}^n$. They also have different bases because the vectors are different. There is however an exception to this rule. If a matrix is symmetric then the row space is the same as the column space. This is because the matrix is the same as its transpose. Also if the matrix is full rank then the row space is the same as the column space. This is because the two spaces then both span the whole space.
+However, very importantly the column space and the row space are not the same. The column space is a subspace of the ambient space $\mathbb{R}^m$ and the row space is a subspace of the ambient space $\mathbb{R}^n$. They also have different bases because the vectors are different. We have already shown this above with examples where the column space and the column space of the transpose are not the same so we have:
 
-<Callout type="todo">
-Let A be and mxn matrix and M an invertible mxm matrix then R(A) = R(MA)
+```math
+C(\mathbf{A}) \neq R(\mathbf{A})
+```
 
-We need to prove that C(A^T) = C((MA)^T). Since (MA)^T = A^T M^T 
-and N := M^T is also invertible (Lemma 3.10), we set B := A^T and prove C(B) = C(BN)
+There is however an exception to this rule. If a matrix is symmetric then the row space is the same as the column space. This is because the matrix is the same as its transpose. Also if the matrix is full rank then the row space is the same as the column space. This is because the two spaces then both span the whole space.
 
-This then means we can calculate  the row space again using the gauss-jordan elimination and then the row space is the span of the resulting rows, not the original rows like for the column space, instead of transposing the matrix and then calculating the column space.
-</Callout>
 <Callout type="example">
 An example where the row space is the same as the column space of the matrix:
 
@@ -584,28 +748,52 @@ An example where the row space is the same as the column space of the matrix:
 \end{bmatrix}
 ```
 
-The rank of the matrix is 2. We can also see that the matrix is symmetric. Therefore the row space is the same as the column space. They both span a plane in 3D space. For other matrices it can be harder to see what the independent rows are. So we can use gaussian elimination to find the independent rows and then see that the row space is the span of these rows.
+The rank of the matrix is 2. We can also see that the matrix is symmetric. Therefore the row space is the same as the column space. They both span a plane in 3D space. 
+</Callout>
+
+To find a basis for the row space, row reduction (Gaussian or Gauss-Jordan elimination) is the tool of choice just like for the column space. We could just transpose the matrix and then find the column space of the transposed matrix, but this is not very efficient if we are trying to find the column and row space at the same time.
+
+Instead we use the gauss-jordan elimination in a different way.For the column space we showed that left multiplying a matrix with an invertible matrix changed the column space because the result of $\mathbf{M}\mathbf{A}$ is a linear combination of the columns of $\mathbf{A}$ transformed by the invertible matrix $\mathbf{M}$. 
+
+For the row space this is slightly different. If we perform the gauss-jordan elimination on the matrix $\mathbf{A}$ it turns out that we are actually not changing the row space of the matrix. Intuitively this can seen as every row operation is a linear combination of the original rows. That is, each row in the row-reduced matrix is some combination of the original rows, so the set of all possible linear combinations (the span) remains unchanged. Conversely, since the process is reversible (each row operation can be undone), every original row is also a combination of the rows in the row-reduced matrix. Thus, the span is exactly the same.
+
+So we have:
+
+```math
+R(\mathbf{A}) = R(\mathbf{M}\mathbf{A})
+```
+
+where $\mathbf{M}$ is an invertible matrix. This means that we can use the gauss-jordan elimination and then just take the non-zero rows of the resulting matrix to form the row space. This is because the non-zero rows of the reduced row echelon form are linearly independent and span the same subspace as the original rows of the matrix $\mathbf{A}$. 
+
+Another way to see that the row space is the same as the row space of the matrix in reduced row echelon form is by showing that $C(\mathbf{A}^T) = C((\mathbf{M}\mathbf{A})^T)$ where $\mathbf{M}$ is an invertible matrix. 
+
+<Callout type="proof">
+To prove $C(\mathbf{A}^T) = C((\mathbf{M}\mathbf{A})^T)$ where $\mathbf{M}$ is an invertible matrix we can write this also as $C(\mathbf{A}^T) = C(\mathbf{A}^T \mathbf{M}^T)$ where $\mathbf{M}^T$ is the transpose of the invertible matrix $\mathbf{M}$. As $\mathbf{M}^T$ is also invertible we can set $\mathbf{N}:= \mathbf{M}^T$ and then we can write the equation as $C(\mathbf{A}^T) = C(\mathbf{A}^T \mathbf{N})$ proving that right multiplying a matrix with an invertible matrix does not change the column space of the transposed matrix. This also makes intuitively sense as the matrix multiplication can be seen as a linear combination of the columns of the matrix $\mathbf{A}^T$ where the coefficients are the columns of the matrix $\mathbf{N}$. So the column space is not changed by right multiplying with an invertible matrix.
+</Callout>
+
+<Callout type="example">
+We use gaussian elimination to find the independent rows and then see that the row space is the span of these rows.
 
 ```math
 \mathbf{A} = \begin{bmatrix} 
 1 & 2 & 0 & 3 \\
 2 & 4 & 1 & 4 \\
 3 & 6 & 2 & 5 \\
-\end{bmatrix} \rightarrow \text{in row echelon form} \rightarrow \begin{bmatrix}
+\end{bmatrix} \rightarrow \text{in reduced row echelon form} \rightarrow \begin{bmatrix}
 1 & 2 & 0 & 3 \\
 0 & 0 & 1 & -2 \\
 0 & 0 & 0 & 0 \\
 \end{bmatrix}
 ```
 
-So we can see that the rank of the matrix is 2 and the first and second rows are linearly independent as we didn't perform any row swaps when doing the gaussian elimination. We also could've transposed the matrix and then performed gaussian elimination to find the independent columns. Therefore the row space is the span of the first and second rows.
+So we can see that the rank of the matrix is 2 and the first and second rows are linearly independent as we didn't perform any row swaps when doing the gaussian elimination. Therefore the row space is the span of the first and second rows.
 
 ```math
 R(\mathbf{A}) = span(\{\begin{bmatrix} 1 & 2 & 0 & 3 \end{bmatrix}, \begin{bmatrix} 2 & 4 & 1 & 4 \end{bmatrix}\}) = \mathbb{R}^2
 ```
 </Callout>
 
-### Row Space of A^TA
+### The Row Space of A^TA
 
 Very similarly as for the column space of $\mathbf{A}\mathbf{A}^T$ the row space of $\mathbf{A}^T\mathbf{A}$ is the same as the row space of $\mathbf{A}$ because we can show that the matrix is a linear combination of the row vectors of $\mathbf{A}$.
 
@@ -630,7 +818,7 @@ So we formally have the following:
 R(\mathbf{A}^T\mathbf{A}) = R(\mathbf{A})
 ```
 
-So we can say the following:
+This means we can also say the following:
 
 ```math
 \begin{align*}
@@ -643,32 +831,44 @@ And because the matrices $\mathbf{A}^T\mathbf{A}$ and $\mathbf{A}\mathbf{A}^T$ a
 
 ```math
 \begin{align*}
-C(\mathbf{A}^T\mathbf{A}) &= R(\mathbf{A}^T\mathbf{A})  \\
+C(\mathbf{A}^T\mathbf{A}) &= R(\mathbf{A}^T\mathbf{A}) \\
 C(\mathbf{A}\mathbf{A}^T) &= R(\mathbf{A}\mathbf{A}^T) \\
 \end{align*}
 ```
 
-However this does not mean that $C(\mathbf{A}) = R(\mathbf{A})$. This is only the case if the matrix is symmetric and full rank.
+However this does not mean that $C(\mathbf{A}) = R(\mathbf{A})$. This is only the case if the matrix is symmetric!
 
 ## Null Space
 
-So far we have seen the column and row space of a matrix. Next we will look at the null space of a matrix, first formally and then how it can actually be found and interpreted. The null space of a matrix $\mathbf{A} \in R^{m \times n}$ is the set of all vectors $\mathbf{x}$ that when multiplied with the matrix $\mathbf{A}$ give the null vector $\mathbf{o}$. We denote the null space of a matrix $\mathbf{A}$ as $N(\mathbf{A})$. So more formally the null space of a matrix $\mathbf{A} \in R^{m \times n}$ is defined as:
+The null space (also called the kernel) of a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ is the set of all vectors $\mathbf{x} \in \mathbb{R}^n$ such that $\mathbf{A}\mathbf{x} = \mathbf{o}$. We denote the null space as $N(\mathbf{A})$:
 
 ```math
 N(\mathbf{A}) = \{\mathbf{x} \in \mathbb{R}^n | \mathbf{A}\mathbf{x} = \mathbf{o}\} \subseteq \mathbb{R}^n
 ```
 
-One obvious vector that is always in the null space of a matrix is the null vector $\mathbf{o}$. This is because then all the elements of the matrix are multiplied with 0 and the result is the null vector. We call this the trivial solution. However, there can also be non-trivial solutions. This means that there are vectors that are not the null vector but when multiplied with the matrix give the null vector. The fact that the null vector is always in the null space also coincides well with our observation that the null vector is in every subspace. The question is now what exactly does the null space of a matrix represent, what does it mean if it only has the trivial solution and what does it mean if it has non-trivial solutions. For this let us go back to our examples of the column and row space. 
+One obvious vector that is always in the null space of a matrix is the null vector $\mathbf{o}$. This is because then all the elements of the matrix are multiplied with 0 and the result is the null vector. We call this the trivial solution. However, there can also be non-trivial solutions. This means that there are vectors that are not the null vector but when multiplied with the matrix give the null vector. The fact that the null vector is always in the null space also coincides well with our observation that the null vector is in every subspace. The question is now what exactly does the null space of a matrix represent, what does it mean if it only has the trivial solution and what does it mean if it has non-trivial solutions.
 
-First I want to start with a disclaimer. In the above have been making use of the fact that if $\mathbf{M}$ is an invertible matrix then the column and row spaces of the matrix $\mathbf{A}$ are the same as of the matrix $\mathbf{M}\mathbf{A}$. We used this fact to find the independent columns and rows of the matrix because the gaussian elimination can be thought of as performing a specifically designed matrix multiplication. We can also quickly observe that the null space of the row echelon form of a matrix is the same as the null space of the reduced row echelon form of the matrix. This is because the zero rows just have the form $0 = 0$.
-
-We know that two columns are linearly dependent if they are multiples of each other. We can however also say that two columns are linearly dependent if they can combined in a way to give the null vector. So the vectors are dependent if:
+Recall that every matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ defines a linear transformation $T : \mathbb{R}^n \to \mathbb{R}^m$ by $T(\mathbf{x}) = \mathbf{A}\mathbf{x}$. The null space of $\mathbf{A}$ is precisely the set of vectors in $\mathbb{R}^n$ that get mapped to the zero vector. In abstract algebra, this set is called the kernel of the linear transformation. So the null space is the kernel of the linear transformation defined by the matrix $\mathbf{A}$:
 
 ```math
-\lambda_1 \mathbf{a}_1 + \lambda_2 \mathbf{a}_2 + \ldots + \lambda_n \mathbf{a}_n = \mathbf{o}
+N(\mathbf{A}) = \{\mathbf{x} \in \mathbb{R}^n | T(\mathbf{x}) = \mathbf{o}\} = \text{ker}(T)
 ```
 
-This looks familiar to the definition of the null space. Just like previously we can look at the row echelon form to find the null space of a matrix. 
+To find the column space or the row space of a matrix we have so far used the gaussian elimination to find the independent columns or rows of the matrix.
+
+For the null space we can use a similar idea. We have already shown that gauss-jordan elimination preserves the solutions to the linear system of equations. This means that the null space of a matrix is the same as the null space of the matrix in reduced row echelon form. So this means that for an invertible matrix $\mathbf{M}$ we have:
+
+```math
+N(\mathbf{A}) = N(\mathbf{M}\mathbf{A})
+```
+
+We also know that transposing the matrix can change the solutions to the linear system of equations. So we can not just transpose the matrix and then find the null space of the transposed matrix. It is also quick to see that the null space of scalar multiplication of a matrix is the same as the null space of the original matrix:
+
+```math
+\mathbf{Ax} = \mathbf{o} \Rightarrow \lambda \mathbf{Ax} = \lambda \mathbf{o} = \mathbf{o}
+```
+
+Just like previously we can look at the row echelon form to find the null space of a matrix. 
 
 ```math
 \mathbf{A} = \begin{bmatrix} 
@@ -696,7 +896,27 @@ x_1 \\ x_2 \\ x_3 \\ x_4
 \end{bmatrix}
 ```
 
-We can see that the zero rows don't contribute anything to the null space which is why we can ignore them and only focus on the reduced row echelon form. We can also see that the columns 1 and 3 are linearly independent with the pivot element, the others are dependent. If we now set up the equations and solve for the independent columns we get:
+We can see that the zero rows don't contribute anything to the null space which is why we can ignore them and only focus on the reduced row echelon form. We also know that two columns are linearly dependent if they are multiples of each other. We can however also say that two columns are linearly dependent if they can be combined in a way to give the null vector. So the vectors are dependent if:
+
+```math
+\lambda_1 \mathbf{a}_1 + \lambda_2 \mathbf{a}_2 + \ldots + \lambda_n \mathbf{a}_n = \mathbf{o}
+```
+
+We can use this to find the null space of the matrix. We can see that the first and third columns are linearly independent with the pivot elements in the reduced row echelon form. The second and fourth columns are dependent on these two columns. So we can write the equations for the null space as follows:
+
+```math
+\begin{bmatrix}
+1 & 2 & 0 & 3 \\
+0 & 0 & 1 & -2 \\
+0 & 0 & 0 & 0 \\
+\end{bmatrix} \begin{bmatrix}
+x_1 \\ x_2 \\ x_3 \\ x_4
+\end{bmatrix} = \begin{bmatrix}
+0 \\ 0 \\ 0
+\end{bmatrix}
+```
+
+We can now rewrite the equations in terms of the pivot variables $x_1$ and $x_3$:
 
 ```math
 \begin{align*}
@@ -705,7 +925,7 @@ x_3 - 2x_4 &= 0 & \Rightarrow & x_3 = 2x_4
 \end{align*}
 ```
 
-So we can see that no matter what the values of $x_2$ and $x_4$ are we can calculate the values of $x_1$ and $x_3$ so that the equation holds. This is why the variables $x_2$ and $x_4$ are also called free variables. So we can see that the pivot variables can be calculated using some linear combination of vectors where the weights are the free variables. 
+So we can see that no matter what the values of $x_2$ and $x_4$ are we can calculate the values of $x_1$ and $x_3$ so that the equation holds. This is why the variables $x_2$ and $x_4$ are also called free variables. So we can see that the pivot variables can be calculated using some linear combination of vectors where the weights are the free variables. If we then rewrite these equations in vector form we get:
 
 ```math
 N(\mathbf{A}) = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \end{bmatrix} = 
@@ -714,7 +934,35 @@ x_2 \begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \end{bmatrix} +
 x_4 \begin{bmatrix} -3 \\ 0 \\ 2 \\ 1 \end{bmatrix}
 ```
 
-So we can see for any value we choose for $x_2$ and $x_4$ we can find a vector that when multiplied with the matrix gives the null vector. These vectors therefore span the null space of the matrix and are its basis. We can convince ourselves by setting some values for $x_2$ and $x_4$ and multiplying the resulting vector with the matrix. For example if we set $x_2 = 1$ and $x_4 = 1$ we get: 
+So we can see for any value we choose for $x_2$ and $x_4$ we can find a vector that when multiplied with the matrix gives the null vector. These vectors therefore span the null space of the matrix and are its basis. We can convince ourselves by setting some values for $x_2$ and $x_4$ and multiplying the resulting vector with the matrix. For example if we set $x_2 = 1$ and $x_4 = 0$ we get: 
+
+```math
+\mathbf{A}
+\begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \end{bmatrix} = 
+\begin{bmatrix}
+1 & 2 & 0 & 3 \\
+2 & 4 & 1 & 4 \\
+3 & 6 & 2 & 5 \\
+\end{bmatrix}
+\begin{bmatrix} -2 \\ 1 \\ 0 \\ 0 \end
+{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}
+```
+
+or if we set $x_2 = 0$ and $x_4 = 1$ we get:
+
+```math
+\mathbf{A}
+\begin{bmatrix} -3 \\ 0 \\ 2 \\ 1 \end
+{bmatrix} =
+\begin{bmatrix}
+1 & 2 & 0 & 3 \\
+2 & 4 & 1 & 4 \\
+3 & 6 & 2 & 5 \\
+\end{bmatrix}
+\begin{bmatrix} -3 \\ 0 \\ 2 \\ 1 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}
+```
+
+or a linear combination of the 2 so for example $x_2 = 1$ and $x_4 = 1$ we get:
 
 ```math
 \mathbf{A}
@@ -729,27 +977,69 @@ So we can see for any value we choose for $x_2$ and $x_4$ we can find a vector t
 
 If we set $x_2$ and $x_4$ we can actually see what the null space is telling us. It is telling us how to combine the two independent columns to get the dependent columns. We can also do the same if we set one of the free variables to 0 and the other to 1 then we only see the relationship between that specific dependent column and the independent columns. 
 
-Just like for the column space and row space the rank of the matrix told us something about the dimensionality of the subspace. The same is true for the null space. Because the null space basis uses the free variables we can see that the number of free variables is the dimensionality of the null space. More formally for a matrix $\mathbf{A} \in R^{m \times n}$:
+So to find the null space of a matrix we first perform the gauss-jordan elimination on the matrix to get it into reduced row echelon form. Then we can find the pivot variables and the free variables. We then write the equations for the null space in terms of the pivot variables and the free variables. Finally we can rewrite the equations in terms of the free variables to find the basis of the null space.
+
+#### Rank Nullity Theorem
+
+The dimension of the null space is called the nullity of the matrix, written as $\operatorname{nullity}(\mathbf{A}) = \dim N(\mathbf{A})$. There is a fundamental relation between the rank of a matrix and its nullity, known as the Rank-Nullity Theorem. 
+
+We have seen that the rank of a matrix is the number of linearly independent columns (or rows) in the matrix. The nullity is the number of free variables in the system of equations defined by the matrix. The Rank-Nullity Theorem states that for any matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$, the following equation holds:
 
 ```math
-dim(N(\mathbf{A})) = n - r
+\operatorname{rank}(\mathbf{A}) + \operatorname{nullity}(\mathbf{A}) = n
 ```
 
-### Left Null Space
-
-We define the left null space of a matrix $\mathbf{A}$ as the null space of the matrix transpose $\mathbf{A}^T$. We define the left null space of a matrix $\mathbf{A} \in R^{m \times n}$ as follows:
+or equivalently
 
 ```math
-LN(\mathbf{A}) = N(\mathbf{A}^T) = \{\mathbf{x} \in \mathbb{R}^m | \mathbf{A}^T\mathbf{x} = \mathbf{o}\} \subseteq \mathbb{R}^m
+\dim C(\mathbf{A}) + \dim N(\mathbf{A}) = n
 ```
 
-So it satisfies the following equation:
+So if this means that if the nullity, i.e the dimension of the null space, is 0 then the rank of the matrix is $n$ and the matrix has full column rank, is invertible and has a unique solution for every vector in the column space. If the nullity is greater than 0 then the matrix has free variables and therefore has infinitely many solutions for some vectors in the column space. If the nullity is equal to $n$ then the matrix is the zero matrix and has no solutions for any vector in the column space except for the zero vector.
+
+## Left Null Space
+
+The **left null space** of a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ is defined as the null space of its transpose $\mathbf{A}^T$. That is, it is the set of all column vectors $\mathbf{y} \in \mathbb{R}^m$ such that
 
 ```math
-\mathbf{A}^T\mathbf{x} = \mathbf{o} = \mathbf{xA}
+\mathbf{A}^T\mathbf{y} = \mathbf{o}
 ```
 
-So for our running example we get: 
+We write the left null space as $LN(\mathbf{A})$ or $N(\mathbf{A}^T)$:
+
+```math
+LN(\mathbf{A}) = N(\mathbf{A}^T) = \{\,\mathbf{y} \in \mathbb{R}^m \mid \mathbf{A}^T \mathbf{y} = \mathbf{o}\,\} \subseteq \mathbb{R}^m
+```
+
+This is called the **left** null space because in the matrix product $\mathbf{y}^T \mathbf{A}$, the vector $\mathbf{y}^T$ appears on the left. In other words, $\mathbf{y}^T$ is a row vector such that
+
+```math
+\mathbf{y}^T \mathbf{A} = \mathbf{o}^T
+```
+
+This is in contrast to the (ordinary) null space, which is defined by $\mathbf{A}\mathbf{x} = \mathbf{o}$, where $\mathbf{x}$ appears on the right.
+
+
+Geometrically the left null space consists of all the vectors in $\mathbb{R}^m$ that are **orthogonal to every row of $\mathbf{A}$**. To see this, recall that
+
+```math
+\mathbf{A}^T \mathbf{y} = \mathbf{o}
+```
+
+can be written as $m$ equations, each of which says that $\mathbf{y}$ is orthogonal to a row of $\mathbf{A}$. Equivalently, each solution $\mathbf{y}$ is a linear combination of the rows of $\mathbf{A}$ that gives the zero vector. To find the dimension of the left null space, we can use the **Rank-Nullity Theorem**. If $\mathbf{A}$ has rank $r$, then by the Rank-Nullity Theorem (applied to $\mathbf{A}^T$), the dimension of the left null space is
+
+```math
+\dim(LN(\mathbf{A})) = \dim(N(\mathbf{A}^T)) = m - r
+```
+
+where $m$ is the number of rows of $\mathbf{A}$. This is because the rank of $\mathbf{A}^T$ is the same as the rank of $\mathbf{A}$, so the number of linearly independent rows is $r$, and the number of "extra" directions in $\mathbb{R}^m$ that are not in the row space is $m - r$.
+
+To find a basis for the left null space of $\mathbf{A}$, we can perform Gauss-Jordan elimination on $\mathbf{A}^T$, exactly as you would to find the null space of any matrix.
+
+Alternatively, there is a nice computational shortcut that comes up in practical row reduction. When you row reduce $\mathbf{A}$ to its (reduced) row echelon form, you are left multiplying $\mathbf{A}$ by an invertible **elimination matrix** $\mathbf{E}$. The nonzero rows of $\mathbf{R}$ form a basis for the row space so are the independent rows of $\mathbf{A}$. The **zero rows** in $\mathbf{R}$ correspond to **linear dependencies among the original rows of $\mathbf{A}$**. The vectors in the left null space describe exactly these dependencies: they are the weights that express some rows as linear combinations of others. Just like the null space did for the column space, the left null space describes how to combine the rows of $\mathbf{A}$ to get zero. To then find a basis for the left null space, we can simply take the rows of the elimination matrix $\mathbf{E}$ that correspond to the zero rows in $\mathbf{R}$.
+
+<Callout type="example">
+So for our running example we get using the gauss-jordan elimination on the matrix $\mathbf{A}^T$:
 
 ```math
 \begin{bmatrix}
@@ -797,14 +1087,9 @@ x_2 + 2x_3 &= 0 \Rightarrow x_2 = -2x_3 \\
 \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix} &= x_3 \begin{bmatrix} 1 \\ -2 \\ 1 \end{bmatrix}
 \end{align*}
 ```
+</Callout>
 
-The dimensionality of the left null space is the number of dependent rows. More formally for a matrix $\mathbf{A} \in R^{m \times n}$ with rank $r$:
-
-```math
-dim(LN(\mathbf{A})) = m - r
-```
-
-## Solution Space & Number of Solutions
+## Solution Space
 
 The solution space can be thought of as all the vectors that are a solution to a system of linear equations. So more formally for a matrix $\mathbf{A} \in R^{m \times n}$ and a vector $\mathbf{b} \in \mathbb{R}^m$ the solution space is defined as:
 
@@ -832,104 +1117,126 @@ So the null space actually tells us about the number of solutions to a system of
 
 What about when we have no solution? This is the case for when the null space is empty. This can only happen if the vector $\mathbf{b}$ is not in the column space of the matrix. So for example if we have the zero matrix but are looking for a solution that is not the null vector then we can't find a solution. 
 
-## Rank-Nullity Theorem
+## Summary of Fundamental Subspaces
 
-<Callout type="todo">
-One of the most important results in linear algebra relating the rank to the solution space of linear systems is the **Rank-Nullity Theorem**.
+We have now encountered four important subspaces associated with any matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$:
 
-The **nullity** of a matrix $\mathbf{A}$, denoted as $\text{nullity}(\mathbf{A})$, is the dimension of its **null space** (also called the kernel). The null space is the set of all vectors $\mathbf{x}$ such that $\mathbf{A}\mathbf{x} = \mathbf{0}$.
+* **Column space** $C(\mathbf{A}) \subseteq \mathbb{R}^m$
+* **Row space** $R(\mathbf{A}) \subseteq \mathbb{R}^n$
+* **Null space** $N(\mathbf{A}) \subseteq \mathbb{R}^n$
+* **Left null space** $LN(\mathbf{A}) = N(\mathbf{A}^T) \subseteq \mathbb{R}^m$
 
-* If $\mathbf{A} \in \mathbb{R}^{m \times n}$, then the null space is a subspace of $\mathbb{R}^n$.
-
-For any matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$,
-
-```math
-\text{rank}(\mathbf{A}) + \text{nullity}(\mathbf{A}) = n
-```
-
-where $n$ is the number of columns.
-
-**Intuition:**
-
-* The rank tells you how many directions in the input space $\mathbb{R}^n$ are mapped to something nonzero (the "image" of the transformation).
-* The nullity tells you how many directions are "collapsed" to zero by $\mathbf{A}$.
-
-Example: Nullity and Rank
-
-Let
+Each of these subspaces carries important information about the matrix $\mathbf{A}$ and the linear transformation it represents. We can compute **all of them at once** by performing **Gauss-Jordan elimination** on the **augmented matrix**:
 
 ```math
-\mathbf{A} = \begin{bmatrix}
-1 & 2 & 3 \\
-2 & 4 & 6
-\end{bmatrix}
+[\mathbf{A} \;|\; \mathbf{I}_m]
 ```
 
-Row 2 is just 2 times row 1, so $\text{rank}(\mathbf{A}) = 1$.
-
-* $n = 3$ (three columns).
-* By the rank-nullity theorem, $\text{nullity}(\mathbf{A}) = 3 - 1 = 2$.
-
-Let us find the null space explicitly:
-Solve $\mathbf{A}\mathbf{x} = \mathbf{0}$:
+where $\mathbf{I}_m$ is the $m \times m$ identity matrix. By applying elementary row operations until we reach reduced row echelon form (RREF), we obtain:
 
 ```math
-\begin{bmatrix}
-1 & 2 & 3 \\
-2 & 4 & 6
-\end{bmatrix}
-\begin{bmatrix}
-x_1 \\ x_2 \\ x_3
-\end{bmatrix}
-=
-\begin{bmatrix}
-0 \\ 0
-\end{bmatrix}
+[R_0 \;|\; M] \quad \text{such that} \quad R_0 = M\mathbf{A}
 ```
 
-Gives two equations:
+where $R_0$ is the RREF of $\mathbf{A}$ and $M$ is an invertible $m \times m$ matrix representing the sequence of row operations we performed (the elimination matrix).
+
+If $\mathbf{A}$ is invertible and square, then after elimination $R_0 = \mathbf{I}$ and $M = \mathbf{A}^{-1}$. But this method works for any $m \times n$ matrix, regardless of whether it is square or invertible.
+
+This single elimination allows us to find **bases and dimensions** for all four fundamental subspaces starting with the **Column Space $C(\mathbf{A})$**. The **pivot columns** of the original matrix $\mathbf{A}$ form a basis for the column space:
 
 ```math
-1x_1 + 2x_2 + 3x_3 = 0 \\
-2x_1 + 4x_2 + 6x_3 = 0
+C(\mathbf{A}) = \operatorname{span}\{\text{pivot columns of } \mathbf{A}\}
 ```
 
-But the second equation is just twice the first, so we only need to solve the first.
-Let $x\_2 = s$, $x\_3 = t$ be free parameters. Then
+If the pivot columns are $\mathbf{a}_{j_1}, \mathbf{a}_{j_2}, \ldots, \mathbf{a}_{j_r}$, then:
 
 ```math
-x_1 = -2s - 3t
+\dim C(\mathbf{A}) = r = \text{number of pivots} = \operatorname{rank}(\mathbf{A})
 ```
 
-So the general solution is
+Then the **Row Space $R(\mathbf{A})= C(\mathbf{A}^T)$** is the column space of the transpose of $\mathbf{A}$. The **nonzero rows** of $R_0$ form a basis for the row space:
 
 ```math
-\begin{bmatrix}
-x_1 \\ x_2 \\ x_3
-\end{bmatrix}
-= s \begin{bmatrix}
--2 \\ 1 \\ 0
-\end{bmatrix}
-+ t \begin{bmatrix}
--3 \\ 0 \\ 1
-\end{bmatrix}
+R(\mathbf{A}) = \operatorname{span}\{\text{nonzero rows of } R_0\}
 ```
 
-which forms a 2-dimensional subspace—confirming the nullity is 2.
+This is because each row operation is a linear combination of the original rows, and the RREF reveals the linearly independent ones.
 
-Given a linear transformation $T: \mathbb{R}^n \to \mathbb{R}^m$ represented by the matrix $\mathbf{A}$:
+The **Null Space $N(\mathbf{A})$** consists of all solutions to $\mathbf{A}\mathbf{x} = \mathbf{o}$. After row reducing to $R_0$, the system is equivalent to:
 
-* The **image** (or column space) of $T$ is the set of all vectors in $\mathbb{R}^m$ that can be written as $\mathbf{A}\mathbf{x}$ for some $\mathbf{x} \in \mathbb{R}^n$. Its dimension is the **rank**.
-* The **kernel** (or null space) of $T$ is the set of all vectors $\mathbf{x} \in \mathbb{R}^n$ such that $\mathbf{A}\mathbf{x} = \mathbf{0}$. Its dimension is the **nullity**.
+```math
+R_0 \mathbf{x} = \mathbf{o}
+```
 
-The rank-nullity theorem says that
+To find a basis we identify **pivot variables** and **free variables**, where pivot variables correspond to the leading 1s in each row of $R_0$, and free variables correspond to the columns without leading 1s. We then can express the pivot variables in terms of the free variables and write the general solution as a linear combination of vectors corresponding to each free variable. If there are $n$ columns and $r$ pivots, then:
 
-> **The dimension of the domain = dimension of the image + dimension of the kernel.**
+```math
+\dim N(\mathbf{A}) = n - r
+```
 
-This is a fundamental result, and you will see it everywhere in linear algebra, from solving systems of equations to understanding decompositions and projections.
-</Callout>
+This is the **nullity** of $\mathbf{A}$.
+
+Lastly, the **Left Null Space $LN(\mathbf{A}) = N(\mathbf{A}^T)$** is the null space of the transpose of $\mathbf{A}$. It consists of all vectors $\mathbf{y} \in \mathbb{R}^m$ such that:
+
+```math
+LN(\mathbf{A}) = \{\mathbf{y} \in \mathbb{R}^m \mid \mathbf{A}^T \mathbf{y} = \mathbf{o}\}
+```
+
+Performing elimination on $\[\mathbf{A} ;|; \mathbf{I}]$ gives us the matrix $M$ such that:
+
+```math
+M\mathbf{A} = R_0
+```
+
+The **last $m - r$ rows of $M$** (corresponding to the zero rows in $R_0$) form a basis for the left null space because they describe the linear dependencies among the original rows:
+
+```math
+\dim LN(\mathbf{A}) = m - r
+```
+
+So putting it all together, after elimination, with rank $r$, we have:
+
+```math
+\begin{aligned}
+\dim C(\mathbf{A}) &= r \quad &\text{(column space)} \\
+\dim R(\mathbf{A}) &= r \quad &\text{(row space)} \\
+\dim N(\mathbf{A}) &= n - r \quad &\text{(null space)} \\
+\dim LN(\mathbf{A}) &= m - r \quad &\text{(left null space)}
+\end{aligned}
+```
+
+These satisfy:
+
+```math
+\underbrace{\dim C(\mathbf{A})}_{r} + \underbrace{\dim N(\mathbf{A})}_{n - r} = n, \qquad
+\underbrace{\dim R(\mathbf{A})}_{r} + \underbrace{\dim LN(\mathbf{A})}_{m - r} = m
+```
+
+which is consistent with the Rank-Nullity Theorem applied to $\mathbf{A}$ and $\mathbf{A}^T$.
+
+<Image 
+src="/maths/calculatingFundamentalSubspaces.png"
+caption="Calculating the fundamental subspaces of a matrix all at once."
+width={600}   
+/>
 
 ## Orthogonal Subspaces and Complements
+
+<Callout type="todo">
+The left null space is the **orthogonal complement** of the row space of $\mathbf{A}$. That is, every vector in $LN(\mathbf{A})$ is orthogonal to every vector in the row space of $\mathbf{A}$. We can write:
+
+```math
+LN(\mathbf{A}) = R(\mathbf{A})^\perp
+```
+
+where $R(\mathbf{A})$ is the row space, and the superscript $\perp$ denotes the orthogonal complement in $\mathbb{R}^m$.
+
+Likewise, the (ordinary) null space $N(\mathbf{A})$ is the orthogonal complement of the column space $C(\mathbf{A})$ (in $\mathbb{R}^n$):
+
+```math
+N(\mathbf{A}) = C(\mathbf{A})^\perp
+```
+</Callout>
 
 ## Spaces of Functions
 
