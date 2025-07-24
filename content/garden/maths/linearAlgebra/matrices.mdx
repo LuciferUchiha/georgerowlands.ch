@@ -1058,6 +1058,25 @@ This can also be applied to matrices. The matrix exponentiation by squaring is d
 
 This results in a time complexity of $O(\log k)$ for calculating the power of a matrix. This is much faster than the naive approach which would take $O(k)$ time.
 
+<Callout type="todo">
+We can calculate the fibonacci numbers using matrix exponentiation by squaring. The Fibonacci numbers can be represented as a matrix multiplication:
+
+```math
+\begin{bmatrix}
+    F_{n-1} \\
+    F_n
+\end{bmatrix} = \begin{bmatrix}
+0 & 1 \\
+1 & 1
+\end{bmatrix}^n \begin{bmatrix}
+    F_{n-2}
+    F_{n-1}
+\end{bmatrix}
+```
+
+for $n \geq 2$. 
+</Callout>
+
 ### Matrix Chain Multiplication
 
 <Callout type="todo">

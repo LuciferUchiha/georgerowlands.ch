@@ -3,25 +3,16 @@ import Image from "@components/Image/Image";
 
 # Orthogonality
 
-<Callout type="todo">
-orthogonal matrices and orthonormal matrices. columns are orthogonal to each other and normalized, i.e. have a length of $1$. what about the rows?
-
-the inverse of an orthogonal matrix is just the transpose of the matrix?
-permutation matrix is orthogonal
-</Callout>
-
-We have already seen that we say two vectors are orthogonal if their dot product is zero or in other words the angle between them is 90 degrees. For non-zero vectors, this can 
-be seen from the formula for the dot product of two vectors:
+We have already seen that we say two vectors are orthogonal if their dot product is zero or in other words the angle between them is 90 degrees. For non-zero vectors, this can be seen from the formula for the dot product of two vectors:
 
 ```math
 \begin{align*}
-\cos(\theta) &= \frac{\mathbf{a} \cdot b}{||a|| \cdot ||b||} = 0 \quad \text{where} \quad \theta = 90^{\circ} \\
-\mathbf{a} \cdot \mathbf{b} &= \cos(\theta) \cdot ||a|| \cdot ||b|| = 0
+\cos(\theta) &= \frac{\mathbf{a} \cdot \mathbf{b}}{||\mathbf{a}|| \cdot ||\mathbf{b}||} = 0 \quad \text{where} \quad \theta = 90^{\circ} \\
+\mathbf{a} \cdot \mathbf{b} &= \cos(\theta) \cdot ||\mathbf{a}|| \cdot ||\mathbf{b}|| = 0
 \end{align*}
 ```
 
-This is due to the fact of the $\cos(90^{\circ}) = 0$, then the entire multiplication becomes zero. 
-We can also write the dot product in matrix multiplication notation which can be useful in some cases:
+This is due to the fact of the $\cos(90^{\circ}) = 0$, then the entire multiplication becomes zero. We can also write the dot product in matrix multiplication notation which can be useful in some cases:
 
 ```math
 \mathbf{a} \cdot \mathbf{b} = \mathbf{a}^T \cdot \mathbf{b} = \sum_{i=1}^{n} a_i \cdot b_i
@@ -34,76 +25,97 @@ We also commonly use the following notation if two vectors are orthogonal:
 ```
 
 From these two equations of the dot product we can see some important properties of orthogonal vectors:
-- Every vector is orthogonal to the zero vector, again because the multiplications just become zero.
-- The length of the vectors do not matter, only the direction of the vectors matter. This can be seen in the equation for the angle 
-between two vectors, as if the angle is 90 degrees then the cosine term becomes zero and the length of the vectors do not matter.
+- **Every vector is orthogonal to the zero vector**, again because the multiplications just become zero.
+- **The length of the vectors do not matter, only the direction of the vectors matter**. This can be seen in the equation for the angle between two vectors, as if the angle is 90 degrees then the cosine term becomes zero and the length of the vectors do not matter.
 
-However the most important property of orthogonal vectors is that they are linearly independent. If there are two vectors then this is rather obvious 
-as if they were dependent then one vector would just be a scalar multiple of the other vector so they would be collinear and pointing in the same direction. If there are more 
-than two vectors then the same logic applies. Think of two vectors that are orthogonal to each other in 3D space. The linear combination of these 
-two vectors spans a plane. If we then add a third vector that is orthogonal to the other 2 vectors then this vector can not be in the plane, 
-or in other words be a linear combination of the other two vectors. So the third vector must be linearly independent of the other two vectors. 
+However the most important property of orthogonal vectors is that they are linearly independent. Intuitively if there are two vectors then this is rather obvious as if they were dependent then one vector would just be a scalar multiple of the other vector so they would be collinear and pointing in the same direction. 
+
+<Callout type="proof">
+To prove that two orthogonal vectors are linearly independent, we can assume for contradiction that they are dependent. This means that one vector can be written as a scalar multiple of the other vector:
+
+```math
+\mathbf{b} = \lambda \mathbf{a}
+```
+
+Then we can take the dot product of both sides with $\mathbf{a}$:
+
+```math
+\begin{align*}
+\mathbf{a} \cdot \mathbf{b} &= \mathbf{a} \cdot (\lambda \mathbf{a}) \\
+0 &= \lambda (\mathbf{a} \cdot \mathbf{a}) \\
+0 &= \lambda ||\mathbf{a}||^2
+\end{align*}
+```
+
+This means that either $\lambda = 0$ or $||\mathbf{a}||^2 = 0$. The first case means that $\mathbf{b}$ is the zero vector which is orthogonal to every vector, so it is trivially linearly independent. The second case means that $\mathbf{a}$ is the zero vector which is also trivially linearly independent. So in both cases we have a contradiction to our assumption that the vectors are dependent, hence they must be linearly independent.
+</Callout>
+
+We can also generalize this to say that if we have $n$ orthogonal vectors in $\mathbb{R}^n$ then they are linearly independent. This also means that an orthogonal vector is orthogonal to all the linear combinations of the other $n - 1$ vectors. Intuitively we can think of two vectors that are orthogonal to each other in 3D space. The linear combination of these two vectors spans a plane. If we then add a third vector that is orthogonal to the other 2 vectors then this vector can not be in the plane as it must be 90 degrees from the other vectors. So in other words it also can't be a linear combination of the other two vectors. So the third vector must be linearly independent of the other two vectors. 
 
 <Image src="/maths/orthogonalVectors.png"
        caption="Adding a third orthogonal vector must be linearly independent of the other two vectors"
        width={600}
 />
 
-We can also immediately see that the third vector is orthogonal to the entire plane so all the linear combinations of the first two vectors. We 
-can also think of this more formally. If we a vector that is a linear combination of the other two orthogonal vectors then the only way that this 
-vector can be orthogonal to the other two vectors is if one of the coefficients of the linear combination is zero making the vector just a scalar 
-multiple of the other vector which would make the vectors dependent. The same logic applies to more than 3 vectors.
+<Callout type="proof">
+
+We can generalize the above proof to show that if we have $n$ orthogonal vectors in $\mathbb{R}^n$ then they are linearly independent. For this we will just show the case for $n = 3$ and then the general case follows by induction from the same logic and the base case for $n = 1$. So we have three orthogonal vectors $\mathbf{a}, \mathbf{b}, \mathbf{c}$ in $\mathbb{R}^3$:
+
+```math
+\mathbf{a} \perp \mathbf{b}, \quad \mathbf{a} \perp \mathbf{c}, \quad \mathbf{b} \perp \mathbf{c}
+```
+
+They are all mutually orthogonal to each other. Now we can assume for contradiction that they are linearly dependent. This means that one of the vectors can be written as a linear combination of the other two vectors:
+
+```math
+\mathbf{c} = \lambda \mathbf{a} + \mu \mathbf{b}
+```
+
+Then we can take the dot product of both sides with $\mathbf{a}$:
 
 ```math
 \begin{align*}
-\mathbf{c} &= \lambda \mathbf{a} + \mu \mathbf{b} \\
-\mathbf{c} \cdot \mathbf{a} &= \sum_{i=1}^{n} c_i \cdot a_i \\
-&= \sum_{i=1}^{n} (\lambda a_i + \mu b_i) \cdot a_i \\
-&= \sum_{i=1}^{n} (\lambda a_i \cdot a_i) + (\mu b_i \cdot a_i) \\
-&= \lambda \sum_{i=1}^{n} a_i \cdot a_i + \mu \sum_{i=1}^{n} b_i \cdot a_i \\
-&= \lambda \sum_{i=1}^{n} a_i^2 = 0 \implies \lambda = 0 \implies \mathbf{c} = \mu \mathbf{b}
+\mathbf{a} \cdot \mathbf{c} &= \mathbf{a} \cdot (\lambda \mathbf{a} + \mu \mathbf{b}) \\
+0 &= \lambda (\mathbf{a} \cdot \mathbf{a}) + \mu (\mathbf{a} \cdot \mathbf{b}) \\
+0 &= \lambda ||\mathbf{a}||^2 + \mu (\mathbf{a} \cdot \mathbf{b}) \\
+0 &= \lambda ||\mathbf{a}||^2 + \mu (0) \\
+0 &= \lambda ||\mathbf{a}||^2
 \end{align*}
 ```
 
+again this means that either $\lambda = 0$ or $||\mathbf{a}||^2 = 0$. The first case means that $\mathbf{c}$ is just a scalar multiple of $\mathbf{b}$ which is orthogonal to $\mathbf{a}$ so it is trivially linearly independent. The second case means that $\mathbf{a}$ is the zero vector which is also trivially linearly independent. So in both cases we have a contradiction to our assumption that the vectors are dependent, hence they must be linearly independent. The same can be shown for the other two vectors by taking the dot product with $\mathbf{b}$ and $\mathbf{c}$ respectively.
+</Callout>
+
 ## Orthogonal Subspaces
 
-Orthogonality also extends to subspaces. We say two subspaces are orthogonal if every vector in the first subspace is orthogonal to every vector in the second subspace.  
-So, in other words, we define two subspaces $A$ and $B$ to be orthogonal if the following holds:
+Orthogonality also extends to subspaces. We say two subspaces are orthogonal if every vector in the first subspace is orthogonal to every vector in the second subspace. So, in other words, we define two subspaces $A$ and $B$ to be orthogonal if the following holds:
 
 ```math
 A \perp B \iff \forall \mathbf{a} \in A, \forall \mathbf{b} \in B, \mathbf{a} \perp \mathbf{b}
 ```
 
-We have already seen that orthogonal vectors are linearly independent and that a vector in a vector space can be written as a linear combination of the basis vectors of the vector space.  
-So, if we combine these two facts, then we can see that for two subspaces to be orthogonal, only the basis vectors of one subspace must be orthogonal to the basis vectors of the other subspace.  
-Because if the basis vectors are orthogonal, then so are all the linear combinations of the basis vectors and therefore also all the vectors in the subspace.
-
-This means that for two subspaces to be orthogonal, the basis vectors of one subspace must be orthogonal to the basis vectors of the other subspace.  
-This is enough to show that the two subspaces are orthogonal. So, more formally, if we have two subspaces $A$ and $B$ with basis vectors  
-$\mathbf{a}_1, \mathbf{a}_2, \ldots, \mathbf{a}_m$ and $\mathbf{b}_1, \mathbf{b}_2, \ldots, \mathbf{b}_n$, respectively,  
-then the following must hold:
+We have already seen that orthogonal vectors are linearly independent and that a vector in a vector space can be written as a linear combination of the basis vectors of the vector space. So, if we combine these two facts, then we can see that for two subspaces to be orthogonal, only the basis vectors of one subspace must be orthogonal to the basis vectors of the other subspace. Because if the basis vectors are orthogonal, then so are all the linear combinations of the basis vectors and therefore also all the vectors in the subspace. This is enough to show that the two subspaces are orthogonal. So, more formally, if we have two subspaces $A$ and $B$ with basis vectors $\mathbf{a}_1, \mathbf{a}_2, \ldots, \mathbf{a}_m$ and $\mathbf{b}_1, \mathbf{b}_2, \ldots, \mathbf{b}_n$, respectively, then the following must hold:
 
 ```math
 A \perp B \iff \forall i, j, \mathbf{a}_i \perp \mathbf{b}_j
 ```
 
-So we want to show that the following linear combination only holds if the basis vectors are orthogonal:
+<Callout type="proof">
+We can prove that two subspaces are orthogonal if and only if their basis vectors are orthogonal. Let's assume we have two subspaces $A$ and $B$ with basis vectors $\mathbf{a}_1, \mathbf{a}_2, \ldots, \mathbf{a}_m$ and $\mathbf{b}_1, \mathbf{b}_2, \ldots, \mathbf{b}_n$, respectively. We want to show that if the basis vectors are orthogonal, then the subspaces are orthogonal so every vector $\mathbf{a} \in A$ is orthogonal to every vector $\mathbf{b} \in B$. This results in the following:
 
 ```math
 \begin{align*}
-\mathbf{a} \in A \quad \text{and} \quad \mathbf{b} \in B \\
-\mathbf{a} \cdot \mathbf{b} &= 0 \\
+0 &= \mathbf{a} \cdot \mathbf{b} \\
 &= \sum_{i=1}^{m} \lambda_i \mathbf{a}_i \cdot \sum_{j=1}^{n} \mu_j \mathbf{b}_j \\
 &= \sum_{i=1}^{m} \sum_{j=1}^{n} \lambda_i \mu_j \mathbf{a}_i \cdot \mathbf{b}_j \\
 &= \sum_{i=1}^{m} \sum_{j=1}^{n} \lambda_i \mu_j (0) = 0
 \end{align*}
 ```
 
-So, if the basis vectors are orthogonal, then the subspaces are orthogonal. Another possibility is if one of the coefficients is zero, but then 
-one of the vectors would just be the zero vector and all the vectors in the subspace would be orthogonal to the zero vector.
+Showing that for the vectors $\mathbf{a} \in A$ and $\mathbf{b} \in B$ to be orthogonal, we either have that one of the coefficients $\lambda_i$ or $\mu_j$ is zero, meaning that one of the vectors is the zero vector which is trivially orthogonal to every vector, or that the basis vectors $\mathbf{a}_i$ and $\mathbf{b}_j$ are orthogonal.
+</Callout>
 
-So we know that if the basis vectors are orthogonal, then the subspaces are orthogonal. This also means that the basis vectors of the two 
-subspaces are linearly independent from our previous findings so the only vector that is in both subspaces is the zero vector. More formally:
+So we know that if the basis vectors are orthogonal, then the subspaces are orthogonal. This also means that the basis vectors of the two subspaces are linearly independent from our previous findings so the only vector that is in both subspaces is the zero vector. More formally:
 
 ```math
 \it{A} \perp \it{B} \implies \it{A} \cap \it{B} = \{\mathbf{0}\}
@@ -113,89 +125,175 @@ Because the basis vectors of the two subspaces are linearly independent we can a
 
 ```math
 \begin{align*}
-\it{C} &= \it{A} \oplus \it{B} \\
-&= \{\lambda \mathbf{a} + \mu \mathbf{b} \mid \lambda, \mu \in \mathbb{R} \, \text{and} \, \mathbf{a} \in A, \mathbf{b} \in B\}
+\it{C} = \it{A} \oplus \it{B} &= \{\lambda \mathbf{a} + \mu \mathbf{b} \mid \lambda, \mu \in \mathbb{R} \, \text{and} \, \mathbf{a} \in A, \mathbf{b} \in B\}
 &= \text{span}(\mathbf{a}_1, \mathbf{a}_2, \ldots, \mathbf{a}_m, \mathbf{b}_1, \mathbf{b}_2, \ldots, \mathbf{b}_n)
 \end{align*}
 ```
 
-Where $\oplus$ denotes the direct sum of the two subspaces, so it contains all the vectors that are in both subspaces and 
-their linear combinations. We can't just take the union of the two subspaces as neither of the subspaces would be closed under addition.
-The dimension of the new subspace is then the sum of the dimensions of the two subspaces, $\text{dim}(C) = \text{dim}(A) + \text{dim}(B)$ as we 
-define the dimension of a subspace as the number of basis vectors of the subspace. 
+Where $\oplus$ denotes the direct sum of the two subspaces, so it contains all the vectors that are in both subspaces and their linear combinations. We can't just take the union of the two subspaces as neither of the subspaces would be closed under addition. The dimension of the new subspace is then the sum of the dimensions of the two subspaces. Or more formally if $A$ and $B$ are two subspaces of $\mathbb{R}^n$ then we have:
+
+```math
+\text{dim}(C) = \text{dim}(A) + \text{dim}(B) \leq n \quad \text{where} \quad C = A \oplus B
+```
+
+as we define the dimension of a subspace as the number of basis vectors of the subspace. 
 
 ### Orthogonal Complement
 
-If we have a subspace $\it{A}$ then we can define a special subspace called the orthogonal complement of $\it{A}$, denoted $\it{A}^{\perp}$. 
-The orthogonal complement of a subspace is the set of all vectors that are orthogonal to every vector in the subspace. So, more formally if 
-we have a subspace $\it{A}$ of $\mathbb{R}^n$ then the orthogonal complement of $\it{A}$ is defined as:
+If we have a subspace $\it{A}$ then we can define a special subspace called the orthogonal complement of $\it{A}$, denoted $\it{A}^{\perp}$. The orthogonal complement of a subspace is the set of all vectors that are orthogonal to every vector in the subspace. So, more formally if we have a subspace $\it{A}$ of $\mathbb{R}^n$ then the orthogonal complement of $\it{A}$ is defined as:
 
 ```math
 \it{A}^{\perp} = \{\mathbf{x} \in \mathbb{R}^n \mid \mathbf{x}^T \mathbf{a} = 0 \, \forall \mathbf{a} \in A\}
 ```
 
-These means that we can decompose a vector space into two subspaces, the subspace itself and the orthogonal complement of the subspace. 
-This comes from the idea that a vector space has $n$ dimensions/basis vectors, if we then take a subspace of the vector space then this 
-subspace has $k \leq n$ dimensions/basis vectors. The orthogonal complement of the subspace then has $n - k$ dimensions/basis vectors because 
-the two subspaces are orthogonal and the basis vectors of the two subspaces are linearly independent. So then when joining the two subspaces 
-together we get the entire vector space, also called the ambient space. This can be written as:
+<Callout type="proof">
+Prove that the orthogonal complement of a subspace is a subspace of the ambient space $\mathbb{R}^n$.
+
+To show that $\it{A}^{\perp}$ is a subspace, we verify the **three subspace properties**:
+
+- **Zero vector in $\it{A}^{\perp}$:** For any $\mathbf{a} \in \it{A}$, we can show that the zero vector $\mathbf{0}$ is in $\it{A}^{\perp}$:
+
+```math
+\mathbf{0} \cdot \mathbf{a} = 0
+```
+
+- **Closed under addition:** If $\mathbf{x}_1, \mathbf{x}_2 \in \it{A}^{\perp}$, then for any $\mathbf{a} \in \it{A}$ we can show that the sum $\mathbf{x}_1 + \mathbf{x}_2$ is also in $\it{A}^{\perp}$:
+
+```math
+(\mathbf{x}_1 + \mathbf{x}_2) \cdot \mathbf{a} = \mathbf{x}_1 \cdot \mathbf{a} + \mathbf{x}_2 \cdot \mathbf{a} = 0 + 0 = 0
+```
+
+- **Closed under scalar multiplication:** If $\mathbf{x} \in \it{A}^{\perp}$ and $\lambda \in \mathbb{R}$ we can show that $\lambda \mathbf{x}$ is also in $\it{A}^{\perp}$:
+
+```math
+(\lambda \mathbf{x}) \cdot \mathbf{a} = \lambda (\mathbf{x} \cdot \mathbf{a}) = \lambda (0) = 0
+```
+
+Thus, $\it{A}^{\perp}$ is a subspace of $\mathbb{R}^n$. 
+</Callout>
+
+These means that we can decompose a vector space into two subspaces, the subspace itself and the orthogonal complement of the subspace. This comes from the idea that a vector space has $n$ dimensions/basis vectors, if we then take a subspace of the vector space then this subspace has $k \leq n$ dimensions/basis vectors. The orthogonal complement of the subspace then has $n - k$ dimensions/basis vectors because the two subspaces are orthogonal and the basis vectors of the two subspaces are linearly independent. So then when joining the two subspaces together we get the entire vector space, also called the ambient space. This can be written as:
 
 ```math
 \it{A} \subset \mathbb{R}^n \implies \mathbb{R}^n = \it{A} \oplus \it{A}^{\perp} = \{\mathbf{a} + \mathbf{x} \mid \mathbf{a} \in A, \mathbf{x} \in A^{\perp}\}
 ```
 
-So this means that every vector in the ambient space can be written as a linear combination of a vector in the subspace and a vector in the 
-orthogonal complement of the subspace. From this it also naturally follows that the orthogonal complement of the orthogonal complement of a 
-subspace is the subspace itself:
+So this means that every vector in the ambient space can be written as a linear combination of a vector in the subspace and a vector in the orthogonal complement of the subspace. Or more formally we let $\it{A}$ be a subspace of $\mathbb{R}^n$ and $\it{A}^{\perp}$ be the orthogonal complement of $\it{A}$, then for an arbitrary vector $\mathbf{a} \in \mathbb{R}^n$ there exists a unique vector $\mathbf{x} \in \it{A}$ and a unique vector $\mathbf{y} \in \it{A}^{\perp}$ such that:
+
+```math
+\mathbf{a} = \mathbf{x} + \mathbf{y}
+```
+
+This is called the **orthogonal decomposition** of the vector $\mathbf{a}$ into the subspace $\it{A}$ and its orthogonal complement $\it{A}^{\perp}$.
+
+<Callout type="proof">
+Let $x_1, x_2, \ldots, x_k$ be the basis vectors of the subspace $\it{A}$ and $y_1, y_2, \ldots, y_{n-k}$ be the basis vectors of the orthogonal complement $\it{A}^{\perp}$. Then we can write any vector $\mathbf{a} \in \mathbb{R}^n$ as a linear combination of these basis vectors:
+
+```math
+\mathbf{a} = \sum_{i=1}^{k} \lambda_i x_i + \sum_{j=1}^{n-k} \mu_j y_j
+```
+
+Where $\lambda_i$ and $\mu_j$ are scalars. This can be done because we have $n$ dimensions in $\mathbb{R}^n$ and the basis vectors of $\it{A}$ and $\it{A}^{\perp}$ are linearly independent. So we have in total $k + (n - k) = n$ independent vectors that span the entire vector space $\mathbb{R}^n$.
+</Callout>
+
+From this it also naturally follows that the orthogonal complement of the orthogonal complement of a subspace is the subspace itself:
 
 ```math
 \mathbb{R}^n = \it{A} \oplus \it{A}^{\perp} = (\it{A}^{\perp})^{\perp} \oplus \it{A}^\perp \implies \it{A} = (\it{A}^{\perp})^{\perp}
 ```
 
+<Callout type="proof">
+To prove that $\it{A} = (\it{A}^{\perp})^{\perp}$, we need to show the two directions of the inclusion. First we show that $\it{A} \subseteq (\it{A}^{\perp})^{\perp}$. For this we take any $\mathbf{a} \in \it{A}$. By definition of $\it{A}^{\perp}$:
+
+```math
+\mathbf{x} \in \it{A}^{\perp} \implies \mathbf{x} \cdot \mathbf{a} = 0
+```
+
+This means that $\mathbf{a}$ is orthogonal to every vector in $\it{A}^{\perp}$. So:
+
+```math
+\mathbf{a} \in (\it{A}^{\perp})^{\perp}
+```
+
+Therefore:
+
+```math
+\it{A} \subseteq (\it{A}^{\perp})^{\perp}
+```
+
+We now need to show the reverse inclusion $ (\it{A}^{\perp})^{\perp} \subseteq \it{A}$. For this we take any $\mathbf{y} \in (\it{A}^{\perp})^{\perp}$. By definition:
+
+```math
+\mathbf{y} \cdot \mathbf{x} = 0 \;\; \forall \mathbf{x} \in \it{A}^{\perp}
+```
+
+To show $\mathbf{y} \in \it{A}$, consider the decomposition of $\mathbb{R}^n$:
+
+```math
+\mathbb{R}^n = \it{A} \oplus \it{A}^{\perp}
+```
+
+we know this decomposition exists because $\dim(\it{A}) + \dim(\it{A}^{\perp}) = n$ and they intersect trivially. We then also know that every vector $\mathbf{y} \in \mathbb{R}^n$ can be written as a sum of a vector in $\it{A}$ and a vector in $\it{A}^{\perp}$:
+
+```math
+\mathbf{y} = \mathbf{a} + \mathbf{x}, \quad \mathbf{a} \in \it{A}, \mathbf{x} \in \it{A}^{\perp}
+```
+
+Now, compute $\mathbf{y} \cdot \mathbf{x}'$ for any $\mathbf{x}' \in \it{A}^{\perp}$:
+
+```math
+\mathbf{y} \cdot \mathbf{x}' = (\mathbf{a} + \mathbf{x}) \cdot \mathbf{x}' = \mathbf{a} \cdot \mathbf{x}' + \mathbf{x} \cdot \mathbf{x}'
+```
+
+But $\mathbf{a} \cdot \mathbf{x}' = 0$ (since $\mathbf{a} \in \it{A}$ and $\mathbf{x}' \in \it{A}^{\perp}$), so:
+
+```math
+\mathbf{y} \cdot \mathbf{x}' = \mathbf{x} \cdot \mathbf{x}'
+```
+
+For this to equal $0$ for **all** $\mathbf{x}' \in \it{A}^{\perp}$, the only possibility is if $\mathbf{x} = \mathbf{0}$ because the dot product restricted to $\it{A}^{\perp}$ is positive definite. Thus:
+
+```math
+\mathbf{y} = \mathbf{a} + \mathbf{x} = \mathbf{a} + \mathbf{0} = \mathbf{a} \in \it{A}
+```
+
+So:
+
+```math
+(\it{A}^{\perp})^{\perp} \subseteq \it{A}
+```
+</Callout>
+
 ### Orthogonality of Matrix Subspaces
 
-We have seen that we can define some subspaces of a matrix. Specifically, we can define the column space $C(A)$, row space $R(A)$, null space 
-$N(A)$ and solution space $Sol(A, b)$ of a matrix $A$. Now let's explore how these spaces are connected through orthogonality and their orthogonal 
-complements.
+We have seen that we can define some subspaces of a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$. Specifically, we can define the column space $C(A)$, row space $R(A)$, null space $N(A)$ and solution space $Sol(A, b)$ of a matrix $A$. Now let's explore how these spaces are connected through orthogonality and their orthogonal complements.
 
-We know that the null space $N(A)$ consists of all vectors $\mathbf{x}$ such that $\mathbf{Ax} = \mathbf{o}$. This means that every 
-vector in $N(A)$ is orthogonal to every row of $A$. Why? Because multiplying $\mathbf{x}$ by $A$ can be thought of as taking the dot 
-product of $\mathbf{x}$ with each row of $A$, and for $A\mathbf{x} = \mathbf{o}$, these dot products must all be zero. We also 
-know that the row space $R(A)$ consists of all vectors that can be written as a linear combination of the rows of $A$. This means that every 
-vector in $R(A)$ is orthogonal to every vector in $N(A)$. Therefore, the null space of $A$ is the orthogonal complement of the row space $R(A)$:
+We know that the null space $N(A)$ consists of all vectors $\mathbf{x}$ such that $\mathbf{Ax} = \mathbf{o}$. This means that every vector in $N(A)$ is orthogonal to every row of $A$. Why? Because multiplying $\mathbf{x}$ by $A$ can be thought of as taking the dot product of $\mathbf{x}$ with each row of $A$, and for $A\mathbf{x} = \mathbf{o}$, these dot products must all be zero. Because the null space is orthogonal to every row of $A$ it follows from above that the null space is also orthogonal to every linear combination of the rows of $A$. The set of linear combinations of the rows of $A$ is the row space $R(A)$. So we can say that the null space $N(A)$ is orthogonal to the row space $R(A)$:
 
 ```math
-N(A) = R(A)^{\perp} = C(A^T)^{\perp}
+N(A) \perp R(A)
 ```
 
-This is a very important relationship between the row space and the null space of a matrix. It also tells us that 
-together, the row space and the null space span the entire ambient space $\mathbb{R}^n$.
-
-```math
-\mathbb{R}^n = R(A) \oplus N(A)
-```
-
-This also matches up when we look at the dimensionalities of the different spaces. For a matrix $A \in \mathbb{R}^{m \times n}$ we have:
-- Our ambient space is the number of columns of the matrix $A$, $n$ so $\mathbb{R}^n$.
+Just because these two subspaces are orthogonal does not mean that they are complements of each other. For that we need to show that every vector in the ambient space $\mathbb{R}^n$ can be written as a linear combination of a vector in the row space $R(A)$ and a vector in the null space $N(A)$. However, we already know that for a matrix $A \in \mathbb{R}^{m \times n}$ we have:
+- The ambient space is the number of columns of the matrix $A$, $n$ so $\mathbb{R}^n$.
 - The row space $R(A)$ has dimension $r$ where $r$ is the rank of the matrix $A$.
 - The null space $N(A)$ has dimension $n - r$. 
-- So the sum of the dimensions of the row space and the null space is $r + (n - r) = n$ which is the dimension of the ambient space.
 
-From taking the orthogonal complement of the above equation we also get:
+So the sum of the dimensions of the row space and the null space is $r + (n - r) = n$ which is the dimension of the ambient space $\mathbb{R}^n$. This means that the row space and the null space together span the entire ambient space $\mathbb{R}^n$. Therefore, the null space $N(A)$ is the orthogonal complement of the row space $R(A)$ and because the row space is the column space of the transpose of the matrix $A$, we can also say that the null space is the orthogonal complement of the column space of the transpose of the matrix $A$:
 
 ```math
-N(A)^{\perp} = R(A) = C(A^T)
+\mathbb{R}^n = R(A) \oplus N(A) \text{and} \quad N(A) = R(A)^{\perp} = C(A^T)^{\perp}
 ```
 
-We can now look at what this means for solving a system of linear equations. For this we know that the column space $C(A)$ represents all possible 
-linear combinations of the columns of $A$, and the null space $N(A)$ captures all solutions to the equation $A\mathbf{x} = \mathbf{o}$.
-So how can we tie this to the solution space $Sol(A, b)$ to solving general systems of linear equations $A\mathbf{x} = \mathbf{b}$?
+If we then also take the orthogonal complement of the null space $N(A)$, we get the row space $R(A)$ because the orthogonal complement of the orthogonal complement of a subspace is the subspace itself:
 
-If a solution $\mathbf{x}$ exists, then we know it involves checking if $\mathbf{b}$ lies in the column space $C(A)$. If $\mathbf{b} 
-\notin C(A)$, then no solution exists because $\mathbf{b}$ cannot be written as a linear combination of the columns of $A$.
+```math
+N(A)^{\perp\perp} = R(A) = C(A^T)
+```
 
-When $\mathbf{b} \in C(A)$, we now from our definition of the solution space that the solution space $Sol(A, b)$ is a shifted version of the 
-null space $N(A)$. So the general solution to the equation $A\mathbf{x} = \mathbf{b}$ is:
+We can now look at what this means for solving a system of linear equations. For this we know that the column space $C(A)$ represents all possible linear combinations of the columns of $A$, and the null space $N(A)$ captures all solutions to the equation $A\mathbf{x} = \mathbf{o}$. So how can we tie this to the solution space $Sol(A, b)$ to solving general systems of linear equations $A\mathbf{x} = \mathbf{b}$?
+
+If a solution $\mathbf{x}$ exists, then we know it involves checking if $\mathbf{b}$ lies in the column space $C(A)$. If $\mathbf{b} \notin C(A)$, then no solution exists because $\mathbf{b}$ cannot be written as a linear combination of the columns of $A$. However, if $\mathbf{b} \in C(A)$, we now from our definition of the solution space that the solution space $Sol(A, b)$ is a shifted version of the null space $N(A)$. So the general solution to the equation $A\mathbf{x} = \mathbf{b}$ is:
 
 ```math
 \mathbf{x} = \mathbf{x}_p + \mathbf{x}_n
@@ -208,17 +306,15 @@ So we get:
 \{\mathbf{x} \in \mathbb{R}^n \mid A\mathbf{x} = \mathbf{b}\} = \mathbf{x}_p + N(A)
 ```
 
-The particular solution $\mathbf{x}_p$ that shifts the null space to form the solution space must come from the row space $R(A)$. The reason for this 
-is that to reach somwhere that is not in the null space we must move in a direction that we can't reach from the null space. So we have to 
-move in a direction that is orthogonal to the null space, i.e. in the row space. So the particular solution $\mathbf{x}_p$ must be in the row space $R(A)$. 
-This then gives us the following equation:
+The particular solution $\mathbf{x}_p$ that shifts the null space to form the solution space must come from the row space $R(A)$. The reason for this is that to reach somewhere that is not in the null space we must move in a direction that we can't reach from the null space. So we have to move in a direction that is orthogonal to the null space, i.e. in the row space. So the particular solution $\mathbf{x}_p$ must be in the row space $R(A)$. This then gives us the following equation:
 
 ```math
 \{\mathbf{x} \in \mathbb{R}^n \mid \mathbf{Ax} = \mathbf{b}\} = \mathbf{x} + N(A) \text{where} \mathbf{x} \in R(A) \text{ so that } \mathbf{Ax} = \mathbf{b}
 ```
 
-We have also seen that the column space of $\mathbf{A}$ is the same as the column space of $\mathbf{AA}^T$ so and the same relation 
-holds for the row space of $\mathbf{A}$ and $\mathbf{A}^T\mathbf{A}$. So we can summarize the following relationships:
+This matches our intuition that we can create any vector $\mathbf{x} \in \mathbb{R}^n$ as a linear combination of a vector in a subspace and a vector in its orthogonal complement. In this case, the subspace is the row space $R(A)$ and the orthogonal complement is the null space $N(A)$.
+
+We have also seen that the column space of $\mathbf{A}$ is the same as the column space of $\mathbf{AA}^T$ and the same relation holds for the row space of $\mathbf{A}$ and $\mathbf{A}^T\mathbf{A}$. So we can summarize the following relationships:
 
 ```math
 \begin{align*}
@@ -233,3 +329,12 @@ N(A^TA) &= R(A^TA)^{\perp} = R(A)^{\perp} = C(A^T)^{\perp} \\
 C(A^T) &= C(A^TA)
 \end{align*}
 ```
+
+## Orthogonal matrices
+
+<Callout type="todo">
+orthogonal matrices and orthonormal matrices. columns are orthogonal to each other and normalized, i.e. have a length of $1$. what about the rows?
+
+the inverse of an orthogonal matrix is just the transpose of the matrix?
+permutation matrix is orthogonal
+</Callout>
