@@ -156,7 +156,7 @@ You might be wondering how we already know that $\mathbf{R}$ is upper triangular
 \begin{bmatrix} r_{11} & r_{12} & r_{13} \\ 0 & r_{22} & r_{23} \\ 0 & 0 & r_{33} \end{bmatrix}.
 ```
 
-Lastly let's look at some of the subspaces of the matrix $\mathbf{A}$ and compare them to the decomposition. First let's compare the column space of $\mathbf{A}$ to the column space of $\mathbf{Q}$. The column space of $\mathbf{Q}$, denoted $C(\mathbf{Q})$, is the same as the column space of $\mathbf{A}$, denoted $C(\mathbf{A})$. This arises naturally from the Gram-Schmidt process, as $\mathbf{Q}$ is constructed by orthonormalizing the columns of $\mathbf{A}$. In other words, the orthonormal vectors in $\mathbf{Q}$ span the same subspace as the original (linearly independent) columns of $\mathbf{A}$.
+Lastly let's look at some of the subspaces of the matrix $\mathbf{A}$ and compare them to the decomposition. First let's compare the column space of $\mathbf{A}$ to the column space of $\mathbf{Q}$. The column space of $\mathbf{Q}$, denoted $C(\mathbf{Q})$, is the same as the column space of $\mathbf{A}$, denoted $C(\mathbf{A})$. This arises naturally from the Gram-Schmidt process, as $\mathbf{Q}$ is constructed by orthonormalizing the columns of $\mathbf{A}$. In other words, all the vectors in $\mathbf{Q}$ are orthonormal and independent and span the same subspace as the original (linearly independent) columns of $\mathbf{A}$.
 
 This property is crucial because it means that $\mathbf{Q}$ retains all the information about the subspace spanned by $\mathbf{A}$, making $\mathbf{Q}$ an ideal basis for performing projections and other computations in that subspace.
 
@@ -209,6 +209,18 @@ Left-multiplying both sides by $\mathbf{Q}^T$ because $\mathbf{Q}^T\mathbf{Q} = 
 ```
 
 Since $\mathbf{R}$ is upper triangular, this system can then efficiently solved using **back substitution** and a matrix-vector multiplication. 
+
+We can also easily calculate the inverse of $\mathbf{A}$:
+
+```math
+\begin{align*}
+\mathbf{A} &= \mathbf{Q}\mathbf{R} \\
+\mathbf{A}^{-1} &= \mathbf{R}^{-1}\mathbf{Q}^{T} \\
+\mathbf{A}^{-1} &= \mathbf{Q}^{T}\mathbf{R}^{-1}
+\end{align*}
+```
+
+We still need to calculate $\mathbf{R}^{-1}$, but this is straightforward since $\mathbf{R}$ is upper triangular and invertible. We can use back substitution to find the inverse of $\mathbf{R}$.
 
 We can actually even further improve our solution for solving the least squares problem where we encounter an overdetermined system that doesn't have an exact solution. In this case, we seek a solution that minimizes the error, i.e., the **least squares solution**:  
 
