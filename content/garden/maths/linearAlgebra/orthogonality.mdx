@@ -330,7 +330,7 @@ C(A^T) &= C(A^TA)
 \end{align*}
 ```
 
-## Orthogonal matrices
+## Orthogonal Matrices
 
 <Callout type="todo">
 orthogonal matrices and orthonormal matrices. columns are orthogonal to each other and normalized, i.e. have a length of $1$. what about the rows?
@@ -338,3 +338,83 @@ orthogonal matrices and orthonormal matrices. columns are orthogonal to each oth
 the inverse of an orthogonal matrix is just the transpose of the matrix?
 permutation matrix is orthogonal
 </Callout>
+
+An **orthogonal matrix** is a matrix whose columns $\mathbf{q}_1, \mathbf{q}_2, \ldots, \mathbf{q}_n$ form an orthonormal set of vectors or basis. A set of vectors is **orthonormal** if the following two properties hold:
+1. Each vector has unit length, meaning $||\mathbf{q}_i|| = 1$. 
+2. They are all orthogonal to each other, meaning $\mathbf{q}_i^T \mathbf{q}_j = 0$ for $i \neq j$ the dot products where $i = j$ are of course 1 as this is then the same as the length of the vector squared. This is also why they form a basis, as we have seen that if the vectors are orthogonal to each other they are linearly independent.
+
+An orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{m \times n}$ has orthonormal columns then it has some very nice properties. The first one is that the transpose of the matrix times the matrix is the identity matrix:
+
+```math
+\mathbf{Q}^T \mathbf{Q} = \mathbf{I}_n
+```
+
+The reason for this is quiet simple if you think of the matrix multiplication as taking the dot product of the columns of the matrix. If we have the orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{m \times n}$ with the orthonormal columns $\mathbf{q}_1, \mathbf{q}_2, \ldots, \mathbf{q}_n$. When we compute $\mathbf{Q}^T \mathbf{Q}$, the $(i, j)$-entry of the resulting matrix is:
+
+```math
+(\mathbf{Q}^T \mathbf{Q})_{ij} = \mathbf{q}_i^T \mathbf{q}_j.
+```
+
+This gives us two cases:
+- If $i = j$, $\mathbf{q}_i^T \mathbf{q}_j = ||\mathbf{q}_i||^2 = 1$. These values will be along the diagonal of the resulting matrix.
+- If $i \neq j$, $\mathbf{q}_i^T \mathbf{q}_j = 0$, since the columns of $\mathbf{Q}$ are orthogonal.
+
+This is very easily visualized if we take the first standard basis vectors from $\mathbb{R}^3$ and put them into a matrix:
+
+```math
+\begin{bmatrix}
+1 & 0 \\
+0 & 1 \\
+0 & 0
+\end{bmatrix} \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 
+0 & 1
+\end{bmatrix}
+```
+
+Orthogonal matrices also have the nice property that if they are square so $m = n$ then the following also holds:
+
+```math
+\mathbf{Q}^T\mathbf{Q} = \mathbf{I} = \mathbf{Q}\mathbf{Q}^T
+```
+
+Which then means that $\mathbf{Q}$ is invertible, and its inverse is given by:
+
+```math
+\mathbf{Q}^{-1} = \mathbf{Q}^T.
+```
+
+Orthogonal matrices also have the nice property of preserving the norm of a vector. So if we have an orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{n \times n}$ and let $\mathbf{x} \in \mathbb{R}^n$ be any vector. So if we consider the transformed vector $\mathbf{y} = \mathbf{Q} \mathbf{x}$. Then the norm of $\mathbf{y}$ is:
+
+```math
+\|\mathbf{y}\| = \sqrt{\mathbf{y}^T \mathbf{y}} = \sqrt{(\mathbf{Q} \mathbf{x})^T (\mathbf{Q} \mathbf{x})}.
+```
+
+Using the associative property of matrix multiplication and the fact that $\mathbf{Q}^T \mathbf{Q} = \mathbf{I}$ (since $\mathbf{Q}$ is orthogonal), we get:
+
+```math
+\|\mathbf{y}\| = \sqrt{\mathbf{x}^T (\mathbf{Q}^T \mathbf{Q}) \mathbf{x}} = \sqrt{\mathbf{x}^T \mathbf{I} \mathbf{x}} = \sqrt{\mathbf{x}^T \mathbf{x}} = \|\mathbf{x}\|.
+```
+
+Thus, the norm of a vector is preserved under multiplication by an orthogonal matrix. An orthogonal matrix also preserves the inner product of two vectors. The inner product of two vectors $\mathbf{x}, \mathbf{z} \in \mathbb{R}^n$ is defined as:
+
+```math
+\langle \mathbf{x}, \mathbf{z} \rangle = \mathbf{x}^T \mathbf{z}.
+```
+
+Now consider the transformed vectors $\mathbf{y} = \mathbf{Q} \mathbf{x}$ and $\mathbf{w} = \mathbf{Q} \mathbf{z}$. The inner product of $\mathbf{y}$ and $\mathbf{w}$ is:
+
+```math
+\langle \mathbf{y}, \mathbf{w} \rangle = \mathbf{y}^T \mathbf{w} = (\mathbf{Q} \mathbf{x})^T (\mathbf{Q} \mathbf{z}).
+```
+
+Using the associative property of matrix multiplication and the fact that $\mathbf{Q}^T \mathbf{Q} = \mathbf{I}$, we have:
+
+```math
+\langle \mathbf{y}, \mathbf{w} \rangle = \mathbf{x}^T (\mathbf{Q}^T \mathbf{Q}) \mathbf{z} = \mathbf{x}^T \mathbf{I} \mathbf{z} = \mathbf{x}^T \mathbf{z} = \langle \mathbf{x}, \mathbf{z} \rangle.
+```
+
+Thus, the inner product of two vectors is also preserved under multiplication by an orthogonal matrix. These two properties give us an important insight into linear transformations that are defined by orthogonal matrices. The geometric interpretation is that Orthogonal matrices represent **rigid transformations** of space, such as rotations and reflections. These transformations do not distort the lengths of vectors or the angles between them, which is why both the norm and the inner product remain unchanged.

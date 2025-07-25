@@ -611,8 +611,8 @@ just a linear combination of the column vectors of $\mathbf{A}$.
 \vdots & \vdots \\
 \mathbf{a}_{1n} & \mathbf{a}_{2n} \\
 \end{bmatrix} = \begin{bmatrix}
-\mathbf{c}_{11} & \mathbf{c}_{12} \\
-\mathbf{c}_{21} & \mathbf{c}_{22} \\
+(a_11^2 + a_12^2 + \ldots + a_1n^2) & (a_11a_21 + a_12a_22 + \ldots + a_1na_2n) \\
+(a_21a_11 + a_22a_12 + \ldots + a_2na_1n) & (a_21^2 + a_22^2 + \ldots + a_2n^2) \\
 \end{bmatrix}
 ```
 
@@ -621,6 +621,20 @@ This means that the column space of $\mathbf{A}\mathbf{A}^T$ is the same as the 
 ```math
 C(\mathbf{A}\mathbf{A}^T) = C(\mathbf{A})
 ```
+
+We notice some properties of the matrix $\mathbf{A}\mathbf{A}^T$. Firstly we can see that the matrix is symmetric so $\mathbf{A}\mathbf{A}^T = (\mathbf{A}\mathbf{A}^T)^T$. This is because the transpose of a product of matrices is the product of the transposes in reverse order, so:
+
+```math
+(\mathbf{A}\mathbf{A}^T)^T = (\mathbf{A}^T)^T\mathbf{A}^T = \mathbf{A}\mathbf{A}^T
+```
+
+It also follows that the diagonal entries of the matrix $\mathbf{A}\mathbf{A}^T$ is the sum of the squares of the entries in the corresponding columns of $\mathbf{A}$. In other words, if $\mathbf{A} \in R^{m \times n}$ has rows $\mathbf{a}_1, \mathbf{a}_2, \ldots, \mathbf{a}_m$, then the diagonal entry at position $(i, i)$ in $\mathbf{A}\mathbf{A}^T$ is given by:
+
+```math
+(\mathbf{A}\mathbf{A}^T)_{ii} = \sum_{j=1}^{n} a_{ij}^2
+```
+
+where $a_{ij}$ is the entry in the $i$-th row and $j$-th column of $\mathbf{A}$. This means that the diagonal entries of $\mathbf{A}\mathbf{A}^T$ represent the squared lengths (norms) of the rows of $\mathbf{A}$.
 
 <Callout type="example">
 If we look at the matrix multiplication we can see the linear combination of the column vectors of $\mathbf{A}$ in the matrix $\mathbf{A}\mathbf{A}^T$.
@@ -645,12 +659,18 @@ If we look at the matrix multiplication we can see the linear combination of the
 + 3 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
 \end{bmatrix} \\
 &= \begin{bmatrix}
+(0^2 + 10^2) & (0 \cdot 3 + 10 \cdot 7) & (0 \cdot 5 + 10 \cdot 3) \\
+(3 \cdot 0 + 7 \cdot 10) & (3^2 + 7^2) & (3 \cdot 5 + 7 \cdot 3) \\
+(5 \cdot 0 + 3 \cdot 10) & (5 \cdot 3 + 3 \cdot 7) & (5^2 + 3^2) \\
+&= \begin{bmatrix}
 100 & 70 & 30 \\
 70 & 58 & 34 \\
 30 & 34 & 34 \\
 \end{bmatrix}
 \end{align*}
 ```
+
+We can also see the symmetric property of the matrix $\mathbf{A}\mathbf{A}^T$ and that the diagonal entries are the sum of the squares of the entries in the corresponding row of $\mathbf{A}$.
 </Callout>
 
 ### Membership of a Vector in the Column Space
@@ -807,8 +827,8 @@ Very similarly as for the column space of $\mathbf{A}\mathbf{A}^T$ the row space
 \vdots & \vdots \\
 \mathbf{a}_{n1} & \mathbf{a}_{n2} \\
 \end{bmatrix} = \begin{bmatrix}
-\mathbf{r}_{11} & \mathbf{r}_{12} \\
-\mathbf{r}_{21} & \mathbf{r}_{22} \\
+(\mathbf{a}_{11}^2 + \mathbf{a}_{21}^2 + \ldots + \mathbf{a}_{n1}^2) & (\mathbf{a}_{11}\mathbf{a}_{12} + \mathbf{a}_{21}\mathbf{a}_{22} + \ldots + \mathbf{a}_{n1}\mathbf{a}_{n2}) \\
+(\mathbf{a}_{12}\mathbf{a}_{11} + \mathbf{a}_{22}\mathbf{a}_{21} + \ldots + \mathbf{a}_{n2}\mathbf{a}_{n1}) & (\mathbf{a}_{12}^2 + \mathbf{a}_{22}^2 + \ldots + \mathbf{a}_{n2}^2) \\
 \end{bmatrix}
 ```
 
@@ -827,7 +847,13 @@ C(\mathbf{A}^T\mathbf{A}) &= C(\mathbf{A}) \\
 \end{align*}
 ```
 
-And because the matrices $\mathbf{A}^T\mathbf{A}$ and $\mathbf{A}\mathbf{A}^T$ are symmetric we can also say that the column spaces are the same as the row spaces:
+Again the matrix we can see that the matrix $\mathbf{A}^T\mathbf{A}$ is symmetric, so $\mathbf{A}^T\mathbf{A} = (\mathbf{A}^T\mathbf{A})^T$. This is because the transpose of a product of matrices is the product of the transposes in reverse order, so:
+
+```math
+(\mathbf{A}^T\mathbf{A})^T = \mathbf{A}^T(\mathbf{A}^T)^T = \mathbf{A}^T\mathbf{A}
+```
+
+this means that because both matrices $\mathbf{A}^T\mathbf{A}$ and $\mathbf{A}\mathbf{A}^T$ are symmetric we can also say that the column spaces are the same as the row spaces:
 
 ```math
 \begin{align*}
@@ -836,7 +862,40 @@ C(\mathbf{A}\mathbf{A}^T) &= R(\mathbf{A}\mathbf{A}^T) \\
 \end{align*}
 ```
 
-However this does not mean that $C(\mathbf{A}) = R(\mathbf{A})$. This is only the case if the matrix is symmetric!
+However this does not mean that $C(\mathbf{A}) = R(\mathbf{A})$. This is only the case if the matrix is symmetric! Again we also notice that the diagonal entries of the matrix $\mathbf{A}^T\mathbf{A}$ are the sum of the squares of the entries in the corresponding columns of $\mathbf{A}$. In other words, if $\mathbf{A} \in R^{m \times n}$ has columns $\mathbf{a}_1, \mathbf{a}_2, \ldots, \mathbf{a}_n$, then the diagonal entry at position $(i, i)$ in $\mathbf{A}^T\mathbf{A}$ is given by:
+
+```math
+(\mathbf{A}^T\mathbf{A})_{ii} = \sum_{j=1}^{m} a_{ji}^2
+```
+
+where $a_{ji}$ is the entry in the $j$-th row and $i$-th column of $\mathbf{A}$. This means that the diagonal entries of $\mathbf{A}^T\mathbf{A}$ represent the squared lengths (norms) of the columns of $\mathbf{A}$.
+
+<Callout type="example">
+If we look at the matrix multiplication we can see the linear combination of the column vectors of $\mathbf{A}$ in the matrix $\mathbf{A}^T\mathbf{A}$.
+
+```math
+\begin{align*}
+\begin{bmatrix}
+0 & 3 & 5 \\
+10 & 7 & 3 \\
+\end{bmatrix}
+\begin{bmatrix}
+0 & 10 \\
+3 & 7 \\
+5 & 3 \\
+\end{bmatrix} &= \begin{bmatrix}
+(0^2 + 3^2 + 5^2) & (0 \cdot 10 + 3 \cdot 7 + 5 \cdot 3) \\
+(10 \cdot 0 + 7 \cdot 3 + 3 \cdot 5) & (10^2 + 7^2 + 3^2)
+\end{bmatrix} \\
+&= \begin{bmatrix}
+34 & 51 \\
+51 & 110 \\
+\end{bmatrix}
+\end{align*}
+```
+
+We can also see the symmetric property of the matrix $\mathbf{A}\mathbf{A}^T$ and that the diagonal entries are the sum of the squares of the entries in the corresponding row of $\mathbf{A}$.
+</Callout>
 
 ## Null Space
 

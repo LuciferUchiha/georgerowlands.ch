@@ -3,26 +3,20 @@ import Image from "@components/Image/Image";
 
 # Projections and Least Squares
 
-The projection of a vector $\mathbf{b} \in \mathbb{R}^m$ onto a subspace $S$ of $\mathbb{R}^m$ is the point $\mathbf{p} \in S$ that is 
-closest to $\mathbf{b}$. So we would define the projection as follows:
+The projection of a vector $\mathbf{b} \in \mathbb{R}^m$ onto a subspace $S$ of $\mathbb{R}^m$ is the point $\mathbf{p} \in S$ that is closest to $\mathbf{b}$. So we would define the projection as follows:
 
 ```math
 \mathbf{p} = \text{proj}_S(\mathbf{b}) = \text{argmin}_{\mathbf{v} \in S} ||\mathbf{b} - \mathbf{v}||_2
 ```
 
-Let's first look at where we have a vector in 2D space and we want to project it onto a line. So a subspace of dimension 1 which is spanned 
-by a single basis vector $\mathbf{a}$. So $S = \{\lambda \mathbf{a} : \lambda \in \mathbb{R} \, \mathbf{a} \in \mathbb{R}^2\}$ = C($\mathbf{a}$).
-If we visualize this, we can see that the projection of $\mathbf{b}$ onto the line, i.e the point $\mathbf{p}$ that is closest to 
-$\mathbf{b}$ is there where the error vector $\mathbf{e} = \mathbf{b} - \mathbf{p}$ is orthogonal to the line. 
+Let's first look at where we have a vector in 2D space and we want to project it onto a line. So a subspace of dimension 1 which is spanned by a single basis vector $\mathbf{a}$. So we have the column space of a single vector $S = \{\lambda \mathbf{a} : \lambda \in \mathbb{R} \, \mathbf{a} \in \mathbb{R}^2\}$ = C($\mathbf{a}$). If we visualize this, we can see that the projection of $\mathbf{b}$ onto the line, i.e the point $\mathbf{p}$ that is closest to $\mathbf{b}$ is there where the error vector $\mathbf{e} = \mathbf{b} - \mathbf{p}$ is orthogonal to the line. 
 
 <Image src="/maths/vectorProjection.png"
        caption="Visualizing the projection of a vector onto a line"
        width={400}
 />
 
-So how do we find the point $\mathbf{p}$ using this information. We can also observe that $\mathbf{p}$ is a scalar multiple of $\mathbf{a}$, 
-i.e $\mathbf{p} = \lambda \mathbf{a}$. So we can write the error vector $\mathbf{e}$ as $\mathbf{e} = \mathbf{b} - \lambda \mathbf{a}$.
-So we are looking for some $\lambda$ that minimizes the error vector. In other words we want to minimize the following:
+So how do we find the point $\mathbf{p}$ using this information. We can also observe that $\mathbf{p}$ is a scalar multiple of $\mathbf{a}$, i.e $\mathbf{p} = \lambda \mathbf{a}$. So we can write the error vector $\mathbf{e}$ as $\mathbf{e} = \mathbf{b} - \lambda \mathbf{a}$. So we are looking for some $\lambda$ that minimizes the error vector. In other words we want to minimize the following:
 
 ```math
 \begin{align*}
@@ -35,28 +29,25 @@ So we are looking for some $\lambda$ that minimizes the error vector. In other w
 \end{align*}
 ```
 
-So we get some function $g(\lambda)$ that we want to minimize, the values of $||\mathbf{b}||^2$ and $||\mathbf{a}||^2$ and $\mathbf{b}^T\mathbf{a}$ are all constants. 
-To minimize this function we can take the derivative with respect to $\lambda$ and set it to 0. This leads to the following:
+So we get some function $g(\lambda)$ that we want to minimize. So to find the minimum of this function we can take the derivative with respect to $\lambda$ and set it to 0. Because the values of $||\mathbf{b}||^2$ and $||\mathbf{a}||^2$ and $\mathbf{b}^T\mathbf{a}$ are all constants we get the following:
 
 ```math
 \begin{align*}
 g(\lambda) &= ||\mathbf{b}||^2 - 2\lambda\mathbf{b}^T\mathbf{a} + \lambda^2||\mathbf{a}||^2 \\
 g'(\lambda) &= -2\mathbf{b}^T\mathbf{a} + 2\lambda||\mathbf{a}||^2 = 0 \\
 2\lambda||\mathbf{a}||^2 &= 2\mathbf{b}^T\mathbf{a} \\
-\lambda &= \frac{\mathbf{b}^T\mathbf{a}}{||\mathbf{a}||^2}
+\lambda &= \frac{\mathbf{b}^T\mathbf{a}}{||\mathbf{a}||^2} \\
 \lambda &= \frac{\mathbf{a}^T\mathbf{b}}{\mathbf{a}^T\mathbf{a}}
 \end{align*}
 ```
 
-So we have found the formula for $\lambda$ which is the scalar multiple of $\mathbf{a}$ that gives us the projection of $\mathbf{b}$ onto the line. 
-Now we just need to put it back together to get the projection:
+So we have found the formula for $\lambda$ which is the scalar multiple of $\mathbf{a}$ that gives us the projection of $\mathbf{b}$ onto the line. Now we just need to put it back together to get the projection $\mathbf{p}$ of a 2D vector $\mathbf{b}$ onto the line spanned by $\mathbf{a}$:
 
 ```math
 \text{proj}_S(\mathbf{b}) = \mathbf{a} \lambda = \mathbf{a} \frac{\mathbf{a}^T\mathbf{b}}{\mathbf{a}^T\mathbf{a}} = \frac{\mathbf{aa}^T}{\mathbf{a}^T\mathbf{a}}\mathbf{b}
 ```
 
-We prefer to have the $\mathbf{b}$ term seperated and we can move around the multiplication of. So the nominator is then the outer product of $\mathbf{a}$ with itself and 
-the denominator is the inner product of $\mathbf{a}$ with itself. This then gives us the final formula for the projection of $\mathbf{b}$ onto the line spanned by $\mathbf{a}$.
+We can rewrite this to isolate $\mathbf{b}$, then the nominator becomes the outer product of $\mathbf{a}$ with itself and the denominator is the inner product of $\mathbf{a}$ with itself. This then gives us the final formula for the projection of $\mathbf{b}$ onto the line spanned by $\mathbf{a}$.
 
 ```math
 \text{proj}_S(\mathbf{b}) = \frac{\mathbf{aa}^T}{\mathbf{a}^T\mathbf{a}}\mathbf{b}
@@ -67,7 +58,7 @@ Let's now check to see if our initial observation that the error vector $\mathbf
 ```math
 \begin{align*}
 (\mathbf{b} - \mathbf{p}) \perp \mathbf{a} &\implies (\mathbf{b} - \text{proj}_S(\mathbf{b})) \perp \mathbf{a} \\
-&\implies \mathbf{a}^T(\mathbf{b} - \text{proj}_S(\mathbf{b})) = 0 \\
+&\implies 0 = \mathbf{a}^T(\mathbf{b} - \text{proj}_S(\mathbf{b})) \\
 &= \mathbf{a}^T(\mathbf{b} - \frac{\mathbf{aa}^T}{\mathbf{a}^T\mathbf{a}}\mathbf{b}) \\
 &= \mathbf{a}^T\mathbf{b} - \frac{\mathbf{a}^T\mathbf{aa}^T}{\mathbf{a}^T\mathbf{a}}\mathbf{b} \\
 &= \mathbf{a}^T\mathbf{b} - \frac{\mathbf{a}^T\mathbf{a}}{\mathbf{a}^T\mathbf{a}}\mathbf{a}^T\mathbf{b} \\
@@ -75,47 +66,89 @@ Let's now check to see if our initial observation that the error vector $\mathbf
 \end{align*}
 ```
 
+<Callout type="example">
+Suppose we have:
+
+```math
+\mathbf{a} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}, \quad \mathbf{b} = \begin{bmatrix} 3 \\ 4 \end{bmatrix}
+```
+
+Then we can calculate the projection of $\mathbf{b}$ onto the line spanned by $\mathbf{a}$:
+
+```math
+\text{proj}_S(\mathbf{b}) = \frac{\mathbf{aa}^T}{\mathbf{a}^T\mathbf{a}}\mathbf{b}
+```
+
+For this we first calculate the inner product $\mathbf{a}^T\mathbf{a}$, i.e the length of $\mathbf{a}$ squared:
+
+```math
+\mathbf{a}^T\mathbf{a} = \begin{bmatrix} 2 & 1 \end{bmatrix} \begin{bmatrix} 2 \\ 1 \end{bmatrix} = 2^2 + 1^2 = 4 + 1 = 5
+```
+
+Then we calculate the outer product $\mathbf{aa}^T$:
+
+```math
+\mathbf{aa}^T = \begin{bmatrix} 2 \\ 1 \end{bmatrix} \begin{bmatrix} 2 & 1 \end{bmatrix} = \begin{bmatrix} 4 & 2 \\ 2 & 1 \end{bmatrix}
+```
+
+Putting it all together we get:
+
+```math
+\begin{align*}
+\text{proj}_S(\mathbf{b}) &= \frac{1}{5} \begin{bmatrix} 4 & 2 \\ 2 & 1 \end{bmatrix} \begin{bmatrix} 3 \\ 4 \end{bmatrix} \\
+&= \frac{1}{5} \begin{bmatrix} 4 \cdot 3 + 2 \cdot 4 \\ 2 \cdot 3 + 1 \cdot 4 \end{bmatrix} = \frac{1}{5} \begin{bmatrix} 12 + 8 \\ 6 + 4 \end{bmatrix} = \frac{1}{5} \begin{bmatrix} 20 \\ 10 \end{bmatrix} = \begin{bmatrix} 4 \\ 2 \end{bmatrix}
+\end{align*}
+```
+</Callout>
+
 ## Projections in Higher Dimensions
 
-In the general case, we want to project a vector $\mathbf{b} \in \mathbb{R}^m$ onto a subspace $S \subseteq \mathbb{R}^m$ of dimension $n$, 
-where $n \leq m$. This subspace $S$ is spanned by $n$ linearly independent vectors, which we organize as the columns of a matrix $\mathbf{A} 
-\in \mathbb{R}^{m \times n}$. The column space of $\mathbf{A}$ is then the subspace $S=C(\mathbf{A})$. Our goal is 
-to then find $\text{proj}_S(\mathbf{b}) = \mathbf{p}$, the projection of $\mathbf{b}$ onto $S$, such that $\mathbf{p}$ is the closest 
-point in $S$ to $\mathbf{b}$.
+In the general case, we want to project a vector $\mathbf{b} \in \mathbb{R}^m$ onto a subspace $S \subseteq \mathbb{R}^m$ of dimension $n$, where $n \leq m$. This subspace $S$ is spanned by $n$ linearly independent vectors, which we organize as the columns of a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$. The column space of $\mathbf{A}$ is then the subspace $S=C(\mathbf{A})$. Our goal is to then find $\text{proj}_S(\mathbf{b}) = \mathbf{p}$, the projection of $\mathbf{b}$ onto $S$, such that $\mathbf{p}$ is the closest point in $S$ to $\mathbf{b}$.
 
-Any vector $\mathbf{p}$ in the subspace $S$ can be expressed as a linear combination of the columns of $\mathbf{A}$. If we store the coefficients 
-of this linear combination in a vector $\hat{\mathbf{x}} \in \mathbb{R}^n$, we can write the projection as:
-```math
-\mathbf{p} = \mathbf{A}\hat{\mathbf{x}}.
-```
-
-Just like in the 1D case, we want to minimize the error vector. This is then equivalent to finding $\hat{\mathbf{x}}$ such that the error vector 
-$\mathbf{e} = \mathbf{b} - \mathbf{p}$ is minimized. Specifically, we minimize the squared norm of the error:
-```math
-||\mathbf{e}|| = ||\mathbf{b} - \mathbf{A}\hat{\mathbf{x}}||
-```
-
-By taking the square norm, which is fine as the norm is always positive, we can simplify the expression to:
+Because our vector $\mathbf{p}$ is in the subspace $S$, it can be expressed as a linear combination of the columns of $\mathbf{A}$. If we store the coefficients of the linear combination that gives us $\mathbf{p}$ in a vector $\hat{\mathbf{x}} \in \mathbb{R}^n$, we can write the projection as:
 
 ```math
-||\mathbf{e}||^2 = (\mathbf{b} - \mathbf{A}\hat{\mathbf{x}})^T (\mathbf{b} - \mathbf{A}\hat{\mathbf{x}})
-= \mathbf{b}^T\mathbf{b} - 2\hat{\mathbf{x}}^T\mathbf{A}^T\mathbf{b} + \hat{\mathbf{x}}^T\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}}.
+\mathbf{A}\hat{\mathbf{x}} = \mathbf{p}.
 ```
 
-This gives us a function $g(\hat{\mathbf{x}})$ very similar to the 1D case that we want to minimize.
-To minimize this function with respect to $\hat{\mathbf{x}}$, we compute the gradient with respect to $\hat{\mathbf{x}}$ and set it to zero:
+We already know this equation very well. However, we want to find the coefficients $\hat{\mathbf{x}}$ such that the projection $\mathbf{p}$ is as close as possible to $\mathbf{b}$. So just like in the 1D case, we want to minimize the error vector $\mathbf{e} = \mathbf{b} - \mathbf{p}$. This means we want to find $\hat{\mathbf{x}}$ such that the error vector is minimized. Specifically, we want to minimize the squared norm of the error:
+
+```math
+||\mathbf{e}|| = || \mathbf{b} - \mathbf{p} || = || \mathbf{b} - \mathbf{A}\hat{\mathbf{x}} ||
+```
+
+To solve this, it is best to square the norm to get rid of the square root. We are allowed to do this as the norm is always positive. So we can write:
+
+```math
+\begin{align*}
+||\mathbf{e}|| &= || \mathbf{b} - \mathbf{A}\hat{\mathbf{x}} || \\
+||\mathbf{e}||^2 &= || \mathbf{b} - \mathbf{A}\hat{\mathbf{x}} ||^2 \\
+&= (\mathbf{b} - \mathbf{A}\hat{\mathbf{x}})^T(\mathbf{b} - \mathbf{A}\hat{\mathbf{x}}) \\
+&= \mathbf{b}^T\mathbf{b} - 2\hat{\mathbf{x}}^T\mathbf{A}^T\mathbf{b} + \hat{\mathbf{x}}^T\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}}.
+\end{align*}
+```
+
+This again gives us a function $g(\hat{\mathbf{x}})$ very similar to the 1D case that we want to minimize. To minimize this function with respect to $\hat{\mathbf{x}}$, we compute the gradient with respect to $\hat{\mathbf{x}}$ and set it to zero. Here it is the gradient rather then the derivative as we are dealing with a vector $\hat{\mathbf{x}}$ rather than a scalar $\lambda$. Just like in the 1D case, we can use the fact that the terms $\mathbf{b}^T\mathbf{b}$, $\mathbf{A}^T\mathbf{b}$, and $\mathbf{A}^T\mathbf{A}$ are constants with respect to $\hat{\mathbf{x}}$. The gradient of $g(\hat{\mathbf{x}})$ is then:
+
 ```math
 -2\mathbf{A}^T\mathbf{b} + 2\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}} = 0
 ```
 
-After further simplifying the above we get the so called normal equations. The normal equations are a set of very important equations in linear algebra 
-and computer science. We will be revisiting them in the context of solving the least squares problem further down the line.
+<Callout type="todo">
+Show calculation of the gradient of $g(\hat{\mathbf{x}})$.
+</Callout>
+
+After further simplifying the above we get the so-called **normal equations**. The normal equations are a set of very important equations in linear algebra and computer science. We will be revisiting them in the context of solving the least squares problem further down the line.
 
 ```math
+\begin{align*}
+-2\mathbf{A}^T\mathbf{b} + 2\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}} &= 0 \\
+2\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}} &= 2\mathbf{A}^T\mathbf{b} \\
 \mathbf{A}^T\mathbf{A}\hat{\mathbf{x}} = \mathbf{A}^T\mathbf{b}
+\end{align*}
 ```
 
-In the case where we add $n=1$ so a subspace of dimension 1 we could rewrite the formula to be:
+We can also get the normal equations for the 1D case by rewriting the projection formula for the 1D case:
 
 ```math
 \begin{align*}
@@ -125,50 +158,98 @@ In the case where we add $n=1$ so a subspace of dimension 1 we could rewrite the
 \end{align*}
 ```
 
-So we can see that the two formulas match up. 
+We defined the matrix $\mathbf{A}\in \mathbb{R}^{m \times n}$ as the matrix whose columns are the basis vectors of the subspace $S$. So we know that the columns of $\mathbf{A}$ are linearly independent and have full row rank. We then know that if we take the transpose of $\mathbf{A}$ and multiply it with $\mathbf{A}$ we get a square matrix $\mathbf{A}^T\mathbf{A} \in \mathbb{R}^{n \times n}$. This matrix is square of dimensionality $n$ and because the rank of $\mathbf{A}$ is $n$, and we know that $\mathbf{A}^T\mathbf{A}$ and $\mathbf{A}$ have the same rank, so we know that $\mathbf{A}^T\mathbf{A}$ is of full rank and therefore invertible. We also know that $\mathbf{A}^T\mathbf{A}$ is symmetric. So we have made from the generally non-square and non-invertible matrix $\mathbf{A}$ a square and invertible matrix $\mathbf{A}^T\mathbf{A}$. 
 
-Because we know that the columns of $\mathbf{A}$ are linearly independent as they form a basis for the subspace $S$, the matrix $\mathbf{A}^T\mathbf{A}$ is square and invertible. 
-The fact that is square is obvious, more specifically it is a square matrix of size $n \times n$ where $n$ is the dimension of the subspace $S$. Because 
-the rank of $\mathbf{A}$ is $n$, the rank of $\mathbf{A}^T\mathbf{A}$ is also $n$ and therefore it is now full rank and invertible. In the general case, 
-the matrix $\mathbf{A}$ is not square and therefore not invertible. So if left multiply the normal equation with the inverse we can solve for $\hat{\mathbf{x}}$:
+We can now use the fact that $\mathbf{A}^T\mathbf{A}$ is invertible to solve the normal equations for $\hat{\mathbf{x}}$:
 
 ```math
+\begin{align*}
+\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}} &= \mathbf{A}^T\mathbf{b} \\
 \hat{\mathbf{x}} = (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b}
+\end{align*}
 ```
 
-Substituting $\hat{\mathbf{x}}$ back into $\mathbf{p} = \mathbf{A}\hat{\mathbf{x}}$, we obtain the projection of $\mathbf{b}$ 
-onto $S$:
+Substituting $\hat{\mathbf{x}}$ back into $\mathbf{p} = \mathbf{A}\hat{\mathbf{x}}$, we obtain the projection of $\mathbf{b}$ onto $S$:
 
 ```math
+\begin{align*}
+\text{proj}_S(\mathbf{b}) &= \mathbf{A}\hat{\mathbf{x}} \\
 \text{proj}_S(\mathbf{b}) = \mathbf{A}(\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b}
+\end{align*}
 ```
 
-This is the general formula for the projection of a vector onto a subspace. However, we would like to simplify the formula slightly in the general case. If we set 
-the matrix $\mathbf{P} = \mathbf{A}(\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T$ we get the so called **projection matrix** for the 
-subspace $S$. It allows us to write the projection concisely as:
+This is the general formula for the projection of a vector onto a subspace. If we set the matrix $\mathbf{P} = \mathbf{A}(\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T$ we get the so called **projection matrix** for the subspace $S$. It allows us to write the projection concisely as:
 
 ```math
 \text{proj}_S(\mathbf{b}) = \mathbf{P}\mathbf{b}
 ```
 
-We know that matrices define linear transformations. Therefore the projection matrix $\mathbf{P}$ defines a linear transformation that projects any vector 
-onto the subspace $S$. Or more formally the transformation is defined as:
+We know that linear transformations can be represented by matrices. Therefore, the projection matrix $\mathbf{P}$ defines a linear transformation that projects any vector onto the subspace $S$. This transformation can be expressed as:
 
 ```math
 \begin{align*}
-T_{\mathbf{P}}: \mathbb{R}^m &\rightarrow \mathbb{R}^n \\
-T_{\mathbf{P}}(\mathbf{b}) = \mathbf{P}\mathbf{b} = \text{proj}_S(\mathbf{b})
+T_{\mathbf{P}}&: \mathbb{R}^m \rightarrow \mathbb{R}^n \\
+T_{\mathbf{P}}&(\mathbf{b}) = \mathbf{P}\mathbf{b} = \text{proj}_S(\mathbf{b})
 \end{align*}
 ```
 
-Where the vector $\mathbf{b}$ is of dimension $m$ and the subspace and therefore the projection is of dimension $n$. The projection transformation 
-also has some important properties. The first oen being that a projection of a projection shouldn't change the vector. This is called the idempotent property:
+Where the vector $\mathbf{b}$ of dimension $m$ is projected onto the subspace $S$ of dimension $n$. 
+
+<Callout type="example">
+Suppose we have:
 
 ```math
-\text{proj}_S(\text{proj}_S(\mathbf{b})) = \text{proj}_S(\mathbf{b})
+\mathbf{A} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix}, \quad \mathbf{b} = \begin{bmatrix} 3 \\ 4 \\ 5 \end{bmatrix}
 ```
 
-So with the projection matrix we should have $\mathbf{P}^2b = \mathbf{P}b$ which is the same as $\mathbf{P}^2 = \mathbf{P}$.
+Then we can calculate the projection of $\mathbf{b}$ onto the subspace spanned by the columns of $\mathbf{A}$. For this we first calculate $\mathbf{A}^T\mathbf{A}$:
+
+```math
+\begin{align*}
+\mathbf{A}^T\mathbf{A} &= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}
+\end{align*}
+```
+
+This is the two dimensional identity matrix and its inverse is itself. So we can now calculate the projection matrix $\mathbf{P}$:
+
+```math
+\mathbf{P} = \mathbf{A}(\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T = \mathbf{A}\mathbf{A}^T
+```
+
+where 
+
+```math
+\mathbf{A}\mathbf{A}^T = \begin{bmatrix} 1 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{bmatrix}
+```
+
+so putting it all together we get:
+
+```math
+\begin{align*}
+\text{proj}_S(\mathbf{b}) &= \mathbf{P}\mathbf{b} \\
+&= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} 3 \\ 4 \\ 5 \end{bmatrix} \\
+&= \begin{bmatrix} 3 \\ 4 \\ 0 \end{bmatrix}
+\end{align*}
+```
+</Callout>
+
+The projection transformation also has some important properties. The first one being that a projection of a projection shouldn't change the vector, the so-called the idempotent property. Intuitively this makes sense, as projecting a vector onto a subspace and then projecting the result again onto the same subspace should yield the same result as it has already been projected. Formally this can be expressed as:
+
+```math
+\begin{align*}
+T_{\mathbf{P}}(T_{\mathbf{P}}(\mathbf{b})) &= T_{\mathbf{P}}(\mathbf{b}) \\
+\text{proj}_S(\text{proj}_S(\mathbf{b})) = \text{proj}_S(\mathbf{b})
+\end{align*}
+```
+
+<Callout type="proof">
+If we are applying the projection to the projection of $\mathbf{b}$ onto the subspace $S$, we can write this as:
+
+```math
+\mathbf{P}(\mathbf{P}\mathbf{b}) = \mathbf{P}\mathbf{P}\mathbf{b} = \mathbf{P}^2\mathbf{b}
+```
+
+So to show that the projection is idempotent we need to show that $\mathbf{P}^2b = \mathbf{P}b$ which is the same as $\mathbf{P}^2 = \mathbf{P}$. We can see this holds by substituting the definition of $\mathbf{P}$ and simplifying using associative property of matrix multiplication:
 
 ```math
 \begin{align*}
@@ -178,135 +259,124 @@ So with the projection matrix we should have $\mathbf{P}^2b = \mathbf{P}b$ which
 &= \mathbf{P}
 \end{align*}
 ```
+</Callout>
 
-The projection onto the orthogonal complement of $S$ is defined as:
-
-```math
-\text{proj}_{S^{\perp}}(\mathbf{b}) = (\mathbf{I} - \mathbf{P})\mathbf{b}
-```
-
-## Orthogonal Matrices
-
-An **orthogonal matrix** is a matrix whose columns $\mathbf{q}_1, \mathbf{q}_2, \ldots, \mathbf{q}_n$
-form an orthonormal set of vectors or basis. A set of vectors is **orthonormal** if the 
-following two properties hold:
-1. Each vector has unit length, meaning $||\mathbf{q}_i|| = 1$.
-2. They are all orthogonal to each other, meaning $\mathbf{q}_i^T \mathbf{q}_j = 0$ for $i \neq j$ the dot products where 
-$i = j$ are of course 1 as this is then the same as the length of the vector squared. This is also why they form a basis, as 
-we have seen that if the vectors are orthogonal to each other they are linearly independent.
-
-An orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{m \times n}$ has orthonormal columns then it has some very nice properties. 
-The first one is that the transpose of the matrix times the matrix is the identity matrix:
+<Callout type="example">
+Previously we saw that given:
 
 ```math
-\mathbf{Q}^T \mathbf{Q} = \mathbf{I}_n
+\mathbf{A} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix}, \quad \mathbf{b} = \begin{bmatrix} 3 \\ 4 \\ 5 \end{bmatrix}
 ```
 
-The reason for this is quiet simple if you think of the matrix multiplication as taking the dot product of the columns of the matrix. 
-If we have the orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{m \times n}$ with the orthonormal columns $\mathbf{q}_1, \mathbf{q}_2, \ldots, \mathbf{q}_n$. 
-When we compute $\mathbf{Q}^T \mathbf{Q}$, the $(i, j)$-entry of the resulting matrix is:
+we got the projection matrix:
 
 ```math
-(\mathbf{Q}^T \mathbf{Q})_{ij} = \mathbf{q}_i^T \mathbf{q}_j.
+\mathbf{P} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{bmatrix}
 ```
 
-This gives us two cases:
-- If $i = j$, $\mathbf{q}_i^T \mathbf{q}_j = ||\mathbf{q}_i||^2 = 1$. These values will be along the diagonal of the resulting matrix.
-- If $i \neq j$, $\mathbf{q}_i^T \mathbf{q}_j = 0$, since the columns of $\mathbf{Q}$ are orthogonal.
-
-This is very easily visualized if we take the first standard basis vectors from $\mathbb{R}^3$ and put them into a matrix:
+and that Projecting $\mathbf{b}$ onto the subspace spanned by the columns of $\mathbf{A}$ gives us:
 
 ```math
-\begin{bmatrix}
-1 & 0 \\
-0 & 1 \\
-0 & 0
-\end{bmatrix} \begin{bmatrix}
-1 & 0 & 0 \\
-0 & 1 & 0
-\end{bmatrix} = \begin{bmatrix}
-1 & 0 
-0 & 1
-\end{bmatrix}
+\text{proj}_S(\mathbf{b}) = \begin{bmatrix} 3 \\ 4 \\ 0 \end{bmatrix}
 ```
 
-Orthogonal matrices also have the nice property that if they are square so $m = n$ then the following also holds:
-
-```math
-\mathbf{Q}^T\mathbf{Q} = \mathbf{I} = \mathbf{Q}\mathbf{Q}^T
-```
-
-Which then means that $\mathbf{Q}$ is invertible, and its inverse is given by:
-
-```math
-\mathbf{Q}^{-1} = \mathbf{Q}^T.
-```
-
-Orthogonal matrices also have the nice property of preserving the norm of a vector. So if we have an orthogonal matrix 
-$\mathbf{Q} \in \mathbb{R}^{n \times n}$ and let $\mathbf{x} \in \mathbb{R}^n$ be any vector. So if we consider
- the transformed vector $\mathbf{y} = \mathbf{Q} \mathbf{x}$. Then the norm of $\mathbf{y}$ is:
-
-```math
-\|\mathbf{y}\| = \sqrt{\mathbf{y}^T \mathbf{y}} = \sqrt{(\mathbf{Q} \mathbf{x})^T (\mathbf{Q} \mathbf{x})}.
-```
-
-Using the associative property of matrix multiplication and the fact that $\mathbf{Q}^T \mathbf{Q} = \mathbf{I}$ (since $\mathbf{Q}$ is orthogonal), we get:
-
-```math
-\|\mathbf{y}\| = \sqrt{\mathbf{x}^T (\mathbf{Q}^T \mathbf{Q}) \mathbf{x}} = \sqrt{\mathbf{x}^T \mathbf{I} \mathbf{x}} = \sqrt{\mathbf{x}^T \mathbf{x}} = \|\mathbf{x}\|.
-```
-
-Thus, the norm of a vector is preserved under multiplication by an orthogonal matrix. An orthogonal matrix also 
-preserves the inner product of two vectors. The inner product of two vectors $\mathbf{x}, \mathbf{z} \in \mathbb{R}^n$ is defined as:
-
-```math
-\langle \mathbf{x}, \mathbf{z} \rangle = \mathbf{x}^T \mathbf{z}.
-```
-
-Now consider the transformed vectors $\mathbf{y} = \mathbf{Q} \mathbf{x}$ and $\mathbf{w} = \mathbf{Q} \mathbf{z}$. The inner product of $\mathbf{y}$ and $\mathbf{w}$ is:
-
-```math
-\langle \mathbf{y}, \mathbf{w} \rangle = \mathbf{y}^T \mathbf{w} = (\mathbf{Q} \mathbf{x})^T (\mathbf{Q} \mathbf{z}).
-```
-
-Using the associative property of matrix multiplication and the fact that $\mathbf{Q}^T \mathbf{Q} = \mathbf{I}$, we have:
-
-```math
-\langle \mathbf{y}, \mathbf{w} \rangle = \mathbf{x}^T (\mathbf{Q}^T \mathbf{Q}) \mathbf{z} = \mathbf{x}^T \mathbf{I} \mathbf{z} = \mathbf{x}^T \mathbf{z} = \langle \mathbf{x}, \mathbf{z} \rangle.
-```
-
-Thus, the inner product of two vectors is also preserved under multiplication by an orthogonal matrix. These two properties give us 
-an important insight into linear transformations that are defined by orthogonal matrices. The geometric interpretation is that 
-Orthogonal matrices represent **rigid transformations** of space, such as rotations and reflections. These transformations 
-do not distort the lengths of vectors or the angles between them, which is why both the norm and the inner product remain unchanged.
-
-### Projections with Orthogonal Matrices
-
-Suppose we are given $\mathbf{Q} \in \mathbb{R}^{m \times n}$ that has orthonormal columns. We now want to project a vector 
-$\mathbf{b} \in \mathbb{R}^m$ onto subspace spanned by the columns of $\mathbf{Q}$, so $C(\mathbf{Q})$. We have already seen that 
-the projection of $\mathbf{b}$ onto $C(\mathbf{Q})$ is given by:
-
-```math
-\text{proj}_{C(\mathbf{Q})}(\mathbf{b}) = \mathbf{Q} \hat{\mathbf{x}},
-```
-
-Which becomes the normal equations. However, since $\mathbf{Q}$ has orthonormal columns, we can simplify the normal 
-equations and the projection matrix. 
+If we now apply the projection matrix $\mathbf{P}$ to the projection of $\mathbf{b}$, we should get the same result:
 
 ```math
 \begin{align*}
-\mathbf{Q}^T \mathbf{Q} \hat{\mathbf{x}} = \mathbf{Q}^T \mathbf{b} \\
-\hat{\mathbf{x}} = \mathbf{Q}^T \mathbf{b} \\
-\\
-\text{proj}_{C(\mathbf{Q})}(\mathbf{b}) = \mathbf{Q} \hat{\mathbf{x}} = \mathbf{Q} (\mathbf{Q}^T \mathbf{b})
+\mathbf{P}(\text{proj}_S(\mathbf{b})) &= \mathbf{P}\begin{bmatrix} 3 \\ 4 \\ 0 \end{bmatrix} \\
+&= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} 3 \\ 4 \\ 0 \end{bmatrix} \\
+&= \begin{bmatrix} 3 \\ 4 \\ 0 \end{bmatrix} \\
+&= \text{proj}_S(\mathbf{b})
+\end{align*}
+```
+</Callout>
+
+## Projecting onto the Orthogonal Complement
+
+We have discussed projecting a vector $\mathbf{b}$ onto a subspace $S$. But what if we want to project onto the space orthogonal to $S$? This space, denoted $S^{\perp}$, is called the orthogonal complement of $S$. It contains all vectors orthogonal to every vector in $S$.
+
+Consider again the simple 2D case from earlier. Suppose we have a subspace $S$ spanned by vector $\mathbf{a}$, and we project a vector $\mathbf{b}$ onto the line spanned by $\mathbf{a}$. We obtained the projection as:
+
+```math
+\text{proj}_S(\mathbf{b}) = \frac{\mathbf{aa}^T}{\mathbf{a}^T\mathbf{a}}\mathbf{b}
+```
+
+The orthogonal complement in this case is simply the line perpendicular to $S$. We want to find the component of $\mathbf{b}$ that lies in $S^{\perp}$. Intuitively, this is simply the error vector $\mathbf{e}$:
+
+```math
+\text{proj}_{S^{\perp}}(\mathbf{b}) = \mathbf{e} = \mathbf{b} - \text{proj}_S(\mathbf{b}) = \mathbf{b} - \frac{\mathbf{aa}^T}{\mathbf{a}^T\mathbf{a}}\mathbf{b}
+```
+
+Generalizing to higher dimensions, the projection onto the orthogonal complement of a subspace $S$ is therefore defined as:
+
+```math
+\text{proj}_{S^{\perp}}(\mathbf{b}) = \mathbf{b} - \text{proj}_S(\mathbf{b}) = \mathbf{b} - \mathbf{P}\mathbf{b} = (\mathbf{I} - \mathbf{P})\mathbf{b}
+```
+
+where $\mathbf{P} = \mathbf{A}(\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T$ is the projection matrix onto the subspace $S$.
+
+<Callout type="example">
+Suppose we have:
+
+```math
+\mathbf{A} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix}, \quad \mathbf{b} = \begin{bmatrix} 3 \\ 4 \\ 5 \end{bmatrix}
+```
+
+First we calculate the projection onto the subspace spanned by the columns of $\mathbf{A}$ as seen above:
+
+```math
+\text{proj}_S(\mathbf{b}) = \mathbf{A}(\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b} = \begin{bmatrix} 3 \\ 4 \\ 0 \end{bmatrix}
+```
+
+Then, the projection onto the orthogonal complement is:
+
+```math
+\text{proj}_{S^{\perp}}(\mathbf{b}) = \mathbf{b} - \text{proj}_S(\mathbf{b}) = \begin{bmatrix} 3 \\ 4 \\ 5 \end{bmatrix} - \begin{bmatrix} 3 \\ 4 \\ 0 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \\ 5 \end{bmatrix}
+```
+</Callout>
+
+## Projections with Orthogonal Matrices
+
+Suppose we are given the orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{m \times n}$ that has orthonormal columns. We now want to project a vector $\mathbf{b} \in \mathbb{R}^m$ onto subspace spanned by the columns of $\mathbf{Q}$, so $C(\mathbf{Q})$. We have already seen that the projection of $\mathbf{b}$ onto $C(\mathbf{Q})$ is given by:
+
+```math
+\text{proj}_{C(\mathbf{Q})}(\mathbf{b}) = \mathbf{Q} \hat{\mathbf{x}}
+```
+
+Where $\hat{\mathbf{x}}$ is the vector of coefficients that gives us the linear combination of the columns of $\mathbf{Q}$ that best approximates $\mathbf{b}$. We get $\hat{\mathbf{x}}$ by solving the normal equations:
+
+```math
+\hat{\mathbf{x}} = (\mathbf{Q}^T\mathbf{Q})^{-1}\mathbf{Q}^T\mathbf{b}
+```
+
+However, because $\mathbf{Q}$ is an orthogonal matrix, we know that $\mathbf{Q}^T\mathbf{Q} = \mathbf{I}$, where $\mathbf{I}$ is the identity matrix. This means that the inverse of $\mathbf{Q}^T\mathbf{Q}$ is simply the identity matrix itself:
+
+```math
+\begin{align*}
+\hat{\mathbf{x}} &= (\mathbf{Q}^T\mathbf{Q})^{-1}\mathbf{Q}^T\mathbf{b} \\
+&=(\mathbf{I})^{-1}\mathbf{Q}^T\mathbf{b} \\
+&=\mathbf{Q}^T\mathbf{b}
 \end{align*}
 ```
 
-The projection matrix for $C(\mathbf{Q})$ is then simply:
+So the projection of $\mathbf{b}$ onto the subspace spanned by the columns of $\mathbf{Q}$ can be expressed as:
 
 ```math
-\mathbf{P} = \mathbf{Q} \mathbf{Q}^T.
+\text{proj}_{C(\mathbf{Q})}(\mathbf{b}) = \mathbf{Q}(\mathbf{Q}^T\mathbf{b}).
 ```
+
+and the projection matrix $\mathbf{P}$ that projects any vector onto the subspace $C(\mathbf{Q})$ can be expressed as:
+
+```math
+\mathbf{P} = \mathbf{Q}\mathbf{Q}^T.
+```
+
+Importantly, note that in general only $\mathbf{Q}^T\mathbf{Q}$ is the identity matrix for orthogonal matrices, not $\mathbf{Q}\mathbf{Q}^T$. The latter is the identity matrix only if $\mathbf{Q}$ is square, i.e. $m = n$, which would mean that we were projecting onto the whole space $\mathbb{R}^m$. 
+
+<Callout type="todo">
+This is related to the change of basis? As then each vector $\mathbf{x} \in \mathbb{R}^n$ can be expressed as a linear combination of the orthonormal columns of $\mathbf{Q}$.
+</Callout>
 
 <Callout type="example">
 We are given the orthogonal matrix $\mathbf{Q}$ and want to project the vector $\mathbf{b}$ onto the subspace spanned by the columns of $\mathbf{Q}$.
@@ -332,59 +402,44 @@ Thus, the projection of $\mathbf{b}$ onto the $xy$-plane is $\begin{bmatrix} 3 \
 
 ## Least Squares
 
-The **least squares problem** is a cornerstone of linear algebra and optimization, with significant applications in data science, machine 
-learning, and statistics. In machine learning, it often appears as an introductory problem under the name **linear regression**. Its goal is to 
-find the best approximation of a set of observations by minimizing the error between observed outcomes and predicted values. This technique 
-is widely used in practical applications, such as predicting **house prices** based on so called **features** like size, age, or location.
+The **least squares problem** is a cornerstone of linear algebra and optimization, with significant applications in data science, machine learning, and statistics. In machine learning, it often appears as an introductory problem under the name **linear regression**. Its goal is to find the best approximation of a set of observations by minimizing the error between observed outcomes and predicted values. This technique is widely used in practical applications, such as predicting **house prices** based on so called **features** like size, age, or location.
 
-Suppose we are tasked with predicting house prices based on the size of the house. We are given a set of data points $(t_1, b_1), (t_2, b_2), \ldots, (t_n, b_n)$, 
-where:
+Suppose we are tasked with predicting house prices based on the size of the house. We are given a set of data points $(t_1, b_1), (t_2, b_2), \ldots, (t_n, b_n)$, where:
 - $t_k$: Is the measured size of the house (independent variable, or feature) for the $k$-th data point.
 - $b_k$: the actual observed price of the house (dependent variable, or outcome) for the $k$-th data point.
 
-
 <Image 
     src="/maths/leastSquares.png"
-    caption="On the x-axis we have some feature such as the size of the house and on the y-axis we have the price of the house. 
-    The dots represent the observed data points and the line is the best-fitting line that we are trying to find."
+    caption="On the x-axis we have some feature such as the size of the house and on the y-axis we have the price of the house. The dots represent the observed data points and the line is the best-fitting line that we are trying to find."
     width={600}
-
 />
 
-If we then assume that there is a linear relationship between the size of the house and its price. So the price of house is 
-dependent on the size of the house. The linear part means that the relationship can be expressed as a line. This is why the problem is also 
-often referred to as "fitting a line to the data". 
+If we then assume that there is a linear relationship between the size of the house and its price. So the price of house is dependent on the size of the house. The linear part means that the relationship can be expressed as a line. This is why the problem is also often referred to as "fitting a line to the data". 
 
-So there is some linear function that given the size of the house can predict the price of the house. We aim to find this function. We know that a linear function is defined 
-as follows:
+So there is some linear function that given the size of the house can predict the price of the house. We aim to find this function. We know that a linear function is defined as follows:
 
 ```math
 y = a_0 + a_1 x
 ```
 
-Where $x$ is our input feature, $y$ is the output and $a_0$ and $a_1$ are the parameters of the function. In our case $x$ is the size of the house 
-and $y$ is the price of the house. So we want to find the parameters $a_0$ and $a_1$ such that the predicted price $\hat{b}_k$ is given by:
+Where $x$ is our input feature, $y$ is the output and $a_0$ and $a_1$ are the parameters of the function. In our case $x$ is the size of the house and $y$ is the price of the house. So we want to find the parameters $a_0$ and $a_1$ such that the predicted price $\hat{b}_k$ is given by:
 
 ```math
 \hat{b}_k = a_0 + a_1 t_k,
 ```
 
-where the predicted price $\hat{b}_k$ is as close as possible to the observed price $b_k$. The difference between the observed price $b_k$ and 
-the predicted price $\hat{b}_k$ is called the **error** for the $k$-th observation. To find the best-fitting line, we minimize the 
-**sum of squared errors** across all observations:
+where the predicted price $\hat{b}_k$ is as close as possible to the observed price $b_k$. The difference between the observed price $b_k$ and the predicted price $\hat{b}_k$ is called the **error** for the $k$-th observation. To find the best-fitting line, we minimize the **sum of squared errors** across all observations:
 
 ```math
 \min_{a_0, a_1} \sum_{k=1}^n \left(b_k - (a_0 + a_1 t_k)\right)^2.
 ```
 
-This least squares formulation has numerous practical applications for modeling any linear relationship between variables.
-As we are doing linear algebra let us represent the data in terms of matrices and vectors. So we define the following:
+This least squares formulation has numerous practical applications for modeling any linear relationship between variables. As we are doing linear algebra let us represent the data in terms of matrices and vectors. So we define the following:
 - The vector containing the observed outcomes (house prices) is $\mathbf{b} = \begin{bmatrix} b_1 \\ b_2 \\ \vdots \\ b_n \end{bmatrix}$.
 - The vector of coefficients (parameters to be determined) is $\mathbf{x} = \begin{bmatrix} a_0 \\ a_1 \end{bmatrix}$.
-- The matrix containing the features is $\mathbf{A} = \begin{bmatrix} 1 & t_1 \\ 1 & t_2 \\ \vdots & \vdots \\ 1 & t_n \end{bmatrix}$.
+- The matrix containing the features is $\mathbf{A} = \begin{bmatrix} 1 & t_1 \\ 1 & t_2 \\ \vdots & \vdots \\ 1 & t_n \end{bmatrix}$. The reason why we concatenate a column of ones to the start of the feature matrix for $\mathbf{A}$ is that we want to include the intercept term $a_0$ in our linear model. This allows us to express the linear function in matrix form, where the first column corresponds to the intercept and the second column corresponds to the feature values $t_k$. So we want to just add the term $a_0$ to the term $a_1 t_k$. 
 
-The reason for the column of ones is that when we multiply the matrix $\mathbf{A}$ with the vector $\mathbf{x}$ we want to just add the 
-term $a_0$ to the term $a_1 t_k$. Our predicted outcomes for all inputs are then given by:
+Our predicted outcomes for all inputs are then given by:
 
 ```math
 \hat{\mathbf{b}} = \mathbf{A}\mathbf{x}.
@@ -402,29 +457,31 @@ The least squares problem is then to find $\mathbf{x}$ that minimizes the square
 \min_{\mathbf{x} \in \mathbb{R}^2} \|\mathbf{b} - \mathbf{A}\mathbf{x}\|^2.
 ```
 
-This matrix formulation generalizes easily to cases with multiple features. For example, if we also have the **age of the house** as an 
-additional feature, the matrix $\mathbf{A}$ would include an additional column corresponding to this feature.
+Hence the name **least squares**. The goal is to find the coefficients $\mathbf{x}$ that minimize the squared error between the observed prices and the predicted prices based on the linear model. This matrix formulation generalizes easily to cases with multiple features. For example, if we also have the **age of the house** as an additional feature, the matrix $\mathbf{A}$ would include an additional column corresponding to this feature:
 
-More generally, for a given matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ (where $m$ is the number of observations and $n$ is the 
-number of features plus one for the intercept) and a vector $\mathbf{b} \in \mathbb{R}^m$, we aim to find the vector 
-$\mathbf{x} \in \mathbb{R}^n$ that minimizes:
+```math
+\mathbf{A} = \begin{bmatrix} 1 & t_1 & s_1 \\ 1 & t_2 & s_2 \\ \vdots & \vdots & \vdots \\ 1 & t_n & s_n \end{bmatrix},
+```
+
+where $s_k$ is for example the age of the $k$-th house. The least squares problem remains the same, but now we have more coefficients to determine, and the vector $\mathbf{x}$ would be:
+
+```math
+\mathbf{x} = \begin{bmatrix} a_0 \\ a_1 \\ a_2 \end{bmatrix},
+```
+
+where $a_2$ is the coefficient for the age of the house. More generally, for a given matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ (where $m$ is the number of observations and $n$ is the number of features plus one for the intercept) and a vector $\mathbf{b} \in \mathbb{R}^m$, we aim to find the vector $\mathbf{x} \in \mathbb{R}^n$ that minimizes:
 
 ```math
 \min_{\mathbf{x} \in \mathbb{R}^n} \|\mathbf{b} - \mathbf{A}\mathbf{x}\|^2.
 ```
 
-From the above formulation we can see that the when we are trying to minimize the squared norm of the error we are actually looking for 
-the projection of $\mathbf{b}$ onto the column space of $\mathbf{A}$:
+From the above formulation we can see that the when we are trying to minimize the squared norm of the error we are actually looking for the projection of $\mathbf{b}$ onto the column space of $\mathbf{A}$:
 
 ```math
 \min_{\mathbf{x} \in \mathbb{R}^n} \|\mathbf{b} - \mathbf{A}\mathbf{x}\|^2 = \|\mathbf{b} - \text{proj}_{C(\mathbf{A})}(\mathbf{b})\|^2.
 ```
 
-This actually makes sense as we are given some vector and we are trying to create it is a linear combination of the columns of $\mathbf{A}$. 
-
-Because we have now noticed that we are looking for the projection of $\mathbf{b}$ onto the column space of $\mathbf{A}$ we can use 
-our knowledge of projections to solve the least squares problem. We know that the solution to the least squares problem is derived using the 
-**normal equations**. By setting the gradient of the squared error to zero, we obtain:
+This actually makes sense as we are given some vector and we are trying to create it as a linear combination of the columns of $\mathbf{A}$. Because we have now noticed that we are looking for the projection of $\mathbf{b}$ onto the column space of $\mathbf{A}$ we can use our knowledge of projections to solve the least squares problem. We know that the solution to the least squares problem is derived using the **normal equations**. By setting the gradient of the squared error to zero, we obtain:
 
 ```math
 \mathbf{A}^T\mathbf{A}\mathbf{x} = \mathbf{A}^T\mathbf{b}.
@@ -436,20 +493,35 @@ If we then assume that the columns of $\mathbf{A}$ are linearly independent, we 
 \mathbf{x} = (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b}.
 ```
 
-To solve the least squares problem, the columns of $\mathbf{A}$ must be **linearly independent**. Linear independence ensures that 
-$\mathbf{A}^T\mathbf{A}$ is invertible, which is crucial for deriving the solution. For example, if all the feature values $t_k$ are 
-identical (e.g., $t_i = t_j$ for all $i \neq j$), then the column would be a multiple of the first column and the columns of $\mathbf{A}$ 
-would not span a sufficiently large space, making it impossible to uniquely determine the coefficients $\mathbf{x}$. Linear independence of 
-the columns of $\mathbf{A}$ ensures that the data provides enough information to determine a unique solution.
+To solve the least squares problem, the columns of $\mathbf{A}$ must be **linearly independent**. Linear independence ensures that $\mathbf{A}^T\mathbf{A}$ is invertible, which is crucial for deriving the solution. For example, if all the feature values $t_k$ are identical (e.g., $t_i = t_j$ for all $i \neq j$), then the column would be a multiple of the first column and the columns of $\mathbf{A}$ would not span a sufficiently large space, making it impossible to uniquely determine the coefficients $\mathbf{x}$. Linear independence of the columns of $\mathbf{A}$ ensures that the data provides enough information to determine a unique solution.
 
-<Callout type="example">
-For the case of predicting house prices based on size, the solution is given by:
+<Callout type="todo">
+Isn't this why regularization is used, i.e adding the identity matrix scaled by some small value $\lambda$ to matrix $\mathbf{A}$ to make the columns linearly independent and thus $\mathbf{A}^T\mathbf{A}$ invertible?
+</Callout>
+
+If we look more closely at the what the matrix multiplication is doing we can actually derive an explicit formula for the coefficients $\mathbf{x}$. First let's remember what the matrix multiplication of $\mathbf{A}^T\mathbf{A}$ looks like:
 
 ```math
-\begin{bmatrix} a_0 \\ a_1 \end{bmatrix} = (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b}.
+\mathbf{A}^T\mathbf{A} = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{bmatrix} 
+\begin{bmatrix}
+a_{11} & a_{21} & \cdots & a_{m1} \\
+a_{12} & a_{22} & \cdots & a_{m2}
+\end{bmatrix} = \begin{bmatrix}
+(a_{11}^2 + a_{12}^2 + \cdots + a_{1m}^2) & (a_{11}a_{21} + a_{12}a_{22} + \cdots + a_{1m}a_{2m}) & \cdots & (a_{11}a_{n1} + a_{12}a_{n2} + \cdots + a_{1m}a_{nm}) \\
+(a_{21}a_{11} + a_{22}a_{12} + \cdots + a_{2m}a_{1m}) & (a_{21}^2 + a_{22}^2 + \cdots + a_{2m}^2) & \cdots & (a_{21}a_{n1} + a_{22}a_{n2} + \cdots + a_{2m}a_{nm}) \\
+\vdots & \vdots & \ddots & \vdots \\
+(a_{m1}a_{11} + a_{m2}a_{12} + \cdots + a_{mm}a_{1m}) & (a_{m1}a_{21} + a_{m2}a_{22} + \cdots + a_{mm}a_{2m}) & \cdots & (a_{m1}a_{n1} + a_{m2}a_{n2} + \cdots + a_{mm}a_{nm})
+\end{bmatrix}
 ```
 
-Expanding this explicitly, we have:
+So we remember that the diagonal elements of $\mathbf{A}^T\mathbf{A}$ are the sums of squares of the columns of $\mathbf{A}$, and the off-diagonal elements are the sums of products of different columns. More specifically for the case where we have one feature (the size of the house) where $\mathbf{A} \in \mathbb{R}^{m \times 2}$, we have that the first column of $\mathbf{A}$ is all ones and the second column is the feature values $t_k$. So the first diagonal element of $\mathbf{A}^T\mathbf{A}$ is the sum of squares of the first column, which is simply $m$ (the number of observations), and the second diagonal element is the sum of squares of the feature values. The off diagonal element is the sum of the feature values multiplied by the ones, which is simply the sum of the feature values. 
+
+If we then just multiply the matrix $\mathbf{A}^T$ with the vector $\mathbf{b}$, representing the observed prices, we get just a linear combination of the observed prices and the feature values. Specifically, the first element is the sum of the observed prices and the second element is the sum of the observed prices multiplied by the feature values. So we can write:
 
 ```math
 \begin{bmatrix} a_0 \\ a_1 \end{bmatrix} = 
@@ -463,13 +535,100 @@ m & \sum_{k=1}^{m} t_k \\
 \end{bmatrix}.
 ```
 
-Where:
-- $m$ is the number of observations (houses).
-- $\sum_{k=1}^{m} t_k$ is the sum of the feature values (sizes of houses).
-- $\sum_{k=1}^{m} b_k t_k$ is the sum of the product of observed prices and feature values.
+Where $m$ is the number of observations (houses), $\sum_{k=1}^{m} t_k$ is the sum of the feature values (sizes of houses) and $\sum_{k=1}^{m} b_k t_k$ is the sum of the product of observed prices and feature values which together give us the coefficient $a_0$ and $a_1$ for the intercept and the slope of the line respectively.
+
+If the columns of $\mathbf{A}$ are pairwise orthogonal, then the matrix $\mathbf{A}^T\mathbf{A}$ is diagonal as each element is the dot product of two columns which is zero for different columns and the sum of squares for the same column. So we get:
+
+```math
+\begin{bmatrix} a_0 \\ a_1 \end{bmatrix} =
+\begin{bmatrix}
+m & 0 \\
+0 & \sum_{k=1}^{m} t_k^2
+\end{bmatrix}^{-1}
+\begin{bmatrix}
+\sum_{k=1}^{m} b_k \\
+\sum_{k=1}^{m} b_k t_k
+\end{bmatrix}
+```
+
+And because the inverse of a diagonal matrix is simply the reciprocal of the diagonal elements, we can write:
+
+```math
+\begin{bmatrix} a_0 \\ a_1 \end{bmatrix} =
+\begin{bmatrix}\frac{1}{m} & 0 \\
+0 & \frac{1}{\sum_{k=1}^{m} t_k^2}
+\end{bmatrix}
+\begin{bmatrix}\sum_{k=1}^{m} b_k \\
+\sum_{k=1}^{m} b_k t_k
+\end{bmatrix} = 
+\begin{bmatrix}\frac{1}{m} \sum_{k=1}^{m} b_k \\
+\frac{1}{\sum_{k=1}^{m} t_k^2} \sum_{k=1}^{m} b_k t_k
+\end{bmatrix}
+```
+
+<Callout type="example" title="One Feature Case">
+Suppose we have the following data points representing the size of houses and their prices:
+
+```math
+\mathbf{A} = \begin{bmatrix} 1 & 50 \\ 1 & 80 \\ 1 & 100 \end{bmatrix}, \quad \mathbf{b} = \begin{bmatrix} 200 \\ 300 \\ 400 \end{bmatrix}
+```
+
+To then find the coefficients $\mathbf{x} = \begin{bmatrix} a_0 \\ a_1 \end{bmatrix}$, we first calculate $\mathbf{A}^T\mathbf{A}$:
+
+```math
+\mathbf{A}^T\mathbf{A} = \begin{bmatrix} 1 & 1 & 1 \\ 50 & 80 & 100 \end{bmatrix} \begin{bmatrix} 1 & 50 \\ 1 & 80 \\ 1 & 100 \end{bmatrix} = \begin{bmatrix} 3 & 230 \\ 230 & 18900 \end{bmatrix}
+```
+
+Then we calculate $\mathbf{A}^T\mathbf{b}$:
+
+```math
+\mathbf{A}^T\mathbf{b} = \begin{bmatrix} 1 & 1 & 1 \\ 50 & 80 & 100 \end{bmatrix} \begin{bmatrix} 200 \\ 300 \\ 400 \end{bmatrix} = \begin{bmatrix} 900 \\ 74000 \end{bmatrix}
+```
+
+We can then either calculate the inverse of $\mathbf{A}^T\mathbf{A}$ and multiply it with $\mathbf{A}^T\mathbf{b}$ to calculate:
+
+```math
+\mathbf{x} = (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b} = \begin{bmatrix} 3 & 230 \\ 230 & 18900 \end{bmatrix}^{-1} \begin{bmatrix} 900 \\ 74000 \end{bmatrix}
+```
+
+Or we can solve the normal equations directly so finding the solution to the least squares problem:
+
+```math
+\mathbf{A}^T\mathbf{A}\mathbf{x} = \mathbf{A}^T\mathbf{b}
+```
+
+So we can write the system of equations as:
+
+```math
+\begin{bmatrix} 3 & 230 \\ 230 & 18900 \end{bmatrix} \begin{bmatrix} a_0 \\ a_1 \end{bmatrix} = \begin{bmatrix} 900 \\ 74000 \end{bmatrix}
+```
+
+solving this system gives us the coefficients $a_0=-\frac{50}{19}$ and $a_1=\frac{75}{19}$. So the best-fitting line is:
+
+```math
+\hat{b_k} = -\frac{50}{19} + \frac{75}{19} t_k
+\end{bmatrix}
+```
+</Callout>
+
+<Callout type="example" title="2 Features Case">
+Add an extra column to the matrix $\mathbf{A}$ for the age of the house, so we have:
 </Callout>
 
 ### Fitting a Parabola
 
-add extra column where we have t^2
+<Callout type="todo">
+polynomial regression rather than linear regression.
 
+Nothing special just add an extra column where we have t^2 so:
+
+```math
+\hat{b_k} = a_0 + a_1 t_k + a_2 t_k^2,
+```
+</Callout>
+
+## Farkas Lemma
+
+<Callout type="todo">
+This is very weird but very powerful?
+</Callout>
