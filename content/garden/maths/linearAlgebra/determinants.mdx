@@ -3,28 +3,18 @@ import Image from "@components/Image/Image";
 
 # Determinants
 
-The determinant of a matrix is a scalar value just like the rank that says something about the matrix. The determinant is 
-only defined for square matrices and is denoted as $det(A)$ or $|A|$ for the matrix $A \in \mathbb{R}^{n \times n}$. 
+The determinant of a matrix is a scalar value just like the rank that says something about the matrix. The determinant is only defined for square matrices and is denoted as $det(A)$ or $|A|$ for the matrix $A \in \mathbb{R}^{n \times n}$. 
 
-So what does the determinant tell us about a matrix? The determinant of a matrix is a measure of how much the matrix scales 
-the area or volume of the space that it is transforming. So in other words, we initially have a unit square or cube and then 
-after the transformation we have a polyhedron in $n$ dimensions. So in 2D, the basis vectors span a square and in 3D the basis vectors span a cube. 
-When the matrix is applied to the basis vectors, the determinant tells us how much the area or volume of the basis has been 
-scaled by. We know that the matrix for a linear transformation is where the standard basis vectors are transformed into the 
-basis vectors of the space. So we can directly read off the coordinates of the transformed polyhedron from the matrix.
+So what does the determinant tell us about a matrix? The determinant of a matrix is a measure of how much the matrix scales the area or volume of the space that it is transforming. So in other words, we initially have a unit square or cube and then after the transformation we have a polyhedron in $n$ dimensions. So in 2D, the basis vectors span a square and in 3D the basis vectors span a cube. When the matrix is applied to the basis vectors, the determinant tells us how much the area or volume of the basis has been scaled by. We know that the matrix for a linear transformation is where the standard basis vectors are transformed into the basis vectors of the space. So we can directly read off the coordinates of the transformed polyhedron from the matrix.
 
 <Image src="/maths/determinantTransformation.png"
        caption="Calculation of the determinant of a 2x2 matrix."
        width={600}
 />
 
-If the determinant is positive, then the matrix has scaled the area or volume of the basis of the polyhedron by that factor. 
-If the determinant is negative, then it is the same scaling factor but the polyhedron has been flipped, so the orientation 
-of the basis has been changed. If the determinant is 0, then the matrix has squished the basis down to a lower dimension. 
+If the determinant is positive, then the matrix has scaled the area or volume of the basis of the polyhedron by that factor. If the determinant is negative, then it is the same scaling factor but the polyhedron has been flipped, so the orientation of the basis has been changed. If the determinant is 0, then the matrix has squished the basis down to a lower dimension. 
 
-The case of where the determinant is 0 is the most interesting case. This is the case where the matrix does not have an 
-inverse, so the matrix is singular. In other words, the rank of the matrix is less than $n$ where $n$ is the number of rows 
-and columns of the matrix. For a system of linear equations, this means that the system of equations has no unique solution. 
+The case of where the determinant is 0 is the most interesting case. This is the case where the matrix does not have an inverse, so the matrix is singular. In other words, the rank of the matrix is less than $n$ where $n$ is the number of rows and columns of the matrix. For a system of linear equations, this means that the system of equations has no unique solution. 
 
 This is why the determinant is useful. It tells us if a matrix has an inverse and if a system of equations has a unique solution amongst other things.
 
@@ -56,12 +46,9 @@ g & h & i
 \end{vmatrix} = aei + bfg + cdh - ceg - bdi - afh
 ```
 
-Now for most people this formula is not very useful as it is quite complicated to remember. So we can use the rule of Sarrus to easily calculate the determinant of a 3x3 matrix. The rule 
-of Sarrus is a mnemonic for the formula above. The way it works is that it defines a specific pattern from which we can derive the formula for the determinant of a 3x3 matrix. 
+Now for most people this formula is not very useful as it is quite complicated to remember. So we can use the rule of Sarrus to easily calculate the determinant of a 3x3 matrix. The rule of Sarrus is a mnemonic for the formula above. The way it works is that it defines a specific pattern from which we can derive the formula for the determinant of a 3x3 matrix. 
 
-We start by writing the matrix out in a 3x3 grid and then we copy the first two columns to the right of the matrix. Then we draw three diagonals from the top left to the bottom right 
-and three diagonals from the top right left to the bottom left. We then multiply the numbers along the diagonals. If the diagonal goes from the top left to the bottom right then we add the 
-products together and if the diagonal goes from the top right to the bottom left then we subtract the products.
+We start by writing the matrix out in a 3x3 grid and then we copy the first two columns to the right of the matrix. Then we draw three diagonals from the top left to the bottom right and three diagonals from the top right left to the bottom left. We then multiply the numbers along the diagonals. If the diagonal goes from the top left to the bottom right then we add the products together and if the diagonal goes from the top right to the bottom left then we subtract the products.
 
 <Image src="/maths/determinantsAugment.png"
        caption="Rule of Sarrus for calculating the determinant of a 3x3 matrix."
@@ -70,14 +57,11 @@ products together and if the diagonal goes from the top right to the bottom left
 
 ## Properties of the Determinant
 
-Now that we have the formula for the determinant of a 2x2 matrix we can start to explore some of the properties of the determinant. We will show the derivations 
-for the properties in the 2D space but they can be generalized to higher dimensions. This will help us to understand why the determinant is defined the way it is 
-and how we can generalize the calculation of the determinant to higher dimensions.
+Now that we have the formula for the determinant of a 2x2 matrix we can start to explore some of the properties of the determinant. We will show the derivations for the properties in the 2D space but they can be generalized to higher dimensions. This will help us to understand why the determinant is defined the way it is and how we can generalize the calculation of the determinant to higher dimensions.
 
 ### Transpose
 
-The determinant of a matrix is the same as the determinant of the transpose of the matrix. The only thing that changes is the order of multiplication which does not change 
-the result as multiplication is commutative.
+The determinant of a matrix is the same as the determinant of the transpose of the matrix. The only thing that changes is the order of multiplication which does not change the result as multiplication is commutative.
 
 ```math
 \begin{align*}
@@ -94,8 +78,7 @@ b & d
 
 ### Scalar Multiplication
 
-The determinant of a matrix multiplied by a scalar is the determinant of the matrix scaled by that scalar to the power of the number of rows or columns of the matrix. 
-So when we perform gaussian elimination the determinant of the original matrix can be scaled up or down by the operations performed.
+The determinant of a matrix multiplied by a scalar is the determinant of the matrix scaled by that scalar to the power of the number of rows or columns of the matrix. So when we perform gaussian elimination the determinant of the original matrix can be scaled up or down by the operations performed.
 
 ```math
 \begin{align*}
@@ -113,8 +96,7 @@ kc & kd
 
 ### Swapping Rows
 
-When two rows of a matrix are swapped the determinant of the matrix changes sign. This means that performing gaussian elimination on a matrix 
-can change the sign of the determinant.
+When two rows of a matrix are swapped the determinant of the matrix changes sign. This means that performing gaussian elimination on a matrix can change the sign of the determinant.
 
 ```math
 \begin{vmatrix}
@@ -129,8 +111,7 @@ a & b
 
 ### Adding Multiples of Rows
 
-When a multiple of one row is added to another row the determinant of the matrix stays the same. We can see this by expanding the determinant calculation 
-as the terms cancel out.
+When a multiple of one row is added to another row the determinant of the matrix stays the same. We can see this by expanding the determinant calculation as the terms cancel out.
 
 ```math
 \begin{vmatrix}
@@ -141,9 +122,7 @@ c + \lambda a & d + \lambda b
 
 ### Matrix Multiplication
 
-The determinant of a matrix multiplied by another matrix is the determinant of the product of the two matrices. This also matches up 
-with the our idea that gaussian elimination can scale the determinant of a matrix. This comes from the fact that gaussian elimination can 
-be thought of as a series of matrix multiplications. We just need to keep in mind that swapping rows changes the sign of the determinant. 
+The determinant of a matrix multiplied by another matrix is the determinant of the product of the two matrices. This also matches up with the our idea that gaussian elimination can scale the determinant of a matrix. This comes from the fact that gaussian elimination can be thought of as a series of matrix multiplications. We just need to keep in mind that swapping rows changes the sign of the determinant. 
 
 ```math
 \begin{align*}
@@ -178,8 +157,7 @@ We can now also use this to argue why the determinant of an invertible matrix ca
 
 So let's start with the forward direction. If the matrix $\mathbf{A}$ is invertible then $\mathbf{AA}^{-1} = I$ and so $det(\mathbf{A})det(\mathbf{A}^{-1}) = det(\mathbf{I}) = 1$. Therefore $det(\mathbf{A}) \neq 0$.
 
-Now we need to show the backwards direction, so that if $det(\mathbf{A}) \neq 0$, then $\mathbf{A}$ is invertible. So, let us assume that $det(\mathbf{A}) \neq 0$. For a $2 \times 2$ matrix 
-this implies that $ad - bc \neq 0$ which also implies that $a \neq 0$ or $d \neq 0$. So we can now construct the inverse of the matrix $\mathbf{A}$:
+Now we need to show the backwards direction, so that if $det(\mathbf{A}) \neq 0$, then $\mathbf{A}$ is invertible. So, let us assume that $det(\mathbf{A}) \neq 0$. For a $2 \times 2$ matrix this implies that $ad - bc \neq 0$ which also implies that $a \neq 0$ or $d \neq 0$. So we can now construct the inverse of the matrix $\mathbf{A}$:
 
 ```math
 \mathbf{A}^{-1} = 
@@ -237,8 +215,7 @@ d & -b \\
 
 This formula for the inverse of a $2 \times 2$ matrix is valid as long as $det(\mathbf{A}) = ad - bc \neq 0$ as otherwise we would be dividing by 0 which is not allowed. 
 
-Now, we can use this result to examine the determinant of the inverse matrix. Recall that the determinant of a scalar multiple of a matrix scales by that scalar. 
-Therefore, using the formula for $\mathbf{A}^{-1}$ the determinant of $\mathbf{A}^{-1}$ is given by:
+Now, we can use this result to examine the determinant of the inverse matrix. Recall that the determinant of a scalar multiple of a matrix scales by that scalar. Therefore, using the formula for $\mathbf{A}^{-1}$ the determinant of $\mathbf{A}^{-1}$ is given by:
 
 ```math
 \begin{align*}
@@ -257,12 +234,11 @@ d & -b \\
 \end{align*}
 ```
 
-So the determinant of the inverse of a matrix is the reciprocal of the determinant of the original matrix.
+So the determinant of the inverse of a matrix is the reciprocal of the determinant of the original matrix. This again shows that if the determinant of the original matrix is 0, then the inverse does not exist as we cannot divide by 0 and can also not calculate the determinant of the inverse matrix as it doesn't exist.
 
 ### Determinants of Triangular Matrices
 
-For a triangular matrix the determinant is very easy to calculate, this trick can also be extended to more specific triangular matrices like diagonal matrices. 
-Let's look at 3x3 upper triangular matrix see what happens when for example the matrix is a 3x3 upper triangular matrix so certain elements are 0.
+For a triangular matrix the determinant is very easy to calculate, this trick can also be extended to more specific triangular matrices like diagonal matrices. Let's look at 3x3 upper triangular matrix see what happens when for example the matrix is a 3x3 upper triangular matrix so certain elements are 0.
 
 ```math
 \begin{vmatrix}
@@ -272,8 +248,7 @@ g & h & i
 \end{vmatrix} = aei + bfg + cdh - ceg - bdi - afh
 ```
 
-So now if $d = g = h = 0$ then the determinant simplifies to just the product of the diagonal elements $aei$. This is true for any triangular matrix. For example the same 
-can be seen for a lower triangular matrix so where $b = c = f = 0$ then the determinant is just the product of the diagonal elements $adi$. So we then have:
+So now if $d = g = h = 0$ then the determinant simplifies to just the product of the diagonal elements $aei$. This is true for any triangular matrix. For example the same can be seen for a lower triangular matrix so where $b = c = f = 0$ then the determinant is just the product of the diagonal elements $adi$. So we then have:
 - $det(\text{upper/lower triangular matrix}) = aei$
 - $det(\text{diagonal matrix}) = aei$
 - $det(\mathbf{I}) = 1$
@@ -294,24 +269,22 @@ And because we know that the determinant of the identity matrix is 1 we can then
 
 ## Co-Factor Expansion for NxN Matrices
 
-We have seen how we can calculate the determinant of a $2 \times 2$ and $3 \times 3$ matrix. But how can we calculate the determinant of a $4 \times 4$ matrix or even higher? 
-The answer is to use the co-factor expansion. The co-factor expansion is a recursive way of calculating the determinant of a matrix by expanding the matrix into smaller matrices.
+We have seen how we can calculate the determinant of a $2 \times 2$ and $3 \times 3$ matrix. But how can we calculate the determinant of a $4 \times 4$ matrix or even higher? The answer is to use the co-factor expansion. The co-factor expansion is a recursive way of calculating the determinant of a matrix by expanding the matrix into smaller matrices.
 
-Before we do this however we need to understand a bit more about permutations and the sign of a permutation. A permutation is a reordering of a set of numbers. So it is a 
-bijective function from a set of numbers to itself:
+Before we do this however we need to understand a bit more about permutations and the sign of a permutation. A permutation is a reordering of a set of numbers. So it is a bijective function from a set of numbers to itself:
 
 ```math
 \sigma: \{1, 2, 3, \ldots, n\} \rightarrow \{1, 2, 3, \ldots, n\}
 ```
 
-The reason why it is bijective is because an ordering of a set of numbers is a one-to-one mapping from the set of numbers to itself. This also means that there is 
-an inverse permutation that maps the set of numbers back to the original ordering. From combinatorics we know that there are $n!$ permutations of a set of $n$ numbers.
+The reason why it is bijective is because an ordering of a set of numbers is a one-to-one mapping from the set of numbers to itself. This also means that there is an inverse permutation that maps the set of numbers back to the original ordering. From combinatorics we know that there are $n!$ permutations of a set of $n$ numbers.
 
-permutations.png
+<Image
+src="/maths/permutations.png"
+width={500}
+/>
 
-The sign of a permutation is a bit weird. It can be either 1 or -1. The sign of a permutation counts the parity of the number of pairs of elements that are out of order 
-after the permutation has been applied. So if the number of pairs of elements that are out of order is even then the sign of the permutation is 1 and if the number of 
-pairs of elements that are out of order is odd then the sign of the permutation is -1.
+The sign of a permutation is a bit weird. It can be either 1 or -1. The sign of a permutation counts the parity of the number of pairs of elements that are out of order after the permutation has been applied. So if the number of pairs of elements that are out of order is even then the sign of the permutation is 1 and if the number of pairs of elements that are out of order is odd then the sign of the permutation is -1.
 
 ```math
 \text{sign}(\sigma) = \begin{cases}
@@ -320,9 +293,7 @@ pairs of elements that are out of order is odd then the sign of the permutation 
 \end{cases}
 ```
 
-For this it is best to look at an example. Let's look at the permutation $\sigma = (1, 3, 2, 4)$. The candidate pairs are $(1,2), (1,3), (1,4), (2,3), (2,4), (3,4)$. 
-After the permutation has been applied the pairs are $(1,3), (1,2), (1,4), (3,2), (3,4), (2,4)$. So the number of pairs that are out of order so where now the first 
-element is greater than the second element is 1, the pair $(3,2)$. So the sign of the permutation is -1.
+For this it is best to look at an example. Let's look at the permutation $\sigma = (1, 3, 2, 4)$. The candidate pairs are $(1,2), (1,3), (1,4), (2,3), (2,4), (3,4)$. After the permutation has been applied the pairs are $(1,3), (1,2), (1,4), (3,2), (3,4), (2,4)$. So the number of pairs that are out of order so where now the first element is greater than the second element is 1, the pair $(3,2)$. So the sign of the permutation is -1.
 
 The determinant of a matrix can then be calculated using the following formula where $\Sigma_n$ is the set of all permutations of the set of numbers $\{1, 2, 3, \ldots, n\}$:
 
@@ -330,8 +301,7 @@ The determinant of a matrix can then be calculated using the following formula w
 det(A) = \sum_{\sigma \in \Sigma_n} \text{sign}(\sigma) \prod_{i=1}^n a_{i, \sigma(i)}
 ```
 
-So for a specific permutation $\sigma$ we calculate the sign of the permutation and then multiply the elements of the matrix at the row $i$ and column $\sigma(i)$ for all $i$.
-Let's look at what this looks like for a $2 \times 2$ matrix. We first define the 2 possible permutations and their signs:
+So for a specific permutation $\sigma$ we calculate the sign of the permutation and then multiply the elements of the matrix at the row $i$ and column $\sigma(i)$ for all $i$. Let's look at what this looks like for a $2 \times 2$ matrix. We first define the 2 possible permutations and their signs:
 - $\sigma_1 = (1, 2)$, all in order so there are 0 pairs out of order which is even, $\text{sign}(\sigma_1) = 1$
 - $\sigma_2 = (2, 1)$, $\text{sign}(\sigma_2) = -1$
 
@@ -349,8 +319,7 @@ c & d
 \end{align*}
 ```
 
-So we can see that this formula generalizes to the formula for the determinant of a $2 \times 2$ matrix that we derived earlier. Now let's 
-look at the formula for the determinant of a $3 \times 3$ matrix.
+So we can see that this formula generalizes to the formula for the determinant of a $2 \times 2$ matrix that we derived earlier. Now let's look at the formula for the determinant of a $3 \times 3$ matrix.
 
 <Image 
 src="/maths/determinantCoFactor.png"
@@ -362,20 +331,15 @@ Which can also be written as:
 src="/maths/determinantCoFactorDense.png"
 />
 
-So we can actually calculate the determinant of a $3 \times 3$ matrix using the formula for the determinant of a $2 \times 2$ matrix. This then further generalizes to 
-higher dimensions so we could calculate the determinant of a $4 \times 4$ matrix using the formula for the determinant of a $3 \times 3$ matrix and so on. 
+So we can actually calculate the determinant of a $3 \times 3$ matrix using the formula for the determinant of a $2 \times 2$ matrix. This then further generalizes to higher dimensions so we could calculate the determinant of a $4 \times 4$ matrix using the formula for the determinant of a $3 \times 3$ matrix and so on. 
 
-From the above example we can actually see a pattern. We are always multiplying an element $a_ij$ with the determinant of the smaller matrix where the row $i$ and column $j$ 
-have been removed. So if we are given a matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ then we define the matrix without the $i$-th row and $j$-th column as 
-$\mathscr{A}_{ij} \in \mathbb{R}^{(n-1) \times (n-1)}$. We can then define a new matrix $\mathbf{C}$ the so-called co-factor matrix where the element $c_{ij}$ is 
-defined as:
+From the above example we can actually see a pattern. We are always multiplying an element $a_{ij}$ with the determinant of the smaller matrix where the row $i$ and column $j$ have been removed. So if we are given a matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ then we define the matrix without the $i$-th row and $j$-th column as $\mathscr{A}_{ij} \in \mathbb{R}^{(n-1) \times (n-1)}$. We can then define a new matrix $\mathbf{C}$ the so-called co-factor matrix where the element $c_{ij}$ is defined as:
 
 ```math
 c_{ij} = (-1)^{i+j} det(\mathscr{A}_{ij})
 ```
 
-We can then calculate the determinant of the matrix $\mathbf{A}$ using the co-factor expansion recursively. We choose some $i \in \{1, 2, 3, \ldots, n\}$ and then 
-calculate the determinant of the matrix $\mathbf{A}$ as:
+We can then calculate the determinant of the matrix $\mathbf{A}$ using the co-factor expansion recursively. We choose some $i \in \{1, 2, 3, \ldots, n\}$ and then calculate the determinant of the matrix $\mathbf{A}$ as:
 
 ```math
 det(\mathbf{A}) = \sum_{j=1}^n a_{ij} c_{ij}
@@ -432,8 +396,7 @@ det(\mathbf{A}) &= \sum_{j=1}^3 a_{3j} c_{3j} \\
 \end{align*}
 ```
 
-So we can see that the determinant of the matrix $\mathbf{A}$ is 0, which means that the matrix is singular and does not have an inverse. We can also compare this 
-to the formula for the determinant of a $3 \times 3$ matrix that we derived earlier and see that it is the same.
+So we can see that the determinant of the matrix $\mathbf{A}$ is 0, which means that the matrix is singular and does not have an inverse. We can also compare this to the formula for the determinant of a $3 \times 3$ matrix that we derived earlier and see that it is the same.
 
 ```math
 \begin{align*}
@@ -442,6 +405,14 @@ det(\mathbf{A}) &= aei + bfg + cdh - ceg - bdi - afh \\
 &= 45 + 84 + 96 - 105 - 72 - 48 = 0
 \end{align*}
 ```
+</Callout>
+
+<Callout type="todo">
+We can calcualte the inverse using the co-factor and the deteriminat but it is not efficient.
+</Callout>
+
+<Callout type="todo">
+In practice the determinant of a matrix is computed using the partial pivoted LU decomposition. This is a more efficient way of calculating the determinant of a matrix as it avoids the recursive nature of the co-factor expansion.
 </Callout>
 
 ## Cramer's Rule
@@ -484,9 +455,7 @@ b_3 & a_{32} & a_{33}
 \end{bmatrix}
 ```
 
-We can then see that the middle matrix is a triangular matrix and so the determinant is the product of the diagonal elements, which in this case is just $x_1$. So if we denote the 
-special matrix on the right where the $i$-th column is replaced by the vector $\mathbf{b}$ as $\mathscr{B}_i$ and use the fact that the determinant of a matrix multiplied by 
-another matrix is the product of the determinants of the two matrices we get:
+We can then see that the middle matrix is a triangular matrix and so the determinant is the product of the diagonal elements, which in this case is just $x_1$. So if we denote the special matrix on the right where the $i$-th column is replaced by the vector $\mathbf{b}$ as $\mathscr{B}_i$ and use the fact that the determinant of a matrix multiplied by another matrix is the product of the determinants of the two matrices we get:
 
 ```math
 \begin{align*}
@@ -495,12 +464,10 @@ x_1 = \frac{det(\mathscr{B}_1)}{det(\mathbf{A})}
 \end{align*}
 ```
 
-In the same way we can then also calculate $x_2$ and $x_3$ by replacing the $i$-th column of the matrix $\mathbf{A}$ with the vector $\mathbf{b}$ and then calculating the 
-determinant of the resulting matrix. So more generally we can solve a system of linear equations using Cramer's rule as:
+In the same way we can then also calculate $x_2$ and $x_3$ by replacing the $i$-th column of the matrix $\mathbf{A}$ with the vector $\mathbf{b}$ and then calculating the determinant of the resulting matrix. So more generally we can solve a system of linear equations using Cramer's rule as:
 
 ```math
 x_i = \frac{det(\mathscr{B}_i)}{det(\mathbf{A})}
 ```
 
-We can also see that if the system is not solvable, i.e the matrix $\mathbf{A}$ isn't full rank and doesn't have an inverse, then the determinant of the matrix is also 0 
-and we wouldn't be able to do the division. So solving a system of linear equations using Cramer's rule stays consistent with our other methods.
+We can also see that if the system is not solvable, i.e the matrix $\mathbf{A}$ isn't full rank and doesn't have an inverse, then the determinant of the matrix is also 0 and we wouldn't be able to do the division. So solving a system of linear equations using Cramer's rule stays consistent with our other methods.

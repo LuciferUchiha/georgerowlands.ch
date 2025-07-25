@@ -519,6 +519,7 @@ a_{12} & a_{22} & \cdots & a_{m2}
 \vdots & \vdots & \ddots & \vdots \\
 (a_{m1}a_{11} + a_{m2}a_{12} + \cdots + a_{mm}a_{1m}) & (a_{m1}a_{21} + a_{m2}a_{22} + \cdots + a_{mm}a_{2m}) & \cdots & (a_{m1}a_{n1} + a_{m2}a_{n2} + \cdots + a_{mm}a_{nm})
 \end{bmatrix}
+\end{align*}
 ```
 
 So we remember that the diagonal elements of $\mathbf{A}^T\mathbf{A}$ are the sums of squares of the columns of $\mathbf{A}$, and the off-diagonal elements are the sums of products of different columns. More specifically for the case where we have one feature (the size of the house) where $\mathbf{A} \in \mathbb{R}^{m \times 2}$, we have that the first column of $\mathbf{A}$ is all ones and the second column is the feature values $t_k$. So the first diagonal element of $\mathbf{A}^T\mathbf{A}$ is the sum of squares of the first column, which is simply $m$ (the number of observations), and the second diagonal element is the sum of squares of the feature values. The off diagonal element is the sum of the feature values multiplied by the ones, which is simply the sum of the feature values. 
@@ -539,7 +540,13 @@ m & \sum_{k=1}^{m} t_k \\
 
 Where $m$ is the number of observations (houses), $\sum_{k=1}^{m} t_k$ is the sum of the feature values (sizes of houses) and $\sum_{k=1}^{m} b_k t_k$ is the sum of the product of observed prices and feature values which together give us the coefficient $a_0$ and $a_1$ for the intercept and the slope of the line respectively.
 
-If the columns of $\mathbf{A}$ are pairwise orthogonal, then the matrix $\mathbf{A}^T\mathbf{A}$ is diagonal as each element is the dot product of two columns which is zero for different columns and the sum of squares for the same column. So we get:
+If the columns of $\mathbf{A}$ are pairwise orthogonal, then the matrix $\mathbf{A}^T\mathbf{A}$ is diagonal as each element is the dot product of two columns which is zero for different columns and the sum of squares for the same column. If $\mathbf{A} \in \mathbb{R}^{m \times 2}$, then the columns are orthogonal if the feature values $t_k$ are such that $\sum_{k=1}^{m} t_k = 0$. This is because when we calculate the dot product of the first column (all ones) and the second column (the feature values), we get:
+
+```math
+\sum_{k=1}^{m} 1 \cdot t_k = \sum_{k=1}^{m} t_k.
+```
+
+So if they are orthogonal we can simplify the matrix $\mathbf{A}^T\mathbf{A}$ to:
 
 ```math
 \begin{bmatrix} a_0 \\ a_1 \end{bmatrix} =
