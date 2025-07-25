@@ -3,8 +3,7 @@ import Image from "@components/Image/Image";
 
 # Eigendecomposition
 
-Before introducing eigenvalues and eigenvectors, let's first remind ourselves how vectors can be transformed by matrices. 
-A matrix can rotate, scale, or otherwise change a vector. For example we can rotate a vector using the rotation matrix:
+Before introducing eigenvalues and eigenvectors, let's first remind ourselves how vectors can be transformed by matrices. A matrix can rotate, scale, or otherwise change a vector. For example we can rotate a vector using the rotation matrix:
 
 ```math
 \begin{bmatrix}
@@ -50,9 +49,7 @@ Or we can use a matrix to scale a vector:
     width={300}
 />
 
-Now, let's dive into the core idea of eigenvalues and eigenvectors. An eigenvector of a square matrix $\mathbf{A}$ is a special 
-non-zero vector whose direction remains unchanged when the matrix is applied to it. So the matrix only scales the vector by a scalar 
-$\lambda$, which is called the eigenvalue. For a square matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$, an eigenvalue $\lambda \in \mathbb{C}$ is a scalar such that:
+Now, let's dive into the core idea of eigenvalues and eigenvectors. An eigenvector of a square matrix $\mathbf{A}$ is a special non-zero vector whose direction remains unchanged when the matrix is applied to it. So the matrix only scales the vector by a scalar $\lambda$, which is called the eigenvalue. For a square matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$, an eigenvalue $\lambda \in \mathbb{C}$ is a scalar such that:
 
 ```math
 \mathbf{A} \mathbf{v} = \lambda \mathbf{v}
@@ -64,41 +61,32 @@ where $\mathbf{v} \in \mathbb{C}^n$ is non-zero and the so called eigenvector. T
 (\mathbf{A} - \lambda \mathbf{I}) \mathbf{v} = \mathbf{0}
 ```
 
-We notice from the equation above that the eigenvector is in the nullspace of the matrix $\mathbf{A} - \lambda \mathbf{I}$. 
-And because we are looking for non-zero trivial solutions this means that the nullspace of the matrix $\mathbf{A} - \lambda \mathbf{I}$ 
-can not just be the zero vector. This then also means that the matrix $\mathbf{A} - \lambda \mathbf{I}$ is not invertible. We 
-know that a matrix is not invertible if the determinant is zero. So we can find the eigenvalues by solving the equation:
+We notice from the equation above that the eigenvector is in the nullspace of the matrix $\mathbf{A} - \lambda \mathbf{I}$. And because we are looking for non-zero trivial solutions this means that the nullspace of the matrix $\mathbf{A} - \lambda \mathbf{I}$ can not just be the zero vector. This then also means that the matrix $\mathbf{A} - \lambda \mathbf{I}$ is not invertible. We know that a matrix is not invertible if the determinant is zero. So we can find the eigenvalues by solving the equation:
 
 ```math
 \text{det}(\mathbf{A} - \lambda \mathbf{I}) = 0
 ```
 
-This is called the characteristic equation or polynomial of the matrix $\mathbf{A}$. Because the 
-determinant involves products of $n$ terms, the characteristic polynomial is a degree-$n$ polynomial and due to the structure of the 
-determinant the leading coefficient of $\lambda^n$ is $(-1)^n$. The other coefficients $c_{n-1}, \dots, c_0$ are determined by the 
-matrix $\mathbf{A}$. This leads us the general form of the characteristic polynomial for 
-an $n \times n$ matrix:
+This is called the characteristic equation or polynomial of the matrix $\mathbf{A}$. Because the determinant involves products of $n$ terms, the characteristic polynomial is a degree-$n$ polynomial and due to the structure of the 
+determinant the leading coefficient of $\lambda^n$ is $(-1)^n$. The other coefficients $c_{n-1}, \dots, c_0$ are determined by the matrix $\mathbf{A}$. This leads us the general form of the characteristic polynomial for an $n \times n$ matrix:
 
 ```math
 P(\lambda) = (-1)^n \lambda^n + c_{n-1} \lambda^{n-1} + \dots + c_1 \lambda + c_0
 ```
 
-Before talking more about the characteristic polynomial, let's first introduce the fundamental theorem of algebra. The theorem states that 
-for any polynomial of degree $n \geq 1$:
+Before talking more about the characteristic polynomial, let's first introduce the fundamental theorem of algebra. The theorem states that for any polynomial of degree $n \geq 1$:
 
 ```math
 P(z) = a_n z^n + a_{n-1} z^{n-1} + \dots + a_0
 ```
 
-where $a_n \neq 0$ and $z \in \mathbb{C}$, there exist exactly $n$ roots in $\mathbb{C}$, so $z_1, z_2, \dots, z_n \in \mathbb{C}$ such that 
-$P(z_n) = 0$, where the roots can be real, complex or repeated. 
-If we factorize the polynomial $P(z)$, we get:
+where $a_n \neq 0$ and $z \in \mathbb{C}$, there exist exactly $n$ roots in $\mathbb{C}$, so $z_1, z_2, \dots, z_n \in \mathbb{C}$ such that $P(z_n) = 0$, where the roots can be real, complex or repeated. If we factorize the polynomial $P(z)$, we get:
 
 ```math
 P(\lambda) = a_n (\lambda - \lambda_1)^{m_1} (\lambda - \lambda_2)^{m_2} \dots (\lambda - \lambda_k)^{m_k}
 ```
-where $\lambda$ is the input variable, $\lambda_1, \lambda_2, \dots, \lambda_k$ are the distinct eigenvalues and $m_1, m_2, \dots, m_k$ is the 
-algebraic multiplicity of the eigenvalues, so the number of times the eigenvalue appears as a root of $P(\lambda)$, satisfying:
+
+where $\lambda$ is the input variable, $\lambda_1, \lambda_2, \dots, \lambda_k$ are the distinct eigenvalues and $m_1, m_2, \dots, m_k$ is the algebraic multiplicity of the eigenvalues, so the number of times the eigenvalue appears as a root of $P(\lambda)$, satisfying:
 
 ```math
 m_1 + m_2 + \dots + m_k = n
@@ -136,8 +124,7 @@ After factorizing the polynomial, we get:
 P(\lambda) = (\lambda - i)(\lambda + i)
 ```
 
-Because each eigenvalue appears only once, the algebraic multiplicity of each eigenvalue is 1. 
-We can then calculate the eigenvector for each eigenvalue. For $\lambda = i$:
+Because each eigenvalue appears only once, the algebraic multiplicity of each eigenvalue is 1. We can then calculate the eigenvector for each eigenvalue. For $\lambda = i$:
 
 ```math
 \mathbf{Av} = 
@@ -175,8 +162,7 @@ Which results in the eigenvector:
 
 </Callout>
 
-We can see that the eigenvectors are not unique, as any scalar multiple of an eigenvector is also an eigenvector. For this reason, 
-it is common to pick the eigenvector to have a norm of 1:
+We can see that the eigenvectors are not unique, as any scalar multiple of an eigenvector is also an eigenvector. For this reason, it is common to pick the eigenvector to have a norm of 1:
 
 ```math
 \mathbf{A}(c\mathbf{v}) = \lambda (c\mathbf{v}) \implies \mathbf{A}\mathbf{v} = \lambda \mathbf{v}
@@ -184,8 +170,7 @@ it is common to pick the eigenvector to have a norm of 1:
 
 ## Complex Numbers and Matrices
 
-So before we continue let us remind ourselves how to work with complex numbers and also introduce the concepts of complex valued
-vectors and matrices.
+So before we continue let us remind ourselves how to work with complex numbers and also introduce the concepts of complex valued vectors and matrices.
 
 The imaginary unit is defined as:
 
@@ -199,9 +184,7 @@ with the fundamental property $i^2 = -1$. Using this, any complex number $z$ can
 z = a + bi
 ```
  
-where $a$ is the real part, denoted $\operatorname{Re}(z)$, and $b$ is the imaginary part, denoted $\operatorname{Im}(z)$. 
-The operations of addition and subtraction between two complex numbers are done component-wise. For example, if $z_1 = a_1 + b_1i$ and 
-$z_2 = a_2 + b_2i$, then the addition is:
+where $a$ is the real part, denoted $\operatorname{Re}(z)$, and $b$ is the imaginary part, denoted $\operatorname{Im}(z)$. The operations of addition and subtraction between two complex numbers are done component-wise. For example, if $z_1 = a_1 + b_1i$ and $z_2 = a_2 + b_2i$, then the addition is:
 
 ```math
 z_1 + z_2 = (a_1 + a_2) + (b_1 + b_2)i
@@ -213,15 +196,13 @@ subtraction follows the same principle. Multiplication involves distributing ter
 z_1 \cdot z_2 = (a_1 + b_1i) \cdot (a_2 + b_2i) = (a_1a_2 - b_1b_2) + (a_1b_2 + a_2b_1)i
 ```
 
-To better understand the geometric significance of a complex number, we consider its modulus or magnitude. The modulus of $z = a + bi$ is 
-given by:
+To better understand the geometric significance of a complex number, we consider its modulus or magnitude. The modulus of $z = a + bi$ is given by:
 
 ```math
 |z| = \sqrt{a^2 + b^2}
 ```
 
-which represents the distance of $z$ from the origin in the complex plane. Closely related to the modulus is the concept of the complex 
-conjugate. For $z = a + bi$, the conjugate, denoted $\overline{z}$, is:
+which represents the distance of $z$ from the origin in the complex plane. Closely related to the modulus is the concept of the complex conjugate. For $z = a + bi$, the conjugate, denoted $\overline{z}$, is:
  
 ```math
 \overline{z} = a - bi
@@ -229,10 +210,7 @@ conjugate. For $z = a + bi$, the conjugate, denoted $\overline{z}$, is:
   
 The modulus can also be computed from the conjugate using the relation $|z|^2 = z \cdot \overline{z}$, which is handy in simplifying complex expressions.
 
-Having revisited these fundamentals, the next step is to extend our understanding of complex numbers to vectors and matrices. When we deal with 
-complex-valued matrices, the usual transpose of a matrix is replaced by what is called the conjugate transpose, also known as the Hermitian 
-transpose. Denoted by $\mathbf{A}^H$, the Hermitian transpose is defined as follows: for a matrix $\mathbf{A}$, the element in the 
-$i$-th row and $j$-th column of $\mathbf{A}^H$ is the complex conjugate of the element in the $j$-th row and $i$-th column of $\mathbf{A}$:
+Having revisited these fundamentals, the next step is to extend our understanding of complex numbers to vectors and matrices. When we deal with complex-valued matrices, the usual transpose of a matrix is replaced by what is called the conjugate transpose, also known as the Hermitian transpose. Denoted by $\mathbf{A}^H$, the Hermitian transpose is defined as follows: for a matrix $\mathbf{A}$, the element in the $i$-th row and $j$-th column of $\mathbf{A}^H$ is the complex conjugate of the element in the $j$-th row and $i$-th column of $\mathbf{A}$:
 
 ```math
 A^H_{ij} = \overline{A}_{ji}
@@ -261,12 +239,10 @@ Its Hermitian transpose is:
 ```  
 </Callout>
 
-In the case of complex vectors, we can also define the norm, which generalizes the usual Euclidean norm. For a vector $\mathbf{v}$, the norm 
-is given by:
+In the case of complex vectors, we can also define the norm, which generalizes the usual Euclidean norm. For a vector $\mathbf{v}$, the norm is given by:
 
 ```math
 ||\mathbf{v}|| = \sqrt{\mathbf{v}^H \mathbf{v}} = \sqrt{\sum_{i=1}^n \overline{v}_i v_i} = \sqrt{\sum_{i=1}^n |v_i|^2}
-
 ```
 
 which is the square root of the sum of the squared magnitudes of its components.
@@ -301,16 +277,9 @@ Adding these results, $\mathbf{v}^H \mathbf{v} = 2 + 8 = 10$. Taking the square 
 
 We have seen some things about eigenvectors and eigenvalues, but let's dive deeper into these concepts and look at some of the properties:
 
-Let's start with the first property, **Every matrix has at least one eigenvalue**. This is a direct consequence of the
-the Fundamental Theorem of Algebra, the characteristic polynomial $P(\lambda) = \text{det}(\mathbf{A} - \lambda \mathbf{I})$ has 
-degree $n$ for an $n \times n$ matrix $\mathbf{A}$. Therefore, it always has $n$ (not necessarily distinct) roots in $\mathbb{C}$, which 
-are the eigenvalues. So there is at least one eigenvalue that has algebraic multiplicity greater than 1.
-Even if $\mathbf{A}$ has no real eigenvalues, it will still have complex eigenvalues.
+Let's start with the first property, **Every matrix has at least one eigenvalue**. This is a direct consequence of the the Fundamental Theorem of Algebra, the characteristic polynomial $P(\lambda) = \text{det}(\mathbf{A} - \lambda \mathbf{I})$ has degree $n$ for an $n \times n$ matrix $\mathbf{A}$. Therefore, it always has $n$ (not necessarily distinct) roots in $\mathbb{C}$, which are the eigenvalues. So there is at least one eigenvalue that has algebraic multiplicity greater than 1. Even if $\mathbf{A}$ has no real eigenvalues, it will still have complex eigenvalues.
 
-The next property is that the **eigenvalues of a matrix and its transpose are the same**. We know that the determinant of a matrix and its 
-transpose are equal, so the characteristic polynomial of $\mathbf{A}$ is the same as that of $\mathbf{A}^T$. This means that the
-the eigenvalues of a matrix $\mathbf{A}$ and its transpose $\mathbf{A}^T$ are identical. However, the eigenvectors are generally **not the same**. 
-Suppose $\lambda$ is an eigenvalue of $\mathbf{A}$ with eigenvector $\mathbf{v}$ and we take the transpose we then get:
+The next property is that the **eigenvalues of a matrix and its transpose are the same**. We know that the determinant of a matrix and its transpose are equal, so the characteristic polynomial of $\mathbf{A}$ is the same as that of $\mathbf{A}^T$. This means that the the eigenvalues of a matrix $\mathbf{A}$ and its transpose $\mathbf{A}^T$ are identical. However, the eigenvectors are generally **not the same**. Suppose $\lambda$ is an eigenvalue of $\mathbf{A}$ with eigenvector $\mathbf{v}$ and we take the transpose we then get:
 
 ```math
 \begin{align*}
@@ -320,8 +289,7 @@ Suppose $\lambda$ is an eigenvalue of $\mathbf{A}$ with eigenvector $\mathbf{v}$
 \end{align*}
 ```
 
-Thus, $\lambda$ is also an eigenvalue of $\mathbf{A}^T$, but the eigenvectors are different. With the same argument we can 
-argue that the gaussian elimination can effect the eigenvalues as it changes the determinant of the matrix.
+Thus, $\lambda$ is also an eigenvalue of $\mathbf{A}^T$, but the eigenvectors are different. With the same argument we can argue that the gaussian elimination can effect the eigenvalues as it changes the determinant of the matrix.
 
 <Callout type="example">
 Consider $\mathbf{A}$:
@@ -350,12 +318,10 @@ The characteristic polynomial is the same:
 \text{det}(\mathbf{A}^T - \lambda \mathbf{I}) = \text{det}\begin{bmatrix} 2 - \lambda & 0 \\ 1 & 3 - \lambda \end{bmatrix} = (2 - \lambda)(3 - \lambda) = 0.
 ```
 
-The eigenvalues are still $\lambda_1 = 2$ and $\lambda_2 = 3$. However, the eigenvectors of $\mathbf{A}$ and $\mathbf{A}^T$ are not
- the same. For $\lambda = 2$, $\mathbf{v}\mathbf{A} \neq \mathbf{v}\mathbf{A}^T$.
+The eigenvalues are still $\lambda_1 = 2$ and $\lambda_2 = 3$. However, the eigenvectors of $\mathbf{A}$ and $\mathbf{A}^T$ are not the same. For $\lambda = 2$, $\mathbf{v}\mathbf{A} \neq \mathbf{v}\mathbf{A}^T$.
 </Callout>
 
-The next property is that **if $\lambda$ and $\mathbf{v}$ are an eigenvalue-eigenvector pair of $\mathbf{A}$, then their complex conjugates $\overline{\lambda}$ and $\overline{\mathbf{v}}$ are also an eigenvalue-eigenvector pair of $\mathbf{A}$**. 
-This is true when the entries of $\mathbf{A}$ are real. We can see this from the following equation:
+The next property is that **if $\lambda$ and $\mathbf{v}$ are an eigenvalue-eigenvector pair of $\mathbf{A}$, then their complex conjugates $\overline{\lambda}$ and $\overline{\mathbf{v}}$ are also an eigenvalue-eigenvector pair of $\mathbf{A}$**. This is true when the entries of $\mathbf{A}$ are real. We can see this from the following equation:
 
 ```math
 \begin{align*}
@@ -367,8 +333,7 @@ This is true when the entries of $\mathbf{A}$ are real. We can see this from the
 
 Since $\mathbf{A}$ has real entries, $\overline{\mathbf{A}} = \mathbf{A}$
 
-The fourth property is that **if $\lambda$ and $\mathbf{v}$ are an eigenvalue-eigenvector pair for $\mathbf{A}$, then $\lambda^k$ and $\mathbf{v}$ are an eigenvalue-eigenvector pair for $\mathbf{A}^k$**.
-To see this we simply use repeated application of $\mathbf{A} \mathbf{v} = \lambda \mathbf{v}$:
+The fourth property is that **if $\lambda$ and $\mathbf{v}$ are an eigenvalue-eigenvector pair for $\mathbf{A}$, then $\lambda^k$ and $\mathbf{v}$ are an eigenvalue-eigenvector pair for $\mathbf{A}^k$**. To see this we simply use repeated application of $\mathbf{A} \mathbf{v} = \lambda \mathbf{v}$:
 
 ```math
 \mathbf{A}^2 \mathbf{v} = \mathbf{A}(\mathbf{A} \mathbf{v}) = \mathbf{A}(\lambda \mathbf{v}) = \lambda (\mathbf{A} \mathbf{v}) = \lambda^2 \mathbf{v}.
@@ -376,8 +341,7 @@ To see this we simply use repeated application of $\mathbf{A} \mathbf{v} = \lamb
 
 By induction, the result generalizes to $\mathbf{A}^k \mathbf{v} = \lambda^k \mathbf{v}$.
 
-Next is the property that **if $\mathbf{A}$ is invertible and $\lambda$ is an eigenvalue of $\mathbf{A}$, then $1/\lambda$ is an 
-eigenvalue of $\mathbf{A}^{-1}$**:
+Next is the property that **if $\mathbf{A}$ is invertible and $\lambda$ is an eigenvalue of $\mathbf{A}$, then $1/\lambda$ is an eigenvalue of $\mathbf{A}^{-1}$**:
 
 ```math
 \begin{align*}  
@@ -391,18 +355,14 @@ eigenvalue of $\mathbf{A}^{-1}$**:
 Thus, $\frac{1}{\lambda}$ is an eigenvalue of $\mathbf{A}^{-1}$.
 
 
-It is tempting to think that the eigenvalues of a sum of two matrices $\mathbf{A}$ and $\mathbf{B}$ might correspond to the sum of the eigenvalues of the 
-individual matrices, but this is not true in general. Eigenvalues depend on the structure of the matrix, which involves more than just 
-summing matrix entries. 
+It is tempting to think that the eigenvalues of a sum of two matrices $\mathbf{A}$ and $\mathbf{B}$ might correspond to the sum of the eigenvalues of the individual matrices, but this is not true in general. Eigenvalues depend on the structure of the matrix, which involves more than just summing matrix entries. 
 
 <Callout type="example">
 Here's an example to demonstrate this:
 
 </Callout>
 
-Similarly, the eigenvalues of a product of two matrices $\mathbf{A}$ and $\mathbf{B}$ do not correspond to the product of their 
-eigenvalues. This is because the eigenvalues of $\mathbf{AB}$ depend on whether $\mathbf{AB}$ and $\mathbf{BA}$ commute 
-(i.e., if $\mathbf{AB} = \mathbf{BA}$). If they do not commute, the eigenvalues of $\mathbf{AB}$ are more complex to calculate.
+Similarly, the eigenvalues of a product of two matrices $\mathbf{A}$ and $\mathbf{B}$ do not correspond to the product of their eigenvalues. This is because the eigenvalues of $\mathbf{AB}$ depend on whether $\mathbf{AB}$ and $\mathbf{BA}$ commute (i.e., if $\mathbf{AB} = \mathbf{BA}$). If they do not commute, the eigenvalues of $\mathbf{AB}$ are more complex to calculate.
 
 <Callout type="example">
 Here's an example to demonstrate this:
@@ -455,30 +415,21 @@ Expanding:
 -\lambda^2 - 2\lambda - 1 = 0.
 ```
 
-This quadratic equation gives eigenvalues $\lambda = -1 \pm \sqrt{2}$, **which are not the product** of the eigenvalues of $\mathbf{A}$ 
-and $\mathbf{B}$ (i.e., $\lambda = 1 \cdot 1$ or $\lambda = 1 \cdot -1$).
+This quadratic equation gives eigenvalues $\lambda = -1 \pm \sqrt{2}$, **which are not the product** of the eigenvalues of $\mathbf{A}$ and $\mathbf{B}$ (i.e., $\lambda = 1 \cdot 1$ or $\lambda = 1 \cdot -1$).
 </Callout>
 
-Now we come to a key property. If all the eigenvalues of a matrix $\mathbf{A}$ are distinct, then the eigenvectors corresponding to 
-those eigenvalues are **linearly independent**. This is a result of the fact that eigenvectors corresponding to distinct eigenvalues lie in 
-different eigenspaces, and eigenspaces of a matrix are independent. So see this we can think of the following scenario.
+Now we come to a key property. If all the eigenvalues of a matrix $\mathbf{A}$ are distinct, then the eigenvectors corresponding to those eigenvalues are **linearly independent**. This is a result of the fact that eigenvectors corresponding to distinct eigenvalues lie in different eigenspaces, and eigenspaces of a matrix are independent. So see this we can think of the following scenario.
 
-Suppose we have $\lambda_1, \lambda_2, \dots, \lambda_k$ distinct eigenvalues of $\mathbf{A}$, and let 
-$\mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_k$ be the corresponding eigenvectors. Then suppose 
-$c_1 \mathbf{v}_1 + c_2 \mathbf{v}_2 + \dots + c_k \mathbf{v}_k = \mathbf{0}$ which would 
-imply that the eigenvectors are linearly dependent. If we then apply $\mathbf{A}$ to this equation we get:
+Suppose we have $\lambda_1, \lambda_2, \dots, \lambda_k$ distinct eigenvalues of $\mathbf{A}$, and let $\mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_k$ be the corresponding eigenvectors. Then suppose $c_1 \mathbf{v}_1 + c_2 \mathbf{v}_2 + \dots + c_k \mathbf{v}_k = \mathbf{0}$ which would imply that the eigenvectors are linearly dependent. If we then apply $\mathbf{A}$ to this equation we get:
 
 ```math
 \mathbf{A}(c_1 \mathbf{v}_1 + c_2 \mathbf{v}_2 + \dots + c_k \mathbf{v}_k) =
 c_1 \lambda_1 \mathbf{v}_1 + c_2 \lambda_2 \mathbf{v}_2 + \dots + c_k \lambda_k \mathbf{v}_k = \mathbf{0}.
 ```
 
-However, since we know that $\lambda_1, \lambda_2, \dots, \lambda_k$ are distinct, this is only possible if $c_1 = c_2 = \dots = c_k = 0$, 
-which is the trivial solution. This therefore shows that $\mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_k$ are linearly independent.
-Which then also means that all the eigenvalues have an algebraic multiplicity of 1.
+However, since we know that $\lambda_1, \lambda_2, \dots, \lambda_k$ are distinct, this is only possible if $c_1 = c_2 = \dots = c_k = 0$, which is the trivial solution. This therefore shows that $\mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_k$ are linearly independent. Which then also means that all the eigenvalues have an algebraic multiplicity of 1.
 
-Interestingly, because orthogonal matrices preserve lengths and angles, the eigenvalues of an orthogonal matrix are all either 1 or -1. This 
-can be shown by considering the following equation:
+Interestingly, because orthogonal matrices preserve lengths and angles, the eigenvalues of an orthogonal matrix are all either 1 or -1. This can be shown by considering the following equation:
 
 ```math
 \begin{align*}
@@ -488,9 +439,7 @@ can be shown by considering the following equation:
 \end{align*}
 ```
 
-Interestingly the eigenvalues of a diagonal matrix are simply the diagonal elements and the eigenvectors are the standard basis vectors. 
-We can see this when we set the eigenvector to be the standard basis vector $\mathbf{e}_i$. All it does is select 
-the $i$-th diagonal element of the matrix.
+Interestingly the eigenvalues of a diagonal matrix are simply the diagonal elements and the eigenvectors are the standard basis vectors. We can see this when we set the eigenvector to be the standard basis vector $\mathbf{e}_i$. All it does is selectthe $i$-th diagonal element of the matrix.
 
 ```math
 \begin{align*}
@@ -557,9 +506,7 @@ The eigenvalues of $\mathbf{A}$ are $\lambda_1 = -0.372$, $\lambda_2 = 5.372$.
 ```
 </Callout>
 
-We can also show that the determinant of a matrix is equal to the product of its eigenvalues. 
-This also then has the direct consequence that if the determinant of a matrix is zero, then at least one of the eigenvalues is zero. 
-So all singular matrices have at least one eigenvalue of zero.
+We can also show that the determinant of a matrix is equal to the product of its eigenvalues. This also then has the direct consequence that if the determinant of a matrix is zero, then at least one of the eigenvalues is zero. So all singular matrices have at least one eigenvalue of zero.
 
 ```math
 \text{det}(\mathbf{A}) = \prod_{i=1}^n \lambda_i
@@ -575,36 +522,25 @@ evaluating $P(0)$ gives $\text{det}(\mathbf{A}) = \prod_{i=1}^n \lambda_i$.
 
 ## Diagonalization
 
-Now that we understand what eigenvalues are and eigenvectors and that if the eigenvalues are distinct then the eigenvectors are linearly 
-independent, we can talk about diagonalization. Diagonalization is the process of expressing a square matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ in the form:
+Now that we understand what eigenvalues are and eigenvectors and that if the eigenvalues are distinct then the eigenvectors are linearly independent, we can talk about diagonalization. Diagonalization is the process of expressing a square matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ in the form:
 
 ```math
 \mathbf{A} = \mathbf{V} \mathbf{D} \mathbf{V}^{-1},
 ```
 
-where $\mathbf{V}$ is an invertible matrix composed of the eigenvectors of $\mathbf{A}$, and $\mathbf{D}$ is a diagonal matrix 
-containing the corresponding eigenvalues. We know that $\mathbf{V}$ is invertible because the eigenvectors are linearly independent. 
-This factorization of the matrix $\mathbf{A}$ is called the eigendecomposition.
+where $\mathbf{V}$ is an invertible matrix composed of the eigenvectors of $\mathbf{A}$, and $\mathbf{D}$ is a diagonal matrix containing the corresponding eigenvalues. We know that $\mathbf{V}$ is invertible because the eigenvectors are linearly independent. This factorization of the matrix $\mathbf{A}$ is called the eigendecomposition.
 
-The process of diagonalizing allows us to represent a matrix in a new basis where its action becomes simple—scaling 
-along eigenvector directions. This is particularly useful for computations like matrix powers, exponentials, and understanding the 
-geometric transformation a matrix represents.
+The process of diagonalizing allows us to represent a matrix in a new basis where its action becomes simple—scaling along eigenvector directions. This is particularly useful for computations like matrix powers, exponentials, and understanding the geometric transformation a matrix represents.
 
-For $\mathbf{A}$ to be diagonalizable, it must have a **complete set of linearly independent eigenvectors**, meaning the eigenvectors 
-must form a basis of $\mathbb{R}^n$. This is the case when the eigenvalues are distinct. But there are other cases where $\mathbf{A}$ 
-is diagonalizable. This depends on the **geometric multiplicity** and **algebraic multiplicity** of the eigenvalues.
+For $\mathbf{A}$ to be diagonalizable, it must have a **complete set of linearly independent eigenvectors**, meaning the eigenvectors must form a basis of $\mathbb{R}^n$. This is the case when the eigenvalues are distinct. But there are other cases where $\mathbf{A}$ is diagonalizable. This depends on the **geometric multiplicity** and **algebraic multiplicity** of the eigenvalues.
 
 - The **algebraic multiplicity** of an eigenvalue $\lambda$ is the number of times $\lambda$ appears as a root of the characteristic 
 polynomial $\det(\mathbf{A} - \lambda \mathbf{I}) = 0$. So the number of unique eigenvalues.
-- The **geometric multiplicity** of $\lambda$ is the dimension of the null space $\text{null}(\mathbf{A} - \lambda \mathbf{I})$, i.e., 
-the number of linearly independent eigenvectors associated with $\lambda$. This null space is the eigenspace corresponding to $\lambda$.
+- The **geometric multiplicity** of $\lambda$ is the dimension of the null space $\text{null}(\mathbf{A} - \lambda \mathbf{I})$, i.e., the number of linearly independent eigenvectors associated with $\lambda$. This null space is the eigenspace corresponding to $\lambda$.
 
-The geometric multiplicity of $\lambda$ is always less than or equal to its algebraic multiplicity. If the geometric multiplicity 
-equals the algebraic multiplicity for all eigenvalues, then $\mathbf{A}$ is diagonalizable and there are enough eigenvectors 
-to form a basis of $\mathbb{R}^n$. We then also say that the matrix $\mathbf{A}$ has a complete set of eigenvectors.
+The geometric multiplicity of $\lambda$ is always less than or equal to its algebraic multiplicity. If the geometric multiplicity equals the algebraic multiplicity for all eigenvalues, then $\mathbf{A}$ is diagonalizable and there are enough eigenvectors to form a basis of $\mathbb{R}^n$. We then also say that the matrix $\mathbf{A}$ has a complete set of eigenvectors.
 
-The Intuition behind this is that each eigenvalue then gets an eigenvector that is linearly independent 
-from the others. So the eigenvector is spanning different directions in the space.
+The Intuition behind this is that each eigenvalue then gets an eigenvector that is linearly independent from the others. So the eigenvector is spanning different directions in the space.
 
 For example, consider the matrix:
 
@@ -612,53 +548,37 @@ For example, consider the matrix:
 \mathbf{A} = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}.
 ```
 
-The eigenvalue $\lambda = 1$ has algebraic multiplicity 2. However, the null space of 
-$\mathbf{A} - \mathbf{I} = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}$ is spanned 
-by $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$, so the geometric multiplicity is 1. Since these multiplicities differ, 
-$\mathbf{A}$ is not diagonalizable, as it lacks a complete set of eigenvectors.
+The eigenvalue $\lambda = 1$ has algebraic multiplicity 2. However, the null space of $\mathbf{A} - \mathbf{I} = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}$ is spanned by $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$, so the geometric multiplicity is 1. Since these multiplicities differ, $\mathbf{A}$ is not diagonalizable, as it lacks a complete set of eigenvectors.
 
-On the other hand, if $\mathbf{A}$ has $n$ distinct eigenvalues, then the algebraic multiplicity of each eigenvalue is 1, 
-and the eigenvectors form a basis of $\mathbb{R}^n$. In this case, the matrix is guaranteed to be diagonalizable.
+On the other hand, if $\mathbf{A}$ has $n$ distinct eigenvalues, then the algebraic multiplicity of each eigenvalue is 1, and the eigenvectors form a basis of $\mathbb{R}^n$. In this case, the matrix is guaranteed to be diagonalizable.
 
-The core idea of diagonalization is transforming $\mathbf{A}$ into a diagonal matrix $\mathbf{D}$ by working in a new basis formed 
-by its eigenvectors. Suppose the eigenvectors of $\mathbf{A}$ are $\mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_n$, and 
-they form a basis of $\mathbb{R}^n$. Any vector $\mathbf{x} \in \mathbb{R}^n$ can be written as a linear combination of these eigenvectors:
+The core idea of diagonalization is transforming $\mathbf{A}$ into a diagonal matrix $\mathbf{D}$ by working in a new basis formed by its eigenvectors. Suppose the eigenvectors of $\mathbf{A}$ are $\mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_n$, and they form a basis of $\mathbb{R}^n$. Any vector $\mathbf{x} \in \mathbb{R}^n$ can be written as a linear combination of these eigenvectors:
 
 ```math
 \mathbf{x} = a_1 \mathbf{v}_1 + a_2 \mathbf{v}_2 + \dots + a_n \mathbf{v}_n.
 ```
 
-Now, consider applying the matrix $\mathbf{A}$ to $\mathbf{x}$. Because eigenvectors satisfy 
-$\mathbf{A} \mathbf{v}_i = \lambda_i \mathbf{v}_i$, the result simplifies to:
+Now, consider applying the matrix $\mathbf{A}$ to $\mathbf{x}$. Because eigenvectors satisfy $\mathbf{A} \mathbf{v}_i = \lambda_i \mathbf{v}_i$, the result simplifies to:
 
 ```math
 \mathbf{A} \mathbf{x} = \lambda_1 a_1 \mathbf{v}_1 + \lambda_2 a_2 \mathbf{v}_2 + \dots + \lambda_n a_n \mathbf{v}_n.
 ```
 
-In this eigenvector basis, $\mathbf{A}$ acts as a stretching transformation, scaling each eigenvector by its eigenvalue. Representing 
-$\mathbf{A}$ in this basis gives the matrix $\mathbf{D}$, where the eigenvalues appear on the diagonal. Transforming back to the 
-standard basis requires the matrix $\mathbf{V}$, whose columns are the eigenvectors of $\mathbf{A}$. Hence, we write:
+In this eigenvector basis, $\mathbf{A}$ acts as a stretching transformation, scaling each eigenvector by its eigenvalue. Representing $\mathbf{A}$ in this basis gives the matrix $\mathbf{D}$, where the eigenvalues appear on the diagonal. Transforming back to the standard basis requires the matrix $\mathbf{V}$, whose columns are the eigenvectors of $\mathbf{A}$. Hence, we write:
 
 ```math
 \mathbf{A} = \mathbf{V} \mathbf{D} \mathbf{V}^{-1}.
 ```
 
-This relationship is the eigendecomposition of $\mathbf{A}$. If $\mathbf{A}$ is diagonalizable, this decomposition provides a change 
-of basis where $\mathbf{A}$ is simpler to understand and compute with.
+This relationship is the eigendecomposition of $\mathbf{A}$. If $\mathbf{A}$ is diagonalizable, this decomposition provides a change of basis where $\mathbf{A}$ is simpler to understand and compute with.
 
-To better understand diagonalization, consider a **projection matrix** $\mathbf{P}$ that projects vectors onto a subspace $S$ of 
-$\mathbb{R}^n$. Such a matrix satisfies $\mathbf{P}^2 = \mathbf{P}$. The eigenvalues of $\mathbf{P}$ are $\lambda = 1$ for vectors 
-in $S$ and $\lambda = 0$ for vectors in the orthogonal complement $S^\perp$. The eigenvectors of $\mathbf{P}$ form a complete basis 
-for $\mathbb{R}^n$, consisting of basis vectors for $S$ and $S^\perp$. Since $\mathbf{P}$ has a complete set of eigenvectors, it is 
-diagonalizable.
+To better understand diagonalization, consider a **projection matrix** $\mathbf{P}$ that projects vectors onto a subspace $S$ of $\mathbb{R}^n$. Such a matrix satisfies $\mathbf{P}^2 = \mathbf{P}$. The eigenvalues of $\mathbf{P}$ are $\lambda = 1$ for vectors in $S$ and $\lambda = 0$ for vectors in the orthogonal complement $S^\perp$. The eigenvectors of $\mathbf{P}$ form a complete basis for $\mathbb{R}^n$, consisting of basis vectors for $S$ and $S^\perp$. Since $\mathbf{P}$ has a complete set of eigenvectors, it is diagonalizable.
 
-This illustrates diagonalization geometrically: the matrix is reduced to a simpler form (diagonal) in a basis reflecting its eigenvectors, 
-making its action as a transformation clear.
+This illustrates diagonalization geometrically: the matrix is reduced to a simpler form (diagonal) in a basis reflecting its eigenvectors, making its action as a transformation clear.
 
 ### Eigenvectors of Symmetric Matrices
 
-Symmetric matrices possess special properties that make them fundamentally important in linear algebra. If $\mathbf{A} \in \mathbb{R}^{n \times n}$ is symmetric (i.e., $\mathbf{A}^T = \mathbf{A}$), then 
-we have some very nicht properties. The first being that the eigenvalues of a symmetric matrix are real. 
+Symmetric matrices possess special properties that make them fundamentally important in linear algebra. If $\mathbf{A} \in \mathbb{R}^{n \times n}$ is symmetric (i.e., $\mathbf{A}^T = \mathbf{A}$), then we have some very nicht properties. The first being that the eigenvalues of a symmetric matrix are real. 
 
 To show this, we use the fact that a symmetric matrix is a subset of **Hermitian matrices.** For a Hermitian matrix $\mathbf{A}$, it is known that its eigenvalues are real. Let $\mathbf{A} \in \mathbb{R}^{n \times n}$, and let $\mathbf{v} \in \mathbb{R}^n \setminus \{ \mathbf{0} \}$ be an eigenvector of $\mathbf{A}$ corresponding to eigenvalue $\lambda$. Then:
 
@@ -678,16 +598,9 @@ Since $\lambda$ is a scalar, the right-hand side simplifies to:
 \lambda (\mathbf{v}^T \mathbf{v}).
 ```
 
-Now recall that $\mathbf{A}$ is symmetric, so $\mathbf{v}^T (\mathbf{A} \mathbf{v}) = 
-(\mathbf{A} \mathbf{v})^T \mathbf{v} = \mathbf{v}^T (\mathbf{A}^T \mathbf{v}) = \mathbf{v}^T (\mathbf{A} 
-\mathbf{v})$. This property ensures that $\lambda$ is **real**, because the left-hand side of the equation is a real scalar 
-(dot product of real vectors), and $\mathbf{v}^T \mathbf{v} \neq 0$, as $\mathbf{v} \neq \mathbf{0}$. Thus, 
-$\lambda \in \mathbb{R}$.
+Now recall that $\mathbf{A}$ is symmetric, so $\mathbf{v}^T (\mathbf{A} \mathbf{v}) = (\mathbf{A} \mathbf{v})^T \mathbf{v} = \mathbf{v}^T (\mathbf{A}^T \mathbf{v}) = \mathbf{v}^T (\mathbf{A} \mathbf{v})$. This property ensures that $\lambda$ is **real**, because the left-hand side of the equation is a real scalar (dot product of real vectors), and $\mathbf{v}^T \mathbf{v} \neq 0$, as $\mathbf{v} \neq \mathbf{0}$. Thus, $\lambda \in \mathbb{R}$.
 
-If $\mathbf{A}$ is symmetric, its eigenvectors corresponding to **distinct eigenvalues** are orthogonal. This property follows directly from 
-the symmetry of $\mathbf{A}$. Let $\mathbf{A} \in \mathbb{R}^{n \times n}$ be symmetric, and let $\mathbf{u}$ and 
-$\mathbf{v}$ be eigenvectors of $\mathbf{A}$ corresponding to the eigenvalues $\lambda_1$ and $\lambda_2$, respectively, with 
-$\lambda_1 \neq \lambda_2$. Then, from the definition of eigenvectors and eigenvalues, we have:
+If $\mathbf{A}$ is symmetric, its eigenvectors corresponding to **distinct eigenvalues** are orthogonal. This property follows directly from the symmetry of $\mathbf{A}$. Let $\mathbf{A} \in \mathbb{R}^{n \times n}$ be symmetric, and let $\mathbf{u}$ and $\mathbf{v}$ be eigenvectors of $\mathbf{A}$ corresponding to the eigenvalues $\lambda_1$ and $\lambda_2$, respectively, with $\lambda_1 \neq \lambda_2$. Then, from the definition of eigenvectors and eigenvalues, we have:
 
 ```math
 \mathbf{A} \mathbf{u} = \lambda_1 \mathbf{u}, \quad \mathbf{A} \mathbf{v} = \lambda_2 \mathbf{v}.
@@ -705,20 +618,17 @@ Now take the dot product of the second equation with $\mathbf{u}$:
 \mathbf{u}^T (\mathbf{A} \mathbf{v}) = \lambda_2 (\mathbf{u}^T \mathbf{v}).
 ```
 
-Since $\mathbf{A}$ is symmetric, $\mathbf{u}^T (\mathbf{A} \mathbf{v}) = (\mathbf{A} \mathbf{u})^T \mathbf{v}$. 
-Therefore, the left-hand sides of the two equations are the same:
+Since $\mathbf{A}$ is symmetric, $\mathbf{u}^T (\mathbf{A} \mathbf{v}) = (\mathbf{A} \mathbf{u})^T \mathbf{v}$. Therefore, the left-hand sides of the two equations are the same:
 
 ```math
 \lambda_1 (\mathbf{v}^T \mathbf{u}) = \lambda_2 (\mathbf{v}^T \mathbf{u}).
 ```
 
-Because $\lambda_1 \neq \lambda_2$, the only way this equation can hold is if $\mathbf{v}^T \mathbf{u} = 0$, which means $\mathbf{u}$ 
-and $\mathbf{v}$ are orthogonal. Thus, eigenvectors corresponding to distinct eigenvalues are orthogonal.
+Because $\lambda_1 \neq \lambda_2$, the only way this equation can hold is if $\mathbf{v}^T \mathbf{u} = 0$, which means $\mathbf{u}$ and $\mathbf{v}$ are orthogonal. Thus, eigenvectors corresponding to distinct eigenvalues are orthogonal.
 
 ### Spectral Theorem
 
 The **spectral theorem** strengthens these ideas. If $\mathbf{A}$ is a symmetric matrix, it satisfies the following:
-
 1. All eigenvalues of $\mathbf{A}$ are real.
 2. Its eigenvectors form an orthonormal basis of $\mathbb{R}^n$.
 3. $\mathbf{A}$ can be diagonalized as:
@@ -727,8 +637,7 @@ The **spectral theorem** strengthens these ideas. If $\mathbf{A}$ is a symmetric
 \mathbf{A} = \mathbf{Q} \mathbf{D} \mathbf{Q}^T,
 ```
 
-where $\mathbf{Q}$ is an **orthogonal matrix** (i.e., $\mathbf{Q}^T = \mathbf{Q}^{-1}$), and $\mathbf{D}$ is a diagonal matrix 
-of its eigenvalues.
+where $\mathbf{Q}$ is an **orthogonal matrix** (i.e., $\mathbf{Q}^T = \mathbf{Q}^{-1}$), and $\mathbf{D}$ is a diagonal matrix of its eigenvalues.
 
 Furthermore, the spectral theorem provides the **spectral decomposition**, which expresses $\mathbf{A}$ as a sum of rank-1 projections:
 
@@ -736,32 +645,25 @@ Furthermore, the spectral theorem provides the **spectral decomposition**, which
 \mathbf{A} = \sum_{i=1}^n \lambda_i \mathbf{v}_i \mathbf{v}_i^T,
 ```
 
-where $\lambda_i$ are the eigenvalues and $\mathbf{v}_i \mathbf{v}_i^T$ is the projection matrix onto the direction of 
-$\mathbf{v}_i$. This decomposition reveals how $\mathbf{A}$ stretches or compresses space along its eigenvector directions. 
-Symmetric matrices possess these convenient properties, making them particularly important in many applications.
+where $\lambda_i$ are the eigenvalues and $\mathbf{v}_i \mathbf{v}_i^T$ is the projection matrix onto the direction of $\mathbf{v}_i$. This decomposition reveals how $\mathbf{A}$ stretches or compresses space along its eigenvector directions. Symmetric matrices possess these convenient properties, making them particularly important in many applications.
 
-The rank of a real symmetric matrix $\mathbf{A}$ is the number of **non-zero eigenvalues** of $\mathbf{A}$. This follows from the fact 
-that the eigenvalues encode the action of $\mathbf{A}$ in its diagonalized form. For any symmetric matrix $\mathbf{A}$, the eigenvalue 
-decomposition is given by:
+The rank of a real symmetric matrix $\mathbf{A}$ is the number of **non-zero eigenvalues** of $\mathbf{A}$. This follows from the fact that the eigenvalues encode the action of $\mathbf{A}$ in its diagonalized form. For any symmetric matrix $\mathbf{A}$, the eigenvalue decomposition is given by:
 
 ```math
 \mathbf{A} = \sum_{i=1}^n \lambda_i \mathbf{v}_i \mathbf{v}_i^T,
 ```
 
-where $\lambda_i$ are the eigenvalues and $\mathbf{v}_i \mathbf{v}_i^T$ is a rank-1 projection matrix. The contributions of zero 
-eigenvalues vanish in this sum, meaning that the rank of $\mathbf{A}$ is determined by the number of non-zero eigenvalues $\lambda_i$.
+where $\lambda_i$ are the eigenvalues and $\mathbf{v}_i \mathbf{v}_i^T$ is a rank-1 projection matrix. The contributions of zero eigenvalues vanish in this sum, meaning that the rank of $\mathbf{A}$ is determined by the number of non-zero eigenvalues $\lambda_i$.
 
 ## Positive Definite Matrices
 
-Earlier, we learned that symmetric matrices have real eigenvalues and orthogonal eigenvectors. An important property of symmetric matrices is 
-that they can be expressed using their eigenvalues and eigenvectors through **spectral decomposition**:
+Earlier, we learned that symmetric matrices have real eigenvalues and orthogonal eigenvectors. An important property of symmetric matrices is that they can be expressed using their eigenvalues and eigenvectors through **spectral decomposition**:
 
 ```math
 \mathbf{A} = \sum_{i=1}^n \lambda_i \mathbf{v}_i \mathbf{v}_i^T,
 ```
 
 where:
-
 - $\mathbf{A} \in \mathbb{R}^{n \times n}$ is a symmetric matrix,
 - $\lambda_i$ are the eigenvalues of $\mathbf{A}$,
 - $\mathbf{v}_i$ are the corresponding orthonormal eigenvectors.
@@ -776,10 +678,7 @@ For any non-zero vector $\mathbf{x} \in \mathbb{R}^n$, the Rayleigh Quotient is 
 R(\mathbf{x}) = \frac{\mathbf{x}^T \mathbf{A} \mathbf{x}}{\mathbf{x}^T \mathbf{x}}.
 ```
 
-The Rayleigh Quotient provides a scalar value representing how the matrix $\mathbf{A}$ "acts" on the vector $\mathbf{x}$ relative to its length.
-The consequences of this are that the **maximum value** of $R(\mathbf{x})$ is the largest eigenvalue $\lambda_{\text{max}}$, achieved when 
-$\mathbf{x}$ is the corresponding eigenvector $\mathbf{v}_{\text{max}}$. Similarly the **minimum value** of $R(\mathbf{x})$ is the 
-smallest eigenvalue $\lambda_{\text{min}}$, achieved when $\mathbf{x} = \mathbf{v}_{\text{min}}$.
+The Rayleigh Quotient provides a scalar value representing how the matrix $\mathbf{A}$ "acts" on the vector $\mathbf{x}$ relative to its length. The consequences of this are that the **maximum value** of $R(\mathbf{x})$ is the largest eigenvalue $\lambda_{\text{max}}$, achieved when $\mathbf{x}$ is the corresponding eigenvector $\mathbf{v}_{\text{max}}$. Similarly the **minimum value** of $R(\mathbf{x})$ is the smallest eigenvalue $\lambda_{\text{min}}$, achieved when $\mathbf{x} = \mathbf{v}_{\text{min}}$.
 
 Therfore for any $\mathbf{x}$, the Rayleigh Quotient satisfies:
 
@@ -793,9 +692,7 @@ To show this let's first express $\mathbf{x}$ in terms of the orthonormal eigenv
 \mathbf{x} = \sum_{i=1}^n c_i \mathbf{v}_i,
 ```
 
-where $c_i = \mathbf{v}_i^T \mathbf{x}$.
-
-Substituting this and the spectral decomposition of $\mathbf{A}$ into the Rayleigh Quotient:
+where $c_i = \mathbf{v}_i^T \mathbf{x}$. Substituting this and the spectral decomposition of $\mathbf{A}$ into the Rayleigh Quotient:
 
 ```math
 \begin{align*}
@@ -808,9 +705,7 @@ This shows that $R(\mathbf{x})$ is a weighted average of the eigenvalues $\lambd
 
 ### Positive Definite and Positive Semi-Definite Matrices
 
-We can now use the Rayleigh Quotient to show that symmetric matrices can be classified as **positive definite** or **positive semi-definite**.
-We call a symmetric matrix $\mathbf{A}$:
-
+We can now use the Rayleigh Quotient to show that symmetric matrices can be classified as **positive definite** or **positive semi-definite**. We call a symmetric matrix $\mathbf{A}$:
 - **Positive Definite (PD)** if all its eigenvalues are **positive**: $\lambda_i > 0$.
 - **Positive Semi-Definite (PSD)** if all its eigenvalues are **non-negative**: $\lambda_i \geq 0$.
 
@@ -831,11 +726,7 @@ we can say for any non-zero vector $\mathbf{x}$:
 \mathbf{x}^T \mathbf{A} \mathbf{x} = \sum_{i=1}^n c_i^2 \lambda_i,
 ```
 
-where $c_i = \mathbf{v}_i^T \mathbf{x}$ as before. Therefore if all $\lambda_i > 0$, then $\mathbf{x}^T \mathbf{A} \mathbf{x} > 0$ for any $\mathbf{x} \ne \mathbf{0}$. 
-Conversely, if $\mathbf{x}^T \mathbf{A} \mathbf{x} > 0$ for all $\mathbf{x} \ne \mathbf{0}$, then all $\lambda_i > 0$.
-
-- If all $\lambda_i > 0$, then $\mathbf{x}^T \mathbf{A} \mathbf{x} > 0$ for any $\mathbf{x} \ne \mathbf{0}$.
-- Conversely, if $\mathbf{x}^T \mathbf{A} \mathbf{x} > 0$ for all $\mathbf{x} \ne \mathbf{0}$, then all $\lambda_i > 0$.
+where $c_i = \mathbf{v}_i^T \mathbf{x}$ as before. Therefore if all $\lambda_i > 0$, then $\mathbf{x}^T \mathbf{A} \mathbf{x} > 0$ for any $\mathbf{x} \ne \mathbf{0}$. Conversely, if $\mathbf{x}^T \mathbf{A} \mathbf{x} > 0$ for all $\mathbf{x} \ne \mathbf{0}$, then all $\lambda_i > 0$.
 
 <Callout type="example">
 We want to check if the following matrix is positive definite:
@@ -858,13 +749,10 @@ First we find the eigenvalues by solving $\det(\mathbf{A} - \lambda \mathbf{I}) 
 \lambda^2 - 4\lambda + 3 = 0 \implies \lambda = 1,\, 3.
 ```
 
-Solving for the eigenvalues we then get the values $\lambda_1 = 1$ and $\lambda_2 = 3$. Since both are positive, 
-$\mathbf{A}$ is positive definite.
+Solving for the eigenvalues we then get the values $\lambda_1 = 1$ and $\lambda_2 = 3$. Since both are positive, $\mathbf{A}$ is positive definite.
 </Callout>
 
-A logical finding from this is then that if $\mathbf{A}$ and $\mathbf{B}$ are symmetric and positive semi-definite, then 
-$\mathbf{A} + \mathbf{B}$ is also symmetric and positive semi-definite. This follows from symmetry 
-being preserved under addition: $\mathbf{A} + \mathbf{B}$ is symmetric. and then that for any vector $\mathbf{x}$:
+A logical finding from this is then that if $\mathbf{A}$ and $\mathbf{B}$ are symmetric and positive semi-definite, then $\mathbf{A} + \mathbf{B}$ is also symmetric and positive semi-definite. This follows from symmetry being preserved under addition: $\mathbf{A} + \mathbf{B}$ is symmetric. and then that for any vector $\mathbf{x}$:
 
 ```math
 \mathbf{x}^T (\mathbf{A} + \mathbf{B}) \mathbf{x} = \mathbf{x}^T \mathbf{A} \mathbf{x} + \mathbf{x}^T \mathbf{B} \mathbf{x} \geq 0 + 0 = 0.
@@ -874,14 +762,11 @@ Therefore, $\mathbf{A} + \mathbf{B}$ is positive semi-definite.
 
 ## Singular Value Decomposition
 
-We have seen that the eigendecomposition of a matrix $\mathbf{A}$ provides a useful way to understand its action on vectors. However, 
-only square matrices have eigendecompositions, and not all square matrices are diagonalizable.
+We have seen that the eigendecomposition of a matrix $\mathbf{A}$ provides a useful way to understand its action on vectors. However, only square matrices have eigendecompositions, and not all square matrices are diagonalizable.
 
-With the **Singular Value Decomposition (SVD)**, we can generalize the eigendecomposition to all matrices, providing deep insights into their 
-structure. The SVD is an essential tool in numerical analysis, statistics, and many engineering fields.
+With the **Singular Value Decomposition (SVD)**, we can generalize the eigendecomposition to all matrices, providing deep insights into their structure. The SVD is an essential tool in numerical analysis, statistics, and many engineering fields.
 
-Before we delve into the SVD, let's first understand the relationship between the matrices $\mathbf{A}^T \mathbf{A}$ and 
-$\mathbf{A} \mathbf{A}^T$. So for any matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$, we will consider the matrices:
+Before we delve into the SVD, let's first understand the relationship between the matrices $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$. So for any matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$, we will consider the matrices:
 - $\mathbf{A}^T \mathbf{A} \in \mathbb{R}^{n \times n}$.
 - $\mathbf{A} \mathbf{A}^T \in \mathbb{R}^{m \times m}$.
 
@@ -890,8 +775,7 @@ We already know a few things about these matrices:
 - Both $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ have the same rank as $\mathbf{A}$. 
 This is because all we are doing is taking linear combinations of the columns of $\mathbf{A}$.
 
-They also have the property of having the same non-zero eigenvalues. So the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$ are the 
-same as those of $\mathbf{A} \mathbf{A}^T$.
+They also have the property of having the same non-zero eigenvalues. So the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$ are the same as those of $\mathbf{A} \mathbf{A}^T$.
 
 This needs to be shown but for now we will just take it as a fact.
 
@@ -938,20 +822,15 @@ where $\lambda_i = \sigma_i^2$ and the left Singular Vectors $\mathbf{U}$ from t
 \mathbf{A} (\mathbf{A}^T \mathbf{A} \mathbf{v}_i) = \mathbf{A} (\lambda_i \mathbf{v}_i) \implies (\mathbf{A} \mathbf{A}^T) (\mathbf{A} \mathbf{v}_i) = \lambda_i (\mathbf{A} \mathbf{v}_i).
 ```
 
-Thus, $\mathbf{u}_i = \mathbf{A} \mathbf{v}_i / \sigma_i$ is an eigenvector of $\mathbf{A} \mathbf{A}^T$ 
-corresponding to $\lambda_i$. The singular values $\sigma_i$ are the square roots of the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$. 
-And because of our earlier statement, we know that the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$ are the same as those of 
-$\mathbf{A} \mathbf{A}^T$. 
+Thus, $\mathbf{u}_i = \mathbf{A} \mathbf{v}_i / \sigma_i$ is an eigenvector of $\mathbf{A} \mathbf{A}^T$ corresponding to $\lambda_i$. The singular values $\sigma_i$ are the square roots of the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$. And because of our earlier statement, we know that the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$ are the same as those of $\mathbf{A} \mathbf{A}^T$. 
 
-For practical computations, especially when $\mathbf{A}$ has rank $r < \min(m, n)$, we can express the SVD using only the non-zero 
-singular values and their corresponding singular vectors:
+For practical computations, especially when $\mathbf{A}$ has rank $r < \min(m, n)$, we can express the SVD using only the non-zero singular values and their corresponding singular vectors:
 
 ```math
 \mathbf{A} = \sum_{i=1}^r \sigma_i \mathbf{u}_i \mathbf{v}_i^T.
 ```
 
-This representation highlights how $\mathbf{A}$ can be decomposed into a sum of rank-1 matrices. Which is then also 
-the so called singular value theorem that every real matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ can be decomposed as:
+This representation highlights how $\mathbf{A}$ can be decomposed into a sum of rank-1 matrices. Which is then also the so called singular value theorem that every real matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ can be decomposed as:
 
 ```math
 \mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T.
@@ -961,7 +840,6 @@ This implies that any linear transformation represented by $\mathbf{A}$ can be v
 1. Rotating or reflecting vectors using $\mathbf{V}^T$.
 2. Scaling along principal axes using $\mathbf{\Sigma}$.
 3. Rotating or reflecting the result using $\mathbf{U}$.
-
 
 <Callout type="example">
 Let's look at an example of computing the SVD of a matrix. We are given the matrix:
@@ -1007,8 +885,7 @@ Let's look at an example of computing the SVD of a matrix. We are given the matr
 
 SVD has numerous applications in data analysis, machine learning, and signal processing. 
 
-**Low-Rank Approximation:** By keeping the largest $k$ singular values and setting the rest to zero, we obtain the best rank-$k$ 
-approximation of $\mathbf{A}$ in terms of the Frobenius norm.
+**Low-Rank Approximation:** By keeping the largest $k$ singular values and setting the rest to zero, we obtain the best rank-$k$ approximation of $\mathbf{A}$ in terms of the Frobenius norm.
 
 ```math
 \mathbf{A} \approx \sum_{i=1}^k \sigma_i \mathbf{u}_i \mathbf{v}_i^T.
