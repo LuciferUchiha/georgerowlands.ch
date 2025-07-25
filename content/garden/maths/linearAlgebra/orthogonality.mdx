@@ -339,11 +339,13 @@ the inverse of an orthogonal matrix is just the transpose of the matrix?
 permutation matrix is orthogonal
 </Callout>
 
-An **orthogonal matrix** is a matrix whose columns $\mathbf{q}_1, \mathbf{q}_2, \ldots, \mathbf{q}_n$ form an orthonormal set of vectors or basis. A set of vectors is **orthonormal** if the following two properties hold:
+A matrix $\mathbf{Q} \in \mathbb{R}^{m \times n}$ is called an **orthogonal matrix** if its columns $\mathbf{q}_1, \mathbf{q}_2, \ldots, \mathbf{q}_n$ form an orthonormal set of vectors or basis. A set of vectors is **orthonormal** if the following two properties hold:
 1. Each vector has unit length, meaning $||\mathbf{q}_i|| = 1$. 
-2. They are all orthogonal to each other, meaning $\mathbf{q}_i^T \mathbf{q}_j = 0$ for $i \neq j$ the dot products where $i = j$ are of course 1 as this is then the same as the length of the vector squared. This is also why they form a basis, as we have seen that if the vectors are orthogonal to each other they are linearly independent.
+2. They are all orthogonal to each other, meaning for $i \neq j$ the dot products are zero so $\mathbf{q}_i^T \mathbf{q}_j = 0$. If $i = j$ then we are calculating the length of the vector squared, so $\mathbf{q}_i^T \mathbf{q}_i = ||\mathbf{q}_i||^2 = 1$. 
 
-An orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{m \times n}$ has orthonormal columns then it has some very nice properties. The first one is that the transpose of the matrix times the matrix is the identity matrix:
+Because all the vectors are orthogonal to each other they are also linearly independent. Because of this the dimension of the subspace spanned by the columns of the orthogonal matrix $\mathbf{Q}$ is equal to the number of columns $n$ of the matrix. So an orthogonal matrix is always full column rank, meaning that the columns of the matrix span an $n$-dimensional subspace of $\mathbb{R}^m$.
+
+Orthogonal matrices are particularly useful in linear algebra and numerical methods because they have some very nice properties. The first one is that the transpose of the orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{m \times n}$ times the matrix is the identity matrix:
 
 ```math
 \mathbf{Q}^T \mathbf{Q} = \mathbf{I}_n
@@ -375,19 +377,53 @@ This is very easily visualized if we take the first standard basis vectors from 
 \end{bmatrix}
 ```
 
-Orthogonal matrices also have the nice property that if they are square so $m = n$ then the following also holds:
+If we calculate $\mathbf{Q}\mathbf{Q}^T$ for this matrix we also get the identity matrix for the same reason. However, the dimension of the identity matrix is $m \times m$ where $m$ is the number of rows of the matrix $\mathbf{Q}$ rather than $n$ the number of columns as we have seen above. So we have:
+
+```math
+\mathbf{Q} \mathbf{Q}^T = \mathbf{I}_m.
+```
+
+as seen here:
+
+```math
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 
+\end{bmatrix} \begin{bmatrix}
+1 & 0 \\
+0 & 1 \\
+0 & 0
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+```
+
+This means that if the orthogonal matrix $\mathbf{Q}$ is square, i.e. $m = n$, then we have:
 
 ```math
 \mathbf{Q}^T\mathbf{Q} = \mathbf{I} = \mathbf{Q}\mathbf{Q}^T
 ```
 
-Which then means that $\mathbf{Q}$ is invertible, and its inverse is given by:
+This is why the usual definition of an orthogonal matrix is that it is a square matrix $\mathbf{Q} \in \mathbb{R}^{n \times n}$ such that the above criteria holds but it can also be generalized to non-square matrices as we have seen above. 
+
+Because an orthogonal matrices columns are linearly independent, if the matrix is square, then it is also invertible as we have $n$ independent columns in $\mathbb{R}^n$. So the orthogonal matrix $\mathbf{Q}$ is full rank and its inverse is given by the transpose of the matrix:
 
 ```math
 \mathbf{Q}^{-1} = \mathbf{Q}^T.
 ```
 
-Orthogonal matrices also have the nice property of preserving the norm of a vector. So if we have an orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{n \times n}$ and let $\mathbf{x} \in \mathbb{R}^n$ be any vector. So if we consider the transformed vector $\mathbf{y} = \mathbf{Q} \mathbf{x}$. Then the norm of $\mathbf{y}$ is:
+this follows from the fact that $\mathbf{Q}^T \mathbf{Q} = \mathbf{I}$ and $\mathbf{Q} \mathbf{Q}^T = \mathbf{I}$ as we have seen above. This is one of the reasons why orthogonal matrices are so useful in numerical methods, as they are easy to invert and have stable numerical properties.
+
+Orthogonal matrices also have the nice property of preserving the norm of a vector. So if we have an orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{n \times n}$ and let $\mathbf{x} \in \mathbb{R}^n$ be any vector then we have:
+
+```math
+\|\mathbf{Q} \mathbf{x}\| = \|\mathbf{x}\|.
+```
+
+<Callout type="proof">
+If we consider the transformed vector $\mathbf{y} = \mathbf{Q} \mathbf{x}$. Then the norm of $\mathbf{y}$ is:
 
 ```math
 \|\mathbf{y}\| = \sqrt{\mathbf{y}^T \mathbf{y}} = \sqrt{(\mathbf{Q} \mathbf{x})^T (\mathbf{Q} \mathbf{x})}.
@@ -399,16 +435,20 @@ Using the associative property of matrix multiplication and the fact that $\math
 \|\mathbf{y}\| = \sqrt{\mathbf{x}^T (\mathbf{Q}^T \mathbf{Q}) \mathbf{x}} = \sqrt{\mathbf{x}^T \mathbf{I} \mathbf{x}} = \sqrt{\mathbf{x}^T \mathbf{x}} = \|\mathbf{x}\|.
 ```
 
-Thus, the norm of a vector is preserved under multiplication by an orthogonal matrix. An orthogonal matrix also preserves the inner product of two vectors. The inner product of two vectors $\mathbf{x}, \mathbf{z} \in \mathbb{R}^n$ is defined as:
+Thus, the norm of a vector is preserved under multiplication by an orthogonal matrix. 
+</Callout>
+
+An orthogonal matrix also preserves the dot product of two vectors. So for two vectors $\mathbf{x}, \mathbf{z} \in \mathbb{R}^n$ and an orthogonal matrix $\mathbf{Q} \in \mathbb{R}^{n \times n}$, we have:
 
 ```math
-\langle \mathbf{x}, \mathbf{z} \rangle = \mathbf{x}^T \mathbf{z}.
+\langle \mathbf{x}, \mathbf{z} \rangle = \mathbf{x}^T \mathbf{z} = (\mathbf{Q} \mathbf{x})^T (\mathbf{Q} \mathbf{z}) 
 ```
 
-Now consider the transformed vectors $\mathbf{y} = \mathbf{Q} \mathbf{x}$ and $\mathbf{w} = \mathbf{Q} \mathbf{z}$. The inner product of $\mathbf{y}$ and $\mathbf{w}$ is:
+<Callout type="proof">
+Consider the transformed vectors $\mathbf{y} = \mathbf{Q} \mathbf{x}$ and $\mathbf{w} = \mathbf{Q} \mathbf{z}$. The dot product of $\mathbf{y}$ and $\mathbf{w}$ is:
 
 ```math
-\langle \mathbf{y}, \mathbf{w} \rangle = \mathbf{y}^T \mathbf{w} = (\mathbf{Q} \mathbf{x})^T (\mathbf{Q} \mathbf{z}).
+\langle \mathbf{y}, \mathbf{w} \rangle = \mathbf{y}^T \mathbf{w} = (\mathbf{Q} \mathbf{x})^T (\mathbf{Q} \mathbf{z}) = \mathbf{x}^T \mathbf{Q}^T \mathbf{Q} \mathbf{z}.
 ```
 
 Using the associative property of matrix multiplication and the fact that $\mathbf{Q}^T \mathbf{Q} = \mathbf{I}$, we have:
@@ -417,4 +457,7 @@ Using the associative property of matrix multiplication and the fact that $\math
 \langle \mathbf{y}, \mathbf{w} \rangle = \mathbf{x}^T (\mathbf{Q}^T \mathbf{Q}) \mathbf{z} = \mathbf{x}^T \mathbf{I} \mathbf{z} = \mathbf{x}^T \mathbf{z} = \langle \mathbf{x}, \mathbf{z} \rangle.
 ```
 
-Thus, the inner product of two vectors is also preserved under multiplication by an orthogonal matrix. These two properties give us an important insight into linear transformations that are defined by orthogonal matrices. The geometric interpretation is that Orthogonal matrices represent **rigid transformations** of space, such as rotations and reflections. These transformations do not distort the lengths of vectors or the angles between them, which is why both the norm and the inner product remain unchanged.
+Thus, the dot product of two vectors is also preserved under multiplication by an orthogonal matrix. 
+</Callout>
+
+Because orthogonal matrices preserve the norm and the dot product, they give us an important insight into linear transformations that are defined by orthogonal matrices. The geometric interpretation is that Orthogonal matrices represent **rigid transformations** of space, such as rotations and reflections. These transformations do not distort the lengths of vectors or the angles between them, which is why both the norm and the dot product remain unchanged.
