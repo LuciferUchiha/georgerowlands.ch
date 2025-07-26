@@ -1,0 +1,107 @@
+# Complex Linear Algebra
+
+First let's revisit the concept of complex numbers, which are fundamental in many areas of mathematics, including linear algebra. 
+
+The imaginary unit is defined as:
+
+```math
+i = \sqrt{-1}
+```
+ 
+with the fundamental property $i^2 = -1$. Using this, any complex number $z$ can be written in Cartesian form as:
+
+```math
+z = a + bi
+```
+ 
+where $a$ is the real part, denoted $\operatorname{Re}(z)$, and $b$ is the imaginary part, denoted $\operatorname{Im}(z)$. The operations of addition and subtraction between two complex numbers are done component-wise. For example, if $z_1 = a_1 + b_1i$ and $z_2 = a_2 + b_2i$, then the addition is:
+
+```math
+z_1 + z_2 = (a_1 + a_2) + (b_1 + b_2)i
+```
+ 
+subtraction follows the same principle. Multiplication involves distributing terms while applying the rule $i^2 = -1$: 
+
+```math
+z_1 \cdot z_2 = (a_1 + b_1i) \cdot (a_2 + b_2i) = (a_1a_2 - b_1b_2) + (a_1b_2 + a_2b_1)i
+```
+
+To better understand the geometric significance of a complex number, we consider its modulus or magnitude. The modulus of $z = a + bi$ is given by:
+
+```math
+|z| = \sqrt{a^2 + b^2}
+```
+
+which represents the distance of $z$ from the origin in the complex plane. Closely related to the modulus is the concept of the complex conjugate. For $z = a + bi$, the conjugate, denoted $\overline{z}$, is:
+ 
+```math
+\overline{z} = a - bi
+```
+  
+The modulus can also be computed from the conjugate using the relation $|z|^2 = z \cdot \overline{z}$, which is handy in simplifying complex expressions.
+
+## Complex Vectors and Matrices
+
+Having revisited these fundamentals, the next step is to extend our understanding of complex numbers to vectors and matrices. When we deal with complex-valued matrices, the usual transpose of a matrix is replaced by what is called the **conjugate transpose, also known as the Hermitian transpose**. Denoted by $\mathbf{A}^H$, the Hermitian transpose is defined as follows: for a matrix $\mathbf{A}$, the element in the $i$-th row and $j$-th column of $\mathbf{A}^H$ is the complex conjugate of the element in the $j$-th row and $i$-th column of $\mathbf{A}$:
+
+```math
+A^H_{ij} = \overline{A}_{ji}
+```
+
+In other words, the matrix is first transposed (rows and columns are interchanged), and then all the elements are conjugated.
+
+<Callout type="example">
+For example, consider the matrix:
+
+```math
+\mathbf{A} =
+\begin{bmatrix}
+1 + i & 2 \\
+3 - i & 4 + 2i
+\end{bmatrix}.
+```
+
+Its Hermitian transpose is:
+
+```math
+\mathbf{A}^H =
+\begin{bmatrix}
+1 - i & 3 + i \\
+2 & 4 - 2i
+\end{bmatrix}.
+```  
+</Callout>
+
+In the case of complex vectors, we can also define the norm, which generalizes the usual Euclidean norm. For a vector $\mathbf{v}$, the norm is given by:
+
+```math
+||\mathbf{v}|| = \sqrt{\mathbf{v}^H \mathbf{v}} = \sqrt{\sum_{i=1}^n \overline{v}_i v_i} = \sqrt{\sum_{i=1}^n |v_i|^2}
+```
+
+which is the square root of the sum of the squared magnitudes of its components.
+
+<Callout type="example">
+To illustrate, let us compute the norm of the complex vector:
+
+```math
+\mathbf{v} = \begin{bmatrix} 1 + i \\ 2 - 2i \end{bmatrix}
+```
+
+First, the Hermitian transpose of $\mathbf{v}$ is:
+
+```math\mathbf{v}^H = \begin{bmatrix} 1 - i & 2 + 2i \end{bmatrix}```
+
+The dot product is then: 
+
+```math
+\mathbf{v}^H \mathbf{v} = (1 - i)(1 + i) + (2 + 2i)(2 - 2i) 
+```
+
+Expanding this, we have:
+
+```math
+(1 - i)(1 + i) = 1 + 1 = 2, \quad (2 + 2i)(2 - 2i) = 4 + 4 = 8.
+```
+
+Adding these results, $\mathbf{v}^H \mathbf{v} = 2 + 8 = 10$. Taking the square root, we find that $||\mathbf{v}|| = \sqrt{10}$.
+</Callout>

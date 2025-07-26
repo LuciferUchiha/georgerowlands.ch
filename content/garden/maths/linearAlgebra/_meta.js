@@ -15,6 +15,7 @@ export default {
   qrDecomposition: "",
   moorePenrose: "",
   determinants: "",
+  complexVectors: "",
   eigendecomposition: "",
   eigenvaluesEigenvectors: "",
   svd: "",
