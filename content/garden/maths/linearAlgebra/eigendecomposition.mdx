@@ -993,7 +993,7 @@ For example, consider the matrix:
 The eigenvalue $\lambda = 1$ has algebraic multiplicity 2. However, the null space of $\mathbf{A} - \mathbf{I} = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}$ is spanned by $\begin{bmatrix} 1 \\ 0 \end{bmatrix}$, so the geometric multiplicity is 1. Since these multiplicities differ, $\mathbf{A}$ is not diagonalizable, as it lacks a complete set of eigenvectors.
 </Callout>
 
-The name **diagonalization** comes from the fact that we are looking for some sort of basis in which the matrix $\mathbf{A}$ can be represented as a diagonal matrix $\mathbf{D}$. This is because in this basis, the action of the matrix becomes very simple: it just makes a vector stretch or compress along the directions of the new basis vectors (the eigenvectors). Geometrically this can be though of as transforming the space so that the eigenvectors align with the axes, and the eigenvalues represent how much the matrix stretches or compresses along those axes and then we finally transform back to the original space using the inverse of the transformation matrix $\mathbf{V}$. Remember that the eigenvectors are the vectors that when multiplied by the matrix $\mathbf{A}$, result in a vector that is a scalar multiple of the original vector. So if we represent a vector $\mathbf{x}$ in the eigenvector basis, then applying the matrix $\mathbf{A}$ to $\mathbf{x}$ results in a vector that is simply scaled by the eigenvalues corresponding to the eigenvectors in that basis. To then transform back to the original space, we use the inverse of the matrix $\mathbf{V}$.
+The name **diagonalization** comes from the fact that we are looking for some sort of basis in which the matrix $\mathbf{A}$ can be represented as a diagonal matrix $\mathbf{D}$. This is because in this basis, the action of the matrix becomes very simple: it just makes a vector stretch or compress along the directions of the new basis vectors (the eigenvectors). Geometrically this can be though of as transforming the space so that the eigenvectors align with the axes, and the eigenvalues represent how much the matrix stretches or compresses along those axes and then we finally transform back to the original space. Remember that the eigenvectors are the vectors that when multiplied by the matrix $\mathbf{A}$, result in a vector that is a scalar multiple of the original vector. So if we represent a vector $\mathbf{x}$ in the eigenvector basis, then applying the matrix $\mathbf{A}$ to $\mathbf{x}$ results in a vector that is simply scaled by the eigenvalues corresponding to the eigenvectors in that basis. To then transform back to the original space, we use the inverse of the matrix $\mathbf{V}$.
 
 <Image
 src="/maths/eigendecomposition.png"
@@ -1532,84 +1532,80 @@ where $\mathbf{C} = \mathbf{R}$ is a lower triangular matrix. This shows that we
 
 ## Singular Value Decomposition
 
-We have seen that the eigendecomposition of a matrix $\mathbf{A}$ provides a useful way to understand its action on vectors. However, only square matrices have eigendecompositions, and not all square matrices are diagonalizable.
+We have seen that the eigendecomposition of a matrix $\mathbf{A}$ provides a useful way to understand its action on vectors and that we can easily calculate the inverse from it amongst other things. However, only diagonalizable matrices can be decomposed which means that we can only apply the eigendecomposition to square matrices. But what if we want to decompose a non-square matrix? Or what if the matrix is not diagonalizable? It needs to be square so that we can calculate the eigenvalues and eigenvectors using the characteristic polynomial which uses the determinant which is only defined for square matrices. Symmetric matrices always fullfill these conditions and therefore we can always apply the eigendecomposition to them.
 
-With the **Singular Value Decomposition (SVD)**, we can generalize the eigendecomposition to all matrices, providing deep insights into their structure. The SVD is an essential tool in numerical analysis, statistics, and many engineering fields.
+With the **Singular Value Decomposition (SVD)**, we can generalize the eigendecomposition to all matrices, providing deep insights into their structure. The SVD is an essential tool in numerical analysis, statistics, and many engineering fields. The idea is that we transform any matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ into a symmetric matrix that we can then apply the eigendecomposition to whilst preserving the essential properties of the original matrix such as its rank, eigenvalues, and eigenvectors.
 
-Before we delve into the SVD, let's first understand the relationship between the matrices $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$. So for any matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$, we will consider the matrices:
-- $\mathbf{A}^T \mathbf{A} \in \mathbb{R}^{n \times n}$.
-- $\mathbf{A} \mathbf{A}^T \in \mathbb{R}^{m \times m}$.
-
-We already know a few things about these matrices:
-- Both $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ are symmetric.
-- Both $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ have the same rank as $\mathbf{A}$. 
-This is because all we are doing is taking linear combinations of the columns of $\mathbf{A}$.
-
-They also have the property of having the same non-zero eigenvalues. So the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$ are the same as those of $\mathbf{A} \mathbf{A}^T$.
-
-This needs to be shown but for now we will just take it as a fact.
-
-We are now ready to define the Singular Value Decomposition. The **Singular Value Decomposition** of $\mathbf{A} \in \mathbb{R}^{m \times n}$ is a factorization of the form:
+We define the **Singular Value Decomposition** of any matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ as a factorization of the form:
 
 ```math
 \mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T,
 ```
 
 where:
-- $\mathbf{U} \in \mathbb{R}^{m \times m}$ is an orthogonal matrix ($\mathbf{U}^T \mathbf{U} = \mathbf{I}$).
-- $\mathbf{V} \in \mathbb{R}^{n \times n}$ is an orthogonal matrix ($\mathbf{V}^T \mathbf{V} = \mathbf{I}$).
-- $\mathbf{\Sigma} \in \mathbb{R}^{m \times n}$ is a diagonal matrix with non-negative real numbers on the diagonal. 
-where $r = \text{rank}(\mathbf{A})$, and $\sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_r > 0$ are the **singular values** of $\mathbf{A}$.
+- **Left Singular Vectors:** $\mathbf{U} \in \mathbb{R}^{m \times m}$ is an orthogonal matrix ($\mathbf{U}^T \mathbf{U} = \mathbf{I}$).
+- **Right Singular Vectors:**$\mathbf{V} \in \mathbb{R}^{n \times n}$ is an orthogonal matrix ($\mathbf{V}^T \mathbf{V} = \mathbf{I}$).
+- **Singular Values:**$\mathbf{\Sigma} \in \mathbb{R}^{m \times n}$ is a diagonal matrix with non-negative real numbers on the diagonal. 
 
-So if we visualize the matrix $\mathbf{\Sigma}$, it will look like this:
-
-  ```math
-  \mathbf{\Sigma} = \begin{bmatrix}
-  \sigma_1 & 0 & \dots & 0 \\
-  0 & \sigma_2 & \dots & 0 \\
-  \vdots & \vdots & \ddots & \vdots \\
-  0 & 0 & \dots & \sigma_r \\
-  & & & \\
-  & & \mathbf{0}_{(m - r) \times (n - r)} &
-  \end{bmatrix},
-  ```
-
-We can actually be more specific about the contents of the matrices:
-- **Left Singular Vectors:** The columns of $\mathbf{U}$ are the eigenvectors of $\mathbf{A} \mathbf{A}^T$.
-- **Right Singular Vectors:** The columns of $\mathbf{V}$ are the eigenvectors of $\mathbf{A}^T \mathbf{A}$.
-- **Singular Values:** The square roots of the non-zero eigenvalues of both $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$.
-
-So we get the right Singular Vectors $\mathbf{V}$ from the eigenvalue decomposition of $\mathbf{A}^T \mathbf{A}$:
+The question now remains how do we obtain these matrices $\mathbf{U}$, $\mathbf{\Sigma}$, and $\mathbf{V}$? Let's first focus on the singular values $\mathbf{\Sigma}$. For this let's assume that this decomposition exists. If we then apply it to the symmetric matrix $\mathbf{A}^T \mathbf{A}$, we we get the following, remembering that the matrices $\mathbf{U}$ and $\mathbf{V}$ are orthogonal matrices so $\mathbf{U}^T \mathbf{U} = \mathbf{I}$ and $\mathbf{V}^T \mathbf{V} = \mathbf{I}$:
 
 ```math
-\mathbf{A}^T \mathbf{A} \mathbf{v}_i = \lambda_i \mathbf{v}_i,
+\begin{align*}
+\mathbf{A}^T \mathbf{A} &= (\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T)^T (\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T) \\
+&= \mathbf{V} \mathbf{\Sigma}^T \mathbf{U}^T \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T \\
+&= \mathbf{V} \mathbf{\Sigma}^T \mathbf{\Sigma} \mathbf{V}^T \\
+&= \mathbf{V} \mathbf{\Sigma}^2 \mathbf{V}^T.
+\end{align*}
 ```
 
-where $\lambda_i = \sigma_i^2$ and the left Singular Vectors $\mathbf{U}$ from the eigenvalue decomposition of $\mathbf{A} \mathbf{A}^T$:
-
+the reason that $\mathbf{\Sigma}^T \mathbf{\Sigma}$ is the same as $\mathbf{\Sigma}^2$ is because $\mathbf{\Sigma}$ is a diagonal matrix, so the transpose is the same as the original matrix. Because $\mathbf{A}^T \mathbf{A}$ is symmetric, we can also apply the eigendecomposition to it, which gives us:
 
 ```math
-\mathbf{A} (\mathbf{A}^T \mathbf{A} \mathbf{v}_i) = \mathbf{A} (\lambda_i \mathbf{v}_i) \implies (\mathbf{A} \mathbf{A}^T) (\mathbf{A} \mathbf{v}_i) = \lambda_i (\mathbf{A} \mathbf{v}_i).
+\mathbf{A}^T \mathbf{A} = \mathbf{V} \mathbf{\Lambda} \mathbf{V}^T,
 ```
 
-Thus, $\mathbf{u}_i = \mathbf{A} \mathbf{v}_i / \sigma_i$ is an eigenvector of $\mathbf{A} \mathbf{A}^T$ corresponding to $\lambda_i$. The singular values $\sigma_i$ are the square roots of the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$. And because of our earlier statement, we know that the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$ are the same as those of $\mathbf{A} \mathbf{A}^T$. 
-
-For practical computations, especially when $\mathbf{A}$ has rank $r < \min(m, n)$, we can express the SVD using only the non-zero singular values and their corresponding singular vectors:
+where $\mathbf{\Lambda}$ is a diagonal matrix containing the eigenvalues of $\mathbf{A}^T \mathbf{A}$. If we now compare this to what we have above, we can quickly see that the right singular vectors $\mathbf{V}$ in the SVD of $\mathbf{A}$ are the eigenvectors of $\mathbf{A}^T \mathbf{A}$. We can also see that the singular values $\mathbf{\Sigma}$ are the square roots of the eigenvalues $\mathbf{\Lambda}$ of the matrix $\mathbf{A}^T \mathbf{A}$:
 
 ```math
-\mathbf{A} = \sum_{i=1}^r \sigma_i \mathbf{u}_i \mathbf{v}_i^T.
+\mathbf{\Sigma}^2 = \mathbf{\Lambda} \implies \mathbf{\Sigma} = \sqrt{\mathbf{\Lambda}}.
 ```
 
-This representation highlights how $\mathbf{A}$ can be decomposed into a sum of rank-1 matrices. Which is then also the so called singular value theorem that every real matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ can be decomposed as:
+If we do the same for the matrix $\mathbf{A} \mathbf{A}^T$, we get the following:
 
 ```math
-\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T.
+\begin{align*}
+\mathbf{A} \mathbf{A}^T &= (\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T)(\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T)^T \\
+&= \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T \mathbf{V} \mathbf{\Sigma}^T \mathbf{U}^T \\
+&= \mathbf{U} \mathbf{\Sigma} \mathbf{\Sigma}^T \mathbf{U}^T \\
+&= \mathbf{U} \mathbf{\Sigma}^2 \mathbf{U}^T.
+\end{align*}
 ```
+
+which is very similar to what we had before. We can also apply the eigendecomposition to this matrix $\mathbf{A} \mathbf{A}^T$:
+
+```math
+\mathbf{A} \mathbf{A}^T = \mathbf{U} \mathbf{\Lambda} \mathbf{U}^T,
+```
+
+here we can now see that the left singular vectors $\mathbf{U}$ in the SVD of $\mathbf{A}$ are the eigenvectors of $\mathbf{A} \mathbf{A}^T$. The singular values $\mathbf{\Sigma}$ are again the square roots of the eigenvalues $\mathbf{\Lambda}$ of the matrix $\mathbf{A} \mathbf{A}^T$. This shows us that the eigenvalues of the matrices $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ are the same, and they are equal to the squares of the singular values $\sigma_i$ of the matrix $\mathbf{A}$.
+
+So putting this all together we can see that the singular value decomposition of a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ can be expressed as:
+
+```math
+\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T,
+```
+
+where:
+- ***Left Singular Vectors:** $\mathbf{U} \in \mathbb{R}^{m \times m}$ is an orthogonal matrix whose columns are the eigenvectors of $\mathbf{A} \mathbf{A}^T$.
+- **Right Singular Vectors:** $\mathbf{V} \in \mathbb{R}^{n \times n}$ is an orthogonal matrix whose columns are the eigenvectors of $\mathbf{A}^T \mathbf{A}$.
+- **Singular Values:** $\mathbf{\Sigma} \in \mathbb{R}^{m \times n}$ is a diagonal matrix whose diagonal entries are the singular values $\sigma_i$ of the matrix $\mathbf{A}$ which are the square roots of the eigenvalues of $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$. Remember that symmetric matrices always have real eigenvalues and that the gram matrices $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ are positive semi-definite, so their eigenvalues are non-negative. So their square roots are well defined and non-negative.
+
+So for any matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$, we can always find a decomposition of the form $\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T$, where $\mathbf{U}$ and $\mathbf{V}$ are orthogonal matrices and $\mathbf{\Sigma}$ is a diagonal matrix with non-negative entries. This is called the **Singular value theorem** and it guarantees the existence of the SVD for any matrix, regardless of its shape or rank.
 
 This implies that any linear transformation represented by $\mathbf{A}$ can be viewed as:
 1. Rotating or reflecting vectors using $\mathbf{V}^T$.
 2. Scaling along principal axes using $\mathbf{\Sigma}$.
-3. Rotating or reflecting the result using $\mathbf{U}$.
+3. Rotating or reflecting the result back to the original basis using $\mathbf{U}$.
 
 <Callout type="example">
 Let's look at an example of computing the SVD of a matrix. We are given the matrix:
@@ -1618,37 +1614,164 @@ Let's look at an example of computing the SVD of a matrix. We are given the matr
 \mathbf{A} = \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix}.
 ```
 
-**Step 1:** Compute $\mathbf{A}^T \mathbf{A}$:
+Let's start with the first step of computing the right singular vectors $\mathbf{V}$. For this we first compute $\mathbf{A}^T \mathbf{A}$:
 
 ```math
 \mathbf{A}^T \mathbf{A} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 2 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} 1 & 0 \\ 0 & 4 \end{bmatrix}.
 ```
 
-**Step 2:** Find the eigenvalues ($\sigma_i^2$) and eigenvectors ($\mathbf{v}_i$) of $\mathbf{A}^T \mathbf{A}$.
+Then we need to find the eigenvalues ($\sigma_i^2$) and eigenvectors ($\mathbf{v}_i$) of $\mathbf{A}^T \mathbf{A}$:
 
-- Eigenvalues: $\lambda_1 = 1$, $\lambda_2 = 4$
-- Singular values: $\sigma_1 = 1$, $\sigma_2 = 2$
-- Eigenvectors:
-    - For $\lambda_1 = 1$: $\mathbf{v}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$
-    - For $\lambda_2 = 4$: $\mathbf{v}_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$
+```math
+\begin{align*}
+\det(\mathbf{A}^T \mathbf{A} - \lambda \mathbf{I}) &= \det\left(\begin{bmatrix} 1 - \lambda & 0 \\ 0 & 4 - \lambda \end{bmatrix}\right) \\
+&= (1 - \lambda)(4 - \lambda) = 0.
+\end{align*}
+```
 
-**Step 3:** Compute $\mathbf{u}_i = \mathbf{A} \mathbf{v}_i / \sigma_i$.
+So the eigenvalues are $\lambda_1 = 1$ and $\lambda_2 = 4$. The corresponding eigenvectors are:
 
-- $\mathbf{u}_1 = \mathbf{A} \mathbf{v}_1 / 1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$
-- $\mathbf{u}_2 = \mathbf{A} \mathbf{v}_2 / 2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}$
+```math
+\begin{align*}
+\mathbf{A}^T \mathbf{A} \mathbf{v}_1 &= 1 \cdot \mathbf{v}_1 \\
+\begin{bmatrix} 1 & 0 \\ 0 & 4 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} &= \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} \\
+\begin{bmatrix} v_1 \\ 4v_2 \end{bmatrix} &= \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}.
+\end{align*}
+```
 
-**Step 4:** Form $\mathbf{U}$, $\mathbf{\Sigma}$, and $\mathbf{V}$.
+So for the first component we can take any non-zero value and for the second component for the equation to hold we need $4v_2 = v_2$, which means that $v_2$ must be zero. So we have the eigenvector $\mathbf{v}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$. If we do the same for the second eigenvalue $\lambda_2 = 4$ we get:
 
-- $\mathbf{U} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$
-- $\mathbf{\Sigma} = \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix}$
-- $\mathbf{V}^T = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$
+```math
+\begin{align*}
+\mathbf{A}^T \mathbf{A} \mathbf{v}_2 &= 4 \cdot \mathbf{v}_2 \\
+\begin{bmatrix} 1 & 0 \\ 0 & 4 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} &= 4 \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} \\
+\begin{bmatrix} v_1 \\ 4v_2 \end{bmatrix} &= \begin{bmatrix} 4v_1 \\ 4v_2 \end{bmatrix}.
+\end{align*}
+```
 
-**Conclusion:** The SVD of $\mathbf{A}$ is:
+For the equation of the first component to hold we need $v_1 = 4v_1$, which means that $v_1$ must be zero. For the second component we have $4v_2 = 4v_2$, which holds for any value of $v_2$. So we can take the eigenvector $\mathbf{v}_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$.
+
+Now we can form the matrix $\mathbf{V}$ from the eigenvectors:
+
+```math
+\mathbf{V} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}.
+```
+
+Next we compute the left singular vectors $\mathbf{U}$. For this we compute $\mathbf{A} \mathbf{A}^T$:
+
+```math
+\mathbf{A} \mathbf{A}^T = \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 & 0 \\ 0 & 2 & 0 \end{bmatrix} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 0 \end{bmatrix}.
+```
+
+We then calcualte the eigenvalues of $\mathbf{A} \mathbf{A}^T$:
+
+```math
+\begin{align*}
+\det(\mathbf{A} \mathbf{A}^T - \lambda \mathbf{I}) &= \det\left(\begin{bmatrix} 1 - \lambda & 0 & 0 \\ 0 & 4 - \lambda & 0 \\ 0 & 0 & -\lambda \end{bmatrix}\right) \\
+&= (1 - \lambda)(4 - \lambda)(-\lambda) = 0.
+\end{align*}
+```
+
+So we can see that the eigenvalues are $\lambda_1 = 1$, $\lambda_2 = 4$, and $\lambda_3 = 0$. As expected, the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ are the same. Here we also nicely see that the rank of the matrix $\mathbf{A}\mathbf{A}^T$ is 2, which is the number of non-zero eigenvalues and because the matrix $\mathbf{A}$, $\mathbf{A}^T \mathbf{A}$, and $\mathbf{A} \mathbf{A}^T$ all have the same rank we can also say that the rank of $\mathbf{A}$ is 2.
+
+We can now find the eigenvectors for each eigenvalue. For the first eigenvalue $\lambda_1 = 1$ we have:
+
+```math
+\begin{align*}
+\mathbf{A} \mathbf{A}^T \mathbf{u}_1 &= 1 \cdot \mathbf{u}_1 \\
+\begin{bmatrix} 1 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix} &= \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix} \\
+\begin{bmatrix} u_1 \\ 4u_2 \\ 0 \end{bmatrix} &= \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix}.
+\end{align*}
+```
+
+So for the first component we can take any non-zero value and for the second component we need $4u_2 = u_2$, which means that $u_2$ must be zero and for the third component we have $0 = u_3$, which means that $u_3$ must also be zero. So we can take the eigenvector $\mathbf{u}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$. For the second eigenvalue $\lambda_2 = 4$ we have:
+
+```math
+\begin{align*}
+\mathbf{A} \mathbf{A}^T \mathbf{u}_2 &= 4 \cdot \mathbf{u}_2 \\
+\begin{bmatrix} 1 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix} &= 4 \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix} \\
+\begin{bmatrix} u_1 \\ 4u_2 \\ 0 \end{bmatrix} &= \begin{bmatrix} 4u_1 \\ 4u_2 \\ 4u_3 \end{bmatrix}.
+\end{align*}
+```
+
+So for the first component we have $u_1 = 4u_1$, which means that $u_1$ must be zero. For the second component we have $4u_2 = 4u_2$, which holds for any value of $u_2$. For the third component we have $0 = 4u_3$, which means that $u_3$ must also be zero. So we can take the eigenvector $\mathbf{u}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}$. For the third eigenvalue $\lambda_3 = 0$ we have:
+
+```math
+\begin{align*}
+\mathbf{A} \mathbf{A}^T \mathbf{u}_3 &= 0 \cdot \mathbf{u}_3 \\
+\begin{bmatrix} 1 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix} &= 0 \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix} \\
+\begin{bmatrix} u_1 \\ 4u_2 \\ 0 \end{bmatrix} &= \begin{bmatrix} 0 \\ 0 \\ 0 \end{bmatrix}.
+\end{align*}
+```
+
+So for the first component we have $u_1 = 0$, for the second component we have $4u_2 = 0$, which means that $u_2$ must also be zero, and for the third component we have $0 = 0$, which holds for any value of $u_3$. So we can take the eigenvector $\mathbf{u}_3 = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}$. So we can form the matrix $\mathbf{U}$ from the eigenvectors:
+
+```math
+\mathbf{U} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}.
+```
+
+The last step is to form the diagonal matrix $\mathbf{\Sigma}$ from the singular values. The matrix $\mathbf{\Sigma}$ is a $m \times n$ so $3 \times 2$ matrix formed by taking the square roots of the eigenvalues we found earlier:
+
+```math
+\mathbf{\Sigma} = \begin{bmatrix}\sqrt{1} & 0 \\ 0 & \sqrt{4} \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix}.
+```
+
+Notice that we didn't include the third singular value in the matrix $\mathbf{\Sigma}$ because it didn't have space in the matrix. This is because the matrix $\mathbf{A}$ is not square, so we can only include the singular values that fit into the matrix $\mathbf{\Sigma}$. This has to do with the rank of the matrix $\mathbf{A}$, which is 2 in this case, so we can only include 2 singular values in the matrix $\mathbf{\Sigma}$. The only reason why we have the third row is to match the dimensions of the matrices $\mathbf{U}$ and $\mathbf{V}$. Because we can only include a maximum of 2 singular values in the matrix $\mathbf{\Sigma}$, it is important that we include all the non-zero singular values in the matrix $\mathbf{\Sigma}$ as these are the relevant ones that tell us about the rank of the matrix $\mathbf{A}$. The third singular value is zero, which doesn't contribute to the rank of the matrix $\mathbf{A}$, so we can safely ignore it in the matrix $\mathbf{\Sigma}$.
+
+So the SVD of $\mathbf{A}$ is:
 
 ```math
 \mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}.
 ```
 
+We can check this factorization by multiplying the matrices together:
+
+```math
+\begin{align*}
+\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T &= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \\
+&= \begin{bmatrix} 1 & 0  \\ 0 & 2 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \\
+&= \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix}
+\end{align*}
+```
+
+It is very important to note that the singular values $\sigma_i$ always match up with their corresponding eigenvectors $\mathbf{u}_i$ and $\mathbf{v}_i$ in the SVD as otherwise the decomposition would not hold. To show this I will swap one of the eigenvectors with another one and show that the decomposition does not hold anymore. Let's swap the first eigenvector $\mathbf{u}_1$ with the second eigenvector $\mathbf{u}_2$:
+
+```math
+\begin{align*}
+\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T &= \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \\
+&= \begin{bmatrix} 0 & 2 \\ 1 & 0 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \\
+&= \begin{bmatrix} 0 & 2 \\ 1 & 0 \\ 0 & 0 \end{bmatrix}.
+\end{align*}
+```
+
+This does not equal the original matrix $\mathbf{A}$, so we can see that the singular values and their corresponding eigenvectors must match up in the SVD for the decomposition to hold. Hence it is crucial to maintain the correct order of singular values and their corresponding singular vectors in the SVD. By convention, the singular values are ordered from largest to smallest, and the corresponding singular vectors are arranged accordingly. By following this convention, we also always ensure that we are keeping the components of the matrix $\mathbf{A}$ that contribute to the rank of the matrix $\mathbf{A}$ rather than the components that do not contribute to the rank of the matrix $\mathbf{A}$, which are the zero singular values.
+</Callout>
+
+<Callout type="todo">
+Show using a square matrix that doesn't have full rank that we can write a compact SVD. compact Rank stuff
+
+- Both $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ have the same rank as $\mathbf{A}$. 
+This is because all we are doing is taking linear combinations of the columns of $\mathbf{A}$.
+
+Because the matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ then its maximum rank is $\min(m, n)$. So let's say that $m > n$, so the matrix is "tall" and has more rows than columns. Then the maximum rank of $\mathbf{A}$ is $n$, so the rank of $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ is also $n$. But we remember that the rank of a symmetric matrix is equal to the number of non-zero eigenvalues. So when we calcualte the matrix $\mathbf{A}^T \mathbf{A}$, we get a symmetric matrix of size $n \times n$ with rank $n$. This means that it'll have $n$ unique non-zero eigenvalues. If the rank is $r < n$, then the matrix $\mathbf{A}^T \mathbf{A}$ will have $n - r$ zero eigenvalues. The same applies to the matrix $\mathbf{A} \mathbf{A}^T$ which will have $m - r$ zero eigenvalues.
+
+if rank r then we have:
+
+```math
+\mathbf{A} = \mathbf{U}_r\mathbf{\Sigma}_r \mathbf{V}_r^T,
+```
+
+where $\mathbf{U}_r \in \mathbb{R}^{m \times r}$, $\mathbf{\Sigma}_r \in \mathbb{R}^{r \times r}$, and $\mathbf{V}_r \in \mathbb{R}^{n \times r}$.
+
+For practical computations, especially when $\mathbf{A}$ has rank $r < \min(m, n)$, we can express the SVD using only the non-zero singular values and their corresponding singular vectors:
+
+```math
+\mathbf{A} = \sum_{i=1}^r \sigma_i \mathbf{u}_i \mathbf{v}_i^T.
+```
+
+So if we visualize the matrix $\mathbf{\Sigma}$, it will look like this:
+
+This representation highlights how $\mathbf{A}$ can be decomposed into a sum of rank-1 matrices. 
 </Callout>
 
 ### Application of SVD
