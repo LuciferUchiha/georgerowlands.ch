@@ -1633,28 +1633,28 @@ So the eigenvalues are $\lambda_1 = 1$ and $\lambda_2 = 4$. The corresponding ei
 
 ```math
 \begin{align*}
-\mathbf{A}^T \mathbf{A} \mathbf{v}_1 &= 1 \cdot \mathbf{v}_1 \\
-\begin{bmatrix} 1 & 0 \\ 0 & 4 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} &= \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} \\
-\begin{bmatrix} v_1 \\ 4v_2 \end{bmatrix} &= \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}.
-\end{align*}
-```
-
-So for the first component we can take any non-zero value and for the second component for the equation to hold we need $4v_2 = v_2$, which means that $v_2$ must be zero. So we have the eigenvector $\mathbf{v}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$. If we do the same for the second eigenvalue $\lambda_2 = 4$ we get:
-
-```math
-\begin{align*}
 \mathbf{A}^T \mathbf{A} \mathbf{v}_2 &= 4 \cdot \mathbf{v}_2 \\
 \begin{bmatrix} 1 & 0 \\ 0 & 4 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} &= 4 \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} \\
 \begin{bmatrix} v_1 \\ 4v_2 \end{bmatrix} &= \begin{bmatrix} 4v_1 \\ 4v_2 \end{bmatrix}.
 \end{align*}
 ```
 
-For the equation of the first component to hold we need $v_1 = 4v_1$, which means that $v_1$ must be zero. For the second component we have $4v_2 = 4v_2$, which holds for any value of $v_2$. So we can take the eigenvector $\mathbf{v}_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$.
+For the equation of the first component to hold we need $v_1 = 4v_1$, which means that $v_1$ must be zero. For the second component we have $4v_2 = 4v_2$, which holds for any value of $v_2$. So we can take the eigenvector $\mathbf{v}_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$. If we do the same for the second eigenvalue $\lambda_2 = 1$ we get:
+
+```math
+\begin{align*}
+\mathbf{A}^T \mathbf{A} \mathbf{v}_1 &= 1 \cdot \mathbf{v}_1 \\
+\begin{bmatrix} 1 & 0 \\ 0 & 4 \end{bmatrix} \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} &= \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} \\
+\begin{bmatrix} v_1 \\ 4v_2 \end{bmatrix} &= \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}.
+\end{align*}
+```
+
+So for the first component we can take any non-zero value and for the second component for the equation to hold we need $4v_2 = v_2$, which means that $v_2$ must be zero. So we have the eigenvector $\mathbf{v}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$.
 
 Now we can form the matrix $\mathbf{V}$ from the eigenvectors:
 
 ```math
-\mathbf{V} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}.
+\mathbf{V} = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}.
 ```
 
 Next we compute the left singular vectors $\mathbf{U}$. For this we compute $\mathbf{A} \mathbf{A}^T$:
@@ -1674,17 +1674,7 @@ We then calcualte the eigenvalues of $\mathbf{A} \mathbf{A}^T$:
 
 So we can see that the eigenvalues are $\lambda_1 = 1$, $\lambda_2 = 4$, and $\lambda_3 = 0$. As expected, the non-zero eigenvalues of $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ are the same. Here we also nicely see that the rank of the matrix $\mathbf{A}\mathbf{A}^T$ is 2, which is the number of non-zero eigenvalues and because the matrix $\mathbf{A}$, $\mathbf{A}^T \mathbf{A}$, and $\mathbf{A} \mathbf{A}^T$ all have the same rank we can also say that the rank of $\mathbf{A}$ is 2.
 
-We can now find the eigenvectors for each eigenvalue. For the first eigenvalue $\lambda_1 = 1$ we have:
-
-```math
-\begin{align*}
-\mathbf{A} \mathbf{A}^T \mathbf{u}_1 &= 1 \cdot \mathbf{u}_1 \\
-\begin{bmatrix} 1 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix} &= \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix} \\
-\begin{bmatrix} u_1 \\ 4u_2 \\ 0 \end{bmatrix} &= \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix}.
-\end{align*}
-```
-
-So for the first component we can take any non-zero value and for the second component we need $4u_2 = u_2$, which means that $u_2$ must be zero and for the third component we have $0 = u_3$, which means that $u_3$ must also be zero. So we can take the eigenvector $\mathbf{u}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$. For the second eigenvalue $\lambda_2 = 4$ we have:
+We can now find the eigenvectors for each eigenvalue. For the first eigenvalue $\lambda_2 = 4$ we have:
 
 ```math
 \begin{align*}
@@ -1694,7 +1684,17 @@ So for the first component we can take any non-zero value and for the second com
 \end{align*}
 ```
 
-So for the first component we have $u_1 = 4u_1$, which means that $u_1$ must be zero. For the second component we have $4u_2 = 4u_2$, which holds for any value of $u_2$. For the third component we have $0 = 4u_3$, which means that $u_3$ must also be zero. So we can take the eigenvector $\mathbf{u}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}$. For the third eigenvalue $\lambda_3 = 0$ we have:
+So for the first component we have $u_1 = 4u_1$, which means that $u_1$ must be zero. For the second component we have $4u_2 = 4u_2$, which holds for any value of $u_2$. For the third component we have $0 = 4u_3$, which means that $u_3$ must also be zero. So we can take the eigenvector $\mathbf{u}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}$. For the second eigenvalue $\lambda_2 = 4$ we have: 
+
+```math
+\begin{align*}
+\mathbf{A} \mathbf{A}^T \mathbf{u}_1 &= 1 \cdot \mathbf{u}_1 \\
+\begin{bmatrix} 1 & 0 & 0 \\ 0 & 4 & 0 \\ 0 & 0 & 0 \end{bmatrix} \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix} &= \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix} \\
+\begin{bmatrix} u_1 \\ 4u_2 \\ 0 \end{bmatrix} &= \begin{bmatrix} u_1 \\ u_2 \\ u_3 \end{bmatrix}.
+\end{align*}
+```
+
+So for the first component we can take any non-zero value and for the second component we need $4u_2 = u_2$, which means that $u_2$ must be zero and for the third component we have $0 = u_3$, which means that $u_3$ must also be zero. So we can take the eigenvector $\mathbf{u}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$. For the third eigenvalue $\lambda_3 = 0$ we have:
 
 ```math
 \begin{align*}
@@ -1707,34 +1707,42 @@ So for the first component we have $u_1 = 4u_1$, which means that $u_1$ must be 
 So for the first component we have $u_1 = 0$, for the second component we have $4u_2 = 0$, which means that $u_2$ must also be zero, and for the third component we have $0 = 0$, which holds for any value of $u_3$. So we can take the eigenvector $\mathbf{u}_3 = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}$. So we can form the matrix $\mathbf{U}$ from the eigenvectors:
 
 ```math
-\mathbf{U} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}.
+\mathbf{U} = \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix}.
 ```
 
 The last step is to form the diagonal matrix $\mathbf{\Sigma}$ from the singular values. The matrix $\mathbf{\Sigma}$ is a $m \times n$ so $3 \times 2$ matrix formed by taking the square roots of the eigenvalues we found earlier:
 
 ```math
-\mathbf{\Sigma} = \begin{bmatrix}\sqrt{1} & 0 \\ 0 & \sqrt{4} \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix}.
+\mathbf{\Sigma} = \begin{bmatrix}\sqrt{4} & 0 \\ 0 & \sqrt{1} \\ 0 & 0 \end{bmatrix} = \begin{bmatrix} 2 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix}.
 ```
 
-Notice that we didn't include the third singular value in the matrix $\mathbf{\Sigma}$ because it didn't have space in the matrix. This is because the matrix $\mathbf{A}$ is not square, so we can only include the singular values that fit into the matrix $\mathbf{\Sigma}$. This has to do with the rank of the matrix $\mathbf{A}$, which is 2 in this case, so we can only include 2 singular values in the matrix $\mathbf{\Sigma}$. The only reason why we have the third row is to match the dimensions of the matrices $\mathbf{U}$ and $\mathbf{V}$. Because we can only include a maximum of 2 singular values in the matrix $\mathbf{\Sigma}$, it is important that we include all the non-zero singular values in the matrix $\mathbf{\Sigma}$ as these are the relevant ones that tell us about the rank of the matrix $\mathbf{A}$. The third singular value is zero, which doesn't contribute to the rank of the matrix $\mathbf{A}$, so we can safely ignore it in the matrix $\mathbf{\Sigma}$.
-
-So the SVD of $\mathbf{A}$ is:
+Notice that we didn't include the third singular value in the matrix $\mathbf{\Sigma}$ because it didn't have space in the matrix. This is because the matrix $\mathbf{A}$ is not square, so we can only include the singular values that fit into the matrix $\mathbf{\Sigma}$. This has to do with the rank of the matrix $\mathbf{A}$, which is 2 in this case, so we can only include 2 singular values in the matrix $\mathbf{\Sigma}$. The only reason why we have the third row is to match the dimensions of the matrices $\mathbf{U}$ and $\mathbf{V}$. Because we can only include a maximum of 2 singular values in the matrix $\mathbf{\Sigma}$, it is important that we **include all the non-zero singular values in the matrix $\mathbf{\Sigma}$ as these are the relevant ones** that tell us about the rank of the matrix $\mathbf{A}$. The third singular value is zero, which doesn't contribute to the rank of the matrix $\mathbf{A}$, so we can safely ignore it in the matrix $\mathbf{\Sigma}$. This is why by convention we order the singular values from largest to smallest, so that we can always include all the non-zero singular values in the matrix $\mathbf{\Sigma}$. So we construct the matrix $\mathbf{\Sigma}$ as follows:
 
 ```math
-\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}.
+\mathbf{\Sigma} = \begin{bmatrix}
+\sigma_1 & 0 & \dots & 0 \\
+0 & \sigma_2 & \dots & 0 \\
+0 & 0 & \dots & \sigma_n
+\end{bmatrix}
+```
+
+where $\sigma_i$ are the singular values of the matrix $\mathbf{A}$ and we have $\sigma_1 \geq \sigma_2 \geq \dots \geq \sigma_n \geq 0$. So the SVD of $\mathbf{A}$ is:
+
+```math
+\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T = \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 2 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}.
 ```
 
 We can check this factorization by multiplying the matrices together:
 
 ```math
 \begin{align*}
-\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T &= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \\
-&= \begin{bmatrix} 1 & 0  \\ 0 & 2 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} \\
-&= \begin{bmatrix} 1 & 0 \\ 0 & 2 \\ 0 & 0 \end{bmatrix}
+\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T &= \begin{bmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 2 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \\
+&= \begin{bmatrix} 0 & 1 \\ 2 & 0 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} \\
+&= \begin{bmatrix} 0 & 1 \\ 2 & 0 \\ 0 & 0 \end{bmatrix}
 \end{align*}
 ```
 
-It is very important to note that the singular values $\sigma_i$ always match up with their corresponding eigenvectors $\mathbf{u}_i$ and $\mathbf{v}_i$ in the SVD as otherwise the decomposition would not hold. To show this I will swap one of the eigenvectors with another one and show that the decomposition does not hold anymore. Let's swap the first eigenvector $\mathbf{u}_1$ with the second eigenvector $\mathbf{u}_2$:
+It is very important to note that the singular values $\sigma_i$ always match up with their corresponding eigenvectors $\mathbf{u}_i$ and $\mathbf{v}_i$ in the SVD as otherwise the decomposition would not hold. To show this I will swap one of the eigenvalues with another one and show that the decomposition does not hold anymore. Let's swap the first eigenvector $\mathbf{u}_1$ with the second eigenvector $\mathbf{u}_2$:
 
 ```math
 \begin{align*}
@@ -1747,53 +1755,214 @@ It is very important to note that the singular values $\sigma_i$ always match up
 This does not equal the original matrix $\mathbf{A}$, so we can see that the singular values and their corresponding eigenvectors must match up in the SVD for the decomposition to hold. Hence it is crucial to maintain the correct order of singular values and their corresponding singular vectors in the SVD. By convention, the singular values are ordered from largest to smallest, and the corresponding singular vectors are arranged accordingly. By following this convention, we also always ensure that we are keeping the components of the matrix $\mathbf{A}$ that contribute to the rank of the matrix $\mathbf{A}$ rather than the components that do not contribute to the rank of the matrix $\mathbf{A}$, which are the zero singular values.
 </Callout>
 
-<Callout type="todo">
-Show using a square matrix that doesn't have full rank that we can write a compact SVD. compact Rank stuff
+### Compact Form  
 
-- Both $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ have the same rank as $\mathbf{A}$. 
-This is because all we are doing is taking linear combinations of the columns of $\mathbf{A}$.
-
-Because the matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ then its maximum rank is $\min(m, n)$. So let's say that $m > n$, so the matrix is "tall" and has more rows than columns. Then the maximum rank of $\mathbf{A}$ is $n$, so the rank of $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ is also $n$. But we remember that the rank of a symmetric matrix is equal to the number of non-zero eigenvalues. So when we calcualte the matrix $\mathbf{A}^T \mathbf{A}$, we get a symmetric matrix of size $n \times n$ with rank $n$. This means that it'll have $n$ unique non-zero eigenvalues. If the rank is $r < n$, then the matrix $\mathbf{A}^T \mathbf{A}$ will have $n - r$ zero eigenvalues. The same applies to the matrix $\mathbf{A} \mathbf{A}^T$ which will have $m - r$ zero eigenvalues.
-
-if rank r then we have:
+We have seen that the SVD of a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ can be expressed as:
 
 ```math
-\mathbf{A} = \mathbf{U}_r\mathbf{\Sigma}_r \mathbf{V}_r^T,
+\mathbf{A} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T,
 ```
 
-where $\mathbf{U}_r \in \mathbb{R}^{m \times r}$, $\mathbf{\Sigma}_r \in \mathbb{R}^{r \times r}$, and $\mathbf{V}_r \in \mathbb{R}^{n \times r}$.
-
-For practical computations, especially when $\mathbf{A}$ has rank $r < \min(m, n)$, we can express the SVD using only the non-zero singular values and their corresponding singular vectors:
+where $\mathbf{U} \in \mathbb{R}^{m \times m}$ is orthogonal, $\mathbf{\Sigma} \in \mathbb{R}^{m \times n}$ contains the singular values, and $\mathbf{V} \in \mathbb{R}^{n \times n}$ is orthogonal. We saw that for the eigendecomposition of a square matrix, we can express the matrix as a sum of rank-1 matrices formed by the outer product of the eigenvectors scaled by their corresponding eigenvalues:
 
 ```math
-\mathbf{A} = \sum_{i=1}^r \sigma_i \mathbf{u}_i \mathbf{v}_i^T.
+\mathbf{A} = \sum_{i=1}^n \mathbf{v}_i (\lambda_i \mathbf{v}_i^T) = \sum_{i=1}^n \lambda_i \mathbf{v}_i \mathbf{v}_i^T.
 ```
 
-So if we visualize the matrix $\mathbf{\Sigma}$, it will look like this:
+The same can be done for the SVD, where we can express the matrix $\mathbf{A}$ as a sum of rank-1 matrices formed by the outer product of the left and right singular vectors scaled by their corresponding singular values:
 
-This representation highlights how $\mathbf{A}$ can be decomposed into a sum of rank-1 matrices. 
+```math
+\mathbf{A} = \sum_{i=1}^r \mathbf{u}_i \sigma_i \mathbf{v}_i^T = \sum_{i=1}^r \sigma_i \mathbf{u}_i \mathbf{v}_i^T.
+```
+
+where $r$ is the rank of the matrix $\mathbf{A}$, and $\sigma_i$ are the singular values, $\mathbf{u}_i$ are the left singular vectors, and $\mathbf{v}_i$ are the right singular vectors. The reason we sum only up to $r$ is because the rank of the matrix $\mathbf{A}$ is $r$ and matrix $\mathbf{A}$ has $r$ non-zero singular values. So for all $i > r$, the singular values $\sigma_i= 0$ and the corresponding singular vectors $\mathbf{u}_i$ and $\mathbf{v}_i$ do not contribute to the rank of the matrix $\mathbf{A}$. For non-square matrices, we can't even express the SVD in the same way as we did for the eigendecomposition because the matrices $\mathbf{U}$ and $\mathbf{V}$ are not equally sized, so on one side we will have more vectors. From this it follows that we can write the SVD in a more compact form by only considering the non-zero singular values and their corresponding singular vectors:
+
+```math
+\mathbf{A} = \mathbf{U}_r \mathbf{\Sigma}_r \mathbf{V}_r^T,
+```
+
+where $\mathbf{U}_r \in \mathbb{R}^{m \times r}$, $\mathbf{\Sigma}_r \in \mathbb{R}^{r \times r}$, and $\mathbf{V}_r \in \mathbb{R}^{n \times r}$ are the matrices containing only the non-zero singular values and their corresponding singular vectors. This is often referred to as the **compact SVD**. This is especially useful when $r < \min(m, n)$, as many of the singular values will be zero, and we can save space by not storing them. 
+
+<Callout type="example">
+For our example above, we can see that we have one zero singular value, so it doesn't contribute anything meaning the rank of the matrix $\mathbf{A}$ is 2. So we can also express the matrix $\mathbf{A}$ as follows:
+
+```math
+\mathbf{A} = 2 \mathbf{u}_1 \mathbf{v}_1^T + 1 \cdot \mathbf{u}_2 \mathbf{v}_2^T = 2 \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix} \begin{bmatrix} 1 & 0 \end{bmatrix} + 1 \cdot \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix} \begin{bmatrix} 0 & 1 \end{bmatrix} = \begin{bmatrix} 0 & 2 \\ 1 & 0 \\ 0 & 0 \end{bmatrix}.
+```
+
+Which can also be summarized in the compact matrix form:
+
+```math
+\mathbf{A} = \begin{bmatrix} 0 & 1 \\ 1 & 0 \\ 0 & 0 \end{bmatrix} \begin{bmatrix} 2 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}^T.
+```
 </Callout>
 
-### Application of SVD
+Because the matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ then its maximum rank is $\min(m, n)$. So let's say that $m > n$, so the matrix is "tall" and has more rows than columns. Then the maximum rank of $\mathbf{A}$ is $n$, so the rank of $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ is also $n$. But we remember that the rank of a symmetric matrix is equal to the number of non-zero eigenvalues. So when we calcualte the matrix $\mathbf{A}^T \mathbf{A}$, we get a symmetric matrix of size $n \times n$ with rank $n$. This means that it'll have $n$ unique non-zero eigenvalues. If the rank is $r < n$, then the matrix $\mathbf{A}^T \mathbf{A}$ will have $n - r$ zero eigenvalues. The same applies to the matrix $\mathbf{A} \mathbf{A}^T$ which will have $m - r$ zero eigenvalues. If the matrix $\mathbf{A}$ is "wide" and has more columns than rows, then we have an anologs situation where the maximum rank is $m$ and the matrix $\mathbf{A}^T \mathbf{A}$ will have $m - r$ zero eigenvalues and the matrix $\mathbf{A} \mathbf{A}^T$ will have $n - r$ zero eigenvalues.
+</Callout>
 
-SVD has numerous applications in data analysis, machine learning, and signal processing. 
+### Low-Rank Approximation
 
-**Low-Rank Approximation:** By keeping the largest $k$ singular values and setting the rest to zero, we obtain the best rank-$k$ approximation of $\mathbf{A}$ in terms of the Frobenius norm.
-
-```math
-\mathbf{A} \approx \sum_{i=1}^k \sigma_i \mathbf{u}_i \mathbf{v}_i^T.
-```
-
-**Calculating the Inverse (When $\mathbf{A}$ is Invertible):**
+We have seen that using the SVD we can express a matrix $\mathbf{A}$ as a sum of rank-1 matrices formed by the outer product of the left and right singular vectors scaled by their corresponding singular values:
 
 ```math
-\mathbf{A}^{-1} = \mathbf{V} \mathbf{\Sigma}^{-1} \mathbf{U}^T.
+\mathbf{A} = \sum_{i=1}^r \mathbf{u}_i \sigma_i \mathbf{v}_i^T = \sum_{i=1}^r \sigma_i \mathbf{u}_i \mathbf{v}_i^T.
 ```
 
-**Calculating the Pseudo-Inverse (When $\mathbf{A}$ is Not Invertible):**
+This gives rise to the concept of **low-rank approximation**. Remember that we ordered the singular values $\sigma_i$ from largest to smallest, so the first few singular values capture the most significant features of the matrix $\mathbf{A}$. Therefore if we leave out the smaller singular values and their corresponding singular vectors so in a way truncate the SVD, we can create a low-rank approximation of the matrix $\mathbf{A}$ that captures the essential features of the matrix while discarding noise and less significant details. So we can create $k$-rank approximations of the matrix $\mathbf{A}$ by truncating the SVD to the first $k$ singular values and their corresponding singular vectors:
+
+```math
+\mathbf{A}_k = \sum_{i=1}^k \sigma_i \mathbf{u}_i \mathbf{v}_i^T.
+```
+
+<Callout type="todo">
+A remarkable theorem (the Eckart-Young-Mirsky theorem) states that $\mathbf{A}_k$ is the best possible rank-$k$ approximation to $\mathbf{A}$ in both the Frobenius norm and the operator norm. This means that among all matrices of rank $k$, $\mathbf{A}_k$ minimizes the distance to $\mathbf{A}$ in these norms:
+
+```math
+\|\mathbf{A} - \mathbf{A}_k \|_F = \min_{\text{rank}(\mathbf{B}) \leq k} \| \mathbf{A} - \mathbf{B} \|_F,
+```
+
+Because we can write the Frobenius norm as the sum of the squares of the singular values, we can also write this as:
+
+```math
+\|\mathbf{A} - \mathbf{A}_k \|_F^2 = \sum_{i=k+1}^r \sigma_i^2.
+```
+
+So the error in the low-rank approximation is determined by the sum of the squares of the discarded singular values. 
+</Callout>
+
+If you think of a grayscale image as a matrix, then you can think of the singular values as the "brightness" of the image, where the largest singular values correspond to the most significant features of the image. By keeping only the largest $k$ singular values and their corresponding singular vectors, we can create a low-rank approximation of the image that captures its essential features while discarding noise and less significant details, so in other words, we can compress the image because we are storing less data but still capturing the essential features of the image. 
+
+To find a good value for $k$, we often use the so-called "elbow-method" where one plots the singular values and looks for the "elbow"—the point where the values drop off rapidly. The rank $k$ at the elbow is then a good choice for a low-rank approximation.
+
+<Image
+  src="/maths/svdImageCompression.png"
+  caption="Image compression using SVD to reduce the rank of the matrix representing the image."
+  width={600}
+/>
+
+### Calculating the Inverse and Pseudo-Inverse
+
+If we have a square matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$ that is invertible, we can derive the inverse of the matrix using the SVD. Remembering that the matrices $\mathbf{U}$ and $\mathbf{V}$ are orthogonal, so their inverses are their transposes, we can write the inverse of the matrix $\mathbf{A}$ as follows:
+
+```math
+\begin{align*}
+\mathbf{A} &= \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T \\
+\mathbf{A}^{-1} &= (\mathbf{U} \mathbf{\Sigma} \mathbf{V}^T)^{-1} \\
+\mathbf{A}^{-1} &= \mathbf{V} \mathbf{\Sigma}^{-1} \mathbf{U}^T,
+\end{align*}
+```
+
+We can also check this by multiplying the inverse with the original matrix:
+
+```math
+\begin{align*}
+\mathbf{A}^{-1} \mathbf{A} &= \mathbf{V} \mathbf{\Sigma}^{-1} \mathbf{U}^T \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T \\
+&= \mathbf{V} \mathbf{\Sigma}^{-1} \mathbf{\Sigma} \mathbf{V}^T \\
+&= \mathbf{V} \mathbf{I} \mathbf{V}^T \\
+&= \mathbf{V} \mathbf{V}^T \\
+&= \mathbf{I}.
+\end{align*}
+```
+
+If the matrix $\mathbf{A}$ is not invertible, we can still compute the Moore-Penrose pseudo-inverse of the matrix using the SVD. The pseudo-inverse is defined as:
 
 ```math
 \mathbf{A}^\dagger = \mathbf{V} \mathbf{\Sigma}^\dagger \mathbf{U}^T,
 ```
 
-where $\mathbf{\Sigma}^\dagger$ is formed by taking reciprocals of the non-zero singular values because $\mathbf{\Sigma}$ is diagonal.
+where $\mathbf{\Sigma}^\dagger$ is obtained by taking the reciprocal of the non-zero singular values in $\mathbf{\Sigma}$ and transposing the resulting matrix. If a singular value is zero, we simply leave it as zero in $\mathbf{\Sigma}^\dagger$. This means that if $\sigma_i$ is a singular value of $\mathbf{A}$, then the corresponding entry in $\mathbf{\Sigma}^\dagger$ is:
+
+```math
+\mathbf{\Sigma}^\dagger_{ii} =
+\begin{cases}
+\frac{1}{\sigma_i} & \text{if } \sigma_i \neq 0 \\
+0 & \text{if } \sigma_i = 0
+\end{cases}
+```
+
+The pseudo-inverse is constructed to satisfy the four Moore-Penrose conditions, generalizing left and right inverses even when $\mathbf{A}$ is not full-rank.
+
+We notice that these are essential identical formulas, the only difference being that if the matrix $\mathbf{A}$ is invertable then we can take the reciprocal of all the singular values, and if not then we take the reciprocal of the singular values that are non-zero and leave the zero singular values as zero. This again shows that the pseudo-inverse is a generalization of the inverse for non-invertible matrices and that if the matrix $\mathbf{A}$ is invertible, then the pseudo-inverse is equal to the inverse.
+
+<Callout type="todo">
+A better derivation of the pseudo-inverse from the SVD but that is because I still don't greatly understand the pseudo-inverse.
+</Callout>
+
+### Solving Linear Systems
+
+If we have the SVD of a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$, we can use it to solve linear systems. As always, we split the problem into two cases: when the matrix $\mathbf{A}$ is square and invertible, and when it is not where we want to find the best possible solution in the least squares sense (where we minimize the squared error and also minimize the norm of the solution vector $\mathbf{x}$ if it is not unique). So suppose we want to solve the following linear system:
+
+```math
+\mathbf{A} \mathbf{x} = \mathbf{b}.
+```
+
+Then if the matrix $\mathbf{A}$ is square and invertible, we can find the unique solution by multiplying both sides with the inverse of the matrix $\mathbf{A}$:
+
+```math
+\begin{align*}
+\mathbf{A} \mathbf{x} &= \mathbf{b} \\
+\mathbf{A}^{-1} \mathbf{A} \mathbf{x} &= \mathbf{A}^{-1} \mathbf{b} \\
+\mathbf{x} &= \mathbf{A}^{-1} \mathbf{b} \\
+\mathbf{x} &= \mathbf{V} \mathbf{\Sigma}^{-1} \mathbf{U}^T \mathbf{b}.
+\end{align*}
+```
+
+If the system has no exact solution, so when the system is overdetermined (i.e. we have more equations than unknowns), we can use the pseudo-inverse to find the best possible solution in the least squares sense. So we get the solution $\hat{\mathbf{x}}$ that minimizes the squared error $\|\mathbf{A} \mathbf{x} - \mathbf{b}\|^2$ as follows:
+
+```math
+\hat{\mathbf{x}} = \mathbf{A}^\dagger \mathbf{b} = \mathbf{V} \mathbf{\Sigma}^\dagger \mathbf{U}^T \mathbf{b}.
+```
+
+If the system is underdetermined (i.e. we have more unknowns than equations), we can still use the pseudo-inverse to find a solution, but we will not get a unique solution. In this case, the pseudo-inverse gives us the solution with the smallest norm, so that we minimize the norm of the solution vector $\|\mathbf{x}\|$. So we can again write the solution as:
+
+```math
+\hat{\mathbf{x}} = \mathbf{A}^\dagger \mathbf{b} = \mathbf{V} \mathbf{\Sigma}^\dagger \mathbf{U}^T \mathbf{b}.
+```
+
+### Fundamental Matrix Subspaces
+
+We already know that the SVD of a matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ reveals the rank of the matrix. We also know that the rank of a matrix can then tell us about the dimensions of the fundamental subspaces of the matrix $\mathbf{A}$:
+
+- **Column Space**: The space spanned by the columns of $\mathbf{A}$ is the column space $C(\mathbf{A}) \subseteq \mathbb{R}^m$, which has dimension equal to the rank of $\mathbf{A}$, so $\text{dim}(C(\mathbf{A})) = r$.
+- **Row Space**: The space spanned by the rows of $\mathbf{A}$ is the row space $R(\mathbf{A})=C(\mathbf{A}^T) \subseteq \mathbb{R}^n$, which also has dimension equal to the rank of $\mathbf{A}$, so $\text{dim}(R(\mathbf{A})) = r$.
+- **Null Space**: The space of solutions to the homogeneous equation $\mathbf{A} \mathbf{x} = 0$ is the null space $N(\mathbf{A}) \subseteq \mathbb{R}^n$, which has dimension equal to $n - r$, so $\text{dim}(N(\mathbf{A})) = n - r$.
+- **Left Null Space**: The space of solutions to the homogeneous equation $\mathbf{A}^T \mathbf{y} = 0$ is the left null space $N(\mathbf{A}^T) \subseteq \mathbb{R}^m$, which has dimension equal to $m - r$, so $\text{dim}(N(\mathbf{A}^T)) = m - r$.
+
+Recall that for any $\mathbf{A}$ and $\mathbf{x}$ we have:
+
+```math
+\mathbf{A}\mathbf{x} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T \mathbf{x}.
+```
+
+It then follows from the definition of the SVD that if we set $\mathbf{x} = \mathbf{v}_i$, where $\mathbf{v}_i$ is a right singular vector, then we have:
+
+```math
+\mathbf{A} \mathbf{v}_i = \sigma_i \mathbf{u}_i,
+```
+
+where $\sigma_i$ is the corresponding singular value. If the singular value $\sigma_i$ is non-zero, so $i \leq r$, then the vector the result is a non-zero vector meaning that $\mathbf{v}_i$ is in the row space of $\mathbf{A}$, so $\mathbf{v}_i \in R(\mathbf{A})$ and that the vector $\mathbf{u}_i$ spans the column space of $\mathbf{A}$, so $\mathbf{u}_i \in C(\mathbf{A})$. If the singular value $\sigma_i$ is zero, so $i > r$, then we have:
+
+```math
+\mathbf{A} \mathbf{v}_i = 0,
+```
+
+So the vector $\mathbf{v}_i$ is in the null space of $\mathbf{A}$, so $\mathbf{v}_i \in N(\mathbf{A})$. Likewise for the left singular vectors $\mathbf{u}_i$, if $\sigma_i$ is non-zero, then we have:
+
+```math
+\mathbf{A}^T \mathbf{u}_i = \sigma_i \mathbf{v}_i,
+```
+
+So $\mathbf{u}_i$ is in the left null space of $\mathbf{A}$, so $\mathbf{u}_i \in N(\mathbf{A}^T)$. So in summary we don't just get the dimensions of the fundamental subspaces from the SVD, but we also get the basis vectors for these subspaces:
+
+- **Column Space**: The left singular vectors $\mathbf{u}_i$ for $i = 1, \ldots, r$ form a basis for the column space $C(\mathbf{A})$.
+- **Row Space**: The right singular vectors $\mathbf{v}_i$ for $i = 1, \ldots, r$ form a basis for the row space $R(\mathbf{A})$. Be aware that the right singular vectors are transposed, so they are actually the rows of the matrix $\mathbf{V}^T$.
+- **Null Space**: The remaining right singular vectors $\mathbf{v}_i$ for $i = r + 1, \ldots, n$ form a basis for the null space $N(\mathbf{A})$.
+- **Left Null Space**: The remaining left singular vectors $\mathbf{u}_i$ for $i = r + 1, \ldots, m$ form a basis for the left null space $N(\mathbf{A}^T)$.
+
+<Image
+  src="/maths/svdSubspaces.png"
+  caption="The blue left singular vectors correspond to a basis for the column space of $\mathbf{A}$, the red left singular vectors correspond to a basis for the left null space of $\mathbf{A}$, the blue right singular vectors correspond to a basis for the row space of $\mathbf{A}$, and the red right singular vectors correspond to a basis for the null space of $\mathbf{A}$."
+  width={600}
+/>
+
+We also remember that the matrices $\mathbf{U}$ and $\mathbf{V}$ are orthogonal, so the basis we are actually getting are better then are normal ones as they are orthonormal. This means that the basis vectors are orthogonal to each other and have unit length, which makes them very nice to work with. The orthogonality of the basis vectors also nicely shows how the column space and left null space are orthogonal to each other, and the row space and null space are orthogonal to each other.
