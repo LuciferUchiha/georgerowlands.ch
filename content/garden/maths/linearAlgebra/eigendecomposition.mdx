@@ -448,6 +448,42 @@ where $c$ is any non-zero scalar such as $c = 1$ to make the eigenvector a unit 
 where again $c$ is any non-zero scalar such as $c = 1$. So we can see that the eigenvectors are different for $\mathbf{A}$ and $\mathbf{A}^T$ even though the eigenvalues are the same. The same would be for the case of $\lambda = 3$.
 </Callout>
 
+For the eigenvalues to be real the discriminant of the characteristic polynomial must be non-negative. This means that if the characteristic polynomial is a quadratic polynomial, then the eigenvalues are real if and only if the discriminant is non-negative, so if the following condition holds:
+
+```math
+D = b^2 - 4ac \geq 0
+```
+
+where $P(\lambda) = a\lambda^2 + b\lambda + c$ is the characteristic polynomial. If the discriminant is positive, then there are two distinct real eigenvalues, if it is zero, then there is one repeated real eigenvalue. If the discriminant is negative, then the eigenvalues are complex conjugates. 
+
+<Callout type="example">
+Suppose we have the following matrix:
+
+```math
+\mathbf{A} = \begin{bmatrix}
+1 & a \\
+2 & 6
+\end{bmatrix}
+```
+
+The characteristic polynomial is:
+
+```math
+P(\lambda) = \text{det}(\mathbf{A} - \lambda \mathbf{I}) = \text{det}\begin{bmatrix}
+1 - \lambda & a \\
+2 & 6 - \lambda
+\end{bmatrix} = (1 - \lambda)(6 - \lambda) - 2a = \lambda^2 - 7\lambda + (6 - 2a)
+```
+
+So for the eigenvalues to be real, we need the discriminant to be non-negative:
+
+```math
+D = (-7)^2 - 4(1)(6 - 2a) = 49 - 24 + 8a = 25 + 8a \geq 0
+```
+
+Which means that $a$ must be greater than or equal to $-\frac{25}{8}=-3.125$. 
+</Callout>
+
 The next property is that **if $\lambda$ and $\mathbf{v}$ are an eigenvalue-eigenvector pair of the real matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$, then their complex conjugates $\overline{\lambda}$ and $\overline{\mathbf{v}}$ are also an eigenvalue-eigenvector pair of $\mathbf{A}$**. So real matrices with complex eigenvalues always have eigenvalues in **complex conjugate pairs**. So if we know one complex eigenvalue $\lambda$ and its corresponding eigenvector $\mathbf{v}$ we automatically another pair of eigenvalues and eigenvectors, namely $\overline{\lambda}$ and $\overline{\mathbf{v}}$. It also follows that if $\mathbf{A}$ has a real eigenvalue, then it must have a real eigenvector. We can see this from the following equation:
 
 ```math
@@ -1607,6 +1643,18 @@ This implies that any linear transformation represented by $\mathbf{A}$ can be v
 2. Scaling along principal axes using $\mathbf{\Sigma}$.
 3. Rotating or reflecting the result back to the original basis using $\mathbf{U}$.
 
+We also remember that the sum of the eigenvalues of $\mathbf{A}$ is equal to the trace of the matrix $\mathbf{A}$ so:
+
+```math
+tr(\mathbf{A}) = \lambda_1 + \lambda_2 + \ldots + \lambda_n = \sum_{i=1}^n \lambda_i
+```
+
+Then we also remember that the singular values $\sigma_i$ are the square roots of the eigenvalues of $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$, so we can also express the trace of the matrix $\mathbf{A}$ in terms of the singular values:
+
+```math
+tr(\mathbf{A}^T \mathbf{A}) = \sigma_1^2 + \sigma_2^2 + \ldots + \sigma_n^2 = \sum_{i=1}^n \sigma_i^2.
+```
+
 <Callout type="example">
 Let's look at an example of computing the SVD of a matrix. We are given the matrix:
 
@@ -1798,7 +1846,6 @@ Which can also be summarized in the compact matrix form:
 </Callout>
 
 Because the matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ then its maximum rank is $\min(m, n)$. So let's say that $m > n$, so the matrix is "tall" and has more rows than columns. Then the maximum rank of $\mathbf{A}$ is $n$, so the rank of $\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ is also $n$. But we remember that the rank of a symmetric matrix is equal to the number of non-zero eigenvalues. So when we calcualte the matrix $\mathbf{A}^T \mathbf{A}$, we get a symmetric matrix of size $n \times n$ with rank $n$. This means that it'll have $n$ unique non-zero eigenvalues. If the rank is $r < n$, then the matrix $\mathbf{A}^T \mathbf{A}$ will have $n - r$ zero eigenvalues. The same applies to the matrix $\mathbf{A} \mathbf{A}^T$ which will have $m - r$ zero eigenvalues. If the matrix $\mathbf{A}$ is "wide" and has more columns than rows, then we have an anologs situation where the maximum rank is $m$ and the matrix $\mathbf{A}^T \mathbf{A}$ will have $m - r$ zero eigenvalues and the matrix $\mathbf{A} \mathbf{A}^T$ will have $n - r$ zero eigenvalues.
-</Callout>
 
 ### Low-Rank Approximation
 
