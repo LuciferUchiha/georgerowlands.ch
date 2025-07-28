@@ -637,6 +637,8 @@ Nothing special just add an extra column where we have t^2 so:
 
 ## Projections of Sets and the Farkas Lemma
 
-<Callout type="todo">
-This is very weird but very powerful?
-</Callout>
+If we have the matrix $\mathbf{A} \in \mathbb{Q}^{m \times n}$ and the vector $\mathbf{b} \in \mathbb{Q}^m$, then their either exists a vector $\mathbf{x} \in \mathbb{R}^n$ such that $\mathbf{A}\mathbf{x} \leq \mathbf{b}$ or there exists a vector $\mathbf{y} \in \mathbb{R}^m$ such that $\mathbf{y} \geq 0$ and $\mathbf{y}^T\mathbf{A} = 0$ and $\mathbf{y}^T\mathbf{b} < 0$. 
+
+Basically this means that either the set defined by the linear inequalities $\mathbf{A}\mathbf{x} \leq \mathbf{b}$ which is a polyhedron is non-empty or the set defined by the linear inequalities $\mathbf{y} \geq 0$, $\mathbf{y}^T\mathbf{A} = 0$ and $\mathbf{y}^T\mathbf{b} < 0$ is non-empty. Meaning we can find a certificate $\mathbf{y}$ that proves that the set defined by the linear inequalities $\mathbf{A}\mathbf{x} \leq \mathbf{b}$ is empty.
+
+The idea here is that we project onto the polyhedron step by step taking a dimension away at a time i.e rewriting inequalities in a reduced space, preserving polyhedral structure. At the final step, if the resulting polyhedron is non-empty, the original polyhedron was non-empty. If it was empty, one applies Farkas Lemma to produce a feasibility certificate (the vector $\mathbf{y}$) that proves the original polyhedron is empty. So in other wrods to show that their exists a solution to the linear inequalities we see if we can find a certificate that proves that set polyhedron is empty, if we can find such a certificate then the set is empty, if we cannot find such a certificate then the set is non-empty.
