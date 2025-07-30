@@ -287,11 +287,7 @@ The idea is to use the monoton convergence theorem. First we need to show that t
 S_{n+1} - S_n = \sum^{n+1}_{k=1}{a_k} - \sum^{n}_{k=1}{a_k} = a_{n+1} \geq 0 \text{ for all } n \geq 1
 ```
 
-Now because we know that the sequence of partial sums is monotone increasing, and that it converges as otherwise the series would diverge, we can conclude that the sequence of partial sums must also be bounded by the monotone convergence theorem. 
-
-<Callout type="todo">
-Add an example of using this and showing that the sequence of partial sums is bounded. 
-</Callout>
+Now because we know that the sequence of partial sums is monotone increasing, and that it converges as otherwise the series would diverge, we can conclude that the sequence of partial sums must also be bounded by the monotone convergence theorem. So in other words, for a series to converge, the sequence of partial sums must be bounded.
 
 The direct comparison follows from the idea shown above but in a more general way and kind of mixing it with the [squeeze theorem](/garden/maths/calculus/sequencesAndSeries/convergentSequences#squeeze-theorem). The idea is that we can compare two series and show that one converges if the other converges. The formal definition of the direct comparison test is as follows. If we have two series $\sum^{\infty}_{n=1}{a_n}$ and $\sum^{\infty}_{n=1}{b_n}$ and we know that the following holds for all $k \geq 1$:
 
@@ -305,10 +301,28 @@ So the terms of both series are always positive and the terms of the first serie
 \sum^{\infty}_{n=1}{b_n} \text{ converges} \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
 ```
 
-The intuition behind this is rather simple. If $b_n$ converges, then the sum of all terms of $b_n$ is finite. If $a_n$ is always less than or equal to $b_n$, then the sum of all terms of $a_n$ must also be finite. Because we are only allowing for positve terms, we also do not have to worry about convergence against negative infinity. 
+The intuition behind this is rather simple. If $b_n$ converges, then the sum of all terms of $b_n$ is finite. If $a_n$ is always less than or equal to $b_n$, then the sum of all terms of $a_n$ must also be finite. Because we are only allowing for positive terms, we also do not have to worry about convergence against negative infinity. 
 
 <Callout type="proof">
-The proof follows from the cauchy criterion.
+This follows from the cauchy criterion. If the series $\sum^{\infty}_{n=1}{b_n}$ converges, then for every $\epsilon > 0$ there exists an $N \in \mathbb{N}$ such that for all $m \geq n \geq N$:
+
+```math
+|\sum^{m}_{k=n} b_k| < \epsilon
+```
+
+Because the terms of $b_k$ are always positive, we can drop the absolute value and rewrite this as:
+
+```math
+\sum^{m}_{k=n} b_k < \epsilon
+```
+
+We also know that the terms of $a_k$ are always less than or equal to the terms of $b_k$. So we can rewrite this as:
+
+```math
+\sum^{m}_{k=n} a_k \leq \sum^{m}_{k=n} b_k < \epsilon
+```
+
+So we can conclude that the series $\sum^{\infty}_{n=1}{a_n}$ converges as well for all $m \geq n \geq N$.
 </Callout>
 
 In a similar way we can also show that if the first series diverges, then the second series also diverges. 
@@ -498,7 +512,52 @@ A Rearrangement of a series is a new series that is formed by rearranging the te
 f: \mathbb{N} \to \mathbb{N} \text{ such that } x_n = a_{f(n)} \text{ for all } n \in \mathbb{N}
 ```
 
-Riemann showed that the series $\sum^{\infty}_{n=1}{(-1)^{n+1} \frac{1}{n}}$ could be rearranged to converge to any real number. 
+If we then have the series $\sum^{\infty}_{n=1}{a_n}$, that converges, but does not converge absolutely, then we can rearrange the series to converge to any $L \in \mathbb{R} \cup \{\infty\}$. Specifically Riemann showed that the series $\sum^{\infty}_{n=1}{(-1)^{n+1} \frac{1}{n}}$ could be rearranged to converge to any real number as this series converges to zero but does not converge absolutely. 
+
+<Callout type="proof">
+We can prove that the alternating harmonic series converges. First we observe the following:
+
+```math
+\begin{align*}
+S_2 &= a_1 - a_2 = 1 - \frac{1}{2} = \frac{1}{2} \\
+S_3 &= S_2 + a_3 = (a_1 - a_2) + a_3 \text{ where } (a_1 - a_2) > 0 \\
+S_4 &= S_3 - a_4 = S_2 + a_3 - a_4 \text{ where } (a_3 - a_4) + a_3 > 0 \\
+\dots
+\end{align*}
+```
+
+If we then focus on the odd terms of the series, we can see that they are decreasing
+
+```math
+S_{2n+1} = a_1 - a_2 + a_3 - a_4 + \dots + a_{2n-1} = S_{2n-1} + (a_{2n + 1} - a_{2n}) \text{ where } (a_{2n + 1} - a_{2n}) < 0
+```
+
+So we have $S_{2n+1} < S_{2n-1}$ and therefore the odd terms of the series are decreasing. We can similarily show that the even terms of the series are increasing:
+
+```math
+S_{2n} = a_1 - a_2 + a_3 - a_4 + \dots + a_{2n} = S_{2n-2} + (a_{2n-1} - a_{2n}) \text{ where } (a_{2n-1} - a_{2n}) > 0
+```
+
+So we have $S_{2n} > S_{2n-2}$ and therefore the even terms of the series are increasing. We also know that these subsequences are bounded:
+
+```math
+a_1 - a_2 = S_2 \leq S_{2n} \leq S_{2n+1} \leq S_1 = a_1
+```
+
+So by the monotone convergence theorem we can conclude that both subsequences converge. The odd terms converge to some limit $L_1$ and the even terms converge to some limit $L_2$. 
+
+```math
+\lim_{n \to \infty} S_{2n+1} = L_1 \text{ and } \lim_{n \to \infty} S_{2n} = L_2
+```
+
+However, we notice that $S_{2n} = S_{2n-1} + a_{2n}$. We also know that $a_{2n} \to 0$ as $n \to \infty$ as it is then just a subsequence of the harmonic series. So we can conclude that $L_2 = L_1 + 0 = L_1$. So both subsequences converge to the same limit $L$:
+
+```math
+\lim_{n \to \infty} S_{2n+1} = \lim_{n \to \infty} S_{2n} = L
+```
+
+From this it follows that if $\sum^{\infty}_{n=1}{a_n}$ is a bounded series. Then if the series of the even and odd terms converge to the same limit, then the series converges to that limit.
+</Callout>
 
 ### Dirchlet's Rearrangement Theorem
 
@@ -506,10 +565,10 @@ Dirchlet showed that if a series converges absolutely, then any rearrangement of
 
 ## Ratio Test
 
-One of the most important tests for convergence of series is the ratio test. The ratio test is a method to check if a series converges or diverges by looking at the ratio of consecutive terms in the series. Similarily to the cauchy criterion where we looked at the difference between consecutive terms, we can also look at the ratio of consecutive terms. The ratio test states that if we have a series $\sum^{\infty}_{n=1}{a_n}$, where importantly $a_n \neq 0$ for all $n$ to avoid division by zero, then we can analyze the convergence of the series by looking at the limit of the ratio of consecutive terms:
+One of the most important tests for convergence of series is the ratio test. The ratio test is a method to check if a series converges or diverges by looking at the ratio of consecutive terms in the series. Similarly to the cauchy criterion where we looked at the difference between consecutive terms, we can also look at the ratio of consecutive terms. The ratio test states that if we have a series $\sum^{\infty}_{n=1}{a_n}$, where importantly $a_n \neq 0$ for all $n$ to avoid division by zero, then we can analyze the convergence of the series by looking at the limit of the ratio of consecutive terms:
 
 ```math
-\limsup_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
+\limsup_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges absolutely}
 ```
 
 ```math
@@ -521,8 +580,48 @@ IF the value of the limit is equal to 1, then the test is inconclusive and we ca
 The intuition behind the ratio test is that if the ratio of consecutive terms is less than 1, then the terms of the series are getting smaller and smaller, which means that the series converges. If the ratio is greater than 1, then the terms of the series are getting larger and larger, which means that the series diverges. If the ratio is equal to 1, then we can not say anything about the convergence of the series.
 
 <Callout type="proof">
-dont get the proof
+We define the following sequence:
+
+```math
+c_n = \sup \left\{ \left| \frac{a_{n+k}}{a_n} \right| : k \geq n \right\}
+```
+
+then the sequence $c_n$ is decreasing because we are taking the supremum of less and less terms. Because it is the absolute value of the ratio of consecutive terms, we can also conclude that $c_n \geq 0$ for all $n$. So we can conclude that the sequence $c_n$ converges to some limit $L \geq 0$ by the monotone convergence theorem. If we pick then some $q$ such that $0 \leq L < q < 1$, then we can find some $N \in \mathbb{N}$ such that for all $n \geq N$:
+
+```math
+\left| \frac{a_{k+1}}{a_k} \right| < q \text{ for all } k \geq N
+```
+
+This results in the following:
+
+```math
+|a_{k+1}| < q |a_k| \text{ for all } k \geq N
+```
+
+and therefore for all $j \geq 1$ we can repeatedly apply this to get:
+
+```math
+|a_{k+j}| \leq q |a_{N + j - 1}| < q^j |a_N| = q^{N + j}\frac{|a_N|}{q^N} \text{ for all } k \geq N
+```
+
+So we have:
+
+```math
+\sum^{\infty}_{k=N}{|a_k|} \leq \sum^{\infty}_{j=1}{q^j |a_N|} = |a_N| \sum^{\infty}_{j=1}{q^j} = |a_N| \cdot \frac{q}{1 - q} < \infty
+```
+
+By the comparison test with the geometric series we can conclude that the series $\sum^{\infty}_{n=1}{|a_n|}$ converges if $q < 1$ or in other words if $L < 1$. We also know that the geometric series diverges if $q > 1$ or in other words if $L > 1$. So we can conclude that the series converges absolutely if $L < 1$ and diverges if $L > 1$. If $L = 1$, then we can not say anything about the convergence of the series.
 </Callout>
+
+Importantly we need to use the limit superior and limit inferior as these always exists, whereas the limit does not always exist and could cause the test to be nonsensical. However, if the limit of the ratio does exist, so $\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right|$ = $L$, then the limes superior and limit inferior are equal to the limit and we can use the limit instead of the limes superior and limit inferior. So we can write the ratio test as follows:
+
+```math
+\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
+```
+
+```math
+\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| > 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ diverges}
+```
 
 <Callout type="example">
 Let's look at the following series:
@@ -563,20 +662,6 @@ We can show that the harmonic series $\sum^{\infty}_{n=1}{\frac{1}{n}}$ diverges
 ```
 
 As $n$ approaches infinity, the limit of the ratio is equal to 1 therefore we can not say anything about the convergence of the series.
-</Callout>
-
-Importantly we need to use the limit superior and limit inferior as these always exists, whereas the limit does not always exist and could cause the test to be nonsensical. However, if the limit of the ratio does exist, so $\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right|$ = $L$, then the limes superior and limit inferior are equal to the limit and we can use the limit instead of the limes superior and limit inferior. So we can write the ratio test as follows:
-
-```math
-\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| < 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ converges}
-```
-
-```math
-\lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right| > 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ diverges}
-```
-
-<Callout type="example">
-Another reason why we  need to use the limes superior and limit inferior is that we can construct a series $a_n$ that converges but has the a limes inferior less then 1 and a limes superior greater than 1. And a series $b_n$ that diverges but has the same limes superior and limit inferior. 
 </Callout>
 
 ## Exponential Series
@@ -693,6 +778,46 @@ Importantly if the limit exists, so $\lim_{n \to \infty} \sqrt[n]{|a_n|} = L$, t
 ```math
 \lim_{n \to \infty} \sqrt[n]{|a_n|} > 1 \implies \sum^{\infty}_{n=1}{a_n} \text{ and } \sum^{\infty}_{n=1}{|a_n|} \text{ diverges}
 ```
+
+<Callout type="proof">
+The proof for the root test is similar to the proof for the ratio test. We define the following sequence:
+
+```math
+c_n = \sup \left\{ \sqrt[n]{|a_{n+k}|} : k \geq n \right\}
+```
+
+then the sequence $c_n$ is decreasing because we are taking the supremum of less and less terms. Because it is the absolute value of the $n$-th root of the terms, we can also conclude that $c_n \geq 0$ for all $n$. So we can conclude that the sequence $c_n$ converges to some limit $L \geq 0$ by the monotone convergence theorem. If we pick then some $q$ such that $0 \leq L < q < 1$, then we can find some $N \in \mathbb{N}$ such that for all $n \geq N$:
+
+```math
+\sqrt[n]{|a_n|} < q
+```
+
+If we then take the $n$-th power of both sides, we get:
+
+```math
+|a_n| < q^n \text{ for all } n \geq N
+```
+
+So we have:
+
+```math
+\sum^{\infty}_{n=N}{|a_n|} \leq \sum^{\infty}_{n=N}{q^n} = \frac{q^N}{1 - q} < \infty
+```
+
+By the comparison test with the geometric series we can conclude that the series $\sum^{\infty}_{n=1}{|a_n|}$ converges if $q < 1$ or in other words if $L < 1$. If $L > 1$ then we can also conclude that the series diverges as by the definition of the limes superior we would have:
+
+```math
+\sqrt[n]{|a_n|} > 1 + \epsilon \text{ for all } n \geq N
+```
+
+Taking the $n$-th power of both sides, we get:
+
+```math
+|a_n| > (1 + \epsilon)^n \text{ for all } n \geq N
+```
+
+As $n$ approaches infinity, the term $(1 + \epsilon)^n$ approaches infinity for any $\epsilon > 0$. So we can conclude that the series diverges. 
+</Callout>
 
 <Callout type="example">
 We define the following sequence and series:
