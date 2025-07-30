@@ -321,11 +321,22 @@ However, $n$ is positive and gets larger and larger, therefore the distance also
 So for a fixed $L$ the number $n$ is in the interval $(L-1, L+1)$ which is not possible for all $n \geq N_{\epsilon}$ as $n$ gets larger and larger. So the sequence does not converge.
 </Callout>
 <Callout type="example" title="Root Sequence">
-using binomialsatz like in exercise sheet 2. of some constant
+From the exercise sheet (apart from the second one which is from her notes)
+```math
+\lim_{n \to \infty} sqrt[n]{a} = a^{1/n} = 1
+```
 
-Then also the square root of n
+```math
+\lim_{n \to \infty} sqrt[n]{n} = n^{1/n} = 1
+```
 
-Then the square root of n - sqrt of n + 1.
+```math
+lim_{n \to \infty} sqrt[n]{n^2 + 3n} - n
+```
+
+```math
+\lim_{n \to \infty} \sqrt{n} - \sqrt{n + 1}
+```
 </Callout>
 
 ## Properties of Convergent Sequences
@@ -654,6 +665,8 @@ und im Nenner aus einem Polynom l-ten Grades besteht, gilt:
 the limit of $n^{1\over n} = 1$
 ans also $a^{1 \over n} = 1$ for all $a > 0$. we use bernoulli for this? or binomial?
 
+
+
 In general when is $\lim_{n \to \infty} \sqrt[n]{f(n)} = \sqrt[n]{\lim_{n \to \infty} f(n)}$? Same goes for $\lim_{n \to \infty} f(n)^n = \lim_{n \to \infty} f(n)^{\lim_{n \to \infty} n}$?
 </Callout>
 
@@ -915,6 +928,11 @@ So we can see that we get the following limits:
 
 And because the Limes Superior and Limes Inferior do not converge to the same limit, we can say that the orginal sequence $a_n$ does not converge.
 </Callout>
+<Callout type="example">
+From the exercise what is limes superior and limes inferior of the sequence $a_n = 2^n(1 + (-1)^n) + 1$?
+
+Then also limes super and inferior if b_n = a_n+1/a_n
+</Callout>
 
 ## Cauchy Criterion
 
@@ -998,6 +1016,8 @@ If the sequence $a_n = n$ so we have $(1, 2, 3, 4, \ldots)$ then we can create t
 </Callout>
 
 <Callout type="proof">
+Subsequenzkriterium
+
 Some proof and example of using it? She didn't show anything.
 
 Jede beschränkte Folge hat eine konvergente Teilfolge, dann gilt:
