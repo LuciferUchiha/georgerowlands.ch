@@ -76,7 +76,7 @@ terms where $n \leq N_{\epsilon}$ and which then means there are an infinite num
 \{n \in \mathbb{N} | \quad |a_n - L| \geq \epsilon\} \text{ or } \{n \in \mathbb{N} | a_n \notin (L-\epsilon, L+\epsilon)\}
 ```
 
-<Callout type="note">
+<Callout type="info">
 An important note is that a sequence has at most one real number as its limit if it is a real valued sequence. The limit can not be infinity as infinity is not a real number. So if a sequence converges to infinity, it is divergent. We can also define this more formally. A sequence $a_n$ converges/diverges to $+\infty$ if for every $T > 0$ there exists an entry index $N_T$ such that for all $n \geq N_T$ the terms are:
 
 ```math
@@ -117,7 +117,29 @@ a_n \text{ converges} \implies a_n \text{ is bounded}
 ```
 
 <Callout type="proof">
-We can also show this formally like in the solutions of the exercise
+A sequence converges to a limit $L$ if for every $\epsilon > 0$ the set 
+
+```math
+\{n \in \mathbb{N} | a_n \notin (L-\epsilon, L+\epsilon)\}
+```
+
+is finite (the indices outside the epsilon neighborhood). Specifically if we set $\epsilon = 1$ then we can say that the set of indices outside the epsilon neighborhood is finite:
+
+```math
+E = \{n \in \mathbb{N} | a_n \notin (L-1, L+1)\}
+```
+
+For all $n \in \mathbb{N} \setminus E$ we then have the follow:
+
+```math
+|a_n| = |a_n - L + L| \leq |a_n - L| + |L| \leq 1 + |L|
+```
+
+Notice that here the reason the difference $|a_n - L|$ is bounded by 1 is because we chose $\epsilon = 1$. So we can say that the sequence is bounded by $|L| + 1$. We can then pick a maximum value $C = \max \{|a_n| \mid n \in E \}$ from the infinite epsilon neighborhood. The bound for the entire sequence can then be defined as:
+
+```math
+|a_n| \leq M \text{ where } M = \max \{C, |L| + 1\} + 1
+```
 </Callout>
 
 <Callout type="example" title="Constant Sequence">
@@ -137,8 +159,8 @@ Because the following always holds:
 
 ```math
 \begin{align*}
-|a_n - c| = |c - c| = 0 \forall n \geq 1 \\
-|a_n - c| < \epsilon \forall n \geq 1 \text{ for any } \epsilon > 0
+|a_n - c| = |c - c| = 0 \, \forall n \geq 1 \\
+|a_n - c| < \epsilon \, \forall n \geq 1 \text{ for any } \epsilon > 0
 \end{align*}
 ```
 </Callout>
@@ -235,6 +257,7 @@ We can rewrite this as:
 ```
 
 Then by the Archimedes property we know that some $N_{\epsilon} \in \mathbb{N}$ exists such that:
+
 ```math
 \frac{1}{N_{\epsilon} + 1} < \epsilon
 ```
@@ -273,6 +296,7 @@ Let's assume by contradiction that a limit exists and that $\epsilon = \frac{1}{
 &\leq |a_n - L| + |L - a_{n+1}| \\
 &\leq \epsilon + \epsilon = 1 \\
 2 &\leq 1
+\end{align*}
 ```
 
 This is a contradiction and therefore the sequence does not converge. Note that we just added 0 by adding and subtracting $L$ and then used the triangle inequality.
@@ -348,9 +372,48 @@ Comes from the above. example could be $a_n = \frac{n^2 - 2n}{n^2 + n + 1}$
 
 - Das Produkt einer beschränkten Folge und einer Nullfolge ist immer eine Nullfolge.
 
-<Callout type="todo">
-From the exercises if an converges then so does a_n+1 + a_n and A-n? all of these different mixes.
-</Callout>
+
+If we have the sequences $a_n, b_n$ and $c_n$ and we define $c_n = a_n \pm b_n$ then we can also look at some properties of the limit of the sequence $c_n$. If we have the sequences $a_n$ and $b_n$ that converge to the limits $a$ and $b$ respectively, then we can say that the limit of the sequence $c_n$ converges to the sum of the limits of the sequences $a_n$ and $b_n$. In other words if $\lim_{n \to \infty} a_n = a$ and $\lim_{n \to \infty} b_n = b$, then:
+
+```math
+\lim_{n \to \infty} c_n = \lim_{n \to \infty} (a_n \pm b_n) = \lim_{n \to \infty} a_n \pm \lim_{n \to \infty} b_n = a \pm b
+```
+
+Similarly if we say that the sequences $a_n$ and $b_n$ are bounded then we can also say that the sequence $c_n$ is bounded. The bounds of the sequence $c_n$ are the sum of the bounds of the sequences $a_n$ and $b_n$. In other words if $a_n$ is bounded by $m_1$ and $M_1$ and $b_n$ is bounded by $m_2$ and $M_2$, then we can say that the sequence $c_n = a_n \pm b_n$ is bounded by $m_1 + m_2$ and $M_1 + M_2$. 
+
+However, we can't say the opposite. If $c_n$ converges to $c$, then we can't say that $a_n$ and $b_n$ also converge! A simple counterexample is if we define the following sequences:
+
+```math
+\begin{align*}
+a_n = (-1)^n \\
+b_n = (-1)^{n+1} \\
+c_n = a_n + b_n = 0
+\end{align*}
+```
+
+Then we can easily see that $c_n$ converges to 0, but $a_n$ and $b_n$ do not converge as they oscillate between -1 and 1. We also can't say that if $c_n$ converges then at least one of the sequences $a_n$ or $b_n$ converges. This again can be seen with the same example as above. Both $a_n$ and $b_n$ do not converge, but $c_n$ does converge to 0.
+
+We can also say that if $a_n$ converges to $a$ if we then define $b_n = a_{n+1} + a_{n}$, then $b_n$ also converges. We can prove this using the definition of a limit. If $\lim_{n \to \infty} a_n = a$, then for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|a_n - a| < \epsilon
+```
+
+Then we can also find an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|b_n - 2a| = |a_{n+1} + a_{n-1} - 2a| \leq |a_{n+1} - a| + |a_{n-1} - a| < \epsilon + \epsilon = 2\epsilon
+```
+
+So we can say that $b_n$ converges to $2a$. The fact that we now have $2\epsilon$ instead of $\epsilon$ is not a problem as the archimedes principle still holds.
+
+However, the other way does not hold in general. So for example if $b_n = a_{n+1} - a_{n}$ converges to $0$, then we can not say that $a_n$ converges to some limit. A simple counterexample is if we define the following sequences:
+
+```math
+b_n = (-1)^{n-1} - (-1)^{n} = 0
+```
+
+Then we can see that $b_n$ converges to 0, but $a_n$ does not converge as it oscillates between -1 and 1.
 
 ## Squeeze Theorem
 
@@ -450,7 +513,7 @@ If $(a_n)_{n\geq 1}$ is bounded above, then there exists the supremum $c = \sup\
 From this it follows that for all $n \geq N_{\epsilon}$ the following holds:
 
 ```math
-c - \epsilon < a_\{N_{\epsilon}} \leq a_n \leq c < c + \epsilon
+c - \epsilon < a_{N_{\epsilon}} \leq a_n \leq c < c + \epsilon
 ```
 
 Key here is that because the sequence is monotonically increasing, we know that all terms after $N_{\epsilon}$ are larger than $a_{N_{\epsilon}}$ so we can write $a_n \geq a_{N_{\epsilon}}$ for all $n \geq N_{\epsilon}$. This then leads to the definition of the limit with rearranging the terms:

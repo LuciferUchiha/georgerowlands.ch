@@ -17,31 +17,31 @@ If we have a [set of real numbers](/garden/maths/discrete/setTheory#real-numbers
 />
 
 <Callout type="info">
-    Note that the endpoints of the interval that is included is always the one with the square bracket if it is excluded it is the one with the round bracket. In some literature you might also see square brackets facing outwards for the open interval rather than round brackets. This is just a different notation and means the same thing.
+Note that the endpoints of the interval that is included is always the one with the square bracket if it is excluded it is the one with the round bracket. In some literature you might also see square brackets facing outwards for the open interval rather than round brackets. This is just a different notation and means the same thing.
 
-    For example, $[a, b)$ includes $a$ but not $b$, while $(a, b]$ includes $b$ but not $a$ and $]a, b[$  is the equivalent of $(a, b)$ in some literature. 
+For example, $[a, b)$ includes $a$ but not $b$, while $(a, b]$ includes $b$ but not $a$ and $]a, b[$  is the equivalent of $(a, b)$ in some literature. 
 
-    Also, note that the unbounded side with $\infty$ is always excluded i.e. uses the round bracket. This is because infinity is not a real number and the interval is a set of real numbers so it can't include infinity. This also means that the interval $(-\infty, \infty)$ is the set of all real numbers so $\mathbb{R} = (-\infty, \infty)$ and that $\forall x \in \mathbb{R}$ we have $-\infty < x < \infty$.
+Also, note that the unbounded side with $\infty$ is always excluded i.e. uses the round bracket. This is because infinity is not a real number and the interval is a set of real numbers so it can't include infinity. This also means that the interval $(-\infty, \infty)$ is the set of all real numbers so $\mathbb{R} = (-\infty, \infty)$ and that $\forall x \in \mathbb{R}$ we have $-\infty < x < \infty$.
 
-    This also has one small consequence which I personally do not like. We said that a closed interval includes both endpoints. But if we have an unbounded interval such as $(-\infty, b]$ then it only includes one endpoint as infinity is not a real number and can not be included. However, we say that the following forms of intervals are closed intervals: 
+This also has one small consequence which I personally do not like. We said that a closed interval includes both endpoints. But if we have an unbounded interval such as $(-\infty, b]$ then it only includes one endpoint as infinity is not a real number and can not be included. However, we say that the following forms of intervals are closed intervals: 
 
-    1. $[a, b], a \leq b \in \mathbb{R}$
-    2. $[a, +\infty), a \in \mathbb{R}$
-    3. $(-\infty, b], b \in \mathbb{R}$
-    4. $(-\infty, +\infty)$
+1. $[a, b], a \leq b \in \mathbb{R}$
+2. $[a, +\infty), a \in \mathbb{R}$
+3. $(-\infty, b], b \in \mathbb{R}$
+4. $(-\infty, +\infty)$
 
-    My personal interpretation of this is that the "closed" intervals with infinity are closed in the sense that they are as closed as they can be, except for the infinity part. So no matter which real number you would then pick as an endpoint, it would be included in the interval. But this is just my personal interpretation and not a formal definition and as noted I find this not very intuitive.
+My personal interpretation of this is that the "closed" intervals with infinity are closed in the sense that they are as closed as they can be, except for the infinity part. So no matter which real number you would then pick as an endpoint, it would be included in the interval. But this is just my personal interpretation and not a formal definition and as noted I find this not very intuitive.
 
-    There is a more logical explanation to this when talking about the [Balzano-Weierstrass theorem](/garden/maths/calculus/sequencesAndSeries/convergentSequences#bolzano-weierstrass-theorem) which states that an Interval is closed if for any sequence containing elements of the interval, the limit of that sequence is also in the interval. So if we have an unbounded interval such as $(-\infty, b]$ then we can always find a sequence such as the constant 
-    sequence $a_n = b$ that converges to $b$ and is in the interval. The same goes for the interval $(-\infty, +\infty)$ which is the set of all real numbers. So we can always find a sequence that converges to some real number in the interval.
+There is a more logical explanation to this when talking about the [Balzano-Weierstrass theorem](/garden/maths/calculus/sequencesAndSeries/convergentSequences#bolzano-weierstrass-theorem) which states that an Interval is closed if for any sequence containing elements of the interval, the limit of that sequence is also in the interval. So if we have an unbounded interval such as $(-\infty, b]$ then we can always find a sequence such as the constant 
+sequence $a_n = b$ that converges to $b$ and is in the interval. The same goes for the interval $(-\infty, +\infty)$ which is the set of all real numbers. So we can always find a sequence that converges to some real number in the interval.
 </Callout>
 
 <Callout type="example">
-    Examples of intervals:
-    - $(2, 5)$ is the set of all real numbers between 2 and 5, but not including 2 and 5.
-    - $[3, 7]$ is the set of all real numbers between 3 and 7, including 3 and 7.
-    - $(-\infty, 4]$ is the set of all real numbers less than or equal to 4.
-    - $(6, \infty)$ is the set of all real numbers greater than 6.
+Examples of intervals:
+- $(2, 5)$ is the set of all real numbers between 2 and 5, but not including 2 and 5.
+- $[3, 7]$ is the set of all real numbers between 3 and 7, including 3 and 7.
+- $(-\infty, 4]$ is the set of all real numbers less than or equal to 4.
+- $(6, \infty)$ is the set of all real numbers greater than 6.
 </Callout>
 
 ## Bounds
@@ -99,7 +99,7 @@ There are two important things to note about the maximum and minimum of a set:
 <Callout type="example">
 The interval $[1, \infty)$ has a lower bound of $1$ but is unbounded above. So it has a minimum of $1$but no maximum as for any element $b \in [1, \infty)$ we can always find a larger element $c = b + 1$ which is also in the interval. Therefore there is no maximum.
 
-The interval $(-1, 1)$ has no upper or lower bound. Therefore it also has no maximum or minimum.
+The interval $(-1, 1)$ has the upper and lower bounds of 1 and -1 but they are not in the set. Therefore it also has no maximum or minimum.
 
 Lastly the interval $(1, \infty)$ has a lower bound of $1$ but is unbounded above. However, it does not have a minimum or maximum. To show that there is no maximum is trivial, but to show that there is no minimum we can do the following:
 
@@ -110,11 +110,9 @@ An alternative way to think about this is if we look at the set of the lower bou
 
 ### Supremum and Infimum
 
-We have seen that if we know an upper or lower bound of a set then all values that are greater or equal to the upper bound or smaller or equal to the lower bound are also bounds. Which leads us to defining the set of all upper and lower bounds of a set. But what if we wanted to find the closest bound to the set that is still a bound? This is where the supremum and infimum come in. 
+We have seen that if we know an upper or lower bound of a set then all values that are greater or equal to the upper bound or smaller or equal to the lower bound are also bounds. Which leads us to defining the set of all upper and lower bounds of a set. But what if we wanted to find the closest bound to the set that is still a bound? This is where the **supremum** and **infimum** come in. 
 
-We formally define the supremum and infimum of a set as the smallest upper bound and largest lower bound of a set, respectively. This is particularly useful when a set does not have a maximum or minimum but still has bounds. As the idea is that the supremum is the closest number to the maximum that is still an upper bound and the infimum is the closest number to the minimum that is still a lower bound. 
-
-We formally define the supremum and infimum of a set $A \subseteq \mathbb{R}$ and $A \neq \emptyset$ as the real numbers $c \in \mathbb{R}$ such that:
+We define the supremum and infimum of a set as the smallest upper bound and largest lower bound of a set, respectively. This is particularly useful when a set does not have a maximum or minimum but still has bounds. As the idea is that the supremum is the closest number to the maximum that is still an upper bound and the infimum is the closest number to the minimum that is still a lower bound. Formally the supremum and infimum of a set $A \subseteq \mathbb{R}$ and $A \neq \emptyset$ as the real numbers $c \in \mathbb{R}$ such that:
 
 - **Supremum**: If $c$ is the smallest upper bound of $A$. In other words, $c$ is an upper bound of $A$ so $\forall a \in A: a \leq c$ but if $d$ is another upper bound of $A$ then $c \leq d$. We then write $\sup A = c$.
 - **Infimum**: If $c$ is the largest lower bound of $A$. In other words, $c$ is a lower bound of $A$ so $\forall a \in A: a \geq c$ but if $d$ is another lower bound of $A$ then $c \geq d$. We then write $\inf A = c$.
@@ -126,7 +124,19 @@ We formally define the supremum and infimum of a set $A \subseteq \mathbb{R}$ an
 />
 
 <Callout type="proof">
-Need to show that the supremum and infimum are well-defined, i.e. that they exist for any non-empty set $A \subseteq \mathbb{R}$ and that they are unique.
+For any non-empty set $A \subseteq \mathbb{R}$ that is bounded above, $\sup A$ exists and is unique. Similarly, if $A$ is bounded below, $\inf A$ exists and is unique. We can prove it is unique by assuming that there are two different supremums $c_1$ and $c_2$ of the set $A$. So for any upper bound $d$ it holds that 
+
+```math
+c_1 \leq d \text{ and } c_2 \leq d
+```
+
+But because $c_1$ and $c_2$ are both upper bounds it means we have:
+
+```math
+c_1 \leq c_2 \text{ and } c_2 \leq c_1
+```
+
+This leads to the conclusion that $c_1 = c_2$ which means that the supremum is unique. The same applies to the infimum.
 </Callout>
 
 This definition leads to two important properties of the supremum and infimum:
@@ -145,10 +155,10 @@ And the infimum as follows:
 I = \inf A = \{\forall \epsilon > 0: \exists a \in A: a < I + \epsilon\}
 ```
 
-This can be intepreted as that the supremum is the smallest number such that if we subtract any positive number $\epsilon$ from it, then there is always an element in the set that is greater than this number. The similar applies to the infimum, where it is the largest number such that if we add any positive number $\epsilon$ to it, then there is always an element in the set that is smaller than this number.
+This can be interpreted as that the supremum is the smallest number such that if we subtract any positive number $\epsilon$ from it, then there is always an element in the set that is greater than this number. The similar applies to the infimum, where it is the largest number such that if we add any positive number $\epsilon$ to it, then there is always an element in the set that is smaller than this number.
 
-<Callout type="todo">
-What is the link min/max, supremum and infimum and the min/max of the set of all upper and lower bounds of a set?
+<Callout type="example">
+If we have the set $A = \{1, \frac{1}{2}, \frac{1}{3}, \ldots\}$, we can quickly see that the maximum is 1, meaning that the supremum is 1 and that it is in the set. We can also see that 0 is a lower bound. But is it also the infimum? To check this we can see if there is a larger lower bound than 0. If we assume that there is a larger lower bound $c > 0$ then we can see that for any element $a \in A$ we have $a \geq c$. But if we take the element $\frac{1}{n}$ for any $n \in \mathbb{N}$, then we can always find an element in the set that is smaller than $c$ by taking $n$ large enough. Therefore, there is no larger lower bound than 0 and therefore the infimum is 0 and there is no minimum as 0 is not in the set.
 </Callout>
 
 <Callout type="example">
@@ -284,6 +294,10 @@ Using the supremum and infimum we can also define the set of all upper and lower
 - **Upper bounds of $A$**: $A = \{c \in \mathbb{R} \mid \forall a \in A: a \leq c\} = [\sup(A), \infty\)$
 - **Lower bounds of $A$**: $A = \{c \in \mathbb{R} \mid \forall a \in A: a \geq c\} = (-\infty, \inf(A)]$
 
+Remember we defined the maximum to be the largest element of a set that is also an upper bound and the minimum to be the smallest element of a set that is also a lower bound. This leads to the following properties:
+- If $A$ has a maximum then $\sup A = \max A$ and it is the infimum of the set of upper bounds of $A$.
+- If $A$ has a minimum then $\inf A = \min A$ and it is the supremum of the set of lower bounds of $A$.
+
 A further important property is how the supremum and infimum between two sets relate to each other. If we have two sets $A, B \subseteq \mathbb{R}$ with $A \subseteq B$, we can see that the supremum and infimum of $A$ and $B$ are related to each other:
 - If $B$ is bounded above then $\sup A \leq \sup B$.
 - If $B$ is bounded below then $\inf A \geq \inf B$.
@@ -291,7 +305,7 @@ A further important property is how the supremum and infimum between two sets re
 It also logically follows that if $\forall a \in A: a \leq b$ for all $b \in B$ then $\sup A \leq \inf B$. And that for any non-empty set $A$ we have $\inf A \leq \sup A$. This is because the supremum is the smallest upper bound and the infimum is the largest lower bound of a set. So if we take the supremum of a set, it must be greater than or equal to any element in the set, and if we take the infimum of a set, it must be less than or equal to any element in the set. If the set only has one element, then the supremum and infimum are equal to that element.
 
 <Callout type="example">
-We have the set $A=[0,1] \cup \{2\}$ and the set $B=[-1,4] \cup \[5,6\]$. Then we have the following:
+We have the set $A=[0,1] \cup \{2\}$ and the set $B=[-1,4] \cup [5,6]$. Then we have the following:
 
 ```math
 \begin{align*}
@@ -302,22 +316,104 @@ We have the set $A=[0,1] \cup \{2\}$ and the set $B=[-1,4] \cup \[5,6\]$. Then w
 </Callout>
 
 Lastly we can also perform some operations on the supremum and infimum of sets. If we have two sets $A, B \subseteq \mathbb{R}$, $A \neq \emptyset \neq B$ and the real number $c \in \mathbb{R}$, we first define the following operations on sets:
-- **Scalar multiplication**: $cA = \{ca \mid a \in A\}$
-- **Set addition**: $A + B = \{a + b \mid a \in A, b \in B\}$
 
-From this we can derive the following properties of the supremum and infimum:
-- **Supremum of union**: $\sup(A \cup B) = \max(\sup A, \sup B)$
-- **Infimum of intersection**: $\inf(A \cap B) = \min(\inf A, \inf B)$
-- **Supremum and Infimum of scalar multiplication**: $\sup(cA) = c \cdot \sup A$ if $c > 0$ and $\sup(cA) = c \cdot \inf A$ if $c < 0$
-- **Supremum and Infimum of set addition**: $\sup(A + B) = \sup A + \sup B$ and $\inf(A + B) = \inf A + \inf B$
+```math
+\begin{align*}
+\text{Scalar multiplication: } & cA = \{ca \mid a \in A\} \\
+\text{Set addition: } & A + B = \{a + b \mid a \in A, b \in B\}
+\end{align*}
+```
+
+We can see that the supremum and infimum of the scalar multiplication and set addition can be derived from the supremum and infimum of the sets themselves. If we have a real number $c \in \mathbb{R}$ and a set $A \subseteq \mathbb{R}$, then we have the following properties:
+
+```math
+\sup(cA) = \begin{cases} 
+c \cdot \sup A & \text{if } c > 0 \\
+c \cdot \inf A & \text{if } c < 0
+\end{cases}
+```
+
+For the infimum we have:
+
+```math
+\inf(cA) = \begin{cases} 
+c \cdot \inf A & \text{if } c > 0 \\
+c \cdot \sup A & \text{if } c < 0
+\end{cases}
+```
+
+<Callout type="proof">
+Let $A \subseteq \mathbb{R}$, $A \neq \emptyset$, and $c \in \mathbb{R}$.
+
+Case 1: $c > 0$:
+* If $S = \sup A$, then for every $a \in A$, $a \leq S \implies ca \leq cS$, so $cS$ is an upper bound of $cA$. Now, suppose $d < cS$ is any real number. Then $d/c < S$, so by the definition of supremum, there exists $a' \in A$ such that $a' > d/c$. Thus, $ca' > d$. Therefore, $cS$ is the *smallest* upper bound of $cA$, i.e., $\sup(cA) = c \sup A$.
+
+* Similarly, the infimum: If $I = \inf A$, for every $a \in A$, $a \geq I \implies ca \geq cI$, so $cI$ is a lower bound for $cA$. Suppose $d > cI$; then $d/c > I$, so by the definition of infimum, there is $a' \in A$ with $a' < d/c$, hence $ca' < d$. Therefore, $cI$ is the *greatest* lower bound of $cA$, i.e., $\inf(cA) = c \inf A$.
+
+Case 2: $c < 0$ (Note that multiplying by a negative number reverses the inequalities):
+* If $S = \sup A$, for all $a \in A$, $a \leq S \implies ca \geq cS$. Thus, $cS$ is now a *lower bound* for $cA$. But the supremum is the *largest* upper bound, so actually, the *smallest* upper bound of $cA$ is $cI$, where $I = \inf A$.
+* Similarly, $\inf(cA) = cS$.
+</Callout>
 
 <Callout type="example">
-TODO
+Let $A = [1,3]$ and $c = 2$.
+
+* $\sup A = 3$, $\inf A = 1$
+* $cA = {2a : a \in [1,3]} = [2,6]$
+* $\sup(cA) = 6 = 2 \cdot 3 = c \sup A$
+* $\inf(cA) = 2 = 2 \cdot 1 = c \inf A$
+
+Now take $c = -1$:
+
+* $(-1)A = {-a : a \in [1,3]} = [-3,-1]$
+* $\sup((-1)A) = -1 = (-1)\inf A$
+* $\inf((-1)A) = -3 = (-1)\sup A$
+
+</Callout>
+
+and with set addition we have:
+
+```math
+\begin{align*}
+\sup(A + B) & = \sup A + \sup B \\
+\inf(A + B) & = \inf A + \inf B
+\end{align*}
+```
+
+<Callout type="proof">
+Let $A, B \subseteq \mathbb{R}$, both non-empty and bounded. Define $A+B = {a+b : a \in A, b \in B}$. Let $S = \sup A$, $T = \sup B$.
+
+1. **$\sup(A+B) \leq S+T$:**
+   For any $a \in A$, $a \leq S$, and for any $b \in B$, $b \leq T$. So $a + b \leq S + T$. Thus, $S + T$ is an upper bound for $A + B$.
+
+2. **$\sup(A+B) \geq S+T$:**
+   Let $\epsilon > 0$ be arbitrary. Then there exist $a' \in A$ and $b' \in B$ such that:
+
+* $S - \frac{\epsilon}{2} < a' \leq S$
+* $T - \frac{\epsilon}{2} < b' \leq T$
+
+Then $a'+b' > S + T - \epsilon$.
+
+Thus, for any $\epsilon > 0$, there exists $s \in A+B$ such that $s > S+T-\epsilon$, so $S+T$ is the *least* upper bound, i.e.,
+
+```math
+\sup(A+B) = \sup A + \sup B
+```
+
+A completely analogous argument applies for the infimum. 
+</Callout>
+<Callout type="example">
+Let $A = [1,2]$, $B = [3,5]$.
+
+* $A+B = {a+b : a \in [1,2], b \in [3,5]} = [1+3, 2+5] = [4,7]$
+* $\sup A = 2$, $\sup B = 5$
+* $\sup(A+B) = 7 = 2 + 5 = \sup A + \sup B$
+* $\inf(A+B) = 4 = 1 + 3 = \inf A + \inf B$
 </Callout>
 
 ### Compact Intervals
 
-The idea of a compact interval is that we want an interval that doesn't have any "gaps" or missing endpoints. This is closely related to the concept of closed intervals and bounded sets. In real analysis, a set is called compact if it is both closed and bounded. So an Inteval $I \subseteq \mathbb{R}$ is called compact if it has the following form:
+The idea of a compact interval is that we want an interval that doesn't have any "gaps" or missing endpoints. This is closely related to the concept of closed intervals and bounded sets. In real analysis, a set is called compact if it is both closed and bounded. So an Interval $I \subseteq \mathbb{R}$ is called compact if it has the following form:
 
 ```math
 I = [a, b] \text{ with } a, b \in \mathbb{R} \text{ and } a \leq b
