@@ -297,7 +297,53 @@ So we can always find an integer that is smaller than a real number and when we 
 Using these properties we can now show that we can always find a solution to the equation $x^2 = t$ for any real number $t \geq 0$. In other words, we can always find the square root if we assume that the square root exists and it is positive.
 
 <Callout type="proof">
+For $t=0$ this statement is trivial because from the axioms we get $0^2 = 0$ and therefore $\sqrt{0} = 0$.
 
+For $t > 0$ it is slightly harder. We first define the following two sets:
+
+```math
+A = \{y \in \mathbb{R} | y \geq 0 \text{ and } y^2 \leq t\} \quad B = \{z \in \mathbb{R} | z \geq 0 \text{ and } z^2 \geq t\}
+```
+
+First we want to show that the sets aren't empty. For $A$ this is simple as $0 \in A$ because $0^2 = 0 \leq t$ for $t > 0$. For $B$ we can show that there exists a natural number $n$ such that $n \geq 1$ and $n \geq t$. If we use the properties of the order relation we get the following:
+
+```math
+\begin{align*}
+n & \geq 1 \\
+n & \geq t \\
+n \cdot n & \geq 1 \cdot n \\
+n^2 & \geq n \geq t
+\end{align*}
+```
+
+so $n \in B$ and therefore $B$ is not empty. From the properties of the order relation it also follows that $y \leq z$ for all $y \in A$ and $z \in B$. To show this let's assume that $y \in A$ and $z \in B$. Then we have $y^2 \leq t$ and $z^2 \geq t$. If we assume that $y > z$, then we can square both sides to get $y^2 > z^2$. This contradicts the fact that $z^2 \geq t$ because then we would have $y^2 > z^2 \geq t$ which means that $y^2 > t$ and therefore $y \notin A$. So we must have $y \leq z$.
+
+So we have our conditions for the completeness property. By this property there exists a real number $c$ such that $y \leq c$ and $c \leq z$ for all $y \in A$ and $z \in B$, or put together we have:
+
+```math
+y \leq c \leq z
+```
+
+We now want to show that $c^2 = t$. We can do this by assuming that $c^2 < t$ and $c^2 > t$ and showing that these lead to a contradiction meaning $c^2$ must be equal to $t$. Let's assume that $c^2 < t$. By definition we then have $c \in A$ because $A$ is the set of all non-negative real numbers whose square is less than or equal to $t$. If we rewrite this assumption we get $0 < t - c^2$ and e can also quickly show that $2c + 1 \geq 1$ because $c \geq 0$. Then by the archimedean property we can find a natural number $n$ such that:
+
+```math
+
+2c + 1 \leq n(t - c^2)
+```
+
+If we then consider the following:
+
+```math
+\begin{align*}
+(c + \frac{1}{n})^2 &= c^2 + 2c \cdot \frac{1}{n} + \frac{1}{n^2} \\
+&\leq c^2 + 2c \cdot \frac{1}{n} + \frac{1}{n} \\
+&= c^2 + (2c + 1) \cdot \frac{1}{n} \\
+&\leq c^2 + (t - c^2) \\
+&= t
+\end{align*}
+```
+
+This means that $c + \frac{1}{n} \in A$ but $c + \frac{1}{n} > c$ which contradicts the fact that $c$ is the largest element in $A$. So we must have $c^2 \geq t$. We can do the same for the case where $c^2 > t$ resulting in the contradiction that $c$ is the smallest element in $B$. So we must have $c^2 = t$.
 </Callout>
 
 ### Young's Inequality
