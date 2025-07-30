@@ -141,6 +141,7 @@ Notice that here the reason the difference $|a_n - L|$ is bounded by 1 is becaus
 |a_n| \leq M \text{ where } M = \max \{C, |L| + 1\} + 1
 ```
 </Callout>
+
 <Callout type="proof">
 Prove that the 2 definitions of a limit are the same
 </Callout>
@@ -338,74 +339,276 @@ However, $n$ is positive and gets larger and larger, therefore the distance also
 So for a fixed $L$ the number $n$ is in the interval $(L-1, L+1)$ which is not possible for all $n \geq N_{\epsilon}$ as $n$ gets larger and larger. So the sequence does not converge.
 </Callout>
 <Callout type="example" title="Root Sequence">
-From the exercise sheet (apart from the second one which is from her notes)
+Suppose we have the following sequence for $a > 0$:
 ```math
-\lim_{n \to \infty} sqrt[n]{a} = a^{1/n} = 1
+\lim_{n \to \infty} \sqrt[n]{a} = a^{1/n} = 1
 ```
 
-```math
-\lim_{n \to \infty} sqrt[n]{n} = n^{1/n} = 1
-```
+and want to prove that the limit of this sequence is 1. For $a = 1$ this is rather obvious as the terms are all 1. But what about for $a \neq 1$? First we look at the case of $a > 1$. For this we can define the following new sequence:
 
 ```math
-lim_{n \to \infty} sqrt[n]{n^2 + 3n} - n
+b_n = a_n - 1 = \sqrt[n]{a} - 1
 ```
+
+then we have $b_n \geq 0$ for all $n \in \mathbb{N}$. By the binomial theorem we also have:
+
+```math
+1 + n b_n \leq (1 + b_n)^n = (1 + \sqrt[n]{a} - 1)^n = a
+```
+
+By rearranging this we get:
+
+```math
+\begin{align*}
+1 + n b_n \leq a \\
+n b_n \leq a - 1 \\
+b_n \leq \frac{a - 1}{n} \\
+0 \leq b_n \leq \frac{a - 1}{n}
+\end{align*}
+```
+
+Because the right side of the inequality goes to 0 as $n$ goes to infinity, we can conclude that $b_n$ also goes to 0 as $n$ goes to infinity. So we have:
+
+```math
+\lim_{n \to \infty} b_n = \sqrt[n]{a} - 1 = 0 \implies \lim_{n \to \infty} \sqrt[n]{a} = 1
+```
+
+Now we just need to prove the case for $0 < a < 1$. For this we can set $c= \frac{1}{a}$ then $c > 1$ and we use our previous result so $\lim_{n \to \infty} \sqrt[n]{c} = 1$. We can then rewrite the sequence as:
+
+```math
+1 = \lim_{n \to \infty} \sqrt[n]{c} = \lim_{n \to \infty} \sqrt[n]{\frac{1}{a}} = \lim_{n \to \infty} \frac{\sqrt[n]{1}}{\sqrt[n]{a}} = \lim_{n \to \infty} \frac{1}{\sqrt[n]{a}} = \frac{1}{\lim_{n \to \infty} \sqrt[n]{a}} = 1
+```
+
+which implies that $\lim_{n \to \infty} \sqrt[n]{a} = 1$ as well. So we can conclude that for all $a > 0$ the limit of the sequence $\sqrt[n]{a}$ is 1.
+
+Suppose we have the following sequence:
+
+```math
+\lim_{n \to \infty} sqrt[n]{n} = \sqrt{1}, \sqrt[2]{2}, \sqrt[3]{3}, \ldots
+```
+
+We could assume that the limit of this sequence is 1 as the terms get closer and closer to 1 or also because we can rewrite the sequence as:
+
+```math
+\lim_{n \to \infty} \sqrt[n]{n} = n^{\frac{1}{n}}
+```
+
+and then as $n$ goes to infinity the exponent goes to 0 just like above. However, this reasoning would be incorrect as the the term also grows as the exponent grows. But we can still prove that the sequence converges to 1 by bringing it into a form that we can analyze. We can rewrite the sequence as follows:
+
+```math
+n^{\frac{1}{n}} = e^{\ln(n^{\frac{1}{n}})} = e^{\frac{\ln(n)}{n}}
+```
+
+Now we can analyze the limit of the exponent $\frac{\ln(n)}{n}$ as $n$ goes to infinity. It is rather obvious that this limit is 0 as the logarithm grows much slower than the linear function $n$. We can also prove this using L'Hôpital's rule. So we have e^{0} which is 1. So we can conclude that the limit of the sequence is 1. 
+
+We could also solve this in a way similar to the previous example. By the definition of the limit we want to show that for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+\left| \sqrt[n]{n} - 1 \right| < \epsilon
+```
+
+We can rewrite this as:
+
+```math
+\begin{align*}
+\left| n^{\frac{1}{n}} - 1 \right| < \epsilon \\
+- \epsilon < n^{\frac{1}{n}} - 1 < \epsilon \\
+1 - \epsilon < n^{\frac{1}{n}} < 1 + \epsilon \\
+(1 - \epsilon)^{n} < n < (1 + \epsilon)^{n}
+\end{align*}
+```
+
+We then use the binomial theorem to expand the right side:
+
+```math
+\begin{align*}
+(1 + \epsilon)^{n} = 1 + n\epsilon + \frac{n(n-1)}{2}\epsilon^2 + \ldots + \epsilon^n \\
+(1 + \epsilon)^{n} \geq 1 + \frac{n(n-1)}{2}\epsilon^2 + 0 \\
+(1 + \epsilon)^{n} \geq \frac{n(n-1)}{2}\epsilon^2
+\end{align*}
+```
+
+Which then gives us:
+
+```math
+\begin{align*}
+n < (1 + \epsilon)^{n} \geq \frac{n(n-1)}{2}\epsilon^2 \\
+n < \frac{n(n-1)}{2}\epsilon^2 \\
+2n < n(n-1)\epsilon^2 \\
+2 < (n-1)\epsilon^2 \\
+\frac{2}{\epsilon^2} < n-1 \\
+\frac{2}{\epsilon^2} + 1 < n
+\end{align*}
+```
+
+So we can choose $N_{\epsilon} = \lceil \frac{2}{\epsilon^2} + 1 \rceil$ for any $\epsilon > 0$, showing that the limit of the sequence is 1.
+</Callout>
+<Callout type="example">
+Suppose we have the following sequence:
+
+```math
+\lim_{n \to \infty} \sqrt{n^2 + 3n} - n
+```
+
+To solve this we want to remove as many of the roots and terms of $n$ as possible. A nice trick here is extend the root with a fraction equal to 1. We can rewrite the sequence as follows:
+
+```math
+\begin{align*}
+\lim_{n \to \infty} \left(\sqrt{n^2 + 3n} - n\right)^2 = \lim_{n \to \infty} \frac{\sqrt{n^2 + 3n} - n}{1} \cdot \frac{\sqrt{n^2 + 3n} + n}{\sqrt{n^2 + 3n} + n} \\
+= \lim_{n \to \infty} \frac{(\sqrt{n^2 + 3n})^2 - n^2}{\sqrt{n^2 + 3n} + n} \\
+= \lim_{n \to \infty} \frac{n^2 + 3n - n^2}{\sqrt{n^2 + 3n} + n} \\
+= \lim_{n \to \infty} \frac{3n}{\sqrt{n^2 + 3n} + n} \\
+= \lim_{n \to \infty} \frac{3n}{\sqrt{n^2(1 + \frac{3}{n})} + n} \\
+= \lim_{n \to \infty} \frac{3n}{n \sqrt{1 + \frac{3}{n}} + n} \\
+= \lim_{n \to \infty} \frac{3}{\sqrt{1 + \frac{3}{n}} + 1} \\
+= \lim_{n \to \infty} \frac{3}{K + 1}
+\end{align*}
+```
+
+Where $K = \lim_{n \to \infty} \sqrt{1 + \frac{3}{n}}$. We can then use the previous example to show that $K = 1$. So we have:
+
+```math
+\left|\sqrt{1 + \frac{3}{n}} - 1\right| < \epsilon
+```
+
+We can rewrite this as:
+
+```math
+\begin{align*}
+\left|\sqrt{1 + \frac{3}{n}} - 1\right| = \left|\frac{\sqrt{1 + \frac{3}{n}} - 1}{1}\frac{\sqrt{1 + \frac{3}{n}} + 1}{\sqrt{1 + \frac{3}{n}} + 1}\right| \\
+= \left|\frac{(1 + \frac{3}{n}) - 1}{\sqrt{1 + \frac{3}{n}} + 1}\right| \\
+= \left|\frac{\frac{3}{n}}{\sqrt{1 + \frac{3}{n}} + 1}\right| \\
+= \frac{3}{n(\sqrt{1 + \frac{3}{n}} + 1)}
+\end{align*}
+```
+
+We can leave out the absolute signs as the nominator is always positive for $n \geq 1$ and so is the denominator, as a square root is always positive. If we set $n=1$ we can also see that:
+
+```math
+n\sqrt{1 + \frac{3}{n}} + 1 = 1\sqrt{1 + 3} + 1 = 2
+```
+
+So the denominator is always larger than 2 for all $n \geq 1$. So putting this all together we get:
+
+```math
+\begin{align*}
+\left|\sqrt{1 + \frac{3}{n}} - 1\right| < \epsilon \\
+\frac{3}{n(\sqrt{1 + \frac{3}{n}} + 1)} < \epsilon \\
+\frac{3}{2n} < \epsilon \\
+3 < 2n\epsilon \\
+\frac{3}{2\epsilon} < n
+\end{align*}
+```
+
+So we can choose $N_{\epsilon} = \lceil \frac{3}{2\epsilon} \rceil$ for any $\epsilon > 0$. Therefore the limit of the expression is 1, so K=1. We can then plug this back into our original expression:
+
+```math
+\lim_{n \to \infty} \sqrt{n^2 + 3n} - n = \lim_{n \to \infty} \frac{3}{K + 1} = \frac{3}{1 + 1} = \frac{3}{2}
+```
+</Callout>
+<Callout type="example">
+Suppose we have the following sequence:
 
 ```math
 \lim_{n \to \infty} \sqrt{n} - \sqrt{n + 1}
 ```
+
+an initial assumption would be that the limit is 0 as the terms grow, the factor of 1 becomes irrelevant so we have $\sqrt{n} - \sqrt{n + 1} \approx \sqrt{n} - \sqrt{n} = 0$. This also becomes visible if we rewrite the sequence as follows using the similar trick as above:
+
+```math
+\begin{align*}
+\sqrt{n} - \sqrt{n + 1} &= \frac{\sqrt{n} - \sqrt{n + 1}}{1} \cdot \frac{\sqrt{n} + \sqrt{n + 1}}{\sqrt{n} + \sqrt{n + 1}} \\
+&= \frac{(\sqrt{n})^2 - (\sqrt{n + 1})^2}{\sqrt{n} + \sqrt{n + 1}} \\
+&= \frac{n - (n + 1)}{\sqrt{n} + \sqrt{n + 1}} \\
+&= \frac{-1}{\sqrt{n} + \sqrt{n + 1}} \leq \frac{-1}{\sqrt{n} + \sqrt{n}} = \frac{-1}{2\sqrt{n}}
+\end{align*}
+```
+
+If we then but this into the definition of the limit we get:
+
+```math
+\begin{align*}
+\left|(\sqrt{n} - \sqrt{n + 1}) - 0\right| < \epsilon \\
+\left|\frac{-1}{\sqrt{n} + \sqrt{n + 1}}\right| < \epsilon \\
+\left|\frac{-1}{2\sqrt{n}}\right| < \epsilon \\
+\frac{1}{2\sqrt{n}} < \epsilon \\
+\frac{1}{2\epsilon} < \sqrt{n} \\
+\frac{1}{4\epsilon^2} < n
+\end{align*}
+```
+
+So we can choose $N_{\epsilon} = \lceil \frac{1}{4\epsilon^2} \rceil$ for any $\epsilon > 0$. Therefore the limit of the expression is 0.
 </Callout>
 
 ## Properties of Convergent Sequences
 
-<Callout type="todo">
-This needs to be rewritten and the examples need to be added.
-</Callout>
+There are some key properties of convergent sequences that are important to know. These properties can help us understand how sequences behave and how we can manipulate them.
 
-Sind $a_n$ und $b_n$ konvergente Folgen mit den Grenzwerten $a$ bzw. $b$, so ist auch die Folge:
-
-- $c \cdot a_n$ konvergent mit $\lim_{n \to \infty} {c \cdot a_n} = c \cdot \lim_{n \to \infty} {a_n} = c \cdot a$ für $c \in R$
-
-
-- $a_n \pm b_n$ konvergent mit $\lim_{n \to \infty}{a_n \pm b_n}={{\lim_{n \to \infty}{a_n}} \pm {\lim_{n \to \infty}{b_n}}}={a \pm b}$
-¨
-
-<Callout type="proof">
-This is in her notes for addition
-</Callout>
-
-<Callout type="example">
-Example from her notes with $a_n = n \over n+1$ and splits it into $1 \over n$ and $1 \over n+1$ and then shows that the limit is the sum of the limits.
-</Callout>
-
-- $a_n \cdot b_n$ konvergent mit $\lim_{n \to \infty}{a_n \cdot b_n}={{\lim_{n \to \infty}{a_n}} \cdot {\lim_{n \to \infty}{b_n}}}={a \cdot b}$
-
-<Callout type="proof">
-This is in her notes for multiplication
-</Callout>
-<Callout type="example">
-Example from her notes with $a_n = (1 + \frac{1}{n})^b$ 
-
-
-or $a_n = \frac{n^2 - 2n}{n^2 + n + 1}$.
-</Callout>
-
-- $a_n \over b_n$ konvergent mit $\lim_{n \to \infty}{a_n \over b_n}={{\lim_{n \to \infty}{a_n}} \over {\lim_{n \to \infty}{b_n}}}={a \over b}$ falls $b \neq 0$ and $b_n \neq 0$ for all $n \geq 1$.
-
-Comes from the above. example could be $a_n = \frac{n^2 - 2n}{n^2 + n + 1}$
-
-- If there exists a $K \geq 1$ and $a_n \leq b_n$ for all $n \geq K$ then $\lim_{n \to \infty}{a_n} \leq \lim_{n \to \infty}{b_n}$ in other words $a \leq b$.
-
-- Das Produkt einer beschränkten Folge und einer Nullfolge ist immer eine Nullfolge.
-
-
-If we have the sequences $a_n, b_n$ and $c_n$ and we define $c_n = a_n \pm b_n$ then we can also look at some properties of the limit of the sequence $c_n$. If we have the sequences $a_n$ and $b_n$ that converge to the limits $a$ and $b$ respectively, then we can say that the limit of the sequence $c_n$ converges to the sum of the limits of the sequences $a_n$ and $b_n$. In other words if $\lim_{n \to \infty} a_n = a$ and $\lim_{n \to \infty} b_n = b$, then:
+To start with, if we have the sequences $a_n, b_n$ and $c_n$ and we define $c_n = a_n \pm b_n$ then we can also look at some properties of the limit of the sequence $c_n$. If we have the sequences $a_n$ and $b_n$ that converge to the limits $a$ and $b$ respectively, then we can say that the limit of the sequence $c_n$ converges to the sum of the limits of the sequences $a_n$ and $b_n$. In other words if $\lim_{n \to \infty} a_n = a$ and $\lim_{n \to \infty} b_n = b$, then:
 
 ```math
 \lim_{n \to \infty} c_n = \lim_{n \to \infty} (a_n \pm b_n) = \lim_{n \to \infty} a_n \pm \lim_{n \to \infty} b_n = a \pm b
 ```
 
+<Callout type="proof">
+If the sequence $a_n$ converges to $a$ then we can say that for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_1$ the following holds:
+
+```math
+|a_n - a| < \epsilon \text{ or } |a_n - a| < \frac{\epsilon}{2}
+```
+
+The same holds for the sequence $b_n$ and we can say that for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_2$ the following holds:
+
+```math
+|b_n - b| < \epsilon \text{ or } |b_n - b| < \frac{\epsilon}{2}
+```
+
+If we know but these together we can then say that for all $N_{\epsilon} = \max(N_1, N_2)$ the following holds:
+
+```math
+\begin{align*}
+|c_n - (a \pm b)| &= |(a_n \pm b_n) - (a \pm b)| \\
+&= |(a_n - a) \pm (b_n - b)| \\
+&\leq |(a_n - a) + (b_n - b)|=|a_n - a| + |b_n - b| < \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon \\
+&\leq |(a_n - a) - (b_n - b)| = |a_n - a| + |-(b_n - b)| = |a_n - a| + |b_n - b| < \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon
+\end{align*}
+``` 
+</Callout>
+<Callout type="example">
+Suppose we have the following sequences:
+
+```math
+\lim _{n \to \infty} \frac{n}{n+1}
+```
+
+Then we can solve this using the above rule. We can rewrite the sequence as follows:
+
+```math
+\begin{align*}
+\frac{n}{n+1} &= \frac{n + 1 - 1}{n + 1} \\
+&= \frac{n + 1}{n + 1} - \frac{1}{n + 1} \\
+&= 1 - \frac{1}{n + 1}
+\end{align*}
+```
+
+the limit of 1 is of course 1 and the limit of $\frac{1}{n + 1}$ we have also already seen that it converges to 0. So we can say that:
+
+```math
+\lim_{n \to \infty} \frac{n}{n+1} = 1 - 0 = 1
+```
+</Callout>
+
 Similarly if we say that the sequences $a_n$ and $b_n$ are bounded then we can also say that the sequence $c_n$ is bounded. The bounds of the sequence $c_n$ are the sum of the bounds of the sequences $a_n$ and $b_n$. In other words if $a_n$ is bounded by $m_1$ and $M_1$ and $b_n$ is bounded by $m_2$ and $M_2$, then we can say that the sequence $c_n = a_n \pm b_n$ is bounded by $m_1 + m_2$ and $M_1 + M_2$. 
+
+<Callout type="proof"> 
+Since $|a_n| \leq M_1$ and $|b_n| \leq M_2$, 
+
+```math 
+|a_n + b_n| \leq |a_n| + |b_n| \leq M_1 + M_2 
+``` 
+
+for all $n \in \mathbb{N}$.
+</Callout>
 
 However, we can't say the opposite. If $c_n$ converges to $c$, then we can't say that $a_n$ and $b_n$ also converge! A simple counterexample is if we define the following sequences:
 
@@ -419,7 +622,24 @@ c_n = a_n + b_n = 0
 
 Then we can easily see that $c_n$ converges to 0, but $a_n$ and $b_n$ do not converge as they oscillate between -1 and 1. We also can't say that if $c_n$ converges then at least one of the sequences $a_n$ or $b_n$ converges. This again can be seen with the same example as above. Both $a_n$ and $b_n$ do not converge, but $c_n$ does converge to 0.
 
-We can also say that if $a_n$ converges to $a$ if we then define $b_n = a_{n+1} + a_{n}$, then $b_n$ also converges. We can prove this using the definition of a limit. If $\lim_{n \to \infty} a_n = a$, then for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+Another important property of convergent sequences is that if a sequence converges to a limit, then what happens in the beginning of the sequence does not matter. In other words, if we have a sequence $(a_n)_{n\geq 1}$ that converges to $a$, then we can define a new sequence $(b_n)_{n\geq 1}$ by shifting the index of the original sequence by some $k \in \mathbb{N}$, so $b_n = a_{n+k}$. Then the new sequence also converges to the same limit $a$:
+
+```math
+\lim_{n \to \infty} a_n = \lim_{n \to \infty} a_{n+k} \text{ for all } k \in \mathbb{N}
+```
+
+<Callout type="proof"> 
+Let $\epsilon > 0$ be given. Since $a_n \to a$, $\exists N$ such that $|a_n - a| < \epsilon$ for all $n \geq N$. But then for all $n \geq N$, $|a_{n+k} - a| < \epsilon$ as $n+k \geq N$ for large enough $n$. Thus, $a_{n+k} \to a$. 
+</Callout>
+
+Similarly we can also say that if $a_n$ converges to $a$ if we then define $b_n = a_{n+1} + a_{n}$, then $b_n$ also converges:
+
+```math
+\lim_{n \to \infty} a_n \to a \implies \lim_{n \to \infty} b_n = \lim_{n \to \infty} (a_{n+1} + a_{n}) = a + a = 2a
+```
+
+<Callout type="proof">
+We can prove this using the definition of a limit. If $\lim_{n \to \infty} a_n = a$, then for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
 
 ```math
 |a_n - a| < \epsilon
@@ -432,6 +652,33 @@ Then we can also find an index $N_{\epsilon}$ such that for all $n \geq N_{\epsi
 ```
 
 So we can say that $b_n$ converges to $2a$. The fact that we now have $2\epsilon$ instead of $\epsilon$ is not a problem as the archimedes principle still holds.
+</Callout>
+
+In fact we we can show that if $a_n$ converges to $a$ and we define $b_n = a_{n+1} - a_{n}$, then $b_n$ always converges to 0:
+
+```math
+\lim_{n \to \infty} a_n = a \implies \lim_{n \to \infty} b_n = \lim_{n \to \infty} (a_{n+1} - a_{n}) = 0
+```
+
+<Callout type="proof">
+This follows from the definition of a limit. If $\lim_{n \to \infty} a_n = a$, then for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|a_n - a| < \epsilon
+```
+
+Because it holds for all $n \geq N_{\epsilon}$, then that also includes $n+1$ so we have:
+
+```math
+|a_{n+1} - a| < \epsilon
+```
+
+putting this together we get:
+
+```math
+|b_n| = |a_{n+1} - a_n| = |(a_{n+1} - a) - (a_n - a)| \leq |a_{n+1} - a| + |a_n - a| < \epsilon + \epsilon = 2\epsilon
+```
+</Callout>
 
 However, the other way does not hold in general. So for example if $b_n = a_{n+1} - a_{n}$ converges to $0$, then we can not say that $a_n$ converges to some limit. A simple counterexample is if we define the following sequences:
 
@@ -440,6 +687,164 @@ b_n = (-1)^{n-1} - (-1)^{n} = 0
 ```
 
 Then we can see that $b_n$ converges to 0, but $a_n$ does not converge as it oscillates between -1 and 1.
+
+Convergent sequences can also be scaled. So if we have a sequence $a_n$ that converges to $a$ and we multiply it by a constant $c$, then the new sequence $c \cdot a_n$ also converges to $c \cdot a$. In other words:
+
+```math
+\lim_{n \to \infty} c \cdot a_n = c \cdot \lim_{n \to \infty} a_n = c \cdot a
+```
+
+<Callout type="proof"> 
+Given $\epsilon > 0$, since $a_n \to a$, $\exists N$ such that $|a_n - a| < \frac{\epsilon}{|c|}$ for all $n \geq N$ (if $c \neq 0$; for $c = 0$ the result is trivial). Then 
+
+```math 
+|c a_n - c a| = |c| \cdot |a_n - a| < |c| \cdot \frac{\epsilon}{|c|} = \epsilon. 
+``` 
+
+So $c a_n \to c a$. 
+</Callout> 
+<Callout type="example"> 
+Let $a_n = \frac{1}{n}$, $c = 5$. Then, 
+
+```math 
+\lim_{n \to \infty} 5 a_n = 5 \cdot 0 = 0. 
+``` 
+</Callout>
+
+The same goes for multiplying two convergent sequences. If we have two sequences $a_n$ and $b_n$ that converge to $a$ and $b$ respectively, then the sequence $a_n \cdot b_n$ also converges to $a \cdot b$. In other words:
+
+```math
+\lim_{n \to \infty} a_n \cdot b_n = \lim_{n \to \infty} a_n \cdot \lim_{n \to \infty} b_n = a \cdot b
+```
+
+<Callout type="proof">
+The proof is very similar to previous ones. We want to show that for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+
+```math
+|a_n \cdot b_n - a \cdot b| < \epsilon
+```
+
+we can rewrite this term and use the triangle inequality:
+
+```math
+\begin{align*}
+|a_n \cdot b_n - a \cdot b| &= |a_n \cdot b_n - a_n \cdot b + a_n \cdot b - a \cdot b| \\
+&= |a_n \cdot (b_n - b) + b \cdot (a_n - a)| \\
+&\leq |a_n| \cdot |b_n - b| + |b| \cdot |a_n - a|
+\end{align*}
+```
+
+Because $a_n$ converges we also know that it is bounded by some $K$ and $k$ such that $k \leq a_n \leq K$ for all $n \geq N_{1}$. So for all $n \geq N_{1}$ we can say that:
+
+```math
+|a_n| \leq K 
+```
+
+and because $|b|$ is just a constant and $a_n$ and $b_n$ converge we can write:
+
+```math
+|a_n - a| < \frac{\epsilon}{K + |b|} \text{ and } |b_n - b| < \frac{\epsilon}{K + |b|}
+```
+
+Putting this all together we get:
+
+```math
+\begin{align*}
+|a_n \cdot b_n - a \cdot b| &< \epsilon \\
+&\leq |a_n| \cdot |b_n - b| + |b| \cdot |a_n - a| \\
+&\leq K \cdot |b_n - b| + |b| \cdot |a_n - a| \\
+&\leq K \cdot \frac{\epsilon}{K + |b|} + |b| \cdot \frac{\epsilon}{K + |b|} \\
+&= \frac{K \cdot \epsilon + |b| \cdot \epsilon}{K + |b|} \\
+&= \frac{(K + |b|) \cdot \epsilon}{K + |b|} \\
+&= \epsilon
+```
+</Callout>
+<Callout type="example">
+Suppose we have the following sequences:
+
+```math
+\lim_{n \to \infty} \frac{n^2 - 2n}{n^2 + n + 1}
+```
+
+We can then rewrite this as follows:
+
+```math
+\begin{align*}
+\frac{n^2 - 2n}{n^2 + n + 1} &= \frac{n^2(1 - \frac{2}{n})}{n^2(1 + \frac{1}{n} + \frac{1}{n^2})} \\
+&= \frac{1 - \frac{2}{n}}{1 + \frac{1}{n} + \frac{1}{n^2}} \\
+&= \frac{1 - 0}{1 + 0 + 0} \\
+&= 1
+\end{align*}
+```
+
+Here we used the fact that $\lim_{n \to \infty} \frac{1}{n} = 0$ and our multiplication rule for limits meaning $\lim_{n \to \infty} \frac{1}{n^2} = 0 \cdot 0$ and the addition rules.
+</Callout>
+
+Lastly we can also say that if we have two sequences $a_n$ and $b_n$ that converge to $a$ and $b$ respectively, then the sequence $\frac{a_n}{b_n}$ also converges to $\frac{a}{b}$ as long as $b \neq 0$. In other words:
+
+```math
+\lim_{n \to \infty} \frac{a_n}{b_n} = \frac{\lim_{n \to \infty} a_n}{\lim_{n \to \infty} b_n} = \frac{a}{b}
+```
+<Callout type="proof"> 
+Since $b_n \to b \neq 0$, $\exists N_1$ such that $|b_n| \geq |b|/2 > 0$ for all $n \geq N_1$ (by the definition of limit). Let $\epsilon > 0$. Since $a_n \to a$ and $b_n \to b$, $\exists N_2$ such that for all $n \geq N_2$, 
+
+```math 
+|a_n - a| < \frac{\epsilon |b|}{3}, \qquad |b_n - b| < \min\left(\frac{|b|}{2}, \frac{\epsilon |b|^2}{3 (|a|+1)}\right) ``` 
+
+Set $N = \max(N_1, N_2)$. Then for $n \geq N$, 
+
+```math 
+\begin{align*} \left| \frac{a_n}{b_n} - \frac{a}{b} \right| &= \left| \frac{a_n b - a b_n}{b_n b} \right| \\
+&= \left| \frac{a_n b - a b + a b - a b_n}{b_n b} \right| \\ 
+&= \left| \frac{b(a_n - a) + a(b - b_n)}{b_n b} \right| \\ 
+&\leq \frac{|b||a_n - a| + |a||b_n - b|}{|b_n||b|} 
+\end{align*} 
+``` 
+
+By our choice, $|b_n| \geq |b|/2$ and $|a_n - a|$, $|b_n - b|$ are both small. Plug in these bounds and simplify to get the desired result (details as in standard analysis texts). 
+</Callout>
+<Callout type="example">
+Suppose we have the following sequence:
+
+```math
+\lim_{n \to \infty} (1 + \frac{1}{n})^b
+```
+
+where $b \in \mathbb{Z}$. Then we already know that the limit of 1 is 1 and the limit of $\frac{1}{n}$ is 0. So we know that $\lim_{n \to \infty} (1 + \frac{1}{n}) = 1$. If $b > 0$ then we just essentially have this term $b$ times which is still 1. If $b < 0$ then we have the term $\frac{1}{(1 + \frac{1}{n})^{|b|}}$ which also converges to 1 as $n$ goes to infinity. So we can conclude that the limit of the sequence is 1 for all $b \in \mathbb{Z}$.
+</Callout>
+
+The example above as we can also generalize this to a property. If we have a sequence $a_n$ that converges to $a$ we then have the following property:
+
+```math
+\lim_{n \to \infty} (a_n)^b = a^b \text{ for all } b \in \mathbb{R}
+```
+
+From the above we actually notice that it also just a generalization of the following property of limits:
+
+```math
+\lim_{n \to \infty} \sqrt[b]{a_n} = \sqrt[b]{\lim_{n \to \infty} a_n} \text{for } b > 0
+```
+
+This follows from the previous property of exponents as the square root is just an exponent of $\frac{1}{2}$ and the $b$-th root is an exponent of $\frac{1}{b}$. So we can generalize this to any positive exponent $b$. However, if we are taking the $n$-th root or power where $n$ is the index of the term then we can not use this property as the exponent is not constant but rather depends on $n$. 
+
+<Callout type="example">
+Suppose we have the following sequence:
+
+```math
+\lim_{n \to \infty} \frac{3^n + (-2)^n}{3^n - 2^n}
+```
+
+We can rewrite this as follows:
+
+```math
+\begin{align*}
+\lim_{n \to \infty} \frac{3^n + (-2)^n}{3^n - 2^n} &= \lim_{n \to \infty} \frac{3^n(1 + (-\frac{2}{3})^n)}{3^n(1 - (\frac{2}{3})^n)} \\
+&= \lim_{n \to \infty} \frac{\lim_{n \to \infty} 1 + \lim_{n \to \infty} (-\frac{2}{3})^n}{\lim_{n \to \infty} 1 - \lim_{n \to \infty} (\frac{2}{3})^n} \\
+&= \frac{1 + 0}{1 - 0} \\
+&= 1
+\end{align*}
+```
+</Callout>
 
 ## Squeeze Theorem
 
@@ -488,7 +893,7 @@ which can be rewritten as:
 a_n - L \leq b_n - L \leq c_n - L
 ```
 
-which by definition of the above limit inequalitys means that:
+which by definition of the above limit inequalities means that:
 
 ```math
 -\epsilon < a_n - L \leq b_n - L \leq c_n - L < \epsilon
@@ -519,8 +924,29 @@ As $n$ goes to infinity the terms on the left and right side go to 0. So by the 
 ```math
 \lim_{n \to \infty} \frac{sin(n)}{n} = 0
 ```
+</Callout>
+<Callout type="example">
+Suppose we have the following sequence:
 
-Another good example from exercise 2 is nth root of 5^n + 11^n + 17^n
+```math
+\lim_{n \to \infty} \sqrt[n]{5^n + 11^n + 17^n}
+```
+
+We can then use the squeeze theorem. Specifically we can find the following upper and lower bounds for the sequence:
+
+```math
+\sqrt[n]{17^n} \leq \sqrt[n]{5^n + 11^n + 17^n} \leq \sqrt[n]{3 \cdot 17^n}
+```
+
+It logically follows that $\sqrt[n]{17^n} = 17$ and using the previous example where we showed that the limit of $\sqrt[n]{a} = 1$ for all $a > 0$, we can also show that $\sqrt[n]{3 \cdot 17^n} = 17 \cdot \sqrt[n]{3}$. So we have:
+
+```math
+\begin{align*}
+\lim_{n \to \infty} \sqrt[n]{17^n} \leq \lim_{n \to \infty} \sqrt[n]{5^n + 11^n + 17^n} \leq \lim_{n \to \infty} \sqrt[n]{3 \cdot 17^n} \\
+17 \leq \lim_{n \to \infty} \sqrt[n]{5^n + 11^n + 17^n} \leq 17 \\
+\lim_{n \to \infty} \sqrt[n]{5^n + 11^n + 17^n} = 17
+\end{align*}
+```
 </Callout>
 
 ## Monotone Convergence Theorem
@@ -651,10 +1077,6 @@ So we have shown that the sequence is monotonically decreasing and bounded below
 \lim_{n \to \infty} a_n = \lim_{n \to \infty} a_{n+k} \text{ for all } k \in \mathbb{N}
 ```
 
-<Callout type="todo">
-Maybe this belongs further up in the article? Is there also some proof for this? The intuition is obvious
-</Callout>
-
 This results in the following:
 
 ```math
@@ -706,37 +1128,16 @@ However, probably the most important fact that comes from the sequence above is 
 
 Which shows that the exponential growth of $r^n$ is much larger than the polynomial growth of $n^b$. This is a very important result as it shows that algorithms that take exponential time to run are much slower than algorithms that take polynomial time to run. This is a very important result in the analysis of algorithms and is often used to show that certain algorithms are not efficient. 
 </Callout>
-<Callout type="example" title="Rational Sequences">
-Für eine rationale Folge, die im Zähler aus einem Polynom k-ten Grades
-und im Nenner aus einem Polynom l-ten Grades besteht, gilt:
-```math
- \lim_{n \to \infty}{{a_kn^k+a_{k-1}n^{k-1}+...+a_0}\over{b_ln^l+b_{l-1}n^{l-1}+...+b_0}} = \begin{dcases}
-        {a_k\over b_k} *\infty, falls\space k >l \\
-        {a_k\over b_k} , falls\space k=l \\
-        0 , falls\space k<l
-\end{dcases}
-```
-</Callout>
-<Callout type="example">
-the limit of $n^{1\over n} = 1$
-ans also $a^{1 \over n} = 1$ for all $a > 0$. we use bernoulli for this? or binomial?
-
-
-
-In general when is $\lim_{n \to \infty} \sqrt[n]{f(n)} = \sqrt[n]{\lim_{n \to \infty} f(n)}$? Same goes for $\lim_{n \to \infty} f(n)^n = \lim_{n \to \infty} f(n)^{\lim_{n \to \infty} n}$?
-</Callout>
 
 ## Bernoulli's Inequality
-
-<Callout type="todo">
-Does this come from probability theory? Where does this belong? For now I put it here because it is used in the proof of Euler's number. What is the intution?
-</Callout>
 
 Bernoulli's Inequality states that for all $n \in \mathbb{N}$ and $x \in \mathbb{R}$ the following holds:
 
 ```math
 (1+x)^n \geq 1+nx
 ```
+
+The inequality essentially says: if you repeatedly increase a quantity by a fixed proportion $x$, the total increase after $n$ iterations $(1+x)^n$ will always be at least as large as simply adding up $n$ times the proportion $x$ to the initial value provided $x \geq -1$. In other words, compound growth (multiplicative) always outpaces or at least matches linear growth (additive), except in some degenerate or negative cases.
 
 <Callout type="proof">
 This can be proven by induction. 
@@ -774,13 +1175,9 @@ So there is a natural limit to how much you can grow your money by compounding i
 
 ## Limits of Recursive Sequences
 
-<Callout type="todo">
-Somehow want to show that the it only works for $A > 1$ to show that it is bounded? or that the start value needs to be greater than 1?
+We have seen that sequences can be defined recursively, meaning that each term is defined based on the previous terms. These sequences can also converge to a limit. To find the limit of a recursive sequence, we can use the same techniques as for non-recursive sequences with the monoton convergence theorem being the most important one as we can prove via induction that the sequence is bounded and monotonically increasing or decreasing.
 
-Then also show that it is monotonically decreasing and therefore has a limit.
-
-Something about it being a fixed point iteration?
-</Callout>
+### Fibonacci Sequence
 
 ### Babylonian/Heron's Method
 
@@ -803,7 +1200,7 @@ a_{n+1} = \frac{a_n + \frac{A}{a_n}}{2}
 <Callout type="proof">
 As we can see this method actually produces a sequence of approximations. However, rather then the sequence being some formula like $a_n = n^2$ it is defined recursively. So the question is then does this sequence converge to the square root of $A$ as $n$ goes to infinity? This should obviously be the case as we are getting closer and closer to the square root of $A$ with each iteration but we can also prove this formally.
 
-This proof uses an important technique of finding the limit based on the knowledge of it existing. We will assume that the limit exists and then show that it is equal to $\sqrt A$.
+This proof uses an important technique of finding the limit based on the knowledge of it existing. We will assume that the limit exists and then show that it is equal to $\sqrt A$. To show that it exists we could use the monoton convergence theorem, by first showing that the sequence is bounded by 1 and then showing that it is monotonically decreasing. 
 
 Let $L = \lim_{n \to \infty} a_n$. Then we can use the recursive definition of the sequence to write:
 
@@ -886,7 +1283,6 @@ and if $B$ is bounded from below then we have:
 ```
 
 This makes sense because as values are taken away from the set $A$ to create the set $B$, the supremum can only decrease or stay the same and the infimum can only increase or stay the same. 
-```
 
 In this case the set $A$ corresponds to the sequence at time $k+1$ and the set $B$ corresponds to the sequence at time $k$. So we can see that the infimum of the set at time $k+1$ is always larger than or equal to the infimum of the set at time $k$ and the supremum of the set at time $k+1$ is always less than or equal to the supremum of the set at time $k$. This means that the sequence $b_n$ is monotonically decreasing and the sequence $c_n$ is monotonically increasing. 
 
@@ -1012,10 +1408,6 @@ This also means that we can use the reverse to show that a sequence diverges, so
 
 Lastly a further important property of Cauchy sequences is that they are bounded. This means that if a sequence is Cauchy, then it is also bounded. However, the reverse is not true so just because a sequence is bounded does not mean that it is Cauchy and therefore converges. This makes sense as otherwise the monotone convergence theorem would be unnecessarily complicated. But why are Cauchy sequences bounded?
 
-<Callout type="todo">
-Intuitively this makes sense but no idea why.
-</Callout>
-
 <Callout type="proof">
 We can prove that the cauchy criterion implies that the sequence converges. Let's assume that the sequence converges, then we know that there exists a limit $L$ such that for all $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
 
@@ -1057,9 +1449,9 @@ So depending on how we set the epsilon we can find an index $N_{\epsilon}$ such 
 Weird stuff with intervals that can then be used to show that real numbers are uncountable. 
 </Callout>
 
-## Balzano-Weierstrass Theorem
+## Bolzano-Weierstrass Theorem
 
-The Balzano-Weierstrass theorem is a very important theorem in real analysis like the montone convergence theorem and the squeeze theorem. It states that every bounded sequence of real numbers has a convergent subsequence. 
+The Bolzano-Weierstrass theorem is a very important theorem in real analysis like the monotone convergence theorem and the squeeze theorem. It states that every bounded sequence of real numbers has a convergent subsequence. In other words, if you have a sequence that does not "escape" to infinity (is bounded), then there exists a subsequence that converges to some real number.
 
 First let's define what a subsequence is. A subsequence of a sequence $a_n$ is a sequence $b_k$ that is formed by taking some of the terms of the original sequence $a_n$ and keeping the order of the terms. Or by removing some of the terms of the original sequence $a_n$ while keeping the order of the remaining terms. Importantly with both approaches the resulting subsequence must still be infinite. So we can say a subsequence $b_n$ is a function just like the original sequence $a_n$ so $b_n: N \to R$ but where there exists a strictly increasing function $k: N \to N$ such that:
 
@@ -1070,21 +1462,167 @@ b_n = a_n \circ k \text{so} b_n = a_{k(n)} \text{ for all } n \in N
 <Callout type="example">
 If the sequence $a_n = n$ so we have $(1, 2, 3, 4, \ldots)$ then we can create the subsequence $b_n = (2, 4, 6, 8, \ldots)$ by taking every second term of the original sequence. However, the subsequence $c_n = (4,2,6,8,\ldots)$ is not a valid subsequence as the order of the terms is not preserved. So we can only take terms from the original sequence and keep the order of the terms.
 </Callout>
+<Callout type="example"> 
+Suppose $a_n = (-1)^n + \frac{1}{n}$. If we define $n_k = 2k$ (i.e., take all the even indices), then the subsequence is $b_k = a_{2k} = 1 + \frac{1}{2k}$, which converges to $1$ as $k \to \infty$. If we take $n_k = 2k+1$ (odd indices), then $c_k = a_{2k+1} = -1 + \frac{1}{2k+1}$, which converges to $-1$. So the sequence has two subsequential limits, $1$ and $-1$. 
+</Callout>
 
 <Callout type="proof">
-Subsequenzkriterium
+Suppose $(a_n)$ is a bounded sequence. Thus, there exist real numbers $m, M$ such that $m \leq a_n \leq M$ for all $n$. We construct a nested sequence of closed intervals $I_k$ containing infinitely many terms of the sequence and with lengths tending to $0$. We do this as follows:
 
-Some proof and example of using it? She didn't show anything.
+1. We start with $I_1 = [m, M]$.
+2. We then divide $I_1$ in half. At least one half contains infinitely many $a_n$; call it $I_2$.
+3. Repeat this process: bisect $I_k$ and select the subinterval $I_{k+1}$ that contains infinitely many $a_n$.
 
-Jede beschränkte Folge hat eine konvergente Teilfolge, dann gilt:
+This gives a nested sequence of intervals with lengths going to zero:
+
+```math
+I_1 \supseteq I_2 \supseteq \dots
+```
+
+Then under the assumption of nesting, the intersection of these intervals is non-empty. Thus there is a number $L$ that is the limit of a convergent subsequence of $(a_n)$ by proving it is an accumulation point of the sequence. (complicated)
+</Callout>
+
+If a sequence $a_n$ is bounded, then we can define the Limes Superior and Limes Inferior of the sequence as we did before. If we then combine this with bolzano weierstrass where we know that every bounded sequence has a convergent subsequence $b_n$, then we can say that the limit of this subsequence is contained in the interval $[\liminf a_n, \limsup a_n]$:
 
 ```math
 \liminf_{n \to \infty} a_n \leq \lim b_n \leq \limsup_{n \to \infty} a_n
 ```
 
-Jede teilfolge b_n einer konvergenter Folge a_n konvergiert und konvergiert gegen den gleichen Grenzwert.
+### Subsequence Criterion
 
-We can also show that if the subsequence of the even indices and the  subsequence of the odd indices converge to the same limit, then the original sequence converges to that limit. 
+The subsequence criterion states a fundamental property of limits. **If a sequence $a_n$ converges to a limit $L$, then every subsequence $b_n$ of $a_n$ also converges to the same limit $L$**. This property is important because it allows us to study sequences by studying their subsequences. In particular, it tells us that convergence is a "global" property. If the whole sequence converges, then any infinite "sample" you take from it, as long as you keep the order, will also converge to the same value.
+
+<Callout type="proof">
+This is a bit weird but basically by definition a sequence converges to a limit $L$ if for every $\epsilon > 0$ there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ we have $|a_n - L| < \epsilon$.
+
+Now the subsequence $b_n$ is defined as $b_n = a_{k(n)}$ where $k(n)$ is a strictly increasing function. This means that for every $n \geq N_{\epsilon}$, we have $k(n) \geq N_{\epsilon}$ at some point. So we can say that for all $n \geq N_{\epsilon}$ we have:
+
+```math
+|b_n - L| = |a_{k(n)} - L| < \epsilon
+```
+</Callout>
+<Callout type="example">
+Suppose $a_n = \frac{1}{n}$, which converges to $0$ as $n \to \infty$. Let's construct a subsequence $b_k = a_{2k} = \frac{1}{2k}$. For this subsequence it then follows that:
+
+```math
+\lim_{k \to \infty} b_k = \lim_{k \to \infty} \frac{1}{2k} = 0
+```
+
+The same holds for any other subsequence of $a_n$, such as $c_k = a_{k^2} = \frac{1}{k^2}$, which also converges to $0$:
+
+```math
+\lim_{k \to \infty} c_k = \lim_{k \to \infty} \frac{1}{k^2} = 0
+```
+
+No matter how we select the subsequence (as long as it is infinite and preserves the order), the subsequence always converges to $0$. 
+
+Another way to prove this is by contradiction. Suppose we have a sequence $a_n$ that converges to a limit $L$ and a subsequence $b_n$ that doesn't converge to $L$. Then there exists an $\epsilon > 0$ such that for all $N_{\epsilon}$ there exists an $n \geq N_{\epsilon}$ such that $|b_n - L| \geq \epsilon$. But this contradicts the definition of convergence of the original sequence $a_n$ as for all $n \geq N_{\epsilon}$ we have $|a_n - L| < \epsilon$ and the subsequence $b_n$ is just a sample of the original sequence $a_n$. So we can conclude that if a sequence converges to a limit $L$, then every subsequence also converges to the same limit $L$.
+</Callout>
+<Callout type="example">
+Suppose we have the following sequence:
+
+```math
+a_n = \begin{cases}
+1 + \sqrt{\frac{k}{12k + 1}} & \text{if } n = 3k + 1 \text{ for } k \in \mathbb{N} \\
+\frac{5k^3 + k}{k^3+1} & \text{if } n = 3k + 2 \text{ for } k \in \mathbb{N} \\
+\frac{(-1)^k}{k} & \text{if } n = 3k + 3 \text{ for } k \in \mathbb{N}
+\end{cases}
+```
+
+First let's look at the subsequences and how they behave. Starting with the first subsequence $b_n = a_{3k+1}$, we have:
+
+```math
+\begin{align*}
+b_n &= 1 + \sqrt{\frac{k}{12k + 1}} \\
+\lim_{k \to \infty} 1 + \sqrt{\frac{k}{12k + 1}} &= 1 + \sqrt{\frac{1}{12}} 
+\end{align*}
+```
+
+Next, we look at the second subsequence $c_n = a_{3k+2}$:
+
+```math
+\begin{align*}
+c_n &= \frac{5k^3 + k}{k^3+1} \\
+\lim_{k \to \infty} \frac{5k^3 + k}{k^3+1} &= \frac{5 + \frac{1}{k^2}}{1 + \frac{1}{k^3}} = 5
+\end{align*}
+```
+
+Finally, we look at the third subsequence $d_n = a_{3k+3}$:
+
+```math
+\begin{align*}
+d_n &= \frac{(-1)^k}{k} \\
+\lim_{k \to \infty} d_n &= \lim_{k \to \infty} \frac{(-1)^k}{k} = 0
+\end{align*}
+```
+
+Because the subsequences converge to different limits, we can conclude that the original sequence $a_n$ does not converge. This is because if a sequence converges, then all its subsequences must converge to the same limit. 
+
+What about the limes superior and limes inferior? To see if these exist we must first check if the sequence is bounded. Because the highest limit of the subsequences is $5$ we can conclude that the sequence is bounded above by $5$. We can also quickly see that the first two subsequences are always positive and that the third subsequence can be negative with the lowest value being $-1$. So we can say that the sequence is bounded below by $-1$. So we can conclude that the sequence is bounded and therefore the Limes Superior and Limes Inferior exist.
+</Callout>
+
+From the above it then follows that if a sequence converges to $L$, then the odd indexed subsequence converges to $L$ and the even indexed subsequence converges to $L$. This is because both subsequences are just a sample of the original sequence and therefore must converge to the same limit.
+
+We can also use this vice versa. If we have a sequence $a_n$ and we know that both the odd indexed subsequence $b_n$ and the even indexed subsequence $c_n$ converge to the same limit $L$, then we can say that the original sequence $a_n$ converges to $L$. The intuition behind this is that if both subsequences converge to the same limit, then the original sequence must also converge to that limit as we have covered all the terms of the original sequence. We can also generalize this to any subsequence. If we have a sequence $a_n$ and we know that every subsequence $b_n$ converges to the same limit $L$, then we can say that the original sequence $a_n$ converges to $L$.
+
+<Callout type="example">
+Suppose we have the following sequence:
+
+```math
+a_n = \frac{1}{n} + (-1)^n \cdot \frac{1}{n}
+```
+
+Let's examine its even- and odd-indexed subsequences.
+
+- **Even-indexed subsequence:** For $n = 2k$ as $k \to \infty$, $b_k \to 0$.
+
+```math
+b_k = a_{2k} = \frac{1}{2k} + 1 \cdot \frac{1}{2k} = \frac{2}{2k} = \frac{1}{k}
+```
+
+
+- **Odd-indexed subsequence:** For $n = 2k+1$ as $k \to \infty$, $c_k \to 0$.
+
+```math
+c_k = a_{2k+1} = \frac{1}{2k+1} + (-1) \cdot \frac{1}{2k+1} = 0
+```
+
+Both the even- and odd-indexed subsequences converge to $0$. Therefore, by the criterion, the original sequence $(a_n)$ also converges to $0$.
+
+Let's check this directly:
+
+```math
+\begin{align*}
+\lim_{n \to \infty} a_n &= \lim_{n \to \infty} \left(\frac{1}{n} + (-1)^n \cdot \frac{1}{n}\right) \\
+\begin{cases}
+\frac{2}{n} & \text{if $n$ is even} \\
+0 & \text{if $n$ is odd}
+\end{cases}
+\end{align*}
+```
+
+As $n \to \infty$, $\frac{2}{n} \to 0$ and the odd terms are already $0$. Thus, $\lim_{n \to \infty} a_n = 0$.
+</Callout>
+
+## Reordering of Sequences
+
+We have seen that if a sequence converges to a limit $L$, then every subsequence converges to the same limit $L$. A similar idea is to reorder a sequence rather then taking a subsequence. So in other we can show that if $a_n$ converges to $L$, then any permutation $\sigma(n)$, i.e. a bijective mapping of the natural numbers to itself, of the sequence $a_n$ also converges to $L$. Formally if $\sigma: \mathbb{N} \to \mathbb{N}$ is a bijection and $a_n$ converges to $L$, then we can say that:
+
+```math
+\lim_{n \to \infty} a_{\sigma(n)} = L
+```
+
+<Callout type="proof">
+Let $(a_n)$ be a sequence converging to $L$, and let $\sigma: \mathbb{N} \to \mathbb{N}$ be a bijection. Then $(a_{\sigma(n)})$ also converges to $L$. Then let $\epsilon > 0$. Since $a_n \to L$, there exists $N \in \mathbb{N}$ such that for all $n \geq N$, $|a_n - L| < \epsilon$.
+
+Because $\sigma$ is a bijection, only finitely many $n$ satisfy $\sigma(n) < N$. Thus, there exists $M \in \mathbb{N}$ such that for all $n \geq M$, $\sigma(n) \geq N$. For such $n$:
+
+```math
+|a_{\sigma(n)} - L| < \epsilon.
+```
+
+Thus, $a_{\sigma(n)} \to L$.
+
 </Callout>
 
 ## Vector Sequences
@@ -1116,8 +1654,6 @@ If we have the vector $L=(l_1, l_2, \ldots, l_d)$ and a vector sequence $a_n$, t
 
 <Callout type="todo">
 She has a proof that these two statements are equivalent. Seems weird and complicated,
-
-balzano weierstrass also works for vector sequences.
 </Callout>
 
 <Callout type="example">
@@ -1174,10 +1710,6 @@ In other words, no term ever became infinitely large or small. For vector sequen
 ||a_n|| \leq R \text{ for all } n \in \mathbb{N}
 ```
 
-<Callout type="todo">
-If the sequences of the components are bounded is the vector sequence also bounded?
-</Callout>
-
 <Callout type="example">
 An example of a bounded vector sequence is the following:
 
@@ -1205,10 +1737,6 @@ Again intuitively we can see that the first component diverges to infinity and t
 </Callout>
 
 Because we know that vector sequences can be bounded it mean can also use the Cauchy criterion and the Bolzano-Weierstrass theorem to show that a vector sequence converges. However, we can not use the monotone convergence theorem as we can not just simply define an order on the vector space. So we can not say that a vector sequence is monotonic. 
-
-<Callout type="todo">
-Examples of using the theorems for vector sequences.
-</Callout>
 
 ## Complex Sequences
 
