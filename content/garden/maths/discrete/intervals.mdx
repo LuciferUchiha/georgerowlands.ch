@@ -315,6 +315,26 @@ We have the set $A=[0,1] \cup \{2\}$ and the set $B=[-1,4] \cup [5,6]$. Then we 
 ```
 </Callout>
 
+We also have the following property for the supremum of the union of two sets. If we have two nonempty subsets $A, B \subseteq \mathbb{R}$ **bounded above**, we can define the supremum and of the union of these two sets as follows:
+
+$$
+\sup(A \cup B) = \max(\sup A, \sup B).
+$$
+
+<Callout type="proof">
+Let $s = \sup A$ and $t = \sup B$. We want to show:
+
+$$
+\sup(A \cup B) = \max(s, t).
+$$
+
+Then first we want to show that $\max(s, t)$ is an upper bound for $A \cup B$ and then that it is the least upper bound. From the definition of supremum, we know that $s$ and $t$ are upper bounds for $A$ and $B$, respectively:
+- For any $x \in A$, $x \leq s \leq \max(s, t)$
+- For any $x \in B$, $x \leq t \leq \max(s, t)$.
+
+So, for any $x \in A \cup B$, $x \leq \max(s, t)$ and therefore, $\max(s, t)$ is an upper bound for $A \cup B$. We then need to show that it is the least upper bound. So let $u < \max(s, t)$ be any real number. We will show $u$ is not an upper bound of $A \cup B$. For this we can assume that $s \leq t$ without loss of generality (if not, we can just swap $s$ and $t$). Then we have $\max(s, t) = t$. So we get $u < t = \sup B$. However, by the definition of the supremum, there exists $y \in B$ such that $y > u$. But then $y \in A \cup B$ because $y \in B$ such that $y > u$, hence we have a contradiction so $u$ and **every** number less than $\max(s, t)$ is not an upper bound of $A \cup B$ and therefore $\max(s, t)$ is the least upper bound.
+</Callout>
+
 Lastly we can also perform some operations on the supremum and infimum of sets. If we have two sets $A, B \subseteq \mathbb{R}$, $A \neq \emptyset \neq B$ and the real number $c \in \mathbb{R}$, we first define the following operations on sets:
 
 ```math
@@ -422,13 +442,13 @@ I = [a, b] \text{ with } a, b \in \mathbb{R} \text{ and } a \leq b
 So in other words, a compact interval is a closed interval with real endpoints. 
 
 <Callout type="example">
-    Examples of compact intervals:
-    - $[0, 1]$ is a compact interval because it is closed and bounded.
-    - $[-5, 5]$ is a compact interval because it is closed and bounded.
-    - $[2, 3]$ is a compact interval because it is closed and bounded.
-    
-    Examples of non-compact intervals:
-    - $(0, 1)$ is not a compact interval because it is not closed.
-    - $(-\infty, 0]$ is not a compact interval because it is not bounded.
-    - $[0, \infty)$ is not a compact interval because it is not bounded.
+Examples of compact intervals:
+- $[0, 1]$ is a compact interval because it is closed and bounded.
+- $[-5, 5]$ is a compact interval because it is closed and bounded.
+- $[2, 3]$ is a compact interval because it is closed and bounded.
+
+Examples of non-compact intervals:
+- $(0, 1)$ is not a compact interval because it is not closed.
+- $(-\infty, 0]$ is not a compact interval because it is not bounded.
+- $[0, \infty)$ is not a compact interval because it is not bounded.
 </Callout>

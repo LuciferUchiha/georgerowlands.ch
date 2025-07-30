@@ -141,6 +141,9 @@ Notice that here the reason the difference $|a_n - L|$ is bounded by 1 is becaus
 |a_n| \leq M \text{ where } M = \max \{C, |L| + 1\} + 1
 ```
 </Callout>
+<Callout type="proof">
+Prove that the 2 definitions of a limit are the same
+</Callout>
 
 <Callout type="example" title="Constant Sequence">
 For the constant sequence such as $a_n = 5$ the limit is the constant itself, so in this case 5. This is rather obvious but we can also prove it. By definition we know that after some specific index $N_{\epsilon}$ all terms have to be within the epsilon neighborhood around the limit and because epsilon is larger than 0 so get the following that needs to be satisfied for all $n \geq N_{\epsilon}$:
@@ -159,8 +162,8 @@ Because the following always holds:
 
 ```math
 \begin{align*}
-|a_n - c| = |c - c| = 0 \, \forall n \geq 1 \\
-|a_n - c| < \epsilon \, \forall n \geq 1 \text{ for any } \epsilon > 0
+|a_n - c| = |c - c| = 0 \forall n \geq 1 \\
+|a_n - c| = 0 < \epsilon \forall n \geq 1 \text{ for any } \epsilon > 0
 \end{align*}
 ```
 </Callout>
@@ -187,27 +190,17 @@ where $a$ is the first term and $d$ is the common difference. In the above case 
 |a_n - 0| < \epsilon \text{ or } \frac{1}{n} < \epsilon
 ```
 
-<Callout type="todo">
-Is this proof correct? I don't rly understand the archimedes principle part.
-</Callout>
-
-For this sequence again we can get $|a_n - L| < \epsilon$ for all $n \geq N_{\epsilon}$. Because of [Archimedes principle](/garden/maths/discrete/intervals#archimedes-principle) we know that for any $x > 0$ there exists a $n \in \mathbb{N}$ such that $y \leq nx$ for all $y \in \mathbb{R}$. If we set $x = \epsilon$ and $y = 1$ then we know the following:
+For this sequence again we can get $|a_n - 0| < \epsilon$ for all $n \geq N_{\epsilon}$. Because of [Archimedes principle](/garden/maths/discrete/intervals#archimedes-principle) we know that for any $x > 0$ there exists a $n \in \mathbb{N}$ such that $y \leq nx$ for all $y \in \mathbb{R}$. If we set $x = \epsilon$ and $y = 1$ then we know the following:
 
 ```math
 \begin{align*}
 y \leq nx \\
 1 \leq N_{\epsilon} \epsilon \\
-\frac{1}{N_{\epsilon}} \leq \epsilon
+\frac{1}{\epsilon} \leq N_{\epsilon}
 \end{align*}
 ```
 
-So we know that some index $N_{\epsilon} \in \mathbb{N}$ exists such that:
-
-```math
-\frac{1}{N_{\epsilon}} < \epsilon
-```
-
-Which then means that for all $n \geq N_{\epsilon}$ the following holds:
+So we can choose $N_{\epsilon} = \lceil \frac{1}{\epsilon} \rceil$ which is the smallest integer larger than or equal to $\frac{1}{\epsilon}$. This means that for all $n \geq N_{\epsilon}$ the following holds:
 
 ```math
 |a_n - 0| = \frac{1}{n} \leq \frac{1}{N_{\epsilon}} < \epsilon
@@ -224,13 +217,23 @@ We have seen that some index $N_{\epsilon}$ exists such that for all $n \geq N_{
 ```math
 \begin{align*}
 \frac{1}{N_{0.8}} < 0.8 \\
-\frac{1}{N_{0.8}} < \frac{8}{10} \\
-\frac{5}{10} < \frac{1}{N_{0.8}} \\
-\frac{1}{2} < \frac{1}{N_{0.8}}
+1 < 0.8N_{0.8} \\
+\frac{1}{0.8} < N_{0.8} \\
+1.25 < N_{0.8}
 \end{align*}
 ```
 
-So $N_{0.8} = 2$ which means that for $\epsilon = 0.8$ all terms after $n=2$ are within the epsilon neighborhood around 0. 
+So $N_{0.8} = 2$ which means that for $\epsilon = 0.8$ all terms after $n=2$ are within the epsilon neighborhood around 0. We can also see this by calculating the terms of the sequence for $n=1$, $n=2$, and $n=3$ etc.
+
+```math
+\begin{align*}
+|a_1 - 0| = |1 - 0| = 1 \\
+|a_2 - 0| = |0.5 - 0| = 0.5 \\
+|a_3 - 0| = |0.333 - 0| = 0.333 \\
+\dots
+\end{align*}
+```
+
 </Callout>
 <Callout type="example">
 Let's look at the following sequence:
@@ -259,16 +262,22 @@ We can rewrite this as:
 Then by the Archimedes property we know that some $N_{\epsilon} \in \mathbb{N}$ exists such that:
 
 ```math
-\frac{1}{N_{\epsilon} + 1} < \epsilon
+\begin{align*}
+\frac{1}{N_{\epsilon}+1} < \epsilon \\
+1 < \epsilon(N_{\epsilon}+1) \\
+\frac{1}{\epsilon} < N_{\epsilon}+1 \\
+\frac{1}{\epsilon} - 1 < N_{\epsilon}
+\end{align*}
 ```
 
 Which means that the sequence converges to 1. We can also calculate the entry index for a given epsilon. For example if we had $\epsilon = 0.1$ then we can calculate $N_{0.1}$ by doing the following:
 
 ```math
 \begin{align*}
-\frac{1}{N_{0.1} + 1} < 0.1 \\
-\frac{1}{N_{0.1} + 1} < \frac{1}{10} \\
-10 < N_{0.1} + 1 \\
+\frac{1}{N_{0.1}+1} < 0.1 \\
+1 < 0.1(N_{0.1}+1) \\
+\frac{1}{0.1} < N_{0.1}+1 \\
+10 < N_{0.1}+1 \\
 9 < N_{0.1}
 \end{align*}
 ```
@@ -281,13 +290,13 @@ We have seen lots of examples of sequences that converge to a limit. But what ab
 (a_n)_{n \geq 1} = (-1)^n = -1, 1, -1, 1, \ldots
 ```
 
-Intuitively it is clear that this sequence does not converge as the terms keep switching between -1 and 1. We can also prove this by contradiction. Let's assume that the sequence converges to a limit $L$. We know that $|a_n - a_{n+1}| = 2$ for all $n \in \mathbb{N}$. The the following must hold for $\epsilon > 0$ and $\forall n \geq N_{\epsilon}$:
+Intuitively it is clear that this sequence does not converge as the terms keep switching between -1 and 1. We can also prove this by contradiction. Let's assume that the sequence converges to a limit $L$. Then the following must hold for $\epsilon > 0$ and $\forall n \geq N_{\epsilon}$:
 
 ```math
 |a_n - L| < \epsilon
 ```
 
-Let's assume by contradiction that a limit exists and that $\epsilon = \frac{1}{2}$. Then we know that there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
+Let's assume by contradiction that a limit exists and that $\epsilon = \frac{1}{2}$. We know that $|a_n - a_{n+1}| = 2$ for all $n \in \mathbb{N}$. Then we also know that there exists an index $N_{\epsilon}$ such that for all $n \geq N_{\epsilon}$ the following holds:
 
 ```math
 \begin{align*}
@@ -298,6 +307,12 @@ Let's assume by contradiction that a limit exists and that $\epsilon = \frac{1}{
 2 &\leq 1
 \end{align*}
 ```
+
+<Callout type="todo">
+Here we used the fact that $|a_n - L| < \epsilon$ and $|a_{n+1} - L| < \epsilon$ for all $n \geq N_{\epsilon}$.
+
+Why can we do this?
+</Callout>
 
 This is a contradiction and therefore the sequence does not converge. Note that we just added 0 by adding and subtracting $L$ and then used the triangle inequality.
 </Callout>
@@ -320,7 +335,13 @@ The specific sequence above does not converge as the terms keep getting larger a
 |a_n - L| < 1 \text{ or } |n - L| < 1
 ```
 
-However, $n$ is positive and gets larger and larger, therefore the distance also gets larger and larger. So there exists no such $N_{\epsilon}$ that satisfies the inequality for all $n \geq N_{\epsilon}$. Therefore the sequence does not converge.
+However, $n$ is positive and gets larger and larger, therefore the distance also gets larger and larger. So there exists no such $N_{\epsilon}$ that satisfies the inequality for all $n \geq N_{\epsilon}$. Therefore the sequence does not converge. Or in other words we have:
+
+```math
+|n - L| < 1 \implies -1 < n - L < 1 \implies L - 1 < n < L + 1
+```
+
+So for a fixed $L$ the number $n$ is in the interval $(L-1, L+1)$ which is not possible for all $n \geq N_{\epsilon}$ as $n$ gets larger and larger. So the sequence does not converge.
 </Callout>
 <Callout type="example" title="Root Sequence">
 using binomialsatz like in exercise sheet 2. of some constant
@@ -442,6 +463,40 @@ This is a very simple but powerful theorem that can be used to show that many se
     caption="Illustration of the idea behind the squeeze theorem"
     width={500}
 />
+
+<Callout type="proof">
+To prove the squeeze theorem, lets assume we have two sequences $(a_n)_{n\geq 1}$ and $(c_n)_{n\geq 1}$ that converge to the same limit $L$, meaning we have the indices $N_a \geq K$ and $N_c \geq K$ where $K$ is the index after which the sequence $(b_n)_{n\geq 1}$ is squeezed between $(a_n)_{n\geq 1}$ and $(c_n)_{n\geq 1}$. Then by definition of the limit we have that for all $n \geq N_a$ and $n \geq N_c$ the following holds:
+
+```math
+|a_n - L| < \epsilon \text{ and } |c_n - L| < \epsilon
+```
+
+If we then define $N_b = \max(N_a, N_c)$ we have for all $n \geq N_b$ as they are also larger than $K$:
+
+```math
+a_n \leq b_n \leq c_n \\ 
+```
+
+which can be rewritten as:
+
+```math
+a_n - L \leq b_n - L \leq c_n - L
+```
+
+which by definition of the above limit inequalitys means that:
+
+```math
+-\epsilon < a_n - L \leq b_n - L \leq c_n - L < \epsilon
+```
+
+So we have that for all $n \geq N_b$ the following holds:
+
+```math
+|b_n - L| < \epsilon
+```
+
+Meaning that the sequence $(b_n)_{n\geq 1}$ also converges to $L$.
+</Callout>
 
 <Callout type="example">
 Let's look at the sequence $a_n = \frac{sin(n)}{n}$. We know that the sine function is bounded between -1 and 1 and then that by dividing everything by $n$ we get the following:
@@ -659,13 +714,15 @@ und im Nenner aus einem Polynom l-ten Grades besteht, gilt:
 </Callout>
 <Callout type="example">
 the limit of $n^{1\over n} = 1$
-seems Weird
+ans also $a^{1 \over n} = 1$ for all $a > 0$. we use bernoulli for this? or binomial?
+
+In general when is $\lim_{n \to \infty} \sqrt[n]{f(n)} = \sqrt[n]{\lim_{n \to \infty} f(n)}$? Same goes for $\lim_{n \to \infty} f(n)^n = \lim_{n \to \infty} f(n)^{\lim_{n \to \infty} n}$?
 </Callout>
 
 ## Bernoulli's Inequality
 
 <Callout type="todo">
-Does this come from probability theory? Where does this belong? For now I put it here because it is used in the proof of Euler's number.
+Does this come from probability theory? Where does this belong? For now I put it here because it is used in the proof of Euler's number. What is the intution?
 </Callout>
 
 Bernoulli's Inequality states that for all $n \in \mathbb{N}$ and $x \in \mathbb{R}$ the following holds:
@@ -1005,6 +1062,14 @@ If the sequence $a_n = n$ so we have $(1, 2, 3, 4, \ldots)$ then we can create t
 <Callout type="proof">
 Some proof and example of using it? She didn't show anything.
 
+Jede beschränkte Folge hat eine konvergente Teilfolge, dann gilt:
+
+```math
+\liminf_{n \to \infty} a_n \leq \lim b_n \leq \limsup_{n \to \infty} a_n
+```
+
+Jede teilfolge b_n einer konvergenter Folge a_n konvergiert und konvergiert gegen den gleichen Grenzwert.
+
 We can also show that if the subsequence of the even indices and the  subsequence of the odd indices converge to the same limit, then the original sequence converges to that limit. 
 </Callout>
 
@@ -1036,7 +1101,9 @@ If we have the vector $L=(l_1, l_2, \ldots, l_d)$ and a vector sequence $a_n$, t
 2. $\lim_{n \to \infty} a_{n,i} = l_i$ for all $i=1,2,\ldots,d$.
 
 <Callout type="todo">
-She has a proof that these two statements are equivalent. Seems weird and complicated
+She has a proof that these two statements are equivalent. Seems weird and complicated,
+
+balzano weierstrass also works for vector sequences.
 </Callout>
 
 <Callout type="example">

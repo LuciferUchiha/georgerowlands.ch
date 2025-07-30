@@ -32,7 +32,7 @@ Another important property of convergent series is that the order in which we su
 \sum_{n=1}^{\infty} a_n = \sum_{n=1}^{\infty} a_{f(n)}
 ```
 
-In addition, just like with the convergence of a sequence, what the series does in the beginning does not affect the convergence of the series. For example, if we start summing the terms of a series at a different index, the series will still converge, but the value of the series will change. This is of course only true for real valued series, as if we would add infinity and then add a finite number, the series would diverge and if we skipped adding the infinity term, the series would converge to a finite value. So more formally for any $m \geq N_0$ we have:
+In addition, just like with the convergence of a sequence, what the series does in the beginning does not affect the convergence of the series. For example, if we start summing the terms of a series at a different index, the series will still converge, but **the value of the series will change**. This is of course only true for real valued series, as if we would add infinity and then add a finite number, the series would diverge and if we skipped adding the infinity term, the series would converge to a finite value. So more formally for any $m \geq N_0$ we have:
 
 ```math
 \sum_{n=N_0}^{\infty} a_n \text{converges} \iff \sum_{n=m}^{\infty} a_n \text{converges}
@@ -118,14 +118,28 @@ So therefore we must have:
 We have seen an example of a series that converges, now let's look at an example of a series that diverges. Just like with the geometric series that uses the geometric sequence, we can also look at the harmonic series that uses the [harmonic sequence](/garden/maths/calculus/convergentSeries). In this case we will analyze the following harmonic series:
 
 ```math
-\sum^{\infty}_{n=1}{\frac{1}{n}}
+\sum^{\infty}_{n=1}{\frac{1}{n}} = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \ldots
 ```
 
 We already know that the harmonic sequence converges to zero as $n$ approaches infinity. So the precondition is met. However, this does not automatically mean that the series also converges. In fact, the harmonic series diverges despite the sequence of terms converging to zero, the series diverges. This is a good example to show that the terms of the sequence converging to zero is a necessary but not sufficient condition for the series to converge. 
 
-<Callout type="todo">
-This isn't so intuitive so it will need a proof. Maybe later on with cauchy criterion or something like that.
-</Callout>
+```math
+\sum^{\infty}_{n=1}{\frac{1}{n}} = \infty
+```
+
+The intuitive idea behind this is that we can always find enough factors to make up a previous factor. For example, if we take the factor $\frac{1}{2}$, we can find two factors that are smaller than $\frac{1}{2}$, namely $\frac{1}{3}$ and $\frac{1}{4}$:
+
+```math
+\frac{1}{2} \leq \frac{1}{3} + \frac{1}{4}
+```
+
+This process can be continued indefinitely, for example we can find four factors that are smaller than $\frac{1}{4}$, namely $\frac{1}{5}$, $\frac{1}{6}$, $\frac{1}{7}$ and $\frac{1}{8}$:
+
+```math
+\frac{1}{4} \leq \frac{1}{5} + \frac{1}{6} + \frac{1}{7} + \frac{1}{8}
+```
+
+This means that we can always find enough factors to make up a previous factor, which leads to the series diverging.
 
 <Image
     src="/maths/harmonicSeries.png"
@@ -171,7 +185,7 @@ and as we can see the terms cancel each other out in a way that we are left with
 <Callout type="info" title="Beware of Infinite Sums">
 In the case of series we can not just use our usual rules for the [sum operator](/garden/maths/calculus/sequencesAndSeries/sumOperator). The reason is because the sums go to infinity and we can not just use the normal rules of arithmetic. 
 
-To see this let's compare two example previously seen examples. We can rewrite 
+To see this let's compare two previously seen examples. We can rewrite:
 
 ```math
 \sum^{\infty}_{n=1}{\frac{1}{n(n+1)}} = \sum^{\infty}_{n=1}{\frac{1}{n}} - \sum^{\infty}_{n=1}{\frac{1}{n+1}}$
@@ -189,11 +203,6 @@ which is not correct as these then diverge and we suddenly get a value of 1 (inf
 So we can only perform operations with series if we have a series $\sum^{\infty}_{k=1}{a_k}$ and $\sum^{\infty}_{j=1}{b_j}$ and they both converge. If this is the case we can perform the following operations:  
 - $\sum^{\infty}_{k=1}{c*a_k}=c* \sum^{\infty}_{k=1}{a_k}$ für $c \in C$
 - $\sum^{\infty}_{k=1}{a_k\pm b_k}=\sum^{\infty}_{k=1}{a_k}\pm \sum^{\infty}_{k=1}{b_k}$
-
-<Callout type="todo">
-Add a proof for this. Maybe using the sequence of partial sums.
-</Callout> 
-
 </Callout>
 
 ## Cauchy Criterion
@@ -231,6 +240,8 @@ The cauchy criterion also has a special property that follows from it. Just like
 ```math
 \sum_{k=1}^{\infty} a_k \text{ converges} \implies \lim_{n \to \infty} \sum_{k=n}^{m} a_k = 0
 ```
+
+which is our precondition we have already seen.
 
 <Callout type="proof">
 Using the cauchy criterion we can actually prove that the underlying sequence must be a null sequence. The proof is pretty simple. We assume we have a series $\sum_{n=1}^{\infty} a_n$ that converges. Then from the cauchy criterion we know that the following holds:
