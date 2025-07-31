@@ -468,10 +468,27 @@ Or in short:
 |\sum^{\infty}_{n=1}{a_n} | \leq \sum^{\infty}_{n=1}{|a_n|}
 ```
 
+Absolute convergent series also have the nice property that any subseries or rearrangement of the series also converges. This is not true for conditionally convergent series. So if we have a series $\sum^{\infty}_{n=1}{a_n}$ that converges absolutely, then we can say that any subseries or rearrangement of the series also converges. Intuitively this makes sense as the absolute value of the terms of the series is always positive and therefore the series value stays finite. 
+
 <Callout type="example">
 Let's look at the series $\sum^{\infty}_{n=1}{(-1)^{n+1} \frac{1}{n}}$ which is the so called alternating harmonic series. The sequence of the terms converge to zero, so our first condition is met. If we analyze the values of the series then we notice that the series converges to $\ln(2)$. So the series converges.
 
 But if we take the absolute value of the terms of the series, we get the harmonic series $\sum^{\infty}_{n=1}{\frac{1}{n}}$ which diverges. So we can say that the original series is convergent but not absolutely convergent. This is a good example to show that the converse of that absolute convergence implies convergence is not true. 
+</Callout>
+<Callout type="example">
+If we have the series $\sum^{\infty}_{n=1}{a_n}$ that converges absolutely, then it also follows that the series $\sum^{\infty}_{n=1}{a_n^2}$ also converges absolutely. We can prove this as follows. Because $a_n$ converges we know it is bounded i.e some $C \in \mathbb{R}$ exists such that $a_n \leq |a_n| \leq C$ for all $n \geq N$ for some $N \in \mathbb{N}$. So we can say that:
+
+```math
+|a_n|^2 \leq C |a_n| \text{ for all } n \geq N
+```
+
+and because we know that $\sum^{\infty}_{n=1}{|a_n|}$ converges and therefore also $C |a_n|$, we can use the direct comparison test to show that $\sum^{\infty}_{n=1}{|a_n|^2}$ converges as well. If we also had the series $\sum^{\infty}_{n=1}{b_n}$, that converges, then we can also show in a similar way that the series $\sum^{\infty}_{n=1}{a_nb_n}$ converges as well as their exists some bound $C \in \mathbb{R}$ such that:
+
+```math
+|a_nb_n| \leq C |b_n| \text{ for all } n \geq N
+```
+
+and therefore we can use the direct comparison test to show that $\sum^{\infty}_{n=1}{a_nb_n}$ converges absolutely as well.
 </Callout>
 
 ## Alternating Series Test
@@ -500,8 +517,6 @@ This comes from the fact that the first term of the series is positive will be t
 
 <Callout type="todo">
 This can somehow be extended to the alternating series estimation theorem which probably also works for all negative terms?
-
-She has a nice visualization of the idea of this estimation with it going back and forth within the bounds.
 </Callout>
 
 ## Riemann Rearrangement Theorem
@@ -1014,24 +1029,311 @@ and therfore with the direct comparison test to the harmonic series we can concl
 \end{cases}
 ```
 
-## Double Series and Multiplication of Series
+## Double Series
 
-We can define a double sequence c_kl that looks like a matrix. If we then add the elements column by column we get a sequence of U_n. From this sequence we can also create a series that sums up the elements so it is then a sum of sums. This is a double series. We can also add the elements row by row to get a different sequence S_n and also add the elements of this sequence to get a different double series. There are many ways of adding the elements and depending on the order the value of the series can be different because addition is not commutative in general.
+So far, we have focused on series with a single index. However, it is also common to encounter series indexed by two variables, such as sequences $c_{ij}$ where both $i$ and $j$ run through the natural numbers. This leads to the concept of the **double series** (or **double sum**), which is essentially the sum over a double-indexed sequence (often visualized as a matrix):
 
-So we say that some series is linear ordering of the double series if there is a bijection between the indices of the single series and the indices of the double series. 
+```math
+\sum_{i=0}^{\infty} \sum_{j=0}^{\infty} c_{ij}
+```
 
-From cauchy it follows that if the linear ordering series converges absolutly then so do the adding by row or by column series. And it follows that these also must be the same. If this is the case then so does every other linear ordering also converges absolutly to the same value.
+The partial sum of the double series is the sum of all terms within a finite rectangle:
+
+```math
+S_{m,n} = \sum_{i=0}^{m} \sum_{j=0}^{n} c_{ij}
+```
+
+We can then consider the limit as both $m$ and $n$ go to infinity. However, just as with single series, the order in which we take the limit—or, more concretely, the order in which we sum the terms—can affect the value of the double series if the series does **not** converge absolutely. So unlike finite sums, **infinite double sums can depend on the order of summation if the double series does not converge absolutely**. Recall that addition is only "order-agnostic" for absolutely convergent series.
+
+There are several natural ways to sum the elements of a double series:
+
+- **Row-wise sum (then columns):** First sum over $j$ for each fixed $i$ (i.e., sum across each row), then sum the resulting values over $i$.
+
+  ```math
+  U_i = \sum_{j=0}^{\infty} c_{ij}
+  ```
+
+  Then
+
+  ```math
+  \sum_{i=0}^{\infty} U_i = \sum_{i=0}^{\infty} \sum_{j=0}^{\infty} c_{ij}
+  ```
+
+- **Column-wise sum (then rows):** First sum over $i$ for each fixed $j$ (i.e., sum down each column), then sum over $j$.
+
+  ```math
+  V_j = \sum_{i=0}^{\infty} c_{ij}
+  ```
+
+  Then
+
+  ```math
+  \sum_{j=0}^{\infty} V_j = \sum_{j=0}^{\infty} \sum_{i=0}^{\infty} c_{ij}
+  ```
+
+- **Linear Ordering:** We can also sum the $c_{ij}$ by any linear ordering (or enumeration) of a double series where the ordering is a bijection $\sigma : \mathbb{N} \to \mathbb{N}^2$ so $k \mapsto (i,j)$. We can then write the double series as a single series:
+
+```math
+\sum_{k=0}^{\infty} b_k = \sum_{k=0}^{\infty} c_{\sigma(k)}
+```
+
+<Callout type="example">
+If a double series **does not** converge absolutely, then different summation orders can give different results (or not converge at all!). Here is a classic example:
+
+```math
+c_{ij} =
+\begin{cases}
+1 & \text{if } i = j \\
+-1 & \text{if } j = i+1 \\
+0 & \text{otherwise}
+\end{cases}
+```
+
+So the matrix looks like:
+
+```text
+1   -1   0    0   0  ...
+0    1  -1    0   0  ...
+0    0   1   -1   0  ...
+...
+```
+
+* **Sum by rows:** Each row is $1 + (-1) = 0$ (since the rest are zeros).
+  Thus, summing by rows gives $0 + 0 + 0 + \ldots = 0$.
+
+* **Sum by columns:** The first column: $1 + 0 + 0 + \ldots = 1$ The second column: $-1 + 1 + 0 + \ldots = 0$ The third column: $0 + -1 + 1 + \ldots = 0$. So, the first term is $1$, and the rest are $0$; the sum is $1$.
+
+So, the value depends on the summation order! If we look at the series we can see that it is not absolutely convergent:
+
+```math
+\sum_{i, j} |c_{ij}| = \sum_{i=0}^{\infty} (|1| + |-1|) = \infty
+```
+
+This is an explicit demonstration that absolute convergence is required for the order of summation to be irrelevant.
+</Callout>
+
+### Fubini's Theorem
+
+We say the double series **converges absolutely** if the sum of the absolute values converges, so there exists some $M \in \mathbb{R}$ such that:
+
+```math
+\sum_{i=0}^{\infty} \sum_{j=0}^{\infty} |c_{ij}| \leq M < \infty
+```
+
+If this is the case, **the value of the double series is independent of the order in which we sum the terms**. This is a consequence of Fubini's Theorem for series. From this is then also follows that the series of adding the elements row-wise and column-wise converge absolutely and converge to the same value. In fact, any linear ordering of the double series converges to the same value:
+
+```math
+\sum_{k=0}^{\infty} c_{\sigma(k)} = \sum_{i=0}^{\infty} \sum_{j=0}^{\infty} c_{ij} = \sum_{j=0}^{\infty} \sum_{i=0}^{\infty} c_{ij}
+```
 
 ## Cauchy Product
 
-Now what if we want to multiply two series? So we need to to find some way to multiply the elements of the series together which will then form a new series. This is called the **Cauchy Product** which has a similar idea to cantors diagonalization?
+So far, we've seen how to sum and manipulate series, but what if we want to **multiply** two series together? Just as the product of two polynomials is a new polynomial whose coefficients are sums of products of the original coefficients, we can define the product of two infinite series in an analogous way. This construction is known as the **Cauchy product**.
 
-This again results in a series (or double series?). The reason for defining the product of two series in this way was that if we had 2 polynomials which are just power series we want to have an accurate result and representation if we were to multipyl them.
+Recall that multiplying two polynomials results in new coefficients which are sums of products of the coefficients from each polynomial. For example, consider two polynomials of degree $n$:
 
-Importantly the cauchy product must not converge! When does it converge? 
+```math
+P(x) = a_0 + a_1 x + a_2 x^2 + \ldots + a_n x^n
+```
 
-If the two original series converge then the cauchy product can still converge. We can only say that if both the original series converge absolutely then the cauchy product also converge and their sum just becomes "normal looking?"
+```math
+Q(x) = b_0 + b_1 x + b_2 x^2 + \ldots + b_n x^n
+```
 
-using this we can prove that exp(x + y) = exp(x) * exp(y)
+Their product is
 
-we also compare the exponential series with the euler series where x=1 for the exponential series.
+```math
+P(x)Q(x) = a_0 b_0 + (a_0 b_1 + a_1 b_0)x + (a_0 b_2 + a_1 b_1 + a_2 b_0)x^2 + \ldots + a_n b_n x^{2n}
+```
+
+We can rewrite this as a sum of products of coefficients:
+
+```math
+P(x)Q(x) = \sum_{k=0}^{2n} c_k x^k
+```
+
+where the coefficients $c_k$ are defined as:
+
+```math
+c_k = \sum_{j=0}^{k} a_j b_{k-j}
+```
+
+That is, **each coefficient $c_k$ is the sum of all products $a_j b_{k-j}$ where the indices add up to $k$**.
+
+When we extend this to infinite series, we get the **Cauchy product**. Let $\sum_{n=0}^{\infty} a_n$ and $\sum_{n=0}^{\infty} b_n$ be two series (typically we take $a_n, b_n \in \mathbb{R}$ or $\mathbb{C}$). The **Cauchy product** is the series whose $n$-th term is defined as:
+
+```math
+c_n = \sum_{k=0}^{n} a_k b_{n-k}
+```
+
+So, the Cauchy product is
+
+```math
+\sum_{n=0}^{\infty} c_n = \sum_{n=0}^{\infty} \left( \sum_{k=0}^{n} a_k b_{n-k} \right )
+```
+
+This formula captures exactly the way polynomial coefficients multiply: each $c_n$ is a sum of products, where the indices of $a_k$ and $b_{n-k}$ add up to $n$.
+
+Now because it is a series, we also want to analyze the convergence of the Cauchy product. In general, the Cauchy product of two series may or may not converge, and if it does converge, it may not converge to the product of the sums of the original series. However, there are important conditions under which the Cauchy product behaves nicely. Even if both original series converge, their Cauchy product need **not** converge and vice versa if the two series diverge, the Cauchy product can still converge.
+
+However, we have the following important result:
+
+**If both $\sum a_n$ and $\sum b_n$ converge absolutely, then their Cauchy product $\sum c_n$ also converges absolutely, and:**
+
+```math
+\sum_{n=0}^{\infty} c_n = \left( \sum_{n=0}^{\infty} a_n \right) \left( \sum_{n=0}^{\infty} b_n \right)
+```
+
+That is, the sum of the Cauchy product is the product of the sums.
+
+<Callout type="proof">
+Suppose $\sum_{n=0}^{\infty} a_n$ and $\sum_{n=0}^{\infty} b_n$ are **absolutely convergent** series. Define
+
+```math
+A = \sum_{n=0}^{\infty} |a_n|, \qquad B = \sum_{n=0}^{\infty} |b_n|
+```
+
+Let $c_n = \sum_{k=0}^n a_k b_{n-k}$ be the terms of the Cauchy product.
+
+We can bound the absolute value of each $c_n$ using the triangle inequality:
+
+```math
+|c_n| = \left| \sum_{k=0}^n a_k b_{n-k} \right| \leq \sum_{k=0}^n |a_k| |b_{n-k}|
+```
+
+Therefore,
+
+```math
+\sum_{n=0}^{\infty} |c_n| \leq \sum_{n=0}^{\infty} \sum_{k=0}^n |a_k| |b_{n-k}|
+```
+
+Notice that the right-hand side is a **double sum** over all $(k, l)$ such that $k + l = n$, which, when summed over all $n$, covers all $(k, l)$ pairs in $\mathbb{N}^2$ exactly once.
+
+Therefore,
+
+```math
+\sum_{n=0}^{\infty} \sum_{k=0}^n |a_k| |b_{n-k}| = \sum_{k=0}^{\infty} |a_k| \sum_{l=0}^{\infty} |b_l| = A \cdot B < \infty
+```
+
+This shows that the Cauchy product is **absolutely convergent**.
+
+To show that the sum of the Cauchy product equals the product of the sums, consider the partial sums:
+
+```math
+S_N = \sum_{n=0}^N a_n, \qquad T_N = \sum_{n=0}^N b_n
+```
+
+Then, their product is:
+
+```math
+S_N T_N = \sum_{n=0}^N a_n \sum_{m=0}^N b_m = \sum_{n=0}^N \sum_{m=0}^N a_n b_m
+```
+
+But for each fixed $k = n + m$, the sum over all $(n, m)$ such that $n + m = k$ with $0 \leq n, m \leq N$ yields:
+
+* For $k \leq N$, all $(n, m)$ with $n + m = k$ are in $0 \leq n, m \leq N$, so we sum $a_n b_{k-n}$ for $n = 0$ to $k$.
+* For $k > N$, not all pairs are in $0 \leq n, m \leq N$.
+
+Thus,
+
+```math
+S_N T_N = \sum_{k=0}^{2N} \left( \sum_{j = \max(0, k-N)}^{\min(k, N)} a_j b_{k-j} \right )
+```
+
+As $N \to \infty$, $S_N \to S = \sum_{n=0}^\infty a_n$, $T_N \to T = \sum_{n=0}^\infty b_n$, and the inner sum tends to $c_k = \sum_{j=0}^k a_j b_{k-j}$. So the sum of the Cauchy product equals $S \cdot T$.
+
+</Callout>
+<Callout type="example">
+Suppose
+
+```math
+a_n = b_n = (-1)^n \frac{1}{\sqrt{n+1}}
+```
+
+Both $\sum a_n$ and $\sum b_n$ are convergent by the alternating series test since $\frac{1}{\sqrt{n+1}} \to 0$. But not absolutely convergent since:
+
+```math
+\sum_{n=0}^{\infty} |a_n| = \sum_{n=0}^{\infty} \frac{1}{\sqrt{n+1}} = \infty
+```
+
+Therefore, the Cauchy product $\sum c_n$ may or may not converge. In fact, it does converge. To show this let's compute the terms of the Cauchy product:
+
+```math
+c_n = \sum_{k=0}^{n} a_k b_{n-k}
+```
+
+Plugging in the values for $a_k$ and $b_{n-k}$:
+
+```math
+c_n = \sum_{k=0}^n (-1)^k \frac{1}{\sqrt{k+1}} \cdot (-1)^{n-k} \frac{1}{\sqrt{n-k+1}}
+```
+
+Combine the $(-1)$ factors:
+
+```math
+(-1)^k \cdot (-1)^{n-k} = (-1)^{n}
+```
+
+So
+
+```math
+c_n = (-1)^n \sum_{k=0}^n \frac{1}{\sqrt{k+1}\sqrt{n-k+1}} = (-1)^n \sum_{k=0}^n \frac{1}{\sqrt{(k+1)(n-k+1)}}
+```
+
+We can then get a upper bound for the root term as $k$ approaches $n$:
+
+```math
+(k+1)(n-k+1) \leq (n+1)^2
+```
+
+So we get:
+
+```math
+c_n = (-1)^n \sum_{k=0}^n \frac{1}{\sqrt{(k+1)(n-k+1)}} \leq (-1)^n \sum_{k=0}^n \frac{1}{\sqrt{(n+1)^2}} = (-1)^n \sum_{k=0}^n \frac{1}{n+1}
+```
+
+Using the fact that the sum of $n+1$ terms is just $n+1$, we get:
+
+```math
+c_n \leq (-1)^n \frac{n+1}{n+1} = (-1)^n
+```
+
+Therefore the Cauchy product diverges as the terms do not converge to zero. So we can conclude that the Cauchy product of two series that converge but not absolutely convergent can diverge.
+
+```math
+\sum_{n=0}^{\infty} c_n = \sum_{n=0}^{\infty} (-1)^n \text{ diverges}
+```
+</Callout>
+<Callout type="example">
+Let's see a powerful application of the cauchy product. The exponential function can be written as a power series:
+
+```math
+\exp(x) = \sum_{n=0}^{\infty} \frac{x^n}{n!}, \qquad \exp(y) = \sum_{n=0}^{\infty} \frac{y^n}{n!}
+```
+
+Both series are absolutely convergent for all $x, y \in \mathbb{R}$ or $\mathbb{C}$. The Cauchy product is:
+
+```math
+\sum_{n=0}^{\infty} c_n \text{ where } c_n = \sum_{k=0}^{n} \frac{x^k}{k!} \frac{y^{n-k}}{(n-k)!}
+```
+
+We can write:
+
+```math
+c_n = \sum_{k=0}^{n} \frac{x^k}{k!} \frac{y^{n-k}}{(n-k)!}
+```
+
+But using the binomial theorem we have:
+
+```math
+c_n = \frac{1}{n!} \sum_{k=0}^n \binom{n}{k} x^k y^{n-k} = \frac{(x + y)^n}{n!}
+```
+
+So the Cauchy product of the exponential series is again the exponential series with the argument $x + y$:
+
+```math
+\exp(x) \exp(y) = \sum_{n=0}^{\infty} \frac{(x + y)^n}{n!} = \exp(x + y)
+```
+
+This is a classic and fundamental result: **the exponential function turns addition into multiplication**, i.e., $\exp(x + y) = \exp(x) \exp(y)$.
+</Callout>
