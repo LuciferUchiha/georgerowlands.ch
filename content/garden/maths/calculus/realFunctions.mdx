@@ -1,0 +1,72 @@
+# Real Functions
+
+A **real function** is a mapping that assigns to every element in its domain $D \subseteq \mathbb{R}$ a unique real number:
+
+```math
+f : D \to \mathbb{R}
+```
+
+where $D$ is a subset of the real numbers. The **image** of $f$ is the set of all values $f(x)$ for $x \in D$, denoted as $f(D)$. We can then group these functions to form the set of all real-valued functions with domain $D$ is denoted as
+
+```math
+\mathbb{R}^D = \{f : D \to \mathbb{R} \mid D \subseteq \mathbb{R} \}
+```
+
+For $f, g \in \mathbb{R}^D$ and $c \in \mathbb{R}$, we can define the following operations:
+
+* **Addition**: $(f + g)(x) := f(x) + g(x)$
+* **Scalar multiplication**: $(c \cdot f)(x) := c \cdot f(x)$
+
+With these operations, $\mathbb{R}^D$ forms a **vector space** over $\mathbb{R}$. The **zero vector** in this space is the **null function** defined by $f_0(x) = 0$ for all $x \in D$.
+
+We can also define:
+
+* **Product**: $(f \cdot g)(x) := f(x) \cdot g(x)$, so the **constant function** $f_1(x) = 1$ is the multiplicative identity.
+* **Quotient**: $\left(\frac{f}{g}\right)(x) := \frac{f(x)}{g(x)}$, defined wherever $g(x) \neq 0$.
+* **Composition**: For $f : D \to \mathbb{R}$ and $g : E \to \mathbb{R}$ with $f(D) \subseteq E$, $(g \circ f)(x) := g(f(x))$.
+
+## Bounded Functions
+
+A function $f : D \to \mathbb{R}$ is called **bounded** if its image, i.e the set of its values $f(D) = {f(x) \mid x \in D}$ is a bounded subset of $\mathbb{R}$. That is, there exists $M > 0$ such that
+
+```math
+|f(x)| \leq M \quad \forall x \in D
+```
+
+Equivalently, $f$ is bounded **above** if there is $M$ such that $f(x) \leq M$ for all $x$, and **below** if there is $m$ such that $f(x) \geq m$ for all $x$.
+
+
+<Callout type="example">
+The constant function $f(x) = c$ is bounded for any $c \in \mathbb{R}$, since $|f(x)| = |c| \leq M$ for any $M \geq |c|$.
+</Callout>
+<Callout type="example">
+The identity function $f(x) = x$ is **not** bounded on $\mathbb{R}$, but **is** bounded if restricted to a bounded domain, e.g., $D = [a, b]$, where $a \leq x \leq b$ implies $|f(x)| \leq \max(|a|, |b|)$.
+</Callout>
+
+## Monotonic Functions
+
+A function $f : D \to \mathbb{R}$ is called **monotonic** if it preserves order in its domain. By preserving order we mean that the function does not change direction in a way that would contradict the order of the inputs. More precisely, for $x_1, x_2 \in D$ with $x_1 < x_2$:
+
+* $f$ is **increasing** if $f(x_1) \leq f(x_2)$.
+* $f$ is **decreasing** if $f(x_1) \geq f(x_2)$.
+* $f$ is **strictly increasing** if $f(x_1) < f(x_2)$.
+* $f$ is **strictly decreasing** if $f(x_1) > f(x_2)$.
+
+<Callout type="example">
+The constant function $f(x) = c$ is **monotonic** (both increasing and decreasing) but not strictly monotonic, since $f(x_1) = f(x_2) = c$ for all $x_1, x_2 \in D$.
+</Callout>
+<Callout type="example">
+The identity function $f(x) = x$ is **strictly increasing** on $\mathbb{R}$, but not bounded. If we restrict $f$ to a bounded interval, say $f : [a, b] \to \mathbb{R}$, then $f$ is both **strictly increasing** and **bounded**, since for all $x \in [a, b]$, we have $a \leq f(x) \leq b$.
+</Callout>
+
+<Callout type="example">
+Polynomial functions $f(x) = x^n$ are strictly increasing on $\mathbb{R}$ if $n$ is odd (e.g., $n=1,3,5$). We can prove this by showing that the derivative $f'(x) = n x^{n-1}$ is positive for $x > 0$, negative for $x < 0$, and zero only at $x = 0$ if $n > 1$. Thus, they are strictly increasing on the entire real line.
+
+On the bounded interval $[-1, 1]$, these functions are also **bounded**, since $|f(x)| \leq 1$ for all $x \in [-1, 1]$. However, they are **not bounded** on $\mathbb{R}$ as $x \to \infty$ or $x \to -\infty$:
+
+```math
+\forall M > 0, \exists x \in \mathbb{R}: |f(x)| = |x^3| > M \implies x > M^{1/3}
+```
+
+So for different $M$, we can find $x$ such that $f(x)$ exceeds any bound.
+</Callout>

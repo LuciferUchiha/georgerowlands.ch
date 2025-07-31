@@ -5,6 +5,7 @@ export default {
     convergentSequences: "",
     series: "",
     convergentSeries: "",
+    realFunctions: "",
     continuousFunctions: "",
     convergentFunctions: "",
     limitRules: "",

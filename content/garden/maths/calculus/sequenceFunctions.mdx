@@ -21,3 +21,47 @@ She later on also shows a third type?
 ### Normal Convergence
 
 Is this the third type?
+
+## Removable Discontinuity
+
+A function $f$ has a **removable discontinuity** at $x_0$ if the limit $\lim_{x \to x_0} f(x)$ exists (from both sides), but $f(x_0)$ is either not defined or not equal to this limit. In other words, the discontinuity can be "removed" by redefining $f(x_0)$ to be this limit. So if for every sequence $a_n \to x_0$, $a_n \neq x_0$, we have $f(a_n) \to L$, but $f(x_0) \neq L$, then $x_0$ is a removable discontinuity. Formally, if
+
+```math
+\lim_{x \to x_0^-} f(x) = \lim_{x \to x_0^+} f(x) = L
+```
+
+but $f(x_0) \neq L$ or $f(x_0)$ is undefined, we can define a new function
+
+```math
+\hat{f}(x) = \begin{cases}
+f(x), & x \neq x_0 \\
+L, & x = x_0
+\end{cases}
+```
+
+which is now continuous at $x_0$.
+
+<Callout type="example">
+Suppose we have a function defined as follows:
+
+```math
+f(x) = \begin{cases}
+\frac{x^2 - 1}{x - 1}, & x \neq 1 \\
+3, & x = 1
+\end{cases}
+```
+
+For $x \neq 1$, $f(x) = x + 1$, so as $x \to 1$, $f(x) \to 2$. But $f(1) = 3 \neq 2$.  
+So, $f$ has a removable discontinuity at $x_0 = 1$. If we redefine $f(1) := 2$, the function becomes continuous at $x_0 = 1$. So the new continuous function $\hat{f}(x)$ is:
+
+```math
+\hat{f}(x) = \begin{cases}
+f(x), & x \neq 1 \\
+2, & x = 1
+\end{cases}
+```
+
+Take $a_n = 1 + \frac{1}{n}$, then $a_n \to 1$, and $f(a_n) = a_n + 1 \to 2$ as $n \to \infty$.  
+But $f(1) = 3$, so $f(a_n) \to 2 \neq f(1)$.  
+Thus, $f$ is not continuous at $x_0 = 1$, but redefining $f(1) := 2$ “removes” the discontinuity.
+</Callout>
