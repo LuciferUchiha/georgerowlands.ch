@@ -1,0 +1,513 @@
+# Sequences of Functions
+
+We know a sequence is a function that maps natural numbers to some real or complex value of a function:
+
+```math
+\begin{align*}
+a: \mathbb{N} \to \mathbb{R} \\
+n \mapsto a(n)=a_n
+\end{align*}
+```
+
+But we can also define a sequence of functions:
+
+```math
+\begin{align*}
+a: \mathbb{N} \to \mathbb{R}^D \\
+n \mapsto f_n: D \to \mathbb{R} 
+\end{align*}
+```
+
+where $D$ is some domain and $\mathbb{R}^D$ is the set of all functions from $D$ to $\mathbb{R}$. So for each index we are getting a different function, not a function value! We can then of course also using on of the functions $f_n$ define a sequence of real numbers by taking every value x in the domain $D$ and evaluating it, $(f_(x))_{n \geq 1}$. So we can create a sequence of sequences?
+
+<Callout type="example">
+We can define the following sequence of functions:
+
+```math
+\begin{align*}
+f_n: [0,1] \to \mathbb{R} \\
+x \mapsto x^n
+\end{align*}
+```
+
+This is a sequence of functions because for different $n$, we get different functions so we have:
+
+```math
+(f_n)_{n \geq 1} = (f_1, f_2, f_3, \ldots) = (x, x^2, x^3, \ldots)
+```
+
+But we can also evaluate these functions for different values in $D = [0,1]$. For example for $x = \frac{1}{2}$:
+
+```math
+(f_n(\frac{1}{2}))_{n \geq 1} = ((\frac{1}{2})^n)_{n \geq 1} = (\frac{1}{2}, \frac{1}{4}, \frac{1}{8}, \ldots)
+```
+
+For $x = 1$, we have:
+
+```math
+(f_n(1))_{n \geq 1} = (1^n)_{n \geq 1} = (1, 1, 1, \ldots)
+```
+
+etc.
+</Callout>
+
+## Convergence of Function Sequences
+
+We can then look at the convergence of each of these sequences for different values of $x$ in the domain $D$. The goal is to find some sort of pattern to then descrive the sequence of functions.
+
+<Callout type="example">
+For example if we look at the sequence where $x=1$ we can clearly see that it converges to 1 as:
+
+```math
+(f_n(1))_{n \geq 1} = (1^n)_{n \geq 1} = (1, 1, 1, \ldots)
+``` 
+
+and we have the limit $\lim_{n \to \infty} f_n(1) = 1^n = 1$.
+
+If we look at the sequence where $x = \frac{1}{2}$, we have:
+
+```math
+(f_n(\frac{1}{2}))_{n \geq 1} = ((\frac{1}{2})^n)_{n \geq 1} = (\frac{1}{2}, \frac{1}{4}, \frac{1}{8}, \ldots)
+```
+
+so we have $\lim_{n \to \infty} f_n(\frac{1}{2}) = \lim_{n \to \infty} (\frac{1}{2})^n = 0$. It turns out this is the case for all $x \in [0,1)$, so we could summarize the convergence of these sequences into a function?
+
+```math
+f(x) = \begin{cases}
+0, & x \in [0,1) \\
+1, & x = 1
+\end{cases}
+```
+
+where f(x) represents the convergence of the sequence of functions? All it meh explained need to clearly seperate things out.
+
+converges against a function?
+</Callout>
+
+### Pointwise Convergence
+
+We say a sequence of functions $(f_n)_{n \geq 1}$ converges **pointwise** to a function $f$ on a domain $D$ if for every $x \in D$, the sequence of real numbers $(f_n(x))_{n \geq 1}$ converges to $f(x)$ as $n \to \infty$. Formally, this means:
+
+```math
+\lim_{n \to \infty} f_n(x) = f(x), \quad \forall x \in D
+```
+
+Or in limit terms for all $x \in D$ and for all $\epsilon > 0$, there exists an $N$ such that for all $n \geq N$:
+
+```math
+|f_n(x) - f(x)| < \epsilon
+```
+
+The functions $x^n$ are continuous but the function they converge to $f(x)$ is not continuous at $x=1$? 
+
+### Uniform Convergence
+
+A sequence of functions $(f_n)_{n \geq 1}$ converges **uniformly** to a function $f$ on a domain $D$ if the convergence is uniform across all points in $D$. This means that for every $\epsilon > 0$, there exists an $N$ such that for all $n \geq N$ and for all $x \in D$:
+
+```math
+|f_n(x) - f(x)| < \epsilon
+```
+
+Notice the difference in the order of quantifiers. What is the actual difference? Wyh does x^n not converge unfiformly? show where it breaks the above condition. We can show that the index N doesnt not only depend on epsilon but also for x. For uniform convergence this is not the case it only depends on epsilon?
+
+It follows that if the sequence consists of continous functions then the sequence converges uniformly if the function f is continous. Why is this the case? So above example does not converge uniformly? So it keeps continouty?
+
+We have that uniform convergence implies pointwise convergence.
+
+It converges uniformly if:
+
+```math
+\limsup_{n \to \infty} \sup_{x \in D} |f_n(x) - f(x)| = 0
+```
+
+Why what does this mean? does it belong higher up?
+
+Something like cauchy convergence? It converges unfiormoly in D if for all $\epsilon > 0$, there exists an $N$ such that for all $m,n \geq N$ and for all $x \in D$:
+
+```math
+|f_n(x) - f_m(x)| < \epsilon
+```
+
+<Callout type="example">
+We consider the following example
+
+```math
+\begin{align*}
+f_n: \mathbb{R} \to \mathbb{R} \\
+x \mapsto x + \frac{1}{n}
+\end{align*}
+```
+
+So for x=0 we have:
+
+```math
+f_n(0) = 0 + \frac{1}{n} = \frac{1}{n}
+```
+
+As $n \to \infty$, $f_n(0) \to 0$. So we have:
+
+```math
+\lim_{n \to \infty} f_n(0) = 0
+```
+
+For $x=1$, we have:
+
+```math
+f_n(1) = 1 + \frac{1}{n}
+```
+
+As $n \to \infty$, $f_n(1) \to 1$. So we have:
+
+```math
+\lim_{n \to \infty} f_n(1) = 1
+```
+
+for all $x \in \mathbb{R}$, we have:
+
+```math
+\lim_{n \to \infty} f_n(x) = x
+```
+
+So we say the function converges pointwise to the function f(x) = x. But it also converges uniformly:
+
+```math
+\begin{align*}
+\sup_{x \in \mathbb{R}} |f_n(x) - f(x)| &= \sup_{x \in \mathbb{R}} |(x + \frac{1}{n}) - x| \\
+&= \sup_{x \in \mathbb{R}} \frac{1}{n} \\
+&= \frac{1}{n} \to 0 \text{ as } n \to \infty
+\end{align*}
+```
+
+So it converges uniformly to the function f(x) = x. This matches our intuition as all the functions involved are continuous (do we not have an issue with division by 0) and the function we converge to is simply the identity function which is also continous.
+</Callout>
+
+Absolutely! I'll complete and refine your notes for **Sequences of Functions** below, matching your style and rigor. I will clarify some points, fix minor typos, and fill out explanations, proofs, and comments as you requested. I'll keep your notation and expand where you left off—adding proper sectioning and clearer separation where needed.
+
+---
+
+# Sequences of Functions
+
+We know a sequence is a function that maps natural numbers to some real or complex value:
+
+```math
+\begin{align*}
+a: \mathbb{N} \to \mathbb{R} \\
+n \mapsto a(n)=a_n
+\end{align*}
+```
+
+But we can also define a sequence of functions:
+
+```math
+\begin{align*}
+a: \mathbb{N} \to \mathbb{R}^D \\
+n \mapsto f_n: D \to \mathbb{R} 
+\end{align*}
+```
+
+where $D$ is some domain and $\mathbb{R}^D$ denotes the set of all functions from $D$ to $\mathbb{R}$. So for each index $n$ we are getting a different function, not just a function value. For any fixed $x \in D$, we can then create a sequence of real numbers by evaluating each function at $x$:
+
+```math
+(f_n(x))_{n \geq 1}
+```
+
+So in a sense, we can think of a sequence of functions as a "sequence of sequences," indexed both by $n$ and by $x$.
+
+<Callout type="example">
+Suppose we have the following sequence of functions:
+
+```math
+\begin{align*}
+f_n: [0,1] \to \mathbb{R} \\
+x \mapsto x^n
+\end{align*}
+```
+
+So,
+
+```math
+(f_n)_{n \geq 1} = (f_1, f_2, f_3, \ldots) = (x, x^2, x^3, \ldots)
+```
+
+If we fix $x = \frac{1}{2}$:
+
+```math
+(f_n(\frac{1}{2}))_{n \geq 1} = ((\frac{1}{2})^n)_{n \geq 1} = (\frac{1}{2}, \frac{1}{4}, \frac{1}{8}, \ldots)
+```
+
+If $x = 1$:
+```math
+(f_n(1))_{n \geq 1} = (1^n)_{n \geq 1} = (1, 1, 1, \ldots)
+```
+</Callout>
+
+## Convergence of Function Sequences
+
+We can now study the convergence of such sequences. For each $x \in D$, the sequence $(f_n(x))_{n \geq 1}$ may converge to a real number. If it does, we can collect these limits to form a new function $f: D \to \mathbb{R}$, where
+
+```math
+f(x) = \lim_{n \to \infty} f_n(x).
+```
+
+So, the sequence of functions "converges" to $f$ if this limit exists for every $x \in D$.
+
+<Callout type="example">
+Consider $f_n(x) = x^n$ on $[0,1]$.
+- For $x = 1$: $(f_n(1))_{n \geq 1} = (1, 1, 1, \ldots) \to 1$
+- For $x = \frac{1}{2}$: $(f_n(\frac{1}{2}))_{n \geq 1} = (\frac{1}{2}, \frac{1}{4}, \frac{1}{8}, \ldots) \to 0$
+- For $x \in [0,1)$, in general: $x^n \to 0$ as $n \to \infty$
+- For $x = 0$: $(0^n) = 0$
+
+So, the **pointwise limit function** is:
+
+```math
+f(x) = \begin{cases}
+0, & x \in [0,1) \\
+1, & x = 1
+\end{cases}
+```
+
+we call it the pointwise limit function because it describes the limit of the sequence at each point $x \in D$. Here, $f$ is not continuous at $x=1$, even though each $f_n$ is continuous everywhere. 
+</Callout>
+
+### Pointwise Convergence
+
+We have already seen in the example above how we can define the pointwise limit function. We say a sequence of functions $(f_n)_{n \geq 1}$ **converges pointwise** to a function $f$ on a domain $D$ if for every $x \in D$:
+
+```math
+\lim_{n \to \infty} f_n(x) = f(x)
+```
+
+In other words, for every $x \in D$ and every $\epsilon > 0$, there exists $N = N(x, \epsilon)$ such that for all $n \geq N$:
+
+```math
+|f_n(x) - f(x)| < \epsilon
+```
+
+In our previous example ($f_n(x) = x^n$), the sequence converges pointwise to $f(x)$ as described above. We also saw that even though all $f_n$ are continuous, the pointwise limit $f(x)$ is **not** continuous at $x=1$. This shows that pointwise convergence does **not** preserve continuity.
+
+Intuitively you can think that pointwise convergence means that for each individual point $x$, the values $f_n(x)$ get closer and closer to $f(x)$ as $n$ increases. However, how quickly this happens can be totally different at different points $x$—there's no “global” rate at which $f_n(x)$ approaches $f(x)$. At each $x$, you might need to wait a different (possibly much larger) $n$ until the values are close.
+
+Imagine watching a crowd of runners (functions $f_n$) approach a finish line ($f$) at different positions ($x$). Pointwise convergence only requires that each runner eventually gets close to their own finish, but at completely different times.
+
+### Uniform Convergence
+
+A stronger type of convergence is **uniform convergence**. A sequence $(f_n)$ converges *uniformly* to $f$ on $D$ if for every $\epsilon > 0$ there exists $N = N(\epsilon)$ such that for all $n \geq N$ and **all** $x \in D$:
+
+```math
+|f_n(x) - f(x)| < \epsilon
+```
+
+That is, after some index $N$, **all** functions $f_n$ stay uniformly close to $f$ everywhere on $D$. Notice the difference in the order of quantifiers compared to pointwise convergence:
+
+* **Pointwise**: $\forall x \in D$, $\forall \epsilon > 0$, $\exists N = N(x,\epsilon)$, $\forall n \geq N$
+* **Uniform**: $\forall \epsilon > 0$, $\exists N = N(\epsilon)$, $\forall n \geq N$, $\forall x \in D$
+
+So the $N$ for the pointwise convergence can depend on $\epsilon$ and $x$, whereas the $N$ for uniform convergence depends only on $\epsilon$. This means that uniform convergence provides a stronger form of control over the convergence behavior of the entire sequence of functions and that **Uniform convergence implies pointwise convergence, but not vice versa.**:
+
+```math
+f_n \text{ converges uniformly to } f \text{ on } D \implies f_n \text{ converges pointwise to } f \text{ on } D
+```
+
+So Uniform convergence requires that all points in the domain “catch up” at once, after a certain stage $N$, regardless of where you look! So after $N$, every $f_n(x)$ is close to $f(x)$, no matter which $x$ you pick.
+
+With uniform convergence, imagine there's a single, global deadline $N$, after which every runner (at every $x$) must be close to the finish line. There's no straggling: everyone keeps up together.
+
+<Callout type="example">
+Let's see why $f_n(x) = x^n$ does **not** converge uniformly on $[0,1]$ to the limit function $f(x)$ above.
+
+Suppose for contradiction that the convergence is uniform. Let $\epsilon = \frac{1}{2}$. We would need to find $N$ so that for all $n \geq N$ and all $x \in [0,1]$:
+
+```math
+|x^n - f(x)| < \frac{1}{2}
+```
+
+But for $x$ close to $1$, say $x = 1 - \delta$ with $0 < \delta < 1$, $x^n$ can be made arbitrarily close to $1$ for any fixed $n$. In particular, for any $n$, we can find $x$ so that $x^n$ is as close to $1$ as we like, but $f(x) = 0$ for $x < 1$. Thus,
+
+```math
+|x^n - f(x)| = |x^n - 0| = x^n \approx 1
+```
+
+for $x$ close enough to $1$. No matter how large $n$ is, $x^n$ does not get uniformly small over the whole interval $[0,1)$. Thus, no such $N$ exists for uniform convergence.
+
+More formally, for every $n$ and $\epsilon < 1$, take $x = (1 - \frac{\epsilon}{2})^{1/n}$. Then $x^n = 1 - \frac{\epsilon}{2}$, so $|x^n - 0| \geq 1 - \frac{\epsilon}{2}$, which is not less than $\epsilon$ for small $\epsilon$.
+</Callout>
+
+Uniform convergence can also be expressed as:
+
+```math
+\lim_{n \to \infty} \sup_{x \in D} |f_n(x) - f(x)| = 0
+```
+
+This means the maximum possible difference between $f_n(x)$ and $f(x)$ over all $x \in D$ tends to $0$ as $n \to \infty$. This does not hold for pointwise convergence (as in the $x^n$ example above).
+
+We can also use a Cauchy-like criterion for uniform convergence. A sequence $(f_n)$ converges uniformly on $D$ if and only if for every $\epsilon > 0$, there exists $N$ such that for all $m,n \geq N$ and all $x \in D$:
+
+```math
+|f_n(x) - f_m(x)| < \epsilon
+```
+
+This mirrors the Cauchy criterion for sequences of real numbers, but applies uniformly for all $x \in D$ and matches our "runner" analogy: after some point $N$, the distance between any two functions in the sequence is uniformly small across the entire domain.
+
+For the pointwise limit function $f(x)$ we saw that it did not preserve continuity. For uniform convergence this is different. If each $f_n$ is continuous and $(f_n)$ converges uniformly to $f$, then $f$ is also continuous. So uniform convergence preserves continuity.
+
+<Callout type="example">
+Suppose we have a sequence of functions defined as follows:
+
+```math
+\begin{align*}
+f_n: \mathbb{R} \to \mathbb{R} \\
+x \mapsto x + \frac{1}{n}
+\end{align*}
+```
+
+If we look at the sequence at $x = 0$:
+
+```math
+f_n(0) = 0 + \frac{1}{n} = \frac{1}{n} \to 0
+```
+
+for $x < 0$:
+
+```math
+f_n(x) = x + \frac{1}{n} \to x
+```
+
+and the same holds for $x > 0$. So for each $x \in \mathbb{R}$,
+
+```math
+\lim_{n \to \infty} f_n(x) = x
+```
+
+Let's check uniform convergence:
+
+```math
+\sup_{x \in \mathbb{R}} |f_n(x) - x| = \sup_{x \in \mathbb{R}} |x + \frac{1}{n} - x| = \frac{1}{n} \to 0
+```
+
+as $n \to \infty$. So, $(f_n)$ converges **uniformly** to $f(x) = x$. Each $f_n$ and $f$ are continuous everywhere as $n \geq 1$, and uniform convergence preserves this.
+</Callout>
+
+### Normal Convergence
+
+Is this the third type?
+
+## Series of Functions
+
+Just as with sequences of numbers, we can consider sequences and series of functions. Given a domain $D$ and functions $f_n : D \to \mathbb{R}$ (or $\mathbb{C}$), we can look at the sequence $(f_n)$ and also the corresponding series $\sum_{n=0}^\infty f_n(x)$. The convergence properties of these series.
+
+Recall that for each $x \in D$, the sum $\sum_{n=0}^\infty f_n(x)$ defines a series of real (or complex) numbers. We say the series of functions **converges pointwise** on $D$ if, for every $x \in D$, the sequence of partial sums $S_N(x) = \sum_{n=0}^N f_n(x)$ converges as $N \to \infty$. The **pointwise limit function** is then $f(x) = \lim_{N \to \infty} S_N(x)$, provided the limit exists for all $x \in D$.
+
+However, pointwise convergence alone is often not enough, especially if we care about the continuity, integrability, or differentiability of the limit function. A stronger concept is **uniform convergence**. We say the series $\sum f_n$ converges **uniformly** on $D$ if the sequence $(S_N)$ converges uniformly, i.e., for every $\epsilon > 0$ there exists $N$ such that for all $n \geq N$ and all $x \in D$,
+
+```math
+|S_n(x) - f(x)| < \epsilon.
+```
+
+Uniform convergence allows us to exchange limits with other operations like integration and differentiation, and it guarantees that the limit function inherits properties such as continuity from the approximating functions.
+
+But how can we actually check uniform convergence in practice? This is where the **Weierstrass M-test** is extremely useful. It provides a powerful criterion to verify uniform convergence for series of functions. 
+
+Imagine you want to control the “size” of each term $f_n(x)$, no matter which $x$ you choose. If you can find a number $M_n$ so that $|f_n(x)| \leq M_n$ for every $x \in D$, then the function $f_n(x)$ can never “spike” above $M_n$ at any point in the domain. If the numerical series $\sum M_n$ converges, then the function series $\sum f_n(x)$ cannot “escape to infinity” anywhere in $D$.
+
+Suppose $f_n : D \to \mathbb{R}$ and for each $n$ there is a real number $M_n \geq 0$ such that $|f_n(x)| \leq M_n$ for all $x \in D$. If the numerical series $\sum_{n=0}^\infty M_n$ converges, then the series $\sum_{n=0}^\infty f_n(x)$ converges **uniformly** and **absolutely** on $D$.
+
+<Callout type="proof">
+Let's see why. For each $N > M \geq 0$, consider the $N$th and $M$th partial sums:
+
+```math
+|S_N(x) - S_M(x)| = \left| \sum_{n=M+1}^N f_n(x) \right| \leq \sum_{n=M+1}^N |f_n(x)| \leq \sum_{n=M+1}^N M_n.
+```
+
+Since $\sum M_n$ converges, for every $\epsilon > 0$ there is $K$ such that for all $M \geq K$,
+
+```math
+\sum_{n=M+1}^\infty M_n < \epsilon,
+```
+
+which means that the tail $\sum_{n=M+1}^N f_n(x)$ is uniformly small for all $x$ once $M$ is large enough. Therefore, the Cauchy criterion for uniform convergence is satisfied, and so the series converges uniformly.
+</Callout>
+<Callout type="example">
+Let's see the M-test in action. Consider the series:
+
+```math
+\sum_{n=0}^\infty \frac{\sin(nx)}{n^2}
+```
+
+We notice that for every $x$, $|\sin(nx)| \leq 1$. So for all $x$ and all $n$:
+
+```math
+\left|\frac{\sin(nx)}{n^2}\right| \leq \frac{1}{n^2}.
+```
+
+Now, the numerical series $\sum_{n=1}^\infty \frac{1}{n^2}$ is a convergent $p$-series (in fact, it sums to $\frac{\pi^2}{6}$). By the Weierstrass M-test, the original series converges uniformly (and absolutely) for all $x \in \mathbb{R}$. This means that not only does $\sum_{n=1}^\infty \frac{\sin(nx)}{n^2}$ converge for each $x$, but the convergence is uniform over all $x$.
+</Callout>
+
+Now, equipped with the M-test, let's examine **power series**, which are among the most important series of functions:
+
+```math
+\sum_{n=0}^\infty c_n x^n
+```
+
+where $c_n$ are real or complex coefficients. The fundamental question is: for which $x$ does this series converge? The answer is given by the **radius of convergence** $r$, which can be computed as
+
+```math
+r = \frac{1}{\displaystyle\limsup_{n \to \infty} |c_n|^{1/n}}
+```
+
+(with the convention $1/0 = \infty$, so if $|c_n|^{1/n} \to 0$, the series converges for all $x$). The power series converges absolutely for all $|x| < r$ and diverges for $|x| > r$. The situation at $|x| = r$ can vary and must be considered separately for each series.
+
+<Callout type="proof">
+Let's prove this with the **root test**. For $a_n = c_n x^n$,
+
+```math
+\limsup_{n \to \infty} |a_n|^{1/n} = \limsup_{n \to \infty} |c_n|^{1/n} |x| = L|x|.
+```
+
+The series converges if $L|x| < 1$, that is, $|x| < r$. Thus $r = 1/L$ as claimed.
+</Callout>
+
+Moreover, the Weierstrass M-test gives us a practical tool to check **uniform convergence** of power series on closed intervals strictly inside their radius of convergence. For example, fix $0 \leq r_0 < r$. For all $x$ with $|x| \leq r_0$, we have
+
+```math
+|c_n x^n| \leq |c_n| r_0^n,
+```
+
+and $\sum |c_n| r_0^n$ converges since $r_0 < r$. So, by the M-test, the series $\sum c_n x^n$ converges uniformly on $|x| \leq r_0$.
+
+Uniform convergence has important consequences. If each $f_n$ is continuous and the series converges uniformly, the sum $f(x) = \sum_{n=0}^\infty f_n(x)$ is also continuous. Therefore, the sum of a power series is always continuous on any closed interval strictly inside its radius of convergence. This is why power series (and polynomials, which are just finite power series) are always continuous within their interval of convergence.
+
+As a concrete example, consider the **exponential function**, which has the power series expansion
+
+```math
+\exp(x) = \sum_{n=0}^\infty \frac{x^n}{n!}.
+```
+
+Let's determine its radius of convergence. Using the ratio test,
+
+```math
+\left| \frac{a_{n+1}}{a_n} \right| = \left| \frac{x^{n+1}/(n+1)!}{x^n/n!} \right| = \left| \frac{x}{n+1} \right| \to 0 \quad (n \to \infty)
+```
+
+for all $x$, so the radius of convergence is infinite: the exponential series converges everywhere. In particular, it converges uniformly on every bounded interval, and thus $\exp(x)$ is continuous everywhere.
+
+Similarly, the sine and cosine functions have power series expansions
+
+```math
+\sin(x) = \sum_{n=0}^\infty \frac{(-1)^n x^{2n+1}}{(2n+1)!}, \qquad \cos(x) = \sum_{n=0}^\infty \frac{(-1)^n x^{2n}}{(2n)!}
+```
+
+These too are power series with infinite radius of convergence, as can be seen using the ratio test (or root test) just as for $\exp(x)$. Thus, both sine and cosine are continuous for all $x$.
+
+Using this fact and the construction of the cosine and sine functions via their power series, we can define the following properties:
+- $\exp(ix) = \cos(x) + i\sin(x)$, which is the famous Euler's formula.
+- $\cos(x) = \cos(-x)$, showing that cosine is an even function.
+- $\sin(x) = \frac{e^{ix} - e^{-ix}}{2i}$, which expresses sine in terms of exponential functions.
+- $\cos(x) = \frac{e^{ix} + e^{-ix}}{2}$, which expresses cosine in terms of exponential functions.
+- $\sin(x + y) = \sin(x)\cos(y) + \cos(x)\sin(y)$, which is the sine addition formula.
+- $\cos(x + y) = \cos(x)\cos(y) - \sin(x)\sin(y)$, which is the cosine addition formula.
+- Specifically from the above it then follows that $\sin(2x) = 2\sin(x)\cos(x)$ and $\cos(2x) = \cos^2(x) - \sin^2(x)$.
+- We then also have $\sin^2(x) + \cos^2(x) = 1$, which is the Pythagorean identity.
+- $\sin(\pi) = 0$ so $\pi$ is the smallest non-zero root of $\sin(x)$.
+
+etc. etc.

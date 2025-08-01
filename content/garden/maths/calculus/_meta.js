@@ -7,6 +7,7 @@ export default {
     convergentSeries: "",
     realFunctions: "",
     continuousFunctions: "",
+    sequencesOfFunctions: "",
     convergentFunctions: "",
     limitRules: "",
     differentiableFunctions: "",
