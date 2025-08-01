@@ -1,18 +1,269 @@
-# Taylor Series
+import Callout from "@components/Callout/Callout";
+import Image from "@components/Image/Image";
 
-A special case of a power series where the coefficients are specifically derived from the function's derivatives at a particular point.
+# Taylor Approximation and Taylor Series
 
-A representation of a function as an infinite sum of terms that are calculated from 
-the values of the function's derivatives at a single point.
-
-The Taylor series of a function $f(x)$ about a point $x = a$ is given by:
+We have seen that if a function $f$ is differentiable at a point $x_0$, it can be approximated near $x_0$ by its tangent line, which is also called the first-order Taylor polynomial:
 
 ```math
-f(x) = f(a) + f'(a)(x - a) + \frac{f''(a)}{2!}(x - a)^2 + \frac{f'''(a)}{3!}(x - a)^3 + ...
-= \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!}(x - a)^n
+f(x) \approx f(x_0) + f'(x_0)(x - x_0)
 ```
 
-Where $f^{(n)}(a)$ is the $n$-th derivative of $f(x)$ evaluated at $x = a$. The higher the order of the derivative, 
-the more accurate the approximation of the function around the point $x = a$.
+Here, $f(x_0) + f'(x_0)(x - x_0)$ gives the value of the tangent at $x_0$. We write this as
 
-Maclaurin series when the point of consideration is $x = 0$.
+```math
+T_1(x) = f(x_0) + f'(x_0)(x - x_0)
+```
+
+The error of this approximation, or **remainder term**, is defined as:
+
+```math
+R_1(f, x, x_0) = f(x) - T_1(x)
+```
+
+It is important that, as $x \to x_0$, this remainder vanishes *faster* than $x - x_0$:
+
+```math
+\lim_{x \to x_0} \frac{R_1(f, x, x_0)}{x - x_0} = 0
+```
+
+This motivates us to try to improve the approximation. An idea is to include higher-order derivatives. If $f$ is $n$ times differentiable at $x_0$, we can build the $n$th-degree Taylor polynomial:
+
+```math
+T_n(x) = f(x_0) + f'(x_0)(x - x_0) + \frac{f''(x_0)}{2!}(x - x_0)^2 + \ldots + \frac{f^{(n)}(x_0)}{n!}(x - x_0)^n
+```
+
+or, in sigma notation:
+
+```math
+T_n(x) = \sum_{k=0}^n \frac{f^{(k)}(x_0)}{k!}(x - x_0)^k
+```
+
+The **remainder term** after the $n$th degree is:
+
+```math
+R_n(f, x, x_0) = f(x) - T_n(x)
+```
+
+And we have, analogously to the first-order case,
+
+```math
+\lim_{x \to x_0} \frac{R_n(f, x, x_0)}{(x - x_0)^{n+1}} = 0
+```
+
+As we can see the denominator now is $(x - x_0)^{n+1}$. As we increase the degree, the Taylor polynomial captures more terms of the function's local behavior, and so the difference between $f(x)$ and $T_n(x)$ shrinks **even faster** near $x_0$. However, for the $n$th-degree polynomial, the error vanishes faster than $(x-x_0)^{n+1}$.
+
+## Taylor's Theorem (with Lagrange Remainder)
+
+Let $f: [a, b] \to \mathbb{R}$ be $n+1$ times differentiable on an open interval containing $a$ and $x$. Then for each $x$ in the interval, there exists some $y$ between $a$ and $x$ such that:
+
+```math
+f(x) = \sum_{k=0}^n \frac{f^{(k)}(a)}{k!}(x - a)^k + R_n(f, x, a)
+```
+
+where the remainder is given by the **Lagrange form**:
+
+```math
+R_n(f, x, a) = \frac{f^{(n+1)}(y)}{(n+1)!}(x - a)^{n+1}, \quad \text{for some } y \in (a, x)
+```
+
+The proof and derivation of this uses repeated application of the mean value theorem. Note that:
+
+```math
+\frac{R_n(f, x, a)}{(x - a)^n} = \frac{f^{(n+1)}(y)}{(n+1)!}(x - a)^{n+1} \frac{1}{(x - a)^{n}} = \frac{f^{(n+1)}(y)}{(n+1)!}(x - a)
+```
+
+and thus
+
+```math
+\lim_{x \to a} \frac{R_n(f, x, a)}{(x-a)^n} = 0
+```
+
+since $(x-a) \to 0$ and $f^{(n+1)}$ is continuous near $a$.
+
+<Callout type="example">
+**Taylor expansion for $\exp(x)$ at $x_0=0$** Recall:
+
+```math
+f(x) = e^x,\quad f^{(k)}(0) = 1\ \forall k \geq 0
+```
+
+So the Taylor polynomial of order $n$ at $x_0=0$ is
+
+```math
+T_n(x) = \sum_{k=0}^n \frac{x^k}{k!}
+```
+
+The remainder is:
+
+```math
+R_n(f, x, 0) = \frac{e^{y}}{(n+1)!} x^{n+1},\quad y \in (0, x)
+```
+
+So for $x \in (0,1)$, we can bound $e^y \leq e$, and thus
+
+```math
+|R_n(f, x, 0)| < \frac{e}{(n+1)!}
+```
+
+In particular, for $n = 5$:
+
+```math
+|R_5(f, x, 0)| < \frac{e}{6!} \leq \frac{3}{720} = \frac{1}{240}
+```
+
+for all $x \in (0,1)$. 
+</Callout>
+
+<Callout type="example">
+**Taylor expansion for $\sin(x)$ at $x_0 = 0$** Recall that $\sin^{(k)}(0)$ cycles as $0, 1, 0, -1, 0, 1, \ldots$, so:
+
+```math
+T_1(x) = x,\qquad T_3(x) = x - \frac{x^3}{3!},\qquad T_5(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!},\ \text{etc.}
+```
+
+In general:
+
+```math
+\sin(x) = \sum_{k=0}^n \frac{(-1)^k}{(2k+1)!} x^{2k+1} + R_{2n+1}(f, x, 0)
+```
+
+The remainder term is of the form
+
+```math
+R_{2n+1}(f, x, 0) = \frac{f^{(2n+2)}(y)}{(2n+2)!} x^{2n+2}
+```
+
+where $f^{(2n+2)}(y)$ is $\pm\sin(y)$ or $\pm\cos(y)$, both of which are bounded in absolute value by $1$. 
+</Callout>
+
+## Taylor Series
+
+We define the **Taylor series** of a smooth function $f \in C^\infty$ at a point $a$ as the infinite sum of its Taylor polynomials:
+
+```math
+T_\infty(x, a) = \sum_{k=0}^{\infty} \frac{f^{(k)}(a)}{k!} (x-a)^k
+```
+
+This is a **power series** centered at $a$.
+
+The convergence of this series depends on $f$ and the value of $x$. For analytic functions, the Taylor series converges to the original function in some neighborhood of $a$, but in general:
+
+* The **radius of convergence** $r$ may be $0$ (the series converges nowhere except at $a$), finite, or infinite.
+* Even within the radius of convergence, the series **need not** converge to the function $f(x)$, unless $f$ is analytic at $a$.
+
+<Callout type="example">
+**Non-analytic function whose Taylor series is identically zero**
+
+Let
+
+```math
+f(x) = \begin{cases}
+e^{-1/x^2} & \text{if } x \neq 0 \\
+0 & \text{if } x = 0
+\end{cases}
+```
+
+This function is infinitely differentiable everywhere, but all derivatives at $x=0$ vanish:
+
+```math
+f^{(k)}(0) = 0\ \forall k
+```
+
+So its Taylor series at $0$ is identically zero, but $f(x) \neq 0$ for $x \neq 0$. Thus, the Taylor series does **not** represent the function except at $x = 0$. 
+</Callout>
+
+## Differentiation of Power Series
+
+Recall from sequences of functions that:
+
+If $f_n \to f$ pointwise and all $f_n$ are differentiable, $f$ need not be differentiable.
+
+If $f_n \to f$ uniformly and all $f_n$ are continuous, $f$ is continuous.
+
+For differentiability to be preserved, we need the derivatives $f_n'$ to converge uniformly as well.
+
+Thus, smoothness is only guaranteed if both the functions and their derivatives converge uniformly.
+
+Power Series are Exceptionally Well-Behaved:
+
+If $f(x) = \sum_{n=0}^\infty c_n (x-x_0)^n$ is a power series with positive radius of convergence $r > 0$, then:
+
+$f$ is continuous and infinitely differentiable (i.e., smooth, $C^\infty$) on $(x_0-r, x_0+r)$.
+
+The power series for $f'$ is obtained by differentiating term by term, and has the same radius of convergence.
+
+Uniform convergence occurs on all closed intervals strictly inside $(x_0-r, x_0+r)$.
+
+Suppose $f(x) = \sum_{n=0}^\infty c_n (x-x_0)^n$ is a power series with positive radius of convergence $r > 0$. Then $f$ is infinitely differentiable for $x \in (x_0 - r, x_0 + r)$, and its $k$th derivative is given by
+
+```math
+f^{(k)}(x) = \sum_{n=k}^\infty c_n \frac{n!}{(n-k)!}(x-x_0)^{n-k}
+```
+
+In particular, at $x = x_0$,
+
+```math
+f^{(k)}(x_0) = k! c_k
+\implies c_k = \frac{f^{(k)}(x_0)}{k!}
+```
+
+**Proof:**
+Start by differentiating term by term:
+
+* For $f'(x) = \sum_{n=1}^\infty n c_n (x-x_0)^{n-1}$
+* For $f''(x) = \sum_{n=2}^\infty n(n-1) c_n (x-x_0)^{n-2}$
+
+Generally, the $k$th derivative:
+
+```math
+f^{(k)}(x) = \sum_{n=k}^\infty c_n \frac{n!}{(n-k)!}(x-x_0)^{n-k}
+```
+
+Set $x = x_0$, then $(x-x_0)^{n-k}$ is $0$ unless $n = k$, so only the $n=k$ term survives:
+
+```math
+f^{(k)}(x_0) = c_k \cdot k!
+\implies c_k = \frac{f^{(k)}(x_0)}{k!}
+```
+
+So for any power series, the coefficients can be read off from the derivatives at the center.
+
+If a power series $\sum c_n (x-x_0)^n$ has radius of convergence $r > 0$, then it converges **uniformly** on any closed interval $[x_0 - r', x_0 + r']$ for $r' < r$. This ensures that we can differentiate and integrate the series term-by-term within such intervals.
+
+<Callout type="example" title="Derivative of the exponential series">
+For $f(x) = e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!}$,
+
+```math
+f'(x) = \sum_{n=1}^\infty \frac{n x^{n-1}}{n!} = \sum_{n=1}^\infty \frac{x^{n-1}}{(n-1)!}
+```
+
+If we re-index by $m = n-1$:
+
+```math
+f'(x) = \sum_{m=0}^\infty \frac{x^m}{m!} = f(x)
+```
+
+So the derivative of $e^x$ is $e^x$, as expected. 
+</Callout>
+<Callout type="example" title="The geometric series and its derivative">
+Let $f(x) = \sum_{n=0}^\infty x^n$ for $|x| < 1$, the geometric series, so
+
+```math
+f(x) = \frac{1}{1-x}
+```
+
+The derivative is:
+
+```math
+f'(x) = \frac{1}{(1-x)^2}
+```
+
+But term-by-term differentiation gives
+
+```math
+f'(x) = \sum_{n=1}^\infty n x^{n-1} = \sum_{k=0}^\infty (k+1)x^k
+```
+
+So the termwise derivative matches the analytic derivative within the radius of convergence. 
+</Callout>
