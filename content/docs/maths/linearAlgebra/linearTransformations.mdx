@@ -1,0 +1,673 @@
+---
+title: Linear Transformations
+---
+
+A linear transformation also often called linear map is a function between two vector spaces which we will come to later. For now you can think of a linear transformation as a function that takes in a vector and outputs a vector. The vectors can have the same dimension or different dimensions. We can write a linear transformation as:
+
+```math
+T: R^N \rightarrow R^M
+```
+
+Where $T$ is the transformation, $R^N$ is the input vector space so vectors of dimension $N$ and $R^M$ is the output vector space so vectors of dimension $M$. If the input and output vector spaces have different dimensions, we call the transformation a projection or a mapping as for example a projection from $R^3$ to $R^2$ can be thought of looking at a cube from above and projecting it onto a 2D plane to get a square.
+
+<Callout type="todo">
+Technically are these actually projections? What is the difference of them being orthogonal projections? 
+</Callout>
+
+Importantly a linear transformation is as the name suggest linear, meaning that it preserves the operations of addition and scalar multiplication. More formally the following two conditions must be satisfied for a function to be a linear transformation of a vector $\mathbf{u}$ and $\mathbf{v}$ and a scalar $c$:
+- **Additivity**: $T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v})$
+- **Scalar Multiplication**: $T(c\mathbf{u}) = cT(\mathbf{u})$
+
+This can also be generalized to a set of vectors, where the transformation preserves the operations for all vectors in the set. Let $\mathbf{x}_1, \mathbf{x}_2, \ldots, \mathbf{x}_n$ be vectors in $R^N$ and $\lambda_1, \lambda_2, \ldots, \lambda_n$ be scalars. Then the transformation $T$ is linear if:
+
+```math
+T\left(\sum_{i=1}^{n} \lambda_i \mathbf{x}_i\right) = \sum_{i=1}^{n} \lambda_i T(\mathbf{x}_i)
+```
+
+<Image
+    src="/maths/linearTransformationAddition.png"
+    caption="A visual representation of preserving addition in a linear transformation."
+    width={600}
+/>
+
+<Image
+    src="/maths/linearTransformationScaling.png"
+    caption="A visual representation of preserving scalar multiplication in a linear transformation."
+    width={600}
+/>
+
+If you want to see more visualizations and explanations of linear transformations, I recommend checking out the [3Blue1Brown video on linear transformations](https://www.youtube.com/watch?v=kYB8IZa5AuE). There he shows that only transformations where a line stays a line and the origin stays the origin are linear transformations. This is because linear transformations can be thought of as a combination of scaling, rotating, reflecting and shearing the input vector. So they preserve the structure of the vector space. 
+
+<Callout type="example" title="Valid Linear Transformation">
+Let's first look at an examples of a valid linear transformations where the vectors have the same dimension.
+
+```math
+T: R^2 \rightarrow R^2, T \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 2x \\ 3y \end{bmatrix}
+```
+
+To show that this is a linear transformation we need to show that it satisfies the two conditions. Firstly we can show that it preserves additivity:
+
+```math
+\begin{align*}
+T(\mathbf{u} + \mathbf{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix} \\
+T(\mathbf{u}) + T(\mathbf{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix}
+\end{align*}
+```
+
+So we can see that $T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v})$ so the transformation preserves additivity. Now we can check that it preserves scalar multiplication:
+
+```math
+\begin{align*}
+T(c\mathbf{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix} \\
+cT(\mathbf{u}) &= c \begin{bmatrix} 2x \\ 3y \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix}
+\end{align*}
+```
+
+Because $T(c\mathbf{u}) = cT(\mathbf{u})$ the transformation preserves scalar multiplication. Therefore the transformation is a linear transformation.
+</Callout>
+
+<Callout type="example" title="Linear Transformation with Different Dimensions">
+A linear transformation can also be between vectors of different dimensions. For example:
+
+```math
+T: R^2 \rightarrow R^3, T \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 2x \\ 3y \\ 0 \end{bmatrix}
+```
+
+This transformation is still linear because it satisfies the two conditions. The additional dimension in the output vector is just simply set to 0 so it doesn't affect the linearity of the transformation.
+
+```math
+\begin{align*}
+T(\mathbf{u} + \mathbf{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \\ 0 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \\ 0 \end{bmatrix} \\
+T(\mathbf{u}) + T(\mathbf{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \\ 0 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \\ 0 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \\ 0 \end{bmatrix}
+\end{align*}
+```
+
+```math
+\begin{align*}
+T(c\mathbf{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \\ 0 \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \\ 0 \end{bmatrix} \\
+cT(\mathbf{u}) &= c \begin{bmatrix} 2x \\ 3y \\ 0 \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \\ 0 \end{bmatrix}
+\end{align*}
+```
+
+We can also do the same for a linear transformation where the input vector has more dimensions than the output vector.
+
+```math
+T: R^3 \rightarrow R^2, T \begin{bmatrix} x \\ y \\ z \end{bmatrix} = \begin{bmatrix} 2x \\ 3y \end{bmatrix}
+```
+
+This transformation is still linear because it satisfies the two conditions. The additional dimensions in the input vector are simply ignored and don't affect the linearity of the transformation.
+
+```math
+\begin{align*}
+T(\mathbf{u} + \mathbf{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \\ z_1 + z_2 \end{bmatrix} = \begin{bmatrix} 2(x_1 + x_2) \\ 3(y_1 + y_2) \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix} \\
+T(\mathbf{u}) + T(\mathbf{v}) &= \begin{bmatrix} 2x_1 \\ 3y_1 \end{bmatrix} + \begin{bmatrix} 2x_2 \\ 3y_2 \end{bmatrix} = \begin{bmatrix} 2x_1 + 2x_2 \\ 3y_1 + 3y_2 \end{bmatrix}
+\end{align*}
+```
+
+```math
+\begin{align*}
+T(c\mathbf{u}) &= T \begin{bmatrix} cx \\ cy \\ cz \end{bmatrix} = \begin{bmatrix} 2(cx) \\ 3(cy) \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix} \\
+cT(\mathbf{u}) &= c \begin{bmatrix} 2x \\ 3y \end{bmatrix} = \begin{bmatrix} 2cx \\ 3cy \end{bmatrix}
+\end{align*}
+```
+</Callout>
+
+<Callout type="example" title="Invalid Linear Transformation">
+However, not all transformations are linear. Lets look at an example of a transformation that is not linear:
+
+```math
+T: R^2 \rightarrow R^2, T \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} x^2 \\ y^2 \end{bmatrix}
+```
+
+This transformation is not linear because it doesn't satisfy the additivity condition:
+
+```math
+\begin{align*}
+T(\mathbf{u} + \mathbf{v}) &= T \begin{bmatrix} x_1 + x_2 \\ y_1 + y_2 \end{bmatrix} = \begin{bmatrix} (x_1 + x_2)^2 \\ (y_1 + y_2)^2 \end{bmatrix} = \begin{bmatrix} x_1^2 + 2x_1x_2 + x_2^2 \\ y_1^2 + 2y_1y_2 + y_2^2 \end{bmatrix} \\
+T(\mathbf{u}) + T(\mathbf{v}) &= \begin{bmatrix} x_1^2 \\ y_1^2 \end{bmatrix} + \begin{bmatrix} x_2^2 \\ y_2^2 \end{bmatrix} = \begin{bmatrix} x_1^2 + x_2^2 \\ y_1^2 + y_2^2 \end{bmatrix}
+\end{align*}
+```
+
+It also doesn't satisfy the scalar multiplication condition:
+
+```math
+\begin{align*}
+T(c\mathbf{u}) &= T \begin{bmatrix} cx \\ cy \end{bmatrix} = \begin{bmatrix} (cx)^2 \\ (cy)^2 \end{bmatrix} = \begin{bmatrix} c^2x^2 \\ c^2y^2 \end{bmatrix} \\
+cT(\mathbf{u}) &= c \begin{bmatrix} x^2 \\ y^2 \end{bmatrix} = \begin{bmatrix} cx^2 \\ cy^2 \end{bmatrix}
+\end{align*}
+```
+
+<Callout type="todo">
+Add the non linear transformation of summing the absolute values of the components, i.e the first norm of a vector.
+</Callout>
+</Callout>
+
+## Matrices as Transformations
+
+Remember when discussing the matrix-vector product we said that a matrix can be thought of transforming a vector from one vector space to another. So we could think that a matrix is a linear transformation. This is indeed the case, and we can represent a linear transformation as a matrix. More formally if $T: \mathbb{R}^N \rightarrow \mathbb{R}^M$ is a linear transformation, then there exists a unique matrix $\mathbf{A}$ such that $T(\mathbf{x}) = \mathbf{A}\mathbf{x}$ for all $\mathbf{x} \in \mathbb{R}^N$. This matrix $\mathbf{A}$ is called the matrix representation of the linear transformation $T$. So in other words, every linear transformation can be represented by a matrix and every matrix can be seen as a linear transformation.
+
+For $T(\mathbf{x}) = \mathbf{A}\mathbf{x}$ to hold we must have $T(\mathbf{e}_i) = \mathbf{A}\mathbf{e}_i$ for each standard basis vector $\mathbf{e}_i$ in $\mathbb{R}^N$. But because $\mathbf{A}\mathbf{e}_j$ is just the $j$-th column of $\mathbf{A}$, we can see that the $j$-th column of $\mathbf{A}$ is just $T(\mathbf{e}_j)$. So the matrix representation of a linear transformation is simply the matrix whose columns are the images of the standard basis vectors under the transformation:
+
+```math
+\mathbf{A} = \begin{bmatrix} T(\mathbf{e}_1) & T(\mathbf{e}_2) & \cdots & T(\mathbf{e}_N) \end{bmatrix}
+```
+
+Importantly because the output vector size is $M$ and the input vector size is $N$, the matrix $\mathbf{A}$ will have dimensions $M \times N$. This means that we need to look at the first $N$ standard basis vectors in $\mathbb{R}^M$ to get the $N$ columns of the matrix $\mathbf{A}$. Putting this all together we get:
+
+```math
+T(\mathbf{x}) = \mathbf{A}\mathbf{x} = \sum_{i=1}^{N} x_i T(\mathbf{e}_i) = T\left(\sum_{i=1}^{N} x_i \mathbf{e}_i\right) = T(\mathbf{x})
+```
+
+So every linear transformation can be represented by a matrix, and is completely determined by its behavior on the standard unit vectors and every matrix can be seen as a linear transformation. 
+
+Notice that if we also look at a set of vectors that form a shape like a square, to transform this shape we can just apply the transformation to the corners of the square and then connect the dots. This is because linear transformations preserve the operations of addition and scalar multiplication, so the transformation will also apply to any linear combination of the vectors defining the shape.
+
+<Image
+    src="/maths/linearTransformationsMatrix1.png"
+    caption="Mirroring and stretching a shape using a matrix as a linear transformation."
+    width={600}
+/>
+
+<Image
+    src="/maths/linearTransformationsMatrix2.png"
+    caption="Rotating and shearing a shape using a matrix as a linear transformation."
+    width={600}
+/>
+
+<Callout type="example">
+Imagine we are given the following results of a linear transformation and are asked to reconstruct the linear transformation. How would we do this? What information do we need? How can we find the matrix representation of the linear transformation? Suppose we are given the following results of a linear transformation:
+
+```math
+T\left(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right) = \begin{bmatrix} 1 \\ 1 \\ 2 \end{bmatrix}, \quad T\left(\begin{bmatrix} 1 \\ 1 \end{bmatrix}\right) = \begin{bmatrix} 2 \\ 3 \\ 2 \end{bmatrix}
+```
+
+First we notice that the input vectors are in $\mathbb{R}^2$ and the output vectors are in $\mathbb{R}^3$. So we need a matrix with dimensions $3 \times 2$ (3 rows and 2 columns) to represent the linear transformation. Ideally if we had the results for all standard basis vectors in $\mathbb{R}^2$, we could just take those as the columns of the matrix. However, we only have the result of the first standard basis vector. We somehow need to find the result of the second standard basis vector in $\mathbb{R}^2$ to complete the matrix. For this we can use the fact that linear transformations preserve the operations of addition and scalar multiplication. We can express the second standard basis vector as a linear combination of the second standard basis vector and the vector we have already:
+
+```math
+\begin{bmatrix} 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 \\ 1 \end{bmatrix} - \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+```
+
+This means that we can find the result of the second standard basis vector by applying the transformation to the second standard basis vector and subtracting the result of the first standard basis vector:
+
+```math
+T\left(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\right) = T\left(\begin{bmatrix} 1 \\ 1 \end{bmatrix}\right) - T\left(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right) = \begin{bmatrix} 2 \\ 3 \\ 2 \end{bmatrix} - \begin{bmatrix} 1 \\ 1 \\ 2 \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \\ 0 \end{bmatrix}
+```
+
+Now we can construct the matrix representation of the linear transformation:
+
+```math
+\mathbf{A} = \begin{bmatrix} 1 & 1 \\ 1 & 2 \\ 2 & 0 \end{bmatrix}
+```
+
+We can also get the general formula for the linear transformation using linearity:
+
+```math
+T(\begin{bmatrix} x \\ y \end{bmatrix}) = x T\left(\begin{bmatrix} 1 \\ 0 \end{bmatrix}\right) + y T\left(\begin{bmatrix} 0 \\ 1 \end{bmatrix}\right) = x \begin{bmatrix} 1 \\ 1 \\ 2 \end{bmatrix} + y \begin{bmatrix} 1 \\ 2 \\ 0 \end{bmatrix} = \begin{bmatrix} x + y \\ x + 2y \\ 2x \end{bmatrix}
+```
+</Callout>
+<Callout type="example">
+Another example is we are given the following matrix:
+
+```math
+\mathbf{A} = \begin{bmatrix} \mathbf{v_1} & \mathbf{v_2} & \ldots & \mathbf{v_n} & \mathbf{v_{n+1}} \end{bmatrix}
+```
+
+where $\mathbf{v}\_i$ are vectors in $\mathbb{R}^M$, so the column vectors are of dimension $M$. Using this matrix we define the following transformation:
+
+```math
+T: \mathbb{R}^N \rightarrow \mathbb{R}^M, \quad T(\mathbf{x}) = \mathbf{A}\begin{bmatrix} x_1 \\ x_2 \\ \ldots \\ x_n \\ 1 \end{bmatrix}
+```
+
+We are told this transformation is linear for all $\mathbf{x} \in \mathbb{R}^N$ **only if** the last column of the matrix $\mathbf{A}$ is the zero vector, i.e. $\mathbf{v}\_{n+1} = \mathbf{o}$. Why is this the case?
+
+First, recall the definition of linearity. A transformation $T$ is linear if for all $\mathbf{x}, \mathbf{y} \in \mathbb{R}^N$ and any scalar $c$ the following conditions hold:
+
+- $T(\mathbf{x} + \mathbf{y}) = T(\mathbf{x}) + T(\mathbf{y})$
+- $T(c\mathbf{x}) = cT(\mathbf{x})$
+- $T(\mathbf{0}) = \mathbf{0}$
+
+Let's first check what happens if we input the zero vector:
+
+```math
+T(\mathbf{0}) = \mathbf{A} \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix} = \mathbf{v}_{n+1}
+```
+
+So, unless $\mathbf{v}\_{n+1} = \mathbf{0}$, the zero vector in $\mathbb{R}^N$ does not get mapped to the zero vector in $\mathbb{R}^M$**. If $\mathbf{v}\_{n+1} \neq \mathbf{0}$, $T(\mathbf{0}) \neq \mathbf{0}$, so $T$ is **not linear**.
+
+Let's also check additivity and homogeneity, assuming $\mathbf{v}\_{n+1} \neq \mathbf{0}$. Let $\mathbf{x}, \mathbf{y} \in \mathbb{R}^N$:
+
+```math
+T(\mathbf{x}) = \mathbf{A} \begin{bmatrix} \mathbf{x} \\ 1 \end{bmatrix}
+= \sum_{i=1}^n x_i \mathbf{v}_i + \mathbf{v}_{n+1}
+```
+
+Similarly,
+
+```math
+T(\mathbf{y}) = \sum_{i=1}^n y_i \mathbf{v}_i + \mathbf{v}_{n+1}
+```
+
+So:
+
+```math
+T(\mathbf{x}) + T(\mathbf{y}) = \sum_{i=1}^n (x_i + y_i) \mathbf{v}_i + 2\mathbf{v}_{n+1}
+```
+
+But:
+
+```math
+T(\mathbf{x} + \mathbf{y}) = \mathbf{A} \begin{bmatrix} \mathbf{x} + \mathbf{y} \\ 1 \end{bmatrix} = \sum_{i=1}^n (x_i + y_i) \mathbf{v}_i + \mathbf{v}_{n+1}
+```
+
+So, **unless $\mathbf{v}\_{n+1} = \mathbf{0}$**, we have $T(\mathbf{x} + \mathbf{y}) \neq T(\mathbf{x}) + T(\mathbf{y})$. Then for homogeneity with scalar $c$:
+
+```math
+T(c\mathbf{x}) = \mathbf{A} \begin{bmatrix} c\mathbf{x} \\ 1 \end{bmatrix} = \sum_{i=1}^n c x_i \mathbf{v}_i + \mathbf{v}_{n+1}
+```
+
+But
+
+```math
+c T(\mathbf{x}) = c \left( \sum_{i=1}^n x_i \mathbf{v}_i + \mathbf{v}_{n+1} \right ) = \sum_{i=1}^n c x_i \mathbf{v}_i + c \mathbf{v}_{n+1}
+```
+
+These are only equal if $c \mathbf{v}*{n+1} = \mathbf{v}*{n+1}$ for all $c$, which is only possible if $\mathbf{v}\_{n+1} = \mathbf{0}$. So we conclude that for the transformation to be linear, the last column $\mathbf{v}_{n+1}$ must be the zero vector and if $\mathbf{v}\_{n+1} = \mathbf{0}$, then:
+
+```math
+T(\mathbf{x}) = \sum_{i=1}^n x_i \mathbf{v}_i
+```
+
+This is just the usual matrix-vector product with the $n$ columns, and the transformation is linear. Intuitively, the last column $\mathbf{v}_{n+1}$ acts like a constant offset and a linear transformation must always map the zero vector to the zero vector. By including a $1$ as the last entry in the input, we are effectively always adding the last column of the matrix to the output—so unless this last column is zero, the transformation will always "shift" everything by the same amount, which breaks linearity.
+</Callout>
+
+## Kernel and Image
+
+Because linear transformations are defined as functions, we can also talk about the kernel and image of a linear transformation just like for normal functions. The image of a transformation is the set of all possible outputs of the transformation. 
+
+```math
+\operatorname{Im}(A) = \{ A\mathbf{x} \in R^M \mid \mathbf{x} \in R^N \}
+```
+
+However, because linear transformations can also be seen as matrices, the image of a linear transformation is also the column space of the matrix. This is because the resulting vectors is just a linear combination of the columns of the matrix where the coefficients are the components of the input vector $\mathbf{x}$:
+
+```math
+\operatorname{Im}(A) = C(A)
+```
+
+where $C(A)$ is the column space of the matrix $A$. Importantly, we also always have that the zero vector $\mathbf{o}$ is in the image of the transformation, as $A\mathbf{0} = \mathbf{0}$ for any matrix $A$.
+
+The kernel of a transformation is the set of all inputs that map to the zero vector. In terms of matrices, this is the null space of the matrix, which is the set of all vectors $\mathbf{x}$ such that $A\mathbf{x} = \mathbf{o}$:
+
+```math
+\operatorname{Ker}(A) = \{ \mathbf{x} \in R^N \mid A\mathbf{x} = \mathbf{o} \} = N(A)
+```
+
+Where $N(A)$ is the null space of the matrix $A$. 
+
+<Callout type="example">
+So for example if have the the transformation $T(\mathbf{x}) = \mathbf{x}$, for all $\mathbf{x} \in \mathbb{R}^N$, then we have:
+
+```math
+\operatorname{Im}(T) = \mathbb{R}^N \quad \text{and} \quad \operatorname{Ker}(T) = \{\mathbf{0}\}
+```
+
+As each vector is mapped to itself, the image is the whole space and the only vector that maps to the zero vector is the zero vector itself. We can define the opposite transformation $T'(\mathbf{x}) = \mathbf{o}$, which maps every vector to the zero vector, then we have:
+
+```math
+\operatorname{Im}(T') = \{\mathbf{0}\} \quad \text{and} \quad \operatorname{Ker}(T') = \mathbb{R}^N
+```
+</Callout>
+
+<Callout type="todo">
+dimension of the domain = dimension of the kernel + dimension of the image why? meanining?
+</Callout>
+
+## Tranforming Multiple Vectors
+
+<Callout type="todo">
+remember that matrix multiplication is just like applying the transformation to each column of the matrix, so we can also think of transforming multiple vectors at once by stacking them as columns in a matrix and then multiplying the matrix with the transformation matrix.
+</Callout>
+
+## Composition of Linear Transformations
+
+We have seen linear transformations as functions and also that they can be represented by matrices. Because they are functions, we could also compose/chain them, so apply one transformation after another. If we have two linear transformations $T_1: \mathbb{R}^N \rightarrow \mathbb{R}^M$ and $T_2: \mathbb{R}^M \rightarrow \mathbb{R}^P$, we can compose them to get a new transformation $S: \mathbb{R}^N \rightarrow \mathbb{R}^P$ defined as:
+
+```math
+S(\mathbf{x}) = T_2(T_1(\mathbf{x}))
+```
+
+The question is now, is this new transformation also linear? The answer is yes, because we can show that it satisfies the two conditions of additivity and scalar multiplication: 
+
+```math
+\begin{align*}
+S(\mathbf{u} + \mathbf{v}) &= T_2(T_1(\mathbf{u} + \mathbf{v})) = T_2(T_1(\mathbf{u}) + T_1(\mathbf{v})) = T_2(T_1(\mathbf{u})) + T_2(T_1(\mathbf{v})) = S(\mathbf{u}) + S(\mathbf{v}) \\
+S(c\mathbf{u}) &= T_2(T_1(c\mathbf{u})) = T_2(cT_1(\mathbf{u})) = cT_2(T_1(\mathbf{u})) = cS(\mathbf{u})
+\end{align*}
+```
+
+This means that the composition of two linear transformations is also a linear transformation. Now we can also ask ourselves what the matrix representation of this new transformation is. This is rather simple, because we can just multiply the matrices representing the two transformations. If $A_1$ is the matrix representation of $T_1$ and $A_2$ is the matrix representation of $T_2$, then the matrix representation $A_S$ of $S$ is given by:
+
+```math
+A_S = A_2 A_1
+```
+
+This is rather easily seen and follows from the associativity of matrix multiplication and is also the reason why matrix multiplication is defined the way it is, so that it corresponds to the composition of linear transformations:
+
+```math
+S(\mathbf{x}) = T_2(T_1(\mathbf{x})) = T_2(A_1 \mathbf{x}) = A_2 (A_1 \mathbf{x}) = (A_2 A_1) \mathbf{x} = A_S \mathbf{x}
+```
+
+This of course also generalizes to the composition of multiple linear transformations due to the associativity of matrix multiplication, we just need to make sure that the dimensions match up, so that the output dimension of one transformation matches the input dimension of the next transformation. So the placement of brackets when multiplying matrices does not necessarily matter, as long as the dimensions are compatible:
+
+```math
+T_{(AB)(CD)} = T_{AB}(T_{CD}) = T_{AB}(T_C(T_D)) = T_A(T_B(T_C(T_D)))
+```
+
+It is just important to note that matrix multiplication is not commutative, meaning that the order of the transformations matters. So in general:
+
+```math
+T_{(AB)(CD)} \neq T_{(CD)(AB)}
+```
+
+which can be seen as the order of applying the transformations matters, as they are not necessarily the same transformation:
+
+```math
+T_{(CD)(AB)}(\mathbf{x}) = T_D(T_C(T_A(T_B(\mathbf{x})))) \neq T_A(T_B(T_C(T_D(\mathbf{x})))) = T_{(AB)(CD)}(\mathbf{x})
+```
+
+To find the best placement of brackets we can use the algorithm discussed in the [Matrix Chain Multiplication]() section, which will give us the optimal order of multiplication to minimize the number of operations needed to compute the product as depending on the order of multiplication, the number of operations can vary significantly.
+
+## Bijective Linear Transformations
+
+So far, we have seen that a linear transformation can "stretch," "rotate," "reflect," "shear," "project," or "collapse" a space. But sometimes a transformation loses information about the original vector. For example, if we **project** all points in $\mathbb{R}^2$ onto a line, different points can end up at the same location after the transformation. In these cases, we cannot reconstruct the original vector from the transformed one, because information is lost—there are "many-to-one" outputs. 
+
+However, there are linear transformations that **do not lose any information**. These transformations are called **bijective linear transformations**. They allow us to uniquely recover the original vector from the transformed one, meaning every output corresponds to exactly one input. Geometrically, a bijective linear transformation can be thought of as a transformation transforms the space in a way that is "reversible" such as:
+- **Stretch** or **compress** space (as long as it doesn't collapse any direction to zero length),
+- **Rotate** or **reflect** space,
+- **Shear** space (as long as it doesn't flatten it).
+
+But it cannot "squash" the entire space onto a lower-dimensional subspace (like a line or point). Every shape is uniquely mapped to a new shape, and every point in the new shape comes from a unique point in the original shape.
+
+Formally we say a linear transformation $T: \mathbb{R}^N \to \mathbb{R}^M$ is bijective if:
+
+- **Injective (one-to-one):** Each vector in the output space is the image of **at most one** vector from the input space (no two different inputs map to the same output). So we have:
+
+```math
+T(\mathbf{x}_1) = T(\mathbf{x}_2) \implies \mathbf{x}_1 = \mathbf{x}_2
+```
+
+- **Surjective (onto):** Each vector in the output space is the image of at least one vector from the input space (the transformation "covers" the entire output space). So for every vector $\mathbf{y} \in \mathbb{R}^M$, there exists at least one vector $\mathbf{x} \in \mathbb{R}^N$ such that:
+
+```math
+T(\mathbf{x}) = \mathbf{y}
+```
+
+So a bijective transformation is both injective and surjective, meaning every vector in the output space corresponds to exactly one vector in the input space. Because of these properties, specifcally the one-to-one mapping, we can recover the original vector from the transformed one. So if a linear transformation $T$ is bijective, then the transformation is **invertible**. This means there exists another linear transformation $T^{-1}$ such that:
+
+```math
+T^{-1}(T(\mathbf{x})) = \mathbf{x} \quad \text{for all } \mathbf{x} \in \mathbb{R}^N
+```
+
+and
+
+```math
+T(T^{-1}(\mathbf{y})) = \mathbf{y} \quad \text{for all } \mathbf{y} \in \mathbb{R}^M
+```
+
+$T^{-1}$ is called the **inverse transformation** and "undoes" the effect of $T$.
+
+Recall that every linear transformation $T: \mathbb{R}^N \to \mathbb{R}^M$ can be written as $T(\mathbf{x}) = \mathbf{A} \mathbf{x}$ for some $N \times M$ matrix $\mathbf{A}$. So this means that a linear transformation $T$ is bijective if and only if the matrix $\mathbf{A}$ is invertible. This is when the determinant of the matrix $\mathbf{A}$ is non-zero, which means that the columns of the matrix are linearly independent and span the entire output space. The matrix of the inverse transformation is given by the inverse of the matrix $\mathbf{A}$:
+
+```math
+T^{-1}(\mathbf{y}) = \mathbf{A}^{-1} \mathbf{y}
+```
+
+<Callout type="example" title="Non-Bijective Linear Transformation">
+Let's first look at an example of a linear transformation that is not bijective. The most obvious one is a transformation that collapses the entire space onto the zero vector:
+
+```math
+T: \mathbb{R}^2 \to \mathbb{R}^2,\qquad T\left( \begin{bmatrix} x \\ y \end{bmatrix} \right) = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+```
+
+Or in matrix form:
+
+```math
+\mathbf{A} = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}
+```
+
+This transformation is not injective because every vector in $\mathbb{R}^2$ maps to the zero vector. So we cannot recover the original vector from the transformed one, as all vectors are mapped to the same output. We also notice that the matrix $\mathbf{A}$ has a determinant of zero.
+
+Another example would be collapsing the entire space onto a line, such as the x-axis:
+
+```math
+T: \mathbb{R}^3 \to \mathbb{R}^2,\qquad T\left( \begin{bmatrix} x \\ y \\ z \end{bmatrix} \right) = \begin{bmatrix} x \\ 0 \end{bmatrix}
+```
+
+Or in matrix form:
+
+```math
+\mathbf{A} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}
+```
+
+Again this transformation is not injective because every vector with the same x-coordinate maps to the same output. So we cannot recover the original vector from the transformed one, as all vectors with the same x-coordinate are mapped to the same output. The matrix $\mathbf{A}$ also has a determinant of zero.
+
+We have seen projections onto lower-dimensional subspaces, but we can also have transformations that go from a low dimensional space to a higher dimensional space, such as:
+
+```math
+T: \mathbb{R}^2 \to \mathbb{R}^3,\qquad T\left( \begin{bmatrix} x \\ y \end{bmatrix} \right) = \begin{bmatrix} x \\ y \\ 0 \end{bmatrix}
+```
+
+Or in matrix form:
+
+```math
+\mathbf{A} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \\ 0 & 0 \end{bmatrix}
+```
+
+This transformation is not surjective because it does not cover the entire output space $\mathbb{R}^3$. The output vectors are all in the plane defined by $z = 0$, so we cannot reach any point with a non-zero $z$-coordinate. Again, the matrix $\mathbf{A}$ has a determinant of zero.
+</Callout>
+
+<Callout type="example" title="Bijective Linear Transformation">
+Now let's look at an example of a linear transformation that is bijective. Consider the transformation:
+
+```math
+T: \mathbb{R}^2 \to \mathbb{R}^2,\qquad T\left( \begin{bmatrix} x \\ y \end{bmatrix} \right) = \begin{bmatrix} y \\ x \end{bmatrix}
+```
+
+Or in matrix form:
+
+```math
+\mathbf{A} = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}
+```
+
+This transformation swaps the coordinates of the input vector, which can be thought of as a reflection across the line $y = x$. This transformation is bijective. We could check that it is injective and surjective or we can just check that the matrix $\mathbf{A}$ is invertible. For this we can calculate the determinant:
+
+```math
+\det(\mathbf{A}) = \det\begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix} = (0)(0) - (1)(1) = -1 \neq 0
+```
+
+This means that the matrix $\mathbf{A}$ is invertible, so the transformation $T$ is bijective and has a unique inverse $T^{-1}$. In this case, the inverse transformation is simply the same transformation, as swapping the coordinates again gives us back the original vector:
+
+```math
+T^{-1}\left( \begin{bmatrix} y \\ x \end{bmatrix} \right) = \begin{bmatrix} x \\ y \end{bmatrix}
+```
+</Callout>
+
+Notice that in the examples above the transformations that the transformations that were not bijective were either collapsing the space onto a lower-dimensional subspace or not covering the entire output space. This is a key insight into when a linear transformation can be bijective. Specifically with regard to the input and output dimensions of the transformation, i.e. the dimensions of the matrix representing the transformation:
+
+- If $N > M$ (more input dimensions than output), then the map "collapses" the space: there are infinitely many input vectors that map to the same output vector. In other words, $\mathbf{A}$ cannot be injective because the columns of $\mathbf{A}$ cannot be linearly independent (there are more columns than rows).
+- If $N < M$ (fewer input dimensions than output), then the map cannot "fill" the output space: not every vector in $\mathbb{R}^M$ can be reached, so the transformation cannot be surjective.
+- Only when $N = M$ (a **square matrix**) is it *possible* for the transformation to be both injective and surjective, i.e., bijective and invertible.
+
+this matches our intuition that a matrix $\mathbf{A}$ is invertible **if and only if** it is square and has full rank (the columns are linearly independent). If $\mathbf{A}$ is not square, then it cannot be invertible and therefore cannot be a bijective linear transformation. So only transformations of the form $T: \mathbb{R}^N \to \mathbb{R}^N$ can be bijective, and they must have full rank (i.e., the determinant is non-zero).
+
+### Rotation Matrices
+
+As mentioned, rotations are a classic example of bijective linear transformations. They preserve the structure of the vector space, meaning they do not collapse dimensions or lose information. Rotation is a great example as it easy to visualize and understand how it works in $\mathbb{R}^2$ and $\mathbb{R}^3$.
+
+We can rotate a vector $\mathbf{x} \in \mathbb{R}^2$ by an angle $\theta$ (counter-clockwise) by multiplying by the rotation matrix:
+
+```math
+R(\theta) = \begin{bmatrix}
+\cos\theta & -\sin\theta \\
+\sin\theta & \cos\theta
+\end{bmatrix}
+```
+
+Intuitively, the a rotation has an inverse, we just rotate back by $-\theta$. But we can also show this mathematically by first showing that the determinant of the rotation matrix is not zero, meaning it is invertible. For this we use the formula for the determinant of a $2 \times 2$ matrix:
+
+```math
+\begin{align*}
+\det(R(\theta)) &= \det\begin{bmatrix}
+\cos\theta & -\sin\theta \\
+\sin\theta & \cos\theta
+\end{bmatrix} \\
+&= \cos\theta \cdot \cos\theta - (-\sin\theta) \cdot \sin\theta \\
+&= \cos^2\theta + \sin^2\theta \\
+&= 1
+\end{align*}
+```
+
+Next we look at what happens if we rotate a vector by angle $\theta\_1$ and then by $\theta\_2$, what is the result. Let:
+
+```math
+R(\theta_1) = \begin{bmatrix} \cos\theta_1 & -\sin\theta_1 \\ \sin\theta_1 & \cos\theta_1 \end{bmatrix}
+```
+
+and
+
+```math
+R(\theta_2) = \begin{bmatrix} \cos\theta_2 & -\sin\theta_2 \\ \sin\theta_2 & \cos\theta_2 \end{bmatrix}
+```
+
+Applying $R(\theta\_2)$ after $R(\theta\_1)$ we get:
+
+```math
+\begin{align*}
+R(\theta_2)R(\theta_1) &= 
+\begin{bmatrix}
+\cos\theta_2 & -\sin\theta_2 \\
+\sin\theta_2 & \cos\theta_2
+\end{bmatrix}
+\begin{bmatrix}
+\cos\theta_1 & -\sin\theta_1 \\
+\sin\theta_1 & \cos\theta_1
+\end{bmatrix} \\
+&= 
+\begin{bmatrix}
+\cos\theta_2\cos\theta_1 - \sin\theta_2\sin\theta_1 & -\cos\theta_2\sin\theta_1 - \sin\theta_2\cos\theta_1 \\
+\sin\theta_2\cos\theta_1 + \cos\theta_2\sin\theta_1 & -\sin\theta_2\sin\theta_1 + \cos\theta_2\cos\theta_1
+\end{bmatrix} \\
+&=
+\begin{bmatrix}
+\cos(\theta_1+\theta_2) & -\sin(\theta_1+\theta_2) \\
+\sin(\theta_1+\theta_2) & \cos(\theta_1+\theta_2)
+\end{bmatrix}
+\end{align*}
+```
+
+by using the sum identities for sine and cosine. Therefore, **chaining rotations is equivalent to adding the angles** and we can express the composition of two rotations as:
+
+```math
+R(\theta_1)R(\theta_2) = R(\theta_1 + \theta_2)
+```
+
+So to "undo" a rotation by $\theta$, we simply rotate by $-\theta$. So, the inverse of a rotation matrix is:
+
+```math
+R(\theta)^{-1} = R(-\theta)
+```
+
+This follows since:
+
+```math
+R(\theta)R(-\theta) = R(\theta + (-\theta)) = R(0) = \begin{bmatrix}
+\cos(0) & -\sin(0) \\
+\sin(0) & \cos(0)
+\end{bmatrix} = \begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix} = \mathbf{I}
+```
+
+where $\mathbf{I}$ is the identity matrix.
+
+<Callout type="proof">
+We can also prove and derive the inverse of a rotation matrix using the properties of determinants and the definition of the inverse matrix. Let's show that the inverse of a $2 \times 2$ rotation matrix is itself a rotation matrix with the negative angle. Recall,
+
+```math
+R(\theta) = \begin{bmatrix}
+\cos\theta & -\sin\theta \\
+\sin\theta & \cos\theta
+\end{bmatrix}
+```
+
+The inverse of a $2 \times 2$ matrix $M = \begin{bmatrix} a & b \ c & d \end{bmatrix}$ is:
+
+```math
+M^{-1} = \frac{1}{ad-bc} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}
+```
+
+So,
+
+```math
+\det(R(\theta)) = \cos^2\theta + \sin^2\theta = 1
+```
+
+so the inverse is:
+
+```math
+R(\theta)^{-1} = \begin{bmatrix}
+\cos\theta & \sin\theta \\
+-\sin\theta & \cos\theta
+\end{bmatrix}
+```
+
+But this is exactly $R(-\theta)$ because $\cos(-\theta) = \cos\theta$ and $\sin(-\theta) = -\sin\theta$. So:
+
+```math
+R(-\theta) = \begin{bmatrix}
+\cos(-\theta) & -\sin(-\theta) \\
+\sin(-\theta) & \cos(-\theta)
+\end{bmatrix}
+=
+\begin{bmatrix}
+\cos\theta & \sin\theta \\
+-\sin\theta & \cos\theta
+\end{bmatrix}
+```
+
+Therefore,
+
+```math
+R(\theta)^{-1} = R(-\theta)
+```
+
+So the inverse of any $2 \times 2$ rotation matrix is again a rotation matrix with the negative angle.
+</Callout>
+
+<Callout type="example">
+Suppose we want to rotate the following vector $\mathbf{x} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}$ by $\theta = 90^\circ = \frac{\pi}{2}$ radians. We can apply the followingrotation matrix:
+
+```math
+R\left(\frac{\pi}{2}\right) = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}
+```
+
+Which results in the following transformation:
+
+```math
+R\left(\frac{\pi}{2}\right)\begin{bmatrix} 2 \\ 1 \end{bmatrix} = \begin{bmatrix} 0 \cdot 2 + (-1) \cdot 1 \\ 1 \cdot 2 + 0 \cdot 1 \end{bmatrix} = \begin{bmatrix} -1 \\ 2 \end{bmatrix}
+```
+
+If we want to recover the original vector, we can apply the inverse rotation matrix. The inverse rotation matrix is simply the rotation matrix for $-90^\circ$:
+
+```math
+R\left(-\frac{\pi}{2}\right) = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}
+```
+
+And applying this to the transformed vector gives us:
+
+```math
+R\left(-\frac{\pi}{2}\right)\begin{bmatrix} -1 \\ 2 \end{bmatrix} = \begin{bmatrix} 0 \cdot (-1) + 1 \cdot 2 \\ -1 \cdot (-1) + 0 \cdot 2 \end{bmatrix} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}
+```
+We have recovered the original vector, showing that the transformation is bijective.
+</Callout>

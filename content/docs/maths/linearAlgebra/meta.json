@@ -1,0 +1,29 @@
+{
+  "title": "Linear Algebra",
+  "pages": [
+    "equations",
+    "vectors",
+    "matrices",
+    "hadamardProduct",
+    "crossProduct",
+    "broadcasting",
+    "linearTransformations",
+    "rank",
+    "gaussianElimination",
+    "inverse",
+    "vectorMatrixSpaces",
+    "orthogonality",
+    "projectionsLS",
+    "qrDecomposition",
+    "moorePenrose",
+    "determinants",
+    "complexVectors",
+    "eigendecomposition",
+    "eigenvaluesEigenvectors",
+    "svd",
+    "quadraticForms",
+    "definiteness",
+    "pca"
+  ]
+}
+  

@@ -3,6 +3,7 @@
   "pages": [
     "calculus",
     "discrete",
+    "linearAlgebra",
     "probabilityStatistics",
     "commonFunctions",
     "scientificNotation",
