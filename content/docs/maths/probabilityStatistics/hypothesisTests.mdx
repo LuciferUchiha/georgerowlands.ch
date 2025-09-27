@@ -1,7 +1,6 @@
-import Callout from "@components/Callout";
-import Image from "@components/Image";
-
-# Hypothesis Tests
+---
+title: Hypothesis Tests
+---
 
 In statistics, we don't just want to estimate unknown parameters—we also often want to test claims or beliefs about those parameters. For example, does a new drug work better than the old one? Is a coin fair? Does an English lady truly have the claimed ability to distinguish tea by taste?
 Hypothesis testing gives us a rigorous framework for making decisions about such claims, using only data and probabilistic reasoning.
@@ -847,7 +846,7 @@ If $X_i$ and $Y_i$ are each distributed as $N(\mu_X, \sigma^2)$ and $N(\mu_Y, \s
 - The variance is given by the properties of variance for independent random variables:
 
 ```math
-\Var[Z_i] = \Var[X_i - Y_i] = \Var[X_i] + \Var[Y_i] = \sigma^2 + \sigma^2 = 2\sigma^2
+\V[Z_i] = \V[X_i - Y_i] = \V[X_i] + \V[Y_i] = \sigma^2 + \sigma^2 = 2\sigma^2
 ```
 
 Thus, the distribution of the differences is:
@@ -963,7 +962,7 @@ The difference $\bar{X}_n - \bar{Y}_m$ is already a difference of averages (not 
 Importantly, note that the variances are the same in the two groups, so we can use the same $\sigma^2$ for both. The variance of the difference is given by:
 
 ```math
-\Var(D) = V(\bar{X}_n - \bar{Y}_m) = V(\bar{X}_n) + V(\bar{Y}_m) = \frac{\sigma^2}{n} + \frac{\sigma^2}{m} = \sigma^2 \left(\frac{1}{n} + \frac{1}{m}\right)
+\V(D) = V(\bar{X}_n - \bar{Y}_m) = V(\bar{X}_n) + V(\bar{Y}_m) = \frac{\sigma^2}{n} + \frac{\sigma^2}{m} = \sigma^2 \left(\frac{1}{n} + \frac{1}{m}\right)
 ```
 
 So the distribution of the difference is:

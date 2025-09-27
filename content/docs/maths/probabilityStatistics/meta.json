@@ -1,0 +1,19 @@
+{
+  "title": "Probability & Statistics",
+  "pages": [
+    "combinatorics",
+    "probabilitySpaces",
+    "conditionalProbabilityIndependence",
+    "randomVariables",
+    "expectationVarianceCovariance",
+    "jointDistributions",
+    "largeSamples",
+    "estimators",
+    "confidenceIntervals",
+    "hypothesisTests",
+    "markovChains",
+    "queueingTheory",
+    "simulating"
+  ]
+}
+  

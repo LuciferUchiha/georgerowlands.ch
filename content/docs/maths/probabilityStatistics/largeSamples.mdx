@@ -1,7 +1,6 @@
-import Callout from "@components/Callout";
-import Image from "@components/Image";
-
-# Large Samples
+---
+title: Large Samples
+---
 
 In probability theory, one of the most powerful ideas is to **study what happens when we repeat a random experiment many times**. That is, to analyze the behavior of sums and averages of large numbers of independent random variables. The idea here is similar to machine learning, where we often want to understand how our model behaves as we gather more data.
 
@@ -200,7 +199,7 @@ Z_n = \frac{\sqrt{n}}{\sigma} (\bar{S}_n - \mu) = \frac{S_n - n\mu}{\sqrt{n}\sig
 ```
 
 For normal variables, $Z\_n \sim \mathcal{N}(0, 1)$ for all $n$!
-But **here’s the amazing thing**: *the same is true, asymptotically, for any i.i.d. sequence with finite mean and variance.*
+But **here's the amazing thing**: *the same is true, asymptotically, for any i.i.d. sequence with finite mean and variance.*
 
 By centering at $n\mu$ (subtracting the mean) and dividing by $\sqrt{n}\sigma$ (the standard deviation of the sum), we “zoom in” on the typical fluctuations, which are of size $\sigma\sqrt{n}$.
 

@@ -1,7 +1,6 @@
-import Callout from "@components/Callout";
-import Image from "@components/Image";
-
-# Combinatorics
+---
+title: Combinatorics
+---
 
 Combinatorics is all about counting: how many ways can you arrange, select, or group objects under certain rules? This sounds simple, but surprisingly subtle patterns and formulas arise. The best way to master combinatorics is to focus on **why the formulas make sense**, not just memorize them.
 
@@ -77,7 +76,7 @@ $4 \cdot 3 \cdot 2 \cdot 1 = 24$ ways
 Partial permutations are when you want to arrange only a subset of the objects, not all of them. This is useful when you have more objects than spots to fill. This is sometimes also referred to as a **k-permutation** where $k$ is the number of spots you want to fill. Suppose you have $n$ distinct objects, but want to arrange only $k$ of them in some order. We can derive the formula step-by-step just like before:
 
 - First spot: $n$ choices
-- Second spot: $n-1$ (since we can’t repeat)
+- Second spot: $n-1$ (since we can't repeat)
 - ...
 - $k$-th spot: $n - (k-1)$ choices
 
@@ -175,7 +174,7 @@ For permutations, we cared about **order**: how many ways to arrange objects. Bu
 
 Suppose you have $n$ distinct objects, and you want to select $k$ of them, with **no repeats**, and the **order is irrelevant**. So the arrangement "ABC" is considered the same as "CAB".
 
-To count combinations, we can use the idea of **partial permutations** but adjust for the fact that order doesn’t matter.
+To count combinations, we can use the idea of **partial permutations** but adjust for the fact that order doesn't matter.
 
 - We start by counting all the ways to arrange $k$ of them in order: $P(n, k) = \frac{n!}{(n-k)!}$.
 - But for combinations, order doesn't matter! Every group of $k$ elements can be arranged among themselves in $k!$ ways, but all those are really the same selection. Or in other words, every unique group is counted $k!$ times (one for each order).
@@ -309,7 +308,7 @@ Adding $|A|$ and $|B|$ counts any element in both sets **twice**—so subtract $
 We first add the sizes of all three sets, then subtract the sizes of each pairwise intersection (since they were counted twice), and finally add back the size of the triple intersection (since it was subtracted too many times). For $n$ sets, the formula generalizes to:
 
 ```math
-|A_1 \cup A_2 \cup \ldots \cup A_n| = \sum_{i=1}^n |A_i| - \sum_{1 \leq i < j \leq n} |A_i \cap A_j| +  \ldots + (-1)^{n+1} |A_1 \cap A_2 \cap \ldots \cap A_n|
+|A_1 \cup A_2 \cup \ldots \cup A_n| = \sum_{i=1}^n |A_i| - \sum_{1 \leq i < j \leq n} |A_i \cap A_j| + \sum_{1 \leq i < j < k \leq n} |A_i \cap A_j \cap A_k| - \ldots + (-1)^{n+1} |A_1 \cap A_2 \cap \ldots \cap A_n|
 ```
 
 This alternating sum accounts for overlaps at all levels, correcting for double-counting. This formula is often also referred to as the **sieve** method, as it "sieves out" the overlaps to get the correct count.
@@ -324,7 +323,7 @@ Suppose in a class of 30 students we have the following groups:
 And now we want to know how many play at least one sport. For this we can use the inclusion-exclusion principle. The 10 students who play both sports are counted in both groups, so we need to subtract them once to avoid double counting:
 
 ```math
-20 + 15 - 10 = 25
+$20 + 15 - 10 = 25$
 ```
 
 So, 25 students play at least one sport.
@@ -424,7 +423,7 @@ Or we can summarize the different types of combinatorial problems in a table:
 | **Permutations** (all $n$)              | $n!$                                    | Arrange all $n$ objects in order, no repeats                   |
 | **Partial Permutations** ($k$ of $n$) | $P(n, k) = \frac{n!}{(n-k)!}$           | Arrange $k$ out of $n$ in order, no repeats                  |
 | **Permutations with Repeats**             | $n^k$                                   | Arrange $k$ objects with $n$ choices each (with replacement) |
-| **Combinations**                          | $\binom{n}{k}$                          | Select $k$ from $n$, order doesn’t matter, no repeats        |
-| **Combinations with Repeats**             | $\binom{n+k-1}{k}$                      | Select $k$ from $n$, order doesn’t matter, with replacement  |
+| **Combinations**                          | $\binom{n}{k}$                          | Select $k$ from $n$, order doesn't matter, no repeats        |
+| **Combinations with Repeats**             | $\binom{n+k-1}{k}$                      | Select $k$ from $n$, order doesn't matter, with replacement  |
 | **Multiset Permutations**                 | $\frac{n!}{n\_1!n\_2!\cdots n\_r!}$     | $n$ objects, $n\_i$ of each type                             |
 | **Derangements**                          | $!n = n!\sum\_{k=0}^n\frac{(-1)^k}{k!}$ | No object in original place                                      |

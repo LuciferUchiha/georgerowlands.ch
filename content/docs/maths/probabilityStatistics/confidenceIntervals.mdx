@@ -1,7 +1,6 @@
-import Callout from "@components/Callout";
-import Image from "@components/Image";
-
-# Confidence Intervals
+---
+title: Confidence Intervals
+---
 
 So far, we have seen that [point estimators](/garden/maths/probabilityStatistics/estimators) provide a single "best guess" for an unknown parameter $\theta$ based on observed data. However, point estimates alone do not express how much uncertainty is involved in our estimate. Often, it is more informative to report a **range of plausible values** for $\theta$ that is likely to contain the true parameter. This is known as a **confidence interval** and is an **interval estimate**.
 
@@ -449,7 +448,7 @@ where $F_{t_{7}}(x)$ is the cumulative distribution function (CDF) of the t-dist
 \end{align*}
 ```
 
-Suppose we calculate the standard deviation from the data as $S = 52.90$ and then using a table for the t-distribution we get $t_{7,0.995} = 3.499$ (for $1-\alpha = 99\%$, i.e. $\alpha = 0.01$). 
+Suppose we calculate the standard deviation from the data as $S = 52.90$ and then using a table for the t-distribution we get $t_{7,0.995} = 3.499$ (for $1-\alpha = 99%$, i.e. $\alpha = 0.01$). 
 
 We can calculate the margin:
 
@@ -499,7 +498,7 @@ where $F_{\chi^2_{n-1}}(x)$ is the cumulative distribution function (CDF) of the
 ```math
 \begin{align*}
 c_1 &= \chi^2_{n-1, \alpha/2} \\
-c_2 &= \chi^2_{n-1, 1 - \alpha/2}
+c_2 &= \chi^2_{n-1, 1 - \alpha/
 \end{align*}
 ```
 
@@ -602,7 +601,6 @@ This allows us to use properties of the standard normal distribution. Just like 
 ```math
 \begin{align*}
 \P\left(-c \leq S_{n}^* \leq c\right) = 1 - \alpha \\
-\end{align*}
 ```
 
 where $c$ is the quantile of the standard normal distribution, i.e. $c = \Phi^{-1}(1 - \alpha/2)$, where $\Phi$ is the CDF of the standard normal distribution. This gives us:

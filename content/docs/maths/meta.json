@@ -1,7 +1,9 @@
 {
   "title": "Mathematics",
   "pages": [
+    "calculus",
     "discrete",
+    "probabilityStatistics",
     "commonFunctions",
     "scientificNotation",
     "latexGuidelines"
