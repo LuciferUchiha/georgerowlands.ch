@@ -1,0 +1,13 @@
+{
+  "title": "Discrete Mathematics",
+  "pages": [
+    "logicTheory",
+    "setTheory",
+    "intervals",
+    "infinityCountability",
+    "relationsFunctions",
+    "algebraicStructures",
+    "proofs",
+    "complexNumbers"
+  ]
+}

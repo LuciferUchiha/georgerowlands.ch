@@ -1,0 +1,10 @@
+{
+  "title": "Relations & Functions",
+  "pages": [
+    "relations",
+    "equivalenceRelations",
+    "orderRelations",
+    "functions",
+    "recurrenceRelations"
+  ]
+}

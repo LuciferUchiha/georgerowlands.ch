@@ -1,0 +1,10 @@
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+:root {
+  --color-fd-example: #7827e3;
+  --color-fd-todo: var(--color-fd-warning);
+  --color-fd-proof: #34a720;
+}
+
