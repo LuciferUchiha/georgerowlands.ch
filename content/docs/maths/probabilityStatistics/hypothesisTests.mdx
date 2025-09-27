@@ -1,0 +1,1208 @@
+import Callout from "@components/Callout";
+import Image from "@components/Image";
+
+# Hypothesis Tests
+
+In statistics, we don't just want to estimate unknown parameters—we also often want to test claims or beliefs about those parameters. For example, does a new drug work better than the old one? Is a coin fair? Does an English lady truly have the claimed ability to distinguish tea by taste?
+Hypothesis testing gives us a rigorous framework for making decisions about such claims, using only data and probabilistic reasoning.
+
+## Hypotheses
+
+Just as with [estimators]() and [confidence intervals](), we start with sample data $x_1, x_2, \ldots, x_n$, viewed as realizations of random variables $X_1, \ldots, X_n$ drawn from some population distribution in a family $\P_\theta$, parameterized by an unknown $\theta$.
+
+Often, we have a specific claim or belief about $\theta$ such as that it equals some value, or falls within a certain range—and we want to test if the data support this claim. This is where hypothesis testing comes into play. The formal structure is to consider two competing models for $\theta$:
+
+```math
+\begin{align*}
+\text{Null Hypothesis: } H_0: \theta \in \Theta_0 \\
+\text{Alternative Hypothesis: } H_A: \theta \in \Theta_A
+\end{align*}
+```
+
+We select $\Theta_0$ and $\Theta_A$ such that $\Theta_0 \cap \Theta_A = \emptyset$ and $\Theta_0, \Theta_A \subseteq \Theta$. Typically we have $\Theta_0 \cup \Theta_A = \Theta$ and we just define $\Theta_0$ for the null hypothesis and then just take $\Theta_A$ for the alternative as the complement, so $\Theta_A = \Theta \setminus \Theta_0$. When $\Theta_0$ only contains a single parameter $\theta_0$, we call this a **simple hypothesis**. Otherwise, we have a **composite hypothesis**.
+
+The intuition is that the null hypothesis ($H_0$) is the “status quo” or default claim. So it's the model we assume is true unless the data provide convincing evidence otherwise. The alternative hypothesis ($H_A$) represents a different possibility, often the actual effect or claim we are seeking evidence for. We will see why we do it this way around later. Testing is then about weighing the evidence from the data. Does the data look so unlikely under $H_0$ so that we should reject it, and instead believe $H_A$ might be true or vice versa?
+
+<Callout type="example" title="Tea Tasting Lady">
+An English lady claims that when drinking tea with milk she can, by taste alone, distinguish whether the milk or the tea was poured into the cup first. How can one verify whether this claim is true? This is where hypothesis testing comes into play. We can set up a hypothesis test to determine if her claim holds true or if it is simply a matter of chance.
+
+So we define the following ways to make tea:
+
+- **Type 1**: Pour the milk first, then add tea.
+- **Type 2**: Pour the tea first, then add milk.
+
+To test her claim, we conduct a blind taste test over $n$ days where she is given 2 cups of tea, one made with each method, and asked to identify which cup is type 1, so where the milk was poured first. We record her responses, where 1 indicates a correct classification and 0 an incorrect classification:
+
+```math
+x_1, x_2, \ldots, x_n \in \{0, 1\}
+```
+Each trial can be modeled as a Bernoulli trial with unknown success probability $\theta$ (her true ability), so $X_i \sim \text{Bernoulli}(\theta)$ for each $i = 1, 2, \ldots, n$ and the trials are i.i.d. Then we can get the random number of correct classifications by summing the observations so we get:
+
+```math
+S_n = \sum_{i=1}^{n} X_i
+```
+
+And because $X_i \text{ are i.i.d. } \text{Bernoulli}(p)$, we would have:
+
+```math
+S_n \sim \text{Binomial}(n, \theta)
+```
+
+We can also define the actual observed number of correct classifications as:
+
+```math
+s_n = \sum_{i=1}^{n} x_i
+```
+
+Now let's define our null and alternative hypotheses. Our parameter $\theta$ has the parameter space $\Theta = [0, 1]$. 
+As skeptics, we doubt the lady's claimed ability. Therefore, we choose as our (simple) null hypothesis:
+
+```math
+H_0: \theta = \frac{1}{2}
+```
+
+So in other words, we assume that she has no ability to distinguish between the two types of tea and is simply guessing which would give her a 50% chance of being correct, i.e. $\Theta_0 = \{\frac{1}{2}\}$. Our (composite) alternative hypothesis is that she does have some ability to distinguish between the two types of tea, so we can write:
+
+```math
+H_A: \theta > \frac{1}{2}
+```
+
+This means that we are looking for evidence that the lady's success rate is greater than 50%, which would suggest that she can at least somewhat distinguish between the two types of tea, i.e. $\Theta_A = (\frac{1}{2}, 1]$.
+
+<Callout type="todo">
+Why cant the null hypothesis be less than $\frac{1}{2}$?
+</Callout>
+</Callout>
+
+## Tests and Decisions
+
+The next step is to translate the hypotheses into a practical decision rule based on observed data. A test consists of two ingredients. Firstly a test statistic $T$, which is simply a function of the sample data (just like estimators):
+
+```math
+T = t(X_1, X_2, \ldots, X_n)
+```
+
+Given the observed data as realizations of the random variables $x_1 = X_1(\omega), x_2 = X_2(\omega), \ldots, x_n = X_n(\omega)$ for some $\omega \in \Omega$, we can compute the test statistic as:
+
+```math
+T(\omega) = t(X_1(\omega), X_2(\omega), \ldots, X_n(\omega))
+```
+
+You can imagine that the test statistic $T$ distills the evidence from the data into a single, easily interpretable number—such as the number of correct guesses, the sample mean, or the difference between two means.
+
+Secondly a critical region (or rejection region) $K \subset \mathbb{R}$. A deterministic set of "extreme" values for $T$ that would lead us to reject $H_0$. Which sets a threshold such that if the evidence (as measured by $T$) is extreme enough, meaning it's unlikely to have occurred if $H_0$ were true. By deterministic, we mean that the set $K$ is fixed and does not depend on the observed data or the parameter $\theta$.
+
+Because $T$ is a random variable, the events $T(\omega) \in K$ for some $\omega \in \Omega$ have a probability associated with them that can be considered under each model. So we can denote us rejecting the null hypothesis as:
+
+```math
+\text{Reject } H_0 \text{ if } T(\omega) \in K
+```
+
+However, failing to reject $H_0$ is not the same as accepting it as true, it simply means the evidence is not strong enough to rule out $H_0$. However, every time we use data to make a decision, we risk making a mistake. In hypothesis testing, there are two main kinds of error:
+
+- **Type 1 Error**: Rejecting $H_0$ when it is actually true (a “false positive”). You can think of this like convicting an innocent person, rejecting the null hypothesis when it's actually correct.
+- **Type 2 Error**: Failing to reject $H_0$ when $H_A$ is actually true (a “false negative”). You can think of this like letting a guilty person go free, failing to reject the null hypothesis when it's actually incorrect.
+
+Every hypothesis test involves a trade-off between these errors. Making it harder to convict (lowering Type 1 error) usually increases the risk of letting someone go (higher Type 2 error), and vice versa. Because these errors are fundamentally about making decisions based on uncertain data, we need to quantify them in terms of probabilities:
+
+```math
+\begin{align*}
+\alpha &= P_\theta(T \in K) \quad \theta \in \Theta_0 \text{ (Type 1 Error)} \\
+\beta(\theta) &= P_\theta(T \notin K) = 1 - P_\theta(T \in K) \quad \theta \in \Theta_A \text{ (Type 2 Error)}
+\end{align*}
+```
+
+<Callout type="example" title="Tea Tasting Lady"> 
+In the tea tasting lady example: 
+- **Type 1 Error:** Rejecting $H_0$ (random guessing) when she actually has no special ability (i.e., claiming she can taste the difference when she cannot). 
+- **Type 2 Error:** Failing to reject $H_0$ when she actually has a special ability ($\theta > 0.5$), i.e., missing a real effect. 
+</Callout>
+
+## Significance Level and Power
+
+To control the risk of a Type 1 error (the more serious error, in most scientific contexts such as about the effectiveness of the lady's tea tasting ability), we fix a significance level $\alpha \in (0,1)$ in advance (commonly $0.05$ or $0.01$). A test $(T, K)$ then has a significance level $\alpha$ if for all $\theta \in \Theta_0$:
+
+```math
+\P_\theta(T \in K) \leq \alpha
+```
+
+When setting up a hypothesis test, we need to decide on a **significance level** $\alpha$, which is the probability of making a Type 1 error, so we reject the null hypothesis when it is actually true. We want to avoid making this error, as it could lead to false conclusions our hypothesis such as about the effectiveness of the lady's tea tasting ability. So we say that a test $(T,K)$ has significance level $\alpha \in (0,1)$ (why not closed?)if for all $\theta \in \Theta_0$ we have:
+
+```math
+\P_\theta(T \in K) \leq \alpha
+```
+
+We similarly also want to avoid making a Type 2 error, which occurs when we fail to reject the null hypothesis when the alternative hypothesis is true. This means we want to ensure that our test has sufficient **power** to detect an effect when it exists. The power of a test at a point $\theta \in \Theta_A$ is the probability that the test correctly rejects $H_0$ when $\theta$ is actually true (i.e., detects a real effect):
+
+```math
+\begin{align*}
+\beta: \Theta_A &\to [0,1] \\
+\beta(\theta) &= P_\theta(T \in K)
+\end{align*}
+```
+
+You can interpret the significance level $\alpha$ as our tolerance for false positives: "I'll only reject $H_0$ if the evidence is so strong that such data would occur by chance less than $\alpha$ of the time." The power of a test is then like the sensitivity of a test: it tells us how likely the test is to detect an effect when there is one. 
+
+So we design our tests to control Type 1 errors first (to avoid making unjustified claims), and only then try to maximize power (minimize Type 2 errors). This leads to an asymmetry in how we treat the two types of errors as we prioritize minimizing Type 1 errors before addressing Type 2 errors. For this reason it is harder to reject $H_0$ than to fail to reject it as we only want reject the null hypothesis if the evidence is compelling. For this reason, we often set $H_0$ as the "skeptical" claim, and $H_A$ as the claim we actually want to prove. Because if we can reject $H_0$, the result is stronger.
+
+Note that such a decision in a test is never proof. It is simply a conclusion based on the evidence available or an interpretation of how well the data agrees with the presumed model. If $T \in K$ we reject $H_0$ and therefore we may no longer believe that $\theta \in Theta_0$ and therefore believe that $\theta \in \Theta_A$. However, it does not tell us the true value of the parameter $\theta$. The asymmetry ensures that only strong evidence leads us to overturn the null hypothesis. Failing to reject $H_0$ is not evidence in its favor it simply reflects the test's design.
+
+<Callout type="example" title="Tea Tasting Lady">
+For our random tea tasting lady experiment, we have the random variables $X_1, X_2, \ldots, X_n$ representing the tea samples she tastes, which are i.i.d and we assume are Bernoulli distributed with parameter $\theta$. Hence the number of total successes (i.e., the number of times she correctly identifies the tea) follows a Binomial distribution:
+
+```math
+S_n = \sum_{i=1}^n X_i \sim \text{Binomial}(n, \theta)
+```
+
+As mentioned we want to check the claim that the lady has a special ability, and therefore define our null hypothesis as the converse/"skeptical" claim. So our null hypothesis test is that the lady has no special ability, we defined this this as:
+
+```math
+H_0: \theta = \frac{1}{2}
+```
+
+We define our alternative hypothesis as the claim we want to test, which is that the lady has a special ability:
+
+```math
+H_A: \theta > \frac{1}{2}
+```
+
+If she has a special ability so $\theta > \frac{1}{2}, we would expect the sum $S_n$ to be higher than what we would expect under the null hypothesis. So a large value of $S_n$ supports the alternative hypothesis $H_A$. Therefore a possible test statistic could be: 
+
+```math
+T = S_n = \sum_{i=1}^n X_i
+```
+
+For our rejection region, we want to find some subset of the possible values of $T$ that would lead us to reject the null hypothesis. In our case we would reject it if $T$ is large enough, so we can set a threshold $c$ such that we reject $H_0$ if $T > c$. This results in a critical region for our test as follows:
+
+```math
+K = (c, \infty)
+```
+
+Therefore if our test has a significance level $\alpha$, we want to choose $c$ such that the probability of rejecting the null hypothesis when it is true is $\alpha$ as we need to control the Type 1 error rate resulting in the following probability:
+
+```math
+P_{\frac{1}{2}}(S_n > c) \leq \alpha
+```
+
+For the power function $\beta(\theta)$, we want to evaluate the probability of correctly rejecting the null hypothesis when the alternative hypothesis is true. This is given by:
+
+```math
+\beta(\theta) = P_{\theta}(S_n > c)
+```
+
+So in general we need to know the distribution of the test statistic under every $P_\theta$ or at least under the null hypothesis to compute the probabilities and the power function. In practice the distribution of $H_0$ can not always be obtained exactly, so approximations or simulations are often used.
+
+If we were to perform the test over $n=10$ days we would get the following table for different $\theta$ and critical values $c$:
+
+| $\theta$ | $c=7$ | $c=8$ | $c=9$ | $c=10$ |
+|----------|-------|-------|-------|--------|
+| 0.5     | 0.0547| 0.0107| 0.0010| 0 |
+| 0.6     | 0.1673| 0.0464| 0.0060| 0 |
+| 0.7     | 0.3828| 0.1493| 0.0282| 0 |
+
+We can interpret this table as follows for the first value where $\theta = 0.5$ and $c = 7$: the probability of having $c=7$ correct guesses when $\theta = 0.5$, so we are arbitrarily guessing, is $0.0547 \approx 5\%$. So if we choose a significance level of $\alpha = 0.05$, we would not reject the null hypothesis as we have the following:
+
+```math
+P_{\frac{1}{2}}(S_n > 7) = 0.0547 > \alpha
+```
+
+So the probability is not low enough for us to reject the null hypothesis. In this case when $c=8$ we have a low enough test statistic $T$ that falls within the acceptance region. So if the lady guesses 8 or more correctly we may believe she has a special ability.
+
+We can also calculate the power of the test using the table. For $c=7$ we have:
+
+```math
+\beta(0.6) = P_{0.6}(S_n > 7) = 0.1673 \text{ and } \beta(0.7) = P_{0.7}(S_n > 7) = 0.3828
+```
+
+So if the lady actually has a $70\%$ success rate, the power of the test is $38\%$, which means the chance to detect the effect if the lady has a 70% success rate is about 38%. We can see that for $\theta$ in the alternative hypothesis, so $\theta > \frac{1}{2}$, the power function $\beta(\theta)$ increases as $\theta$ increases. This means we have a significant probability of a Type 2 error (i.e. failing to detect a real ability) when the deviation from $0.5$ is small. In general:
+- Power close to $1$ means the test is likely to detect an effect if there is one. 
+- Power close to $\alpha$ means the test is weak (hard to detect even real effects). 
+- For fixed $n$ and $\alpha$, power increases as the true effect size increases. Where effect size is how different the true distribution is from the null distribution.
+- Choosing a higher $\alpha$ increases power but also increases the Type 1 error rate. So there is a trade-off: to decrease Type 1 error, you may increase Type 2 error (lower power), and vice versa. 
+</Callout>
+
+## Likelihood Ratio Test
+
+In this section, we develop a systematic and principled approach to hypothesis testing based on the concept of likelihood, which often leads to the **most powerful/optimal possible test**. This test is known as the **Likelihood Ratio Test (LRT)**. The likelihood ratio test essentially compares how well the data is explained under the null hypothesis to how well it could possibly be explained under the alternative.
+
+Suppose we want to test two simple hypotheses about the parameter $\theta$:
+
+```math
+H_0: \theta = \theta_0 \quad \text{and} \quad H_A: \theta = \theta_A
+```
+
+where $\theta_0 \neq \theta_A$ are fixed and known. We also assume that the random variables $X_1, \ldots, X_n$ are either jointly discrete or jointly continuous under both $P_{\theta_0}$ and $P_{\theta_A}$. In particular the likelihood function is well-defined for both $\theta = \theta_0$ and $\theta = \theta_A$ if the random variables are independent and identically distributed (i.i.d.):
+
+```math
+\L(x_1, x_2, \ldots, x_n; \theta) = \begin{cases}
+\prod_{i=1}^{n} p_{X_i}(x_i; \theta) & \text{if } X_i \text{ are discrete} \\
+\prod_{i=1}^{n} f_{X_i}(x_i; \theta) & \text{if } X_i \text{ are continuous}
+\end{cases}
+```
+
+We then can define the **likelihood ratio statistic** as follows:
+
+```math
+R(x_1, \ldots, x_n) = \frac{\L(x_1, \ldots, x_n \mid \theta_A)}{\L(x_1, \ldots, x_n \mid \theta_0)}
+```
+
+By convention if $\L(x_1, \ldots, x_n \mid \theta_0) = 0$ then $R(x_1, \ldots, x_n) = \infty$. The likelihood ratio test uses this as its statistic:
+
+```math
+T = R(X_1, \ldots, X_n)
+```
+
+The test then rejects $H_0$ in favor of $H_A$ if $R(x_1, \ldots, x_n)$ is sufficiently large, as then the observed data is much more likely under $H_A$ than under $H_0$. Intuitively this makes sense as if the data would be very rare if $H_0$ were true, but quite expected under $H_A$, then the data provide evidence against $H_0$. Because we reject the null hypothesis in favor of the alternative hypothesis if the likelihood ratio is sufficiently large we can define the critical region $K$ as:
+
+```math
+K = (c, \infty)
+```
+
+For some constant $c$. Both likelihoods are numbers in $[0,1]$ (for probability mass functions), but their ratio can be arbitrarily large for example if the data is almost impossible under $H_0$ but fits well under $H_A$ we get:
+
+```math
+\frac{0.99}{0.01} \quad \text{or} \quad \frac{0.1}{0.9} = 0.111 \quad \text{or} \quad \frac{0.5}{0.5} = 1
+```
+
+Just like with the [maximum likelihood estimator](), it is often more convenient in practice and theory to use the **log-likelhood ratio** instead of the likelihood ratio itself. The log-likelihood ratio is defined as:
+
+```math
+\lambda(x_1, \ldots, x_n) = \log R(x_1, \ldots, x_n) = \ell(x_1, \ldots, x_n \mid \theta_A) - \ell(x_1, \ldots, x_n \mid \theta_0)
+```
+
+where $\ell(x_1, \ldots, x_n \mid \theta)$ is the log-likelihood function.
+
+We said earlier that the likelihood ratio test is the most powerful or most optimal test we can define but what does this mean? The likelhood ratio test was setup by Jerzy Neyman and Egon Pearson in the 1930s. They defined a proved a lemma that characterizes the optimality of the likelihood ratio test in the case of simple hypotheses, the so-called **Neyman-Pearson Lemma**. It states that for two simple hypotheses $H_0: \theta = \theta_0$ and $H_A: \theta = \theta_A$, the likelihood ratio test $(T,K)$ with significance level $\hat{\alpha} = P_{\theta_0}(T \in K)$, then any other test with significance level $\alpha \leq \hat{\alpha}$ will have less or equal power under $H_A$. That is, for any other test $(T', K')$ with $P_{\theta_0}(T' \in K') \leq \alpha$, we have:
+
+```math
+\P_{\theta_A}(T' \in K') \leq \P_{\theta_A}(T \in K)
+```
+
+Which is why we say the likelihood ratio test is optimal in the sense that any other test with significance
+level no greater than the level of the likelihood ratio test will have lower power. So it maximizes the power of the test for a given significance level.
+
+Another important note is that when using the likelihood ratio test in practice we often have to deal with composite hypotheses. So we generalize the idea to the **generalized likelihood ratio test (GLRT)** which yields good or even optimal tests for composite hypotheses:
+
+```math
+R(x_1, \ldots, x_n) = \frac{\sup_{\theta \in \Theta_A} \L(x_1, \ldots, x_n \mid \theta)}{\sup_{\theta \in \Theta_0} \L(x_1, \ldots, x_n \mid \theta)}
+```
+
+Because of the supremum is compares the best possible fit to the data under the alternative hypothesis $H_A$ to the best possible fit under the null hypothesis $H_0$. The test then again rejects $H_0$ if $R$ is large enough.
+
+<Callout type="example" title="Tea Tasting Lady">
+Let's revisit the tea tasting lady and see the likelihood ratio explicitly step by step, both in terms of the likelihood and the log-likelihood.
+
+Suppose, as before, we model her correct guesses as $X_i \sim \text{Bernoulli}(\theta)$ i.i.d. for $i = 1, \ldots, n$. Let $x_1, \ldots, x_n \in {0,1}$ be the observed outcomes (1 if correct, 0 if not), and $S_n = \sum_{i=1}^n x_i$ is the total number of correct guesses. The probability mass function for each $X_i$ is then:
+
+```math
+p_X(x_i; \theta) = \theta^{x_i} (1 - \theta)^{1 - x_i} \quad \text{for } x_i \in \{0, 1\}
+``` 
+
+and the joint likelihood function for an observed sample $(x_1, \ldots, x_n)$ is given by:
+
+```math
+\L(x_1, \ldots, x_n \mid \theta) = \prod_{i=1}^n p_X(x_i; \theta) = \theta^{\sum_{i=1}^n x_i} (1 - \theta)^{n - \sum_{i=1}^n x_i}
+```
+
+which can be rewritten using $S_n = \sum_{i=1}^n x_i$:
+
+```math
+\L(x_1, \ldots, x_n \mid \theta) = \theta^{S_n} (1 - \theta)^{n - S_n}
+```
+
+Now we consider again our two hypotheses:
+
+```math
+H_0: \theta = \frac{1}{2} \quad \text{and} \quad H_A: \theta >\frac{1}{2}
+```
+
+The likelihood under the simple null hypothesis $H_0$ is then:
+
+```math
+mathcal{L}(x_1, \ldots, x_n \mid H_0) = \left(\frac{1}{2}\right)^{s_n}\left(\frac{1}{2}\right)^{n-s_n} = \left(\frac{1}{2}\right)^n = \frac{1}{2^n}
+```
+
+For our composite alternative hypotheses $H_A$, rather than using the supremum we can just use the parameter $\theta_A$ and later on see how the ratio behaves as $\theta_A$ varies. So we can write the likelihood under the alternative hypothesis as:
+
+```math
+\L(x_1, \ldots, x_n \mid H_A) = \theta_A^{S_n} (1 - \theta_A)^{n - S_n}
+```
+
+We can then compute the likelihood ratio as follows:
+
+```math
+\begin{align*}
+R(x_1, \ldots, x_n; \frac{1}{2}, \theta_A) &= \frac{\L(x_1, \ldots, x_n \mid H_A)}{\L(x_1, \ldots, x_n \mid H_0)} \\
+&= \frac{\theta_A^{S_n} (1 - \theta_A)^{n - S_n}}{\left(\frac{1}{2}\right)^n} \\
+&= \frac{\theta_A^{S_n}}{\left(\frac{1}{2}\right)^n} \cdot \frac{(1 - \theta_A)^{n - S_n}}{\left(\frac{1}{2}\right)^n} \\
+&= \left(\frac{\theta_A}{\frac{1}{2}}\right)^{S_n} \left(\frac{1 - \theta_A}{\frac{1}{2}}\right)^{n - S_n} \\
+&= \left(2 \theta_A\right)^{S_n} \left(2 (1 - \theta_A)\right)^{n - S_n}
+\end{align*}
+```
+
+Because by assumption that $\theta_A > \frac{1}{2}$, we have that the first term $2 \geq 2 \theta_A > 1$ and therefore when $S_n$ increases, the factor $(2\theta_A)^{S_n}$ grows rapidly. For the second term we have $0 < 2 (1 - \theta_A) < 1$ so as $S_n$ increases, the factor $(2(1 - \theta_A))^{n - S_n}$ shrinks. So the likelihood ratio is large when $S_n$ is large, which makes sense as we expect more correct guesses under the alternative hypothesis $H_A$. 
+
+As a concrete example, we set $\theta_A = 0.7$ and compute the likelihood ratio for different values of $S_n$. We get $2 \theta_A = 1.4$ and $2(1 - \theta_A) = 0.6$. Then the likelihood ratio becomes:
+
+```math
+R(x_1, \ldots, x_n; \frac{1}{2}, 0.7) = \left(1.4\right)^{S_n} \left(0.6\right)^{n - S_n}
+```
+
+If we compute this for $n = 10$ and different values of $S_n$, we get:
+- For $S_n = 3: $R = (1.4)^3 \cdot (0.6)^7 \approx 0.07$
+- For $S_n = 5: $R = (1.4)^5 \cdot (0.6)^5 \approx 0.41$
+- For $S_n = 7: $R = (1.4)^7 \cdot (0.6)^3 \approx 2.27$
+
+We can also look at the log-likelihood ratio:
+
+```math
+\begin{align*}
+\lambda(x_1, \ldots, x_n; \theta_0, \theta_A) &= \log R(x_1, \ldots, x_n; \theta_0, \theta_A) \\
+&= S_n \log(\theta_A) + (n - S_n) \log(1 - \theta_A) - (S_n \log(\frac{1}{2}) + (n - S_n) \log(\frac{1}{2})) \\
+&= S_n (\log(\theta_A) - \log(\frac{1}{2})) + (n - S_n) (\log(1 - \theta_A) - \log(\frac{1}{2})) \\
+&= S_n \log(2 \theta_A) + (n - S_n) \log(2 (1 - \theta_A))
+\end{align*}
+```
+
+This again shows that $\lambda$ is an increasing function of $s_n$, the larger the number of correct guesses, the larger the log-likelihood ratio.
+
+So we can say the likelihood ratio test statistic is equivalent to our previous test statistic $T = \sum_{i=1}^n x_i$, and thus, the Neyman-Pearson approach leads us to reject $H_0$ (i.e. the hypothesis of random guessing) if the observed sum $_n$ is large just like the other test procedure we motivated above.
+</Callout>
+<Callout type="example" title="Normal Model with Known Variance">
+Let us also revisit the normal model example. Suppose $X_1, \ldots, X_n \sim N(\mu, \sigma^2)$ i.i.d., with known variance $\sigma^2$ and the unknown mean parameter $\theta = \mu \in \mathbb{R}$:
+
+```math
+X_i \sim N(m, \sigma^2) \quad \text{for } i = 1, \ldots, n
+```
+
+The probability density function (pdf) of the normal distribution is given by:
+
+```math
+f_X(x_i, \theta) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left(-\frac{(x_i - \theta)^2}{2 \sigma^2}\right)
+```
+
+Because the variables are i.i.d. normal, we can just simply use the joint likelihood function for the sample $(x_1, \ldots, x_n)$:
+
+```math
+\L(x_1, \ldots, x_n \mid \theta) = \prod_{i=1}^n f_X(x_i, \theta) = \left(\frac{1}{\sqrt{2 \pi \sigma^2}}\right)^n \exp\left(-\frac{1}{2 \sigma^2} \sum_{i=1}^n (x_i - \theta)^2\right)
+```
+
+We want to test the simple hypotheses against each other:
+
+```math
+H_0: \theta = \mu_0 \quad \text{and} \quad H_A: \theta = \mu_A
+```
+
+where $\mu_0 \neq \mu_A$ are fixed and known. We then get the following likelihood ratio:
+
+```math
+\begin{align*}
+R(x_1, \ldots, x_n) 
+&= \frac{\left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^n \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu_A)^2\right)}{\left(\frac{1}{\sqrt{2\pi\sigma^2}}\right)^n \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu_0)^2\right)} \\
+&= \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu_A)^2 + \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu_0)^2\right) \\
+&= \exp\left(\frac{1}{2\sigma^2}\left[ \sum_{i=1}^n (x_i - \mu_0)^2 - \sum_{i=1}^n (x_i - \mu_A)^2 \right]\right)
+\end{align*}
+```
+
+To see how this depends on the data, we can expand the difference in the exponents:
+
+```math
+\begin{align*}
+& \sum_{i=1}^n (x_i - \mu_0)^2 - \sum_{i=1}^n (x_i - \mu_A)^2 \\
+&= \sum_{i=1}^n \Big[ (x_i^2 - 2x_i \mu_0 + \mu_0^2) - (x_i^2 - 2x_i \mu_A + \mu_A^2) \Big] \\
+&= \sum_{i=1}^n \Big[ -2x_i\mu_0 + \mu_0^2 + 2x_i\mu_A - \mu_A^2 \Big] \\
+&= \sum_{i=1}^n [2x_i(\mu_A - \mu_0) + (\mu_0^2 - \mu_A^2)] \\
+&= 2(\mu_A - \mu_0) \sum_{i=1}^n x_i + n(\mu_0^2 - \mu_A^2)
+\end{align*}
+```
+
+Putting it together, we have the likelihood ratio:
+
+```math
+\begin{align*}
+R(x_1, \ldots, x_n) &= \exp\left(\frac{1}{2\sigma^2}\left[2(\mu_A - \mu_0)\sum_{i=1}^n x_i + n(\mu_0^2 - \mu_A^2)\right]\right) \\
+&= \exp\left(\frac{\mu_A - \mu_0}{\sigma^2} \sum_{i=1}^n x_i + \frac{n}{2\sigma^2}(\mu_0^2 - \mu_A^2)\right)
+\end{align*}
+```
+
+Again the test statistic is essentially $\sum_{i=1}^n x_i$ (or the sample mean), since the other terms are constant for given $n$ and $\sigma^2$. We also see this when taking the logarithm:
+
+```math
+\lambda(x_1, \ldots, x_n) = \log R(x_1, \ldots, x_n) = \frac{\mu_A - \mu_0}{\sigma^2} \sum_{i=1}^n x_i + \frac{n}{2\sigma^2}(\mu_0^2 - \mu_A^2)
+```
+
+So we can define the test statistic as:
+
+```math
+T = \sum_{i=1}^n X_i
+```
+
+For the critical region, we again want to reject $H_0$ if the likelihood ratio is large. This means we reject $H_0$ if $R(x_1, \ldots, x_n) > c$ for some constant $c$. However, we need to consider the sign of $(\mu_A - \mu_0)$ to determine how we define "large". If $(\mu_A - \mu_0) > 0$ so $(\mu_A > \mu_0)$, we set critical region of the form:
+
+```math
+K_{(>)} = (c_{(>)} , \infty)
+```
+
+and choose $c$ such that we reject $H_0$ is large so if $T > c_{(>)}$. Conversely, if $(\mu_A - \mu_0) < 0$ so $(\mu_A < \mu_0)$, then the exponent is large when $T$ is small, so we set the critical region of the form:
+
+```math
+K_{(<)} = (-\infty, c_{(<)})
+```
+
+In both cases we need to choose the constants $c_{(>)}$ and $c_{(<)}$ appropriately to control the Type I error rate with the significance level $\alpha$ as we wish to have:
+
+```math
+P_{\mu_0}(T \in K) \leq \alpha
+```
+
+To choose the constants $c_{(>)}$ and $c_{(<)}$, we need to consider the distribution of the test statistic $T$ under the null hypothesis $H_0: \theta = \mu_0$. Here this is easy as we just have a sum of i.i.d. normal random variables, which is also normal:
+
+```math
+T \sim N(n \mu_0, n \sigma^2)
+```
+
+We can also standardize the test statistic:
+
+```math
+Z = \frac{T - n\mu_0}{\sqrt{n\sigma^2}} \sim N(0, 1) \quad \text{under $H_0$}
+```
+
+To control the Type I error rate at significance level $\alpha$, we choose the threshold $c$ so that
+
+```math
+P_{\mu_0}(T > c) = \alpha
+```
+
+By substituting the standardized variable $Z$ into the equation, we have:
+
+```math
+\begin{align*}
+P_{\mu_0}(T > c) &= \alpha \\
+P_{\mu_0}\left(\frac{T - n\mu_0}{\sqrt{n\sigma^2}} > \frac{c - n\mu_0}{\sqrt{n\sigma^2}}\right) &= \alpha \\
+P\left(Z > \frac{c - n\mu_0}{\sqrt{n\sigma^2}}\right) = \alpha
+\end{align*}
+```
+
+Recall that the CDF of the standard normal is $\Phi(z) = P(Z \leq c)$. We want $P(Z > c) = \alpha$, so:
+
+```math
+P(Z > c) = \alpha \implies P(Z \leq c) = 1 - \alpha
+```
+
+So $c = \Phi^{-1}(1-\alpha)$ is the point such that $1-\alpha$ of the distribution is below it and $\alpha$ is above it. So from the above equation we have:
+
+```math
+\begin{align*}
+\frac{c - n\mu_0}{\sqrt{n\sigma^2}} &= \Phi^{-1}(1-\alpha) \\
+c - n\mu_0 &= \sqrt{n\sigma^2} \Phi^{-1}(1-\alpha) \\
+c &= n\mu_0 + \sqrt{n\sigma^2} \Phi^{-1}(1-\alpha)
+\end{align*}
+```
+
+where $\Phi^{-1}$ is the quantile function (inverse CDF) of the standard normal distribution. This is directly analogous to setting quantiles for the confidence intervals. Rather then defining different critical regions for the two cases, we can just change the critical region to $T < c$ if $\mu_A < \mu_0$ and $T > c$ if $\mu_A > \mu_0$. This means we can define the critical region as:
+
+```math
+c = \begin{cases}
+c_{(>)} = n\mu_0 + \sqrt{n\sigma^2} \Phi^{-1}(1-\alpha) & \text{if } \mu_A > \mu_0 \\
+c_{(<)} = n\mu_0 - \sqrt{n\sigma^2} \Phi^{-1}(\alpha) & \text{if } \mu_A < \mu_0
+\end{cases}
+```
+</Callout>
+
+## Z-Test
+
+The z-test is the classic hypothesis test for the mean of a normal distribution when the variance $\sigma^2$ is known. It gets its name from the fact that the test statistic is standardized and follows a standard normal distribution under the null hypothesis.
+
+Suppose we have a sample of i.i.d. random variables $X_1, X_2, \ldots, X_n$ drawn from a normal distribution with unknown mean $\theta$ and known variance $\sigma^2$:
+
+```math
+X_i \sim N(\theta, \sigma^2) \quad \text{for } i = 1, \ldots, n
+```
+
+We want to test the null hypothesis:
+
+```math
+H_0: \theta = \theta_0
+```
+
+Against one of the alternative hypotheses:
+- **One-sided test**: $H_A: \theta > \theta_0$ (right) or $H_A: \theta < \theta_0$ (left)
+- **Two-sided test**: $H_A: \theta \neq \theta_0$
+
+Which alternative is most appropriate depends on the concrete question. For the mean we use the sample mean as our estimate:
+
+```math
+T = X_n = \frac{1}{n} \sum_{i=1}^n X_i
+```
+
+and standardize it to create the test statistic:
+
+```math
+Z = \frac{X_n - \theta_0}{\sigma / \sqrt{n}} \sim N(0, 1) \quad \text{under } H_0
+```
+
+The critical region $K$ which we consider as "extreme values" to reject the null hypothesis depend on the alternative hypothesis we are testing against. 
+
+For the **right one-sided** test against $H_A: \theta > \theta_0$, we want to reject the null hypothesis if the test statistic $Z$ is greater than some critical value $c_{(>)}$. So our set of critical values is:
+
+```math
+K = (c_{(>)} , \infty)
+```
+
+And we want to choose $c_{(>)}$ such that:
+
+```math
+\P_{\theta_0}(Z \in K) = \P_{\theta_0}(Z > c_{(>)} ) = \alpha
+```
+
+Which for the standard normal distribution gives us:
+
+```math
+\P_{\theta_0}(Z > c_{(>)} ) = 1 - \Phi(c_{(>)} ) = \alpha
+```
+
+where $\Phi$ is the cumulative distribution function (CDF) of the standard normal distribution. This means we can compute $c_{(>)}$ as:
+
+```math
+\alpha = 1 - \Phi(c_{(>)} ) \implies c_{(>)} = \Phi^{-1}(1 - \alpha)
+```
+
+Thus we reject the null hypothesis if:
+
+```math
+\begin{align*}
+Z &> \Phi^{-1}(1 - \alpha) \\
+\frac{X_n - \theta_0}{\sigma / \sqrt{n}} &> \Phi^{-1}(1 - \alpha) \\
+X_n &> \theta_0 + \sigma / \sqrt{n} \Phi^{-1}(1 - \alpha)
+\end{align*}
+```
+
+For the **left one-sided** test against $H_A: \theta < \theta_0$, we want to reject the null hypothesis if the test statistic $Z$ is less than some critical value $c_{(<)}$. So our set of critical values is:
+
+```math
+K = (-\infty, c_{(<)})
+```
+
+And we want to choose $c_{(<)}$ such that:
+
+```math
+\P_{\theta_0}(Z \in K) = \P_{\theta_0}(Z < c_{(<)} ) = \alpha
+```
+
+For the standard normal distribution this gives us:
+
+```math
+\P_{\theta_0}(Z < c_{(<)} ) = \Phi(c_{(<)} ) = \alpha
+```
+
+This means we can compute $c_{(<)}$ as:
+
+```math
+\alpha = \Phi(c_{(<)} ) \implies c_{(<)} = \Phi^{-1}(\alpha)
+```
+
+Thus we reject the null hypothesis if:
+
+```math
+\begin{align*}
+Z &< \Phi^{-1}(\alpha) \\
+\frac{X_n - \theta_0}{\sigma / \sqrt{n}} &< \Phi^{-1}(\alpha) \\
+X_n &< \theta_0 + \sigma / \sqrt{n} \Phi^{-1}(\alpha)
+\end{align*}
+```
+
+A useful property of the standard normal distribution is that $\Phi^{-1}(1 - \alpha) = -\Phi^{-1}(\alpha)$, so we can also express the critical value for the left one-sided test as:
+
+```math
+c_{(<)} = -\Phi^{-1}(1 - \alpha)
+```
+
+For the **two-sided test** against $H_A: \theta \neq \theta_0$, we want to reject the null hypothesis if the test statistic $Z$ is either greater than some critical value $c_{(>)}$ or less than some critical value $c_{(<)}$. So our set of critical values is:
+
+```math
+K = (-\infty, c_{(=)}) \cup (c_{(=)} , \infty)
+```
+
+So in other words, we want to choose $c_{(=)}$ such that:
+
+```math
+\P_{\theta_0}(Z \in K) = \P_{\theta_0}(|Z| > c_{(=)} ) = \P_{\theta_0}(Z < c_{(=)} ) + \P_{\theta_0}(Z > c_{(=)})= \alpha
+```
+
+Because the standard normal distribution is symmetric, we have:
+
+```math
+\P_{\theta_0}(Z < c_{(=)} ) = \P_{\theta_0}(Z > c_{(=)}) = \frac{\alpha}{2}
+```
+
+So solving for $c_{(=)}$ gives:
+
+```math
+c_{(=)} = \Phi^{-1}(1 - \alpha/2)
+```
+
+<Callout type="example" title="Ostrich Eggs">
+Suppose two researchers, Mr. Smith and Dr. Thurston, are debating the average weight of ostrich eggs. To resolve this, they collect $n = 8$ ostrich eggs and measure their weights (in grams):
+
+```math
+x_1=1090,\ x_2=1150,\ x_3=1170,\ x_4=1080,\ x_5=1210,\ x_6=1230,\ x_7=1180,\ x_8=1140
+```
+
+We model these weights as i.i.d. random variables:
+
+```math
+X_1, X_2, \ldots, X_8 \sim N(m, \sigma^2)
+```
+
+where $m$ is the unknown mean weight and $\sigma^2$ the variance is known as $\sigma=55$ grams. Dr. Thurston proposes to test Mr. Smith's claim by taking the hypothesis:
+
+```math
+H_0: \theta = 1100
+```
+
+against the alternative hypothesis:
+
+```math
+H_A: \theta > 1100
+```
+
+(or against his claim which is that the average weight is 1200g) at the significance level $\alpha = 0.05$ so $5\%$ Type I error rate. We calculate the sample mean as:
+
+```math
+T = \bar{X_8} = \frac{1090 + 1150 + 1170 + 1080 + 1210 + 1230 + 1180 + 1140}{8} = 1156.25
+```
+
+From the standard normal distribution, we find $\Phi^{-1}(1 - 0.05) \approx 1.645$. So for our standardized model our test statistic is:
+
+```math
+Z = \frac{T - \theta_0}{\sigma / \sqrt{n}} = \frac{1156.25 - 1100}{55 / \sqrt{8}} \approx 2.89
+```
+
+Which means we reject the null hypothesis $H_0$ at the $5\%$ significance level because:
+
+```math
+Z > 1.645 \implies 2.89 > 1.645
+```
+
+Mr. Smith, however, feels that this procedure disadvantages him and suggests instead testing Dr. Thurston's claim with the hypothesis:
+
+```math
+H_0: \theta = 1200
+```
+
+against the alternative hypothesis:
+
+```math
+H_A: \theta < 1200
+```
+
+(or alternatively against his claim that the average weight is 1100g) at the significance level $\alpha = 0.05$. The sample mean is still $T = 1156.25$ and we can compute the critical value as:
+
+```math
+c_{(<)} = \Phi^{-1}(\alpha) = -\Phi^{-1}(1 - \alpha) \approx -1.645
+```
+
+So for the standardized test statistic we have:
+
+```math
+Z = \frac{T - \theta_0}{\sigma / \sqrt{n}} = \frac{1156.25 - 1200}{55 / \sqrt{8}} \approx -2.25
+```
+
+Which means we reject the null hypothesis $H_0$ at the $5\%$ significance level because:
+
+```math
+Z < -1.645 \implies -2.25 < -1.645
+```
+
+So both of their claims are not supported by the data, and they conclude that the average weight of ostrich eggs is likely between 1100g and 1200g.
+</Callout>
+
+## T-Test
+
+The t-test is used when we want to test the mean of a normal distribution but the population variance $\sigma^2$ is unknown. The name comes from the fact that the standardized test statistic when both are unknown follows a t-distribution rather than a normal distribution.
+
+Suppose we have a sample of i.i.d. random variables $X_1, X_2, \ldots, X_n$ drawn from a normal distribution with unknown mean $\theta$ and unknown variance $\sigma^2$:
+
+```math
+X_i \sim N(\theta, \sigma^2) \quad \text{for } i = 1, \ldots, n
+```
+
+We want to test the null hypothesis:
+
+```math
+H_0: \theta = \theta_0 \quad
+```
+
+This is strictly a composite hypotheses since $\sigma_2$ is unspecified meaning the set of possible values for $\theta_0$ is:
+
+```math
+\Theta_0 = \{\theta_0\} \times (0, \infty)
+```
+
+Since $\sigma^2$ is unknown, we estimate it from the data using the sample variance:
+
+```math
+S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X})^2
+```
+
+where $\bar{X}$ is the sample mean. Just like for the [confidence intervals]() we then use this in our standardized normal model to create the test statistic. The t-test is based on the fact that under the null hypothesis, the sample mean follows a t-distribution with $n-1$ degrees of freedom. Specifically, we use the **t-statistic** defined as:
+
+```math
+T = \frac{\bar{X} - \theta_0}{S / \sqrt{n}} \sim t_{n-1} \quad \text{under } H_0
+```
+
+where $S$ is the sample standard deviation and $n$ is the sample size. Depending on the alternative hypothesis, we again calculate the critical regions using the correct quantiles of the t-distribution with $n-1$ degrees of freedom.
+- **Right one-sided test** against $H_A: \theta > \theta_0$:
+
+```math
+T > t_{n-1, 1 - \alpha}
+```
+
+- **Left one-sided test** against $H_A: \theta < \theta_0$:
+
+```math
+T < t_{n-1, \alpha}
+```
+
+- **Two-sided test** against $H_A: \theta \neq \theta_0$:
+
+```math
+|T| > t_{n-1, 1 - \alpha/2}
+```
+
+<Callout type="example" title="Ostrich Eggs">
+Now, Mr. Smith and Dr. Thurston wonder whether, in their first experiment, they might have used an incorrect estimate of the variance of ostrich eggs. Therefore, they decide to perform the tests again without the assumption of known variance so using the t-test instead of the z-test. Dr. Thurston still insists on testing:
+
+```math
+H_0: \theta = 1100 \quad \text{against } \quad H_A: \theta > 1100
+```
+
+with a significance level of $\alpha = 0.05$. The sample mean is still $T = 1156.25$ and the sample variance is:
+
+```math
+S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X})^2 = \frac{1}{n}(\sum_{i=1}^n (X_i^2) - n \bar{X}^2) = 2798.21
+```
+
+Taking the square root gives us the sample standard deviation of $S \approx 52.9$. From the t-distribution with $n-1$ degrees of freedom, we can find $t_{7, 0.95} \approx 1.895$. The test statistic is then:
+
+```math
+T = \frac{1156.25 - 1100}{52.9 / \sqrt{8}} \approx 3.008
+```
+
+We again reject the null hypothesis $H_0$ at the $5\%$ significance level because:
+
+```math
+T > 1.895 \implies 3.008 > 1.895
+```
+
+Not surprisingly, Mr. Smith remains unconvinced and suggests instead testing Dr. Thurston's claim with the alternative hypothesis reversed:
+
+```math
+H_0: \theta = 1200 \quad \text{against } \quad H_A: \theta < 1200
+```
+
+He computes the test statistic as:
+
+```math
+T = \frac{1156.25 - 1200}{52.9 / \sqrt{8}} \approx -2.339
+```
+
+For this alternative hypothesis, we need the quantile $t_{7, 0.05} = -t_{7, 0.95} \approx -1.895$. Again we reject the null hypothesis $H_0$ at the $5\%$ significance level because:
+
+```math
+T < -1.895 \implies -2.339 < -1.895
+```
+</Callout>
+
+## Two-Sample Tests
+
+Often in statistics, we are interested not just in testing a single mean or parameter, but in comparing **two populations**. For example, suppose we wish to know whether a new drug reduces blood pressure more effectively than a standard drug. We then have two sets of samples, possibly of different sizes, and our goal is to test if their means (or some other parameters) differ. The key question becomes: **Is the observed difference between the two sample means larger than what we'd expect by chance, given the natural variability in the data?**
+
+There are two main scenarios:
+
+- **Paired (dependent) samples:** Each data point in one sample has a natural pairing in the other (e.g., measurements before and after a treatment for the same individuals).
+- **Unpaired (independent) samples:** The samples are independent; for example, they are from different groups of subjects.
+
+### Paired 
+
+Suppose we have two sets of measurements for each of $n$ subjects:
+
+- $X_1, X_2, \ldots, X_n$ (e.g., measurement **before** treatment)
+- $Y_1, Y_2, \ldots, Y_n$ (e.g., measurement **after** treatment)
+
+Assume $(X_i, Y_i)$ is a pair for the same subject, and each pair is independent of all others. A typical model is that $(X_i, Y_i)$ are jointly normally distributed, but for now assume they have equal variance $\sigma^2$ and the $X_i$ and $Y_i$ are independent within a pair).
+
+Our goal is then to **Test whether the mean of $X$ and the mean of $Y$ differ.** Because the data is paired, we can "collapse" the problem to a **one-sample test** of the differences:
+
+```math
+Z_i = X_i - Y_i, \quad i = 1, 2, \ldots, n
+```
+
+If $X_i$ and $Y_i$ are each distributed as $N(\mu_X, \sigma^2)$ and $N(\mu_Y, \sigma^2)$, and are independent within each pair, the difference $Z_i$ is also normally distributed:
+- The mean is straightforward as it follows from the properties of expectation:
+
+```math
+\E[Z_i] = \E[X_i - Y_i] = \E[X_i] - \E[Y_i] = \mu_X - \mu_Y
+```
+- The variance is given by the properties of variance for independent random variables:
+
+```math
+\Var[Z_i] = \Var[X_i - Y_i] = \Var[X_i] + \Var[Y_i] = \sigma^2 + \sigma^2 = 2\sigma^2
+```
+
+Thus, the distribution of the differences is:
+
+```math
+Z_i \sim N(\mu_X - \mu_Y, 2\sigma^2)
+```
+
+this also matches or intuition that the normal distribution is closed under linear combinations, and the difference of two independent normal variables is also normal. So, we reduce the two-sample problem to a one-sample test for the mean of $Z_i$.
+
+We can now formulate our hypotheses in terms of the difference in means. Suppose we want to test if the means are equal:
+
+```math
+\begin{align*}
+H_0: \mu_X = \mu_Y \qquad (\text{or } \mu_X - \mu_Y = 0) \\
+H_A: \mu_X \neq \mu_Y \qquad (\text{or } \mu_X - \mu_Y \neq 0)
+\end{align*}
+```
+
+Depending on whether we know the variance $\sigma^2$ or not we either use a z-test or a t-test. If we know the variance, we can use the z-test with the standardized test statistic:
+
+```math
+Z = \frac{\bar{Z}}{\sqrt{2\sigma^2 / n}} \sim N(0, 1) \quad \text{under } H_0
+```
+
+where $\bar{Z}$ is the sample mean of the differences $Z_i = X_i - Y_i$:
+
+```math
+\bar{Z} = \frac{1}{n} \sum_{i=1}^n Z_i
+```
+
+and the variance of the differences is $2\sigma^2$ as shown above. If the variance is unknown, we use the t-test where we estimate the variance from the sample differences:
+
+```math
+S_Z^2 = \frac{1}{n-1} \sum_{i=1}^n (Z_i - \bar{Z})^2
+```
+
+and then use the t-statistic:
+
+```math
+T = \frac{\bar{Z}}{S_Z - 0/ \sqrt{n}} \sim t_{n-1} \quad \text{under } H_0
+```
+
+where $S_Z$ is the sample standard deviation of the differences and the zero in the numerator is because we are testing if the mean of the differences is zero.
+
+<Callout type="example" title="Blood Pressure Before and After Treatment">
+Suppose we measure the blood pressure of $n=6$ patients before and after a treatment. And want to test if the treatment has a significant effect on blood pressure. The variance is unknown, so we use the t-test. The measurements are:
+
+| Patient | Before ($X\_i$) | After ($Y\_i$) | $Z\_i = X\_i - Y\_i$ |
+| ------- | :---------------: | :--------------: | :--------------------: |
+| 1       |        140        |        130       |           10           |
+| 2       |        135        |        132       |            3           |
+| 3       |        150        |        140       |           10           |
+| 4       |        145        |        143       |            2           |
+| 5       |        138        |        132       |            6           |
+| 6       |        142        |        139       |            3           |
+
+We compute the sample mean $Z\_i$:
+
+```math
+\bar{Z} = \frac{10 + 3 + 10 + 2 + 6 + 3}{6} = 5.67
+```
+
+and the sample variance:
+
+```math
+S_Z^2 = \frac{1}{5}[(10-5.67)^2 + (3-5.67)^2 + \ldots + (3-5.67)^2] = 13.0667
+```
+
+The test statistic is then:
+
+```math
+T = \frac{\bar{Z}}{S_Z/\sqrt{n}} = \frac{5.67}{\sqrt{13.0667/6}} \approx 8.3674
+```
+
+Then we compare $T$ to $t\_{5,1-\alpha/2}$ for your desired significance level to make a decision. 
+</Callout>
+
+### Unpaired
+
+Suppose now we have two independent samples:
+
+- $X_1, \ldots, X_n$ from $N(\mu_X, \sigma^2)$
+- $Y_1, \ldots, Y_m$ from $N(\mu_Y, \sigma^2)$
+
+We wish to test whether the means are equal, but there is **no natural pairing** between $X$ and $Y$:
+
+```math
+\begin{align*}
+H_0: \mu_X = \mu_Y \\
+H_A: \mu_X \neq \mu_Y
+\end{align*}
+```
+
+We are still interested in the difference between the sample means but here $n$ and $m$ can be different so we define the sample means as:
+
+```math
+D = \bar{X}_n - \bar{Y}_m = \frac{1}{n} \sum_{i=1}^n X_i - \frac{1}{m} \sum_{j=1}^m Y_j
+```
+
+where $\bar{X}_n$ is the sample mean of $X$ and $\bar{Y}_m$ is the sample mean of $Y$. Both $\bar{X}_n$ and $\bar{Y}_m$ are (independently) normally distributed because they are averages of independent normal variables:
+
+```math
+\bar{X}_n \sim N(\mu_X, \frac{\sigma^2}{n}) \quad \text{and} \quad \bar{Y}_m \sim N(\mu_Y, \frac{\sigma^2}{m})
+```
+
+The difference $\bar{X}_n - \bar{Y}_m$ is already a difference of averages (not sums), so it is naturally scaled by $n$ and $m$. If you were to compare the sum of all $X_i$ to the sum of all $Y_j$ directly, then different sample sizes would distort the result. However, by averaging first, we account for the different sample sizes and obtain a fair comparison between group means. So we calcualte the expectation of the distribution of the difference:
+
+```math
+\E(D) = \E(\bar{X}_n - \bar{Y}_m) = \E(\bar{X}_n) - \E(\bar{Y}_m) = \mu_X - \mu_Y
+```
+
+Importantly, note that the variances are the same in the two groups, so we can use the same $\sigma^2$ for both. The variance of the difference is given by:
+
+```math
+\Var(D) = V(\bar{X}_n - \bar{Y}_m) = V(\bar{X}_n) + V(\bar{Y}_m) = \frac{\sigma^2}{n} + \frac{\sigma^2}{m} = \sigma^2 \left(\frac{1}{n} + \frac{1}{m}\right)
+```
+
+So the distribution of the difference is:
+
+```math
+D \sim N(\mu_X - \mu_Y, \sigma^2 \left(\frac{1}{n} + \frac{1}{m}\right))
+```
+
+To test the null hypothesis that the means are equal we can again either use a z-test if the variance $\sigma^2$ is known, or a t-test if it is unknown. So if $\sigma^2$ is known, we use the z-test with the test statistic:
+
+```math
+T = \frac{\bar{X}_n - \bar{Y}_m}{\sigma \sqrt{\frac{1}{n} + \frac{1}{m}}} \sim N(0, 1) \quad \text{under } H_0
+```
+
+If $\sigma^2$ is unknown, we estimate it from the data using the sample variances of each group:
+
+```math
+S_X^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \bar{X}_n)^2, \quad \text{and} \quad S_Y^2 = \frac{1}{m-1} \sum_{j=1}^m (Y_j - \bar{Y}_m)^2
+```
+
+We then use the pooled sample variance to estimate the variance of the difference:
+
+```math
+S^2 = \frac{(n-1) S_X^2 + (m-1) S_Y^2}{n + m - 2}
+```
+
+If we assume both groups have the same variance ($\sigma^2$), the best estimate uses data from both groups, combining (pooling) them. Otherwise by summing the squared deviations from both groups and dividing by the total degrees of freedom ($n + m - 2$), we get a more stable and accurate estimate, especially when sample sizes are small.
+
+The t-test statistic is then:
+
+```math
+T = \frac{\bar{X}_n - \bar{Y}_m}{S \sqrt{\frac{1}{n} + \frac{1}{m}}} \sim t_{n+m-2} \quad \text{under } H_0
+```
+
+where $S$ is the pooled sample standard deviation. Depending on the alternative hypothesis, we again calculate the critical regions using the correct quantiles of the t-distribution with $n + m - 2$ degrees of freedom.
+
+<Callout type="example" title="Unpaired">
+Suppose we have $n=8$ patients treated with a **new drug** and $m=10$ patients with an **old drug**. Their reduction in blood pressure is:
+
+* New Drug ($X$): $\[12, 8, 11, 13, 7, 10, 9, 14]$
+* Old Drug ($Y$): $\[8, 6, 9, 7, 5, 9, 10, 8, 7, 6]$
+
+We calculate the sample means:
+
+```math
+\bar{X}_8 = \frac{12+8+11+13+7+10+9+14}{8} = 10.5 \\
+\bar{Y}_{10} = \frac{8+6+9+7+5+9+10+8+7+6}{10} = 7.5
+```
+
+Sample variances:
+
+```math
+S_X^2 = \frac{1}{7} \sum_{i=1}^8 (X_i - 10.5)^2 = 6 \\
+S_Y^2 = \frac{1}{9} \sum_{j=1}^{10} (Y_j - 7.5)^2 = 2.5
+```
+
+Pooled variance:
+
+```math
+S^2 = \frac{7 \cdot 6 + 9 \cdot 2.5}{8 + 10 - 2} = \frac{42 + 22.5}{16} = 4.03
+```
+
+Test statistic:
+
+```math
+T = \frac{10.5 - 7.5}{\sqrt{4.03 \left(\frac{1}{8} + \frac{1}{10}\right)}} 
+= \frac{3}{\sqrt{4.03 \times 0.225}} 
+= \frac{3}{\sqrt{0.906}} 
+\approx \frac{3}{0.951} \approx 2.85
+```
+
+Then just compare $T$ to $t_{16, 1-\alpha/2}$ (for $\alpha = 0.05$, $t_{16, 0.975} \approx 2.12$) and decide whether to reject $H_0$. 
+</Callout>
+
+## The P-value
+
+So far, we have established how hypothesis tests are structured by choosing a test statistic $T$ and a critical region $K$. The decision to reject or fail to reject the null hypothesis $H_0$ is usually made at some predetermined significance level $\alpha$. However, rather than choosing a single fixed significance level, it is common practice to quantify the strength of evidence against the null hypothesis using a single number called the **p-value**. Intuitively this p-value answers the following question:
+
+> If the null hypothesis $H_0$ were actually true, what is the probability of observing data as extreme as (or more extreme than) what we actually observed?
+
+A small p-value means our data would be very unlikely if $H_0$ were true, providing strong evidence against it. Conversely, a large p-value means our data is quite consistent with $H_0$.
+
+To formally define the p-value clearly, we first introduce the notion of an **ordered family of tests**. Typically, when choosing a test, we do not just have one critical region but rather a collection (family) of critical regions parameterized by a value $t$:
+
+- **Right-tailed test**:
+
+```math
+K_t = (t, \infty)
+```
+
+- **Left-tailed test**:
+
+```math
+K_t = (-\infty, t)
+```
+
+- **Two-tailed test**:
+
+```math
+K_t = (-\infty, -t) \cup (t, \infty)
+```
+
+These sets form an **ordered family** because changing the threshold $t$ systematically shrinks or expands the critical region. For example, with a right-tailed test, larger values of $t$ correspond to smaller critical regions. Formally we say a family of tests for a statistic $T$ is ordered if we can define critical regions $K_t$ such that:
+
+```math
+s \leq t \implies K_s \subseteq K_t.
+```
+
+Now the idea of using this ordering is that it allows us to continuously measure how extreme our observed test statistic is by finding exactly the threshold $t$ at which we would just barely reject the null hypothesis which we denote as $K_t$. The p-value is then defined as the probability of observing a test statistic at least as extreme as our observed value under the null hypothesis. 
+
+So suppose we have a **simple null hypothesis** $H_0: \theta = \theta_0$ and an ordered family of tests defined by a statistic $T$ and critical regions $K_t$. Given observed data $X_1(\omega), \dots, X_n(\omega)$ for some outcome $\omega \in \Omega$, we compute the observed test statistic:
+
+```math
+T(\omega) = t(X_1(\omega), \dots, X_n(\omega)).
+```
+
+We then define the p-value as a random variable through the function $G$:
+
+```math
+\text{p-value}(\omega) = G(T(\omega)), \quad \text{where}\quad G(t) = P_{\theta_0}(T \in K_t).
+```
+
+So $K_t$ is the critical region corresponding to a threshold $t$ for the test statistic $T$. For the data we actually observe, say $T(\omega) = t_{obs}$, the set $K_{t_{obs}}$ consists of all test statistic values at least as extreme as what we observed. $G(t)$ is a function that gives, for any threshold $t$, the probability (under the null hypothesis) that $T$ falls in the corresponding critical region $K_t$. So if we observe a test statistic $T(\omega) = t_{obs}$, the p-value is the probability, under $H_0$, of observing a value of $T$ at least as extreme as what you observed.
+
+This definition directly captures the probability of observing outcomes at least as extreme as our data under the null hypothesis. If our observed statistic is very unusual under $H_0$, the probability $G(T(\omega))$ will be very small. Conversely, if our data fits well with the null hypothesis, this probability will be larger. Notice the p-value only depends on the null hypothesis and the test statistic, not on the alternative hypothesis. (What does this imply?)
+
+Therefore the p-value gives us information about which tests in our family will reject the null hypothesis. If $p-value < \alpha$ then we reject the null hypothesis at the significance level $\alpha$. If $p-value \geq \alpha$ then we do not reject the null hypothesis at the significance level $\alpha$.
+
+If the test statistic $T$ has a continuous distribution under the null hypothesis (meaning it can take any value within a range), then the p-value has the remarkable property of being uniformly distributed between $0$ and $1$. Formally, under $H_0$:
+
+```math
+\text{p-value} \sim U(0,1).
+```
+
+As we repeat the experiment many times under $H_0$, the observed $T$ varies randomly as we always get different samples. For each possible $T$, the chance (under $H_0$) that $T$ falls into a region at least as extreme as itself is exactly $u$ for some $u \in [0, 1]$, and the probability that the p-value is less than $u$ is just $u$. This means that if we repeatedly conduct the same test under the null hypothesis, the p-values we observe will be uniformly distributed across the interval $[0, 1]$ by definition of the uniform distribution and the way we defined the p-value.
+
+<Callout type="example" title="Tossing a Coin">
+Suppose we flip a coin $n = 100$ times and observe $X_n(\omega) = 60$ heads. Consider the null hypothesis:
+
+```math
+H_0: \theta = 0.5 \quad(\text{coin is fair})
+```
+
+and the alternative hypothesis:
+
+```math
+H_A: \theta \neq 0.5 \quad(\text{coin is biased}).
+```
+
+We know that the sum of independent Bernoulli trials (coin flips) follows a binomial distribution. Specifically, under the null hypothesis, the number of heads $X_n$ follows:
+
+```math
+X_n \sim \text{Binomial}(n, \theta_0) \quad \text{where } X_n = \sum_{i=1}^n X_i \text{ and } X_i \sim \text{Bernoulli}(\theta_0).
+```
+
+To simplify calculations, we can approximate the binomial distribution with a normal distribution when $n$ is large which is valid by the Central Limit Theorem. Thus, we can use the standardized test statistic:
+
+```math
+T(\omega) = \frac{X_n(\omega)- n\theta_0}{\sqrt{n\theta_0(1-\theta_0)}} 
+= \frac{60-50}{\sqrt{100\times0.5\times0.5}} 
+= \frac{10}{5} = 2.
+```
+
+Because our alternative hypothesis is two-sided, we use the two-tailed test. The critical region is:
+
+```math
+K_t = \left(-\infty, -t\right) \cup \left(t, \infty\right)
+```
+
+By definition, our p-value is computed as:
+
+```math
+\text{p-value}(\omega) 
+= G(T(\omega)) 
+= P_{\theta_0}(|T|\geq |T(\omega)|)
+= P_{\theta_0}(|T|\geq 2).
+```
+
+To calculate this probability explicitly, we recognize under the null hypothesis (fair coin, large $n$) that our statistic $T$ approximately follows a standard normal distribution $N(0,1)$. Thus, the probability above becomes:
+
+```math
+P_{\theta_0}(|T|\geq 2) = P(Z \leq -2) + P(Z \geq 2),\quad Z\sim N(0,1).
+```
+
+Because the standard normal is symmetric, we get:
+
+```math
+p-value(\omega) = P(Z \leq -2) + P(Z \geq 2)
+= 2P(Z\geq 2) = 2[1-\Phi(2)],
+```
+
+where $\Phi$ is the cumulative distribution function (CDF) of the standard normal. Using standard normal tables or software, we find $\Phi(2)\approx 0.97725$. Thus we have:
+
+```math
+\text{p-value}(\omega)=2(1-0.97725)=0.0455.
+```
+
+The calculation above shows explicitly how the definition via $G$ is used in practice. The function $G$ here is explicitly given by the tail-probabilities of the standard normal distribution:
+
+```math
+G(t)=P_{\theta_0}(|T|\geq t)=2[1-\Phi(t)],\quad t\geq0.
+```
+
+Hence, the p-value at the observed test-statistic $t=2$ is precisely $G(2)=0.0455$. So why do we get different values if we know repeatedy call this function? Because the t changes, i.e the underlying data changes? The resulting p-value $0.0455$ means:
+
+- **If the coin is actually fair** so under the assumption of $H_0$, the chance of observing a result as extreme or more extreme than 60 heads out of 100 is about $4.55\%$.
+- At the $5\%$ significance level, this is considered unlikely enough to reject the null hypothesis.
+- At the $1\%$ significance level, it is not sufficiently unlikely to reject the null hypothesis.
+
+
+If we know repeated this experiment an got 50 heads, our observed test statistic $T$ changes and therefore also $K_{T(\omega)}$ and $G(T(\omega))$ change accordingly. 
+</Callout>
+
+## Randomized Test
+
+<Callout type="todo">
+For now skip this part as it is a bit weird
+</Callout>
+
+As seen in the example above where the distribution of $T$ was discrete, it is impossible to achieve the exact significance level $\alpha$ for all possible values of $\theta$. So we can't usually define a critical region $K$ such that:
+
+```math
+P_\theta(T \in K) = \alpha
+```
+
+A common practice is to instead use a randomized test, where we randomize the decision to reject the null hypothesis based on the observed data. We define some number $\gamma \in [0, 1]$ such that:
+
+```math
+\gamma \P_\theta(T > c) + (1 - \gamma) \P_\theta(T > c+1) = \alpha
+```
+
+We then decide that if $T > c$, we reject the null hypothesis with probability $\gamma$, so $H_0$ is reject if firstly $T > c$ and secondly we draw a uniform random variable $U \sim \text{Uniform}(0, 1)$ and reject $H_0$ if $U < \gamma$.
+
+This seems very random and specfic for this example and I don't understand it, or how it would generalize.
+
+<Callout type="example" title="Tea Tasting Lady">
+By choosing $c=7$ we can actually achieve the exact level $\alpha = 0.05$ by defining $\gamma$ such that:
+
+```math
+\gamma = \frac{\alpha - \P_\theta(T > c+1)}{\P_\theta(T > c) - \P_\theta(T > c+1)} \approx 0.893
+```
+</Callout>

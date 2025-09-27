@@ -1,0 +1,82 @@
+# Algorithms and Probability
+
+Applications:
+- Zero knowledge proofs
+- Swarm Computing
+- Distributed Computing, example of of a fast algorithm to compute a large independent set in a graph (also applies to normal sets)
+
+Discrete probability space:
+- A set of outcomes, elemental events each with a probability of occuring
+- probability meassure between 0 and 1 and sum over all outcomes is 1
+- An event is a subset and has a probability of occuring equal to the sum of the probabilities of the outcomes in the event
+- complementary event is the set of outcomes not in the event so the event not occuring has a probability of 1 minus the event occuring
+- Example of dice events which also turn out to be laplace
+- Some lemmas for events:
+- sure and impossible event
+- pairwise disjoint events can be added together also called mutually exclusive events for finite amount and infinite amount of events
+- Monotonicity of events, if A is a subset of B then the probability of A is less than or equal to the probability of B. This is also called the monotonicity property.
+- example of the dice using the previous events and then applying the addition. For non pairwise disjoint example leads to the inequality (booles inequality) also called the union bound.
+- This then leads to the inclusion exclusion principle to actually calculate the probability of the union of events. Works for finite does it also work for ifninite? Show also the algorithm on how to calculate it in code, not as easy as you would think. Example of calculting it for the failing example and a larger one. Can also be proven that it is then nearly a special case of the binomial formula.
+- Continuity of probability meassure.
+- Laplace space, could maybe be introduced earlier on? Example of laplace (cards) and non laplace (sum of 2 die). Depending on the construction it can or can not be a laplace space, think wisely
+- Back to combinatorics, which ones can be laplace and which cant? a bit weird
+
+Conditional probability:
+- What is the probability that I have an ace given the opponent has an ace? (conditional probability). Visually get the intersection of the two events and then divide by the probability of the event that is given. This is called the conditional probability. Importantly the conditions probability can not be 0. 
+- From this we also get a formula to calculte the probability that A and B happen at the same time, so the intersection of A and B. It is the conditional probability of A given B times the probability of B. Example with two child problem. This is called the multiplication rule and can be generalized to more than 2 events also infinite?
+- Birthday paradox, also can be seen as throwing balls into bins and then seeing if there is a collision. A chain of conditional probabilities. Leads to approximating products where for small x, 1-x is approximately e^(-x). Then it is just adding the exponents.
+- Total probability, mutually exclusive events and the total probability of the event. Also called the law of total probability. Football example.
+- Bayes theorem, You want to find the conditional probability the other way around. Can be derived from total probability. Example of the test for a disease. Also called the inverse probability. Cancer example.
+- Independence of events, intuitivly the conditional probability meassures the probability of A with the information of B given. If B does not add any information to A then they are independent. This is the case if the conditional probability is equal to the normal probability of A. This then also means that the intersection of A and B is equal to the product of the two probabilities. Example of the coin tosses. Independence is a very strong condition, it is not easy to find independent events. Die examples again, Give intuitiong as to why it being even and the sum being 7 and being 6 are different regarding independence. The multiplication defintion is nicer as it avoids the division by 0. The relation is symmetric from the second definition. If B does not add any information to A then A does not add any information to B. 
+- Independence for more then 2 events is a bit more tricky. All the pairwose and the total independences need to be checked. Show examples where calculation might seem independent but where they obviously are not.
+- Some additional lemmas such as if A and others are independent then so is the compliment of A with the others. If A,B,C etc are independent then so is the intersection of A and B with all the others.Also an alternative defintion using the compliments of the events in like an algorithmic way?
+
+Discrete Random Variables:
+- Some sort of motivation why do it?
+- Example of flipping coin 200 times or some formula on the die counts lol
+- Indicator Variables, what about the intersection, compliment and union of indicator variables, the union is hard but comes down to being the sieve formula?
+- Density function being for the precise value. Also called the probability mass function. Example of the die and the coin flip. Also called the probability function.
+- Cumulative distribution function being the probability of the random variable being less than or equal to x. Example of the die and the coin flip. Also called the distribution function. Examples with die. 
+
+Plot of the different examples:
+- Indicator
+- Bernoulli
+- Binomial, as n goes to infinity the binomial converges to the normal distribution?
+- Poisson, this can be derived some way from the binomial distribution?
+- Geometric
+- Negative Binomial?
+- Coupon Collector? goes back to geometric
+
+Expected Value:
+- two defintions either of the random variable or over the sample space.
+- If the variables are integers the formular can be simplified to the sum of the cmfs. With proof.
+- The expected value is linear, so adding 2 random variables then the expected value is the sum of the expected values. Also works for the indicator variables. Example of the die and coin flip.
+- Multiply a variable by a constant and the expected value is multiplied by the same constant. Example of the die.
+- This then leads to the linearity of the expected value. Example of collection of dice?
+- For indicator variables the expected value is the probability of the event. Example of the die and coin flip. Then also combining this with the linearity of the expected value. This is much better then combining up with a specific ereigniss where a coin is thrown 100 times.
+- The example of the indepdent set is now used? The expected value is np-mp^2
+- Showing that the number of comparisons in the random quicksort is O(n log n)
+- Multiplying the values of 2 random variables, the expected value is the product of the expected values. This is only true if the random variables are independent. 
+
+More random variable stuff:
+- Conditional random variables are just variables with their domain restricted to the event that is given. The expected value of a conditional random variable is the expected value of the random variable given the event. This is called the conditional expectation. Example of the dice eagain.
+- Multiple random variables such as throwing a coin and a dice with different distributions, previously seen with the same distribution. Joint distribution function. To then go back to just one random variable we can use the marginal distribution function. 
+- Independence of random variables works in a similar way to the independence of events. The joint distribution function is equal to the product of the marginal distribution functions. 
+2 Indicator variables trick, but doesnt work for 3 or more.
+- Sum of two indepdent random variables. This results in us being able to add Poisson distributions and binomial distributions.
+- Walds equation, the expected value of the sum of random variables is equal to the expected value of the random variable times the expected value of the number of trials. Example is throw a dice and then throw a coin the number of times the die shows.
+
+Variance:
+- If given a value and we know the expected value then we want to know what the probability is to get that value. In a way a value that quantifies how badly off we are. The average distance to the expected value. Could use absolute distance or squared distance. The average squared distance is called the variance. Using the squared distance is nice as it makes certain calculations easier. However, it gives more weight to the outliers. By taking the square root we get the standard deviation. Which is like taking away again that weighting and giving the average absolute distance.
+We also get that the variance is the expected value of the variable squared minus the expected value squared.
+- Linearity of a single variable of the variance.
+- Adding independent variables, the variance is the sum of the variances. This is not true for dependent variables.
+- Multiplying two independent variables, is just not true.
+
+Approximation of probabilites using inequalites:
+- Tail sum formula
+- Monotonicity
+- Jensens inequality
+- Markov inequality
+- Chebyshev inequality
+- Chernoff bound only works for binomial distrubitions and seems complicated. Results in 3 different bounds.
