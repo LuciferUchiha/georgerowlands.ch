@@ -6,7 +6,7 @@ import {
   defineDocs,
   frontmatterSchema,
   metaSchema
-} from "fumadocs-mdx/config/zod-3";
+} from "fumadocs-mdx/config";
 var docs = defineDocs({
   docs: {
     schema: frontmatterSchema
