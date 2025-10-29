@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "NODE_OPTIONS=--max-old-space-size=32768 next build",
-    "dev": "NODE_OPTIONS=--max-old-space-size=32768 next dev --turbopack",
+    "build": "NODE_OPTIONS=--max-old-space-size=49152 next build",
+    "dev": "NODE_OPTIONS=--max-old-space-size=49152 next dev --turbopack",
     "start": "next start",
     "postinstall": "fumadocs-mdx",
     "lint": "eslint"

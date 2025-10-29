@@ -30,6 +30,9 @@
     "linkAnalysis",
     "pageRank",
     "nodeEmbeddings",
+    "autoencoders",
+    "gan",
+    "diffusion",
     "gnn",
     "knn"
   ]

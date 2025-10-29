@@ -1,0 +1,16 @@
+{
+  "title": "Large Language Models",
+  "pages": [
+    "rnn",
+    "lstm",
+    "attention",
+    "transformers",
+    "bert",
+    "roberta",
+    "gpt",
+    "gpt2",
+    "mamba",
+    "xlstm",
+    "lora"
+  ]
+}
