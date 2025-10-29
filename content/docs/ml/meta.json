@@ -2,6 +2,9 @@
   "title": "Machine Learning",
   "pages": [
     "mainIdeas",
+    "linearRegression",
+    "bayesianLinearRegression",
+    "gaussianProcesses",
     "correlation",
     "correlationCross",
     "correlationAuto",
@@ -15,8 +18,6 @@
     "courseraML",
     "courseraDL",
     "linear",
-    "ridge",
-    "lasso",
     "logistic",
     "crossValidation",
     "naiveBayes",

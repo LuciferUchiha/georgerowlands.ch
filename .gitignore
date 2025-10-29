@@ -6,8 +6,8 @@ node_modules/
 npm-debug.log
 
 # Nest.js generated files
-.next
-.source
+.next/
+.source/
 
 # IDE files
 .vscode/
