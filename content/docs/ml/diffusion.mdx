@@ -397,3 +397,175 @@ the lambda function is a weighting function that can be used to balance the cont
 the step size $\alpha_k$ is usually set proportional to $\sigma_k^2$ which results in total in annealed langevin sampling.
 
 Code of this process. the target distribution is just a mixture of gaussians.
+
+### Forward SDE and Anderson's Reversal
+
+we don't just add noise but also scale down the features of the data which results in the forwards defussion process.
+
+Brian Anderson 1982 showed that the reverse of a diffusion process is also a diffusion process with modified drift term. Then the time-reversed SDE is given by:
+
+$$
+\tilde{X}(t) = X(T - t)
+$$
+
+of the forward SDE:
+
+$$
+dX = [f(X, t) - g(t)^2 \nabla_X \log P_t(X)]dt + g(t)d\tilde{W}_t
+$$
+
+use X not X tilde despite being reverse. Drift term has an additional term involving the score function of the marginal distribution at time t. can be derived using the Fokker-Planck equation. Brownian motion is replaced by a new Brownian motion $\tilde{W}_t$ running backwards in time. the idea of the additional term is that it guides back the backward process back towards high probability regions of the data distribution at each time step.
+
+If we can estimate the score function $\nabla_X \log P_t(X)$ at each time step t then we can use the reverse SDE to generate new samples from the data distribution by simulating the backward process starting from pure noise at time T and iteratively applying the reverse SDE until reaching time 0 resulting in a sample from the target distribution. The samples can be generated using the Euler-Maruyama method as before but now applied to the reverse SDE.
+
+The challange is learning the score function at every time step t_1, t_2 etc. We can do this again with NCSM, noise conditional score matching. We train a time-conditional score model $s_\theta(X, t)$ to estimate the score function of the marginal distribution at each time step:
+
+$$
+s_\theta(X, t) \approx \nabla_X \log P_t(X(t) | X(0))
+$$
+
+here t plays the role of the noise level sigma in NCSM. So the conditional score will depend on how the forward process is defined. Putting this all together with the Euler-Maruyama method for simulating the reverse SDE gives us the following update step for generating samples:
+
+$$
+X(t_{i-1}) = X(t_i) + [f(X(t_i), t_i) - g(t_i)^2 s_\theta(X(t_i), t_i)]\Delta t + g(t_i)\sqrt{\Delta t}\epsilon_i
+$$
+
+where $\epsilon_i \sim N(0, I)$ are independent standard normal random variables. 
+
+## DDPM
+
+recall that the general form the forward SDE is given by:
+
+$$
+dX = f(X, t)dt + g(t)dW_t
+$$
+
+where f(X, t) is the deterministic drift term and g(t) is the stochastic injection of gaussian noise. as t increases the distribution of X(t) becomes smoother and converges to a simple known distribution such as a standard Gaussian.
+
+this pulls samples towards the origin as time increases representing gaussian noise. The process addes isotropic gaussian noise at each time step with variance controlled by g(t) whilst preserving the overall strucutres and global variance of the data distribution ensuring numerical stability and interpretability.
+
+For the forward diffusion process in DDPMs we choose the drift and diffusion terms as:
+
+$$
+f(X, t) = -\frac{1}{2} \beta(t) X \text{ and } g(t) = \sqrt{\beta(t)}
+$$
+
+where $\beta(t)$ is a non-negative, monotonically increasing function called the noise schedule. This choice results in a forward SDE that gradually adds gaussian noise to the data points while scaling them down over time. This results in the variance-preserving(VP) SDE:
+
+$$
+dX = -\frac{1}{2} \beta(t) X dt + \sqrt{\beta(t)} dW_t
+$$
+
+we call it variance-preserving because if $X(0)$ has unit variance, then $Var(X(t)) \approx 1$ for all t. So doesn't explode or vanish over time. In practice we garantee this by normalizing the data in the training dataset to have zero mean and unit variance before training the score model.
+
+To discretize the VP SDE using the Euler-Maruyama method we define a partition of the time interval [0, T] into N equidistant steps with step size $\Delta t = T/N = t_n - t_{n-1}$. So $0 = t_0 < t_1 < ... < t_N = 1$. So is T = 1? This gives us:
+
+$$
+X(t_i) = X(t_{i-1}) - \frac{1}{2} \beta(t_{i-1}) X(t_{i-1}) \Delta t + \sqrt{\beta(t_{i-1})} \sqrt{\Delta t} \epsilon_i
+$$
+
+and we define the discrete noise schedule as $\beta_i = \beta(t_{i-1}) \Delta t$ resulting in the reccurence relation:
+
+$$
+X_i = (1-\frac{1}{2} \beta_i) X_{i-1} + \sqrt{\beta_i} \epsilon_i
+$$
+
+we need to use a first order taylor approximation of beta around 0? Why? as long as beta is small enough this is a good approximation. So $1-\frac{1}{2} \beta_i \approx \sqrt{1 - \beta_i}$ giving us the final reccurence relation:
+
+$$
+X_i = \sqrt{1 - \beta_i} X_{i-1} + \sqrt{\beta_i} \epsilon_i
+$$
+
+This allows us to arbitraly go from any step i to any step j > i directly without simulating all the intermediate steps. $\alpha_i = 1 - \beta_i$ and $\bar{\alpha}_i = \prod_{k=1}^{i} \alpha_k$. Unrolling the reccurence relation gives us:
+
+$$
+X_i = \sqrt{\bar{\alpha}_i} X_0 + \sqrt{1 - \bar{\alpha}_i} \epsilon
+$$
+
+where $\epsilon \sim N(0, I)$. If we condition on $X_0$ we get the following closed form distribution:
+
+$$
+X_i | X_0 \sim N(\sqrt{\bar{\alpha}_i} X_0, (1 - \bar{\alpha}_i) I)
+$$
+
+this is essential for efficient training and for writing the losses as we will see later. If we then assume that $\alpha_i \in (0, 1)$ then gives us that as i goes to infinity $\\bar{\alpha}_i$ goes to 0 and $X_i$ converges to pure Gaussian noise:
+
+$$
+X_\infty | X_0 \sim N(0, I)
+$$
+
+show notebook that implements DDPM using MNIST dataset for forward process.
+
+The reversal process is given by $P(X_{i-1} | X_i)$ by bayes rule and the markov property. We know that the forward process is:
+
+$$
+X_i | X_{i-1} \sim N(\sqrt{\alpha_i} X_{i-1}, (1 - \alpha_i) I) \text{ and } X_{i-1} | X_0 \sim N(\sqrt{\bar{\alpha}_{i-1}} X_0, (1 - \bar{\alpha}_{i-1}) I)
+$$
+
+so using bayes rule for gaussians we get:
+
+$$
+P(X_{i-1} | X_i, X_0) \propto P(X_i | X_{i-1}) P(X_{i-1} | X_0)
+$$
+
+Therefore the product is also a gaussian with mean and covariance given by:
+
+$$
+P(X_{i-1} | X_i, X_0) = N(\tilde{\mu_i}(X_i, X_0), \tilde{\beta}_i I)
+$$
+
+using the standard formula we can compute the mean and covariance:
+
+$$
+\tilde{\mu_i}(X_i, X_0) = \frac{\sqrt{\bar{\alpha_i}}}{1 - \bar{\alpha}_{i-1}} X_i + \frac{\sqrt{\alpha_{i-1}}\beta_i}{1- \bar{\alpha}_i}X_0
+$$
+
+and the covariance:
+
+$$
+\tilde{\beta}_i = \frac{(1 - \bar{\alpha}_{i-1})}{1 - \bar{\alpha}_i}\beta_i$
+$$
+
+to elimante the dependence on $X_0$ we can use the reccurence relation to express $X_0$ in terms of $X_i$ and the noise $\epsilon$:
+
+$$
+X_i = \sqrt{\bar{\alpha}_i} X_0 + \sqrt{1 - \bar{\alpha}_i} \bar{\epsilon}_i \implies X_0 = \frac{1}{\sqrt{\bar{\alpha}_i}} (X_i - \sqrt{1 - \bar{\alpha}_i} \bar{\epsilon}_i)
+$$
+
+where $\bar{\epsilon}_i \sim N(0, I)$ is the known noise used to corrupt the data point $X_0$ to get $X_i$. We can then replace X_0 in these expressions which results in the conditional probabiity of the reverse diffusion process:
+
+$$
+X_{i-1} | X_i, X_0 \sim N(\bar{\mu}_i(X_i), \tilde{\beta}_i I)
+$$
+
+To be able to sample from the reverse process we need to use the reparameterization trick to express the sampling step in terms of standard gaussian noise???
+
+$$
+X_{i-1} = \frac{1}{\sqrt{\alpha_i}} \left( X_i - \frac{1-\alpha_i}{\sqrt{1 - \bar{\alpha}_i}} \bar{\epsilon}_i \right) + \sqrt{\tilde{\beta}_i} Z
+$$
+
+where $Z \sim N(0, I)$ is standard gaussian noise independent of everything else. This allows us to sample from the reverse process by first sampling $Z$ and then applying the above transformation. Each update is then adding gaussian noise with mean shifted in the direction of denoising, opposite of the forward noise process $\bar{\epsilon}_i$. We use a neural network to predict the noise $\bar{\epsilon}_i$ given the current noisy sample $X_i$ and the time step i. This results in the following update step for sampling from the reverse diffusion process:
+
+$$
+X_{i-1} = \frac{1}{\sqrt{\alpha_i}} \left( X_i - \frac{1-\alpha_i}{\sqrt{1 - \bar{\alpha}_i}} \epsilon_\theta(X_i, i) \right) + \sqrt{\tilde{\beta}_i} Z
+$$
+
+where $\epsilon_\theta(X_i, i)$ is the neural network's prediction of the noise at time step i given the noisy input $X_i$. The training objective minimizes the expected mean squared error between the true noise $\bar{\epsilon}_i$ and the predicted noise $\epsilon_\theta(X_i, i)$ over all time steps:
+
+$$
+L(\theta) = E_{i, X_0, \bar{\epsilon}_i} [\frac{1}{2} ||\bar{\epsilon}_i - \epsilon_\theta(X_i, i)||^2]
+$$
+
+by learning this noise the network implicitly learns the strucutre of the data distribution at different noise levels allowing it to effectively denoise samples during the reverse diffusion process and generate new data points from the target distribution. 
+
+In each iteration the reverse process 3 key operations are performed: 
+
+1. **Denoising Step**: The term $\frac{1-\alpha_i}{\sqrt{1 - \bar{\alpha}_i}} \epsilon_\theta(X_i, i)$ removes the estimated noise from the current sample $X_i$ based on the neural network's prediction. This shifts the sample closer to the data manifold, i.e towards higher data likelihood regions under the target distribution $P^*$.
+2. **Rescaling Step**: Multiplying by $\frac{1}{\sqrt{\alpha_i}}$ inverts the signal contraction applied during the forward diffusion process. This ensures that the overall variance of the samples remains stable throughout the reverse process.
+3. **Random Perturbation Step**: The term $\sqrt{\tilde{\beta}_i} Z$ adds a small amount of gaussian noise to the sample. This stochasticity helps the reverse process explore the data distribution and prevents it from getting stuck in local modes or collapsing to a single deterministic point.
+
+T determines the trade-off between sample quality and computational cost. Larger T allows for more gradual and smoother denoising but requires more computation. 
+
+the schedule $\beta_i$ controls the amount of noise added at each step in the forward process and consequently the amount of denoising required in the reverse process. It plays a key role in sample diversity and quality/sharpness. Often is chosen to be a linear or cosine schedule increasing from a small value to a larger value over the T steps. 
+
+Determinisitc variant such as DDIM remove the stochastic term by setting $Z_i = 0$ in the update step. This results in a deterministic mapping from pure noise to data samples. This improves generation speed but with slightly reduced sample diversity? Intuitevly it converges faster to high likelihood regions but may miss some modes of the distribution due to lack of stochastic exploration.
