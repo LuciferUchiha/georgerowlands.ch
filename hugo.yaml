@@ -13,9 +13,26 @@ markup:
   highlight:
     noClasses: false
 
+params:
+  page:
+    # full (100%), wide (90rem), normal (1280px)
+    width: wide
+  navbar:
+    displayTitle: true
+    displayLogo: false
+
+  footer:
+    displayCopyright: false
+    displayPoweredBy: true
+
+  editURL:
+    enable: true
+    base: "https://github.com/imfing/hextra-starter-template/edit/main/content"
+
 menu:
   main:
     - name: Docs
+      identifier: docs
       pageRef: /docs
       weight: 1
     - name: About
@@ -34,15 +51,3 @@ menu:
       params:
         icon: github
 
-params:
-  navbar:
-    displayTitle: true
-    displayLogo: false
-
-  footer:
-    displayCopyright: false
-    displayPoweredBy: true
-
-  editURL:
-    enable: true
-    base: "https://github.com/imfing/hextra-starter-template/edit/main/content"
