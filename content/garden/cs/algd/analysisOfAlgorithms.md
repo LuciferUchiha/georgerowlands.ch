@@ -62,7 +62,7 @@ the function $g(n)$ an upper bound on the growth rate of $f(n)$. For this reason
 
 > Suppress the lower order terms and constants to get the time complexity of the algorithm.
 
-<Callout type="example">
+{{< callout type="example" >}}
 We want to show that $f(n) = 5n^2 + 3n + 7$ is in $O(n^2)$. For this we need to find constants $c$ and $n_0$ such that $f(n) \leq c \cdot n^2$ for all $n \geq n_0$. 
 We can see that as $n$ grows the $5n^2$ term will dominate the other terms so we can choose $c = 6$ and $n_0 = 1$ to satisfy the inequality:
 
@@ -82,16 +82,16 @@ Let's also show that $f(n) = n^3 -n$ is in $O(n^3)$. We can choose $c = 2$ and $
 $$
 n^3 - n \leq 2n^3 \text{ for all } n \geq 1
 $$
-</Callout>
+{{< /callout >}}
 
-<Callout type="info">
-    Why is exponential just $2^n$ not any other base like $3^n$?
+{{< callout type="info" >}}
+Why is exponential just $2^n$ not any other base like $3^n$?
 
-    The reason is that the base of the exponential function does not matter when we are talking about the order of growth. Different bases can be converted to each other by a constant factor, so they are considered equivalent.
-    For example, $3^n = (2^{log_2(3)})^n = 2^{n \cdot log_2(3)}$ and because $log_2(3)$ is a constant it can be absorbed into the constant factor and we can just say that $3^n$ is $O(2^n)$.
+The reason is that the base of the exponential function does not matter when we are talking about the order of growth. Different bases can be converted to each other by a constant factor, so they are considered equivalent.
+For example, $3^n = (2^{log_2(3)})^n = 2^{n \cdot log_2(3)}$ and because $log_2(3)$ is a constant it can be absorbed into the constant factor and we can just say that $3^n$ is $O(2^n)$.
 
-    But why is $n^3$ then not $O(n^2)$? Because the base of the polynomial function does matter. The difference between $n^2$ and $n^3$ is not just a constant factor, but a factor of $n$ because $n^3 = n \cdot n^2$.
-</Callout>
+But why is $n^3$ then not $O(n^2)$? Because the base of the polynomial function does matter. The difference between $n^2$ and $n^3$ is not just a constant factor, but a factor of $n$ because $n^3 = n \cdot n^2$.
+{{< /callout >}}
 
 ## Telescoping
 
@@ -101,7 +101,7 @@ These reccurance relations are actually just some series, i.e a sum of terms. Fo
 Telescoping is then a method to solve these series/reccurance relations to find a closed form solution, i.e. a function that gives the sum of the series. This closed form solution can then be used to find the time complexity of the algorithm.
 The idea of telescoping is to write out the series for a few terms and then find a pattern to simplify or cancel out terms. Once we have our closed form we can check it is correct using [proof by induction](/garden/maths/discrete/proofs#proof-by-induction).
 
-<Callout type="example">
+{{< callout type="example" >}}
 Lets show that the reccurance relation $T(n) = T(n-1) + 2n$ with $T(0) = 0$ is a sum of terms and can be solved using telescoping.
 The first step is to write out the first few expansions of the reccurance relation, it can also be helpful to write out the expansion step $k$ before the term:
 
@@ -146,12 +146,12 @@ Proof by induction that $T(n) = n^2 + n$ is the correct closed form solution to 
 - $T(k+1) = T(k) + 2(k+1) = k^2 + k + 2k + 2 = k^2 + 3k + 2 = (k+1)^2 + (k+1)$
 
 Therefore, by induction $T(n) = n^2 + n$ is the correct closed form solution to the reccurance relation $T(n) = T(n-1) + 2n$ with $T(0) = 0$.
-</Callout>
+{{< /callout >}}
 
 Since we now have the correct closed form solution we can supress the lower order terms and constants to get the time complexity of the algorithm. In this case the time complexity is $O(n^2)$.
 </Callout>
 
-<Callout type="info">
+{{< callout type="info" >}}
 It is useful to remember some of the closed forms of common series like the sum of the first $n$ natural numbers to make telescoping easier. 
 
 $$
@@ -165,7 +165,7 @@ $$
 $$
 
 The same can be done for other variations of the sum of the first $n$ natural numbers
-</Callout>
+{{< /callout >}}
 
 ### Standard Multiplication
 
@@ -247,7 +247,7 @@ $$
 T(2^k) = 3^kT(2^0) = 3^k
 $$
 
-<Callout type="proof">
+{{< callout type="proof" >}}
 Proof by induction that $T(2^k) = 3^k$ is the correct closed form solution to the reccurance relation $T(2^k) = 3T(2^{k-1})$ with $T(1) = 1$.
 
 1. Base case: $T(1) = T(2^0) = 1 = 3^0$ which is true.
@@ -256,7 +256,7 @@ Proof by induction that $T(2^k) = 3^k$ is the correct closed form solution to th
 - $T(2^{k+1}) = 3T(2^k) = 3 \cdot 3^k = 3^{k+1}$
 
 Therefore, by induction $T(2^k) = 3^k$ is the correct closed form solution to the reccurance relation $T(2^k) = 3T(2^{k-1})$ with $T(1) = 1$.
-</Callout>
+{{< /callout >}}
 
 However, we want the time complexity in terms of $n$ not $k$ so we need to find the relationship between $n$ and $k$. We know that $n = 2^k$ so $k = \log_2 n$. We can then substitute $k = \log_2 n$ and use 
 the fact that any number can be written as $a^{\log_a b} = b$ and the Logarithmic identity $\log_a b \cdot \log_b a = 1$ to get the time complexity in terms of $n$:
@@ -267,7 +267,7 @@ $$
 
 Therefore, the time complexity of the Karatsuba algorithm is $O(n^{1.58})$ which is faster than the standard multiplication algorithm with time complexity $O(n^2)$.
 
-<Callout type="example">
+{{< callout type="example" >}}
 Let's first show how it works for multiplying two 2-digit numbers $23 \cdot 56$ so where $n=1$ and $a=2$, $b=3$, $c=5$ and $d=6$.
 
 $$
@@ -292,8 +292,7 @@ $$
 \text{... and so on for the other recursive multiplications}
 \end{align*}
 $$
-
-</Callout>
+{{< /callout >}}
 
 ## Big Omega and Big Theta
 

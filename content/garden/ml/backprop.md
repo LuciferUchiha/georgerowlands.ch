@@ -25,7 +25,6 @@ $$
 \end{align*}
 $$
 
-
 Let's say we have the following input, weights and biases:
 
 | Variable | Value |
@@ -81,9 +80,9 @@ $$
 
 We can also write these calculations in matrix form which is more efficient and easier to generalise to larger networks. 
 
-<Callout type="todo">
+{{< callout type="todo" >}}
 Do matrix form
-</Callout>
+{{< /callout >}}
 
 ## Backpropagation
 
@@ -92,38 +91,37 @@ weights and biases of the network. These gradients are then used to update the w
 
 The backpropagation algorithm is based on the chain rule from calculus. So lets start with a brief reminder of the chain rule.
 
-<Callout type="info" title="Chain Rule">
-    If we have a the differentiable functions $f(x)$ and $g(x)$ and the composite function $h(x) = f(g(x))$, i.e where 
-    the function $f$ is applied to the output of $g$, then the derivative of $h$ with respect to $x$ is given by:
+{{< callout type="info" title="Chain Rule" >}}
 
-    $$
-    h'(x) = f'(g(x))g'(x) \text{ or } \frac{dh}{dx} = \frac{df}{dg}\frac{dg}{dx}
-    
+If we have a the differentiable functions $f(x)$ and $g(x)$ and the composite function $h(x) = f(g(x))$, i.e where 
+the function $f$ is applied to the output of $g$, then the derivative of $h$ with respect to $x$ is given by:
+
+$$
+h'(x) = f'(g(x))g'(x) \text{ or } \frac{dh}{dx} = \frac{df}{dg}\frac{dg}{dx}  
 $$
 
-    Notice that the denominator $dg$ is the the same as the following numerator, this can be thougth of as "the chain". The chain rule also makes sense 
-    intuitively, if we think of $dg$ cancelling out in the numerator and denominator. 
-    
-    It is a simple but powerful rule that allows us to calculate the derivative of a composite function. For example, if we have $h(x) = (x^2 + 1)^3$, 
-    then we can write $h(x) = f(g(x))$ where $f(x) = x^3$ and $g(x) = x^2 + 1$. The derivative of $h$ is then given by:
+Notice that the denominator $dg$ is the the same as the following numerator, this can be thougth of as "the chain". The chain rule also makes sense 
+intuitively, if we think of $dg$ cancelling out in the numerator and denominator. 
 
-    $$
-    \begin{align*}
-    h'(x) &= f'(g(x))g'(x) \\
-    &= 3(x^2 + 1)^2 * 2x \\
-    &= 6x(x^2 + 1)^2
-    \end{align*}
-    
+It is a simple but powerful rule that allows us to calculate the derivative of a composite function. For example, if we have $h(x) = (x^2 + 1)^3$, 
+then we can write $h(x) = f(g(x))$ where $f(x) = x^3$ and $g(x) = x^2 + 1$. The derivative of $h$ is then given by:
+
+$$
+\begin{align*}
+h'(x) &= f'(g(x))g'(x) \\
+&= 3(x^2 + 1)^2 * 2x \\
+&= 6x(x^2 + 1)^2
+\end{align*}
 $$
 
-    This also works for more obvious composite functions such as $h(x) = \sin(x^2 + 1)$.
+This also works for more obvious composite functions such as $h(x) = \sin(x^2 + 1)$.
 
-    The key take away is that the derivative of a composite function can be calculated step by step, by first calculating the derivative of the most
-    inner function, then the next inner function and so on. This is the key idea behind backpropagation as a neural network is just one big composite function with 
-    lots of variables and lots of inner functions.
+The key take away is that the derivative of a composite function can be calculated step by step, by first calculating the derivative of the most
+inner function, then the next inner function and so on. This is the key idea behind backpropagation as a neural network is just one big composite function with 
+lots of variables and lots of inner functions.
 
-    TODO: Multiple variables
-</Callout>
+TODO: Multiple variables
+{{< /callout >}}
 
 show the idea. The chain rule. then the full derivation.
 
