@@ -2,6 +2,7 @@ baseURL: https://example.org/
 languageCode: en-us
 title: My New Hugo Site
 theme: hextra
+enableGitInfo: true
 
 markup:
   # allow raw html
@@ -23,9 +24,14 @@ markup:
 params:
   math:
     engine: katex
+
   page:
     # full (100%), wide (90rem), normal (1280px)
     width: wide
+
+  displayUpdatedDate: true
+  dateFormat: "January 2, 2006"
+
   navbar:
     displayTitle: true
     displayLogo: false
@@ -59,3 +65,19 @@ menu:
       params:
         icon: github
 
+comments:
+    enable: false
+    type: giscus
+    
+    giscus:
+      repo: DarthVeigar/georgerowlands.ch
+      repoId: R_kgDOIt7MZQ
+      category: Digital Garden Giscus
+      categoryId: DIC_kwDOIt7MZc4ChZB7
+      # strict: 0
+      # reactionsEnabled: 1
+      # emitMetadata: 0
+      inputPosition: top
+      theme: transparent_dark
+      # lang: en
+      loading: lazy
