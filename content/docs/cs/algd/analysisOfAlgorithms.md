@@ -45,9 +45,9 @@ The formal definition of Big O notation is as follows:
 
 A function $f(n)$ is said to be in $O(g(n))$, if there exist constants $c > 0$ and $n_0 > 0$ such that:
 
-```math
+$$
 f(n) \leq c \cdot g(n) \text{ for all } n \geq n_0
-```
+$$
 
 In simple terms, at some point $n_0$ the function $f(n)$ will always be less than or equal to $c \cdot g(n)$ for all $n > n_0$. 
 
