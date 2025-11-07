@@ -66,22 +66,22 @@ the function $g(n)$ an upper bound on the growth rate of $f(n)$. For this reason
 We want to show that $f(n) = 5n^2 + 3n + 7$ is in $O(n^2)$. For this we need to find constants $c$ and $n_0$ such that $f(n) \leq c \cdot n^2$ for all $n \geq n_0$. 
 We can see that as $n$ grows the $5n^2$ term will dominate the other terms so we can choose $c = 6$ and $n_0 = 1$ to satisfy the inequality:
 
-```math
+$$
 5n^2 + 3n + 7 \leq 6n^2 \text{ for all } n \geq 1
-```
+$$
 
 Therefore, $f(n) = 5n^2 + 3n + 7$ is in $O(n^2)$. But we could also choose $c = 7$ and $n_0 = 1$ to satisfy the inequality:
 
-```math
+$$
 5n^2 + 3n + 7 \leq 7n^2 \text{ for all } n \geq 1
-```
+$$
 
 This is why we suppress the lower order terms and constants to get the time complexity of the algorithm.
 Let's also show that $f(n) = n^3 -n$ is in $O(n^3)$. We can choose $c = 2$ and $n_0 = 1$ to satisfy the inequality or $c = 3$ and $n_0 = 1$.
 
-```math
+$$
 n^3 - n \leq 2n^3 \text{ for all } n \geq 1
-```
+$$
 </Callout>
 
 <Callout type="info">
@@ -105,7 +105,7 @@ The idea of telescoping is to write out the series for a few terms and then find
 Lets show that the reccurance relation $T(n) = T(n-1) + 2n$ with $T(0) = 0$ is a sum of terms and can be solved using telescoping.
 The first step is to write out the first few expansions of the reccurance relation, it can also be helpful to write out the expansion step $k$ before the term:
 
-```math
+$$
 \begin{align*}
 k=1 \quad T(n) &= \textcolor{red}{T(n-1)} + 2n \\
 k=2 \quad T(n) &= \textcolor{red}{T(n-2) + 2(n-1)} + 2n \\
@@ -115,17 +115,17 @@ k=3 \quad  T(n) &= \textcolor{green}{T(n-3) + 2(n-2)} + 2(2n) - 2 \\
 k=4 \quad T(n) &= \textcolor{orange}{T(n-4) + 2(n-3)} + 3(2n) - 4 - 2 \\
 &= T(n-4) + 4(2n) - 6 - 4 - 2 \\
 \end{align*}
-```
+$$
 
 Now we can see there is a pattern, with the trickiest part being connecting the subractions to $k$ and $n$, but we can see that for $k=2$ its $-2(1)$ for $k=3$ its $-2(2 + 1)$ and for $k=4$ its $-2(3 + 2 + 1)$.
 
-```math
+$$
 T(n-k) = T(n-k) + k(2n) - 2 \sum_{i=1}^{k-1} i
-```
+$$
 
 However, we don't want the k in our closed form. To remove it we need to know when the recursive call will reach the base case. This is when $n=0$ so $n-k=0$ and $k=n$. We can then substitute $k=n$ into the formula above to get:
 
-```math
+$$
 \begin{align*}
 T(n) = T(0) + n(2n) - 2 \sum_{i=1}^{n-1} i \\
 T(n) = 0 + 2n^2 - 2 \sum_{i=1}^{n-1} i \\
@@ -133,7 +133,7 @@ T(n) = 2n^2 - 2 \left( \frac{n(n-1)}{2} \right) \\
 T(n) = 2n^2 - n^2 + n \\
 T(n) = n^2 + n
 \end{align*}
-```
+$$
 
 Now that we have our closed form solution we can check that it is correct using proof by induction.
 
@@ -154,15 +154,15 @@ Since we now have the correct closed form solution we can supress the lower orde
 <Callout type="info">
 It is useful to remember some of the closed forms of common series like the sum of the first $n$ natural numbers to make telescoping easier. 
 
-```math
+$$
 \sum_{i=1}^{n} i = \frac{n(n+1)}{2}
-```
+$$
 
 But because we are subtracting the sum of the first $n-1$ natural numbers we can subtract the last $n$ from the closed form to get the sum of the first $n-1$ natural numbers:
 
-```math
+$$
 \sum_{i=1}^{n-1} i = \frac{n(n+1)}{2} - n = \frac{n(n-1)}{2}
-```
+$$
 
 The same can be done for other variations of the sum of the first $n$ natural numbers
 </Callout>
@@ -181,7 +181,7 @@ one of the numbers is negative and then add a negative sign to the result.
 
 If we only focus on counting the number of multiplications we can see that for two $n$-digit we get the following pattern and closed form solution:
 
-```math
+$$
 \begin{align*}
 T(1) &= 1 \\
 T(2) &= 4 \\
@@ -189,7 +189,7 @@ T(3) &= 9 \\
 T(4) &= 16 \\
 T(n) &= n^2
 \end{align*}
-```
+$$
 
 The pattern is quite obvious. In fact, you can also derive the recursive relation $T(n) = T(n-1) + 2n - 1$ with $T(1) = 1$. Using telescoping, you can find the closed-form solution $T(n) = n^2$.
 
@@ -205,9 +205,9 @@ However, with Karatsuba's algorithm demonstrated it is possible to perform multi
 The Karatsuba algorithm uses a divide and conquer approach, splitting each number into two smaller parts, multiplying them recursively, and combining the results in a clever way to remove a multiplication operation. 
 The algorithm is as follows for multiplying two $n$-digit numbers $x$ and $y$ where we assume $n$ is a power of 2 for easier splitting:
 
-```math
+$$
 (10^{n/2}a + b)(10^{n/2}c + d) = 10^n \textcolor{red}{a \cdot c} + 10^{n/2} \textcolor{red}{a \cdot c} + 10^{n/2} \textcolor{green}{b \cdot d} + \textcolor{green}{b \cdot d} + 10^{n/2} \textcolor{orange}{(a - b) \cdot (d - c)}
-```
+$$
 
 Where $a$ and $b$ are the first and second half of $x$ and $c$ and $d$ are the first and second half of $y$. The algorithm then recursively calculates the following three multiplications recursively:
 - $\textcolor{red}{a \cdot c}$
@@ -222,30 +222,30 @@ Where $a$ and $b$ are the first and second half of $x$ and $c$ and $d$ are the f
 
 We can quiet easily see that the reccurance relation for the Karatsuba algorithm is as follows if we only focus on the number of multiplications:
 
-```math
+$$
 T(2^k) = \begin{cases}
 1 & \text{if } k = 0 \\
 3T(2^{k-1}) & \text{if } k > 0
 \end{cases}
-```
+$$
 
 This is because for the base case where $n=1$ so $k=0$ we only need 1 multiplication and then if we want to multiply two numbers with two digits we need to perform 3 multiplications and then for two numbers with 4 digits we need to perform 3 times a multiplication of two numbers with 2 digits etc.
 Using telescoping we can find the closed form solution and then show the time complexity of the Karatsuba algorithm.
 
-```math
+$$
 \begin{align*}
 l=1 \quad T(2^k) &= 3T(2^{k-1}) \\
 l=2 \quad T(2^k) &= 3(3T(2^{k-2})) = 3^2T(2^{k-2}) \\
 l=3 \quad T(2^k) &= 3^2(3T(2^{k-3})) = 3^3T(2^{k-3}) \\
 l=4 \quad T(2^k) &= 3^3(3T(2^{k-4})) = 3^4T(2^{k-4}) \\
 \end{align*}
-```
+$$
 
 We can see the pattern is as follows:
 
-```math
+$$
 T(2^k) = 3^kT(2^0) = 3^k
-```
+$$
 
 <Callout type="proof">
 Proof by induction that $T(2^k) = 3^k$ is the correct closed form solution to the reccurance relation $T(2^k) = 3T(2^{k-1})$ with $T(1) = 1$.
@@ -261,16 +261,16 @@ Therefore, by induction $T(2^k) = 3^k$ is the correct closed form solution to th
 However, we want the time complexity in terms of $n$ not $k$ so we need to find the relationship between $n$ and $k$. We know that $n = 2^k$ so $k = \log_2 n$. We can then substitute $k = \log_2 n$ and use 
 the fact that any number can be written as $a^{\log_a b} = b$ and the Logarithmic identity $\log_a b \cdot \log_b a = 1$ to get the time complexity in terms of $n$:
 
-```math
+$$
 T(n) = 3^{\log_2 n} = (2^{\log_2 3})^{\log_2 n} = 2^{\log_2 3 \cdot \log_2 n} = n^{\log_2 3} \approx n^{1.58}
-```
+$$
 
 Therefore, the time complexity of the Karatsuba algorithm is $O(n^{1.58})$ which is faster than the standard multiplication algorithm with time complexity $O(n^2)$.
 
 <Callout type="example">
 Let's first show how it works for multiplying two 2-digit numbers $23 \cdot 56$ so where $n=1$ and $a=2$, $b=3$, $c=5$ and $d=6$.
 
-```math
+$$
 \begin{align*}
 62 \cdot 37 &= (10^{2/2} \cdot 6 + 2)(10^{2/2} \cdot 3 + 7) \\
 &= 10^2 \textcolor{red}{6 \cdot 3} + 10^{2/2} \textcolor{red}{6 \cdot 3} + 10^{2/2} \textcolor{green}{2 \cdot 7} + \textcolor{green}{2 \cdot 7} + 10^{2/2} \textcolor{orange}{(6 - 2) \cdot (7 - 3)} \\
@@ -278,11 +278,11 @@ Let's first show how it works for multiplying two 2-digit numbers $23 \cdot 56$ 
 &= 1800 + 180 + 140 + 14 + 160 \\
 &= 2294
 \end{align*}
-```
+$$
 
 If we now use the Karatsuba algorithm to multiply two 4-digit numbers $6237 \cdot 5898$ it get's a bit more complicated by hand but the algorithm is the same. We split the numbers into two parts and then recursively multiply them:
 
-```math
+$$
 \begin{align*}
 6237 \cdot 5898 &= (10^{4/2} \cdot 62 + 37)(10^{4/2} \cdot 58 + 98) \\
 &= 10^4 \textcolor{red}{62 \cdot 58} + 10^{4/2} \textcolor{red}{62 \cdot 58} + 10^{4/2} \textcolor{green}{37 \cdot 98} + \textcolor{green}{37 \cdot 98} + 10^{4/2} \textcolor{orange}{(62 - 37) \cdot (98 - 58)} \\
@@ -291,7 +291,7 @@ If we now use the Karatsuba algorithm to multiply two 4-digit numbers $6237 \cdo
 &= 3596
 \text{... and so on for the other recursive multiplications}
 \end{align*}
-```
+$$
 
 </Callout>
 
@@ -300,16 +300,16 @@ If we now use the Karatsuba algorithm to multiply two 4-digit numbers $6237 \cdo
 Unlike Big O which is an upper bound on the growth rate of a function, Big Omega is a lower bound on the growth rate of a function. In simpler terms, Big Omega is used to describe the best-case scenario of an algorithm.
 More formally, a function $f(n)$ is said to be in $\Omega(g(n))$ where $g(n)$ is a growth function and the following condition is satisfied for all $n > n_0$:
 
-```math
+$$
 f(n) \in \Omega(g(n)) \iff \exists c > 0, n_0 > 0 \text{ such that } f(n) \geq c \cdot g(n)
-```
+$$
 
 Big Theta combines the concepts of Big O and Big Omega. It is used to describe the tight bound on the growth rate of a function meaning it gives both an upper and lower bound on the growth rate of a function. 
 More formally, a function $f(n)$ is said to be in $\Theta(g(n))$ where $g(n)$ is a growth function and the following condition is satisfied for all $n > n_0$:
 
-```math
+$$
 f(n) \in \Theta(g(n)) \iff \exists c_1, c_2 > 0, n_0 > 0 \text{ such that } c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)
-```
+$$
 
 <Image 
     src="/cs/algdAsymptoticNotations.png"
@@ -323,16 +323,16 @@ More specifically, it determines the tight asymptotic bound theta $\Theta(g(n))$
 It requires the reccurance relation to be in a specific form, but if it is then the time complexity can be determined by just 
 simply looking at the reccurance relation and extracting parameters from it. The reccurance relation needs to be in the form:
 
-```math
+$$
 T(n) = aT\left(\frac{n}{b}\right) + f(n)
-```
+$$
 
 We can then determine the time complexity of the algorithm by looking at the parameters $a$, $b$ and the function $f(n)$. 
 We also need to calculate the following value which is the relationship between the number of subproblems and the size of the subproblems:
 
-```math
-c_{\text{crit}} = \log_b a = \frac{\log_2 a}{\log_2 b} = \frac{\text{log of # subproblems}}{\text{log of relative size of subproblems}}
-```
+$$
+c_{\text{crit}} = \log_b a = \frac{\log_2 a}{\log_2 b} = \frac{\text{log of number of subproblems}}{\text{log of relative size of subproblems}}
+$$
 
 The master theorem then determines the time complexity based on the following three cases:
 

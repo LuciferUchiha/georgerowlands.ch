@@ -36,19 +36,18 @@ params:
 
   editURL:
     enable: true
-    base: "https://github.com/imfing/hextra-starter-template/edit/main/content"
+    base: "https://github.com/DarthVeigar/georgerowlands.ch/edit/main/content"
 
 menu:
   main:
-    - name: Docs
-      identifier: docs
-      pageRef: /docs
+    - name: Digital Garden
+      pageRef: /garden
       weight: 1
     - name: About
       pageRef: /about
       weight: 2
     - name: Contact ↗
-      url: "https://github.com/imfing"
+      url: "https://ch.linkedin.com/in/georgerowlands"
       weight: 3
     - name: Search
       weight: 4
