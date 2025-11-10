@@ -42,11 +42,13 @@ git init
 
 ## Making Changes to a Repository
 
-<Image 
-    src="/cs/gitFileLifecycle.png"
-    caption="The lifecycle and stages of a file in a git repository."
-    width="800"
-/>
+{{< figure
+  src="/images/cs/gitFileLifecycle.png"
+  caption="The lifecycle and stages of a file in a git repository."
+  width="600"
+>}}
+
+<span class="hx:text-lg hx:font-bold">Working Directory</span>
 
 After adding/deleting/modifying files, use `git add <directory>` or `git add <file>` to add the files to the queue to be
 committed.
@@ -119,27 +121,27 @@ git branch testing
 
 The `git branch` command only created a new branch it didn't switch to that branch.
 
-<Image 
-    src="/cs/gitHeadToMaster.png"
-    caption="The HEAD pointer is still pointing to the master branch which points to the latest commit."
-    width="800"
-/>
+{{< figure
+  src="/images/cs/gitHeadToMaster.png"
+  caption="The HEAD pointer is still pointing to the master branch which points to the latest commit."
+  width="600"
+>}}
 
 To switch to an existing branch, you run the `git checkout testing` command.
 
-<Image 
-    src="/cs/gitHeadToTesting.png"
-    caption="The HEAD is now pointing to the testing branch."
-    width="800"
-/>
+{{< figure
+  src="/images/cs/gitHeadToTesting.png"
+  caption="The HEAD is now pointing to the testing branch."
+  width="600"
+>}}
 
 After changing a file and commiting, our structure could look something like this
 
-<Image 
-    src="/cs/gitHeadAhead.png"
+{{< figure
+    src="/images/cs/gitHeadAhead.png"
     caption="The HEAD and the testing branch are now ahead of the master branch."
-    width="800"
-/>
+    width="600"
+>}}
 
 To create and checkout a new branch at the same time:
 
@@ -154,11 +156,11 @@ branch. If you add `--all` you can also see the remote branches of a repository.
 
 Assume our structure looks like the following
 
-<Image 
-    src="/cs/gitBranching.png"
+{{< figure
+    src="/images/cs/gitBranching.png"
     caption="Two branches are based on the master branch and have been worked on."
-    width="800"
-/>
+    width="600"
+>}}
 
 ### Fast-Forward
 
@@ -170,11 +172,11 @@ git checkout master
 git merge hotfix
 ```
 
-<Image 
-    src="/cs/gitFastForward.png"
-    caption='The master hotfix branch can be merged by "fast-forwarding" the master branch pointer to the hotfix branch.'
-    width="800"
-/>
+{{< figure
+  src="/images/cs/gitFastForward.png"
+  caption="The master hotfix branch can be merged by 'fast-forwarding' the master branch pointer to the hotfix branch."
+  width="600"
+>}}
 
 ### Three-Way
 
@@ -189,11 +191,11 @@ git commit -a -m "Did lots of work"
 
 We now however want our new changes to also be in the master branch, so we want to merge `iss53` into `master`.
 
-<Image 
-    src="/cs/gitThreeWayStart.png"
-    caption='The current structure of the branches before merging the iss53 branch into the master branch.'
+{{< figure
+    src="/images/cs/gitThreeWayStart.png"
+    caption="The current structure of the branches before merging the iss53 branch into the master branch."
     width="800"
-/>
+>}}
 
 ```bash
 git checkout master
@@ -203,11 +205,11 @@ git merge iss53
 A fast-forward is not possible here so git does a so called three-way merge. It is called three-way because it uses the
 two branch heads and their common ancestor.
 
-<Image 
-    src="/cs/gitThreeWayEnd.png"
-    caption='The three-way merge creates a new commit that has two parents, the last commit of the master branch and the last commit of the iss53 branch.'
+{{< figure
+    src="/images/cs/gitThreeWayEnd.png"
+    caption="The three-way merge creates a new commit that has two parents, the last commit of the master branch and the last commit of the iss53 branch."
     width="800"
-/>
+>}}
 
 ### Merge Conflicts
 
