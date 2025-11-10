@@ -1,0 +1,383 @@
+---
+title: Order Relations
+type: docs
+weight: 3
+---
+
+Just like we have [equivalence relations](/garden/maths/discrete/relationsFunctions/equivalenceRelations) we can also define so called order relations. The equivalence relation worked in a similar way to our normal understanding of equivalence. The order relation works in a similar way to our normal understanding of order so that one thing is less than or equal to another thing and vice versa.
+
+## Partial Order
+
+We can define a so called partial order $R$ on a set $X$ as a homogeneous relation or in other words a binary relation between the same sets, that is reflexive, antisymmetric and transitive. This is sometimes also called a **weak order** or a order relation. Because the relation $R$ defines an ordering it is often denoted by the symbol $\leq$. 
+
+The pair $P=(X, R)$ or simply $(X, \leq)$ is then called a partially ordered set or often abbreviated as poset.  
+
+For a relation $R$ to be a partial order, it must satisfy the following properties:
+- **Reflexivity**: For all $a \in X$, $a R a$ (or $a \leq a$).
+- **Antisymmetry**: For all $a, b \in X$, if $a R b$ and $b R a$, then $a = b$ (or $a \leq b$ and $b \leq a$ implies $a = b$).
+- **Transitivity**: For all $a, b, c \in X$, if $a R b$ and $b R c$, then $a R c$ (or $a \leq b$ and $b \leq c$ implies $a \leq c$).
+
+So the only difference between a partial order and an equivalence relation is that the partial order is antisymmetric instead of symmetric. This means that if two elements are related to each other, they must be equal. In other words, if $a \leq b$ and $b \leq a$, then $a = b$. Whereas in an equivalence relation, if $a \equiv b$ then $b \equiv a$ is true but $a$ and $b$ do not have to be equal. 
+
+We can also compare this to our normal understanding of "less than or equal to":
+- We say that two things that are the same are less than or equal to each other because they are equal (reflexive and antisymmetric).
+- If something is less than or equal to something else, then a third thing that is less than or equal to the second thing is also less than or equal to the first thing (transitive).
+
+{{< callout type="example" >}}
+The following relations are partial orders on the set $X = \{1, 2, 3, 4, 5\}$:
+- The relation $R = \{(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)\}$ is a partial order .
+- The relation $R = \{(1, 2), (2, 3), (3, 4), (4, 5), (1, 3), (1, 4), (1, 5), (2, 4), (2, 5), (3, 5)\}$ is a partial order.
+- The relation $R = \{(1, 2), (2, 3), (3, 4), (1, 3), (1, 4), (2, 4)\}$ is a partial order.
+Despite that 5 is not related to 1, 2, 3 and 4, the relation is still a partial order because it is reflexive, antisymmetric and transitive. This is why it is called a partial order because not every pair of elements needs to be comparable.
+{{< /callout >}}
+
+{{< callout type="example" title="Subset is a Partial Order" >}}
+The subset relation $\subseteq$ on the power set of a set $X$ is a partial order. 
+{{< /callout >}}
+
+{{< callout type="example" title="Divisibility is a Partial Order" >}}
+The divisibility relation $\mid$ on the set of natural numbers $\mathbb{N}$ is a partial order. For example, $2 \mid 4$ and $3 \mid 6$ but $2 \nmid 3$.
+{{< /callout >}}
+
+### Strong Partial Order
+
+A strong or also called strict partial order is a homogeneous relation $R$ often denoted by the symbol $< $ on a set $X$ that satisfies the following properties:
+- **Irreflexivity**: For all $a \in X$, it is not the case that $a R a$ (or $a < a$).
+- **Asymmetry**: For all $a, b \in X$, if $a R b$, then it is not the case that $b R a$ (or $a < b$ does not imply $b < a$).
+- **Transitivity**: For all $a, b, c \in X$, if $a R b$ and $b R c$, then $a R c$ (or $a < b$ and $b < c$ implies $a < c$).
+
+So the difference between a strong partial order and a partial order is that the strong partial order is irreflexive and asymmetric instead of reflexive and antisymmetric. Important to note is that asymmetric and antisymmetric are not the same. Asymmetric means that if $a < b$ then it is not the case that $b < a$. Antisymmetric means that if $a \leq b$ and $b \leq a$, then $a = b$.
+
+So we can see that where the weak order was like our normals understanding of "less than or equal to", the strong order is like our normal understanding of "less than". We can see this in the properties of the relation:
+- We say that two things that are the same are not less than each other (irreflexive).
+- If something is less than something else, then that something else is not less than the first thing (asymmetric).
+- If something is less than something else, and that something else is less than a third thing, then the first thing is also less than the third thing (transitive).
+
+{{< callout type="example" >}}
+The following relations are strong partial orders on the set $X = \{1, 2, 3, 4, 5\}$:
+- The relation $R = \{(1, 2), (2, 3), (3, 4), (4, 5)\}$ is a strong partial order.
+- The relation $R = \{(1, 2), (2, 3), (3, 4), (1, 3), (1, 4), (2, 4)\}$ is a strong partial order.
+{{< /callout >}}
+
+## Total Order
+
+The reason a total order is a special case of a partial order is that it imposes an additional requirement: every pair of elements must be comparable. In other words, for any two elements $a$ and $b$ in the set, either $a \leq b$ or $b \leq a$ must hold.
+
+{{< callout type="example" >}}
+The natural numbers $\mathbb{N}$ with the "less than or equal to" relation $\leq$ is a total order. For any two natural numbers $a$ and $b$, either $a \leq b$ or $b \leq a$ holds. 
+
+However, the power set $P(X)$ of a set $X$ with the subset relation $\subseteq$ is not a total order because there are pairs of subsets that are not comparable. For example, if $X = \{1, 2\}$, then the subsets $\{1\} \subseteq \{1, 2\}$ are related by the subset relation, but $\{1\}$ and $\{2\}$ are not related by the subset relation because neither $\{1\} \subseteq \{2\}$ nor $\{2\} \subseteq \{1\}$ holds. In other words, there is no relation between the two subsets.
+{{< /callout >}}
+
+## Hasse Diagram
+
+We can create a so called ordering graph where the vertices are the elements of the set and the edges represent the relation between the elements. If the relation is a partial order, this results in a so called Hasse diagram. 
+
+Importantly the Hasse diagram draws the so called "cover" relations, which are the relations that cannot be derived from other relations in the diagram. This means that if $a \leq b$ and there is no element $c$ such that $a \leq c \leq b$, then there is an edge between $a$ and $b$ in the Hasse diagram. This is best seen when drawing the Hasse diagram for the power set of a set $X$ and the subset relation $\subseteq$. The Hasse diagram will not contain edge from the empty set to the set $X$ if it has more than one element because there are other subsets $c$ such that $\emptyset \subseteq c \subseteq X$. 
+
+<Image 
+    src="/maths/setsHasseDiagram.png"
+    caption="Hasse diagram showing the power set of the set {1,2,3} and the subset relation."
+    width={300}
+/>
+
+This can also be seen in the Hasse diagram of the natural numbers $\mathbb{N}$ with the "less than or equal to" relation $\leq$. The Hasse diagram will contain an edge from $1$ to $2$, from $2$ to $3$, and so on, but it will not contain an edge from $1$ to $3$ because there is the element $c=2$ such that $1 \leq 2 \leq 3$.
+
+If the relation is a total order, the Hasse diagram is a linear graph where all elements are connected in a single line. Hence the total order is also called a linear order.
+
+
+<Image 
+    src="/maths/relationsTotalOrderHasse.png"
+    caption='Hasse diagram showing the "less than or equal to" relation on powers of 2.'
+    width={300}
+/>
+
+## Ordering of Real Numbers
+
+We can define a weak total ordering on the set of real numbers $\mathbb{R}$ by defining the relation $\leq$ between two real numbers $a$ and $b$:
+
+$$
+\begin{align*}
+\text{Reflexivity: } & a \leq a \text{ for all } a \in \mathbb{R} \\
+\text{Tansitivity: } & a \leq b \text{ and } b \leq c \implies a \leq c \text{ for all } a, b, c \in \mathbb{R} \\
+\text{Antisymmetry: } & a \leq b \text{ and } b \leq a \implies a = b \text{ for all } a, b \in \mathbb{R} \\
+\text{Totality: } & a \leq b \text{ or } b \leq a \text{ for all } a, b \in \mathbb{R}
+\end{align*}
+$$
+
+We can also define such a relation on the rational numbers $\mathbb{Q}$ in a similar way. However, the key difference between the real numbers and the rational numbers is the that the ordering of the real numbers has the completeness property. This means that for any two non-empty sets of real numbers $A$ and $B$ such that $\forall a \in A, b \in B: a \leq b$, there exists at least one real number $c$ such that $\forall a \in A, b \in B: a \leq c \leq b$. So in a more intuitive way, this means that for any number $a$ in set $A$ and any number $b$ in set $B$, we can always find a real number $c$ that lies between them, this then also means that for any two real numbers $a$ and $b$ such that $a < b$, there exists a real number $c$ such that $a < c < b$ as we could just define $A = \{a\}$ and $B = \{b\}$.
+
+<Image 
+    src="/maths/relationsOrderCompleteness.png"
+    caption="Illustration of the completeness property of real numbers."
+    width={300}
+/>
+
+This can't be done with the rational numbers for example if the two sets are construct in such a way that the only number in between $a$ and $b$ is irrational such as $\sqrt{2}$. You can see a proof of why $\sqrt{2}$ is not a rational number in the [proof of irrational numbers](/garden/maths/discrete/setTheory#rational-and-irrational-numbers).
+
+{{< callout type="proof" title="Completeness Property of Rational Numbers" >}}
+We can construct the two sets $A$ and $B$ as follows:
+- Let $A = \{a \in \mathbb{Q} | 1 \leq a \leq 2 \text{ and } a^2 \leq 2\}$. This set contains all rational numbers between 1 and 2 whose square is less than or equal to 2.
+- Let $B = \{b \in \mathbb{Q} | 1 \leq b \leq 2 \text{ and } b^2 \geq 2\}$. This set contains all rational numbers between 1 and 2 whose square is greater than or equal to 2.
+
+By constructing these two sets, we have basically taken all the rational numbers between 1 and 2. By the completeness property we would then also have a real number $c$ such that $c^2 = 2$. However, $\sqrt{2}$ is not a rational number so it can't be in either set and therefore the completeness property does not hold for the rational numbers. This is why the real numbers are called complete.
+{{< /callout >}}
+
+The real numbers $\mathbb{R}$ have the arithmetic operations of addition and multiplication defined on them, which are compatible with the ordering relation $\leq$. This means that we can add and multiply real numbers while preserving the order. 
+
+{{< callout type="proof" title="Addition preserves order" >}}
+The addition of real numbers preserves the order relation $\leq$. More formally, we want to show that if $a \leq b$ for any real numbers $a$ and $b$, then for any real number $c$, we have $a + c \leq b + c$. We can show this as follows for $a, b, c \in \mathbb{R}$ where $a \leq b$:
+
+$$
+\begin{align*}
+a \leq b \\
+0 \leq b - a \\
+c \leq b - a + c \\
+a + c \leq b + c
+\end{align*}
+$$
+
+We can then also extend this for $a, b, c, d \in \mathbb{R}$ where $a \leq b$ and $c \leq d$ to show that $a + c \leq b + d$. 
+
+$$
+\begin{align*}
+a \leq b \\
+a + c \leq b + c \\
+c \leq d \\
+c + b \leq d + b \\
+a + c \leq c + b \leq b + d \\
+a + c \leq b + d
+\end{align*}
+$$
+{{< /callout >}}
+
+{{< callout type="proof" title="Multiplication preserves order" >}}
+The multiplication of real numbers preserves the order relation $\leq$. More formally, we first want to show that if $a \geq 0$ and $b \geq 0$ for any real numbers $a$ and $b$, then $a \cdot b \geq 0$. Showing this is rather simple.
+
+$$
+\begin{align*}
+a \geq 0 \\
+a \cdot b \geq 0 \cdot b \\
+a \cdot b \geq 0
+\end{align*}
+$$
+
+We can then extend this to show that if $0 \leq a \leq b$ and $0 \leq c \geq 0$, then $a \cdot c \leq b \cdot c$. 
+
+$$
+\begin{align*}
+0 \leq a \leq b \\
+0 \leq b - a \\
+0 \cdot c \leq (b - a) \cdot c \\
+0 \leq b \cdot c - a \cdot c \\
+a \cdot c \leq b \cdot c
+\end{align*}
+$$
+
+Lastly we can also show that if $a \leq b$ and $c \leq d$ for any real numbers $a, b, c, d$, then $a \cdot c \leq b \cdot d$. This is done by combining the two previous proofs. This is rather more complex to show but similar to the addition proof.
+
+$$
+\begin{align*}
+a \leq b \\
+a \cdot c \leq b \cdot c \\
+c \leq d \\
+c \cdot b \leq d \cdot b \\
+a \cdot c \leq c \cdot b \leq b \cdot d \\
+a \cdot c \leq b \cdot d
+\end{align*}
+$$
+{{< /callout >}}
+
+Using these properties we can show a multitude of things such as that the additive inverse of a real number $a$ is unique. If we assume that there are two additive inverses $b$ and $c$ such that $a + b = 0$ and $a + c = 0$, then we can show that $b = c$:
+
+$$
+\begin{align*}
+b = b + 0 \\
+b = b + (a + c) \\
+b = (b + a) + c \\
+b = 0 + c \\
+b = c
+\end{align*}
+$$
+
+The same goes for the multiplicative inverse of a real number $a$ where $a \neq 0$. If we assume that there are two multiplicative inverses $b$ and $c$ such that $a \cdot b = 1$ and $a \cdot c = 1$, then we can show that $b = c$:
+
+$$
+\begin{align*}
+a \cdot b & = 1 \\
+a \cdot c - 1 & = 0 \\
+a \cdot b - a \cdot c & = 0 \\
+a \cdot (b - c) & = 0 \\
+b - c & = 0 \\
+b & = c
+\end{align*}
+$$
+
+We already used the fact that $0 \cdot a = 0$ in the proof of multiplication preserving order. However, we can also show this in a more general way. We can show that $0 \cdot a = 0$ for all real numbers $a$ and that $(-1) \cdot a = -a$ for all real numbers $a$ using the distributive property of multiplication over addition.
+
+$$
+\begin{align*}
+0 \cdot a + 0 \cdot a & = (0 + 0) \cdot a \\
+0 \dot a + 0 \cdot a & = 0 \cdot a \\
+0 \cdot a & = 0 \\
+\\
+1 \cdot a + (-1) \cdot a & = (1 + (-1)) \cdot a \\
+1 \cdot a + (-1) \cdot a & = 0 \cdot a \\
+(-1) \cdot a & = -a
+\end{align*}
+$$
+
+specifically we can also show that $(-1)^2 = 1$ using $a=-1$:
+
+$$
+(-1) \cdot a = -a \\
+(-1) \cdot (-1) = -(-1) \\
+(-1)^2 = 1
+$$
+
+We can also show that the negation of a positive real number is negative. If we assume that $0 \leq a$ for some real number $a$, then we can show that $-a \leq 0$:
+
+$$
+\begin{align*}
+0 & \leq a \\
+0 \cdot (-1) & \leq a \cdot (-1) \\
+0 & \leq -a \\
+-a & \leq 0
+\end{align*}
+$$
+
+In a similar way we can also show that the square of a real number is non-negative. If we assume that $a \in \mathbb{R}$, then we can show that $0 \leq a^2$. The case where $a = 0$ is trivial, so we first assume that $0 < a$. Then we can show that $0 \leq a^2$:
+
+$$
+\begin{align*}
+0 & \leq a \\
+0 \cdot a & \leq a \cdot a \\
+0 & \leq a^2
+\end{align*}
+$$
+We can also show that if $a < 0$, then $0 \leq a^2$. If $a$ is negative then we have $a=-b$ for some positive real number $b$. We can then show that $0 \leq a^2$:
+
+$$
+\begin{align*}
+a^2 & = (-b)^2 = (-b) \cdot (-b) \\
+& = ( 1 \cdot b) \cdot (1 \cdot b) \\
+& = (-1) \cdot (-1) \cdot b \cdot b \\
+& = 1 \cdot b^2 \\
+& = b^2 \\
+0 & \leq b^2 \text{and therefore } 0 \leq a^2
+\end{align*}
+$$
+
+This comes from the previous proof where $0 \leq b$ so then $0 \cdot b \leq b \cdot b$ and therefore $0 \leq b^2$.
+
+### Archimedean Property
+
+The Archimedean property, named after the ancient Greek mathematician Archimedes is an interesting property which the real numbers have. There are multiple interpretations and ways to state this property, but the most common one is that for any two real numbers $x > 0$ and $y \in \mathbb{R}$, there exists an integer $n \in \mathbb{N}$ such that the following holds:
+
+```math	
+y \leq nx
+```
+
+So if we have a real number then we can always create a multiple of another positive real number with a natural number that is larger. In other words, the set $\{nx : n \in \mathbb{N}\}$ is unbounded above in $\mathbb{R}$ for every $x > 0$.
+
+<Image 
+    src="/maths/archimedianProperty.svg"
+    width={600}
+/>
+
+An alternative way to state the Archimedean property is that for any real number $x \in \mathbb{R}$, there exists exactly one integer $n \in \mathbb{Z}$ such that:
+
+$$
+n \leq x < n + 1.
+$$
+
+So we can always find an integer that is smaller than a real number and when we add 1 to that integer we get an integer that is larger than the original real number. So in other words, we can always bound a real number between two integers (think of it as sandwiching it between 2 numbers). This also leads to the conclusion that the set of natural numbers $\mathbb{N}$ is unbounded and has an infinite number of elements. Because the natural numbers are an infinite set and also a subset of the integers $\mathbb{Z}$, the set of integers is also unbounded and has an infinite number of elements the same goes for the other sets of numbers such as the rational numbers $\mathbb{Q}$ and the real numbers $\mathbb{R}$.
+
+### Roots of Real Numbers
+
+Using these properties we can now show that we can always find a solution to the equation $x^2 = t$ for any real number $t \geq 0$. In other words, we can always find the square root if we assume that the square root exists and it is positive.
+
+{{< callout type="proof" >}}
+For $t=0$ this statement is trivial because from the axioms we get $0^2 = 0$ and therefore $\sqrt{0} = 0$.
+
+For $t > 0$ it is slightly harder. We first define the following two sets:
+
+$$
+A = \{y \in \mathbb{R} | y \geq 0 \text{ and } y^2 \leq t\} \quad B = \{z \in \mathbb{R} | z \geq 0 \text{ and } z^2 \geq t\}
+$$
+
+First we want to show that the sets aren't empty. For $A$ this is simple as $0 \in A$ because $0^2 = 0 \leq t$ for $t > 0$. For $B$ we can show that there exists a natural number $n$ such that $n \geq 1$ and $n \geq t$. If we use the properties of the order relation we get the following:
+
+$$
+\begin{align*}
+n & \geq 1 \\
+n & \geq t \\
+n \cdot n & \geq 1 \cdot n \\
+n^2 & \geq n \geq t
+\end{align*}
+$$
+
+so $n \in B$ and therefore $B$ is not empty. From the properties of the order relation it also follows that $y \leq z$ for all $y \in A$ and $z \in B$. To show this let's assume that $y \in A$ and $z \in B$. Then we have $y^2 \leq t$ and $z^2 \geq t$. If we assume that $y > z$, then we can square both sides to get $y^2 > z^2$. This contradicts the fact that $z^2 \geq t$ because then we would have $y^2 > z^2 \geq t$ which means that $y^2 > t$ and therefore $y \notin A$. So we must have $y \leq z$.
+
+So we have our conditions for the completeness property. By this property there exists a real number $c$ such that $y \leq c$ and $c \leq z$ for all $y \in A$ and $z \in B$, or put together we have:
+
+$$
+y \leq c \leq z
+$$
+
+We now want to show that $c^2 = t$. We can do this by assuming that $c^2 < t$ and $c^2 > t$ and showing that these lead to a contradiction meaning $c^2$ must be equal to $t$. Let's assume that $c^2 < t$. By definition we then have $c \in A$ because $A$ is the set of all non-negative real numbers whose square is less than or equal to $t$. If we rewrite this assumption we get $0 < t - c^2$ and e can also quickly show that $2c + 1 \geq 1$ because $c \geq 0$. Then by the archimedean property we can find a natural number $n$ such that:
+
+$$
+
+2c + 1 \leq n(t - c^2)
+$$
+
+If we then consider the following:
+
+$$
+\begin{align*}
+(c + \frac{1}{n})^2 &= c^2 + 2c \cdot \frac{1}{n} + \frac{1}{n^2} \\
+&\leq c^2 + 2c \cdot \frac{1}{n} + \frac{1}{n} \\
+&= c^2 + (2c + 1) \cdot \frac{1}{n} \\
+&\leq c^2 + (t - c^2) \\
+&= t
+\end{align*}
+$$
+
+This means that $c + \frac{1}{n} \in A$ but $c + \frac{1}{n} > c$ which contradicts the fact that $c$ is the largest element in $A$. So we must have $c^2 \geq t$. We can do the same for the case where $c^2 > t$ resulting in the contradiction that $c$ is the smallest element in $B$. So we must have $c^2 = t$.
+{{< /callout >}}
+
+### Young's Inequality
+
+From the properties of the real numbers we can quickly come up with that the following quadratic inequality holds for all real numbers $a$ and $b$:
+
+$$
+(a - b)^2 \geq 0
+$$
+
+This can be expanded to:
+
+$$
+a^2 - 2ab + b^2 \geq 0 \text{ or } 2ab \leq a^2 + b^2
+$$
+
+The idea is now that we want to approximate a bound for the product $2ab$ by a weighted sum of the squares of $a$ and $b$. This is done by introducing a scaling factor $\epsilon > 0$ to the inequality, which is commonly chosen as $\epsilon = \frac{|a|}{|b|}$ where $b \neq 0$. Depending on the scaling factor the approximation becomes better or worse.
+This leads us to Young's inequality for all real numbers $a$ and $b$ and for all $\epsilon > 0$:
+
+$$
+2|ab| \leq \epsilon a^2 + \frac{1}{\epsilon}b^2
+$$
+
+{{< callout type="example" >}}
+We want to have a bound for the product $2ab$ where $a = 3$ and $b = 4$. We can choose $\epsilon = 1$.
+
+$$
+2ab = 2 \cdot 3 \cdot 4 = 24 \leq 1 \cdot 3^2 + \frac{1}{1} \cdot 4^2 = 9 + 16 = 25
+$$
+
+If we choose $\epsilon = \frac{3}{4}$, we get a different but in this case worse bound: 
+
+$$
+2ab = 2 \cdot 3 \cdot 4 = 24 \leq \frac{3}{4} \cdot 3^2 + \frac{1}{\frac{3}{4}} \cdot 4^2 = \frac{27}{4} + \frac{16}{\frac{3}{4}} = \frac{27}{4} + \frac{64}{3} = \frac{81 + 256}{12} = \frac{337}{12} \approx 28.08
+$$
+{{< /callout >}}
