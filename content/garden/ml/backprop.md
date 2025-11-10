@@ -11,9 +11,11 @@ and applying the activation function to the output of each layer. The output of 
 Say we have a simple neural network with three linear layers, the input layer of size 2, a hidden layer of size 2 and an output layer of size 1. We will use the 
 sigmoid activation function for the hidden layer and the output layer. 
 
-<Image src="/cs/mlSimpleNeuralNetwork.png"
-       caption="A simple neural network."
-/>
+{{< figure
+  src="/cs/mlSimpleNeuralNetwork.png"
+  alt="A simple neural network."
+  caption="A simple neural network."
+>}}
 
 Each linear layer is defined by a weight matrix $\mathbf{W}$ and a bias vector 
 $\mathbf{b}$. The vector $\mathbf{z}$ contains the pre-activations and the vector $\mathbf{a}$ the activatiosn, i.e. outputs of the layer. 
@@ -74,9 +76,11 @@ y &= \sigma(a3) \\
 \end{align*}
 $$
 
-<Image src="/cs/mlForwardPass.gif"
-       caption="The forward pass of the simple neural network."
-/>
+{{< figure
+  src="/cs/mlForwardPass.gif"
+  alt="The forward pass of the simple neural network."
+  caption="The forward pass of the simple neural network."
+>}}
 
 We can also write these calculations in matrix form which is more efficient and easier to generalise to larger networks. 
 

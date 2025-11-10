@@ -1,7 +1,7 @@
 ---
 title: Scientific Notation
 type: docs
-comments: true
+weight: 8
 ---
 
 Scientific notation is a way of expressing numbers that are either very large or very small in a short and convenient

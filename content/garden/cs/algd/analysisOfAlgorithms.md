@@ -31,10 +31,10 @@ The most common growth functions, listed in increasing order of growth rate, are
 - Exponential: $O(2^n)$
 - Factorial: $O(n!)$
 
-<Image 
-    src="/cs/algdGrowthFunctions.png"
-    width="600"
-/>
+{{< figure
+  src="/cs/algdGrowthFunctions.png"
+  width="600"
+>}}
 
 We can compare an algorithm's growth rate by determining which of these standard functions provides an upper bound. Specifically, if we have a function $f(n)$ that represents the algorithm's work, 
 we determine the smallest standard function $g(n)$ such that $f(n)$ grows no faster than a constant multiple of $g(n)$ as $n$ becomes large. This is expressed as $f(n) \in O(g(n))$ often said as "$f(n)$ is big O of $g(n)$" or "$f(n)$ is order of $g(n)$" and called Big O notation.
@@ -51,10 +51,10 @@ $$
 
 In simple terms, at some point $n_0$ the function $f(n)$ will always be less than or equal to $c \cdot g(n)$ for all $n > n_0$. 
 
-<Image 
-    src="/cs/algdBigO.png"
-    width="400"
-/>
+{{< figure
+  src="/cs/algdBigO.png"
+  width="400"
+>}}
 
 This method works because if we can find some $c$ and $n_0$ that satisfy the inequality, then we can also find different $c'$ and $n_0'$ that also satisfy the inequality as $n$ grows to infinity. 
 This is because the function $g(n)$ grows faster than $f(n)$ so we can always find a $c'$ and $n_0'$ that satisfy the inequality, making 
@@ -137,7 +137,7 @@ $$
 
 Now that we have our closed form solution we can check that it is correct using proof by induction.
 
-<Callout type="proof">
+{{< callout type="proof" >}}
 Proof by induction that $T(n) = n^2 + n$ is the correct closed form solution to the reccurance relation $T(n) = T(n-1) + 2n$ with $T(0) = 0$.
 
 1. Base case: $T(0) = 0^2 + 0 = 0$ which is true.
@@ -149,7 +149,7 @@ Therefore, by induction $T(n) = n^2 + n$ is the correct closed form solution to 
 {{< /callout >}}
 
 Since we now have the correct closed form solution we can supress the lower order terms and constants to get the time complexity of the algorithm. In this case the time complexity is $O(n^2)$.
-</Callout>
+{{< /callout >}}
 
 {{< callout type="info" >}}
 It is useful to remember some of the closed forms of common series like the sum of the first $n$ natural numbers to make telescoping easier. 
@@ -173,11 +173,12 @@ A classic introductory example of time complexity analysis is the multiplication
 whilst making sure to shift the numbers to the left depending on the position of the digit. For simplicity, let's assume that the numbers are of the same length as we can always pad the shorter number with zeros. For negative numbers we just need to check if only 
 one of the numbers is negative and then add a negative sign to the result.
 
-<Image 
-    src="/cs/algdMultiplication.png"
-    caption="Multiplication of two numbers with 2 digits"
-    width="200"
-/>
+{{< figure
+  src="/cs/algdMultiplication.png"
+  alt="Multiplication of two numbers with 2 digits"
+  caption="Multiplication of two numbers with 2 digits"
+  width="200"
+>}}
 
 If we only focus on counting the number of multiplications we can see that for two $n$-digit we get the following pattern and closed form solution:
 
@@ -214,11 +215,12 @@ Where $a$ and $b$ are the first and second half of $x$ and $c$ and $d$ are the f
 - $\textcolor{green}{b \cdot d}$
 - $\textcolor{orange}{(a - b) \cdot (d - c)}$
 
-<Image 
-    src="/cs/algdKaratsuba.png"
-    caption="Karatsuba algorithm for multiplying two numbers."
-    width="600"
-/>
+{{< figure
+  src="/cs/algdKaratsuba.png"
+  alt="Karatsuba algorithm for multiplying two numbers."
+  caption="Karatsuba algorithm for multiplying two numbers."
+  width="600"
+>}}
 
 We can quiet easily see that the reccurance relation for the Karatsuba algorithm is as follows if we only focus on the number of multiplications:
 
@@ -310,10 +312,10 @@ $$
 f(n) \in \Theta(g(n)) \iff \exists c_1, c_2 > 0, n_0 > 0 \text{ such that } c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)
 $$
 
-<Image 
-    src="/cs/algdAsymptoticNotations.png"
-    width="800"
-/>
+{{< figure
+  src="/cs/algdAsymptoticNotations.png"
+  width="800"
+>}}
 
 ## Master Theorem
 

@@ -1,0 +1,10 @@
+{
+  "title": "Common Math Functions",
+  "pages": [
+    "absolute",
+    "factorial",
+    "binomialCoefficient",
+    "trigonometry",
+    "expLog"
+  ]
+}

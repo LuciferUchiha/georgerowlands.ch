@@ -1,6 +1,7 @@
 ---
 title: LaTeX Guidelines
 type: docs
+weight: 7
 ---
 
 This notation guide is inspired by [Deep Learning by Ian Goodfellow, Yoshua Bengio and Aaron Courville](https://www.deeplearningbook.org/) whilst trying to stay short and compatible with [KaTeX](https://katex.org/docs/supported.html#style-color-size-and-font) (Docusaurus support) and [MathJax](https://docs.mathjax.org/en/latest/input/tex/macros/index.html) (Jupyter Notebook support). This page is also meant as a cheat sheet for me on latex structures such as matrices etc.
