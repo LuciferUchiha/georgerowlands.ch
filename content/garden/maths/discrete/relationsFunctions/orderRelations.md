@@ -75,22 +75,21 @@ We can create a so called ordering graph where the vertices are the elements of 
 
 Importantly the Hasse diagram draws the so called "cover" relations, which are the relations that cannot be derived from other relations in the diagram. This means that if $a \leq b$ and there is no element $c$ such that $a \leq c \leq b$, then there is an edge between $a$ and $b$ in the Hasse diagram. This is best seen when drawing the Hasse diagram for the power set of a set $X$ and the subset relation $\subseteq$. The Hasse diagram will not contain edge from the empty set to the set $X$ if it has more than one element because there are other subsets $c$ such that $\emptyset \subseteq c \subseteq X$. 
 
-<Image 
-    src="/maths/setsHasseDiagram.png"
-    caption="Hasse diagram showing the power set of the set {1,2,3} and the subset relation."
-    width={300}
-/>
+{{< figure
+  src="/images/maths/setsHasseDiagram.png"
+  alt="Hasse diagram showing the power set of the set {1,2,3} and the subset relation."
+  caption="Hasse diagram showing the power set of the set {1,2,3} and the subset relation."
+>}}
 
 This can also be seen in the Hasse diagram of the natural numbers $\mathbb{N}$ with the "less than or equal to" relation $\leq$. The Hasse diagram will contain an edge from $1$ to $2$, from $2$ to $3$, and so on, but it will not contain an edge from $1$ to $3$ because there is the element $c=2$ such that $1 \leq 2 \leq 3$.
 
 If the relation is a total order, the Hasse diagram is a linear graph where all elements are connected in a single line. Hence the total order is also called a linear order.
 
 
-<Image 
-    src="/maths/relationsTotalOrderHasse.png"
-    caption='Hasse diagram showing the "less than or equal to" relation on powers of 2.'
-    width={300}
-/>
+{{< figure
+  src="/images/maths/relationsTotalOrderHasse.png"
+  width="400"
+>}}
 
 ## Ordering of Real Numbers
 
@@ -107,11 +106,12 @@ $$
 
 We can also define such a relation on the rational numbers $\mathbb{Q}$ in a similar way. However, the key difference between the real numbers and the rational numbers is the that the ordering of the real numbers has the completeness property. This means that for any two non-empty sets of real numbers $A$ and $B$ such that $\forall a \in A, b \in B: a \leq b$, there exists at least one real number $c$ such that $\forall a \in A, b \in B: a \leq c \leq b$. So in a more intuitive way, this means that for any number $a$ in set $A$ and any number $b$ in set $B$, we can always find a real number $c$ that lies between them, this then also means that for any two real numbers $a$ and $b$ such that $a < b$, there exists a real number $c$ such that $a < c < b$ as we could just define $A = \{a\}$ and $B = \{b\}$.
 
-<Image 
-    src="/maths/relationsOrderCompleteness.png"
-    caption="Illustration of the completeness property of real numbers."
-    width={300}
-/>
+{{< figure
+  src="/images/maths/relationsOrderCompleteness.png"
+  alt="Illustration of the completeness property of real numbers."
+  caption="Illustration of the completeness property of real numbers."
+  width="400"
+>}}
 
 This can't be done with the rational numbers for example if the two sets are construct in such a way that the only number in between $a$ and $b$ is irrational such as $\sqrt{2}$. You can see a proof of why $\sqrt{2}$ is not a rational number in the [proof of irrational numbers](/garden/maths/discrete/setTheory#rational-and-irrational-numbers).
 
@@ -274,16 +274,15 @@ This comes from the previous proof where $0 \leq b$ so then $0 \cdot b \leq b \c
 
 The Archimedean property, named after the ancient Greek mathematician Archimedes is an interesting property which the real numbers have. There are multiple interpretations and ways to state this property, but the most common one is that for any two real numbers $x > 0$ and $y \in \mathbb{R}$, there exists an integer $n \in \mathbb{N}$ such that the following holds:
 
-```math	
+$$
 y \leq nx
-```
+$$
 
 So if we have a real number then we can always create a multiple of another positive real number with a natural number that is larger. In other words, the set $\{nx : n \in \mathbb{N}\}$ is unbounded above in $\mathbb{R}$ for every $x > 0$.
 
-<Image 
-    src="/maths/archimedianProperty.svg"
-    width={600}
-/>
+{{< figure
+  src="/images/maths/archimedianProperty.svg"
+>}}
 
 An alternative way to state the Archimedean property is that for any real number $x \in \mathbb{R}$, there exists exactly one integer $n \in \mathbb{Z}$ such that:
 

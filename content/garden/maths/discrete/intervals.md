@@ -11,11 +11,11 @@ If we have a [set of real numbers](/garden/maths/discrete/setTheory#real-numbers
 - **Half-open interval**: We include one of the endpoints but not the other. This is denoted as $[a, b) = \{x \in \mathbb{R} \mid a \leq x < b\}$ or $(a, b] = \{x \in \mathbb{R} \mid a < x \leq b\}$. As you might have guessed, a half-open interval only includes one of the two endpoints.
 - **Unbounded/Infinite interval**: On one or both sides, the interval extends indefinitely. This is denoted as $(-\infty, b] = \{x \in \mathbb{R} \mid x \leq b\}$ if we want all numbers less or equal than $b$, or $(a, \infty) = \{x \in \mathbb{R} \mid x > a\}$ if we want all numbers greater than $a$. We can also have intervals that are unbounded on both sides, such as $(-\infty, \infty) = \mathbb{R}$.
 
-<Image 
-    src="/maths/intervalsLines.png"
-    caption="All types of intervals visualized on the number line."
-    width={600}
-/>
+{{< figure
+  src="/images/maths/intervalsLines.png"
+  alt="All types of intervals visualized on the number line."
+  caption="All types of intervals visualized on the number line."
+>}}
 
 {{< callout type="info" >}}
 Note that the endpoints of the interval that is included is always the one with the square bracket if it is excluded it is the one with the round bracket. In some literature you might also see square brackets facing outwards for the open interval rather than round brackets. This is just a different notation and means the same thing.
@@ -118,11 +118,11 @@ We define the supremum and infimum of a set as the smallest upper bound and larg
 - **Supremum**: If $c$ is the smallest upper bound of $A$. In other words, $c$ is an upper bound of $A$ so $\forall a \in A: a \leq c$ but if $d$ is another upper bound of $A$ then $c \leq d$. We then write $\sup A = c$.
 - **Infimum**: If $c$ is the largest lower bound of $A$. In other words, $c$ is a lower bound of $A$ so $\forall a \in A: a \geq c$ but if $d$ is another lower bound of $A$ then $c \geq d$. We then write $\inf A = c$.
 
-<Image 
-    src="/maths/intervalsSupremumInfimum.png"
-    caption="A visual representation of the supremum and infimum of intervals."
-    width={600}
-/>
+{{< figure
+  src="/images/maths/intervalsSupremumInfimum.png"
+  alt="A visual representation of the supremum and infimum of intervals."
+  caption="A visual representation of the supremum and infimum of intervals."
+>}}
 
 {{< callout type="proof" >}}
 For any non-empty set $A \subseteq \mathbb{R}$ that is bounded above, $\sup A$ exists and is unique. Similarly, if $A$ is bounded below, $\inf A$ exists and is unique. We can prove it is unique by assuming that there are two different supremums $c_1$ and $c_2$ of the set $A$. So for any upper bound $d$ it holds that 

@@ -502,11 +502,11 @@ The structure of a proof by induction is as follows:
 
 The analogy for why this works can be seen as a row of dominos. If we can show that the first domino falls (is true) and show that if the $k$'th domino falling causes the $k+1$'th domino to fall then all dominos must fall.
 
-<Image 
-    src="/maths/proofsInduction.png"
-    caption="A visual representation of the principle of mathematical induction."
-    width={600}
-/>
+{{< figure
+  src="/images/maths/proofsInduction.png"
+  alt="A visual representation of the principle of mathematical induction."
+  caption="A visual representation of the principle of mathematical induction."
+>}}
 
 {{< callout type="proof" >}}
 **The statements $S_1, S_2, S_3, \ldots$ are all true.**

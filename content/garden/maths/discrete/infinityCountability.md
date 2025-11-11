@@ -41,16 +41,16 @@ More formally, a set $A$ is finite if there exists a bijective function, a one-t
 $\emptyset$ and the set $A$ is also the empty set. So the empty set is also finite.
 
 {{< callout type="example" >}}
-    Examples of finite sets:
-    - The set of natural numbers $\{1, 2, 3, 4, 5\}$ is finite.
-    - The set of even numbers $\{2, 4, 6, 8, 10\}$ is finite.
-    - The set of letters in the latin alphabet $\{a, b, c, \ldots, z\}$ is finite.
-    - The empty set $\emptyset$ is finite.
+Examples of finite sets:
+- The set of natural numbers $\{1, 2, 3, 4, 5\}$ is finite.
+- The set of even numbers $\{2, 4, 6, 8, 10\}$ is finite.
+- The set of letters in the latin alphabet $\{a, b, c, \ldots, z\}$ is finite.
+- The empty set $\emptyset$ is finite.
 
-    Examples of non-finite sets:
-    - The set of natural numbers $\mathbb{N}$ is infinite.
-    - The set of integers $\mathbb{Z}$ is infinite.
-    - The set of real numbers $\mathbb{R}$ is infinite.
+Examples of non-finite sets:
+- The set of natural numbers $\mathbb{N}$ is infinite.
+- The set of integers $\mathbb{Z}$ is infinite.
+- The set of real numbers $\mathbb{R}$ is infinite.
 {{< /callout >}}
 
 ## Infinite Sets
@@ -59,12 +59,12 @@ A set is infinite if it has more elements than any finite set. This means that t
 The cardinality of such a set is then $\infty$.
 
 {{< callout type="example" >}}
-    Examples of infinite sets:
-    - The set of natural numbers $\mathbb{N}$ is infinite.
-    - The set of integers $\mathbb{Z}$ is infinite.
-    - The set of real numbers $\mathbb{R}$ is infinite.
-    - The set of all even numbers $\{2, 4, 6, 8, \ldots\}$ is infinite.
-    - The set of all possible words using the latin alphabet is infinite.
+Examples of infinite sets:
+- The set of natural numbers $\mathbb{N}$ is infinite.
+- The set of integers $\mathbb{Z}$ is infinite.
+- The set of real numbers $\mathbb{R}$ is infinite.
+- The set of all even numbers $\{2, 4, 6, 8, \ldots\}$ is infinite.
+- The set of all possible words using the latin alphabet is infinite.
 {{< /callout >}}
 
 ## Countable Sets
@@ -73,17 +73,16 @@ We have already seen that for a set to be finite, you need to be able to define 
 However, there are also infinite sets that can be counted. These sets are called countable sets. A set is countable if there exists a bijective function between the set and the set of natural numbers $\mathbb{N}$. These is the key difference between countable and finite sets. 
 
 {{< callout type="example" >}}
-    Examples of countable sets:
-    - The set of natural numbers $\mathbb{N}$ is countable.
-    - The set of integers $\mathbb{Z}$ is suprisingly countable. This is because we can define a bijective function between the set of natural numbers and the set of integers. 
-    For example, we can define the function $f: \mathbb{Z} \to \mathbb{N}$ such that $f(0) = 1$, $f(1) = 2$, $f(-1) = 3$, $f(2) = 4$, $f(-2) = 5$, and so on. This function is a bijection between the set of natural numbers and the set of integers.
-    - The set of all even numbers $\{2, 4, 6, 8, \ldots\}$ is countable.
-    - The set of odd numbers $\{1, 3, 5, 7, \ldots\}$ is countable.
-    - The set of prime numbers $\{2, 3, 5, 7, 11, \ldots\}$ is countable. Because it is a subset of the natural numbers.
+Examples of countable sets:
+- The set of natural numbers $\mathbb{N}$ is countable.
+- The set of integers $\mathbb{Z}$ is suprisingly countable. This is because we can define a bijective function between the set of natural numbers and the set of integers. For example, we can define the function $f: \mathbb{Z} \to \mathbb{N}$ such that $f(0) = 1$, $f(1) = 2$, $f(-1) = 3$, $f(2) = 4$, $f(-2) = 5$, and so on. This function is a bijection between the set of natural numbers and the set of integers.
+- The set of all even numbers $\{2, 4, 6, 8, \ldots\}$ is countable.
+- The set of odd numbers $\{1, 3, 5, 7, \ldots\}$ is countable.
+- The set of prime numbers $\{2, 3, 5, 7, 11, \ldots\}$ is countable. Because it is a subset of the natural numbers.
 
-    Examples of uncountable sets:
-    - The set of real numbers $\mathbb{R}$ is uncountable. 
-    - The set of irrational numbers $\mathbb{R} \setminus \mathbb{Q}$ is uncountable. This is because the set of irrational numbers is a subset of the real numbers and the real numbers are uncountable.
+Examples of uncountable sets:
+- The set of real numbers $\mathbb{R}$ is uncountable. 
+- The set of irrational numbers $\mathbb{R} \setminus \mathbb{Q}$ is uncountable. This is because the set of irrational numbers is a subset of the real numbers and the real numbers are uncountable.
 {{< /callout >}}
 
 ## Uncountable Sets
@@ -91,11 +90,12 @@ However, there are also infinite sets that can be counted. These sets are called
 There are sets that are so large that they cannot be counted. These sets are called uncountable sets. The set of real numbers $\mathbb{R}$ is an example of an uncountable set. This means that there is no way to define a bijective function between the set of real numbers and the set of natural numbers. 
 Intuitively, we can understand why the real numbers might be uncountable. The real numbers are continuous so for any two real numbers, there are infinitely many real numbers between them. This makes it impossible to define a bijective function between the set of real numbers and the set of natural numbers.
 
-<Image 
-    src="/maths/infiniteRealNumbers.png"
-    caption="No matter how far you zoom in on the real number line, there are always more real numbers."
-    width={600}
-/>
+{{< figure
+  src="/images/maths/infiniteRealNumbers.png"
+  alt="No matter how far you zoom in on the real number line, there are always more real numbers."
+  caption="No matter how far you zoom in on the real number line, there are always more real numbers."
+  width="400"
+>}}
 
 ### Cantor's Diagonal Argument
 

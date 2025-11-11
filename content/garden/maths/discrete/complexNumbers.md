@@ -1,5 +1,7 @@
 ---
 title: Complex Numbers
+type: docs
+weight: 8
 ---
 
 {{< callout type="todo" >}}
@@ -128,7 +130,9 @@ $$
 
 Wir können also definieren, dass wir zwei komplexe Zahlen addieren/subtrahieren, indem wir ihre Real- und Imaginärteile addieren/subtrahieren.
 
-```math(a+bi)\pm (c+di)=(a \pm c) + i(c\pm d)```
+$$
+(a+bi)\pm (c+di)=(a \pm c) + i(b \pm d)
+$$
 
 {{< callout type="example" >}}
 Beispiel komplexe Zahlen addieren/subtrahieren
@@ -231,7 +235,12 @@ $$
 
 Diese Abbildung nennt man Komplexe oder Gauss'sche Zahlenebene. **Achtung!!!** wenn wir komplexe Zahlen darstellen dann werden oft Zeiger verwendet welche nicht mit Vektoren zu verwirren sind da auf Vektoren andere Operationen definiert sind auch wenn sie sehr ähnlich sind und oftmals auch sehr ähnlich funktionieren.
 
-![complexNumberCartesian](/maths/complexNumberCartesian.png)
+{{< figure
+  src="/images/maths/complexNumberCartesian.png"
+  alt="complexNumberCartesian"
+  caption="complexNumberCartesian"
+  width="400"
+>}}
 
 
 ### Betrag einer komplexen Zahl
@@ -288,7 +297,12 @@ $$
 Punkte in einem Koordinatensystem müssen nicht unbedingt im kartesischen
 Koordinatensystem sein. Wir können auch polare Koordinaten verwenden, wir müssen es dann nur Umwandeln. Dafür verwenden wir Betrag: $r=|z|$ und Argument: $\varphi=\arg(z)$ der komplexen Zahl.
 
-![complexNumberPolar](/maths/complexNumberPolar.png)
+{{< figure
+  src="/images/maths/complexNumberPolar.png"
+  alt="complexNumberPolar"
+  caption="complexNumberPolar"
+  width="400"
+>}}
 
 ### Goniometrische Darstellung
 
@@ -320,7 +334,12 @@ Schauen wir uns nun an wie die oben schon definierten Rechenoperationen von komp
 
 Schauen wir uns zuerst einmal die Komplexe Konjugation und Negation an.
 
-![complexNumberConjugate](/maths/complexNumberConjugate.png)
+{{< figure
+  src="/images/maths/complexNumberConjugate.png"
+  alt="complexNumberConjugate"
+  caption="complexNumberConjugate"
+  width="400"
+>}}
 
 Wir sehen, dass die komplexe Konjugation eine Spiegelung an der x-Achse bewirkt. Wir sehen auch, dass eine negation eine Spiegelung am Ursprung bewirkt.
 
@@ -328,7 +347,12 @@ Wir sehen, dass die komplexe Konjugation eine Spiegelung an der x-Achse bewirkt.
 
 Die Addition/Subtraktion von zwei komplexen Zahlen lässt sich wie die Addition zweier Vektoren interpretieren. Achtung sie sind aber nicht Vektoren sondern Zeiger!
 
-![complexNumberAdditionSubtraction](/maths/complexNumberAdditionSubtraction.png)
+{{< figure
+  src="/images/maths/complexNumberAdditionSubtraction.png"
+  alt="complexNumberAdditionSubtraction"
+  caption="complexNumberAdditionSubtraction"
+  width="400"
+>}}
 
 Die Berechnung der Summe ist immer am einfachsten in der arithmetischen Form die goniometrische Form eignet sich nicht dafür.
 
@@ -356,7 +380,12 @@ Wird die komplexe Zahl $z_1 = a + ib = r \text{ cis}(\varphi)$ als Zeiger in der
 Gauss’schen Zahlenebene interpretiert, so bewirkt die Multiplikation von $z_1$ mit der
 komplexen Zahl $z_2 = s \text{ cis} (\alpha)$ eine Drehstreckung des Zeigers $z_1$. Der Zeiger wird dabei um den Faktor $s$ gestreckt und um den Winkel $\alpha$ (im gegenuhrzeigersinn) gedreht!
 
-![komplexeZahlenMutiplikation](/maths/complexNumberMultiplication.png)
+{{< figure
+  src="/images/maths/complexNumberMultiplication.png"
+  alt="komplexeZahlenMutiplikation"
+  caption="komplexeZahlenMutiplikation"
+  width="500"
+>}}
 
 {{< callout type="example" >}}
 Interessante Beispiele bei der Multiplikation
@@ -386,7 +415,11 @@ $$
 
 Der Betrag der Division ist also gleich der Division der Beträge und das Argument der Division entspricht der Differenz der Argumente.
 
-![komplexeZahlenDividieren](/maths/complexNumberDivision.png)
+{{< figure
+  src="/images/maths/complexNumberDivision.png"
+  alt="komplexeZahlenDividieren"
+  caption="komplexeZahlenDividieren"
+>}}
 
 ### Satz von Moivre
 

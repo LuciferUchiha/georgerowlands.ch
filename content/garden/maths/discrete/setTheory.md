@@ -87,11 +87,12 @@ $$
 
 When working with sets, it can be very helpful to visualize them with venn diagrams. The sets are usually represented by circles. By creating a venn diagram, you can easily see the relations between sets.
 
-<Image 
-    src="/maths/setsVennDiagrams.png"
-    caption="Venn diagram showing the relation between cats, dogs and birds."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/setsVennDiagrams.png"
+  alt="Venn diagram showing the relation between cats, dogs and birds."
+  caption="Venn diagram showing the relation between cats, dogs and birds."
+  width="500"
+>}}
 
 ## Sub and Superset
 
@@ -132,11 +133,12 @@ $$
 A \subset B \iff A \subseteq B \land A \neq B
 $$
 
-<Image 
-    src="/maths/setsSubsets.png"
-    caption="Venn diagram showing the difference between a subset and a proper subset."
-    width={700}
-/>
+{{< figure
+  src="/images/maths/setsSubsets.png"
+  alt="Venn diagram showing the difference between a subset and a proper subset."
+  caption="Venn diagram showing the difference between a subset and a proper subset."
+  width="600"
+>}}
 
 {{< callout type="example" >}}
 - $\{1,2\} \subset \{1,2,3\}$ because all elements of the first set are also in the second set but the sets are not equal.
@@ -230,11 +232,11 @@ $$
 \Bbb{N} \subset \Bbb{Z} \subset \Bbb{Q} \subset \Bbb{R} \subset \Bbb{C}
 $$
 
-<Image 
-    src="/maths/setsOfNumbers.png"
-    caption="Venn diagram showing the all the sets of numbers."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/setsOfNumbers.png"
+  alt="Venn diagram showing the all the sets of numbers."
+  caption="Venn diagram showing the all the sets of numbers."
+>}}
 
 ### Natural Numbers
 
@@ -408,11 +410,12 @@ Real numbers are the combination of rational and irrational numbers, i.e. all nu
 
 This can also be thought of as the set of all points on the number line.
 
-<Image 
-    src="/maths/setsRealNumberLine.png"
-    caption="Number line showing the real numbers."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/setsRealNumberLine.png"
+  alt="Number line showing the real numbers."
+  caption="Number line showing the real numbers."
+  width="400"
+>}}
 
 {{< callout type="example" >}}
 $$
@@ -449,11 +452,12 @@ $$
 A \cap B = \{x \mid x \in A \land x \in B\}
 $$
 
-<Image 
-    src="/maths/setsIntersection.png"
-    caption="Venn diagram showing the intersection of two sets."
-    width={300}
-/>
+{{< figure
+  src="/images/maths/setsIntersection.png"
+  alt="Venn diagram showing the intersection of two sets."
+  caption="Venn diagram showing the intersection of two sets."
+  width="200"
+>}}
 
 To remember the difference between the union and intersection symbols, you can think of the union symbol as a "U" for "union".
 
@@ -498,11 +502,12 @@ $$
 A \cup B = \{x \mid x \in A \lor x \in B\}
 $$
 
-<Image 
-    src="/maths/setsUnion.png"
-    caption="Venn diagram showing the union of two sets."
-    width={300}
-/>
+{{< figure
+  src="/images/maths/setsUnion.png"
+  alt="Venn diagram showing the union of two sets."
+  caption="Venn diagram showing the union of two sets."
+  width="200"
+>}}
 
 {{< callout type="example" >}}
 $$
@@ -542,11 +547,12 @@ $$
 A \setminus B = \{x \mid x \in A \land x \notin B\}
 $$
 
-<Image 
-    src="/maths/setsDifference.png"
-    caption="Venn diagram showing the difference of two sets, in this case the left set minus the right set."
-    width={300}
-/>
+{{< figure
+  src="/images/maths/setsDifference.png"
+  alt="Venn diagram showing the difference of two sets, in this case the left set minus the right set."
+  caption="Venn diagram showing the difference of two sets, in this case the left set minus the right set."
+  width="200"
+>}}
 
 {{< callout type="example" >}}
 $$
@@ -585,11 +591,12 @@ $$
 A \ominus B = (A \cup B) \setminus (A \cap B) = (A \setminus B) \cup (B \setminus A)
 $$
 
-<Image 
-    src="/maths/setsSymmetricDifference.png"
-    caption="Venn diagram showing the symmetric difference of two sets."
-    width={300}
-/>
+{{< figure
+  src="/images/maths/setsSymmetricDifference.png"
+  alt="Venn diagram showing the symmetric difference of two sets."
+  caption="Venn diagram showing the symmetric difference of two sets."
+  width="200"
+>}}
 
 {{< callout type="example" >}}
 $$
@@ -618,11 +625,12 @@ $$
 A^c = U \setminus A
 $$
 
-<Image 
-    src="/maths/setsAbsoluteComplement.png"
-    caption="Venn diagram showing the absolute complement of the left set."
-    width={300}
-/>
+{{< figure
+  src="/images/maths/setsAbsoluteComplement.png"
+  alt="Venn diagram showing the absolute complement of the left set."
+  caption="Venn diagram showing the absolute complement of the left set."
+  width="200"
+>}}
 
 {{< callout type="example" >}}
 Given the universal set $U=\{1,2,3,4,5,6\}$:
@@ -678,11 +686,12 @@ $$
 This is especially useful if for example we wanted to define all the possible points in 2D space. This could be done with the cartesian power of the set of real numbers to the power of 2, $\Bbb{R}^2$. 
 Where the first element of the ordered pair would represent the x-coordinate and the second element the y-coordinate. This could then be extended to 3D space with $\Bbb{R}^3$ and so on hence the name cartesian power and cartesian plane.
 
-<Image 
-    src="/maths/setsCartesianPlane.png"
-    caption="The cartesian plane showing all the possible points in 2D space."
-    width={300}
-/>
+{{< figure
+  src="/images/maths/setsCartesianPlane.png"
+  alt="The cartesian plane showing all the possible points in 2D space."
+  caption="The cartesian plane showing all the possible points in 2D space."
+  width="400"
+>}}
 
 ### Operation Properties
 
@@ -701,11 +710,11 @@ To create the power set of a set, we can use either a tree diagram or a hasse di
 
 For the tree diagram, we start with the empty set and then add the elements of the original set one by one. For each element we have two choices, either include it in the subset or not. 
 
-<Image 
-    src="/maths/setsTreeDiagram.png"
-    caption="Tree diagram showing the power set of the set {1,2,3}."
-    width={600}
-/>
+{{< figure
+  src="/images/maths/setsTreeDiagram.png"
+  alt="Tree diagram showing the power set of the set {1,2,3}."
+  caption="Tree diagram showing the power set of the set {1,2,3}."
+>}}
 
 This results in a binary tree with $2^n$ leaves, where $n$ is the number of elements in the original set. This also tells us that the cardinality of the power set of a set with $n$ elements is $2^n$.
 
@@ -716,11 +725,11 @@ $$
 To create the hasse diagram, we start at the bottom with the empty set and then add the elements of the original set one by one. We then connect the subsets that are related to each other, i.e. if one subset is a subset of another subset. 
 This also results in a diagram where the subsets are ordered by their cardinality from top to bottom.
 
-<Image 
-    src="/maths/setsHasseDiagram.png"
-    caption="Hasse diagram showing the power set of the set {1,2,3} and the subset relation."
-    width={300}
-/>
+{{< figure
+  src="/images/maths/setsHasseDiagram.png"
+  alt="Hasse diagram showing the power set of the set {1,2,3} and the subset relation."
+  caption="Hasse diagram showing the power set of the set {1,2,3} and the subset relation."
+>}}
 
 {{< callout type="example" >}}
 $$
@@ -748,11 +757,11 @@ Therefore the partition of a set can be thought of as a way to divide the set in
 - The union of all the sets in $P$ is equal to $A$, so $\bigcup_{X \in P} X = A$.
 - The elements of $P$ don't overlap i.e the sets in $P$ are disjoint, so $X \cap Y = \emptyset$ for all $X,Y \in P$.
 
-<Image 
-    src="/maths/setsPartition.png"
-    caption="Venn diagram showing a partition of a set."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/setsPartition.png"
+  alt="Venn diagram showing a partition of a set."
+  caption="Venn diagram showing a partition of a set."
+>}}
 
 {{< callout type="example" >}}
 The set $\{1,2,3\}$ has 5 possible partitions:
@@ -792,11 +801,12 @@ Think of it is a big bag where you can throw in pretty much anything and the ord
 In maths multisets are rarely seen or used, but in computer science they are used to represent collections of objects where the order doesn't matter and the same object can appear multiple times.
 
 
-<Image 
-    src="/maths/setsMultiset.png"
-    caption="Comparison of a set and a multiset."
-    width={600}
-/>
+{{< figure
+  src="/images/maths/setsMultiset.png"
+  alt="Comparison of a set and a multiset."
+  caption="Comparison of a set and a multiset."
+  width="600"
+>}}
 
 
 ## Cardinality of Infinite Sets

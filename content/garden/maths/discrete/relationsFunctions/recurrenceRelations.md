@@ -60,11 +60,11 @@ where $F_n$ is the $n$th term of the Fibonacci sequence.
 A popular way to visualize reccurance relations is to draw a call or recursion tree, which
 shows the recursive calls made by the function. The call tree for the Fibonacci sequence is shown below:
 
-<Image 
-    src="/maths/relationsFibonacci.png"
-    caption="The call tree for the Fibonacci sequence."
-    width={700}
-/>
+{{< figure
+  src="/images/maths/relationsFibonacci.png"
+  alt="The call tree for the Fibonacci sequence."
+  caption="The call tree for the Fibonacci sequence."
+>}}
 
 If we wanted to code the Fibonacci sequence, we could use the following recursive function:
 

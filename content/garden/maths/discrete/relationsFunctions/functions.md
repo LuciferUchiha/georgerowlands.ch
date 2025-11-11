@@ -10,11 +10,12 @@ You have most likely seen functions before. They are a fundamental concept in ma
 Functions describe relationships between things. For example, the cost of something might be a function of the number of items bought 
 or the distance you travel might be a function of the time and speed you travel at.
 
-<Image 
-    src="/maths/functionsInputOutput.png"
-    caption="A function takes an input and maps it to an output."
-    width={300}
-/>
+{{< figure
+  src="/images/maths/functionsInputOutput.png"
+  alt="A function takes an input and maps it to an output."
+  caption="A function takes an input and maps it to an output."
+  width="200"
+>}}
 
 To be more formal and precise a function is a relation between two sets. 
 The first set is the input set, also called the domain, and the second set is the output set, also called the codomain.
@@ -39,22 +40,20 @@ So the range for the function $f: \mathbb{A} \to \mathbb{B}, x \mapsto 2x + 1$ i
 {{< callout type="warning" >}}
 Not every relation is a function. A relation is a function if each element in the domain is mapped to exactly one element in the codomain.
 
-<SideBySideBlock>
-<Block>
-<Image 
-    src="/maths/functionsRelation.png"
-    caption="A relation that is a function."
-    width={250}
-/>
-</Block>
-<Block>
-<Image 
-    src="/maths/functionsNonRelation.png"
-    caption="A relation that is not a function."
-    width={250}
-/>
-</Block>
-</SideBySideBlock>
+<div class="hx:flex hx:flex-row hx:align-center hx:justify-center hx:gap-4">
+{{< figure
+  src="/images/maths/functionsRelation.png"
+  alt="A relation that is a function."
+  caption="A relation that is a function."
+  width="200"
+>}}
+{{< figure
+  src="/images/maths/functionsNonRelation.png"
+  alt="A relation that is not a function."
+  caption="A relation that is not a function."
+  width="200"
+>}}
+</div>
 
 The relation on the right is not a function because the element $2$ in the domain is mapped to two elements in the codomain, $B$ and $C$, 
 which would make the function ambiguous. It is also not a function because the elements $3$ and $4$ in the domain are not mapped to any element in the codomain.
@@ -141,11 +140,12 @@ $$
 Visually there are no two points on the graph of the function that have the same y-coordinate. This also means 
 that $|A| \leq |B|$ because each element in the domain is mapped to a unique element in the codomain.
 
-<Image 
-    src="/maths/functionsInjective.png"
-    caption="Example of injective and non-injective functions and their graphs."
-    width={800}
-/>
+{{< figure
+  src="/images/maths/functionsInjective.png"
+  alt="Example of injective and non-injective functions and their graphs."
+  caption="Example of injective and non-injective functions and their graphs."
+  width="700"
+>}}
 
 ### Surjective
 
@@ -159,11 +159,12 @@ $$
 Visually there are no points on the graph of the function that are not mapped to by an element in the domain.
 This also means that $|A| \geq |B|$ because each element in the codomain is mapped to by at least one element in the domain.
 
-<Image 
-    src="/maths/functionsSurjective.png"
-    caption="Example of surjective and non-surjective functions and their graphs."
-    width={800}
-/>
+{{< figure
+  src="/images/maths/functionsSurjective.png"
+  alt="Example of surjective and non-surjective functions and their graphs."
+  caption="Example of surjective and non-surjective functions and their graphs."
+  width="700"
+>}}
 
 
 ### Bijective
@@ -183,11 +184,12 @@ $$
 Visually there are no two points on the graph of the function that have the same y-coordinate and there are no points on the graph that are not mapped to by an element in the domain.
 This also means that $|A| = |B|$ because each element in the domain is mapped to a unique element in the codomain and each element in the codomain is mapped to by an element in the domain.
 
-<Image 
-    src="/maths/functionsBijective.png"
-    caption="Example of bijective and non-bijective functions and their graphs."
-    width={800}
-/>
+{{< figure
+  src="/images/maths/functionsBijective.png"
+  alt="Example of bijective and non-bijective functions and their graphs."
+  caption="Example of bijective and non-bijective functions and their graphs."
+  width="700"
+>}}
 
 ## Composition of Functions
 
@@ -195,11 +197,12 @@ This also means that $|A| = |B|$ because each element in the domain is mapped to
 Add formal definition of composition of functions and examples.
 {{< /callout >}}
 
-<Image 
-    src="/maths/functionsComposition.png"
-    caption="Composition of two functions."
-    width={400}
-/>
+{{< figure
+  src="/images/maths/functionsComposition.png"
+  alt="Composition of two functions."
+  caption="Composition of two functions."
+  width="400"
+>}}
 
 ## Inverse Functions
 
@@ -207,17 +210,19 @@ Add formal definition of composition of functions and examples.
 Add formal definition of inverse functions and examples.
 {{< /callout >}}
 
-<Image 
-    src="/maths/functionsInverse.png"
-    caption="Visualisation of a function and its inverse."
-    width={600}
-/>
+{{< figure
+  src="/images/maths/functionsInverse.png"
+  alt="Visualisation of a function and its inverse."
+  caption="Visualisation of a function and its inverse."
+  width="400"
+>}}
 
-<Image 
-    src="/maths/functionsInverseGraph.png"
-    caption="The graph of a function and its inverse."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/functionsInverseGraph.png"
+  alt="The graph of a function and its inverse."
+  caption="The graph of a function and its inverse."
+  width="400"
+>}}
 
 ## Image and Preimage
 

@@ -40,11 +40,12 @@ There are many ways to show relations such as a table or a directed graph, somet
 
 The directed graph of the relation $R$:
 
-<Image 
-    src="/maths/relationsDiagram.png"
-    caption="A directed graph of the relation above."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/relationsDiagram.png"
+  alt="A directed graph of the relation above."
+  caption="A directed graph of the relation above."
+  width="400"
+>}}
 
 ## Empty Relation
 
@@ -92,11 +93,12 @@ An example of a reflexive relation is the relation $\leq$ on the set of real num
 We can see in the table below that every element has a "1" in the diagonal and therefore the relation is reflexive.
 The same can be seen in the diagram where every element has a loop to itself.
 
-<Image 
-    src="/maths/relationsReflexive.png"
-    caption="An example of a reflexive relation."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/relationsReflexive.png"
+  alt="An example of a reflexive relation."
+  caption="An example of a reflexive relation."
+  width="400"
+>}}
 
 ### Irreflexive
 
@@ -111,11 +113,12 @@ An example of an irreflexive relation is the relation $<$ on the set of real num
 We can see in the table below that every element has a "0" in the diagonal and therefore the relation is irreflexive.
 The same can be seen in the diagram where no element has a loop to itself.
 
-<Image 
-    src="/maths/relationsIrreflexive.png"
-    caption="An example of an irreflexive relation."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/relationsIrreflexive.png"
+  alt="An example of an irreflexive relation."
+  caption="An example of an irreflexive relation."
+  width="400"
+>}}
 
 ### Symmetric
 
@@ -131,11 +134,12 @@ We can see in the table below that if $(a, b)$ is in the relation then $(b, a)$ 
 This means that the table is symmetrical or mirrored along the diagonal. 
 The same can be seen in the diagram where if there is an arrow from $a$ to $b$ then there is an arrow from $b$ to $a$.
 
-<Image 
-    src="/maths/relationsSymmetric.png"
-    caption="An example of a symmetric relation."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/relationsSymmetric.png"
+  alt="An example of a symmetric relation."
+  caption="An example of a symmetric relation."
+  width="400"
+>}}
 
 ### Antisymmetric
 
@@ -150,11 +154,12 @@ An example of an antisymmetric relation is the relation $\geq$ on the set of rea
 We can see in the table below that if $(a, b)$ is in the relation and $(b, a)$ is also in the relation then the corresponding diagonal element is a "1" and therefore the relation is antisymmetric.
 The same can be seen in the diagram that there are no arrows from $a$ to $b$ and $b$ to $a$ only one way arrows and loops.
 
-<Image 
-    src="/maths/relationsAntisymmetric.png"
-    caption="An example of an antisymmetric relation."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/relationsAntisymmetric.png"
+  alt="An example of an antisymmetric relation."
+  caption="An example of an antisymmetric relation."
+  width="400"
+>}}
 
 ### Asymmetric
 
@@ -169,11 +174,12 @@ An example of an asymmetric relation is the relation $<$ on the set of real numb
 We can see in the table below that if $(a, b)$ is in the relation then $(b, a)$ is not in the relation and all the diagonal elements are "0" and therefore the relation is asymmetric.
 The same can be seen in the diagram that there are no arrows from $a$ to $b$ and $b$ to $a$ and no loops.
 
-<Image 
-    src="/maths/relationsAsymmetric.png"
-    caption="An example of an asymmetric relation."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/relationsAsymmetric.png"
+  alt="An example of an asymmetric relation."
+  caption="An example of an asymmetric relation."
+  width="400"
+>}}
 
 ### Transitive
 
@@ -188,14 +194,15 @@ An example of a transitive relation is the relation $\leq$ on the set of real nu
 We can see in the table below that if $(a, b)$ and $(b, c)$ are in the relation then $(a, c)$ is also in the relation and therefore the relation is transitive.
 The same can be seen in the diagram that if there is an arrow from $a$ to $b$ and $b$ to $c$ then there is an arrow from $a$ to $c$.
 
-<Image 
-    src="/maths/relationsTransitive.png"
-    caption="An example of a transitive relation."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/relationsTransitive.png"
+  alt="An example of a transitive relation."
+  caption="An example of a transitive relation."
+  width="400"
+>}}
 
 {{< callout type="info" >}}
-    Importantly note if for example $(a,b) \in R$ and $(b,a) \in R$ then $(a,a)$ and $(b,b)$ must also be in the relation for it to be transitive.
+Importantly note if for example $(a,b) \in R$ and $(b,a) \in R$ then $(a,a)$ and $(b,b)$ must also be in the relation for it to be transitive.
 {{< /callout >}}
 
 ## Relations between Sets
@@ -209,11 +216,12 @@ $$
 The first set $A$ is called the domain and the second set $B$ is called the codomain. This means that the relation assigns elements of the domain to elements of the codomain.
 This can be shown in a directed graph where the elements of the domain are on the left and the elements of the codomain are on the right.
 
-<Image 
-    src="/maths/relationsHeteregenous.png"
-    caption="An example of a relation between two different sets."
-    width={500}
-/>
+{{< figure
+  src="/images/maths/relationsHeteregenous.png"
+  alt="An example of a relation between two different sets."
+  caption="An example of a relation between two different sets."
+  width="400"
+>}}
 
 Depending on the relationship between the elements of the two sets not all elements of the codomain are assigned to an element of the domain. The elements of the codomain that are assigned to an element of the domain are called the range of the relation.
 So in the above diagram the domain is $\{1,2,5,7\}$ and the codomain is $\{a,c,m,n\}$ and the range of the relation is $\{a,c,n\}$.
@@ -243,11 +251,12 @@ This means that if $(a, b)$ is in the relation $R$ then $(b, a)$ is in the inver
 
 When visualising the inverse relation in a directed graph the arrows are simply reversed.
 
-<Image 
-    src="/maths/relationsInverse.png"
-    caption="On the left is the original relation p and on the right is its inverse relation q."
-    width={700}
-/>
+{{< figure
+  src="/images/maths/relationsInverse.png"
+  alt="On the left is the original relation p and on the right is its inverse relation q."
+  caption="On the left is the original relation p and on the right is its inverse relation q."
+  width="600"
+>}}
 
 ## Composition of Relations
 
@@ -261,14 +270,15 @@ This means that if there is an element $(a, b)$ in the relation $R$ and an eleme
 
 When visualising the composition of relations in a directed graph the arrows are simply chained together.
 
-<Image 
-    src="/maths/relationsComposition.png"
-    caption="An example of the composition of two relations."
-    width={600}
-/>
+{{< figure
+  src="/images/maths/relationsComposition.png"
+  alt="An example of the composition of two relations."
+  caption="An example of the composition of two relations."
+  width="400"
+>}}
 
 {{< callout type="info" >}}
-    Importantly note that the composition of relations is not commutative i.e. $R \circ S \neq S \circ R$.
+Importantly note that the composition of relations is not commutative i.e. $R \circ S \neq S \circ R$.
 
-    Also note that the relations are denoted from left to right i.e. $R \circ S$ means that $R$ is applied first and then $S$ is applied. Unlike functions where $f \circ g$ means that $g$ is applied first and then $f$ is applied.
+Also note that the relations are denoted from left to right i.e. $R \circ S$ means that $R$ is applied first and then $S$ is applied. Unlike functions where $f \circ g$ means that $g$ is applied first and then $f$ is applied.
 {{< /callout >}}
