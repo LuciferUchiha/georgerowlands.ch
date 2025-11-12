@@ -486,12 +486,12 @@ We can quickly see that $\exp(0) = 1$. And that $\exp(x) > 0$ for all $x \in \ma
 
 Next we want to show that the exponential function is strictly increasing. For this we can use the fact that the derivative of the exponential function is itself, so $\exp'(x) = e^x > 0$ for all $x \in \mathbb{R}$. This means that the function is strictly increasing because if $x > y$ then $\exp(x) > \exp(y)$, so the function is injective.
 
-<Callout type="todo">
+{{< callout type="todo" >}}
 Showing it is surjective is annoying.
 
 Showing it is continous even more.
 {{< /callout >}}
-</Callout>
+{{< /callout >}}
 
 Now that we have defined $\ln(x)$ as the inverse of $e^x$ on $(0, \infty)$, we can prove its key properties. We'll do this by translating statements about $e^x$ into statements about $\ln(x)$, using the definition $e^{\ln(x)} = x$ for $x > 0$ and $\ln(e^y) = y$ for all $y \in \mathbb{R}$.
 
