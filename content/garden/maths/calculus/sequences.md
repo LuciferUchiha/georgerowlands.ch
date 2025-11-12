@@ -1,0 +1,246 @@
+---
+title: Sequences
+type: docs
+weight: 1
+---
+
+A sequence is a list of objects. Unlike a [set](/garden/maths/discrete/setTheory), the order of the objects in a sequence matters. The objects in a sequence are called elements or terms and are most commonly written between round or square brackets.
+Out of simplicity sequences are often also jut written out and separated by commas.
+
+$$
+(a_1, a_2, a_3, ..., a_n) \text{ or } [a_1, a_2, a_3, ..., a_n] \text{ or } a_1, a_2, a_3, ..., a_n
+$$
+
+A sequence can have no elements at all, in which case it is called an empty sequence and is denoted by $()$. The number of elements in a sequence is called its length. The length of a sequence can be finite or infinite.
+
+Unlike a [set](/garden/maths/discrete/setTheory), the same element can appear multiple times in a sequence. 
+
+{{< callout type="example" >}}
+- $(1, 2, 3, 4, 5)$ is a sequence with 5 elements.
+- $(1, 1, 1, 1, 1)$ is a sequence with 5 elements, all of which are the number 1.
+- $(1, 2, 3, ...)$ is an infinite sequence.
+- $()$ is an empty sequence.
+{{< /callout >}}
+
+## Indexing
+
+The elements of a sequence are indexed by natural numbers. The index of an element is the natural number that corresponds to the position of the element in the sequence. The index of the first element is usually 1 or 0, depending on the context.
+
+As a computer scientist, I prefer to start counting at 0, but in mathematics, it is more common to start counting at 1.
+
+This also allows for sequences to be defined by a function: 
+
+$$
+a: N \to R, n \mapsto a_n
+$$
+
+Where the function $f$ maps the natural numbers i.e. the index to the real numbers i.e. the elements of the sequence.
+
+The index is often written as a subscript to the variable name, e.g. $a_n$ is the n-th element of the sequence. Another common notation is to write $(a_n)_{n \in N}$ to denote the sequence. There are then also many variations of this notation such as $(a_n)_{n=1}^{\infty}$ or $(a_n)_{n \geq 1}$.
+
+## Forms of Sequences
+
+Sequences can be defined primarly in three ways: Enumeration, with a formula, or recursively.
+
+### Enumeration
+
+When a sequence is defined by explicitly listing its elements, it is called an enumerated sequence. This is the most straightforward way to define a sequence and is often used for small sequences.
+
+{{< callout type="example" >}}
+- $(1, 2, 3, 4, 5)$
+- $(1, 1, 1, 1, 1)$ 
+- $(1, -1, 1, -1, 1, -1, ...)$
+- $(1, 2, 4, 8, 16, ...)$
+{{< /callout >}}
+
+### Formula
+
+Sequences can also be defined by a function or formula that describes how to calculate the $n$-th element of the sequence. This is often used for sequences that have a pattern or a rule that can be described by a mathematical formula. So given an index $n$ we can calculate the $n$-th element of the sequence.
+
+{{< callout type="example" >}}
+- $a_n = n$
+- $a_n = n^2$
+- $a_n = (-1)^n$
+- $a_n = 2^n$
+{{< /callout >}}
+
+### Recursively
+
+Lastly, sequences can also be defined recursively. This means that the $n$-th element of the sequence is defined in terms of the previous elements of the sequence. For some people this can be a bit harder to understand but it is a powerful way to define sequences. Computer scientists often use recursive definitions to define sequences. Recursion is however a common concept and can also be seen for example in [recurrence Relations](/garden/maths/discrete/relationsFunctions/recurrenceRelations) which are closely related to recursive sequences.
+
+Just like recursive relations or functions, recursive sequences have base cases that define the first elements of the sequence and a recursive step that defines how to calculate the next element of the sequence.
+
+{{< callout type="example" >}}
+- $a_1 = 1, a_{n+1} = a_n + 1$ for $n \geq 1$ is the sequence $(1, 2, 3, 4, 5, ...)$
+- $a_1 = 1, a_{n+1} = a_n^2 + 1$ for $n \geq 1$ is the sequence $(1, 2, 5, 26, ...)$
+- $a_1 = 1, a_{n+1} = 2 \cdot a_n$ for $n \geq 1$ is the sequence $(1, 2, 4, 8, 16, ...)$
+- $a_1 = 1, a_2 = 1, a_{n+2} = a_{n+1} + a_n$ for $n \geq 1$ is the Fibonacci sequence $(1, 1, 2, 3, 5, 8, 13, ...)$
+{{< /callout >}}
+
+## Equality
+
+Two sequences are equal if they have the same length and each element is equal to the corresponding element in the other sequence. Meaning that for two sequences to be equal, they must have the same elements in the same order. 
+
+$$
+(a_1, a_2, a_3, ..., a_n) = (b_1, b_2, b_3, ..., b_n) \iff a_i = b_i \text{ for all } i \in N, 1 \leq i \leq n
+$$
+
+{{< callout type="example" >}}
+- $(1, 2, 3) = (1, 2, 3)$ because the elements are the same and in the same order.
+- $(1, 2, 3) \neq (3, 2, 1)$ because the elements are in a different order.
+- $(1, 2, 3) \neq (1, 2, 3, 4)$ because the sequences have different lengths.
+{{< /callout >}}
+
+## Order Pair
+
+An ordered pair is a sequence of exactly two elements. This is often used to represent points in a two-dimensional space, i.e the x and y coordinates of a point 
+in the Cartesian coordinate system.
+
+{{< figure
+  src="/images/maths/sequencesOrderPair.png"
+  alt="An ordered pair (x, y) representing a point in a two-dimensional space."
+  caption="An ordered pair (x, y) representing a point in a two-dimensional space."
+  width="400"
+>}}
+
+### n-tuple
+
+The idea of an ordered pair can be generalized for any finite number of elements a so called n-tuple.
+n-tuples are sequences of exactly n elements and are commonly seen in computer science and mathematics.
+
+In linear algebra a vector is often represented as an n-tuple. For example a 3-dimensional vector in 
+3D space can be represented as a 3-tuple. This would correspond to a row-vector which we like to transpose to a column-vector.
+
+{{< figure
+  src="/images/maths/sequencesNTuple.png"
+  alt="An n-tuple (a1, a2, a3, ..., an) representing a vector in n-dimensional space."
+  caption="An n-tuple (a1, a2, a3, ..., an) representing a vector in n-dimensional space."
+>}}
+
+## Monotonic Sequences
+
+We can analyze the behavior of a sequence by looking at how the terms of the sequence change. Certain sequences for example are always increasing or decreasing. We call these sequences that are always increasing or decreasing monotonic sequences. More formally:
+
+- A sequence $a_n$ is **monotonically increasing** if $a_n \leq a_{n+1}$ for all $n \geq 1$. This is often also abbreviated to just increasing. If $a_n < a_{n+1}$ for all $n \geq 1$ then the sequence is **strictly monotonically increasing**.
+- A sequence $a_n$ is **monotonically decreasing** if $a_n \geq a_{n+1}$ for all $n \geq 1$. This is also often abbreviated to just decreasing. If $a_n > a_{n+1}$ for all $n \geq 1$ then the sequence is **strictly monotonically decreasing**.
+
+Another popular way of saying that a sequence is monotonically increasing is to say that the sequence is non-decreasing. Similarly, a monotonically decreasing sequence is often called non-increasing. If a sequence is either monotonically increasing or decreasing, then it is called a **monotonic sequence**.
+
+The concept of monotonicity is rather intuitive. It can also be visually inspected by plotting the terms of the sequence on a graph. If the values on the y-axis are always going up or always going down, then the sequence is monotonically increasing or decreasing. To be strictly monotonically increasing or decreasing the values must be strictly going up or down and not stay on the same level.
+
+{{< figure
+  src="/images/maths/sequencesMonotonic.png"
+  alt="A monotonically increasing sequence (red) and a monotonically decreasing sequence (blue)."
+  caption="A monotonically increasing sequence (red) and a monotonically decreasing sequence (blue)."
+  width="500"
+>}}
+
+{{< callout type="note" >}}
+For a sequence to be monotonically increasing or decreasing we said that all terms $n \geq 1$ must be considered. However, in some contexts, the first few terms of the sequence are not considered, for example when analyzing the long-term behavior of the sequence such as the convergence of a sequence as $n$ approaches infinity. In this case, we can also say that the sequence is monotonically increasing or decreasing if the terms from a certain index $K$ onwards are monotonically increasing or decreasing. This is often denoted as $n \geq K$.
+{{< /callout >}}
+
+{{< callout type="example" >}}
+Let's look at some intuitive examples:
+
+- $a_n=n^2$ is strictly monotonically increasing.
+- $b_n=\frac{1}{n}$ is strictly monotonically decreasing.
+- $c_n=(-1)^n$ is neither monotonically decreasing nor increasing.
+- $d_n=1$ is monotonically increasing and decreasing but not strictly.
+{{< /callout >}}
+
+To actually prove that a sequence is monotonically increasing or decreasing we actually need to do a bit more work. For example, we can show that a sequence is monotonically increasing by showing that the difference between consecutive terms is always positive.
+
+So if $a_{n+1} - a_n \geq 0$ for all $n \in N$ then the sequence is monotonically increasing. Similarly, if $a_{n+1} - a_n \leq 0$ for all $n \in N$ then the sequence is monotonically decreasing. If we have strict inequality then the sequence is strictly monotonically increasing or decreasing. 
+
+{{< callout type="example" >}}
+Let's show that the sequence $a_n=\frac{1}{n}$ is strictly monotonically decreasing. So in other words 
+we want to show that $a_{n+1} - a_n < 0$ for all $n \in N$.
+
+$$
+\begin{align*}
+a_{n+1} - a_n & = \frac{1}{n+1} - \frac{1}{n} \\
+& = \frac{n - (n+1)}{n(n+1)} \\
+& = \frac{-1}{n(n+1)} < 0
+\end{align*}
+$$
+
+Because the nominator is negative and the denominator is positive for all $n \in N$ the fraction is negative and the sequence is strictly monotonically decreasing.
+{{< /callout >}}
+
+Another idea is if all the values of the sequence are positive then we can take the ratio of consecutive terms and if this ratio is greater or than 1 or less than 1 then the sequence is monotonically strictly increasing or decreasing.
+
+{{< callout type="example" >}}
+Let's now show that the sequence $a_n=\frac{2^n}{3^n}$ is strictly monotonically decreasing. First we will use the difference of consecutive terms and then the ratio of consecutive terms.
+
+$$
+\begin{align*}
+a_{n+1} - a_n & = \frac{2^{n+1}}{3^{n+1}} - \frac{2^n}{3^n} \\
+& = \frac{2 \cdot 2^n \cdot 3^n - 2^n \cdot 3^{n+1}}{3^{n+1}} \\
+& = \frac{2^n \cdot 3^n \cdot (2 - 3)}{3^{n+1}} \\
+& = \frac{-2^n \cdot 3^n}{3^{n+1}} \\
+& = -\frac{2^n}{3^{n+1}} < 0
+\end{align*}
+$$
+
+So the sequence is strictly monotonically decreasing. Now let's show this with the ratio of consecutive terms.
+
+$$
+\begin{align*}
+\frac{a_{n+1}}{a_n} & = \frac{\frac{2^{n+1}}{3^{n+1}}}{\frac{2^n}{3^n}} \\
+& = \frac{2^{n+1} \cdot 3^n}{3^{n+1} \cdot 2^n} \\
+& = \frac{2 \cdot 2^n \cdot 3^n}{3 \cdot 3^n \cdot 2^n} \\
+& = \frac{2}{3} < 1
+\end{align*}
+$$
+
+Again we have that the ratio is less than 1 and that therefore the sequence is strictly monotonically decreasing.
+{{< /callout >}}
+
+The last technique apart is to show that the derivative of the sequence is always positive or negative. This is a bit more advanced and requires some knowledge of calculus. We know that the derivative of a function is positive if the function is increasing and negative if the function is decreasing. So if we can show that the derivative of the sequence is always positive or negative for all $n \in N$ then we can conclude that the sequence is monotonically increasing or decreasing.
+
+{{< callout type="example" >}}
+Let's show that the sequence $a_n=n^2$ is strictly monotonically increasing by showing that the derivative of the sequence is always positive.
+
+$$
+\begin{align*}
+f(n) & = n^2 \\
+f'(n) & = 2n \\ 
+2n & > 0 \text{ for all } n \in N
+\end{align*}
+$$
+{{< /callout >}}
+
+## Bounded Sequences
+
+Another important property of sequences to analyze is whether they are bounded. We have already seen that [sets of numbers can be bounded or unbounded](/garden/maths/discrete/intervals#bounds). The same concept applies to sequences.
+A sequence is said to be bounded if all of its values are within a certain range or more specifically if the set of the values is bounded. This range can be defined by an upper and lower bound. More formally:
+
+- A sequence $a_n$ is **bounded above** if there exists a real number $c$ such that $a_n \leq c$ for all $n \in N$. The number $c$ is called an upper bound of the sequence.
+- A sequence $a_n$ is **bounded below** if there exists a real number $c$ such that $a_n \geq c$ for all $n \in N$. The number $c$ is called a lower bound of the sequence.
+
+If a sequence is both bounded above and below, then it is simply called a bounded sequence. 
+
+Just like the concept of monotonicity, the concept of boundedness can be visually inspected by plotting the terms of the sequence on a graph. If a horizontal line can be drawn and all the values are either above or below this line, then the sequence is bounded above or below. If the lines enclose all the values of the sequence, then the sequence is bounded.
+
+{{< figure
+  src="/images/maths/sequencesBounded.gif"
+  alt="The sequence on the left is bounded above as all values are below the line. The sequence on the right is bounded as all values are between the lines."
+  caption="The sequence on the left is bounded above as all values are below the line. The sequence on the right is bounded as all values are between the lines."
+>}}
+
+To determine whether a sequence is bounded it is best to first write out some values of the sequence and notice a pattern. For example if the values of the sequence are always positive then the sequence is bounded below by 0. If the values of the sequence are always negative then the sequence is bounded above by 0. If the values of the sequence are oscillating between two values then the sequence is bounded between these two values. Later on when looking at 
+[convergence of sequences](/garden/maths/calculus/sequencesAndSeries/convergence) we will see that boundedness is an important property for a sequence to converge. 
+
+Another way to see if a sequence is bounded is if you know that for all values the sequence $a_n \leq b_n$ then if you know that the sequence $b_n$ is bounded above then the sequence $a_n$ is also bounded above. The same goes for the lower bound. If we might assume that a value is an upper or lower bound then we can [prove this by induction](/garden/maths/discrete/proofs#proof-by-induction).
+
+{{< callout type="example" >}}
+Let's look at some intuitive examples. An important thing to not forget is that a sequence starts at a certain index such as 0 or 1. This can influence whether a sequence is bounded or not.
+
+- $a_n=n^2$ is bounded below by 0 as all values are positive.
+- $a_n=-n$ is bounded above by 0 as all values are negative.
+- $a_n=-2n^2+4 = 2,-4,-14,-28,...$ is bounded above by 2.
+- $a_n=\frac{1}{n}$ is bounded below by 0 and above by 1.
+- $a_n=n-5 = -5,-4,-3,...$ is bounded below by 5.
+- $a_n=(-1)^n = -1,1,-1,1,...$ is bounded below by -1 and above by 1.
+$a_n=(-1)^n *n^2= -1,4,-9,16,...$ is not bounded as the values are alternating between positive and negative and increasing in magnitude.
+{{< /callout >}}

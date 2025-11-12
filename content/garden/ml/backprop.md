@@ -146,9 +146,9 @@ There are many possible solutions to this problem. Some of the most common are:
 
 We can see the vanishing gradient problem pretty easily by looking at the derivative of the sigmoid function.
 
-<div className="flex justify-center mt-5">
-    <iframe src="https://www.desmos.com/calculator/xs6tgfd48r?embed" width="500" height="500"/>
-</div>
+{{< callout type="todo" >}}
+Add a plot of the vanishing gradient problem
+{{< /callout >}}
 
 The derivative of the sigmoid function is always less then 0.25, multiplying this together for each layer will make the gradient very small.
 

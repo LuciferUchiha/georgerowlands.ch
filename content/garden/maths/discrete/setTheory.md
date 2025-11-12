@@ -391,7 +391,7 @@ our initial assumption that $\sqrt{2}$ is rational must be false, and we conclud
 {{< callout type="proof" title="Proof pi is Irrational" >}}
 Lindemann's proof that $\pi$ is irrational is a more advanced proof that uses the fact that $\pi$ is not a root of any polynomial with rational coefficients. 
 
-<Callout type="todo">
+{{< callout type="todo" >}}
 I don't understand this proof yet. Why does pi not being a root of any polynomial with rational coefficients imply that it is irrational?
 {{< /callout >}}
 
@@ -402,7 +402,7 @@ a_0 + a_1 \pi + a_2 \pi^2 + ... + a_n \pi^n = 0
 $$
 
 So a polynomial with real coefficients cannot have $\pi$ as a root. This means that $\pi$ is not a solution to any polynomial equation with rational coefficients, and therefore it is irrational.
-</Callout>
+{{< /callout >}}
 
 ### Real Numbers
 

@@ -1,0 +1,301 @@
+---
+title: Function Analysis
+type: docs
+weight: 18
+---
+
+## Real Functions
+
+Unter einer reellen Funktion $f$ versteht man die Abbildung, die jedem $x \in D$ mit $D \subseteq R$ genau eine reelle Zahl $y$ aus einer Wertemenge $W$ zuordnet:
+
+$$
+f:x\mapsto y=f(x), D \subseteq R \mapsto W \subseteq R
+$$
+
+### Nullstelle
+
+Eine Funktion $f$ besitzt eine Nullstelle in $x_0$, falls $f(x_0) = 0$ gilt.
+Der Funktionsgraph schneidet die x-Achse in einer Nullstelle der Funktion.
+
+### Gerade
+
+Eine Funktion heisst gerade, falls $f(x) = f(−x)$ für alle $x\in D$ gilt.
+Der Funktionsgraph einer geraden Funktion ist spiegelsymmetrisch zur y−Achse.
+
+{{< callout type="example" >}}
+Die Funktion $f(x)=x^2$ ist gerade.
+{{< /callout >}}
+
+### Ungerade
+
+Eine Funktion heißt ungerade, falls $f(−x) = −f(x)$ für alle $x\in D$ gilt.
+Der Funktionsgraph einer ungerade Funktion ist punktsymmetrisch zum Koordinatenursprung.
+
+{{< callout type="example" >}}
+Die Funktion $f(x)=x^3$ ist ungerade.
+{{< /callout >}}
+
+## Polynomfunktion
+
+Eine Funktion $f: R \mapsto R$ der Form:
+
+$$
+f(x)=a_nx^n+a_{n-1}x^{n-1}+...+a_1x+a_0
+$$ 
+
+mit $a_n \neq 0$ heisst **Polynom vom Grad** $n$. Die reelen Zahlen $a_0,a_1,...,a_n$ heissen **Koeffizienten** der Polynoms.
+
+{{< callout type="example" >}}
+$f_1(x)=x^3-x+2$ ist ein Polynom 3. Grades.
+$f_2(x)=2x^7-4x^5+x^2-3x+2$ ist ein Polynom 7. Grades.
+{{< /callout >}}
+
+$$
+a_n x^n + a_{n-1} x^{n-1} + \ldots + a_1 x + a_0 = 0
+$$
+
+### Fundamental Theorem of Algebra
+
+Every polynomial of degree $n$ has $n$ roots in the complex plane. so has $n$ solutions including complex solutions.
+
+### Linearfaktoren
+
+Ist $x_0$ eine Nullstelle des Polynoms $n$-ten Grades von $f$, dann wäre ein **Linearfaktor** von $f$:
+
+$$
+f(x)=(x-x_0)(b_nx^{n-1}+..+b_2x+b_1)
+$$
+
+Jedes Polynom $n$-ten Grades hat höchstes n verschiedene Nullstellen.
+Besitzt ein Polynom $n$-ten Grades $n$ Nullstellen $x_1,x_2,..x_n$ dann lässt es sich als Produkt aus $n$ Linearfaktoren darstellen:
+
+$$
+f(x)=a_nx^n+a_{n-1}x^{n-1}+a_1x+a_0=a_n(x-x_1)(x-x_2)...(x-x_{n-1})(x-x_n)
+$$
+
+#### Zerlegung in Linearfaktoren
+
+Die Abspaltung eines Linearfaktors erreicht man am besten mit Polynomdivision.
+
+{{< callout type="example" >}}
+$f(x)=x^3-7x^2-10x+16$
+Durch einsetzen, dass $x_1 = {\color{Red}1}$ eine Nullstelle des Polynoms d.h. $f(1) = 0$
+
+$(x^3-7x^2-10x+16) : (x-{\color{Red}1})=x^2-6x-16$
+$\underline{-(x^3-x^2)}$
+$\quad -6x^2-10x$
+$\quad \underline{-(-6x^2+6x)}$
+$\quad \quad -16x+16$
+$\quad\quad \underline{-(-16x+16)}$
+$\quad\quad\quad0$
+
+Wir erhalten dadurch: $f(x)=(x-1)(x^2-6x-16)$. 
+$(x^2-6x-16)$ kann dann weiter mit der Polynomdivision zerteilen um die weiteren Linearfaktoren zu erhalten.
+
+$f(x)=x^3-7x^2-10x+16=(x-1)(x+2)(x-8)$
+{{< /callout >}}
+
+## Rationale Funktion
+
+Eine rationale Funktion ist eine Funktion, die sich als Bruch von zwei Polynomfunktion $g(x)$ und $h(x)$ darstellen lässt.
+
+$$
+f(x)=\frac{g(x)}{h(x)}={{a_mx^m+a_{m-1}x^{m-1}+...+a_1x+a_0}\over {b_nx^n+b_{n-1}x^{n-1}+...+b_1x+b_0}}
+$$
+
+Ein Polynomfunktion ist eine rationale Funktion wo $n=0$.
+
+### Echt rationale Funktionen
+
+Wenn $m < n$
+
+### Unecht rationale Funktionen
+
+Wenn $m \geq n$
+
+### Eigenschaften
+
+Sei $f(x) = \frac{g(x)}{h(x)}$ eine rationale Funktion. Mit Zähler und Nenner soweit möglich in Linearfaktoren zerteilt und gemeinsame Linearfaktoren gekürtzt
+
+#### Nullstellen
+
+Die im Zähler($g(x)$) verbleibenden Linearfaktoren ergeben die **Nullstellen** der Funktion $f(x)$.
+
+Das Newtonverfahren (oder Tangentenverfahren von Newton) ist eine sogenanntes Iterationsverfahren. Das Lösen von Gleichungen gehört zu den wichtigsten Aufgaben der Mathematik. Jedoch können wir schon einfache Gleichungen, wie z. B. $x^3+x=1$ nicht mehr so einfach lösen. Weshalb wir ein Näherungsverfahren zur Lösung von Gleichungen der Form $f(x)=0$ verwenden.
+Jede Gleichung kann auf diese Form gebracht werden.
+
+$$
+x^3+x=1 \iff x^3+x-1=0
+$$
+
+Ist $\xi$ eine Lösung der Gleichung $f(x)=0$ gilt $f(\xi)=0$, so kann die Stelle $\xi$ auch Nullstelle sein.
+
+#### Polstellen
+
+Die im Nenner ($h(x)$)verbleibenden Linearfaktoren ergeben die **Polstellen**
+der Funktion $f(x)$.
+
+##### Pollstelle k-ter Ordnung
+
+Ist Linearfaktor im gekürzten Nenner in $k$-ter Ordnung $(x - x_0)^k, k \in N$  dann nennt man die Stelle $x_0$ eine Polstelle $k$-ter Ordnung.
+
+##### Pollstelle mit Vorzeichenwechsel
+
+Es sei $x_0$ eine Pollstelle $k$-ter Odnung.
+
+- Ist $k$ gerade, so handelt es sich um eine **Pollstelle ohne Vorzeichenwechsel**.
+- Ist $k$ ungerade, so handelt es sich um eine **Pollstelle mit Vorzeichenwechsel**.
+
+{{< callout type="example" >}}
+$f(x)={1 \over (x+1)}$ hat bei $x=-1$ eine Pollstelle mit Vorzeichenwechsel.
+$f(x)={1 \over (x-1)^2}$ hat bei $x=1$ eine Pollstelle ohne Vorzeichenwechsel.
+{{< /callout >}}
+
+#### Defintionslücken
+
+Vor dem kürzen sind die Nullstellen im Nenner($h(x)$) für rationale Funktionen nicht definiert. Sie müssen explizit aus dem Definitionsbereich der Funktion herausgenommen werden, man spricht von **Definitionslücken**.
+
+#### Hebbare Definitionslücken
+
+Die vollständig weggekürzten Linearfaktoren im Nenner geben die
+**hebbaren Definitionslücken** der Funktion $f(x)$ an.
+
+### Verhalten rationale Funktionen im Unendlichen
+
+Genau gleich wie 2-FolgenRationale Folgen.
+Sei $f(x) = {g(x)\over h(x)}$ eine rationale Funktion, dann gilt für den Grenzwert:
+
+$$
+\lim_{n \to \infty}{f(x)} = \begin{cases}
+        0, grad\space g < grad \space h \\
+        {a_n \over b_n} , grad \space g=grad \space h \\
+        {a_n \over b_n} * \infty , grad \space g > grad\space h
+\end{cases}
+$$
+
+## Umkehrfunktion
+
+Eine Funktion $f: x \mapsto y, D \mapsto W$ heisst umkehrbar, wenn aus $x_1 \neq x_2$ stets folgt $f(x_1)\neq f(x_2)$
+Ist die Funktion umkehrbar, dann gibt es zu jedem $y \in W$ genau ein $x \ in D$ $f^{-1}: y \mapsto f^{-1}(y)=f^{-1}(f(x))=x$ wird **Umkehrfunktion** genannt.
+
+## Potenzfunktion
+
+Polynomfunktion der Form $p: x \mapsto ax^n, R \mapsto R$ für $a,n \in R$
+Potenzfunktion haben Wurzelfunktion als Umkehrfunktion und umgekehrt.
+
+{{< callout type="example" >}}
+$p(x) = x^2$ hat $p^{-1}(x)=\sqrt{x} = x^{1 \over 2}$
+$p(x) = x^3$ hat $p^{-1}(x)=\sqrt[3]{x} = x^{1 \over 3}$
+{{< /callout >}}
+
+## Wurzelfunktion
+
+Die Funktion$p^{-1}: x \mapsto\sqrt[n]{x}$ für n gerade $R^+ \mapsto R^+$, für n ungerade $R \mapsto R$ heisst $n$-te Wurzerlfunktion mit $n \in N$.
+
+## Exponentialfunktion
+
+$f: x \mapsto e^x$ mit $e=2.71828...=$ Eulersche Zahl heisst Exponentialfunktion.
+
+### Rechenregeln der Exponentialfunktion
+
+- $e^0=1$
+- $e^{x+y}=e^x*e^y$
+- $e^{-x}=(e^x)^-1={1 \over e^x}$
+- $e^{nx}=(e^x)^n$
+- $e^{1 \over n}=\sqrt[n]{e}$
+
+## Logarithmusfunktion
+
+Die Umkehrfunktion zu Exponentialfunktion wird **natürliche Logarithmusfunktion** genannt. $f: x \mapsto ln(x), R^+ \mapsto R$
+
+### Rechenregeln der Logarithmusfunktion
+
+- $ln(1)=0$
+- $ln(x*y)=ln(x)+ln(y)$
+- $ln(x^n)= n*ln(x)$
+- $ln(e^x)=x ln(e) = x$ weil $ln(e)=1$
+
+## Trigonometrische Funktionen
+
+Sinus- und Cosinusfunktion sind periodisch mit der Periode $2\pi$, d.h. es gilt
+$f(x)=f(x+k*2\pi), k \in Z$
+
+Die Funktionsgraphen von Sinus- und Cosinusfunktion sind kongruent. Durch Verschiebung um $2\pi$ nach links, geht die Cosinus-Kurve aus der Sinus-Kurve hervor.
+
+### Trigonometrischer Pythagoras
+
+$$
+sin^2(a)+cos^2(a)=1
+$$
+
+### Sinus
+
+$sin: x \mapsto sin(x), R \mapsto [-1,1]$
+
+### Cosinus
+
+$cos: x \mapsto cos(x), R \mapsto [-1,1]$
+
+### Tangens
+
+### Cotangens
+
+## Ableitungsfunktion
+
+Die Funktion $f': x \mapsto f'(x)$ heisst die Ableitungsfunktion von $f(x)$ oder kurz **Ableitung von** $f()x$.
+Die Ableitungsfunktion ordnet jedem Wert x die Steigung der Tangente an der Stelle x zu.
+
+### Höhere Ableitung
+
+Exisitiert zu einer Funktion $f$ Ableitung $f'$ und ist $f'(x)$ wieder differenzierbar, so bezeichnet man deren Ableitung als zweite Ableitung $f''(x)$. Es gilt also $f''=(f')'$
+Die $n$-te Ableitung für $n>3$ schreibt man $f^{(n)}$, die Funktion ist dann $n$-mal differenzierbar.
+
+## Differenzierbarkeit und Stetigkeit
+
+- Jede differenzierbare Funktion ist auch stetig und hat an allen Stellen eine eindeutige Steigung.
+- Ist eine Funktion $f$ an der Stelle $x_0$ nicht stetig, dann ist sie dort auch nicht differenzierbar.
+
+## Monotonie
+
+Die erste Ableitung an der Stelle $x_0$ beschreibt das Steigungsverhalten einer Funktion $f$ in der unmittelbaren Umgebung der Stelle $x_0$
+
+$$
+f'(x_0)=\begin{dcases}
+        <0 \Rightarrow \text{Funktion fällt, streng monoton fallend} \\
+        >0 \Rightarrow \text{Funktion wächst, streng monoton wachsend}
+\end{dcases}
+$$
+
+## Krümmung
+
+Die zweite Ableitung an der Stelle $x_0$ be-schreibt das Krümmungsverhalten einer Funktion $f$ in der unmittelbaren Umgebung der Stelle $x_0$:
+
+$$
+f''(x_0)=\begin{dcases}
+        <0 \Rightarrow \text{Rechtskrümmung, Steigung nimmt ab} \\
+       <0 \Rightarrow \text{Linkskrümmung, Steigung nimmt zu wachsend}
+\end{dcases}
+$$
+
+### Konkav
+
+Ist $f''(x) < 0 \Rightarrow f'(x)$ ist streng monoton fallend $\Rightarrow f(x)$ ist konkav (Rechtsgekrümmt).
+
+### Konvex
+
+Ist $f''(x) > 0 \Rightarrow f'(x)$ ist streng monoton wachsend $\Rightarrow f(x)$ ist konvex (linksgekrümt).
+
+## Extremwerte
+
+### Lokales Maximum
+
+Ist $f'(x_0)=0$ und $f''(x_0)<0$, dann ist x_0 ein lokales Maximum.
+
+### Lokales Minimum
+
+Ist $f'(x_0)=0$ und $f''(x_0)>0$, dann ist x_0 ein lokales Minimum.
+
+## Wendepunkte und Sattelpunkte
+
+Ist $f''(x_0)=0$ und $f'''(x_0)\neq 0$, dann ist $x_0$ ein Wendepunkt.
+Wenn zusätzlich noch $f'(x_0)=0$, dann ist $x_0$ zusätzlich noch ein Sattelpunkt.
