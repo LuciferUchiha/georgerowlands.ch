@@ -19,38 +19,31 @@ A shortcode to create a callout.
 {{- $styles.Set "default" (dict
   "icon" "search"
   "style" "hx:border-purple-200 hx:bg-purple-100 hx:text-purple-900 hx:dark:border-purple-200/30 hx:dark:bg-purple-900/30 hx:dark:text-purple-200"
-  )
--}}
+  ) -}}
 {{- $styles.Set "info" (dict
   "icon" "information-circle"
   "style" "hx:border-blue-200 hx:bg-blue-100 hx:text-blue-900 hx:dark:border-blue-200/30 hx:dark:bg-blue-900/30 hx:dark:text-blue-200"
-  )
--}}
+  ) -}}
 {{- $styles.Set "warning" (dict
   "icon" "exclamation"
   "style" "hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"
-  )
--}}
+  ) -}}
 {{- $styles.Set "error" (dict
   "icon" "ban"
   "style" "hx:border-red-200 hx:bg-red-100 hx:text-red-900 hx:dark:border-red-200/30 hx:dark:bg-red-900/30 hx:dark:text-red-200"
-  )
--}}
+  ) -}}
 {{- $styles.Set "example" (dict
   "icon" "globe"
   "style" "hx:border-purple-200 hx:bg-purple-100 hx:text-purple-900 hx:dark:border-purple-200/30 hx:dark:bg-purple-900/30 hx:dark:text-purple-200"
-  )
--}}
+  ) -}}
 {{- $styles.Set "todo" (dict
   "icon" "lightning-bolt"
   "style" "hx:border-amber-200 hx:bg-amber-100 hx:text-amber-900 hx:dark:border-amber-200/30 hx:dark:bg-amber-900/30 hx:dark:text-amber-200"
-  )
--}}
+  ) -}}
 {{- $styles.Set "proof" (dict
   "icon" "sparkles"
   "style" "hx:border-green-200 hx:bg-green-100 hx:text-green-900 hx:dark:border-green-200/30 hx:dark:bg-green-900/30 hx:dark:text-green-200"
-  )
--}}
+  ) -}}
 
 {{- $style := or ($styles.Get $type) ($styles.Get "default") -}}
 
