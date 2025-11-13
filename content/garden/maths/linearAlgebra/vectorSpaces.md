@@ -227,10 +227,13 @@ $$
 span(\{\mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_n\}) = \{a_1\mathbf{v}_1 + a_2\mathbf{v}_2 + \ldots + a_n\mathbf{v}_n | a_1, a_2, \ldots, a_n \in \mathbb{R}\}
 $$
 
+Visually we can think of the span of a set of vectors as all the points we can reach by taking linear combinations of the vectors.
+
 {{< figure
-  src="/images/maths/spansOfVectors.png"
+  src="/images/maths/vectorSpans.png"
   alt="Different spaces spanned by different sets of vectors."
   caption="Different spaces spanned by different sets of vectors."
+  width="600"
 >}}
 
 Because the span of a set of vectors is defined by their linear combinations, vectors that are linear combinations of others do not add any new information to the span. This means that the span of a set of vectors is the same as the span of a subset containg the linearly independent vectors that span the same space.
@@ -324,6 +327,7 @@ $$
   src="/images/maths/vectorSpaceCoordinates.png"
   alt="The same vector can have different coordinate vectors depending on the basis."
   caption="The same vector can have different coordinate vectors depending on the basis."
+  width="600"
 >}}
 
 {{< callout type="example" >}}
@@ -605,7 +609,8 @@ If we then look at what the matrix multiplication for $\mathbf{A}^T\mathbf{A}$ a
 just a linear combination of the column vectors of $\mathbf{A}$. 
 
 $$
-\mathbf{A}\mathbf{A}^T = \begin{bmatrix}
+\begin{align*}
+\mathbf{A}\mathbf{A}^T &= \begin{bmatrix}
 \mathbf{a}_{11} & \mathbf{a}_{12} & \ldots & \mathbf{a}_{1n} \\
 \mathbf{a}_{21} & \mathbf{a}_{22} & \ldots & \mathbf{a}_{2n} 
 \end{bmatrix} \begin{bmatrix}
@@ -613,10 +618,12 @@ $$
 \mathbf{a}_{12} & \mathbf{a}_{22} \\
 \vdots & \vdots \\
 \mathbf{a}_{1n} & \mathbf{a}_{2n} \\
-\end{bmatrix} = \begin{bmatrix}
+\end{bmatrix} \\
+&= \begin{bmatrix}
 (a_11^2 + a_12^2 + \ldots + a_1n^2) & (a_11a_21 + a_12a_22 + \ldots + a_1na_2n) \\
 (a_21a_11 + a_22a_12 + \ldots + a_2na_1n) & (a_21^2 + a_22^2 + \ldots + a_2n^2) \\
 \end{bmatrix}
+\end{align*}
 $$
 
 This means that the column space of $\mathbf{A}\mathbf{A}^T$ is the same as the column space of $\mathbf{A}$. Because a vector space is defined by all the possible linear combinations of the vectors that span it. Thus a linear combination of the column vectors of $\mathbf{A}$ can not leave the column space of $\mathbf{A}$ so it must be at least a subset of the vector space. But because we also know that the rank of $\mathbf{A}\mathbf{A}^T$ is the same as the rank of $\mathbf{A}$ we know that the column spaces have the same dimensionality and therefore must be the same. So we can say the following: 
@@ -651,21 +658,44 @@ $$
 \end{bmatrix} \begin{bmatrix}
 0 & 3 & 5 \\
 10 & 7 & 3 \\
-\end{bmatrix} &= \begin{bmatrix}
-0 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix} 
-+ 10 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
-\quad
-3 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix}
-+ 7 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
-\quad
-5 \begin{bmatrix} 0 \\ 3 \\ 5 \end{bmatrix}
-+ 3 \begin{bmatrix} 10 \\ 7 \\ 3 \end{bmatrix}
+\end{bmatrix} &= 
+0 \cdot \begin{bmatrix}
+0 \\
+3 \\ 
+5 
+\end{bmatrix} 
++10 \cdot \begin{bmatrix}
+10 \\ 
+7 \\ 
+3 
+\end{bmatrix}
+\quad 3 \cdot \begin{bmatrix} 
+0 \\ 
+3 \\ 
+5 
+\end{bmatrix}
++7 \cdot \begin{bmatrix} 
+10 \\ 
+7 \\ 
+3 \end{bmatrix}
+\quad 5 \cdot \begin{bmatrix} 
+0 \\ 
+3 \\ 
+5 
+\end{bmatrix}
++3 \cdot \begin{bmatrix} 
+10 \\ 
+7 \\ 
+3 
 \end{bmatrix} \\
-&= \begin{bmatrix}
+&= 
+\begin{bmatrix}
 (0^2 + 10^2) & (0 \cdot 3 + 10 \cdot 7) & (0 \cdot 5 + 10 \cdot 3) \\
 (3 \cdot 0 + 7 \cdot 10) & (3^2 + 7^2) & (3 \cdot 5 + 7 \cdot 3) \\
 (5 \cdot 0 + 3 \cdot 10) & (5 \cdot 3 + 3 \cdot 7) & (5^2 + 3^2) \\
-&= \begin{bmatrix}
+\end{bmatrix} \\
+&= 
+\begin{bmatrix}
 100 & 70 & 30 \\
 70 & 58 & 34 \\
 30 & 34 & 34 \\
@@ -821,7 +851,8 @@ $$
 Very similarly as for the column space of $\mathbf{A}\mathbf{A}^T$ the row space of $\mathbf{A}^T\mathbf{A}$ is the same as the row space of $\mathbf{A}$ because we can show that the matrix is a linear combination of the row vectors of $\mathbf{A}$.
 
 $$
-\mathbf{A}^T\mathbf{A} = \begin{bmatrix}
+\begin{align*}
+\mathbf{A}^T\mathbf{A} &= \begin{bmatrix}
 \mathbf{a}_{11} & \mathbf{a}_{21} & \ldots & \mathbf{a}_{n1} \\
 \mathbf{a}_{12} & \mathbf{a}_{22} & \ldots & \mathbf{a}_{n2}
 \end{bmatrix} \begin{bmatrix}
@@ -829,10 +860,13 @@ $$
 \mathbf{a}_{21} & \mathbf{a}_{22} \\
 \vdots & \vdots \\
 \mathbf{a}_{n1} & \mathbf{a}_{n2} \\
-\end{bmatrix} = \begin{bmatrix}
+\end{bmatrix} \\ 
+&= 
+\begin{bmatrix}
 (\mathbf{a}_{11}^2 + \mathbf{a}_{21}^2 + \ldots + \mathbf{a}_{n1}^2) & (\mathbf{a}_{11}\mathbf{a}_{12} + \mathbf{a}_{21}\mathbf{a}_{22} + \ldots + \mathbf{a}_{n1}\mathbf{a}_{n2}) \\
 (\mathbf{a}_{12}\mathbf{a}_{11} + \mathbf{a}_{22}\mathbf{a}_{21} + \ldots + \mathbf{a}_{n2}\mathbf{a}_{n1}) & (\mathbf{a}_{12}^2 + \mathbf{a}_{22}^2 + \ldots + \mathbf{a}_{n2}^2) \\
 \end{bmatrix}
+\end{align*}
 $$
 
 So we formally have the following:
@@ -1162,7 +1196,7 @@ $$
 If the vector $\mathbf{b}$ is the null vector then the solution space is the null space of the matrix. If the vector $\mathbf{b}$ is not the null vector then the solution space isn't actually a subspace for the simple fact that it doesn't contain the null vector. However, we can think of it similarly to a subspace. If we compare the solution space to the null space again we actually notice that it is just a shifted version of the null space. 
 
 {{< figure
-  src="/images/maths/lagShiftingNullSpace.png"
+  src="/images/maths/vectorShiftingNullSpace.png"
   alt="Shifting the null space to get the solution space."
   caption="Shifting the null space to get the solution space."
 >}}
@@ -1176,7 +1210,7 @@ $$
 So the null space actually tells us about the number of solutions to a system of linear equations. If the null space only contains the null vector then the system of linear equations has only one solution. This is done by shifting from the origin to some point. This also matches up with our intuition that a system of linear equations has only one solution if the columns of the matrix are linearly independent or in other words the rank of the matrix is the same as the number of columns. If the null space contains more than just the null vector then the system of linear equations has infinitely many solutions. This can be seen in the image below.
 
 {{< figure
-  src="/images/maths/lagSolutionSpace.png"
+  src="/images/maths/vectorSolutionSpace.png"
   alt="A solution space of dimension 0, a point (left); a solution space of dimension 1, a line (middle); a solution space of dimension 2, a plane (right)."
   caption="A solution space of dimension 0, a point (left); a solution space of dimension 1, a line (middle); a solution space of dimension 2, a plane (right)."
 >}}
@@ -1281,7 +1315,7 @@ $$
 which is consistent with the Rank-Nullity Theorem applied to $\mathbf{A}$ and $\mathbf{A}^T$.
 
 {{< figure
-  src="/images/maths/calculatingFundamentalSubspaces.png"
+  src="/images/maths/vectorSubspacesCalculation.png"
   alt="Calculating the fundamental subspaces of a matrix all at once."
   caption="Calculating the fundamental subspaces of a matrix all at once."
 >}}

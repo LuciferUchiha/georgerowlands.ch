@@ -298,13 +298,13 @@ S_{\text{lower}}(f)=S_{\text{upper}}(f)\quad\Longleftrightarrow\quad
 $$
 
 {{< callout type="proof" >}}
-We can prove this equivalence by showing both directions. First we assume $f$ is integrable so $S\_{\text{lower}}(f)=S\_{\text{upper}}(f)=A$ where $A$ is the Riemann integral of $f$ on the interval $[a,b]$. If we then take some $\varepsilon>0$. By definition of the supremum there exists a partition $P\_1$ such that
+We can prove this equivalence by showing both directions. First we assume $f$ is integrable so $S_{\text{lower}}(f)=S_{\text{upper}}(f)=A$ where $A$ is the Riemann integral of $f$ on the interval $[a,b]$. If we then take some $\varepsilon>0$. By definition of the supremum there exists a partition $P_1$ such that
 
 $$
 S_{\text{upper}}(f,P_1)<I+\tfrac{\varepsilon}{2},
 $$
 
-and a partition $P\_2$ with
+and a partition $P_2$ with
 
 $$
 S_{\text{lower}}(f,P_2)>I-\tfrac{\varepsilon}{2}.

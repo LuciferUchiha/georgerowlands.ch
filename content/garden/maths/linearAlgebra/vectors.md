@@ -18,6 +18,7 @@ Usually the starting point of the vector is at the origin, $(0, 0)$ in 2D space 
   src="/images/maths/vectorPosition.png"
   alt="We can see that the vectors defined from the origin are equivalent to the point coordinates."
   caption="We can see that the vectors defined from the origin are equivalent to the point coordinates."
+  width="400"
 >}}
 
 Vectors are easily visualized in 2D and 3D space, but can be extended to any number of dimensions. If we define that all vectors have the same starting point, they can be uniquely be defined by their ending point which is the same as the direction and length of the vector. The length of the vector is also called the magnitude. Vectors in math can however, also be seen as movement in space so they do not be in a specific position but can be anywhere in space.
@@ -28,6 +29,7 @@ This is also in line with vectors in physics, where vectors are used to represen
   src="/images/maths/vectorPhysics.png"
   alt="Vectors being used to denote force and acceleration of a car."
   caption="Vectors being used to denote force and acceleration of a car."
+  width="400"
 >}}
 
 
@@ -114,6 +116,7 @@ We can also visualize vector addition nicely in 2D and 3D space with position ve
   src="/images/maths/vectorAddition.png"
   alt="Vector addition in 2D."
   caption="Vector addition in 2D."
+  width="400"
 >}}
 
 This idea can also be extended to adding multiple vectors together. It is easy to see that vector addition is also associative, i.e. we can add multiple vectors together in any order:
@@ -128,6 +131,7 @@ Visually this results in lots of different routes that all lead to the same poin
   src="/images/maths/vectorAdditionAssociative.png"
   alt="The associative property of vector addition."
   caption="The associative property of vector addition."
+  width="400"
 >}}
 
 ## Scalar Multiplication
@@ -172,6 +176,7 @@ We can also visualize scalar multiplication nicely in 2D and 3D space. Geometric
   src="/images/maths/vectorScalarMultiplication.png"
   alt="Scalar multiplication of a vector in 2D."
   caption="Scalar multiplication of a vector in 2D."
+  width="400"
 >}}
 
 If we multiply a vector with the scalar 0, then the resulting vector is the zero vector, i.e. the vector with all components equal to 0. This can be thought of as the vector being shrunk to a point at the origin or collapsing it to a single point.
@@ -239,6 +244,7 @@ When visualizing the subtraction of two vectors, we can think of it as adding th
   src="/images/maths/vectorSubtraction.png"
   alt="Vector subtraction in 2D."
   caption="Vector subtraction in 2D."
+  width="400"
 >}}
 
 Another geometric interpretation of vector subtraction is that the resulting vector is the vector that points from the head of the second vector to the head of the first vector after moving the tail of the second vector to the tail of the first vector. From this interpretation, we can clearly see that the subtraction of two vectors is not commutative, i.e. the order in which we subtract the vectors matters as the resulting vector will point in the opposite direction just like in normal subtraction, $1 - 2 = -1$ and $2 - 1 = 1$. If you think of $\mathbf{b} - \mathbf{a}$ as the vector $\mathbf{c}$, then you can also see that $\mathbf{a} + \mathbf{c} = \mathbf{b}$ and after rewriting the equation we get $\mathbf{c} = \mathbf{b} - \mathbf{a}$ visually.
@@ -565,6 +571,7 @@ $$
   src="/images/maths/vectorLinearDependence2D.png"
   alt="The left two vectors are linearly independent, while the right two vectors are linearly dependent."
   caption="The left two vectors are linearly independent, while the right two vectors are linearly dependent."
+  width="400"
 >}}
 
 {{< callout type="example" >}}
@@ -752,6 +759,7 @@ $$
   src="/images/maths/vectorManhattenNorm.png"
   alt="No matter how we move along the roads of Manhattan, the distance between two points is always the same."
   caption="No matter how we move along the roads of Manhattan, the distance between two points is always the same."
+  width="300"
 >}}
 
 {{< callout type="example" >}}
@@ -816,6 +824,7 @@ In other words, the $L_\infty$ norm is vector component with the largest absolut
   src="/images/maths/vectorNorms.png"
   alt="The different norms in 2D space."
   caption="The different norms in 2D space."
+  width="600"
 >}}
 
 {{< callout type="todo" >}}
@@ -890,6 +899,7 @@ So the dot product of two unit vectors $\mathbf{v}$ and $\mathbf{w}$ if we place
   src="/images/maths/vectorDotProductAngle.png"
   alt="Calculating the angle between two vectors using the dot product."
   caption="Calculating the angle between two vectors using the dot product."
+  width="300"
 >}}
 
 This means that the dot product can be used to calculate the angle between any two vectors. Because the angle does not depend on the length of the vectors we can just normalize the vectors to unit vectors and then calculate the angle between them. Because the vectors anyway describe a direction their tails don't need to be at the same point, we can just place them at the origin. This then gives us the following formula for the dot product of two vectors $\mathbf{x}$ and $\mathbf{y}$:
@@ -1061,6 +1071,7 @@ This can also visually be seen in the 2D case, where the direct path from one po
   src="/images/maths/vectorTriangleInequality.png"
   alt="Visualizing the triangle inequality in 2D space."
   caption="Visualizing the triangle inequality in 2D space."
+  width="400"
 >}}
 
 {{< callout type="proof" >}}
@@ -1103,6 +1114,7 @@ We can now combine the idea of orthogonal vectors and normalized vectors to get 
   src="/images/maths/vectorOrthonormal.png"
   alt="The difference between orthogonal and orthonormal vectors."
   caption="The difference between orthogonal and orthonormal vectors."
+  width="400"
 >}}
 
 ### Standard Unit Vectors
@@ -1125,4 +1137,5 @@ It is quite easy to see that the standard unit vectors are orthonormal, because 
   src="/images/maths/vectorsStandardUnitVectors.png"
   alt="The standard unit vectors here in 3D space are i, j, and k. We can see how the vector a can be written as a linear combination of the standard unit vectors."
   caption="The standard unit vectors here in 3D space are i, j, and k. We can see how the vector a can be written as a linear combination of the standard unit vectors."
+  width="400"
 >}}

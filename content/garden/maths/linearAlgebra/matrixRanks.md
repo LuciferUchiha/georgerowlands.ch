@@ -35,8 +35,7 @@ u_m
 \end{bmatrix}
 \begin{bmatrix}
 v_1 & v_2 & \ldots & v_n
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 u_1 v_1 & u_1 v_2 & \ldots & u_1 v_n \\
 u_2 v_1 & u_2 v_2 & \ldots & u_2 v_n \\

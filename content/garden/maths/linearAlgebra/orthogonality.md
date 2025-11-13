@@ -54,7 +54,7 @@ This means that either $\lambda = 0$ or $||\mathbf{a}||^2 = 0$. The first case m
 We can also generalize this to say that if we have $n$ orthogonal vectors in $\mathbb{R}^n$ then they are linearly independent. This also means that an orthogonal vector is orthogonal to all the linear combinations of the other $n - 1$ vectors. Intuitively we can think of two vectors that are orthogonal to each other in 3D space. The linear combination of these two vectors spans a plane. If we then add a third vector that is orthogonal to the other 2 vectors then this vector can not be in the plane as it must be 90 degrees from the other vectors. So in other words it also can't be a linear combination of the other two vectors. So the third vector must be linearly independent of the other two vectors. 
 
 {{< figure
-  src="/images/maths/orthogonalVectors.png"
+  src="/images/maths/vectorOrthogonal.png"
   alt="Adding a third orthogonal vector must be linearly independent of the other two vectors"
   caption="Adding a third orthogonal vector must be linearly independent of the other two vectors"
 >}}

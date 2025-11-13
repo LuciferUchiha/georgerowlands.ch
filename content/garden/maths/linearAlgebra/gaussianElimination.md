@@ -724,9 +724,10 @@ First let's look at the definition of reduced row echelon form. The reduced row 
 - Each column containing a leading 1 has zeros in all other positions, so the column is a standard unit vector. 
 
 {{< figure
-  src="/images/maths/reducedRowEchelonForm.png"
+  src="/images/maths/matrixReducedRowEchelonForm.png"
   alt="A matrix in reduced row echelon matches this form."
   caption="A matrix in reduced row echelon matches this form."
+  width="400"
 >}}
 
 Another way of seeing this is if given a matrix in reduced row echelon form, we can permute the columns such that the leading 1's are in the first, second, third, etc. columns. This means that the leading 1's are in the first $r$ columns where $r$ is the rank of the matrix. The remaining columns are all mixed columns, meaning they could be zero or non-zero. Then we can describe a matrix in reduced row echelon form as:
@@ -871,7 +872,7 @@ $$
 or more generally:
 
 $$
-\color{blue}{m} \times \color{red}{m} \cdot \color{green}{m} \times \color{yellow}{n} = \color{blue}{m} \times \color{yellow}{n}
+\color{blue}{m} \times \color{red}{m} \cdot \color{green}{m} \times \color{orange}{n} = \color{blue}{m} \times \color{orange}{n}
 $$
 
 The elimination matrices are still triangular matrices and work in the same way as the elimination matrices in the Gaussian elimination algorithm. They are just a bit more complex as they also contain the operations to get the leading 1's and zeros in the positions above and below the leading 1's. So we now not only have lower triangular matrices but also upper triangular matrices. So for example to divide the first row by 2 we would have the elimination matrix:
@@ -1001,7 +1002,7 @@ $$
 \right]
 $$
 
-The last row is all zeros (no contradiction). The first and second columns have pivots, so $x\_1$ and $x\_2$ are basic variables. The third column does not, so $x\_3$ is a **free variable**. If we let $x\_3 = t$, $t \in \mathbb{R}$) then we can express the basic variables in terms of the free variable:
+The last row is all zeros (no contradiction). The first and second columns have pivots, so $x_1$ and $x_2$ are basic variables. The third column does not, so $x_3$ is a **free variable**. If we let $x_3 = t$, $t \in \mathbb{R}$) then we can express the basic variables in terms of the free variable:
 
 $$
 \begin{cases}
@@ -1063,7 +1064,10 @@ $$
 Now the question is with what can be multiply the matrix $\mathbf{C}$ to get the matrix $\mathbf{A}$. We know that the matrix vector product is a linear combination of the columns of the matrix. So the $i$-th entry of the vector is the weight of the $i$-th column of the matrix. We also know that the matrix multiplication is like creating multiple linear combinations of the columns of the matrix. So we can see that the matrix $\mathbf{R}$ is the matrix that contains the weights of the independent columns to create all the columns of the matrix $\mathbf{A}$. For the example above this looks like this: 
 
 {{< figure
-  src="/images/maths/lagCRDecomposition.png"
+  src="/images/maths/matrixCRDecomposition.png"
+  alt="CR-Decomposition of a matrix."
+  caption="CR-Decomposition of a matrix."
+  width="500"
 >}}
 
 You might notice something about the matrix $\mathbf{R}$, it is the exact matrix that we get when we perform the gauss-jordan algorithm after removing the zero rows at the bottom so the reduced row echelon form of the matrix. Why is this?
@@ -1133,13 +1137,13 @@ $$
 
 The gauss-jordan elimination method can be extended to calculate the inverse of a matrix. Because the inverse of a matrix is only defined for square matrices, this algorithm only works for square matrices such as $2 \times 2$ matrices, $3 \times 3$ matrices, $\mathbf{A} \in \mathbb{R}^{n \times n}$.
 
-Recall that any sequence of elementary row operations can be encoded as a sequence of **elimination matrices**. Each elimination matrix $\mathbf{E}\_i$ represents a single row operation. If we apply $k$ such operations to $\mathbf{A}$, the cumulative effect is:
+Recall that any sequence of elementary row operations can be encoded as a sequence of **elimination matrices**. Each elimination matrix $\mathbf{E}_i$ represents a single row operation. If we apply $k$ such operations to $\mathbf{A}$, the cumulative effect is:
 
 $$
 \mathbf{E}_k \cdots \mathbf{E}_2 \mathbf{E}_1 \mathbf{A} = \mathbf{R}
 $$
 
-where $\mathbf{R}$ is the final row-reduced matrix. If $\mathbf{A}$ is full rank and square, $\mathbf{R}$ will be the identity $\mathbf{I}$ after reduction. We also remember that each elimination matrix $\mathbf{E}\_i$ is invertible, and its inverse $\mathbf{E}\_i^{-1}$ corresponds to **undoing** the row operation. Thus, to reverse all $k$ operations, we apply the inverses in reverse order (follows from the property of inverting matrices):
+where $\mathbf{R}$ is the final row-reduced matrix. If $\mathbf{A}$ is full rank and square, $\mathbf{R}$ will be the identity $\mathbf{I}$ after reduction. We also remember that each elimination matrix $\mathbf{E}_i$ is invertible, and its inverse $\mathbf{E}_i^{-1}$ corresponds to **undoing** the row operation. Thus, to reverse all $k$ operations, we apply the inverses in reverse order (follows from the property of inverting matrices):
 
 $$
 (\mathbf{E}_k \cdots \mathbf{E}_2 \mathbf{E}_1)^{-1}(\mathbf{E}_1 \cdots \mathbf{E}_k)\mathbf{A} = (\mathbf{E}_k \cdots \mathbf{E}_2 \mathbf{E}_1)^{-1}\mathbf{R} 
@@ -1206,6 +1210,8 @@ $$
 $$
 
 {{< callout type="example" >}}
+Using the above defined augmented matrix we can perform the Gauss-Jordan elimination algorithm to find the inverse of the matrix $\mathbf{A}$:
+
 $$
 \begin{align}
 [\mathbf{A}|\mathbf{I}]= \left[\begin{array}{ccc|ccc}
@@ -1213,49 +1219,41 @@ $$
 4 & 9 & -3 & 0 & 1 & 0 \\
 -2 & -3 & 7 & 0 & 0 & 1
 \end{array}\right] & \rightarrow R_1 = \frac{1}{2}R_1 \\
-
 \rightarrow \left[\begin{array}{ccc|ccc}
 1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
 4 & 9 & -3 & 0 & 1 & 0 \\
 -2 & -3 & 7 & 0 & 0 & 1
 \end{array}\right] & \rightarrow R_2 = R_2 - 4R_1 \\
-
 \rightarrow \left[\begin{array}{ccc|ccc}
 1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
 0 & 1 & 1 & -2 & 1 & 0 \\
 -2 & -3 & 7 & 0 & 0 & 1
 \end{array}\right] & \rightarrow R_3 = R_3 + 2R_1 \\
-
 \rightarrow \left[\begin{array}{ccc|ccc}
 1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
 0 & 1 & 1 & -2 & 1 & 0 \\
 0 & 1 & 5 & 1 & 0 & 1
 \end{array}\right] & \rightarrow R_3 = R_3 - R_2 \\
-
 \rightarrow \left[\begin{array}{ccc|ccc}
 1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
 0 & 1 & 1 & -2 & 1 & 0 \\
 0 & 0 & 4 & 3 & -1 & 1
 \end{array}\right] & \rightarrow R_3 = \frac{1}{4}R_3 \\
-
 \rightarrow \left[\begin{array}{ccc|ccc}
 1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
 0 & 1 & 1 & -2 & 1 & 0 \\
 0 & 0 & 1 & \frac{3}{4} & -\frac{1}{4} & \frac{1}{4}
 \end{array}\right] & \rightarrow R_2 = R_2 - R_3 \\
-
 \rightarrow \left[\begin{array}{ccc|ccc}
 1 & 2 & -1 & \frac{1}{2} & 0 & 0 \\
 0 & 1 & 0 & -\frac{11}{4} & \frac{5}{4} & -\frac{1}{4} \\
 0 & 0 & 1 & \frac{3}{4} & -\frac{1}{4} & \frac{1}{4}
 \end{array}\right] & \rightarrow R_1 = R_1 + R_3 \\
-
 \rightarrow \left[\begin{array}{ccc|ccc}
 1 & 2 & 0 & \frac{5}{4} & -\frac{1}{4} & \frac{1}{4} \\
 0 & 1 & 0 & -\frac{11}{4} & \frac{5}{4} & -\frac{1}{4} \\
 0 & 0 & 1 & \frac{3}{4} & -\frac{1}{4} & \frac{1}{4}
 \end{array}\right] & \rightarrow R_1 = R_1 - 2R_2 \\
-
 \rightarrow \left[\begin{array}{ccc|ccc}
 1 & 0 & 0 & \frac{27}{4} & -\frac{11}{4} & \frac{3}{4} \\
 0 & 1 & 0 & -\frac{11}{4} & \frac{5}{4} & -\frac{1}{4} \\

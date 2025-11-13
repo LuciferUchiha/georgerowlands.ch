@@ -27,9 +27,10 @@ For the second vector $\mathbf{a}_2$, we want to make it orthogonal to $\mathbf{
 This is then followed by normalizing the resulting vector to get $\mathbf{q}_2$. To do this, we use the formula for projecting a vector onto a subspace. 
 
 {{< figure
-  src="/images/maths/gramSchmidt2d.png"
+  src="/images/maths/vectorGramSchmidt2d.png"
   alt="The Gram-Schmidt process in 2D space."
   caption="The Gram-Schmidt process in 2D space."
+  width="400"
 >}}
 
 In general, the formula for projecting a vector $\mathbf{b}$ onto a subspace $S$ spanned by the columns of a matrix $\mathbf{A}$ is defined as:
@@ -108,7 +109,7 @@ $$
 So by subtracting the projection of the vector onto the previously computed orthonormal vectors, we are systematically removing components of the vector that lie in the directions of those vectors. This ensures that the resulting vector is orthogonal and linearly independent to all the previous ones. Normalization then ensures that the vector has unit length, completing the orthonormalization process.
 
 {{< figure
-  src="/images/maths/gramSchmidt3d.gif"
+  src="/images/maths/vectorGramSchmidt3d.gif"
   alt="Visualization of the Gram-Schmidt process with three vectors in 3D space."
   caption="Visualization of the Gram-Schmidt process with three vectors in 3D space."
 >}}

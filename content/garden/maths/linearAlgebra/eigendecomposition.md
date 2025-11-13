@@ -1,6 +1,6 @@
 ---
 title: Eigendecomposition
-type: Docs
+type: docs
 weight: 15
 ---
 
@@ -13,8 +13,7 @@ $$
 \end{bmatrix}\begin{bmatrix}
   x \\
   y \\
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
   x' \\
   y' \\
@@ -25,6 +24,7 @@ $$
   src="/images/maths/vectorTransformationRotation2D.png"
   alt="Rotating a 2D vector by the angle theta"
   caption="Rotating a 2D vector by the angle theta"
+  width="300"
 >}}
 
 Or we can use a matrix to scale a vector:
@@ -36,8 +36,7 @@ $$
 \end{bmatrix}\begin{bmatrix}
   4 \\
   3 \\
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
   8 \\
   6 \\
@@ -48,6 +47,7 @@ $$
   src="/images/maths/vectorTransformationScaling2D.png"
   alt="Scaling a 2D vector, in this case doubling its length"
   caption="Scaling a 2D vector, in this case doubling its length"
+  width="300"
 >}}
 
 Now, let's dive into the core idea of eigenvalues and eigenvectors. An eigenvector of a square matrix $\mathbf{A} \in \mathbf{R}^{n \times n}$ is a special vector whose direction remains unchanged when the matrix is applied to it. So the matrix only scales the vector by a scalar $\lambda$, which is called the eigenvalue. For a square matrix $\mathbf{A} \in \mathbb{R}^{n \times n}$, an eigenvalue $\lambda \in \mathbb{C}$ is a scalar such that:
@@ -120,7 +120,7 @@ using the determinant formula for a $3 \times 3$ matrix, we can expand this to:
 
 $$
 \begin{align*}
-det(\mathbf{A}) = aei + bfg + cdh - ceg - bdi - afh \\
+det(\mathbf{A}) &= aei + bfg + cdh - ceg - bdi - afh \\
 P(\lambda) &= det(\mathbf{A} - \lambda \mathbf{I}) \\
 &= (a - \lambda)(e - \lambda)(i - \lambda) + bfg + cdh - ceg - bdi - afh \\
 &= (a - \lambda)(e - \lambda)(i - \lambda) + bfg + cdh - c(e - \lambda)g - bd(i - \lambda) - (a - \lambda)fh \\
@@ -652,8 +652,7 @@ $$
 \begin{bmatrix}
 0 & 1 \\
 1 & 0
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 2 & 1 \\
 1 & 0
@@ -851,6 +850,17 @@ $$
 This matches with the product of the eigenvalues.
 {{< /callout >}}
 
+### Eigenvalues of 2 by 2 Matrices
+
+As presented in this [video by 3Blue1Brown](https://www.youtube.com/watch?v=e50Bj7jn9IQ) there is a cool formula that can be used to calculate the eigenvalues of a $2 \times 2$ matrix . It rests upon two properties that have already been mentioned above:
+
+- The trace of $\mathbf{A}$ is the sum of its eigenvalues $tr(\mathbf{A})=\sum_{i=1}^{n}{\lambda_i}$. So in other words $a + d = \lambda_1 + \lambda_2$. We can also reform this to get the mean value of the two eigenvalues: $\frac{1}{2}tr(\mathbf{A})=\frac{a+d}{2}=\frac{\lambda_1 + \lambda_2}{2}=m$
+- The determinant of $\mathbf{A}$ is the product of its eigenvalues $det(\mathbf{A})=\prod_{i=1}^{n}{\lambda_i}$. So in other words $ad - bc = \lambda_1 \cdot \lambda_2 = p$.
+
+$$
+\lambda_1, \lambda_2 = m \pm \sqrt{m^2 - p}
+$$
+
 ## Eigenvalues of Orthogonal Matrices
 
 Interestingly, because orthogonal matrices preserve lengths and angles, the eigenvalues of an orthogonal matrix are all either 1 or -1. This can be shown by considering the following equation:
@@ -959,11 +969,12 @@ v_3
 0
 \end{bmatrix} 
 \end{align*}
+$$
 
 this results in the following equations:
-$$math
+$$
 2v_2 + 3v_3 = 0 \text{ and } 3v_2 + 5v_3 = 0 \text{ and } 5v_3 = 0.
-```
+$$
 
 This means that $v_3 = 0$, and substituting this into the first equation gives $2v_2 = 0$, so $v_2 = 0$. The first equation then gives us $v_1$ can be any value. So we have the eigenvector $\mathbf{v}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}$.
 {{< /callout >}}

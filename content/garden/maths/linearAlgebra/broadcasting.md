@@ -1,5 +1,7 @@
 ---
 title: Broadcasting
+type: docs
+weight: 16
 ---
 
 {{< callout type="info" >}}

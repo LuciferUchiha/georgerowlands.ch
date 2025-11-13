@@ -505,7 +505,7 @@ If we look more closely at the what the matrix multiplication is doing we can ac
 
 $$
 \begin{align*}
-\mathbf{A}^T\mathbf{A} = \begin{bmatrix}
+\mathbf{A}^T\mathbf{A} &= \begin{bmatrix}
 a_{11} & a_{12} & \cdots & a_{1n} \\
 a_{21} & a_{22} & \cdots & a_{2n} \\
 \vdots & \vdots & \ddots & \vdots \\
@@ -515,7 +515,7 @@ a_{m1} & a_{m2} & \cdots & a_{mn}
 a_{11} & a_{21} & \cdots & a_{m1} \\
 a_{12} & a_{22} & \cdots & a_{m2}
 \end{bmatrix} \\ 
-= \begin{bmatrix}
+&= \begin{bmatrix}
 (a_{11}^2 + a_{12}^2 + \cdots + a_{1m}^2) & (a_{11}a_{21} + a_{12}a_{22} + \cdots + a_{1m}a_{2m}) & \cdots & (a_{11}a_{n1} + a_{12}a_{n2} + \cdots + a_{1m}a_{nm}) \\
 (a_{21}a_{11} + a_{22}a_{12} + \cdots + a_{2m}a_{1m}) & (a_{21}^2 + a_{22}^2 + \cdots + a_{2m}^2) & \cdots & (a_{21}a_{n1} + a_{22}a_{n2} + \cdots + a_{2m}a_{nm}) \\
 \vdots & \vdots & \ddots & \vdots \\

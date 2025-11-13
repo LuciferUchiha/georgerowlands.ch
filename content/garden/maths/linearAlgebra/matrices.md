@@ -337,6 +337,7 @@ $$
   src="/images/maths/matrixMultiplicationDimensions.png"
   alt="Dimensions of a matrix multiplication visualized."
   caption="Dimensions of a matrix multiplication visualized."
+  width="400"
 >}}
 
 The actual calculation of the elements in the resulting matrix is a bit more complex. The element in the $i$-th row and $j$-th column in the resulting matrix is defined as the sum of the products of the elements in the $i$-th row of the first matrix and the $j$-th column of the second matrix. So the element $c_{ij}$ in the resulting matrix is calculated as follows:
@@ -354,6 +355,15 @@ $$
 $$
 
 There are three different ways to think about matrix multiplication, the element view, the row view and the column view. The first way would be to think of how a single element in the resulting matrix is calculated. A single element in row $i$ and column $j$ is calculated as the sum of the products of the elements in the $i$-th row of the first matrix and the $j$-th column of the second matrix. Later on you will see that this is the dot product of the $i$-th row and the $j$-th column as vectors. 
+
+{{< figure
+  src="/images/maths/matrixMultiplication.png"
+  alt="Calculating single elements at a time in matrix multiplication."
+  caption="Calculating single elements at a time in matrix multiplication."
+width="400"
+>}}
+
+This can also be summarized as the "element-wise" view of matrix multiplication.
 
 {{< figure
   src="/images/maths/matrixMultiplicationElement.png"
@@ -690,7 +700,8 @@ The reason as to why the identity matrix functions as the multiplicative identit
 
 {{< callout type="example" >}}
 $$
-\mathbf{I} \cdot {A} =
+\begin{align*}
+\mathbf{I} \cdot {A} &=
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & 1 & 0 \\
@@ -699,23 +710,27 @@ $$
 1 & 2 & 3 \\
 4 & 5 & 6 \\
 7 & 8 & 9
-\end{bmatrix} =
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 (1 \cdot 1 + 0 \cdot 4 + 0 \cdot 7) & (1 \cdot 2 + 0 \cdot 5 + 0 \cdot 8) & (1 \cdot 3 + 0 \cdot 6 + 0 \cdot 9) \\
 (0 \cdot 1 + 1 \cdot 4 + 0 \cdot 7) & (0 \cdot 2 + 1 \cdot 5 + 0 \cdot 8) & (0 \cdot 3 + 1 \cdot 6 + 0 \cdot 9) \\
 (0 \cdot 1 + 0 \cdot 4 + 1 \cdot 7) & (0 \cdot 2 + 0 \cdot 5 + 1 \cdot 8) & (0 \cdot 3 + 0 \cdot 6 + 1 \cdot 9)
-\end{bmatrix} =
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6 \\
 7 & 8 & 9
 \end{bmatrix}
+\end{align*}
 $$
 
 The same is true for the other way around but the identity matrix selects the columns of the first matrix instead of the rows:
 
 $$
-\mathbf{A} \cdot {I} =
+\begin{align*}
+\mathbf{A} \cdot {I} &=
 \begin{bmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6 \\
@@ -724,17 +739,20 @@ $$
 1 & 0 & 0 \\
 0 & 1 & 0 \\
 0 & 0 & 1
-\end{bmatrix} =
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 (1 \cdot 1 + 2 \cdot 0 + 3 \cdot 0) & (1 \cdot 0 + 2 \cdot 1 + 3 \cdot 0) & (1 \cdot 0 + 2 \cdot 0 + 3 \cdot 1) \\
 (4 \cdot 1 + 5 \cdot 0 + 6 \cdot 0) & (4 \cdot 0 + 5 \cdot 1 + 6 \cdot 0) & (4 \cdot 0 + 5 \cdot 0 + 6 \cdot 1) \\
 (7 \cdot 1 + 8 \cdot 0 + 9 \cdot 0) & (7 \cdot 0 + 8 \cdot 1 + 9 \cdot 0) & (7 \cdot 0 + 8 \cdot 0 + 9 \cdot 1)
-\end{bmatrix} =
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6 \\
 7 & 8 & 9
 \end{bmatrix}
+\end{align*}
 $$
 {{< /callout >}}
 
@@ -743,6 +761,8 @@ $$
 We have seen that multiplying matrices can be quite complex, but diagonal matrices have a very simple multiplication rule. This simplicity arises because the only non-zero elements are on the main diagonal, which makes calculations straightforward. The most obvious case of this is when multiplying a matrix by the identity matrix (also a diagonal matrix). Here we saw that the identity matrix acts as if it selects the corresponding rows or columns of the other matrix. If we change one of the values on the diagonal of the identity matrix to a different value, we can see that it also selects the corresponding rows or columns of the other matrix but scales them by that value (for the identity matrix this value is always 1):
 
 $$
+\begin{align*}
+\mathbf{D} \cdot \mathbf{A} &=
 \begin{bmatrix}
 a & 0 & 0 \\
 0 & b & 0 \\
@@ -751,22 +771,27 @@ a & 0 & 0 \\
 1 & 2 & 3 \\
 4 & 5 & 6 \\
 7 & 8 & 9
-\end{bmatrix} =
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 (a \cdot 1 + 0 \cdot 4 + 0 \cdot 7) & (a \cdot 2 + 0 \cdot 5 + 0 \cdot 8) & (a \cdot 3 + 0 \cdot 6 + 0 \cdot 9) \\
 (0 \cdot 1 + b \cdot 4 + 0 \cdot 7) & (0 \cdot 2 + b \cdot 5 + 0 \cdot 8) & (0 \cdot 3 + b \cdot 6 + 0 \cdot 9) \\
 (0 \cdot 1 + 0 \cdot 4 + c \cdot 7) & (0 \cdot 2 + 0 \cdot 5 + c \cdot 8) & (0 \cdot 3 + 0 \cdot 6 + c \cdot 9)
-\end{bmatrix} =
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 a & 2a & 3a \\
 4b & 5b & 6b \\
 7c & 8c & 9c
 \end{bmatrix}
+\end{align*}
 $$
 
 Or for the other way around:
 
 $$
+\begin{align*}
+\mathbf{A} \cdot \mathbf{D} &=
 \begin{bmatrix}
 1 & 2 & 3 \\
 4 & 5 & 6 \\
@@ -775,44 +800,47 @@ $$
 a & 0 & 0 \\
 0 & b & 0 \\
 0 & 0 & c
-\end{bmatrix} =
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 (1 \cdot a + 2 \cdot 0 + 3 \cdot 0) & (1 \cdot 0 + 2 \cdot b + 3 \cdot 0) & (1 \cdot 0 + 2 \cdot 0 + 3 \cdot c) \\
 (4 \cdot a + 5 \cdot 0 + 6 \cdot 0) & (4 \cdot 0 + 5 \cdot b + 6 \cdot 0) & (4 \cdot 0 + 5 \cdot 0 + 6 \cdot c) \\
 (7 \cdot a + 8 \cdot 0 + 9 \cdot 0) & (7 \cdot 0 + 8 \cdot b + 9 \cdot 0) & (7 \cdot 0 + 8 \cdot 0 + 9 \cdot c)
-\end{bmatrix} =
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 a & 2b & 3c \\
 4a & 5b & 6c \\
 7a & 8b & 9c
 \end{bmatrix}
+\end{align*}
 $$
 
-We can also write this in a more general and formal way. Let $\mathbf{D} = \operatorname{diag}(d\_{11}, \ldots, d\_{nn})$ be a diagonal matrix of size $n \times n$, and $\mathbf{A} \in \mathbb{R}^{n \times m}$ is any $n \times m$ matrix. Then the product $\mathbf{D}\mathbf{A}$ is:
+We can also write this in a more general and formal way. Let $\mathbf{D} = \operatorname{diag}(d_{11}, \ldots, d_{nn})$ be a diagonal matrix of size $n \times n$, and $\mathbf{A} \in \mathbb{R}^{n \times m}$ is any $n \times m$ matrix. Then the product $\mathbf{D}\mathbf{A}$ is:
 
 $$
 (\mathbf{D}\mathbf{A})_{ij} = \sum_{k=1}^n d_{ik} a_{kj}
 $$
 
-But since $d\_{ik} = 0$ for $i \neq k$, only $k = i$ contributes:
+But since $d_{ik} = 0$ for $i \neq k$, only $k = i$ contributes:
 
 $$
 (\mathbf{D}\mathbf{A})_{ij} = d_{ii} a_{ij}
 $$
 
-So, **multiplying from the left scales the $i$-th row of $\mathbf{A}$ by $d\_{ii}$**. And then the product for the other side, $\mathbf{A}\mathbf{D}$, is:
+So, **multiplying from the left scales the $i$-th row of $\mathbf{A}$ by $d_{ii}$**. And then the product for the other side, $\mathbf{A}\mathbf{D}$, is:
 
 $$
 (\mathbf{A}\mathbf{D})_{ij} = \sum_{k=1}^n a_{ik} d_{kj}
 $$
 
-But again, $d\_{kj} = 0$ for $k \neq j$, so only $k = j$ contributes:
+But again, $d_{kj} = 0$ for $k \neq j$, so only $k = j$ contributes:
 
 $$
 (\mathbf{A}\mathbf{D})_{ij} = a_{ij} d_{jj}
 $$
 
-So, **multiplying from the right scales the $j$-th column of $\mathbf{A}$ by $d\_{jj}$**.
+So, **multiplying from the right scales the $j$-th column of $\mathbf{A}$ by $d_{jj}$**.
 
 {{< callout type="example" >}}
 Let
@@ -839,8 +867,7 @@ $$
 2 \cdot 1 & 2 \cdot 2 \\
 0 \cdot 3 & 0 \cdot 4 \\
 3 \cdot 5 & 3 \cdot 6
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 2 & 4 \\
 0 & 0 \\
@@ -870,8 +897,7 @@ $$
 \begin{bmatrix}
 1 \cdot 10 & 2 \cdot 0 & 3 \cdot (-1) \\
 4 \cdot 10 & 5 \cdot 0 & 6 \cdot (-1)
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 10 & 0 & -3 \\
 40 & 0 & -6
@@ -882,7 +908,8 @@ $$
 We can also look at the case where both matrices are diagonal. In this case, the multiplication is even simpler because the only non-zero elements are on the diagonal. The product of two diagonal matrices is another diagonal matrix where each diagonal element is the product of the corresponding diagonal elements of the two matrices. This again can be quickly seen when looking at an example:
 
 $$
-\begin{bmatrix}
+\begin{align*}
+&\begin{bmatrix}
 d_1 & 0 & 0 \\
 0 & d_2 & 0 \\
 0 & 0 & d_3
@@ -890,17 +917,20 @@ d_1 & 0 & 0 \\
 e_1 & 0 & 0 \\
 0 & e_2 & 0 \\
 0 & 0 & e_3
-\end{bmatrix} =
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 (d_1 \cdot e_1 + 0 \cdot 0 + 0 \cdot 0) & (0 \cdot e_1 + d_2 \cdot e_2 + 0 \cdot 0) & (0 \cdot e_1 + 0 \cdot e_2 + d_3 \cdot e_3) \\
 (0 \cdot e_1 + 0 \cdot e_2 + 0 \cdot e_3) & (d_1 \cdot 0 + d_2 \cdot e_2 + 0 \cdot 0) & (0 \cdot e_1 + d_2 \cdot 0 + d_3 \cdot e_3) \\
 (0 \cdot e_1 + 0 \cdot e_2 + d_3 \cdot 0) & (d_1 \cdot 0 + d_2 \cdot 0 + d_3 \cdot e_3) & (0 \cdot e_1 + 0 \cdot e_2 + d_3 \cdot e_3)
-\end{bmatrix} =
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 (d_1 e_1) & 0 & 0 \\
 0 & (d_2 e_2) & 0 \\
 0 & 0 & (d_3 e_3)
 \end{bmatrix}
+\end{align*}
 $$
 
 This then becomes equivialent to the [elementwise product (Hadamard product)() of the diagonal elements of the two matrices. Formally, if $\mathbf{D} = \operatorname{diag}(d_1, \ldots, d_n)$ and $\mathbf{E} = \operatorname{diag}(e_1, \ldots, e_n)$, then:
@@ -909,7 +939,7 @@ $$
 (\mathbf{D}\mathbf{E})_{ij} = \sum_{k=1}^n d_{ik} e_{kj}
 $$
 
-But $d\_{ik} = 0$ unless $i = k$, and $e\_{kj} = 0$ unless $k = j$, so the only nonzero term is when $i = k = j$:
+But $d_{ik} = 0$ unless $i = k$, and $e_{kj} = 0$ unless $k = j$, so the only nonzero term is when $i = k = j$:
 
 $$
 (\mathbf{D}\mathbf{E})_{ij} = d_{ii} e_{ii} \text{ if } i = j, \text{ else } 0
@@ -1367,7 +1397,7 @@ Lastly we can also look at the case of multiplying a triangular matrix with a ge
 
 $$
 \begin{align*}
-\begin{bmatrix}
+&\begin{bmatrix}
 a & 0 & 0 \\
 b & c & 0 \\
 d & e & f
@@ -1375,7 +1405,8 @@ d & e & f
 x_1 & y_1 & z_1 \\
 x_2 & y_2 & z_2 \\
 x_3 & y_3 & z_3
-\end{bmatrix} &=
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 (a \cdot x_1 + 0 \cdot x_2 + 0 \cdot x_3) & (a \cdot y_1 + 0 \cdot y_2 + 0 \cdot y_3) & (a \cdot z_1 + 0 \cdot z_2 + 0 \cdot z_3) \\
 (b \cdot x_1 + c \cdot x_2 + 0 \cdot x_3) & (b \cdot y_1 + c \cdot y_2 + 0 \cdot y_3) & (b \cdot z_1 + c \cdot z_2 + 0 \cdot z_3) \\
@@ -1395,7 +1426,7 @@ If we multiply a lower triangular matrix from the right, we can see the followin
 
 $$
 \begin{align*}
-\begin{bmatrix}
+&\begin{bmatrix}
 x_1 & y_1 & z_1 \\
 x_2 & y_2 & z_2 \\
 x_3 & y_3 & z_3
@@ -1403,7 +1434,8 @@ x_3 & y_3 & z_3
 a & 0 & 0 \\
 b & c & 0 \\
 d & e & f
-\end{bmatrix} &=
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 (x_1 \cdot a + y_1 \cdot b + z_1 \cdot d) & (x_1 \cdot 0 + y_1 \cdot c + z_1 \cdot e) & (x_1 \cdot 0 + y_1 \cdot 0 + z_1 \cdot f) \\
 (x_2 \cdot a + y_2 \cdot b + z_2 \cdot d) & (x_2 \cdot 0 + y_2 \cdot c + z_2 \cdot e) & (x_2 \cdot 0 + y_2 \cdot 0 + z_2 \cdot f) \\
@@ -1423,7 +1455,7 @@ Now let's look at the case of multiplying an upper triangular matrix with a gene
 
 $$
 \begin{align*}
-\begin{bmatrix}
+&\begin{bmatrix}
 a & b & c \\
 0 & d & e \\
 0 & 0 & f
@@ -1431,7 +1463,8 @@ a & b & c \\
 x_1 & y_1 & z_1 \\
 x_2 & y_2 & z_2 \\
 x_3 & y_3 & z_3
-\end{bmatrix} &=
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 (a \cdot x_1 + b \cdot x_2 + c \cdot x_3) & (a \cdot y_1 + b \cdot y_2 + c \cdot y_3) & (a \cdot z_1 + b \cdot z_2 + c \cdot z_3) \\
 (0 \cdot x_1 + d \cdot x_2 + e \cdot x_3) & (0 \cdot y_1 + d \cdot y_2 + e \cdot y_3) & (0 \cdot z_1 + d \cdot z_2 + e \cdot z_3) \\
@@ -1451,7 +1484,7 @@ If we multiply an upper triangular matrix from the right, we can see the followi
 
 $$
 \begin{align*}
-\begin{bmatrix}
+&\begin{bmatrix}
 x_1 & y_1 & z_1 \\
 x_2 & y_2 & z_2 \\
 x_3 & y_3 & z_3
@@ -1459,7 +1492,8 @@ x_3 & y_3 & z_3
 a & b & c \\
 0 & d & e \\
 0 & 0 & f
-\end{bmatrix} &=
+\end{bmatrix} \\
+&=
 \begin{bmatrix}
 (x_1 \cdot a + y_1 \cdot 0 + z_1 \cdot 0) & (x_1 \cdot b + y_1 \cdot d + z_1 \cdot 0) & (x_1 \cdot c + y_1 \cdot e + z_1 \cdot f) \\
 (x_2 \cdot a + y_2 \cdot 0 + z_2 \cdot 0) & (x_2 \cdot b + y_2 \cdot d + z_2 \cdot 0) & (x_2 \cdot c + y_2 \cdot e + z_2 \cdot f) \\
@@ -1637,6 +1671,7 @@ When you want the transpose of a matrix you don't actually need to perform any o
   src="/images/maths/matrixTransposeOnComputers.png"
   alt="Reading a matrix and its transpose."
   caption="Reading a matrix and its transpose."
+  width="200"
 >}}
 
 Depending on the size of the matrix and how many times you need to access the elements of the matrix this can be a lot faster than actually transposing the matrix. However, if you need to access the elements of the matrix multiple times it is probably faster to transpose the matrix first and then access the elements due to memory locality.
@@ -1716,7 +1751,7 @@ $$
 (\pi_2 \circ \pi_1)^{-1}(i) = \pi_1^{-1}(\pi_2^{-1}(i))
 $$
 
-We can also extend this idea to permuting the components of a vector. For this we represent the permutation as a matrix as remember that we can transform vectors into other vectors by multiplying them with matrices. A **permutation matrix** $\mathbf{P} \in \mathbb{R}^{n \times n}$ is obtained by permuting the rows of the identity matrix $\mathbf{I}\_n$ according to a permutation $\pi$. Formally, the entries of a permutation matrix are defined as:
+We can also extend this idea to permuting the components of a vector. For this we represent the permutation as a matrix as remember that we can transform vectors into other vectors by multiplying them with matrices. A **permutation matrix** $\mathbf{P} \in \mathbb{R}^{n \times n}$ is obtained by permuting the rows of the identity matrix $\mathbf{I}_n$ according to a permutation $\pi$. Formally, the entries of a permutation matrix are defined as:
 
 $$
 P_{ij} = \begin{cases}
@@ -1738,15 +1773,15 @@ $$
 \end{bmatrix}
 $$
 
-Suppose we apply $\mathbf{P}$ to the vector $\mathbf{x} = \begin{bmatrix} x\_1 \ x\_2 \ x\_3 \end{bmatrix}$ then the following happens:
+Suppose we apply $\mathbf{P}$ to the vector $\mathbf{x} = \begin{bmatrix} x_1 \ x_2 \ x_3 \end{bmatrix}$ then the following happens:
 
 - The first row of $\mathbf{P}$ is $(0\ 1\ 0)$:
-  This means the first entry of the output vector is $0 \cdot x\_1 + 1 \cdot x\_2 + 0 \cdot x\_3 = x\_2$.
-  So, the $1$ in column 2 means “place $x\_2$ into the first position”.
+  This means the first entry of the output vector is $0 \cdot x_1 + 1 \cdot x_2 + 0 \cdot x_3 = x_2$.
+  So, the $1$ in column 2 means “place $x_2$ into the first position”.
 - The second row is $(0\ 0\ 1)$:
-  The output's second entry is $x\_3$ (the $1$ in column 3).
+  The output's second entry is $x_3$ (the $1$ in column 3).
 - The third row is $(1\ 0\ 0)$:
-  The output's third entry is $x\_1$ (the $1$ in column 1).
+  The output's third entry is $x_1$ (the $1$ in column 1).
 
 $$
 \mathbf{P}\mathbf{x} = \begin{bmatrix} x_2 \\ x_3 \\ x_1 \end{bmatrix}
@@ -1766,7 +1801,7 @@ $$
 $$
 
 {{< callout type="example" >}}
-Suppose you have $\mathbf{P}$ as above, which permutes $(x\_1, x\_2, x\_3) \to (x\_2, x\_3, x\_1)$.
+Suppose you have $\mathbf{P}$ as above, which permutes $(x_1, x_2, x_3) \to (x_2, x_3, x_1)$.
 How do we undo this? We need a permutation matrix $\mathbf{Q}$ such that:
 
 $$
@@ -1775,7 +1810,7 @@ $$
 
 Let's work this out explicitly:
 
-$\mathbf{P}\mathbf{x} = \begin{bmatrix} x\_2 \ x\_3 \ x\_1 \end{bmatrix}$
+$\mathbf{P}\mathbf{x} = \begin{bmatrix} x_2 \ x_3 \ x_1 \end{bmatrix}$
 
 We want $\mathbf{Q}$ so that:
 
@@ -1783,13 +1818,13 @@ $$
 \mathbf{Q} \begin{bmatrix} x_2 \\ x_3 \\ x_1 \end{bmatrix} = \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}
 $$
 
-So, what must $\mathbf{Q}$ do? It must move $x\_2$ (currently in position 1) back to position 2, $x\_3$ (currently in position 2) back to position 3, $x\_1$ (currently in position 3) back to position 1.
+So, what must $\mathbf{Q}$ do? It must move $x_2$ (currently in position 1) back to position 2, $x_3$ (currently in position 2) back to position 3, $x_1$ (currently in position 3) back to position 1.
 
 So, the inverse permutation matrix $\mathbf{Q}$ will have $1$s in the following places:
 
-- Row 1: column 3 (to put $x\_1$ in position 1),
-- Row 2: column 1 (to put $x\_2$ in position 2),
-- Row 3: column 2 (to put $x\_3$ in position 3):
+- Row 1: column 3 (to put $x_1$ in position 1),
+- Row 2: column 1 (to put $x_2$ in position 2),
+- Row 3: column 2 (to put $x_3$ in position 3):
 
 $$
 \mathbf{Q} = \begin{bmatrix}
@@ -1804,8 +1839,7 @@ we can check that this works:
 $$
 \mathbf{Q} \begin{bmatrix}
 x_2 \\ x_3 \\ x_1
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 0 & 0 & 1 \\
 1 & 0 & 0 \\
@@ -1813,8 +1847,7 @@ x_2 \\ x_3 \\ x_1
 \end{bmatrix}
 \begin{bmatrix}
 x_2 \\ x_3 \\ x_1
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 x_1 \\
 x_2 \\
@@ -1987,11 +2020,11 @@ $$
 {{< /callout >}}
 
 {{< callout type="todo" >}}
-    Add properties of the trace. and proof that it is the sum of the eigenvalues.
+Add properties of the trace. and proof that it is the sum of the eigenvalues.
 {{< /callout >}}
 
 {{< callout type="todo" >}}
-    Parts below here are still a work in progress and might not belong here.
+Parts below here are still a work in progress and might not belong here.
 {{< /callout >}}
 
 ## Orthogonal / Orthonormal Matrix
@@ -1999,7 +2032,7 @@ $$
 Very unclear what the difference is between these two. I think an orthogonal matrix is a matrix where the columns are orthogonal to each other but don't have to be normalized. And an orthonormal matrix is a matrix where the columns are orthogonal to each other and are normalized, i.e. have a length of $1$.
 
 {{< callout type="todo" >}}
-    Add more to this section such as examples etc. these are later on very important.
+Add more to this section such as examples etc. these are later on very important.
 {{< /callout >}}
 
 ## Householder Matrix

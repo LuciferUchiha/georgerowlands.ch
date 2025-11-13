@@ -214,13 +214,13 @@ $$
 \mathbf{A} = \begin{bmatrix} \mathbf{v_1} & \mathbf{v_2} & \ldots & \mathbf{v_n} & \mathbf{v_{n+1}} \end{bmatrix}
 $$
 
-where $\mathbf{v}\_i$ are vectors in $\mathbb{R}^M$, so the column vectors are of dimension $M$. Using this matrix we define the following transformation:
+where $\mathbf{v}_i$ are vectors in $\mathbb{R}^M$, so the column vectors are of dimension $M$. Using this matrix we define the following transformation:
 
 $$
 T: \mathbb{R}^N \rightarrow \mathbb{R}^M, \quad T(\mathbf{x}) = \mathbf{A}\begin{bmatrix} x_1 \\ x_2 \\ \ldots \\ x_n \\ 1 \end{bmatrix}
 $$
 
-We are told this transformation is linear for all $\mathbf{x} \in \mathbb{R}^N$ **only if** the last column of the matrix $\mathbf{A}$ is the zero vector, i.e. $\mathbf{v}\_{n+1} = \mathbf{o}$. Why is this the case?
+We are told this transformation is linear for all $\mathbf{x} \in \mathbb{R}^N$ **only if** the last column of the matrix $\mathbf{A}$ is the zero vector, i.e. $\mathbf{v}_{n+1} = \mathbf{o}$. Why is this the case?
 
 First, recall the definition of linearity. A transformation $T$ is linear if for all $\mathbf{x}, \mathbf{y} \in \mathbb{R}^N$ and any scalar $c$ the following conditions hold:
 
@@ -234,9 +234,9 @@ $$
 T(\mathbf{0}) = \mathbf{A} \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix} = \mathbf{v}_{n+1}
 $$
 
-So, unless $\mathbf{v}\_{n+1} = \mathbf{0}$, the zero vector in $\mathbb{R}^N$ does not get mapped to the zero vector in $\mathbb{R}^M$**. If $\mathbf{v}\_{n+1} \neq \mathbf{0}$, $T(\mathbf{0}) \neq \mathbf{0}$, so $T$ is **not linear**.
+So, unless $\mathbf{v}_{n+1} = \mathbf{0}$, the zero vector in $\mathbb{R}^N$ does not get mapped to the zero vector in $\mathbb{R}^M$**. If $\mathbf{v}_{n+1} \neq \mathbf{0}$, $T(\mathbf{0}) \neq \mathbf{0}$, so $T$ is **not linear**.
 
-Let's also check additivity and homogeneity, assuming $\mathbf{v}\_{n+1} \neq \mathbf{0}$. Let $\mathbf{x}, \mathbf{y} \in \mathbb{R}^N$:
+Let's also check additivity and homogeneity, assuming $\mathbf{v}_{n+1} \neq \mathbf{0}$. Let $\mathbf{x}, \mathbf{y} \in \mathbb{R}^N$:
 
 $$
 T(\mathbf{x}) = \mathbf{A} \begin{bmatrix} \mathbf{x} \\ 1 \end{bmatrix}
@@ -261,7 +261,7 @@ $$
 T(\mathbf{x} + \mathbf{y}) = \mathbf{A} \begin{bmatrix} \mathbf{x} + \mathbf{y} \\ 1 \end{bmatrix} = \sum_{i=1}^n (x_i + y_i) \mathbf{v}_i + \mathbf{v}_{n+1}
 $$
 
-So, **unless $\mathbf{v}\_{n+1} = \mathbf{0}$**, we have $T(\mathbf{x} + \mathbf{y}) \neq T(\mathbf{x}) + T(\mathbf{y})$. Then for homogeneity with scalar $c$:
+So, **unless $\mathbf{v}_{n+1} = \mathbf{0}$**, we have $T(\mathbf{x} + \mathbf{y}) \neq T(\mathbf{x}) + T(\mathbf{y})$. Then for homogeneity with scalar $c$:
 
 $$
 T(c\mathbf{x}) = \mathbf{A} \begin{bmatrix} c\mathbf{x} \\ 1 \end{bmatrix} = \sum_{i=1}^n c x_i \mathbf{v}_i + \mathbf{v}_{n+1}
@@ -273,7 +273,7 @@ $$
 c T(\mathbf{x}) = c \left( \sum_{i=1}^n x_i \mathbf{v}_i + \mathbf{v}_{n+1} \right ) = \sum_{i=1}^n c x_i \mathbf{v}_i + c \mathbf{v}_{n+1}
 $$
 
-These are only equal if $c \mathbf{v}*{n+1} = \mathbf{v}*{n+1}$ for all $c$, which is only possible if $\mathbf{v}\_{n+1} = \mathbf{0}$. So we conclude that for the transformation to be linear, the last column $\mathbf{v}_{n+1}$ must be the zero vector and if $\mathbf{v}\_{n+1} = \mathbf{0}$, then:
+These are only equal if $c \mathbf{v}*{n+1} = \mathbf{v}*{n+1}$ for all $c$, which is only possible if $\mathbf{v}_{n+1} = \mathbf{0}$. So we conclude that for the transformation to be linear, the last column $\mathbf{v}_{n+1}$ must be the zero vector and if $\mathbf{v}_{n+1} = \mathbf{0}$, then:
 
 $$
 T(\mathbf{x}) = \sum_{i=1}^n x_i \mathbf{v}_i
@@ -529,7 +529,7 @@ $$
 \end{align*}
 $$
 
-Next we look at what happens if we rotate a vector by angle $\theta\_1$ and then by $\theta\_2$, what is the result. Let:
+Next we look at what happens if we rotate a vector by angle $\theta_1$ and then by $\theta_2$, what is the result. Let:
 
 $$
 R(\theta_1) = \begin{bmatrix} \cos\theta_1 & -\sin\theta_1 \\ \sin\theta_1 & \cos\theta_1 \end{bmatrix}
@@ -541,7 +541,7 @@ $$
 R(\theta_2) = \begin{bmatrix} \cos\theta_2 & -\sin\theta_2 \\ \sin\theta_2 & \cos\theta_2 \end{bmatrix}
 $$
 
-Applying $R(\theta\_2)$ after $R(\theta\_1)$ we get:
+Applying $R(\theta_2)$ after $R(\theta_1)$ we get:
 
 $$
 \begin{align*}
@@ -630,8 +630,7 @@ $$
 R(-\theta) = \begin{bmatrix}
 \cos(-\theta) & -\sin(-\theta) \\
 \sin(-\theta) & \cos(-\theta)
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 \cos\theta & \sin\theta \\
 -\sin\theta & \cos\theta

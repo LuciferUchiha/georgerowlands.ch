@@ -429,13 +429,13 @@ $$
 
 ## Inverse of Triangular Matrices
 
-Let's now look at the inverse of triangular matrices. As with diagonal matrices, triangular matrices (if invertible) have a particularly nice structure for their inverse. Let $\mathbf{L}$ be an $n\times n$ **lower triangular** matrix with entries $l\_{ij}$, that is,
+Let's now look at the inverse of triangular matrices. As with diagonal matrices, triangular matrices (if invertible) have a particularly nice structure for their inverse. Let $\mathbf{L}$ be an $n\times n$ **lower triangular** matrix with entries $l_{ij}$, that is,
 
 $$
 l_{ij} = 0 \qquad \text{if } i < j.
 $$
 
-Suppose that $\mathbf{L}$ is invertible, and denote its inverse by $\mathbf{M} = \mathbf{L}^{-1}$, with entries $m\_{ij}$. Then it turns out that $\mathbf{M}$ is also lower triangular. To see this let us look at a explicit calculation:
+Suppose that $\mathbf{L}$ is invertible, and denote its inverse by $\mathbf{M} = \mathbf{L}^{-1}$, with entries $m_{ij}$. Then it turns out that $\mathbf{M}$ is also lower triangular. To see this let us look at a explicit calculation:
 
 $$
 \mathbf{L} =
@@ -465,8 +465,7 @@ d & e & f
 m_{11} \\
 m_{21} \\
 m_{31}
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 1 \\ 
 0 \\ 
@@ -475,20 +474,20 @@ m_{31}
 $$
 
 We then can write out the equations for each row of the first column:
-- Row 1: $a m\_{11} = 1 \implies m\_{11} = \frac{1}{a}$
-- Row 2: $b m\_{11} + c m\_{21} = 0 \implies m\_{21} = -\frac{b}{c} m\_{11} = -\frac{b}{a c}$
-- Row 3: $d m\_{11} + e m\_{21} + f m\_{31} = 0 \implies m\_{31} = -\frac{d m\_{11} + e m\_{21}}{f} = -\frac{d/a + e \cdot (-b/(a c))}{f} = -\frac{d}{a f} + \frac{e b}{a c f}$
+- Row 1: $a m_{11} = 1 \implies m_{11} = \frac{1}{a}$
+- Row 2: $b m_{11} + c m_{21} = 0 \implies m_{21} = -\frac{b}{c} m_{11} = -\frac{b}{a c}$
+- Row 3: $d m_{11} + e m_{21} + f m_{31} = 0 \implies m_{31} = -\frac{d m_{11} + e m_{21}}{f} = -\frac{d/a + e \cdot (-b/(a c))}{f} = -\frac{d}{a f} + \frac{e b}{a c f}$
 
 And so on for the other columns. We can always solve the system by back substitution for triangular matrices. For the second column, we have:
-- Row 1: $a m\_{12} = 0 \implies m\_{12} = 0$
-- Row 2: $b m\_{12} + c m\_{22} = 1 \implies m\_{22} = \frac{1}{c}$
-- Row 3: $d m\_{12} + e m\_{22} + f m\_{32} = 0 \implies m\_{32} = -\frac{e}{c f}$
+- Row 1: $a m_{12} = 0 \implies m_{12} = 0$
+- Row 2: $b m_{12} + c m_{22} = 1 \implies m_{22} = \frac{1}{c}$
+- Row 3: $d m_{12} + e m_{22} + f m_{32} = 0 \implies m_{32} = -\frac{e}{c f}$
 
 And for the third column:
-- Row 1: $a m\_{13} = 0 \implies m
-\_{13} = 0$
-- Row 2: $b m\_{13} + c m\_{23} = 0 \implies m\_{23} = 0$
-- Row 3: $d m\_{13} + e m\_{23} + f m\_{33} = 1 \implies m\_{33} = \frac{1}{f}$
+- Row 1: $a m_{13} = 0 \implies m
+_{13} = 0$
+- Row 2: $b m_{13} + c m_{23} = 0 \implies m_{23} = 0$
+- Row 3: $d m_{13} + e m_{23} + f m_{33} = 1 \implies m_{33} = \frac{1}{f}$
 
 Thus, we can see that the inverse $\mathbf{M}$ is also lower triangular and for the $3 \times 3$ case we have:
 
@@ -501,12 +500,13 @@ $$
 \end{bmatrix}
 $$
 
-Notice that, when solving for $m\_{ii}$, we get the equation:
-$$math
-l_{ii} m_{ii} = 1 \implies m_{ii} = \frac{1}{l_{ii}}
-```
+Notice that, when solving for $m_{ii}$, we get the equation:
 
-Therefore, if any of the diagonal elements $l\_{ii} = 0$, then the fraction is not defined and $\mathbf{L}$ is not invertible. If all $l\_{ii} \neq 0$, then $\mathbf{L}$ is invertible and its inverse is also lower triangular. Later on this will also match our intuition that [the determinant of a triangular matrix is the product of its diagonal elements](https://en.wikipedia.org/wiki/Determinant#Properties_of_the_determinant) and if the determinant is zero (so one of the diagonal elements is zero), then the matrix is not invertible.
+$$
+l_{ii} m_{ii} = 1 \implies m_{ii} = \frac{1}{l_{ii}}
+$$
+
+Therefore, if any of the diagonal elements $l_{ii} = 0$, then the fraction is not defined and $\mathbf{L}$ is not invertible. If all $l_{ii} \neq 0$, then $\mathbf{L}$ is invertible and its inverse is also lower triangular. Later on this will also match our intuition that [the determinant of a triangular matrix is the product of its diagonal elements](https://en.wikipedia.org/wiki/Determinant#Properties_of_the_determinant) and if the determinant is zero (so one of the diagonal elements is zero), then the matrix is not invertible.
 
 We can also show that the inverse of an **upper triangular** matrix is also upper triangular. The proof is similar to the one above:
 
@@ -530,9 +530,9 @@ m_{31}
 $$
 
 which leads to the equations (here starting with the last row makes it easier):
-- Row 3: $f m\_{31} = 0 \implies m\_{31} = 0$
-- Row 2: $d m\_{21} + e m\_{31} = 0 \implies m\_{21} = 0$
-- Row 1: $a m\_{11} + b m\_{21} + c m\_{31} = 1 \implies m\_{11} = \frac{1}{a}$
+- Row 3: $f m_{31} = 0 \implies m_{31} = 0$
+- Row 2: $d m_{21} + e m_{31} = 0 \implies m_{21} = 0$
+- Row 1: $a m_{11} + b m_{21} + c m_{31} = 1 \implies m_{11} = \frac{1}{a}$
 
 etc. for the other columns. Putting this all together, we get:
 

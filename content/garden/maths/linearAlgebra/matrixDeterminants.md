@@ -1,6 +1,6 @@
 ---
 title: Determinants of Matrices
-type: Docs
+type: docs
 weight: 13
 ---
 
@@ -35,6 +35,7 @@ $$
   src="/images/maths/determinantDerivasion.png"
   alt="Derivation of the formula for the determinant of a 2x2 matrix using pythagoras theorem."
   caption="Derivation of the formula for the determinant of a 2x2 matrix using pythagoras theorem."
+  width="600"
 >}}
 
 {{< callout type="todo" >}}
@@ -78,6 +79,7 @@ We start by writing the matrix out in a 3x3 grid and then we copy the first two 
   src="/images/maths/determinantsAugment.png"
   alt="Rule of Sarrus for calculating the determinant of a 3x3 matrix."
   caption="Rule of Sarrus for calculating the determinant of a 3x3 matrix."
+  width="300"
 >}}
 
 {{< callout type="todo" >}}
@@ -372,8 +374,7 @@ c & d
 \begin{bmatrix}
 w & x \\
 y & z
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 1 & 0 \\
 0 & 1
@@ -551,6 +552,9 @@ The reason why it is bijective is because an ordering of a set of numbers is a o
 
 {{< figure
   src="/images/maths/permutations.png"
+  alt="Constructing permutations of a set of numbers."
+  caption="Constructing permutations of a set of numbers."
+  width="600"
 >}}
 
 The sign of a permutation is a bit weird. It can be either 1 or -1. The sign of a permutation counts the parity of the number of pairs of elements that are out of order after the permutation has been applied. So if the number of pairs of elements that are out of order is even then the sign of the permutation is 1 and if the number of pairs of elements that are out of order is odd then the sign of the permutation is -1.
@@ -597,6 +601,10 @@ c & d
 $$
 
 So we can see that this formula generalizes to the formula for the determinant of a $2 \times 2$ matrix that we derived earlier. Now let's look at the formula for the determinant of a $3 \times 3$ matrix.
+
+{{< Callout type="todo" >}}
+Transform these images to LaTeX code.
+{{< /callout >}}
 
 {{< figure
   src="/images/maths/determinantCoFactor.png"

@@ -1,6 +1,6 @@
 ---
 title: Complex Linear Algebra
-type: Docs
+type: docs
 weight: 14
 ---
 
