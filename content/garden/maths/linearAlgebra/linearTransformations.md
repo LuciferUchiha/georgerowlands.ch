@@ -139,10 +139,10 @@ cT(\mathbf{u}) &= c \begin{bmatrix} x^2 \\ y^2 \end{bmatrix} = \begin{bmatrix} c
 \end{align*}
 $$
 
-<Callout type="todo">
+{{< callout type="todo" >}}
 Add the non linear transformation of summing the absolute values of the components, i.e the first norm of a vector.
 {{< /callout >}}
-</Callout>
+{{< /callout >}}
 
 ## Matrices as Transformations
 

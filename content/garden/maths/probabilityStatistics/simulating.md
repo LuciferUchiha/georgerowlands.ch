@@ -1,0 +1,37 @@
+---
+title: Simulating Random Variables
+type: docs
+draft: true
+---
+
+Manchmal ist es nur mit grossem Aufwand Wahrscheinlichkeiten zu exakt berechnen. Eine Lösung für dieses Problem ist die Zufallsvariable zu simulieren, also Zahlen zu erzeugen die korrekt verteilt sind und dann schauen, welcher Prozentsatz dieser Zahlen im gesuchten Ereignis liegen. Dank dem Gesetz der grossen Zahlen wird diese Wahrscheinlichkeit genauer mit wachsender Anzahl an Wiederholungen.
+
+In den meisten Programmiersprachen ist der sogenannte lineare Kongruenzgenerator eingebaut welcher ein Pseudozufallszahlengenerator ist. Das heisst er erzeugt die Zahlen nicht wirklich zufällig sondern berechnet sie anhand eines Startwerts, der sogenannte **Seed** (oftmals die Systemzeit).
+
+Für kryptographische Zwecke wie Schlüsselerzeugung sind Pseudozufallszahlengenerator nicht geeinigt, weil mit wenigen Werten kann man die verwendete Parameter berechnen und kann dann die Zufallsvariablen voraus sehen.
+
+## Linearer Kongruenzgenerator
+
+Beim linearen Kongruenzgenerator haben wir ein sogenanntes modul $m >1$ und  einen Anfangswert (der Seed) $x_0$ und zwei weitere Werte $a$ und $b$. Wichtig dabei ist, dass $a,b,x_0 \in \{0,1,...,m-1\}$ sind. Dann können wir eine Zufallszahl wie gefolgt berechnen
+
+```mathx_{n+1}=(a\cdot x_n +b) \text{ mod } m```
+
+Wir erhalten dann einen Wert aus dem endlichen Bereich ${0,1,...m-1}$. Weil der Wertebereich endlich ist gibt es eine Periode. Wenn z.B. $m=12,a=4,b=1,x_0=1$ dann wiederholt sich die Folge schon nach dem dritten Wert.
+
+Der Satz von Knuth besagt, damit die Periodenlänge maximal ist, also $m$ muss folgendes gelten:
+
+- $b$ ist zum Modul $m$ teilerfremd, also $ggt(b,m)=1$.
+- Jeder Primfaktor von $m$ teilt $a-1$.
+- Wenn $m$ durch 4 teilbar ist, dann muss auch $a-1$ durch 4 teilbar sein.
+
+Durch eine Transformation bekommen wir auch nur noch Werte im Intervall $[a,b]$.
+
+```mathz_n=a+(b-1)\frac{x_n}{m}```
+
+Die Werte $U$ die wir erhalten sind im Intervall $[a,b]$ gleich verteilt.
+
+## Inversionsmethode
+
+Wir können nun unsere Zufallszahlen auf eine bestimmte Verteilung abbilden mit der Inversionsmethode.
+
+Es sei $F$ eine streng monoton steigende Verteilungsfunktion und $U$ eine im Intervall $[0,1]$ gleichverteilte Zufallsvariable dann ist Zufallsvariable $F^{-1}(U)$ verteilt mit der Verteilungsfunktion $F$.
