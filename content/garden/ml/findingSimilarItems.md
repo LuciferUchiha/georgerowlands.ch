@@ -7,7 +7,8 @@ weight: 22
 Many problems relating to data can be expressed as finding similar items. For example, if we wanted to solve the scene completion problem we would want to find images that are similar to each other to complete the scene.
 
 {{< figure
-  src="/images/cs/mlSceneCompletionProblem.png"
+  src="/images/ml/mlSceneCompletionProblem.png"
+  caption="The scene completion problem where we want to fill in the missing parts of the image."
 >}}
 
 We can generalize this problem to finding near-neighbors in a high dimensional space. We can pretty easily come up with a naive solution to solve this. For example, if vectorize the images and then define some distance function $d(x_1,x_2)$ which returns the distance between the vectors $x_1$ and $x_2$. We could then find all pairs of images $(x_i, x_j)$ that are within some distance threshold $d(x_i, x_j) \leq t$. However, for $n$ images this naive solution takes $O(n^2)$. Luckily there is a method to do this in $O(n)$!
@@ -47,7 +48,7 @@ So to solve this problem we define a series of steps:
 3. Lastly, we only want to focus on pairs of signatures that have a high similarity i.e we want to decrease the number of pairs to compare, this is done with locality sensitive-hashing, short LSH.
 
 {{< figure
-  src="/images/cs/mlFindingSimiliarItemsOverview.png"
+  src="/images/ml/mlFindingSimiliarItemsOverview.png"
 >}}
 
 ## Shingling

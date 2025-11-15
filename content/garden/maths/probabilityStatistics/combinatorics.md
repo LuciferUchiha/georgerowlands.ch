@@ -310,7 +310,10 @@ $$
 We first add the sizes of all three sets, then subtract the sizes of each pairwise intersection (since they were counted twice), and finally add back the size of the triple intersection (since it was subtracted too many times). For $n$ sets, the formula generalizes to:
 
 $$
-|A_1 \cup A_2 \cup \ldots \cup A_n| = \sum_{i=1}^n |A_i| - \sum_{1 \leq i < j \leq n} |A_i \cap A_j| + \sum_{1 \leq i < j < k \leq n} |A_i \cap A_j \cap A_k| - \ldots + (-1)^{n+1} |A_1 \cap A_2 \cap \ldots \cap A_n|
+\begin{align*}
+|A_1 \cup A_2 \cup \ldots \cup A_n| &= \sum_{i=1}^n |A_i| - \sum_{1 \leq i < j \leq n} |A_i \cap A_j| \\ 
+&+ \sum_{1 \leq i < j < k \leq n} |A_i \cap A_j \cap A_k| - \ldots + (-1)^{n+1} |A_1 \cap A_2 \cap \ldots \cap A_n|
+\end{align*}
 $$
 
 This alternating sum accounts for overlaps at all levels, correcting for double-counting. This formula is often also referred to as the **sieve** method, as it "sieves out" the overlaps to get the correct count.
@@ -408,12 +411,6 @@ So there are 30 people who neither drink coffee nor tea.
 ## Urn Model
 
 The **urn model** is a metaphor for almost every combinatorics scenario. It helps visualize how to count arrangements, selections, and distributions of objects. Think of an urn containing $n$ distinct balls, and you want to draw $k$ balls under various conditions such as with or without replacement, and whether order matters or not etc. This is also a very useful model to visualize basic probability theory concepts as drawing balls from an urn behaves just like drawing a sample from a laplace distribution if the balls are drawn with with replacement.
-
-{{< figure
-  src="/images/maths/combinatoricsUrnenModell.png"
-  alt="urnenModell"
-  caption="urnenModell"
->}}
 
 We can then summarize the 4 main cases in a table:
 

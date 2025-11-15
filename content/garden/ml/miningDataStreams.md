@@ -16,7 +16,9 @@ Think of Google as the system. They have multiple data streams, one could search
 {{< /callout >}}
 
 {{< figure
-  src="/images/cs/mlDataStreams.png"
+  src="/images/ml/mlDataStreams.png"
+  alt="Flow of data and queries in a data stream system."
+  caption="Flow of data and queries in a data stream system."
 >}}
 
 ## Sampling a Data Stream
@@ -26,7 +28,10 @@ Since we can't store and use the entire data stream we want to take samples of a
 When working with samples we are interested in two types of samples either a fixed proportion of the data stream for example 10% of all elements. Or we can get a random sample of fixed size for example 100 elements.
 
 {{< figure
-  src="/images/cs/mlDataSample.png"
+  src="/images/ml/mlDataSample.png"
+  alt="Sampling from a data distribution."
+  caption="Sampling from a data distribution."
+  width="500"
 >}}
 
 ### Fixed Proportion Sample
@@ -65,7 +70,10 @@ We can do this using the so-called Reservoir Sampling Algorithm:
 You can simply think of a water reservoir where if fresh water comes in some old water spills/overflows to make space for it.
 
 {{< figure
-  src="/images/cs/mlSamplingReservoir.png"
+  src="/images/ml/mlSamplingReservoir.png"
+  alt="Visualization of the reservoir sampling algorithm."
+  caption="Visualization of the reservoir sampling algorithm."
+  width="400"
 >}}
 
 We can prove that this algorithm fits our requirements by using proof by induction:
@@ -92,7 +100,7 @@ $$
 We very often find ourselves querying a data stream about the most recent input elements. This can be further generalized to processing queries using a sliding window. This sliding window holds $N$ elements. 
 
 {{< figure
-  src="/images/cs/mlQuerySlidingWindow.png"
+  src="/images/ml/mlQuerySlidingWindow.png"
 >}}
 
 We could solve this problem quite easily by just keeping track of the $N$ most recent elements. But what if the $N$ elements take up to much storage and therefore can not be stored in memory? Or we have multiple streams and therefore want to minimize the memory usage as much as possible. 
@@ -128,7 +136,7 @@ We also add a few more constraints to the algorithm apart from the amount of 1s 
 - Blocks disappear when they are out of the window, i.e their end time is larger than $N$.
 
 {{< figure
-  src="/images/cs/mlDGIMBlocks.png"
+  src="/images/ml/mlDGIMBlocks.png"
 >}}
 
 This leads us to have at max $\log N$ blocks, and each block needs $O(\log N)$ bits so we have a total memory usage of $O(log^2 N)$.
@@ -142,7 +150,7 @@ When new values come into the system we need to maintain our data structure. If 
 3. Recursively check if there are three blocks of the same size and combine the oldest blocks.
 
 {{< figure
-  src="/images/cs/mlDGIMBlocksUpdate.png"
+  src="/images/ml/mlDGIMBlocksUpdate.png"
 >}}
 
 #### Querying

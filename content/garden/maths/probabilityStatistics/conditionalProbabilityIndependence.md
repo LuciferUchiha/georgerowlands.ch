@@ -356,9 +356,11 @@ If the first card is an ace, there are now 3 aces left out of 51 cards. So, the 
 By the multiplication rule the probability that both cards drawn are aces is:
 
 $$
+\begin{align*}
 \mathbb{P}(\text{first card is ace} \cap \text{second card is ace})
-= \mathbb{P}(A \cap B) = \mathbb{P}(A) \cdot \mathbb{P}(B \mid A)
-= \frac{4}{52} \cdot \frac{3}{51} = \frac{12}{2652} = \frac{1}{221} \approx 0.45\%
+&= \mathbb{P}(A \cap B) = \mathbb{P}(A) \cdot \mathbb{P}(B \mid A) \\
+&= \frac{4}{52} \cdot \frac{3}{51} = \frac{12}{2652} = \frac{1}{221} \approx 0.45\%
+\end{align*}
 $$
 {{< /callout >}}
 
@@ -369,9 +371,8 @@ A **multi-stage random experiment** consists of several random steps performed i
 1. **Multiplication Rule:**
    The probability of a specific path (sequence of outcomes) is the **product** of the conditional probabilities along the path. This is because each stage's outcome is "conditioned" on the previous outcomes so it follows directly from the multiplication rule for conditional probabilities:
 
-    $$
-    \mathbb{P}(A_1 \cap A_2 \cap \ldots \cap A_n) = \mathbb{P}(A_1)\cdot\mathbb{P}(A_2|A_1)\cdot\mathbb{P}(A_3|A_1\cap A_2)\cdots\mathbb{P}(A_n|A_1\cap\cdots\cap A_{n-1})
-    
+$$
+\mathbb{P}(A_1 \cap A_2 \cap \ldots \cap A_n) = \mathbb{P}(A_1)\cdot\mathbb{P}(A_2|A_1)\cdot\mathbb{P}(A_3|A_1\cap A_2)\cdots\mathbb{P}(A_n|A_1\cap\cdots\cap A_{n-1})
 $$
 
 2. **Additivity Rule (Countable Additivity):**
@@ -444,7 +445,7 @@ $$
 The tree diagram for this experiment would look like this:
 
 {{< figure
-  src="/images/maths/mehrstufigeZufallsexperimente.png"
+  src="/images/maths/probabilityMultiStage.png"
   alt="Tree diagram for a multi-stage random experiment with dependent stages"
   caption="Tree diagram for a multi-stage random experiment with dependent stages"
 >}}
