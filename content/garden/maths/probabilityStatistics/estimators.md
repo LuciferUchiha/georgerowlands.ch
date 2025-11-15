@@ -243,10 +243,10 @@ Both estimators are unbiased because their bias is zero, but they have different
 
 This means that, even though both estimators are correct on average, the sample mean estimator is much more reliable and concentrated around the true value. Especially as the sample size increases, the variance and the MSE of the sample mean estimator tends to zero which implies that it becomes a very good estimator for the true parameter $\theta$.
 
-<Callout type="todo">
+{{< callout type="todo" >}}
 Would a concrete number example make sense here and help?
 {{< /callout >}}
-</Callout>
+{{< /callout >}}
 
 ## Maximum Likelihood Estimation (MLE)
 
@@ -581,7 +581,7 @@ $$
 = \frac{n-1}{n}\sigma^2
 $$
 
-<Callout type="todo">
+{{< callout type="todo" >}}
 How was this expectation calculated? Is it possible without variance?
 {{< /callout >}}
 
@@ -624,4 +624,4 @@ $$
 $$
 
 Thus, $S^2$ is an unbiased estimator for $\sigma^2$.
-</Callout>
+{{< /callout >}}

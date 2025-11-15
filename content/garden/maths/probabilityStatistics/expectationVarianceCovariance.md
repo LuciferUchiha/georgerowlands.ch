@@ -568,7 +568,7 @@ which matches $\mathbb{E}[X] \cdot \mathbb{E}[Y]$.
 {{< /callout >}}
 
 {{< callout type="example" title="Dependent" >}}
-<Callout type="todo">
+{{< callout type="todo" >}}
 Is this correct?
 {{< /callout >}}
 Suppose you play two independent games: Game A: Flip a fair coin. Win $X = 1$ (heads) or $X = 2$ (tails). Game B: Roll a fair die. Win $Y \in \{1,2,3,4,5,6\}$ equally likely.
@@ -586,7 +586,7 @@ $$
 $$
 
 but $\mathbb{E}[X] = 1.5$, $\mathbb{E}[Y] = 5.5/2 = 2.75$, so $\mathbb{E}[X] \mathbb{E}[Y] = 4.125 \neq 8$.
-</Callout>
+{{< /callout >}}
 
 ## Variance and Standard Deviation
 

@@ -70,10 +70,10 @@ $$
 
 This means that we are looking for evidence that the lady's success rate is greater than 50%, which would suggest that she can at least somewhat distinguish between the two types of tea, i.e. $\Theta_A = (\frac{1}{2}, 1]$.
 
-<Callout type="todo">
+{{< callout type="todo" >}}
 Why cant the null hypothesis be less than $\frac{1}{2}$?
 {{< /callout >}}
-</Callout>
+{{< /callout >}}
 
 ## Tests and Decisions
 

@@ -1,18 +1,19 @@
 ---
 title: Backpropagation
 type: docs
+weight: 4
 ---
 
 ## Forward Pass
 
-The forward pass, sometimes also called forward propogration, is the process of calculating the output of a neural network given an input. This is done by running the input through the network layer by layer, 
+The forward pass, sometimes also called forward propagation, is the process of calculating the output of a neural network given an input. This is done by running the input through the network layer by layer, 
 and applying the activation function to the output of each layer. The output of the last layer is the output of the network. 
 
 Say we have a simple neural network with three linear layers, the input layer of size 2, a hidden layer of size 2 and an output layer of size 1. We will use the 
 sigmoid activation function for the hidden layer and the output layer. 
 
 {{< figure
-  src="/cs/mlSimpleNeuralNetwork.png"
+  src="/images/cs/mlSimpleNeuralNetwork.png"
   alt="A simple neural network."
   caption="A simple neural network."
 >}}
@@ -26,6 +27,7 @@ $$
 \mathbf{a} &= \sigma(\mathbf{z})
 \end{align*}
 $$
+
 
 Let's say we have the following input, weights and biases:
 
@@ -51,8 +53,7 @@ $$
 \begin{align*}
 a1 &= x1w1 + x2w2 + b1 \\
 &= 0.888 * 1.76 + -0.49 * 0.4 + 0 \\
-&= 1.367
-\\
+&= 1.367 \\
 h1 &= \sigma(a1) \\
 &= \frac{1}{1 + e^{-a1}} \\
 &= \frac{1}{1 + e^{-1.367}} \\
@@ -67,8 +68,7 @@ $$
 \begin{align*}
 a3 &= h1w5 + h2w6 + b3 \\
 &= 0.797 * 1.86 + 0.441 * -0.97 + 0 \\
-&= 1.055
-\\
+&= 1.055 \\
 y &= \sigma(a3) \\
 &= \frac{1}{1 + e^{-a3}} \\
 &= \frac{1}{1 + e^{-1.055}} \\
@@ -77,7 +77,7 @@ y &= \sigma(a3) \\
 $$
 
 {{< figure
-  src="/cs/mlForwardPass.gif"
+  src="/images/cs/mlForwardPass.gif"
   alt="The forward pass of the simple neural network."
   caption="The forward pass of the simple neural network."
 >}}
@@ -96,35 +96,36 @@ weights and biases of the network. These gradients are then used to update the w
 The backpropagation algorithm is based on the chain rule from calculus. So lets start with a brief reminder of the chain rule.
 
 {{< callout type="info" title="Chain Rule" >}}
+    If we have a the differentiable functions $f(x)$ and $g(x)$ and the composite function $h(x) = f(g(x))$, i.e where 
+    the function $f$ is applied to the output of $g$, then the derivative of $h$ with respect to $x$ is given by:
 
-If we have a the differentiable functions $f(x)$ and $g(x)$ and the composite function $h(x) = f(g(x))$, i.e where 
-the function $f$ is applied to the output of $g$, then the derivative of $h$ with respect to $x$ is given by:
-
-$$
-h'(x) = f'(g(x))g'(x) \text{ or } \frac{dh}{dx} = \frac{df}{dg}\frac{dg}{dx}  
-$$
-
-Notice that the denominator $dg$ is the the same as the following numerator, this can be thougth of as "the chain". The chain rule also makes sense 
-intuitively, if we think of $dg$ cancelling out in the numerator and denominator. 
-
-It is a simple but powerful rule that allows us to calculate the derivative of a composite function. For example, if we have $h(x) = (x^2 + 1)^3$, 
-then we can write $h(x) = f(g(x))$ where $f(x) = x^3$ and $g(x) = x^2 + 1$. The derivative of $h$ is then given by:
-
-$$
-\begin{align*}
-h'(x) &= f'(g(x))g'(x) \\
-&= 3(x^2 + 1)^2 * 2x \\
-&= 6x(x^2 + 1)^2
-\end{align*}
+    $$
+    h'(x) = f'(g(x))g'(x) \text{ or } \frac{dh}{dx} = \frac{df}{dg}\frac{dg}{dx}
+    
 $$
 
-This also works for more obvious composite functions such as $h(x) = \sin(x^2 + 1)$.
+    Notice that the denominator $dg$ is the the same as the following numerator, this can be thougth of as "the chain". The chain rule also makes sense 
+    intuitively, if we think of $dg$ cancelling out in the numerator and denominator. 
+    
+    It is a simple but powerful rule that allows us to calculate the derivative of a composite function. For example, if we have $h(x) = (x^2 + 1)^3$, 
+    then we can write $h(x) = f(g(x))$ where $f(x) = x^3$ and $g(x) = x^2 + 1$. The derivative of $h$ is then given by:
 
-The key take away is that the derivative of a composite function can be calculated step by step, by first calculating the derivative of the most
-inner function, then the next inner function and so on. This is the key idea behind backpropagation as a neural network is just one big composite function with 
-lots of variables and lots of inner functions.
+    $$
+    \begin{align*}
+    h'(x) &= f'(g(x))g'(x) \\
+    &= 3(x^2 + 1)^2 * 2x \\
+    &= 6x(x^2 + 1)^2
+    \end{align*}
+    
+$$
 
-TODO: Multiple variables
+    This also works for more obvious composite functions such as $h(x) = \sin(x^2 + 1)$.
+
+    The key take away is that the derivative of a composite function can be calculated step by step, by first calculating the derivative of the most
+    inner function, then the next inner function and so on. This is the key idea behind backpropagation as a neural network is just one big composite function with 
+    lots of variables and lots of inner functions.
+
+    TODO: Multiple variables
 {{< /callout >}}
 
 show the idea. The chain rule. then the full derivation.
@@ -146,9 +147,9 @@ There are many possible solutions to this problem. Some of the most common are:
 
 We can see the vanishing gradient problem pretty easily by looking at the derivative of the sigmoid function.
 
-{{< callout type="todo" >}}
-Add a plot of the vanishing gradient problem
-{{< /callout >}}
+<div className="flex justify-center mt-5">
+    <iframe src="https://www.desmos.com/calculator/xs6tgfd48r?embed" width="500" height="500"/>
+</div>
 
 The derivative of the sigmoid function is always less then 0.25, multiplying this together for each layer will make the gradient very small.
 

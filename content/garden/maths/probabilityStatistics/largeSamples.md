@@ -126,12 +126,12 @@ $$
 {{< callout type="example" title="Approximating $\pi$ with Monte Carlo" >}}
 Suppose we wish to estimate the area of a unit circle, which is $\pi$. Imagine drawing random points in the square $[-1, 1] \times [-1, 1]$ and counting the fraction that fall inside the circle $x^2 + y^2 \leq 1$. This fraction, multiplied by $4$ (the area of the square), estimates $\pi$.
 
-<Callout type="todo">
+{{< callout type="todo" >}}
 I get the idea but im not seeing the integral
 {{< /callout >}}
 
 As the number of points increases, this approximation converges to the true value of $\pi$ by the law of large numbers. 
-</Callout>
+{{< /callout >}}
 
 ## Convergence for Random Variables
 
@@ -237,7 +237,7 @@ $$
 So the normalized sum $Z_n$ converges in distribution to a standard normal distribution as $n \to \infty$ despite the original distribution of the $X_i$ being arbitrary (as long as it has finite mean and variance). This is the essence of the central limit theorem. This is why the normal distribution is so prevalent in statistics and probability theory: it describes the behavior of sums of random variables, even when those variables themselves are not normally distributed. Hence we use it for physical phenomena, measurement errors, and many other applications where we deal with sums of random effects.
 
 {{< callout type="example" >}}
-<Callout type="todo">
+{{< callout type="todo" >}}
 I dont get the point of this? what does it mean and what is its application?
 {{< /callout >}}
 
@@ -254,7 +254,7 @@ $$
 $$
 
 So, for large $n$, the sum $S_n$ almost always falls in an interval of width $4\sigma\sqrt{n}$ centered at $n\mu$. 
-</Callout>
+{{< /callout >}}
 
 ### Moiver-Laplace Theorem
 

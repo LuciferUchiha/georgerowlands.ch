@@ -257,10 +257,10 @@ A | B B C | D | E
 
 Where one scoop is flavor A, two scoops are flavor B, one scoop is flavor C, and no scoops of D or E.
 
-<Callout type="todo">
+{{< callout type="todo" >}}
 This is a bit confusing, can we get a better example?
 {{< /callout >}}
-</Callout>
+{{< /callout >}}
 
 {{< callout type="example" title="Beispiel Kombination mit zurücklegen" >}}
 Wie viele Kombinationsmöglichkeiten gibt es beim dreimaligen Würfeln?

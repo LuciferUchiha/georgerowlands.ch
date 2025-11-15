@@ -30,10 +30,10 @@ $$
 
 This means that the probability of the die showing a 6 given that it shows an even number is $\frac{1}{3}$. This is intuitive as we have 3 possible outcomes that are even and only one of them is a 6. 
 
-<Callout type="todo">
+{{< callout type="todo" >}}
 This can also be nicely be shown with a Venn diagram
 {{< /callout >}}
-</Callout>
+{{< /callout >}}
 
 If it turns out that the prior information we are given happens to be the exact same as the event we are interested in, so $A=B$, then we know that the event $A$ will surely happen and we get the following:
 
@@ -532,7 +532,7 @@ Given that the test is positive, it is much more likely that you are in the seco
 ## Birthday Paradox
 
 {{< callout type="example" title="Birthday Problem" >}}
-<Callout type="todo">
+{{< callout type="todo" >}}
 This is in exercise sheet 2 and is a very common example of how certain probabilities are often misestimate intuitively.
 
 Write this better and show the solutions and proof clearly.
@@ -553,7 +553,7 @@ P(\text{same})=1-P(\text{different}) \Leftrightarrow P(A)=1- \frac{365 \cdot (36
 $$
 
 for a class of 23 people this is already above 50%.
-</Callout>
+{{< /callout >}}
 
 ## Simpson's Paradox
 

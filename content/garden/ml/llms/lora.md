@@ -1,5 +1,5 @@
 ---
-title: Multivariate Gaussian
+title: LoRA
 type: docs
 weight: 8
 ---

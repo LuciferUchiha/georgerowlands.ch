@@ -2,6 +2,7 @@
 title: Markov Chains
 type: docs
 weight: 12
+draft: true
 ---
 
 ## Stochastische Prozesse
