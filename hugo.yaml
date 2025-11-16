@@ -1,4 +1,4 @@
-title: My New Hugo Site
+title: George Rowlands
 enableGitInfo: true
 theme: hextra
 
@@ -21,7 +21,7 @@ markup:
     copy:
       enable: true
       # hover | always
-      display: always
+      display: hover
 
 
 menu:

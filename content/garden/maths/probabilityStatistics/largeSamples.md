@@ -42,11 +42,13 @@ The **Strong Law of Large Numbers (SLLN)** is very similar. However rather than 
 
 $$
 \lim_{n \to \infty} \bar{S}_n = \mu
+$$
 
 So in other words if we consider the set of outcomes where the average converges to the mean, we have:
-$$math
+
+$$
 E = \{\omega \in \Omega : \lim_{n \to \infty} \bar{S}_n(\omega) = \mu\}
-```
+$$
 
 Then the set of outcomes if of course an event, as it is a subset of the sample space. Thus we can assign a probability to it, i.e. $\mathbb{P}(E)$. The SLLN states that this probability is $1$:
 
@@ -262,22 +264,29 @@ Weil eine Binomialverteilte Zufallsvariable $X \sim Bin(n,p)$ als Summe von $n$ 
 
 Mit dem Satz können wir für $n > \frac{9}{p(1-p)}$ folgendes gut approximieren
 
-```mathP(a \leq X \leq b) \approx normcdf(\frac{b-np}{\sqrt{np(1-p)}})-normcdf(\frac{a-np}{\sqrt{np(1-p)}})```
+$$
+\mathbb{P}(a \leq X \leq b) \approx \text{normcdf}\left(\frac{b-np}{\sqrt{np(1-p)}}\right)-\text{normcdf}\left(\frac{a-np}{\sqrt{np(1-p)}}\right)
+$$
 
 Genauer wird es dann mit der Stetigkeitskorrektur
 
-```mathP(a \leq X \leq b) \approx normcdf(\frac{b+\frac{1}{2}-np}{\sqrt{np(1-p)}})-normcdf(\frac{a-\frac{1}{2}-np}{\sqrt{np(1-p)}})```
+$$
+\mathbb{P}(a \leq X \leq b) \approx \text{normcdf}\left(\frac{b+\frac{1}{2}-np}{\sqrt{np(1-p)}}\right)-\text{normcdf}\left(\frac{a-\frac{1}{2}-np}{\sqrt{np(1-p)}}\right)
+$$
 
-:::note Beispiel Satz von Moivre-Laplace
+{{< callout type="example" >}}
+Ein fairer Würfel wirf 1000 mal geworfen. Wie hoch ist die Wahrscheinlichkeit, dass wir zwischen 150 und 200 sechs würfeln?
 
- Ein fairer Würfel wirf 1000 mal geworfen. Wie hoch ist die Wahrscheinlichkeit, dass wir zwischen 150 und 200 sechs würfeln?
+Genau:
 
- Genau:
+$$
+\text{binocdf}(200,1000,1/6)-\text{bincdf}(149,1000,1/6)=0.9265
+$$
 
- ```mathbinocdf(200,1000,1/6)-bincdf(149,1000,1/6)=0.9265```
+Mit Satz von Moivre-Laplace:
 
- Mit Satz von Moivre-Laplace:
+$$
+\text{normcdf}\left(\frac{200+\frac{1}{2}-\frac{1000}{6}}{\sqrt{1000\cdot \frac{5}{36}}}\right) - \text{normcdf}\left(\frac{150-\frac{1}{2}-\frac{1000}{6}}{\sqrt{1000\cdot \frac{5}{36}}}\right)=0.9253
+$$
 
- ```mathnormcdf(\frac{200+\frac{1}{2}-\frac{1000}{6}}{\sqrt{1000\cdot \frac{5}{36}}}) - normcdf(\frac{150-\frac{1}{2}-\frac{1000}{6}}{\sqrt{1000\cdot \frac{5}{36}}})=0.9253```
-
-:::
+{{< /callout >}}

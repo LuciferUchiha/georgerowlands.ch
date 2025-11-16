@@ -30,30 +30,31 @@ The standard interpretation of the correlation strength is:
 - $0 \leq |r| \leq 0.1$ is no correlation.
 
 {{< figure
-  src="/images/cs/correlationLinear.png"
+  src="/images/maths/correlationLinear.png"
   alt="Visualizations of linear correlations, positive and negative."
   caption="Visualizations of linear correlations, positive and negative."
 >}}
 
 {{< callout type="example" >}}
-    A simple example of a linear correlation is the air temperature and the number of ice creams sold. If it is hot
-    then more ice creams are sold, if it is cold then less ice creams are sold. This is a linear correlation, and the
-    correlation coefficient is close to 1 as the two variables increase and decrease together.
+A simple example of a linear correlation is the air temperature and the number of ice creams sold. If it is hot
+then more ice creams are sold, if it is cold then less ice creams are sold. This is a linear correlation, and the
+correlation coefficient is close to 1 as the two variables increase and decrease together.
 {{< /callout >}}
 
 Non-linear correlations are also possible, but they are more difficult to interpret.
 
 {{< figure
-  src="/images/cs/correlationNonLinear.png"
+  src="/images/maths/correlationNonLinear.png"
   alt="Visualizations of linear and non-linear correlations. The top left is the linear correlation coeff, the top right is the non-linear correlation coeff."
   caption="Visualizations of linear and non-linear correlations. The top left is the linear correlation coeff, the top right is the non-linear correlation coeff."
+  width="600"
 >}}
 
 {{< callout type="warning" >}}
-    The correlation coefficient only measures if there is a correlation between the two variables, it does not say
-    anything about cause and effect. For example if we have a positive correlation between the number of ice creams
-    sold and the number of people who drown, it does not mean that eating ice cream causes people to drown. It is
-    simply that both variables increase during the summer months.
+The correlation coefficient only measures if there is a correlation between the two variables, it does not say
+anything about cause and effect. For example if we have a positive correlation between the number of ice creams
+sold and the number of people who drown, it does not mean that eating ice cream causes people to drown. It is
+simply that both variables increase during the summer months.
 {{< /callout >}}
 
 ### Outliers
@@ -63,7 +64,7 @@ the correlation coefficient will be affected by them. So it is important to chec
 correlation coefficient.
 
 {{< figure
-  src="/images/cs/correlationOutlier.png"
+  src="/images/maths/correlationOutlier.png"
   alt="An example of an outlier affecting the correlation coefficient."
   caption="An example of an outlier affecting the correlation coefficient."
   width="500"
@@ -114,7 +115,7 @@ $$
 $$
 
 {{< callout type="todo" >}}
-    This can be linked to all the other articles about statistics. Specifically making it clear that correlation is a standardized covariance.
+This can be linked to all the other articles about statistics. Specifically making it clear that correlation is a standardized covariance.
 {{< /callout >}}
 
 Now we can see that the nominator of the Pearson's correlation coefficient is the covariance between $X$ and $Y$ times
@@ -127,46 +128,45 @@ r_{X,Y} = \frac{\text{Cov}(X,Y)}{\sigma_X \cdot \sigma_Y}
 $$
 
 {{< callout type="example" >}}
-    Let's say we have the hypothesis that students with a higher GPA also have a higher SAT score. We can then check
-    if there is a correlation between the two variables. We have the following data:
+Let's say we have the hypothesis that students with a higher GPA also have a higher SAT score. We can then check
+if there is a correlation between the two variables. We have the following data:
 
-    | Student | GPA ($X$) | SAT ($Y$) |
-    |---------|-----|-----|
-    | 1 | 3.4 | 595 |
-    | 2 | 3.2 | 520 |
-    | 3 | 3.9 | 715 |
-    | 4 | 2.3 | 405 |
-    | 5 | 3.9 | 680 |
-    | 6 | 2.5 | 490 |
-    | 7 | 3.5 | 565 |
+| Student | GPA ($X$) | SAT ($Y$) |
+|---------|-----|-----|
+| 1 | 3.4 | 595 |
+| 2 | 3.2 | 520 |
+| 3 | 3.9 | 715 |
+| 4 | 2.3 | 405 |
+| 5 | 3.9 | 680 |
+| 6 | 2.5 | 490 |
+| 7 | 3.5 | 565 |
 
-    If we plot the data we get the following plot, where we can see a clear correlation:
+If we plot the data we get the following plot, where we can see a clear correlation:
 
-    <div className="flex justify-center mt-5">
-        <iframe src="https://www.desmos.com/calculator/p6uua7noqe?embed" width="400" height="400"/>
-    </div>
+{{< callout type="todo" >}}
+Include plot here.
+{{< /callout >}}
 
-    By extending the table slightly we can calculate the Pearson's correlation coefficient pretty quickly.
+By extending the table slightly we can calculate the Pearson's correlation coefficient pretty quickly.
 
-    | Student | GPA ($X$) | SAT ($Y$) | $x_i y_i$ | $x_i^2$ | $y_i^2$ |
-    |---------|-----|-----|-----|-----|-----|
-    | 1 | 3.4 | 595 | 2023 | 11.56 | 354025 |
-    | 2 | 3.2 | 520 | 1664 | 10.24 | 270400 |
-    | 3 | 3.9 | 715 | 2789 | 15.21 | 511225 |
-    | 4 | 2.3 | 405 | 932 | 5.29 | 164025 |
-    | 5 | 3.9 | 680 | 2652 | 15.21 | 462400 |
-    | 6 | 2.5 | 490 | 1225 | 6.25 | 240100 |
-    | 7 | 3.5 | 565 | 1978 | 12.25 | 319225 |
-    | **Sum** | 22.7 | 3970 | 13262 | 76.01 | 2322400 |
+| Student | GPA ($X$) | SAT ($Y$) | $x_i y_i$ | $x_i^2$ | $y_i^2$ |
+|---------|-----|-----|-----|-----|-----|
+| 1 | 3.4 | 595 | 2023 | 11.56 | 354025 |
+| 2 | 3.2 | 520 | 1664 | 10.24 | 270400 |
+| 3 | 3.9 | 715 | 2789 | 15.21 | 511225 |
+| 4 | 2.3 | 405 | 932 | 5.29 | 164025 |
+| 5 | 3.9 | 680 | 2652 | 15.21 | 462400 |
+| 6 | 2.5 | 490 | 1225 | 6.25 | 240100 |
+| 7 | 3.5 | 565 | 1978 | 12.25 | 319225 |
+| **Sum** | 22.7 | 3970 | 13262 | 76.01 | 2322400 |
 
-    Now we can calculate the Pearson's correlation coefficient:
+Now we can calculate the Pearson's correlation coefficient:
 
-    $$
-    \begin{align*}
-    r_{X,Y} &= \frac{7 \cdot 13262 - 22.7 \cdot 3970}{\sqrt{7 \cdot 76.01 - 22.7^2} \cdot \sqrt{7 \cdot 2322400 - 3970^2}} \\
-    &= \frac{2715}{2864.22} \approx 0.95
-    \end{align*}
-    
+$$
+\begin{align*}
+r_{X,Y} &= \frac{7 \cdot 13262 - 22.7 \cdot 3970}{\sqrt{7 \cdot 76.01 - 22.7^2} \cdot \sqrt{7 \cdot 2322400 - 3970^2}} \\
+&= \frac{2715}{2864.22} \approx 0.95
+\end{align*}
 $$
 {{< /callout >}}
 
@@ -192,7 +192,7 @@ r_s = 1 - \frac{6 \cdot \sum_{i=1}^{n}{(R(X_i) - R(Y_i))^2}}{n \cdot (n^2 - 1)} 
 $$
 
 {{< figure
-  src="/images/cs/correlationSpearman.png"
+  src="/images/maths/correlationSpearman.png"
   alt="Visualizations of Spearman's rank correlation coefficient compared to Pearson's correlation coefficient."
   caption="Visualizations of Spearman's rank correlation coefficient compared to Pearson's correlation coefficient."
 >}}

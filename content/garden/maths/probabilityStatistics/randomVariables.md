@@ -300,9 +300,10 @@ $$
 Because it is discrete the graph of the PMF is a series of discrete points, this is commonly shown using a table or a bar graph. 
 
 {{< figure
-  src="/images/maths/stabdiagram.png"
+  src="/images/maths/probabilityPMF.png"
   alt="The bar graph of the PMF of the random variable $X$."
   caption="The bar graph of the PMF of the random variable $X$."
+  width="500"
 >}}
 
 {{< callout type="info" >}}
@@ -362,9 +363,10 @@ $$
 {{< /callout >}}
 
 {{< figure
-  src="/images/maths/verteilungsFunktion.png"
+  src="/images/maths/probabilityCDF.png"
   alt="The CDF of the random variable $X$."
   caption="The CDF of the random variable $X$."
+  width="500"
 >}}
 
 We can see that the CDF is a step function that increases at the points where the random variable $X$ takes on a value. This is because the CDF is defined as the sum of the probabilities of all values less than or equal to $a$. You can think of the CDF as the accumulated height of the PMF. 
@@ -404,9 +406,9 @@ F_X(a) = \begin{cases}
 \end{cases}
 $$
 
-<div className="flex justify-center mt-5">
-    <iframe src="https://www.desmos.com/calculator/v2hy1ergap?embed" width="500" height="500"/>
-</div>
+{{< callout type="todo" >}}
+Add the plot of the CDF here.
+{{< /callout >}}
 
 We can also see the basic identity in effect. For example if we want to know the probability that we get points, so $X > 0$, we can use the basic identity with $a = 0$ and $b = 2$:
 
@@ -549,23 +551,20 @@ Now, let's compute the conditional PMF:
 
 - $\mathbb{P}(X = -1 \mid B)$: Only $\omega = 2$ contributes (since $2 \in B$ and $X(2) = -1$), so
 
-  $$
-  \mathbb{P}(X = -1 \mid B) = \frac{\mathbb{P}(\{2\})}{\mathbb{P}(B)} = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
-  
+$$
+\mathbb{P}(X = -1 \mid B) = \frac{\mathbb{P}(\{2\})}{\mathbb{P}(B)} = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
 $$
 
 - $\mathbb{P}(X = 0 \mid B)$: Only $\omega = 4$ (since $4 \in B$ and $X(4) = 0$):
 
-  $$
-  \mathbb{P}(X = 0 \mid B) = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
-  
+$$
+\mathbb{P}(X = 0 \mid B) = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
 $$
 
 - $\mathbb{P}(X = 2 \mid B)$: Only $\omega = 6$ (since $6 \in B$ and $X(6) = 2$):
 
-  $$
-  \mathbb{P}(X = 2 \mid B) = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
-  
+$$
+\mathbb{P}(X = 2 \mid B) = \frac{\frac{1}{6}}{\frac{1}{2}} = \frac{1}{3}
 $$
 
 So, conditional on rolling an even number, the random variable $X$ is equally likely to be $-1$, $0$, or $2$.
@@ -1239,8 +1238,7 @@ So we have:
 $$
 \lim_{n \to \infty} \binom{n}{k}
 \left(\frac{\lambda}{n}\right)^k
-\left(1-\frac{\lambda}{n}\right)^{n-k}
-=
+\left(1-\frac{\lambda}{n}\right)^{n-k} =
 \frac{\lambda^k}{k!} e^{-\lambda}
 $$
 

@@ -52,7 +52,7 @@ $$
 
 You can think of this as a table where each cell corresponds to a pair $(x, y)$:
 
-| $X$\textbackslash$Y$ | 0   | 1   |
+| $X \backslash Y$ | 0   | 1   |
 | -------------------- | --- | --- |
 | 0                    | 1/4 | 1/4 |
 | 1                    | 1/4 | 1/4 |
@@ -61,7 +61,7 @@ So the probability of getting $X=0$ and $Y=1$ is $\mathbb{P}(X=0, Y=1) = 1/4$.
 
 We could also define the joint distribution of $(X, X)$:
 
-| $X$\textbackslash$X$ | 0   | 1   |
+| $X \backslash X$ | 0   | 1   |
 | -------------------- | --- | --- |
 | 0                    | 1/2 | 0   |
 | 1                    | 0   | 1/2 |
@@ -243,7 +243,7 @@ $$
 
 If we look at the joint distribution of two dependent variables, say $X$ and $Y$ where $Y = X + 1$, we can see that the joint distribution cannot be expressed as the product of the marginals. For example, if $X$ can take values $\{0, 1\}$, then $Y$ can take values $\{1, 2\}$, and the joint distribution would be:
 
-| $X$\textbackslash$Y$ | 1   | 2   |
+| $X \backslash Y$ | 1   | 2   |
 |----------------------|-----|-----|
 | 0                    | 1/2 | 0   |
 | 1                    | 0   | 1/2 |
