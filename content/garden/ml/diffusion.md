@@ -4,15 +4,165 @@ type: docs
 weight: 16
 ---
 
-generative, new and realistic samples matching the world we know. In other words, learn the underlying data distribution $P^*$ on $R^d$ to be able to sample from it. In the case of diffusion models, initially the goal is to be able to generate new images that look like real images. But now also audio, video, and 3D data?
+A common goal in machine learning is to learn generative models that can produce new data samples that closely resemble a given dataset or in other words that can produce new and realistic samples matching the world we know. So given data samples ${x_1, x_2, ..., x_N}$ drawn from an unknown data distribution $q$ on $R^d$, the goal is to learn a model $p_\theta$ parametrized by $\theta$ that can generate new samples $\hat{x} \sim p_\theta$ such that the distribution of generated samples closely approximates the true data distribution, so $p_\theta \approx q$. 
 
-true distribution is complex but we need some sort of stochastic process to model it. Idea is to learn a transformation from a simple known distribution (e.g. Gaussian noise) to a meaningful data point (e.g. an image). Noise to strucute -> essence of genrative modeling.
+For example in the case of images, our data samples could be all images of the internet and we want to learn a model that can generate new images that look like real images. So our underlying data distribution $q$ and the dimension $d$ is very high (e.g. if we consider $64 \times 64$ black and white images then $d = 64 \times 64 = 4,096$. Note that the pixel values are then usually scaled to then be in $[0,1]$ not $[0,255]$). This $d$ dimensional space is also called the pixel space where each dimension corresponds to the intensity value of a pixel in the image, but in general our data distribution could be anything such as videos such as in [Video Diffusion Models](https://arxiv.org/abs/2204.03458) or proteins such as in [RF Diffusion](https://www.nature.com/articles/s41586-023-06415-8).
 
-If not a stochastic process then would have a determinitic transfromation which suffer from mode collapse (GANs)? and produce only "average" samples?
+Modeling such high dimensional distributions is very challenging due to the curse of dimensionality and the complex structure of real world data. The high dimensional space is also mostly empty with regards to our region of interest, also referred to as the data manifold (e.g. natural images) making it difficult to learn meaningful patterns. In the case of images, an easy way to think of this is that we are only interested in pictures of humans with say 2 eyes, 2 arms and 2 legs. But the pixel space also contains all sorts of other images that do not correspond to real humans such as images with 3 eyes or 5 arms etc. which do not exist in the real world. So the data distribution $q$ is concentrated on a very small area/manifold within the high dimensional pixel space.
 
-iterative process is easier to learn than a single step transformation? breaking down the problem into smaller steps?
+Used Resources:
+- https://yang-song.net/blog/2021/score/
+- https://theaisummer.com/diffusion-models/
+- https://ayandas.me/blogs/2021-12-04-diffusion-prob-models.html
+- https://lilianweng.github.io/posts/2021-07-11-diffusion-models/
+- https://goyalpramod.github.io/blogs/demysitifying_diffusion_models/
+- https://huggingface.co/blog/annotated-diffusion
+- https://github.com/diff-usion/Awesome-Diffusion-Models
+- And all the corresponding papers linked throughout the text.
 
-So we want to develop a recursive algoriothm A that takes a data point $x_t$ at time step t and produces a slightly less noisy data point $x_{t-1}$ at time step t-1. $x_0$ is a sample from an initial simple distribution (e.g. Gaussian noise) and as t increases the data point becomes less noisy and more structured converging to a sample from the true data distribution $P^*$.
+## Denoising Diffusion Probabilistic Models
+
+As is common in computer science and machine learning, it is often easier to solve a complex problem by breaking it down into smaller subproblems. In the case of generative modeling, instead of learning to directly generate samples from the complex data distribution $q$, we can instead learn to gradually improve our samples in an iterative/recursive manner to reach the desired result. Think of it as painting a picture step by step, starting from a blank canvas and adding more and more details and layering colors of paint until the final masterpiece is complete, rather than trying to paint the entire picture in one go. 
+
+The idea of diffusion models is to use a stochastic process to gradually transform simple known distributions such as Gaussian noise into our complex data distribution $q$. The main idea behind diffusion models is to define a forward diffusion process that gradually adds noise to the data samples until they become pure noise, and then learn a neural network to reverse this process and denoise the noisy samples back to the original data distribution. By iteratively applying this denoising process starting from a pure noise sample, we can generate new samples that closely resemble samples from the true data distribution.
+
+### Forward Diffusion Process
+
+First we define the forward diffusion process which gradually "perturbs/destroys" the data samples and moves it to our simple known distribution. In our case we will use a gaussian distribution as our simple known distribution. 
+
+We then define the forwards diffusion process as a markov chain that adds small amounts of gaussian noise to the data samples over $T$ time steps. So if we let $x_0$ be a data sample drawn from our true data distribution $x_0 \sim q(x)$, then the forward diffusion process results in a sequence of noisy samples $x_1, x_2, ..., x_T$ where each $x_t$ is obtained by adding gaussian noise to the previous sample $x_{t-1}$. The amount of noise added at each time step is controlled by the so called **variance or noise schedule** $\beta_1, \beta_2, ..., \beta_T$ where each $\beta_t$ is a small positive value as variance must be positive. The choice of the noise schedule and this particular construction of the forward process is an algorithmic design choice that has been found to work well in practice for diffusion models. However, it can also be linked to physics and the concept of Langevin dynamics which we will discuss later. Usually the noise schedule is chosen to be some monotonic increasing function such that more noise is added at later time steps. A common choice is to use a linear schedule where $\beta_t$ increases linearly from a small value (e.g. 0.0001) to a larger value (e.g. 0.02) over $T$ time steps or a cosine schedule as proposed in [Improved Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2102.09672).
+
+So we can define the forward diffusion process of gradually adding noise as:
+
+$$
+x_t = \sqrt{1 - \beta_t} x_{t-1} + \epsilon_t \text{ where } \epsilon_t \sim N(0, \beta_t I)
+$$
+
+Note that we scale down the previous sample $x_{t-1}$ by $\sqrt{1 - \beta_t}$ to ensure that the overall variance of $x_t$ does not explode but instead has the desired effect of gradually adding noise to the data sample and forcing the original signal to decay over time. Because the variables are independent they can be added and we can show this explosion of variance more formally by calculating the variance of $x_t$:
+
+$$
+\text{Var}(x_t) = \text{Var}(x_{t-1}) + \text{Var}(\epsilon_t) = \text{Var}(x_{t-1}) + \beta_t I
+$$
+
+Because variance is positive, over time it accumulates and can become very large. By scaling down $x_{t-1}$ we ensure that the variance remains stable, especially if $\text{Var}(x_{t-1}) = I$ then it is clear that the variance stays constant:
+
+$$
+\text{Var}(x_t) = (1 - \beta_t) \text{Var}(x_{t-1}) + \beta_t I 
+= (1 - \beta_t) I + \beta_t I = I
+$$
+
+Importantly because this is a markov chain, each sample $x_t$ only depends on the previous sample $x_{t-1}$ and not on any earlier samples, so we have:
+
+$$
+q(x_t | x_{t_1}, x_{t-2}, ..., x_0) = q(x_t | x_{t-1})
+$$
+
+which also means we can write the joint distribution over the entire sequence as:
+
+$$
+q(x_{1:T} | x_0) = \prod_{t=1}^{T} q(x_t | x_{t-1})
+$$
+
+where $x_{1:T}$ denotes the sequence of noisy samples from time step 1 to $T$ that we obtain by applying the forward diffusion process to the original data sample $x_0$. Using the recurrence relation defined above for the forward diffusion process, we can also write the conditional distribution at each time step as a gaussian distribution:
+
+$$
+q(x_t | x_{t-1}) = N(x_t; \sqrt{1 - \beta_t} x_{t-1}, \beta_t I)
+$$
+
+where we evaluate the gaussian at $x_t$ with mean $\sqrt{1 - \beta_t} x_{t-1}$ and covariance $\beta_t I$. The mean represents the scaled down previous sample while the covariance represents the amount of noise added at this time step. 
+
+Because the forward diffusion process is a linear gaussian markov process(a markov process composed of linear transformations and gaussian noise), we can also derive a closed form expression for the distribution of $x_t$ given the original data sample $x_0$ by unrolling the recurrence relation and using the reparameterization trick. Before unrolling the relation, we first define some notation to make the equations cleaner:
+
+- We define $\alpha_t = 1 - \beta_t$ which represents the scaling factor applied to the previous sample at time step t.
+- We define $\bar{\alpha}_t = \prod_{s=1}^{t} \alpha_s$ as the cumulative product of the $\alpha_t$ values up to time step t.
+- The gaussian noise added at each time step $\epsilon_t \sim N(0, \beta_t I)$ can be equivalently written as $\epsilon_t = \sqrt{\beta_t} z_t$ where $z_t \sim N(0, I)$ is an independent standard normal random variable.
+
+Now we can unroll the recurrence relation for $x_t$:
+
+$$
+\begin{align*}
+x_t &= \sqrt{1 - \beta_t} x_{t-1} + \epsilon_t \\
+&= \sqrt{\alpha_t} x_{t-1} + \sqrt{\beta_t} z_t \\
+&= \sqrt{\alpha_t}\left( \sqrt{\alpha_{t-1}} x_{t-2} + \sqrt{\beta_{t-1}} z_{t-1} \right) + \sqrt{\beta_t} z_t \\
+&= \sqrt{\alpha_t \alpha_{t-1}} x_{t-2} + \sqrt{\alpha_t \beta_{t-1}} z_{t-1} + \sqrt{\beta_t} z_t \\
+&= \ldots \\
+&= \sqrt{\prod_{j=1}^{t} \alpha_j} x_0 + \sum_{s=1}^{t} \left( \sqrt{\beta_s} \prod_{j=s+1}^{t} \sqrt{\alpha_j} \right) z_s \\
+\end{align*}
+$$
+
+We can simplify the product term in the summation further using the definition of $\bar{\alpha}_t$:
+
+$$
+\prod_{j=s+1}^{t} \alpha_j = \frac{\bar{\alpha}_t}{\bar{\alpha}_s},
+$$
+
+so the unrolled expression becomes:
+
+$$
+x_t = \sqrt{\bar{\alpha}_t} x_0 + \sum_{s=1}^{t} \left( \sqrt{\beta_s} \sqrt{\frac{\bar{\alpha}_t}{\bar{\alpha}_s}} \right) z_s
+$$
+
+Because $\mathbb{E}(z_s) = 0$ for all s, we can compute the expectation of $x_t$ given $x_0$ as:
+
+$$
+\mathbb{E}(x_t \mid x_0) = \sqrt{\bar{\alpha}_t} x_0
+$$
+
+To calculate the variance of $\text{Var}(x_t \mid x_0)$, we only need to consider the noise terms since the first term involving $x_0$ is deterministic given $x_0$ and thus has zero variance. Because the noise terms are independent, we can compute the variance of each term in the sum separately and then sum them up:
+
+$$
+\text{Var}\left(
+\sqrt{\beta_s}
+\sqrt{\frac{\bar{\alpha}_t}{\bar{\alpha}_s}} z_s
+\right) =
+\beta_s
+\frac{\bar{\alpha}_t}{\bar{\alpha}_s} I
+$$
+
+So the total variance is:
+
+$$
+\text{Var}(x_t \mid x_0) =
+\sum_{s=1}^{t} \beta_s
+\frac{\bar{\alpha}_t}{\bar{\alpha}_s} I
+$$
+
+it can also be shown that the following identity holds:
+
+$$
+\sum_{s=1}^{t} \beta_s \frac{\bar{\alpha}_t}{\bar{\alpha}_s} = 1 - \bar{\alpha}_t
+$$
+
+which gives us the final expression for the variance:
+
+$$
+\text{Var}(x_t \mid x_0) = (1 - \bar{\alpha}_t) I
+$$
+
+putting this together we get the closed form expression for the distribution of $x_t$ given $x_0$ as:
+
+$$
+q(x_t | x_0) = N(x_t; \sqrt{\bar{\alpha}_t} x_0, (1 - \bar{\alpha}_t) I)
+$$
+
+where we have reparameterized from the sum of gaussians to a single gaussian depending on $x_0$ and the parameter $\bar{\alpha}_t$. This means that picking a time step $t$ and sampling from $q(x_t | x_0)$ is equivalent to scaling down the original data sample $x_0$ by $\sqrt{\bar{\alpha}_t}$ and adding gaussian noise with variance $(1 - \bar{\alpha}_t) I$. This is useful as it allows us to directly sample noisy samples at any time step $t$ without having to iteratively apply the forward diffusion process from time step 1 to $t$ which can be computationally expensive for large $T$.
+
+Under some mild assumptions on the noise schedule $\beta_t$ (e.g. $ 0< \beta_t < 1$), it can be shown that this defines as **ergodic** markov chain meaning that as $T$ approaches infinity, the distribution of $x_T$ becomes independent of the initial data sample $x_0$ and converges to a stationary distribution where in our case the stationary distribution is a standard normal distribution:
+
+$$
+\lim_{T \to \infty} q(x_T | x_0) = N(0, I)
+$$
+
+This means that after enough time steps of adding noise, the data samples become indistinguishable from pure Gaussian noise. Intuitively this makes sense as we want $\sqrt{\bar{\alpha}_T} \to 0$ and $(1 - \bar{\alpha}_T) \to 1$ as $T$ approaches infinity, so we pick a noise schedule $\beta_t$ that ensures this. In other words, we are scaling down the original signal to zero while continuously adding random noise, so eventually the original signal is completely lost and we are left with just noise. This is key for diffusion models as it allows us to start from pure Gaussian noise and then reverse the diffusion process to generate new data samples. 
+
+### Reverse Denoising Process
+
+
+we don't need to do all T steps per batch because it is an expectation and uniformly sample $t$ from 1 to T for each data point in the batch?
+
+## Noise-Conditional Score Networks
+
+We can also link the process of diffusion models to physics and the concept of Langevin dynamics.
 
 inspired by physics, the dynamics of iterative transformatiosn such as ???? are described by ordinary differential equations (ODEs) where $f$ determines the change in the data point with respect to time:
 
@@ -26,8 +176,64 @@ $$
 dX = f(X, t)dt + g(t)dW_t
 $$
 
-X here is
+X here is a random variable representing the data point at time t,
 where W_t is Brownian motion (Wiener process) introducing randomness into the dynamics, and g(t) is a function controlling the amount of noise added at each time step.
+
+### Ito Calculus
+
+### Langevin Dynamics
+
+### Score Matching
+
+### Euler-Maruyama Method
+
+### Annealed Langevin Dynamics
+
+### Anderson's Reversal
+
+## Denoising Diffusion Implicit Models
+
+Determinisitc variant such as DDIM remove the stochastic term by setting $Z_i = 0$ in the update step. This results in a deterministic mapping from pure noise to data samples. This improves generation speed but with slightly reduced sample diversity? Intuitevly it converges faster to high likelihood regions but may miss some modes of the distribution due to lack of stochastic exploration.
+
+## Diffusion Backbones
+
+Notice that so far we have not specified the architecture of the model to be used in the reverse denoising process. Our only requirement is that the the dimensionality of the input and output match the data dimensionality d. So in the case of images we need a model that takes in an image and outputs an image of the same size. 
+
+### U-Net
+
+The original choice for the denoising model is the U-Net architecture which was first proposed in the context of biomedical image segmentation in [U-Net: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597). The U-Net is a type of convolutional neural network (CNN) that has an encoder-decoder structure with skip connections between corresponding layers in the encoder and decoder paths. The encoder path consists of a series of convolutional and MaxPooling layers that progressively downsample the input image such that the spatial information is reduced while feature information is increased. The decoder path then consists of a series of upsampling and convolutional layers that progressively reconstruct the image back to its original size. Importantly just like in the ResNet architecture, skip connections are used to directly connect feature maps from the encoder to the decoder at corresponding spatial resolutions. This allows the decoder to leverage both high-level semantic information from the encoder as well as low-level spatial details from earlier layers, resulting in more accurate reconstructions and avoiding gradient vanishing issues.
+
+{{< figure 
+    src="/garden/ml/diffusion/mlUNet.png" 
+    alt="U-Net Architecture used in the original Biomedical Image Segmentation paper."
+    caption="U-Net Architecture used in the original Biomedical Image Segmentation paper."
+>}}
+
+### Diffusion Transformers
+
+## Latent Diffusion Models
+
+## Super Resolution Diffusion Models
+
+## Conditional Diffusion
+
+### Classifier Guided
+
+### Classifier-Free Guidance
+
+### Dall-E
+
+### Imagen
+
+### LoRa
+
+### ControlNet
+
+### DreamBooth
+
+true distribution is complex but we need some sort of stochastic process to model it. Idea is to learn a transformation from a simple known distribution (e.g. Gaussian noise) to a meaningful data point (e.g. an image). Noise to strucute -> essence of genrative modeling.
+
+If not a stochastic process then would have a determinitic transfromation which suffer from mode collapse (GANs)? and produce only "average" samples?
 
 ## Ito Calculus
 
@@ -569,5 +775,3 @@ In each iteration the reverse process 3 key operations are performed:
 T determines the trade-off between sample quality and computational cost. Larger T allows for more gradual and smoother denoising but requires more computation. 
 
 the schedule $\beta_i$ controls the amount of noise added at each step in the forward process and consequently the amount of denoising required in the reverse process. It plays a key role in sample diversity and quality/sharpness. Often is chosen to be a linear or cosine schedule increasing from a small value to a larger value over the T steps. 
-
-Determinisitc variant such as DDIM remove the stochastic term by setting $Z_i = 0$ in the update step. This results in a deterministic mapping from pure noise to data samples. This improves generation speed but with slightly reduced sample diversity? Intuitevly it converges faster to high likelihood regions but may miss some modes of the distribution due to lack of stochastic exploration.
