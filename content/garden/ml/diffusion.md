@@ -6,9 +6,24 @@ weight: 16
 
 A common goal in machine learning is to learn generative models that can produce new data samples that closely resemble a given dataset or in other words that can produce new and realistic samples matching the world we know. So given data samples ${x_1, x_2, ..., x_N}$ drawn from an unknown data distribution $q$ on $R^d$, the goal is to learn a model $p_\theta$ parametrized by $\theta$ that can generate new samples $\hat{x} \sim p_\theta$ such that the distribution of generated samples closely approximates the true data distribution, so $p_\theta \approx q$. 
 
-For example in the case of images, our data samples could be all images of the internet and we want to learn a model that can generate new images that look like real images. So our underlying data distribution $q$ and the dimension $d$ is very high (e.g. if we consider $64 \times 64$ black and white images then $d = 64 \times 64 = 4,096$. Note that the pixel values are then usually scaled to then be in $[0,1]$ not $[0,255]$). This $d$ dimensional space is also called the pixel space where each dimension corresponds to the intensity value of a pixel in the image, but in general our data distribution could be anything such as videos such as in [Video Diffusion Models](https://arxiv.org/abs/2204.03458) or proteins such as in [RF Diffusion](https://www.nature.com/articles/s41586-023-06415-8).
+For example in the case of images, our data samples could be all images of the internet and we want to learn a model that can generate new images that look like real images. So our underlying data distribution $q$ and the dimension $d$ is very high (e.g. if we consider $64 \times 64$ black and white images then $d = 64 \times 64 = 4,096$. Note that the pixel values are then usually scaled to then be in $[-1,1]$ not $[0,255]$). This $d$ dimensional space is also called the pixel space where each dimension corresponds to the intensity value of a pixel in the image, but in general our data distribution could be anything such as videos such as in [Video Diffusion Models](https://arxiv.org/abs/2204.03458) or proteins such as in [RF Diffusion](https://www.nature.com/articles/s41586-023-06415-8).
+
+{{< figure 
+    src="/images/ml/diffusionFluxExample.png"
+    alt="Image generated using open source black-forest-labs/FLUX.1-dev model with some extra addons."
+    caption="Image generated using open source black-forest-labs/FLUX.1-dev model with some extra addons."
+    width="300"
+>}}
 
 Modeling such high dimensional distributions is very challenging due to the curse of dimensionality and the complex structure of real world data. The high dimensional space is also mostly empty with regards to our region of interest, also referred to as the data manifold (e.g. natural images) making it difficult to learn meaningful patterns. In the case of images, an easy way to think of this is that we are only interested in pictures of humans with say 2 eyes, 2 arms and 2 legs. But the pixel space also contains all sorts of other images that do not correspond to real humans such as images with 3 eyes or 5 arms etc. which do not exist in the real world. So the data distribution $q$ is concentrated on a very small area/manifold within the high dimensional pixel space.
+
+This is also related to the data manifold hypothesis which states that real world high dimensional data such as images, audio or text actually lie on a low dimensional manifold embedded within the high dimensional space, the so called ambient space. This means that although the data lives in a high dimensional space, the intrinsic dimensionality of the data is much lower due to the underlying structure and correlations present in real world data. For example, natural images have strong spatial correlations and patterns that can be exploited to represent them more efficiently. This has important implications for machine learning as it suggests that we can learn more efficient representations and models by focusing on the low dimensional manifold rather than the entire high dimensional space.
+
+{{< figure 
+    src="/images/ml/diffusionDataManifold.png"
+    alt="Illustration of the relative sparse nature of high dimensional spaces and its dense data manifold projected in 2D. Visualization is from the \"Swiss Roll\" problem."
+    caption="Illustration of the relative sparse nature of high dimensional spaces and its dense data manifold projected in 2D. Visualization is from the \"Swiss Roll\" problem."
+>}}
 
 Used Resources:
 - https://yang-song.net/blog/2021/score/
@@ -30,7 +45,29 @@ The idea of diffusion models is to use a stochastic process to gradually transfo
 
 First we define the forward diffusion process which gradually "perturbs/destroys" the data samples and moves it to our simple known distribution. In our case we will use a gaussian distribution as our simple known distribution. 
 
-We then define the forwards diffusion process as a markov chain that adds small amounts of gaussian noise to the data samples over $T$ time steps. So if we let $x_0$ be a data sample drawn from our true data distribution $x_0 \sim q(x)$, then the forward diffusion process results in a sequence of noisy samples $x_1, x_2, ..., x_T$ where each $x_t$ is obtained by adding gaussian noise to the previous sample $x_{t-1}$. The amount of noise added at each time step is controlled by the so called **variance or noise schedule** $\beta_1, \beta_2, ..., \beta_T$ where each $\beta_t$ is a small positive value as variance must be positive. The choice of the noise schedule and this particular construction of the forward process is an algorithmic design choice that has been found to work well in practice for diffusion models. However, it can also be linked to physics and the concept of Langevin dynamics which we will discuss later. Usually the noise schedule is chosen to be some monotonic increasing function such that more noise is added at later time steps. A common choice is to use a linear schedule where $\beta_t$ increases linearly from a small value (e.g. 0.0001) to a larger value (e.g. 0.02) over $T$ time steps or a cosine schedule as proposed in [Improved Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2102.09672).
+We then define the forwards diffusion process as a markov chain that adds small amounts of gaussian noise to the data samples over $T$ time steps. So if we let $x_0$ be a data sample drawn from our true data distribution $x_0 \sim q(x)$, then the forward diffusion process results in a sequence of noisy samples $x_1, x_2, ..., x_T$ where each $x_t$ is obtained by adding gaussian noise to the previous sample $x_{t-1}$. 
+
+{{< figure 
+    src="/images/ml/diffusionForward.png"
+    alt="Illustration of the forward diffusion process gradually adding noise to a data sample over T time steps."
+    caption="Illustration of the forward diffusion process gradually adding noise to a data sample over T time steps."
+>}}
+
+{{< figure 
+    src="/images/ml/diffusionForwardAnimation.gif"
+    alt="Animation showing the forward diffusion process gradually adding noise to a toy distribution."
+    caption="Animation showing the forward diffusion process gradually adding noise to a toy distribution."
+>}}
+
+The amount of noise added at each time step is controlled by the so called **variance or noise schedule** $\beta_1, \beta_2, ..., \beta_T$ where each $\beta_t$ is a small positive value as variance must be positive. The choice of the noise schedule and this particular construction of the forward process is an algorithmic design choice that has been found to work well in practice for diffusion models. However, it can also be linked to physics and the concept of Langevin dynamics which we will discuss later. Usually the noise schedule is chosen to be some monotonic increasing function such that more noise is added at later time steps. A common choice is to have an isotropic gaussian, so the covariance matrix is a scaled identity matrix $\beta_t I$ where $I$ is the identity matrix. A common choice is to use a linear schedule where $\beta_t$ increases linearly from a small value (e.g. 0.0001) to a larger value (e.g. 0.02) over $T$ time steps or a cosine schedule as proposed in [Improved Denoising Diffusion Probabilistic Models by OpenAI](https://arxiv.org/abs/2102.09672).
+
+{{< figure 
+    src="/images/ml/diffusionNoiseSchedule.png"
+    alt="Example of linear (top) and cosine (bottom) noise schedules used in diffusion models."
+    caption="Example of linear (top) and cosine (bottom) noise schedules used in diffusion models."
+>}}
+
+The reasoning for why the cosine schedule may work better is because intuitively we can see that in the beginning we don't want the image to be destroyed too quickly as we want to retain most of the structure of the image in the early stages of the diffusion process. So we want to add noise slowly in the beginning and then more rapidly towards the end when the image is already mostly destroyed. 
 
 So we can define the forward diffusion process of gradually adding noise as:
 
@@ -102,7 +139,13 @@ $$
 x_t = \sqrt{\bar{\alpha}_t} x_0 + \sum_{s=1}^{t} \left( \sqrt{\beta_s} \sqrt{\frac{\bar{\alpha}_t}{\bar{\alpha}_s}} \right) z_s
 $$
 
-Because $\mathbb{E}(z_s) = 0$ for all s, we can compute the expectation of $x_t$ given $x_0$ as:
+Which can also be shown more compactly as:
+
+$$
+x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon \text{ where } \epsilon \sim N(0, I)
+$$
+
+To then construct the gaussian distribution $q(x_t | x_0)$, we need to compute the mean and variance of $x_t$ given $x_0$. Because $\mathbb{E}(z_s) = 0$ for all s, we can compute the expectation of $x_t$ given $x_0$ as:
 
 $$
 \mathbb{E}(x_t \mid x_0) = \sqrt{\bar{\alpha}_t} x_0
@@ -155,10 +198,320 @@ $$
 
 This means that after enough time steps of adding noise, the data samples become indistinguishable from pure Gaussian noise. Intuitively this makes sense as we want $\sqrt{\bar{\alpha}_T} \to 0$ and $(1 - \bar{\alpha}_T) \to 1$ as $T$ approaches infinity, so we pick a noise schedule $\beta_t$ that ensures this. In other words, we are scaling down the original signal to zero while continuously adding random noise, so eventually the original signal is completely lost and we are left with just noise. This is key for diffusion models as it allows us to start from pure Gaussian noise and then reverse the diffusion process to generate new data samples. 
 
+In bayesian terms we can also interpret our complex target distribution $q(x_0)$ as the posterior distribution and the known simple gaussian distribution as the prior distribution. However, unlike traditional bayesian inference where we have a known likelihood function relating the data to the parameters and where we want to infer the posterior over the parameters given the data, in diffusion models we want to learn to transform samples from the prior (pure noise) into samples from the posterior (data distribution) via the learned reverse denoising process.
+
+{{< figure 
+    src="/images/ml/diffusionNoiseConvergence.png"
+    alt="Illustration of the convergence of the forward diffusion process to pure Gaussian noise over T time steps."
+    caption="Illustration of the convergence of the forward diffusion process to pure Gaussian noise over T time steps."
+    width="500"
+>}}
+
 ### Reverse Denoising Process
 
+Now that we have defined the forward diffusion process that gradually adds noise to the data samples, we can define the reverse denoising process that aims to reverse this process and recover the original data samples from the noisy samples. The key idea here is that because the forward process results in pure Gaussian noise after enough time steps, we can start from pure noise and then iteratively denoise the samples to generate new data samples. So in other words, we want to learn a markov chain that starts from a sample $x_T \sim N(0, I)$ and then iteratively applies denoising steps to obtain samples $x_{T-1}, x_{T-2}, ..., x_0$ where finally $x_0$ should closely resemble samples from the true data distribution. 
+
+{{< figure 
+    src="/images/ml/diffusionReverse.png"
+    alt="Illustration of the reverse denoising process gradually removing noise from a noisy sample over T time steps."
+    caption="Illustration of the reverse denoising process gradually removing noise from a noisy sample over T time steps."
+>}}
+
+{{< figure 
+    src="/images/ml/diffusionReverseAnimation.gif"
+    alt="Animation showing the reverse denoising process gradually removing noise from a toy distribution."
+    caption="Animation showing the reverse denoising process gradually removing noise from a toy distribution."
+>}}
+
+So we want the distribution of the final sample $x_0$ obtained from reversing the noise addition process. We can write this is as a joint distribution over the entire sequence of samples from time step $T$ to 0. However, remember that the reverse process is also a markov chain, so each sample $x_{t-1}$ only depends on the current sample $x_t$ and not on any later samples. We can also use the product rule of probability to write the joint distribution as:
+
+$$
+q(x_0:T) = q(x_T) \prod_{t=1}^{T} q(x_{t-1} | x_t, x_{t+1}, ..., x_T) = q(x_T) \prod_{t=1}^{T} q(x_{t-1} | x_t)
+$$
+
+Notice that for this we need to know the reverse conditional distributions as we already know the initial distribution $q(x_T) = N(0, I)$. The reverse conditional distributions represent the probability of obtaining the previous slightly less noisy sample $x_{t-1}$ given the current noisy sample $x_t$. So we need to compute:
+
+$$
+q(x_{t-1} | x_t)
+$$
+
+if we rewrite this using bayes theorem we get:
+
+$$
+q(x_{t-1} | x_t) = \frac{q(x_t | x_{t-1}) q(x_{t-1})}{q(x_t)}
+$$
+
+Unfortunately we can see that this is intractable to compute directly as we do not have access to the true data distribution $q(x_{t-1})$ nor the marginal distribution $q(x_t)$. However, it was shown that the reverse conditional probability is tractable if we in addition condition on the original data sample $x_0$. So in other words, if we are given both the current noisy sample $x_t$ and the original data sample $x_0$ as a "hint", we stand a chance at computing the reverse conditional distribution. We have already seen this in the forward process where we derived the closed form expression for $q(x_t | x_0)$ to be a gaussian distribution. The same applies here. 
+
+$$
+q(x_{t-1} | x_t) = N(x_{t-1}; \mu(x_t, t), \Sigma(x_t, t))
+$$
+
+Additionally conditioning on $x_0$ makes the formulation of the problem and derivation of the solution possible. So if we restrict ourselves to just having an isotropic gaussian noise model just like in the forward diffusion process, we can write:
+
+$$
+q(x_{t-1} | x_t, x_0) = N(x_{t-1}; \tilde{\mu}(x_t, x_0), \tilde{\beta}_t(x_t, x_0) I)
+$$
+
+If we restrict ourselves to just having an isotropic gaussian noise model just like in the forward diffusion process, we can write:
+
+$$
+q(x_{t-1} | x_t, x_0) = N(x_{t-1}; \tilde{\mu}(x_t, x_0), \tilde{\beta}_t I)
+$$
+
+But we still do not have access to $x_0$ at sampling time as we only start from pure noise $x_T \sim N(0, I)$ and we don't know the parameters $\tilde{\mu}(x_t, x_0)$ and $\tilde{\beta}_t(x_t, x_0)$ of the reverse conditional distribution. So the idea is that we can instead learn a neural network model $p_\theta(x_{t-1} | x_t)$ parametrized by $\theta$ to approximate this reverse conditional distribution:
+
+$$
+p_\theta(x_{t-1} | x_t) \approx q(x_{t-1} | x_t, x_0)
+$$
+
+So in other words, we want these two distributions to match as closely as possible. This is the main learning objective of diffusion models and can be achieved by finding the optimal parameters $\theta$ that minimize the KL divergence between the two distributions:
+
+$$
+p_\theta^* = \arg \min_\theta D_{KL}(q(x_{t-1} | x_t, x_0) \| p_\theta(x_{t-1} | x_t))
+$$
+
+In other words, we want to learn some mean and variance functions $\mu_\theta(x_t, t)$ and $\Sigma_\theta(x_t, t)$ such that the learned reverse conditional distribution $p_\theta(x_{t-1} | x_t)$ closely matches the true reverse conditional distribution $q(x_{t-1} | x_t, x_0)$. We can also describe the entire reverse denoising process as a markov chain with the following trajectory distribution:
+
+$$
+p_\theta(x_{0:T}) = p(x_T) \prod_{t=1}^{T} p_\theta(x_{t-1} | x_t)
+$$
+
+where we set the initial distribution $p(x_T) = N(0, I)$ to match the stationary distribution of the forward diffusion process. To achieve this as is often the case in machine learning and especially bayesian inference, we want to find some parameters $\theta$ that maximize the likelihood of the observed data samples under the model $p_\theta(x_0)$. However, directly maximizing the likelihood is intractable because we would need to marginalize over all possible trajectories from $x_T$ to $x_0$:
+
+$$
+p_\theta(x_0) = \int p_\theta(x_{0:T}) dx_{1:T}
+$$
+
+So in other words, over all possible ways noise could have been added. This integral is intractable due to the high dimensionality of the space and the complex dependencies between the variables. So instead of maximizing the likelihood or the log likelihood directly, we can instead maximize a lower bound on the log likelihood called the evidence lower bound (ELBO) using variational inference. We use this lower bound as a surrogate objective that is easier to optimize and still leads to good enough solutions, but not necessarily the optimal solution due to being a lower bound. Because we also prefer minimization problems in machine learning, we usually minimize the negative log likelihood or equivalently minimize the negative ELBO.
+
+{{< figure 
+    src="/images/ml/variationalInference.png"
+    alt="Visualization of variational inference as minimizing the KL divergence between the true posterior and an approximate distribution."
+    caption="Visualization of variational inference as minimizing the KL divergence between the true posterior and an approximate distribution."
+    width="400"
+>}}
+
+There are two possible derivations of the ELBO, one can be derived from minimizing the cross entropy between the true data distribution and the model distribution, while the other can be derived from minimizing the KL divergence between the true trajectory distribution and the model trajectory distribution. 
+
+First we start with the cross entropy derivation. The cross entropy between the true data distribution $q(x_0)$ and the model distribution $p_\theta(x_0)$ is defined as:
+
+$$
+L_{\text{CE}} = H(q, p_\theta) = - \mathbb{E}_{x_0 \sim q(x_0)} [\log p_\theta(x_0)]
+$$
+
+which measures how well the model distribution matches the true data distribution. Minimizing this cross entropy is equivalent to maximizing the log likelihood of the observed data samples under the model. However, as mentioned earlier, directly maximizing the log likelihood is intractable due to the need to marginalize over all possible trajectories, so instead we can use Jensen's inequality which states that for a concave function $f$ and a random variable $X$, we have:
+
+$$
+f(\mathbb{E}[X]) \geq \mathbb{E}[f(X)]
+$$
+
+Luckily the log function is concave, so we can apply Jensen's inequality to the log likelihood and derive the lower bound:
+
+$$
+\begin{align*}
+\log p_\theta(x_0) &= \log \int p_\theta(x_{0:T}) dx_{1:T} \\
+&= \log \int q(x_{1:T} | x_0) \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} dx_{1:T} \\
+&= \log \mathbb{E} \left[q(x_{1:T} | x_0) \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] &\text{ (Hint to: Cross Entropy) } \\
+&= \log \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] &\text{ (by definition of expectation) } \\
+&\geq \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] &\text{ (by Jensen's inequality) } \\
+L_{\text{ELBO}} &= \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{1:T})} \right] \leq \mathbb{E}_{x_0 \sim q(x_0)} [\log p_\theta(x_0)]
+\end{align*}
+$$
+
+So to maximize the log likelihood we need to minimize the negative ELBO loss which is a lower bound on the negative log likelihood:
+
+$$
+\min -L_{\text{ELBO}} = - \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] \geq - \mathbb{E}_{q(x_0)} [\log p_\theta(x_0)]
+$$
+
+The other derivation starts from the definition of the KL divergence between the true trajectory distribution $q(x_{1:T} | x_0)$ and the model trajectory distribution $p_\theta(x_{1:T} | x_0)$. The KL divergence is defined as:
+
+$$
+D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) = \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{1:T} | x_0)} \right]
+$$
+
+Importantly the KL divergence is always non-negative, so we have:
+
+$$
+\begin{align*}
+0 &\leq D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) \\
+-\log p_\theta(x_0) &\leq - \log p_\theta(x_0) + D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) \\
+&= -\log p_\theta(x_0) + \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{1:T} | x_0)} \right] & \text{ (by definition of KL divergence) } \\
+&= -\log p_\theta(x_0) + \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{\frac{p_\theta(x_0 | x_{1:T}) p_\theta(x_{1:T})}{p_\theta(x_0)}} \right] & \text{ (by bayes theorem) } \\
+&= -\log p_\theta(x_0) + \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{\frac{p_\theta(x_{0:T})}{p_\theta(x_0)}} \right] & \text{ (by joint distribution) } \\
+&= -\log p_\theta(x_0) + \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} + \log p_\theta(x_0) \right] & \text{ (by log and division) } \\
+&= -\log p_\theta(x_0) + \log p_\theta(x_0) + \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} \right] & \text{ (by linearity of expectation) } \\
+L_{\text{ELBO}} &= \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} \right]
+\end{align*}
+$$
+
+Now we have successfully derived the ELBO from two different perspectives and gotten rid of the intractable $\log p_\theta(x_0)$ term. We can now rewrite the ELBO in a more convenient form for optimization where we will use the finding of conditioning on $x_0$ as otherwise all the terms would have high variance and be difficult to estimate but giving it the original data sample as a hint makes the estimation easier and more stable:
+
+$$
+\begin{align*}
+L_{\text{ELBO}} &= \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} \right] \\
+&= \mathbb{E}_{q( \cdot | x_0)} \left[ \log \frac{\prod_{t=1}^{T} q(x_t | x_{t-1})}{p(x_T) \prod_{t=1}^{T} p_\theta(x_{t-1} | x_t)} \right] \text{ (by joint distributions) } \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[ -\log p(x_T) + \log \frac{\prod_{t=1}^{T} q(x_t | x_{t-1})}{\prod_{t=1}^{T} p_\theta(x_{t-1} | x_t)} \right] \text{ (by log and division) } \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[ -\log p(x_T) + \sum_{t=1}^{T} \log \frac{q(x_t | x_{t-1})}{p_\theta(x_{t-1} | x_t)} \right] \text{ (by log and product) } \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[ -\log p(x_T) + \sum_{t=2}^{T} \log \frac{q(x_t | x_{t-1})}{p_\theta(x_{t-1} | x_t)} + \log \frac{q(x_1 | x_0)}{p_\theta(x_0 | x_1)} \right] \text{ (separating last term) } \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[ -\log p(x_T) + \sum_{t=2}^{T} \log \frac{\frac{q(x_{t-1} | x_t) q(x_t)}{q(x_{t-1})}}{p_\theta(x_{t-1} | x_t)} + \log \frac{q(x_1 | x_0)}{p_\theta(x_0 | x_1)} \right] \text{ (by bayes theorem) } \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[ -\log p(x_T) + \sum_{t=2}^{T} \log \frac{\frac{q(x_{t-1} | x_t, x_0) q(x_t | x_0)}{q(x_{t-1} | x_0)}}{p_\theta(x_{t-1} | x_t)} + \log \frac{q(x_1 | x_0)}{p_\theta(x_0 | x_1)} \right] \text{ (conditioning on } x_0 \text{) } \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[ -\log p(x_T) + \sum_{t=2}^{T} \left( \log \frac{q(x_{t-1} | x_t, x_0)q(x_t | x_0)}{p_\theta(x_{t-1} | x_t) q(x_{t-1} | x_0)} \right) + \log \frac{q(x_1 | x_0)}{p_\theta(x_0 | x_1)} \right] \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[ -\log p(x_T) + \sum_{t=2}^{T} \left( \log \frac{q(x_{t-1} | x_t, x_0)}{p_\theta(x_{t-1} | x_t)} \right) + \sum_{t=2}^{T} \left( \log \frac{q(x_t | x_0)}{q(x_{t-1} | x_0)} \right) + \log \frac{q(x_1 | x_0)}{p_\theta(x_0 | x_1)} \right] \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[ -\log p(x_T) + \sum_{t=2}^{T} \left( \log \frac{q(x_{t-1} | x_t, x_0)}{p_\theta(x_{t-1} | x_t)} \right) + \log \frac{q(x_T | x_0)}{q(x_1 | x_0)} + \log \frac{q(x_1 | x_0)}{p_\theta(x_0 | x_1)} \right] \text{ (telescoping sum) } \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[ -\log p(x_T) + \sum_{t=2}^{T} \left( \log \frac{q(x_{t-1} | x_t, x_0)}{p_\theta(x_{t-1} | x_t)} \right) + \log q(x_T | x_0) - \log p_\theta(x_0 | x_1) \right] \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[ \log \frac{q(x_T | x_0)}{p(x_T)} + \sum_{t=2}^{T} \left( \log \frac{q(x_{t-1} | x_t, x_0)}{p_\theta(x_{t-1} | x_t)} \right) - \log p_\theta(x_0 | x_1) \right] \\
+&= \mathbb{E}_{q(\cdot | x_0)} \left[\underbrace{D_{KL}(q(x_T | x_0) \| p(x_T))}_{L_T} + \sum_{t=2}^{T} \underbrace{D_{KL}(q(x_{t-1} | x_t, x_0) \| p_\theta(x_{t-1} | x_t))}_{L_{t-1}} \underbrace{- \log p_\theta(x_0 | x_1)}_{L_0} \right]
+\end{align*}
+$$
+
+This is now our final expression for the ELBO which we can then minimize the negative of. If we analyze the different terms in this expression we can see that it consists of three main parts:
+
+- The first term $L_t = D_{KL}(q(x_T | x_0) \| p_\theta(x_T))$ measures how well the model can match the distribution of the final noisy sample $x_T$ to the prior distribution. This term can be ignored in practice as if we choose a large enough T and an appropriate noise schedule $\beta_t$, then $q(x_T | x_0)$ will be very close to $N(0, I)$ anyway due to the ergodic property of the forward diffusion process and we pick $p_\theta(x_T) = N(0, I)$ which has no trainable parameters and is therefore just a constant, hence this term does not contribute to the optimization and can be ignored during training.
+
+- The last term $L_0 = - \log p_\theta(x_0 | x_1)$ is the last step where we want to reconstruct the original data sample from the slightly noisy sample $x_1$. Because we scaled our image data from being in $[0, 255]$ to $[-1, 1]$ the last step does some weird stuff but this can basically be ignored and in practice this term is just omitted during training and then at sampling we handle the final step slightly differently.
+
+So we only need to focus on the main terms $L_t$ for $t = 1, 2, ..., T-1$ which measure how well the model can match the reverse conditional distributions at each time step exactly as we initially set out to do. So our final training objective reduces to minimizing the sum of KL divergences between the true reverse conditional distributions and the learned reverse conditional distributions at each time step:
+
+$$
+\min_\theta \sum_{t=2}^{T} D_{KL}(q(x_{t-1} | x_t, x_0) \| p_\theta(x_{t-1} | x_t))
+$$
+
+Remember that we previously said that if we additionally condition on $x_0$ the problem becomes tractable and we can rewrite the reverse conditional distribution as a gaussian:
+
+$$
+q(x_{t-1} | x_t, x_0) = N(x_{t-1}; \tilde{\mu}(x_t, x_0), \tilde{\beta}_t(x_t, x_0) I)
+$$
+
+If we now apply bayes theorem again we can derive closed form expressions we get:
+
+$$
+q(x_{t-1} | x_t, x_0) = \frac{q(x_t | x_{t-1}) q(x_{t-1} | x_0)}{q(x_t | x_0)}
+$$
+
+Each of these components are gaussians as we have already derived the forward conditional distribution $q(x_t | x_{t-1})$ and the marginal distribution $q(x_t | x_0)$ above. We can also derive the conditional distribution $q(x_{t-1} | x_0)$ in a similar way to how we derived $q(x_t | x_0)$ which is just different by one time step. So we can get its closed form by multiplying two gaussians together and reparameterizing to find the mean and variance of the resulting gaussian as a function of $x_t$ and $x_0$:
+
+$$
+q(x_{t-1} | x_t, x_0) \propto q(x_t | x_{t-1}) q(x_{t-1} | x_0)
+$$
+
+{{< callout type="todo" >}}
+Actually show the calculations
+{{< /callout >}}
+
+This results in the following closed form expression for the variance of the reverse conditional distribution:
+
+$$
+\tilde{\beta}_t = \frac{1 - \bar{\alpha}_{t-1}}{1 - \bar{\alpha}_t} \beta_t
+$$
+
+This variance still depends on the time step t but no longer on $x_t$ or $x_0$ which is good as we want to be able to sample from this distribution without knowing $x_0$. Remember we picked an isotropic gaussian $\Sigma(x_t, t) = \tilde{\beta}_t I$. In the [DDPM paper](https://arxiv.org/abs/2006.11239) the authors tried different choices for $\tilde{\beta}_t$ and found that setting $\tilde{\beta}_t = \beta_t$ works well in practice. We know $\beta_t$ from the noise schedule, so we have a closed form expression for the variance of the reverse conditional distribution which just depends on the time step t and no longer on $x_t$ or $x_0$.
+
+{{< callout type="todo" >}}
+Actually show the calculations
+{{< /callout >}}
+
+If we then also calculate the mean of this distribution we get:
+
+$$
+\tilde{\mu}(x_t, x_0) = \frac{\sqrt{\alpha_t}(1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_t}x_t + \frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1 - \bar{\alpha}_t}x_0
+$$
+
+This mean function still depends on both $x_t$ and $x_0$. However, we do not have access to $x_0$ at sampling time as we only start from pure noise $x_T \sim N(0, I)$. However, remember that we could previously reparameterize $x_t$ in terms of $x_0$ and some standard gaussian noise $\epsilon$ as:
+
+$$
+x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon \text{ where } \epsilon \sim N(0, I)
+$$
+
+If we rearrange this expression we can express $x_0$ in terms of $x_t$ and $\epsilon$ as:
+
+$$
+x_0 = \frac{1}{\sqrt{\bar{\alpha}_t}} \left( x_t - \sqrt{1 - \bar{\alpha}_t} \epsilon \right)
+$$
+
+If we then substitute this expression for $x_0$ into the mean function $\tilde{\mu}(x_t, x_0)$ from above and simplify we can express the mean function solely in terms of $x_t$ and some random noise $\epsilon$ showing that the mean of the reverse conditional distribution really is just a scaled version of the current noisy sample $x_t$ minus some noise term:
+
+$$
+\begin{align*}
+\tilde{\mu}_t(x_t) &= \frac{\sqrt{\alpha_t}(1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_t}x_t + \frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1 - \bar{\alpha}_t}x_0 \\
+&= \frac{\sqrt{\alpha_t}(1 - \bar{\alpha}_{t-1})}{1 - \bar{\alpha}_t}x_t + \frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1 - \bar{\alpha}_t} \left( \frac{1}{\sqrt{\bar{\alpha}_t}} \left( x_t - \sqrt{1 - \bar{\alpha}_t} \epsilon_t \right) \right) \\
+&= \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_t \right)
+\end{align*}
+$$
+
+So in other words our training of $p_\theta(x_{t-1} | x_t)$ now reduces to learning the mean function as we can express the reverse conditional distribution as:
+
+$$
+p_\theta(x_{t-1} | x_t) = N(x_{t-1}; \mu_\theta(x_t, t), \Sigma_\theta(x_t, t))
+$$
+
+where we can set $\Sigma_\theta(x_t, t) = \sigma_t^2 I$ with $\sigma_t^2 = \beta_t$ as mentioned above. So we would like to train $\mu_\theta(x_t, t)$ to be an estimator of the true mean of the reverse conditional distribution:
+
+$$
+\mu_\theta(x_t, t) \approx \tilde{\mu}(x_t, t) = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_t \right)
+$$
+
+Because at training time we have access to $x_t$ we can reparameterize it to instead predict the noise $\epsilon_t$ from the input $x_t$ and time step t. This has been found to work better in practice as predicting just the noise is easier than predicting the entire denoised sample. So we can rewrite the mean function as:
+
+$$
+\mu_\theta(x_t, t) = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(x_t, t) \right)
+$$
+
+where $\epsilon_\theta(x_t, t)$ is a neural network that predicts the noise added at time step t given the noisy sample $x_t$. Therefore the slightly denoised sample can be computed as:
+
+$$
+\begin{align*}
+x_{t-1} &= N\left( x_{t-1}; \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(x_t, t) \right), \Sigma_\theta(x_t, t) \right)\\
+&= \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(x_t, t) \right) + \beta_t z_t \text{ where } z_t \sim N(0, I)
+\end{align*}
+$$
+
+It is important that we add some noise back at each denoising step to maintain stochasticity in the process and ensure diversity in the generated samples. This avoids collapsing to a single mode and helps explore the data distribution better as the model is only predicting the mean of the reverse conditional distribution.
+
+Above we derived that our training objective reduces to minimizing the KL divergence between the true reverse conditional distribution and the learned reverse conditional distribution at each time step. The general form of the KL divergence between two gaussians $N(\mu_1, \Sigma_1)$ and $N(\mu_2, \Sigma_2)$ in $\mathbb{R}^d$ is given by:
+
+{{< callout type="todo" >}}
+Actually show the calculations
+{{< /callout >}}
+
+$$
+D_{KL}(N(\mu_1, \Sigma_1) \| N(\mu_2, \Sigma_2)) = \frac{1}{2} \left( \log \frac{|\Sigma_2|}{|\Sigma_1|} - d + \text{tr}(\Sigma_2^{-1} \Sigma_1) + (\mu_2 - \mu_1)^T \Sigma_2^{-1} (\mu_2 - \mu_1) \right)
+$$
+
+If we substitute in our expressions of $\tilde{\mu}(x_t, t)$, $\mu_\theta(x_t, t)$, $\tilde{\beta}_t$ and $\sigma_t^2$ into this expression and simplify we get something similar to a mean squared error loss between the true noise $\epsilon_t$ and the predicted noise $\epsilon_\theta(x_t, t)$ scaled by some factor:
+
+$$
+\begin{align*}
+L_t &= \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{1}{2 \| \Sigma_\theta (x_t, t) \|^2} \| \tilde{\mu}(x_t, t) - \mu_\theta (x_t, t) \|^2 \right] \\
+&= \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{1}{2 \sigma_t^2} \left\| \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_t \right) - \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta (x_t, t) \right) \right\|^2 \right] \\
+&= \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{1}{2 \sigma_t^2} \left\| \frac{\beta_t}{\sqrt{\alpha_t} \sqrt{1 - \bar{\alpha}_t}} \left( \epsilon_t - \epsilon_\theta (x_t, t) \right) \right\|^2 \right] \\
+&= \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{\beta_t^2}{2 \sigma_t^2 \alpha_t (1 - \bar{\alpha}_t)} \| \epsilon_t - \epsilon_\theta (x_t, t) \|^2 \right] 
+\end{align*}
+$$
+
+In the [DDPM paper](https://arxiv.org/abs/2006.11239) the authors showed that empirically a simplified version of this loss function outperforms the full variational bound ignoring as when we set the noise schedule $\sigma_t^2 = \beta_t$ the scaling factor can be ignored during optimization. This results in our final simplified loss function for training the denoising model:
+
+$$
+L_t^{\text{simple}} = \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \| \epsilon - \epsilon_\theta (x_t, t) \|^2 \right] = \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \| \epsilon - \epsilon_\theta (\sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon, t) \|^2 \right]
+$$
+
+This can then of course be scaled by a half to match the usual MSE loss convention and make the gradients nicer:
+
+$$
+L_t^{\text{simple}} = \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{1}{2} \| \epsilon - \epsilon_\theta (x_t, t) \|^2 \right] = \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{1}{2} \| \epsilon - \epsilon_\theta (\sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon, t) \|^2 \right]
+$$
+
+This is now our final training objective for diffusion models which is just a simple mean squared error loss between the true noise added at each time step and the predicted noise from the neural network model. We can then optimize this loss using stochastic gradient descent and backpropagation to learn the parameters $\theta$ of the denoising model.
+
+### Training & Sampling
 
 we don't need to do all T steps per batch because it is an expectation and uniformly sample $t$ from 1 to T for each data point in the batch?
+
+diffusionDDPMTraining.png
+diffusionDDPMSampling.png
+
+Importantly when sampling after denoising we add some noise back except for the last step to maintain stochasticity in the process and ensure diversity in the generated samples? This avoids collapsing to a single mode and helps explore the data distribution better. Just on the edge of data manifold rather than deep inside it? remember we are just predicting the mean of the reverse conditional distribution so adding noise back helps explore the distribution better.
 
 ## Noise-Conditional Score Networks
 
@@ -193,7 +546,9 @@ where W_t is Brownian motion (Wiener process) introducing randomness into the dy
 
 ## Denoising Diffusion Implicit Models
 
-Determinisitc variant such as DDIM remove the stochastic term by setting $Z_i = 0$ in the update step. This results in a deterministic mapping from pure noise to data samples. This improves generation speed but with slightly reduced sample diversity? Intuitevly it converges faster to high likelihood regions but may miss some modes of the distribution due to lack of stochastic exploration.
+Determinisitc variant such as DDIM remove the stochastic term by setting $Z_i = 0$ in the update step. This results in a deterministic mapping from pure noise to data samples. This improves generation speed but with slightly reduced sample diversity? Intuitevly it converges faster to high likelihood regions but may miss some modes of the distribution due to lack of stochastic exploration. Wasn^t this shown to be bad by 3blue1brown?
+
+Basically it can be shown that there is an ODE that matches the planck SDE and this ODE can be solved deterministically. So instead of simulating the SDE with noise we can solve the corresponding ODE without noise to get a deterministic mapping from noise to data samples. has smaller scaling of our step size do not go towards the mean?
 
 ## Diffusion Backbones
 
@@ -209,6 +564,11 @@ The original choice for the denoising model is the U-Net architecture which was 
     caption="U-Net Architecture used in the original Biomedical Image Segmentation paper."
 >}}
 
+Also has attention somewhore
+
+and to know at which time it is uses sinusoidaL embeddings?
+
+Second paper by openai "Diffusion Models Beat GANs on Image Synthesis" with some changes and also introduces classifier guidance.
 ### Diffusion Transformers
 
 ## Latent Diffusion Models
