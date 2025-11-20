@@ -947,135 +947,102 @@ $$
 s_\theta \approx \nabla_X \log P^*(X)
 $$
 
-Idea is to learn an approximation of the score function using a neural network $s_\theta(X)$ parameterized by $\theta$. We can then train this network using score matching using simple MSE loss between the true score function and the predicted score function. But would still need the true score function which we do not have access to?
-
-Hyvärinen's trick? Expanding and simplyfying the loss function to get rid of the dependence on the true score function.
-
-This results in the score mathching objective also called Hyvärinen's objective
-
-However we still have 2 problems. Evaluating the divergence term is computationally expensive as it requires calculating the trace of the Jacobian matrix of the score function which is O(d^2) where d is the dimensionality of X. 
-
-
-So instead we want to estimate the score function from data samples drawn from the target distribution $P^*$. This is where score matching comes in. So we use a parametric family of functions, i.e. model to approximate the score function parametrized by $\theta$:
-
-$$
-s_\theta: R^d \to R^d \text{ such that } s_\theta(X) \approx \nabla_X \log P^*(X)
-$$
-
-A simple loss function to train this model could be the mean squared error between the estimated score and the true score:
+To train this network we can use the **score matching objective** introduced by Hyvärinen (2005). The idea starts with using the mean squared error (MSE) loss between the true score function and the predicted score function:
 
 $$
 L(\theta) = \frac{1}{2} E_{X \sim P^*} [||s_\theta(X) - \nabla_X \log P^*(X)||^2]
 $$
 
-why the 1/2 factor? just for convenience when taking derivatives. But we still have the problem that we do not know the true score function $\nabla_X \log P^*(X)$. For this we can use Hyvarinen's score matching technique which allows us to train the score model without knowing the true score function. If we expand the loss function we get
-
-$$
-L(\theta) = \frac{1}{2} E_P(||s_\theta(X)||^2) - E_P[s_\theta(X) \cdot \nabla_X \log P(X)] + \frac{1}{2} E_P(||\nabla_X \log P(X)||^2)
-$$
-
-why now just P? is this just the general form? To remove the dependence on the true score function we can apply integration by parts formula in multiple dimensions. So let $v: R^d \to R^d$ be a vector field and $p: R^d \to R$ be a scalar field. Then the integration by parts formula states that:
-
-$$
-\int_{R^d} v(X) \cdot \nabla_X p(X) dX = -\int_{R^d} p(X) \nabla_X \cdot v(X) dX
-$$
-
-by the chain rule we also have:
-
-$$
-\nabla_X \log P(X) \cdot P(X) = \nabla_X P(X)
-$$
-
-Putting these together we get:
+the problem here is that we still need the true score function $\nabla_X \log P^*(X)$ which we do not have access to. However, Hyvärinen showed that we can expand and simplify this loss function to get rid of the dependence on the true score function by expanding and using integration by parts. 
 
 $$
 \begin{align*}
-E_P[s_\theta(X) \cdot \nabla_X \log P(X)] &= \int_{R^d} s_\theta(X) \cdot \nabla_X \log P(X) P(X) dX \\
-&= \int_{R^d} s_\theta(X) \cdot \nabla_X P(X) dX \\
-&= -\int_{R^d} P(X) \nabla_X \cdot s_\theta(X) dX \\
-&= -E_P[\nabla_X \cdot s_\theta(X)]
+L(\theta) &= \frac{1}{2} E_{X \sim P^*} [||s_\theta(X) - \nabla_X \log P^*(X)||^2] \\
+&= \frac{1}{2} E_{X \sim P^*} [||s_\theta(X)||^2] - E_{X \sim P^*} [s_\theta(X) \cdot \nabla_X \log P^*(X)] + \frac{1}{2} E_{X \sim P^*} [||\nabla_X \log P^*(X)||^2] \\
 \end{align*}
 $$
 
-Putting this back into the loss function gives us the so called **score matching objective** or **Hyvarinen's objective**:
+We can ignore the last term as it does not depend on the parameters $\theta$ of our score model. Let's focus on the middle term:
 
 $$
-L(\theta) = E_{X \sim P} \left[ \frac{1}{2} ||s_\theta(X)||^2 + \nabla_X \cdot s_\theta(X) \right]
+\begin{align*}
+E_{X \sim P^*} [s_\theta(X) \cdot \nabla_X \log P^*(X)] = \int_{R^d} s_\theta(X) \cdot \nabla_X \log P^*(X) P^*(X) dX \text{Chain rule} \\
+&= \int_{R^d} s_\theta(X) \cdot \nabla_X P^*(X) dX \\
+&= -\int_{R^d} P^*(X) \nabla_X \cdot s_\theta(X) dX \text{Integration by parts} \\
+&= -E_{X \sim P^*} [\nabla_X \cdot s_\theta(X)]
+\end{align*}
 $$
 
-the objective can be interpreted as penalizing two complimentary aspects? Doesn't make sense to me:
-- The first term $||s_\theta(X)||^2$ encourages the score model to predict a small vector near data points. Have to assume the data points are high likelihood data points of the target distribution. So once it is in the high likelihood region the score should be small.
-- The second term $\nabla_X \cdot s_\theta(X)$ (divergence) ensures that the data points behave like a local optimum of the log density by penalizing divergence.
+This results in the so called **score matching objective** or **Hyvärinen's objective**:
 
-Hwoever, there are still two challanges with this approach. Firstly the divergence term $\nabla_X \cdot s_\theta(X)= \text{Tr}(\frac{\partial s_\theta(X)}{\partial X})$ requires computing the trace of the Jacobian matrix of the score model which can be computationally infeasable for high dimensional data as a naive implementation would require one backpropagation per input dimension? For example videos with millions of dimensions. 
+$$
+L(\theta) = E_{X \sim P^*} \left[ \frac{1}{2} ||s_\theta(X)||^2 + \nabla_X \cdot s_\theta(X) \right]
+$$
 
-Secondly, the score is only informative near regions of high data density where we have training samples and generalizes poorly to low density regions far away from the data manifold. This is problematic for generative modeling where we need to be able to sample from the entire data distribution including low density regions. Can be visaulized.
+This objective can be interpreted as penalizing two complementary aspects:
+- The first term $||s_\theta(X)||^2$ encourages the score model to predict a small vector near data points. Since data points are high likelihood points of the target distribution, the score should be small there.
+- The second term $\nabla_X \cdot s_\theta(X)$ (divergence) ensures that the data points behave like local optima of the log density by penalizing divergence and encouraging the score model to point towards regions of higher probability density.
 
-This results in Noise Conditional score matching (NCSM) where we add Gaussian noise to the data samples at different scales and train a score model to estimate the score function of the perturbed data distribution. By adding noise we smooth out the data distribution and make the score function well-defined everywhere in R^d.
+However, there are still two challanges with this approach:
 
-So let $X \sim P(X)$ be a random variable followign the target data distribution. We define a perturbed version of X by adding Gaussian noise with standard deviation $\sigma$:
+1. Firstly the divergence term $\nabla_X \cdot s_\theta(X)= \text{Tr}(\frac{\partial s_\theta(X)}{\partial X})$ requires computing the trace of the Jacobian matrix of the score model which can be computationally infeasable for high dimensional data as a naive implementation would require one backpropagation per input dimension.
+
+2. Secondly, the score is only informative near regions of high data density where we have training samples and generalizes poorly to low density regions far away from the data manifold. This is problematic for generative modeling where we need to be able to sample from the entire data distribution including low density regions. You can think of this as if the particle is very far away from the data manifold, the score function may not provide useful guidance on how to move towards higher density regions and instead just point in a generic direction.
+
+To adress both of these issues, we use **Noise Conditional Score Matching (NCSM)**, where we add Gaussian noise to the data samples and train our score model to predict the score function of the perturbed data distribution:
 
 $$
 \tilde{X} = X + \epsilon \text{ where } \epsilon \sim N(0, \sigma^2 I)
 $$
 
-Can visuallized the petrubed data distribution and the true and noisy score functions. The variance $\sigma^2$ controls the amount of smoothing applied to the data distribution. Larger values of $\sigma$ result in a smoother distribution with a well-defined score function everywhere. But destroys the fine strucute of the data. Smaller values of $\sigma$ preserve more details but the score function fails to cover low density regions. This results in the following objective:
+The added noise smooths out the data distribution, making the score function well-defined everywhere in $\mathbb{R}^d$ and improving generalization to low density regions. This results in the modified objective:
 
 $$
-\min_\theta \frac{1}{2} E_{\tilde{X} \sim P_\sigma} [||s_\theta(\tilde{X}, \sigma) - \nabla_{\tilde{X}} \log P_\sigma(\tilde{X})||^2]
+L(\theta) = \frac{1}{2} E_{\tilde{X} \sim P_\sigma} [||s_\theta(\tilde{X}, \sigma) - \nabla_{\tilde{X}} \log P_\sigma(\tilde{X})||^2]
 $$
 
-where $P_\sigma$ is the perturbed data distribution obtained by convolving the original data distribution P with a Gaussian kernel of variance $\sigma^2$. Agai we can expand and rewrite the objective. The expectation of the cross term can be rewritten as the conditional distribution $P(\tilde{X}|X)$:
+Note that the score model now also takes the noise level $\sigma$ as an additional input, allowing it to adapt its predictions based on the amount of noise added to the data. This is important because the score function of the perturbed distribution $P_\sigma$ will vary depending on the noise level. But how does this help us avoid computing the divergence term? If we split this objective again just like before we can throw away the last term which does not depend on $\theta$ and focus on the last term:
 
 $$
-E_{\tilde{X}}[s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} \log P_\sigma(\tilde{X})] = E_{X, \tilde{X}|X}[s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} \log P(\tilde{X}|X)]
+L(\theta) = \frac{1}{2} E_{\tilde{X} \sim P_\sigma} [||s_\theta(\tilde{X}, \sigma)||^2] - E_{\tilde{X} \sim P_\sigma} [s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} \log P_\sigma(\tilde{X})]
 $$
 
-The above needs to be proven as all these calculations are very confussing. Uses the leibniz rule to interchange differentiation and integration.
-
-This results in:
+If we use the defintion of expectation under the marginal distribution we can rewrite the objective as:
 
 $$
-\min_\theta \frac{1}{2} E_{\tilde{X}}[||s_\theta(\tilde{X}, \sigma)||^2] + E_{X, \tilde{X}|X}[s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} \log P(\tilde{X}|X)]
+\begin{align*}
+E_{\tilde{X} \sim P_\sigma} [s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} \log P_\sigma(\tilde{X})] &= \int s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} \log P_\sigma(\tilde{X}) P_\sigma(\tilde{X}) d\tilde{X} \\
+&= \int s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} P_\sigma(\tilde{X}) d\tilde{X} \\
+&= \int s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} \int P_\sigma(X) P_\sigma(\tilde{X}|X) dX d\tilde{X} \text{Marginalization} \\
+&= \int s_\theta(\tilde{X}, \sigma) \cdot \int P_\sigma(X) \nabla_{\tilde{X}} P_\sigma(\tilde{X}|X) dX d\tilde{X} \text{Leibniz rule} \\
+&= \int \int s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} P_\sigma(\tilde{X}|X) P_\sigma(X) dX d\tilde{X} \\
+&= \int \int s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} \log P_\sigma(\tilde{X}|X) P_\sigma(\tilde{X}|X) P_\sigma(X) dX d\tilde{X} \text{Chain rule} \\
+&= E_{X, \tilde{X}|X} [s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} \log P_\sigma(\tilde{X}|X)]
+\end{align*}
 $$
 
-By using marginliazion we can also get:
+So we have rewritten the expectation over the marginal distribution $P_\sigma(\tilde{X})$ into an expectation over the joint distribution of the original data and the perturbed data $P_\sigma(X, \tilde{X}) = P_\sigma(X) P_\sigma(\tilde{X}|X)$. This is useful because the conditional distribution $P_\sigma(\tilde{X}|X)$ is often easier to work with since it is defined by our noise model which is just Gaussian noise addition due to $\tilde{X} = X + \epsilon$ with $\epsilon \sim N(0, \sigma^2 I)$. The PDF of this conditional distribution is known:
 
 $$
-E_{\tilde{X}}[||s_\theta(\tilde{X}, \sigma)||^2] = \int s_\theta(\tilde{X}, \sigma)^2 P_\sigma(\tilde{X}) d\tilde{X} = \int \int s_\theta(\tilde{X}, \sigma) P_\sigma(\tilde{X}|X) P(X) dX d\tilde{X} = E_{X, \tilde{X}|X}[||s_\theta(\tilde{X}, \sigma)||^2]
+P_\sigma(\tilde{X}|X) = \frac{1}{(2\pi \sigma^2)^{d/2}} \exp \left( -\frac{||\tilde{X} - X||^2}{2\sigma^2} \right)
 $$
 
-Giving us
+We can then obtain the score function of this conditional distribution by taking the gradient of the log PDF:
 
 $$
-E_{X, \tilde{X}|X} \left[ ||s_\theta(\tilde{X}, \sigma)||^2 - 2 E_{X, \tilde{X}|X}[||s_\theta(\tilde{X}, \sigma) \cdot \nabla_{\tilde{X}} \log P(\tilde{X}|X)||^2 \right] + E_{X, \tilde{X}|X} \left[ ||\nabla_{\tilde{X}} \log P(\tilde{X}|X)||^2 \right] - E_{X, \tilde{X}|X} \left[ ||\nabla_{\tilde{X}} \log P(\tilde{X}|X)||^2 \right]
+\nabla_{\tilde{X}} \log P_\sigma(\tilde{X}|X) = -\frac{1}{\sigma^2} (\tilde{X} - X) = -\frac{1}{\sigma^2} \epsilon
 $$
 
-So we get:
+with $\epsilon \sim N(0, \sigma^2 I)$. This means we can now compute the score function of the conditional distribution exactly without needing to compute any divergence terms. Putting this all together we get the final Noise Conditional Score Matching (NCSM) objective:
 
 $$
-\min_\theta \frac{1}{2} E_{\tilde{X}}[||s_\theta(\tilde{X}, \sigma) - \nabla_{\tilde{X}} \log P(\tilde{X})||^2] = \min_\theta \frac{1}{2} E_{X, \tilde{X}|X} [||s_\theta(\tilde{X}, \sigma) - \nabla_{\tilde{X}} \log P(\tilde{X}|X)||^2]
+L_\text{NCSM}(\theta) = \frac{1}{2} E_{X, \tilde{X}|X} [||s_\theta(\tilde{X}, \sigma) + \frac{1}{\sigma^2} (\tilde{X} - X)||^2] = \frac{1}{2} E_{X, \epsilon} [||s_\theta(X + \epsilon, \sigma) + \frac{1}{\sigma^2} \epsilon||^2] \qquad \epsilon \sim N(0, \sigma^2 I)
 $$
 
-key here is the conditional distribution $P(\tilde{X}|X)$ is easier to work with since it is just a Gaussian distribution with known mean and variance:
+So now we can train our score model $s_\theta$ to approximate the score function of the perturbed data distribution by minimizing this objective using samples from the original data distribution and adding Gaussian noise. This allows us to effectively learn the score function needed for denoising in diffusion models without needing to compute intractable divergence terms. We can also interpret this objective as follows:
 
-$$
-P(\tilde{X}|X) = \frac{1}{(2\pi \sigma^2)^{d/2}} \exp \left( -\frac{||\tilde{X} - X||^2}{2\sigma^2} \right)
-$$
-
-takign the log and the gradient we get:
-
-$$
-\nabla_{\tilde{X}} \log P(\tilde{X}|X) = -\frac{1}{\sigma^2} (\tilde{X} - X) = -\frac{1}{\sigma^2} \epsilon
-$$
-
-Therefore the noise conditional score matching objective simplifies to:
-
-$$
-L_{NCSM}(\theta) = \frac{1}{2} E_{X, \epsilon} \left[ ||s_\theta(X + \sigma \epsilon, \sigma) + \frac{1}{\sigma^2} \epsilon||^2 \right] \text{ where } \epsilon \sim N(0, I)
-$$
-
-now we can efficiently train the score model using samples from the data distribution and Gaussian noise. the model learns to undo the effect of the added noise and estimate the score function of the perturbed data distribution. using SGD of mini batches.
+- The $\tilde{X} = X + \epsilon$ represents a noisy version of the original data point $X$ obtained by adding Gaussian noise $\epsilon$ with standard deviation $\sigma$.
+- The term $\frac{1}{\sigma^2}\epsilon$ represents the score function and therefore the direction in which we should move $\tilde{X}$ to increase its likelihood under the perturbed data distribution which in other words tells us how to denoise $\tilde{X}$ back towards the original data point $X$.
 
 ### Annealed Langevin Dynamics
 
@@ -1094,6 +1061,16 @@ the step size $\alpha_k$ is usually set proportional to $\sigma_k^2$ which resul
 
 
 ### Anderson's Reversal
+
+So we have now achieved the following:
+
+- Langevin Dynamics proved that if you have a gradient (score) and noise, you can converge to a distribution. This proves Generative Modeling is possible via gradients.
+- NCSM proved that you can learn those gradients from data without knowing the density, but only if you smooth the data with noise. This proves Training is possible.
+
+
+Now comes the key idea for diffusion models. 
+
+Reverse SDE unified these ideas into a continuous process, showing that "adding noise slowly" and "removing noise slowly" are mathematically symmetrical processes
 
 What actually is the forward SDE now so that we then calcualte the reverse SDE? How does this link with langevin dynamics and score matching?
 
@@ -1128,9 +1105,6 @@ X(t_{i-1}) = X(t_i) + [f(X(t_i), t_i) - g(t_i)^2 s_\theta(X(t_i), t_i)]\Delta t 
 $$
 
 where $\epsilon_i \sim N(0, I)$ are independent standard normal random variables. 
-
-
-### Comparing to DDPM
 
 We can define the SDE corresponding to the DDPM forward process (also called the **VP-SDE**, VP stands for variance preserving) as:
 
