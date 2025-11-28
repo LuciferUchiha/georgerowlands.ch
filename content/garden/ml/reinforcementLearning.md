@@ -4,21 +4,19 @@ type: docs
 weight: 24
 ---
 
-what is the visulization tool? what is the difference between stochastic and probabilistic? Just means not deterministic?
+## Markov Decision Processes
 
-Analogy with grid world seems to be a good way to think about it?
+Introduce MDP, POMDP, etc. Define states, actions, rewards, transitions, policies, value functions (V(s)), action-value functions (Q(s, a)), Bellman equations.
 
-state space, the environment is not necessarily fully observable.
 
-action space
 
-reward from the environment to the agent which results in a policy to choose the actions based on the state. environment changes state based on action and reward given state and action.
 
-want to maximize the reward over time which is called the return.
 
-have a value function which is the expected return from a state.
 
-Q function is the expected return from a state and action. Everything is very stochastic including the reward function. Results in 3 percepectives. Based on state, state and action, state action and resulting state etc.
+
+## Reza Content of I think first 2 Sessions
+
+Everything is very stochastic including the reward function. Results in 3 percepectives. Based on state, state and action, state action and resulting state etc.
 
 Is a markov process. More specifcally a markov decision process (MDP). and then a MDP with a reward.
 
@@ -28,7 +26,7 @@ We then finally get to law of total expectation and law of total probability. Ca
 
 Bellman equation is the key equation in reinforcement learning. It means we can use something recursive to calculate the value function and Q function. Have a "discount" factor.
 
-Finding the optimum results in the Bellman optimality equation. We want to pick the optimal aciton and branches. This is q star?
+Finding the optimum results in the Bellman optimality equation. We want to pick the optimal aciton and branches. 
 
 The Bellman optimality equation is used to find the optimal policy by maximizing the expected return. The optimal Q function, denoted as Q*, gives the maximum expected return for each state-action pair.
 
