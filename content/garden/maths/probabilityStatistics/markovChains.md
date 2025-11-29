@@ -26,6 +26,4 @@ On the other hand, a stochastic process is a process where the next state is not
 
 ## Markov Decision Processes
 
-### With Rewards
-
 ### Partially Observable
