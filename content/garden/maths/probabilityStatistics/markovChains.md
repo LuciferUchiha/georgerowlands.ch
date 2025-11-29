@@ -1,95 +1,31 @@
 ---
-title: Markov Chains
+title: Markov Chains & Decision Processes
 type: docs
 weight: 12
-draft: true
 ---
 
-## Stochastische Prozesse
+Markov Chains are a key concept in probability theory and has many applications in computer science and machine learning. For example the PageRank algorithm used by Google Search to rank web pages is based on a Markov Chain model of web surfing behavior or Diffusion models also use Markov Chains to model the process of gradually transforming random noise into coherent images.
 
-Ein stochastischer Prozess beschreibt die Zustände eines Systems zu einem bestimmten Zeitpunkt welche vom Zufall beeinflusst sind.
+The same goes for Markov Decision Processes, which extend Markov Chains to include the possibility of making decisions at each state, allowing for the modeling of sequential decision-making problems and potential rewards. These decision processes form the basis of many reinforcement learning algorithms, where an agent learns to make optimal decisions by interacting with an environment.
 
-Für jeden Zeitpunkt $t \in T \subset \mathbb{R}$ beschreibt die Zufallsvariable $X_t: \Omega \mapsto I$ den Zustand eines Systems zum Zeitpunkt $t$. Dann heisst $(X_t, t\in T)$ oder kurz $(X_t)$ **stochastischer Prozess mit Zustandsraum** $I$. Wir beschränken uns hier auf Prozesse mit diskreter Zeit und diskretem Zustandsraum, also sind beide endlich abzählbar ($\mathbb{N}, \mathbb{Z}$).
+## Markov Chains
 
-## Markow-Kette
+First let's start with defining what a stochastic process is. A deterministic process is a process where we start from a given state $s_0$ and can predict with certainty the next state $s_1$ and all future states $s_2, s_3, ...$ based on some rules. We can think of such a process as a function $f$ that maps the current state to the next state and a specific initial state $s_0$:
 
-Bei vielen Systemen hängt der Folgezustand nur vom aktuellen Zustand ab, und nicht noch von allen Zuständen davor. Solche Prozesse nennt man Markow-Ketten. Mathematische ausgedrückt sieht das dann so aus für $(X_n,n\in\mathbb{N})$
+$$
+s_{n+1} = f(s_n) \quad \text{with} \quad s_0 \text{ given}
+$$
 
-```mathP(X_n=i_n | X_{n-1}=i_{n-1},...,X_0=i_o)=P(X_n=i_n | X_{n-1}=i_{n-1})```
+The idea of such a process is also briefly discussed when discussing the movement of particles in physics as an e
 
-hierbei sind alle $i_0,...,i_n \in I$. Ein Beispiel hier wäre, dass wenn ein Server ohne Probleme läuft, dann hat er mit 0.9 Wahrscheinlichkeit am nächsten Tag auch kein Problem. Hat er jedoch ein Problem dann hat er mit 0.5 Wahrscheinlichkeit am nächsten Tag immer noch ein Problem.
+On the other hand, a stochastic process is a process where the next state is not determined solely by the current state, but also involves some randomness. In this case, we can think of the process as a function $f$ that maps the current state to a probability distribution over possible next states:
 
-### Homogene Markow-Kette, HMK
+### Homogeneous Markov Chains
 
-Wenn nicht nur die ganze Historie sondern auch der Tag keine Rolle spielt dann ist es eine **homogene Markow-Kette** (HMK). Dies wäre nicht der Fall wenn die Wahrscheinlichkeit, dass am Sonntag der Server noch Probleme hat, wenn er am Samstag schon ein Problem hat anders ist also alle andere Tage (Obwohl dies sehr wahrscheinlich der Fall ist weil niemand am Sonntag arbeitet um den Server zu reparieren). Eine Markow-Kette ist also homogen, wenn die Übergangswahrscheinlichkeiten für alle $n$ gleich sind.
+### Regular Markov Chains
 
-```mathP(X_n=j|X_{n-1}=i), (i,j\in I)```
+## Markov Decision Processes
 
-### Übergangs-Matrix / Graph
+### With Rewards
 
-In diesem Fall heisst die Matrix $P=(p_{ij})$ eine Übergangsmatrix wobei $P_{ij}=P(X_n=j|X_{n-1}=i)$ (Zeile=$i$ und Spalte=$j$). Wichtig hierbei ist, dass die Summe der Reihen 1 ergeben weil die Wahrscheinlichkeiten normalisiert sind.
-
-{{< figure
-  src="/images/maths/markowKetteUebergangsmatrix.png"
-  alt="markowKetteUebergangsmatrix"
-  caption="markowKetteUebergangsmatrix"
->}}
-
-Oftmals werden Markow-Ketten auch mit Hilfe von einem Übergangsgraph dargestellt.
-
-{{< figure
-  src="/images/maths/markowKetteUebergangsgraph.png"
-  alt="markowKetteUebergangsgraph"
-  caption="markowKetteUebergangsgraph"
->}}
-
-### Zustände in der Zukunft
-
-Mit der Übergangsmatrix können wir Zustände des Systems in der Zukunft berechnen solange wir den Startwert kennen in dem wir folgendes machen
-
-```mathP(X_{n+m}=j|X-n=i) \text{ ist der ij-te Eintrag der Matrix } P^m```
-
-Jedoch ist der Startwert nicht immer bekannt dieser kann auch zufällig sein. Zum Beispiel kann ein Server mit 1% Wahrscheinlichkeit beim liefern schon kaputt gehen. Man hat also eine Startverteilung $P(X_0=i)$ für alle $i \in I$. Einen nicht zufälligen also festen Startwert $X_0=s$ kann man auch so modellieren $P(X_0=s)=1$ für all andere $i\neq s,$ $P(X_0=i)=0$.
-
-Der Vektor mit den Einträgen $P(X_0=i)$ für alle $i \in I$ bezeichnet man meistens mit $\pi_0$. Mit $\pi_n$ bezeichnet man den Vektor mit den Einträgen für $P(X_n=i)$ für alle $i \in I$. Daraus folgt dann
-
-```math\pi_n=\pi_0 \cdot P^n```
-
-Für unseres vorherige Beispiel erhalten wir also die Startverteilung $\pi_0=(0.99,0.01)$ daraus können wir dann berechnen was die Verteilung am ersten Tag, am vierten etc ist.
-
-- $\pi_1=\pi_0 \cdot P = (0.99 \cdot 0.9 + 0.01 \cdot 0.5, 0.99 \cdot 0.1 + 0.01 \cdot 0.5)=(0.896, 0.104)$
-- $\pi_4=\pi_0 \cdot P^4=(0.8434, 0.1566)$
-- $\pi_364=\pi_0 \cdot P^{364}=(0.8333, 0.1667)$
-
-### Reguläre HMK
-
-Die Frage, ob der Server an einem konkreten Tag Probleme hat, ist aber eigentlich gar nicht so wichtig. Viel wichtiger ist die Frage, an wie vielen Tagen der Server langfristig Probleme hat. Dazu schauen wir uns das Verhalten von $\pi_n$ über die Zeit an.
-
-{{< figure
-  src="/images/maths/markowKetteTimeGraph.png"
-  alt="markowKetteTimeGraph"
-  caption="markowKetteTimeGraph"
->}}
-
-Wir sehen also das nach einer Phase beträgt die Wahrscheinlichkeit, das der Server an einem beliebigen Tag ein Problem hat, 16.667%. Mit einem anderen Startwert erhalten wir.
-
-{{< figure
-  src="/images/maths/markowKetteTimeGraph2.png"
-  alt="markowKetteTimeGraph2"
-  caption="markowKetteTimeGraph2"
->}}
-
-Die Konvergenz, unabhängig von der Startverteilung, ist kein Zufall, dies gilt für jede **reguläre** HMK. Eine HMK mit Übergangsmatrix $P$ heisst regulär wenn ein $n$ existiert, so dass all Einträge von $P^n$ grösser als 0 sind.
-
-### Grenzverteilung
-
-Zu jeder regulären HMK existiert eine sogenannte Grenzverteilung(auch stationäre oder Gleichgewichtsverteilung) $\pi^*= (\pi_1^*,...,\pi_m^*)$. Diese Grenzverteilung hat die folgende Eigenschaften
-
-- Für jede Startverteilung $\pi_0$ gilt $\lim_{n \to \infty}{\pi_0\cdot P^n=\pi^*}$
-- $\pi^*\cdot P = \pi^*$
-- Die Zeilen der Matrix $P^n$ konvergieren gegen die Grenzverteilung $\pi^*$
-
-Um die Gleichgewichtsverteilung zu bestimmen muss man das folgende Gleichungssystem lösen:
-
-- Normierung Bedingung (N): $\sum_{i\in I}{\pi_i^*}=1$
-- Gleichgewicht Bedingung (G): $\pi^*\cdot P = \pi^*$
+### Partially Observable
