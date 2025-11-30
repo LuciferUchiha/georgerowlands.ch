@@ -6,11 +6,33 @@ weight: 24
 
 ## Markov Decision Processes
 
-Introduce MDP, POMDP, etc. Define states, actions, rewards, transitions, policies, value functions (V(s)), action-value functions (Q(s, a)), Bellman equations.
+state space, action space, transition probabilities, reward function, policy, value function, action-value function, Bellman equations
 
+### Partially Observable
 
+like poker or blackjack where you don't know all the information about the state
 
+## Reinforcement Learning Overview
 
+General blabla about reinforcement learning here.
+
+on vs off policy learning
+model based vs model free
+finite vs infinite horizon
+discounted vs undiscounted rewards
+continuous vs discrete state and action spaces
+
+## Temporal Difference Learning
+
+## Q-Learning
+
+## Policy Gradients
+
+### Reinforce
+
+### Actor-Critic
+
+### Proximal Policy Optimization
 
 
 
