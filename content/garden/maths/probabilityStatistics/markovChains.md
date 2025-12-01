@@ -1,14 +1,10 @@
 ---
-title: Markov Chains & Decision Processes
+title: Markov Chains
 type: docs
 weight: 12
 ---
 
 Markov Chains are a key concept in probability theory and have many applications in computer science and machine learning. For example the PageRank algorithm used by Google Search to rank web pages is based on a Markov Chain model of web surfing behavior or Diffusion models also use Markov Chains to model the process of gradually transforming random noise into coherent images.
-
-The same goes for Markov Decision Processes, which extend Markov Chains to include the possibility of making decisions at each state, allowing for the modeling of sequential decision-making problems and potential rewards. These decision processes form the basis of many reinforcement learning algorithms, where an agent learns to make optimal decisions by interacting with an environment.
-
-## Markov Chains
 
 Before defining Markov chains, it is helpful to think carefully about what we mean by a "process" or more specifically, a "process over time". We will begin with deterministic processes, which are much easier to describe, and then move toward stochastic processes where randomness plays a role. 
 
@@ -41,6 +37,12 @@ $$
 $$
 
 Note that we use capital letters to denote random variables. This means that the next state $X_{n+1}$ is not determined solely by the current state $X_n$, but rather has a distribution of possible outcomes based on some probability distribution $P$. In the context of diffusion models, this randomness can be thought of as random movements of particles due to thermal fluctuations or other sources of noise just like Brownian motion. 
+
+{{< figure 
+    src="/images/maths/markovChain.png"
+    alt="Illustration of a markov chain with states and transition probabilities."
+    caption="Illustration of a markov chain with states and transition probabilities."
+>}}
 
 When discussing Bernoulli random variables such as repeated coin flips, we implicitly discussed a simple stochastic process where each coin flip is independent of the previous ones. So in other words, each coin flip is a random variable $X_n$ that takes on the value 1 (heads) with probability $p$ and the value 0 (tails) with probability $1-p$. The sequence of coin flips can be thought of as a stochastic process where each flip is independent of the previous ones. Importantly, we remember that in each coin flip, the outcome only depends on the probability $p$ and not on the previous outcomes. So in other words, the probability of getting heads on the next flip is always $p$ regardless of how many heads or tails we got in previous flips. Meaning that the process has no memory of previous states. This property is known as the **Markov property**. More formally, the markov property states that the conditional probability distribution of future states of the process depends only on the present state, not on the sequence of events that preceded it:
 
