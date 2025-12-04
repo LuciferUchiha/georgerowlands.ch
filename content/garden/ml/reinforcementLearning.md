@@ -189,125 +189,415 @@ The value function only depends on the policy $\pi$ and the state $s$, not on th
 
 Intuitively, $v_\pi(s)$ tells us the long-term expected return if we start in state $s$ and then follow policy $\pi$. If $v_\pi(s)$ is high, it means that being in state $s$ is desirable under policy $\pi$, as it leads to high expected future rewards. Conversely, if $v_\pi(s)$ is low or negative, it indicates that being in state $s$ is not beneficial when following policy $\pi$. Importantly, the value function depends on the policy $\pi$, for example if one policy is a Grandmaster at chess and another is a beginner, the value of being in a certain board position will differ significantly between the two policies because you would expect the Grandmaster to be able to convert that position into a win much more often than the beginner which might blunder away the advantage.
 
-## **The Action-Value Function (q_\pi(s,a))**
+However, the state-value function only tells us how good it is to be in a certain state, it doesn't directly tell us what to do in that state. This leads us to the **action-value function** also called **Q-Function** which tells us the expected return of if we start in state $s$, take action $a$ (which might be subpotimal or not according to the policy), and then follow policy $\pi$ thereafter:
 
-Sometimes we want a more fine-grained understanding: not just “how good is state (s)?”, but “how good is it to take this particular action (a) in state (s)?”. This leads to the **action-value function**, defined as:
-
-[
-q_\pi(s,a)
-= \mathbb{E}_\pi \left[ G_t \mid S_t = s, A_t = a \right].
-]
-
-This represents the expected return if the agent **first** takes action (a) in state (s), and then follows the policy (\pi) thereafter.
+$$
+q_\pi(s,a) = \mathbb{E}_\pi [ G_t \mid S_t = s, A_t = a ] = \mathbb{E}_\pi \left[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \mid S_t = s, A_t = a \right].
+$$
 
 The distinction is simple but powerful:
+- $v_\pi(s)$ tells us the expected return of being in state $s$ and behaving "normally", i.e. following policy $\pi$.
+- $q_\pi(s,a)$ tells us the expected return of being in state $s$, taking action $a$ (which might be good or bad), and then behaving "normally" again.
 
-* (v_\pi(s)) tells you how good a state is when following (\pi).
-* (q_\pi(s,a)) tells you how good a specific action is in that state when following (\pi).
+These two functions are crucial. As remember that the agent can't see into the future. The reward signal is delayed and noisy, a decision now might have consequences far later. Value functions compress the entire uncertain future into a **single numeric prediction** and therefore allow us to evaluate how good different states and actions are in terms of expected future rewards, which in turn enables us to make informed decisions about which actions to take in order to maximize the long-term reward. In this sense, value functions provide the agent with a **map of the future**, telling it which states and which decisions are promising.
 
-As we’ll later see, optimal behaviour can be extracted directly from (q_*(s,a)), the optimal action-value function.
+{{< callout type="example" >}}
+If we go back to our grid world example, we can see how the value functions help us evaluate states and actions. 
 
----
+If the agent starts in some state $s$, then:
+- $v_\pi(s)$ will be large if the policy tends to reach high-reward teleportation states like $A$ or $B$ quickly.
+- If $v_\pi(s)$ is small or negative, it indicates that the policy often leads to long paths with many $-1$ penalties before reaching a teleportation state.
 
-## **Relationship Between (v_\pi) and (q_\pi)**
+If we look at action-values, $q_\pi(s,a)$ distinguishes between the possible actions in state $s$. For example, if “move down” leads directly into the teleportation cell $A$, then:
 
-The state-value and action-value functions are intimately related. If in state (s) the policy chooses action (a) with probability (\pi(a \mid s)), then the value function is just the expectation of action-values under the policy:
+- $q_\pi(s,\text{down})$ will be large.
+- while $q_\pi(s,\text{left})$ will be smaller because it leads to a longer sequence of penalties.
 
-[
-v_\pi(s)
-= \sum_{a \in \mathcal{A}(s)} \pi(a \mid s), q_\pi(s,a).
-]
+{{< figure 
+    src="/images/ml/rlGridWorldValue.webp"
+    caption="The state-value function of a policy in the grid world example."
+    alt="The state-value function of a policy in the grid world example."
+>}}
 
-This simply says:
-“the value of a state is the average value of the actions the policy takes there”.
-
-This relationship is extremely important, because in many RL algorithms we estimate (q_\pi) directly (for example in Monte Carlo control or Q-learning), and then obtain (v_\pi) or greedy policies from it.
-
----
-
-## **Value Functions as Long-Term Predictions**
-
-To appreciate why these functions matter, remember that the agent cannot see into the future. The reward signal is delayed and noisy; a decision now might have consequences far later. Value functions compress the entire uncertain future into a **single numeric prediction**.
-
-If:
-
-* (v_\pi(s)) is high, the agent should try to reach state (s);
-* if (q_\pi(s,a)) is high, the agent should try to choose action (a) in that state.
-
-In this sense, value functions provide the agent with a **map of the future**: they tell it which states and which decisions are promising.
-
----
-
-## **Example: Value in a Grid World**
-
-Consider the grid world example. If the agent starts in some non-terminal state (s), then:
-
-* (v_\pi(s)) will be large if the policy tends to reach high-reward teleportation states like (A) or (B);
-* (v_\pi(s)) will be small or negative if the policy tends to wander into long paths with many (-1) penalties.
-
-If we look at action-values, (q_\pi(s,a)) distinguishes between the possible actions in state (s). For example, if “move down” leads directly into the teleportation cell (A), then:
-
-* (q_\pi(s,\text{down})) will be large,
-* while (q_\pi(s,\text{left})) might be small because it leads to a long sequence of penalties.
-
-This fine-grained structure is essential for improving the policy later on.
-
----
-
-## **Value Functions and Policy Improvement**
-
-A remarkable consequence of these definitions is that knowing (q_\pi) is enough to produce a strictly better policy. The simplest improvement rule is the **greedy policy**:
-
-[
-\pi'(s) = \arg\max_a q_\pi(s,a).
-]
-
-This new policy (\pi') is guaranteed to be at least as good as (\pi), and often strictly better. This fact is the foundation of:
-
-* policy improvement,
-* policy iteration,
-* value iteration,
-* Q-learning,
-* and modern actor–critic methods.
-
-But to use these tools, we need a way to compute or approximate the value functions themselves. This brings us to the **Bellman equations**, which express the value functions in a recursive form that relates (v_\pi) and (q_\pi) to expectations of future values.
-
-* State-value (V^\pi(s))
-* Action-value (Q^\pi(s,a))
-* Expected return and discounted expected return
-* How value functions imply policies and vice versa
+From this value function, it is easy to see which states are desirable (those near teleportation states) and which actions are preferable in each state (those leading towards teleportation states). This information can then be used to also induce a policy which always chooses the best action which leads it to a higher value state.
+{{< /callout >}}
 
 ### Bellman Equations
 
-* Deriving Bellman expectation equations for (V^\pi) and (Q^\pi)
-* Bellman optimality equations
-* Principle of optimality
+The definition of the value functions above is useful for understanding what they represent, but it does not provide a practical way to compute them as they define value as an expectation over all possible future trajectories, which can be infinite in length. This would mean we would theoretically have to simulate the agent in all states and actions for an infinite amount of time to compute the value functions exactly, which would be intractable in all but the simplest cases.
 
-### Planning
+Instead, we can exploit the recursive structure of the return $G_t$ to derive a set of equations known as the **Bellman equations**. These equations express the value functions in terms of themselves, allowing us to compute them iteratively. Remember that the return can be expressed recursively as:
 
-Assumes **complete knowledge** of transition and reward functions. So known MDP.
+$$
+G_t = R_{t+1} + \gamma G_{t+1}.
+$$
 
-Dynamic Programming
+This can also be observed as follows:
 
-## Policy Evaluation
+$$
+\begin{align*}
+v_\pi(s) &= \mathbb{E}_\pi [ G_t \mid S_t = s ] \\
+&= \mathbb{E}_\pi [ R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots \mid S_t = s ] \\
+&= \mathbb{E}_\pi [ R_{t+1} + \gamma (R_{t+2} + \gamma R_{t+3} + \cdots) \mid S_t = s ] \\
+&= \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s ].
+\end{align*}
+$$
 
-* Solving for (V^\pi) exactly
-* Iterative (fixed-point) policy evaluation
-* Connection to dynamic programming
-approximate policy evaluation?
+So by linearity of expectation we could separate the immediate reward and the future return:
 
-## Policy Improvement
+$$
+v_\pi(s) = \mathbb{E}_\pi [ R_{t+1} \mid S_t = s ] + \gamma \, \mathbb{E}_\pi [ G_{t+1} \mid S_t = s ].
+$$
 
-* How to derive a better policy from a value function
-* Proof of policy improvement theorem
+We can further expand these expectations by "unrolling" the randomness in the environment's dynamics and the agent's policy. First, we use the policy to condition on the action taken at time step $t$:
 
-## Policy Iteration
+$$
+\begin{align*}
+v_\pi(s) &= \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s ] \\
+&= \sum_{a \in \mathcal{A}} \pi(a \mid s) \, \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a ].
+\end{align*}
+$$
 
-* Alternating evaluation and improvement
-* Convergence properties
-* Pros and cons
+Now we are given the action $a$ taken in state $s$, so we can use these and to get the next state $s'$ and reward $r$ according to the environment's transition probabilities, $\mathbb{P}(S_{t+1} = s', R_{t+1} = r \mid S_t = s, A_t = a)$ and apply the law of total expectation:
 
-## Value Iteration
+$$
+\begin{align*}
+\mathbb{E} [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a ]
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \, \mathbb{E} [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a, S_{t+1} = s', R_{t+1} = r ] \\
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \, \mathbb{E} [ G_{t+1} \mid S_{t+1} = s' ] \right] 
+\end{align*}
+$$
+
+Note that above we used the markov property to drop the conditioning on $S_t$ and $A_t$ in the second term. Finally, we can recognize that the expectation of the return from time step $t+1$ given that we are in state $s'$ is just the value function at state $s'$:
+
+$$
+\mathbb{E} [ G_{t+1} \mid S_{t+1} = s' ] = v_\pi(s').
+$$
+
+Putting everything together, we arrive at the **Bellman equation for the state-value function**:
+
+$$
+v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
+$$
+
+It states that the value of a state under policy $\pi$ is equal to the expected immediate reward plus the expected discounted value of the next state, averaged over all possible actions and next states according to the policy and transition probabilities. We can also express this more compactly by combining the sums back into a single expectation:
+
+$$
+v_\pi(s) = \mathbb{E}_\pi [ R_{t+1} + \gamma v_\pi(S_{t+1}) \mid S_t = s ].
+$$
+
+using the definition of the state-value function in terms of the action-value function we can also write the Bellman equation as:
+
+$$
+v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \, q_\pi(s,a).
+$$
+
+Importantly we get such an equation for each state $s \in \mathcal{S}$, resulting in a system of $|\mathcal{S}|$ linear equations with $|\mathcal{S}|$ unknowns (the values $v_\pi(s)$). This system can be solved using standard linear algebra techniques, such as matrix inversion or iterative methods like value iteration. Specifically, if we collect the values $v_\pi(s)$ into a vector $\mathbf{v}_\pi$:
+
+$$
+\mathbf{v}_\pi = \begin{bmatrix}
+v_\pi(s_1) \\
+v_\pi(s_2) \\
+\vdots \\
+v_\pi(s_{|\mathcal{S}|})
+\end{bmatrix},
+$$
+
+and define the state transition matrix $\mathbf{P}_\pi$ as an $|\mathcal{S}| \times |\mathcal{S}|$ matrix where each entry $(i,j)$ represents the probability of transitioning from state $s_i$ to state $s_j$ under policy $\pi$:
+
+$$
+\mathbf{P}_\pi(i,j) = \sum_{a \in \mathcal{A}} \pi(a \mid s_i) \mathbb{P}(s_j \mid s_i, a) \quad \text{where} \quad \mathbb{P}(s_j \mid s_i, a) = \sum_{r \in \mathbb{R}} \mathbb{P}(s_j, r \mid s_i, a)
+$$
+
+and the reward vector $\mathbf{r}_\pi$ as:
+
+$$
+\mathbf{r}_\pi = \begin{bmatrix}
+r_\pi(s_1) \\
+r_\pi(s_2) \\
+\vdots \\
+r_\pi(s_{|\mathcal{S}|})
+\end{bmatrix} \quad \text{where} \quad r_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \cdot r
+$$
+
+we can rewrite the Bellman equation in matrix form as:
+
+$$
+\mathbf{v}_\pi = \mathbf{r}_\pi + \gamma \mathbf{P}_\pi \mathbf{v}_\pi.
+$$
+
+From the MDP we know all the components on the right-hand side except for $\mathbf{v}_\pi$, so we can rearrange this system so that we can solve for $\mathbf{v}_\pi$:
+
+$$
+\begin{align*}
+\mathbf{Ax} &= \mathbf{b} \\
+(\mathbf{I} - \gamma \mathbf{P}_\pi) \mathbf{v}_\pi &= \mathbf{r}_\pi  \\
+\mathbf{v}_\pi &= (\mathbf{I} - \gamma \mathbf{P}_\pi)^{-1} \mathbf{r}_\pi.
+\end{align*}
+$$
+
+For small problems, we can directly compute the inverse of matrix $\mathbf{A}$ to find the value function but for larger problems, iterative methods like value iteration or policy evaluation are more practical. The inverse $(\mathbf{I} - \gamma \mathbf{P}_\pi)^{-1}$ exists as long as $\gamma < 1$ and the MDP is well-defined (i.e., the transition probabilities are valid summing to one). Don't ask me why though, I am not a mathematician.
+
+If we now go back to the action-value function, we can derive its Bellman equation in a similar manner. Starting from the definition:
+
+$$
+\begin{align*}
+q_\pi(s,a) &= \mathbb{E}_\pi [ G_t \mid S_t = s, A_t = a ] \\
+&= \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a ].
+\end{align*}
+$$
+
+and then again we can expand the expectation by conditioning on the next state $s'$ and reward $r$:
+
+$$
+\begin{align*}
+q_\pi(s,a) &= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \, \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a, S_{t+1} = s', R_{t+1} = r ] \\
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \, \mathbb{E}_\pi [ G_{t+1} \mid S_{t+1} = s' ] \right].
+\end{align*}
+$$
+
+Just like before, we recognize that the expectation of the return from time step $t+1$ given that we are in state $s'$ is just the value function at state $s'$:
+
+$$
+q_\pi(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
+$$
+
+We can now again use the relationship between state-values and action-values to express this entirely in terms of action-values:
+
+$$
+\begin{align*}
+q_\pi(s,a) &= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right] \\
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \sum_{a' \in \mathcal{A}} \pi(a' \mid s') \, q_\pi(s',a') \right].
+\end{align*}
+$$
+
+Giving us the final form of the **Bellman equation for the action-value function**. Similar to before, we can also express this all as an expectation:
+
+$$
+q_\pi(s,a) = \mathbb{E}_\pi [ R_{t+1} + \gamma v_\pi(S_{t+1}) \mid S_t = s, A_t = a ].
+$$
+
+It is easy to see that the value functions are related to each other. If in state $s$ the policy $\pi$ chooses action $a$ with probability $\pi(a \mid s)$, then the value function is just the expectation of action-values under the policy:
+
+$$
+v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) q_\pi(s,a).
+$$
+
+This relationship is extremely important, as in practice it is often easier to estimate action-values directly, and then derive state-values from them. This is the basis for many reinforcement learning algorithms, such as Q-learning and Deep Q-Networks (DQN) etc. 
+
+An important note is that if the policy $\pi$ is deterministic, meaning it always chooses the same action $a = \pi(s)$ in state $s$, then the relationship simplifies to:
+
+$$
+v_\pi(s) = q_\pi(s, \pi(s)).
+$$
+
+So in summary, the Bellman equations provide a recursive way to compute the value functions by expressing them in terms of themselves. This allows us to use iterative methods to compute the value functions efficiently, which is crucial for solving MDPs and finding optimal policies. We have also shown that the state-value and action-value functions are closely related, with the state-value function being the expectation of the action-value function under the policy and that we can also compute the value functions using linear algebra techniques for small problems.
+
+- **Bellman state-value equation**:
+
+$$
+v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
+$$
+
+- **Bellman action-value equation**:
+
+$$
+q_\pi(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \sum_{a' \in \mathcal{A}} \pi(a' \mid s') \, q_\pi(s',a') \right].
+$$
+- **Relationship between state-value and action-value functions**:
+
+$$
+\begin{align*}
+v_\pi(s) &= \sum_{a \in \mathcal{A}} \pi(a \mid s) q_\pi(s,a) \\
+q_\pi(s,a) &= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right]
+\end{align*}
+$$
+
+### Bellman Optimality Equations
+
+The Bellman equations allow us to compute the value functions iteratively and therefore evaluate how good a specific policy $\pi$ is. However, our ultimate goal is not just to evaluate a fixed policy, but to find the **optimal policy** $\pi^*$ that maximizes the expected return from every state. So in other words, we want to find the **optimal state-value function** $v_*(s)$ which corresponds to the maximum value achievable from state $s$ under any policy:
+
+$$
+v_*(s) = \max_\pi v_\pi(s)
+$$
+
+Similarly, we define the **optimal action-value function** $q_*(s,a)$ as the maximum expected return achievable from state $s$ by taking action $a$ and then following the optimal policy thereafter:
+
+$$
+q_*(s,a) = \max_\pi q_\pi(s,a)
+$$
+
+These value functions correspond to the best possible behaviour achievable in the MDP and induced by at least one optimal policy $\pi^*$ and therefore an optimal policy can be derived from them. Intuitively, an optimal policy shouldn't just average over actions like a random policy but instead should select the best action. This intuition is formalized by the **Bellman Optimality Equations**.
+
+To derive the Bellman optimality equation for the state-value function, we consider the value of a state $s$ under the optimal policy. The value of state $s$ is the expected return of taking the best possible action $a$ in state $s$, and then following the optimal policy thereafter. Therefore, instead of summing over actions weighted by the policy probabilities, we take the maximum over all possible actions:
+
+$$
+v_*(s) = \max_a \mathbb{E} [ R_{t+1} + \gamma v_*(S_{t+1}) \mid S_t = s, A_t = a ].
+$$
+
+if we expand the expectation as before, we get the **Bellman optimality equation for the state-value function**:
+
+$$
+v_*(s) = \max_a \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_*(s') \right].
+$$
+
+We now notice that we can also express this in terms of the optimal action-value function by using the defintion of the action-value function in terms of the state-value function:
+
+$$
+q_*(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_*(s') \right].
+$$
+
+Substituting this into the Bellman optimality equation for the state-value function gives us:
+
+$$
+v_*(s) = \max_a q_*(s,a).
+$$
+
+Similarly, we can derive the Bellman optimality equation for the action-value function. The value of taking action $a$ in state $s$ under the optimal policy is the expected return of taking action $a$, and then following the optimal policy thereafter. Therefore, we again take the maximum over all possible actions in the next state:
+
+$$
+q_*(s,a) = \mathbb{E} [ R_{t+1} + \gamma \max_{a'} q_*(S_{t+1}, a') \mid S_t = s, A_t = a ].
+$$
+
+Expanding the expectation gives us the **Bellman optimality equation for the action-value function**:
+
+$$
+q_*(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \max_{a'} q_*(s',a') \right].
+$$
+
+which also matches if we had above replaced $v_*(s')$ with $\max_{a'} q_*(s',a')$ directly. So we can see that if we have one of the optimal value functions, we can easily derive the other using these relationships. Specifically if we have the optimal action-value function, we can easily derive the optimal policy by simply acting greedily with respect to it (i.e., choosing the action with the highest action-value in each state). This is also known as the **greedy policy** with respect to the action-value function:
+
+$$
+\pi^*(s) = \arg\max_a q_*(s,a) = \arg\max_a [r(s,a) + \gamma \sum_{s' \in \mathcal{S}} \mathbb{P}(s' \mid s, a) v_*(s')].
+$$
+
+This link between the policy being optimal and it being greedy with respect to the optimal action-value function is extremely important, as it allows us to derive optimal policies directly from the value functions.
+
+Importantly we now get non-linear equations because of the max operator, so we can no longer solve this using linear algebra techniques. However, instead we notice that these equations satisfy the conditions for **dynamic programming** methods, which allow us to compute the optimal value functions recursively/iteratively. The idea of dynamic programming is to break down a complex problem into simpler subproblems and solve them recursively where importantly solutions to subproblems are stored and reused to avoid redundant computations and the solution for a subproblem is used to solve larger problems. This matches Bellman's **principle of optimality**, which states that "an optimal policy has the property that whatever the initial state and initial decision are, the remaining decisions must constitute an optimal policy with regard to the state resulting from the first decision." in computer science this is known as **optimal substructure**. 
+
+{{< callout type="example" >}}
+In our grid world example, the optimal state-value function $v_*(s)$ will assign high values to states that are close to the teleportation cells $A$ and $B$, as these lead to high rewards quickly. 
+
+So if we are given the optimal value function, we can easily derive the optimal policy $\pi^*$ using the greedy approach, which simply chooses the action that leads to the highest expected value in the next state:
+
+$$
+\pi^*(s) = \arg\max_a \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P(s', r \mid s, a) \left[ r + \gamma v_*(s') \right]}.
+$$
+
+In our grid world example, if we take an action the resulting state is deterministic, so the optimal policy simply chooses the action that leads to the neighboring state with the highest value:
+
+$$
+\pi^*(s) = \arg\max_a v_*(s').
+$$
+
+For example, if the agent is in the state just above teleportation cell $A$, the optimal action would be to move down into cell $A$ to receive the high reward and teleport to $A'$. If there is a tie between multiple actions leading to equally good states, or all neighboring states have low values, the optimal policy can choose any of those actions arbitrarily as it can't stay in place.
+
+{{< figure 
+    src="/images/ml/rlGridWorldOptimal.png"
+    caption="The optimal state-value function in the grid world example and the corresponding greedy policy."
+    alt="The optimal state-value function in the grid world example and the corresponding greedy policy."
+>}}
+{{< /callout >}}
+
+## Planning
+
+So far we have assumed that the agent follows some fixed policy $\pi$ and derived the corresponding value functions and Bellman equations. But how do we actually find a good policy in the first place? This is where the concepts of **planning** and **reinforcement learning** come into play. Specifically, planning refers to the process of computing an optimal policy when the MDP model (transition and reward functions) is known, or in other words, when we have **complete knowledge** of the environment. In contrast, reinforcement learning deals with the situation where the MDP model is unknown and must be learned through interaction with the environment.
+
+### Policy Evaluation
+
+To be able to find an optimal policy, we first need to be able to evaluate how good a given policy is. This is done through the policy evaluation step, where we compute the value function $v_\pi$ for the current policy. As mentioned earlier, the Bellman Equations gives us a system of linear equations. While we could solve this analytically, it is computationally expensive for large state spaces, specifically it requires inverting a matrix of size $|\mathcal{S}| \times |\mathcal{S}|$ which is $O(|\mathcal{S}|^3)$ in time complexity. Instead, we can use an iterative approach known as **iterative policy evaluation**. The idea is to start with an initial guess for the value function (e.g., all zeros) and then repeatedly update the value function using the Bellman equation until it converges to the true value function for the policy. Specifically, we can use the following update rule for each state $s$:
+
+$$
+v_{k+1}(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_k(s') \right].
+$$
+
+We repeat this update for all states until the value function converges, i.e., the changes in the value function are below a certain threshold $\theta$:
+
+$$
+\max_{s \in \mathcal{S}} |v_{k+1}(s) - v_k(s)| < \theta.
+$$
+
+How is the above derived?
+
+Here we can see the connection to dynamic programming again, as we are caching the results of subproblems (the value of each state) and using them to compute the values of other states iteratively. This process is guaranteed to converge to the true value function $v_\pi$ for the policy $\pi$ as long as the discount factor $\gamma < 1$. 
+
+This algorithm can also be viewed as a form of **fixed-point iteration** ??? explanation and formal definition?
+Bellman expectation operator?
+
+{{< figure 
+    src="/images/ml/rlPolicyEvaluation.png"
+    caption="Pseudo-code illustration of the iterative policy evaluation process."
+    alt="Pseudo-code illustration of the iterative policy evaluation process."
+    width="400"
+>}}
+
+### Policy Improvement
+
+Once we have evaluated the current policy and obtained its value function $v_\pi$, we can use this information to improve the policy. The idea is to use the value function to identify better actions in each state, leading to a new policy that is at least as good as the current one. This process is known as **policy improvement**.
+
+The idea is rather simple. Consider we are in some state $s$ and the current policy selects action $\pi(s)$. If we then were to find an action which isn't $\pi(s)$ but leads to a higher expected return according to the value function, then we could improve the policy by switching to that action instead, so $q_\pi(s,a) > v_\pi(s)$ for some action $a \neq \pi(s)$. The reason this works is because in both cases after the initial action we follow the same policy $\pi$ thereafter, so if taking action $a$ now leads to a higher expected return than taking action $\pi(s)$ now, then the new policy which takes action $a$ in state $s$ and follows $\pi$ thereafter must be better than the old policy. 
+
+So if we find a policy $\pi'$ such that for all states $s$:
+
+$$
+q_\pi(s, \pi'(s)) \geq v_\pi(s),
+$$
+
+then the new policy $\pi'$ is guaranteed to be at least as good as the old policy $\pi$. So how do we find such a policy? The answer is simple: we can simply choose the action that maximizes the action-value function in each state so we get the **greedy policy** with respect to the action-value function:
+
+$$
+\pi'(s) = \arg\max_a q_\pi(s,a).
+$$
+
+However, we don't have the action-value function $q_\pi$ directly, but we can compute it from the value function $v_\pi$ using the Bellman equation for the action-value function:
+
+$$
+q_\pi(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
+$$
+
+Putting everything together, we can improve the policy by updating it to choose the action that maximizes the expected return based on the current value function:
+
+$$
+\pi'(s) = \arg\max_a \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
+$$
+
+If the new policy $\pi'$ is the same as the old policy $\pi$, then we have found the optimal policy and can stop. Otherwise, we can repeat the process of policy improvement and calculating the value function for the new policy until convergence. 
+
+### Policy Iteration
+
+One of the fundamental algorithms for finding an optimal policy in a known MDP is **policy iteration**. This algorithm alternates between two main steps: **policy evaluation** and **policy improvement**. By iteratively evaluating the current policy and then improving it based on the value function, policy iteration converges to the optimal policy.
+
+{{< figure 
+    src="/images/ml/rlPolicyIterationCycle.png"
+    caption="The cycle of policy iteration slowly converging to the optimal policy."
+    alt="The cycle of policy iteration slowly converging to the optimal policy."
+    width="500"
+>}}
+
+For a finite MDP with a finite number of states and actions, policy iteration is guaranteed to converge to the optimal policy $\pi^*$ in a finite number of iterations. This is because each policy improvement step produces a strictly better policy unless the current policy is already optimal, and there are only a finite number of possible policies. 
+
+The biggest issue with policy iteration is that the policy evaluation step can be computationally expensive, especially for large state spaces, as it requires solving a system of linear equations or performing many iterations of value updates. However, in practice, policy iteration often converges in relatively few iterations, making it a powerful method for finding optimal policies in MDPs.
+
+{{< figure 
+    src="/images/ml/rlPolicyIteration.png"
+    caption="Pseudo-code illustration of the policy iteration algorithm."
+    alt="Pseudo-code illustration of the policy iteration algorithm."
+    width="400"
+>}}
+
+{{< callout type="example" >}}
+In our grid world example, we can apply policy iteration to find the optimal policy for the agent. Starting with an initial policy (e.g., moving randomly), we first evaluate the policy to compute its value function. Then, we improve the policy by choosing actions that lead to higher expected returns based on the current value function. Repeating this process, we eventually converge to the optimal policy that guides the agent to the teleportation cells $A$ and $B$ efficiently, maximizing its long-term rewards.
+
+In this example, we can see that the policy iteration algorithm quickly converges to the optimal policy, demonstrating its effectiveness in solving MDPs.
+
+{{< figure 
+    src="/images/ml/rlGridWorldPolicyIteration.png"
+    caption="Visualization of policy iteration in the grid world example."
+    alt="Visualization of policy iteration in the grid world example."
+>}}
+{{< /callout >}}
+
+### Value Iteration
 
 * Combining iteration and improvement into one step
 * When value iteration is preferred
