@@ -501,9 +501,25 @@ For example, if the agent is in the state just above teleportation cell $A$, the
 
 ## Planning
 
-So far we have assumed that the agent follows some fixed policy $\pi$ and derived the corresponding value functions and Bellman equations. But how do we actually find a good policy in the first place? This is where the concepts of **planning** and **reinforcement learning** come into play. Specifically, planning refers to the process of computing an optimal policy when the MDP model (transition and reward functions) is known, or in other words, when we have **complete knowledge** of the environment. In contrast, reinforcement learning deals with the situation where the MDP model is unknown and must be learned through interaction with the environment.
+So far we have assumed that the agent follows some fixed policy $\pi$ and derived the corresponding value functions and Bellman equations. But how do we actually find a good policy in the first place? This is where the concepts of **planning** and **reinforcement learning** come into play. Specifically, planning refers to the process of computing an optimal policy when the MDP model (transition and reward functions) is known, or in other words, when we have **complete knowledge** of the environment. In contrast, reinforcement learning deals with the situation where the environment is unknown and must be learned by interacting with the environment. However, both planning and reinforcement learning share the same underlying goal of finding an optimal policy that maximizes the expected return.
+
+This can be very confussing to differentiate, especially since we can also do planning in reinforcement learning settings, for example by learning a model of the environment and then using that model to plan. However, the key distinction is whether the MDP model is whether you have access to a model of the environment, and you try to solve it via some form of advanced search. It does not require to collect true experience from the real environment, but some planning methods are based on simulated experience from the known (or modeled) environment. It's all in the agent's head, just like when you plan something, hence planning.
+
+Learning is when you do not assume to have a model of the environment, and thus you need true experience to infer anything. And it can be done broadly speaking in two ways: 
+- **Model-based learning**: Here, the agent tries to learn a model of the environment's dynamics (i.e., the transition probabilities and reward function) from its interactions with the environment. Once the model is learned, the agent can use planning methods to compute an optimal policy based on this learned model.
+- **Model-free learning**: In this approach, the agent directly skips learning a model of the environment and instead focuses on learning the value functions or policies directly from its interactions with the environment. 
+
+{{< figure 
+    src="/images/ml/rlModelBasedFree.png"
+    caption="Illustration of model-based and model-free reinforcement learning."
+    alt="Illustration of model-based and model-free reinforcement learning."
+>}}
 
 ### Policy Evaluation
+
+{{< callout type="todo" >}}
+Clearly mention tabular case only, i.e. small finite state and action spaces. Later on we will look at other cases.
+{{< /callout >}}
 
 To be able to find an optimal policy, we first need to be able to evaluate how good a given policy is. This is done through the policy evaluation step, where we compute the value function $v_\pi$ for the current policy. As mentioned earlier, the Bellman Equations gives us a system of linear equations. While we could solve this analytically, it is computationally expensive for large state spaces, specifically it requires inverting a matrix of size $|\mathcal{S}| \times |\mathcal{S}|$ which is $O(|\mathcal{S}|^3)$ in time complexity. Instead, we can use an iterative approach known as **iterative policy evaluation**. The idea is to start with an initial guess for the value function (e.g., all zeros) and then repeatedly update the value function using the Bellman equation until it converges to the true value function for the policy. Specifically, we can use the following update rule for each state $s$:
 
@@ -517,7 +533,7 @@ $$
 \max_{s \in \mathcal{S}} |v_{k+1}(s) - v_k(s)| < \theta.
 $$
 
-How is the above derived?
+*How is the above derived?*
 
 Here we can see the connection to dynamic programming again, as we are caching the results of subproblems (the value of each state) and using them to compute the values of other states iteratively. This process is guaranteed to converge to the true value function $v_\pi$ for the policy $\pi$ as long as the discount factor $\gamma < 1$. 
 
@@ -603,28 +619,34 @@ In this example, we can see that the policy iteration algorithm quickly converge
 * When value iteration is preferred
 * Convergence characteristics
 
-## Reinforcement Learning
+## Tabular Reinforcement Learning
 
 now we **don’t know** the MDP model (transition/reward functions).
 
 Transition from planning to learning when the model is unknown.
 
-* Episodic vs continual tasks
 * Online vs offline RL
-
-Model-Based RL:
-
-* Learning the transition probabilities and rewards (e.g., MLE/MAP)
-* Planning with a learned model
-* The Rmax algorithm
-
-Model-Free RL Overview:
-
 * On-policy vs off-policy
-* Exploration vs exploitation strategies
-* ε-greedy and softmax exploration
+  
+Off-policy methods are therefore more sample-efficient than
+on-policy
 
-### Monte Carlo Methods
+### Model-Based Methods
+
+Tabular setting
+
+Learning the transition probabilities and rewards (e.g., MLE/MAP)?
+Do we then perform planning with the learned model (e.g., value iteration/policy iteration)?
+
+* Exploration vs exploitation strategies
+
+What is the epsilon greedy, softmax/boltzmann exploration in this context?
+
+and then the optimism in the face of uncertainty (OFU) principle to encourage exploration which motivates algorithms like Rmax.
+
+### Model-free Approaches
+
+#### Monte Carlo Learning
 
 model free 
 
@@ -648,7 +670,12 @@ can make a split to behavior policy and target policy to get off-policy learning
 importance sampling for off-policy monte carlo and with coverage?
 target no longer epsilon-soft but behavior policy is for exploration. instead our target policy could be deterministic greedy policy.
 
-### Temporal-Difference Learning
+#### SARSA
+
+expected sarsa?
+double sarsa?
+
+#### Temporal-Difference Learning
 
 Learning value functions from experience using bootstrapping.
 
@@ -658,7 +685,7 @@ Bootstrapping and TD(0)
 * TD update rule
 * TD as SGD on value approximation
 
-### Q-Learning
+#### Q-Learning
 
 Central model-free control method.
 
@@ -671,46 +698,95 @@ Exploration Revisited
 * Decaying ε
 * Tradeoffs
 
-### Deep Q-Networks (DQN)
+## Deep Reinforcement Learning
+
+### Model-Free
+
+#### Deep Q-Networks (DQN)
 
 Using neural networks as function approximators for Q-values.
 
 linear functions or neural networks to approximate Q-values.
 
-## Double DQN
+#### Double DQN
 
 * Overestimation problem
 * Double Q-learning correction
 
-### Policy Gradient Methods
+#### Policy Gradient Methods
 
 Directly optimizing the policy.
 
 * Difficulty of using Q-values in continuous action spaces
 * Policy parameterization
 
-### Variance Reduction
-
+Variance Reduction:
 * Baselines
 * Advantage functions
 
-### REINFORCE
+#### Reinforce Algorithm
 
 * Monte Carlo policy gradient
 * Derivation and limitations
 
-### Actor–Critic Methods
+#### Actor–Critic
 
 Hybrid methods combining TD learning with policy gradients.
+
+But also a version where we start with Q Learning rather then TD learning?
 
 * Actor updates the policy
 * Critic estimates value function
 * Lower variance than pure policy gradients
 
-### Proximal Policy Optimization (PPO)
+#### Advantage Actor–Critic
 
+Introduce Advantage function to reduce variance.
+
+#### Proximal Policy Optimization (PPO)
 A stable and practical policy gradient method.
 
 * Avoiding destructive large policy updates
 * Clipped surrogate objective
 * Why PPO works well in practice
+
+#### Trust Region Policy Optimization (TRPO)
+
+This is the clipped version
+
+### Maximum Entropy RL (MERL)
+
+motivates exploration by augmenting the reward with an entropy term.
+
+soft actor-critic (SAC)?
+
+#### Deep Deterministic Policy Gradient (DDPG)
+
+#### Stochastic Value Gradients (SVG)
+
+### Model-Based
+
+World models
+
+#### Model Predictive Control (MPC)
+
+random shooting methods
+
+for stochastic dynamics we use:
+
+trajectory sampling methods like thompson sampling?
+
+#### Pilco?
+
+#### Pets?
+
+#### Hallucinated upper confidence reinforcement learning
+
+#### Constrained and Safe RL
+
+## Learning from Preferences
+
+### Reinforcement Learning with Human Feedback (RLHF)
+
+### Direct Preference Optimization (DPO)
+
