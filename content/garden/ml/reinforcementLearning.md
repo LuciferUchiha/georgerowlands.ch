@@ -222,11 +222,11 @@ If we look at action-values, $q_\pi(s,a)$ distinguishes between the possible act
 From this value function, it is easy to see which states are desirable (those near teleportation states) and which actions are preferable in each state (those leading towards teleportation states). This information can then be used to also induce a policy which always chooses the best action which leads it to a higher value state.
 {{< /callout >}}
 
-### Bellman Equations
+### Bellman Expectation Equations
 
 The definition of the value functions above is useful for understanding what they represent, but it does not provide a practical way to compute them as they define value as an expectation over all possible future trajectories, which can be infinite in length. This would mean we would theoretically have to simulate the agent in all states and actions for an infinite amount of time to compute the value functions exactly, which would be intractable in all but the simplest cases.
 
-Instead, we can exploit the recursive structure of the return $G_t$ to derive a set of equations known as the **Bellman equations**. These equations express the value functions in terms of themselves, allowing us to compute them iteratively. Remember that the return can be expressed recursively as:
+Instead, we can exploit the recursive structure of the return $G_t$ to derive a set of equations known as the **Bellman expectation equations**. These equations express the value functions in terms of themselves, allowing us to compute them iteratively. Remember that the return can be expressed recursively as:
 
 $$
 G_t = R_{t+1} + \gamma G_{t+1}.
@@ -505,7 +505,31 @@ So far we have assumed that the agent follows some fixed policy $\pi$ and derive
 
 ### Policy Evaluation
 
-To be able to find an optimal policy, we first need to be able to evaluate how good a given policy is. This is done through the policy evaluation step, where we compute the value function $v_\pi$ for the current policy. As mentioned earlier, the Bellman Equations gives us a system of linear equations. While we could solve this analytically, it is computationally expensive for large state spaces, specifically it requires inverting a matrix of size $|\mathcal{S}| \times |\mathcal{S}|$ which is $O(|\mathcal{S}|^3)$ in time complexity. Instead, we can use an iterative approach known as **iterative policy evaluation**. The idea is to start with an initial guess for the value function (e.g., all zeros) and then repeatedly update the value function using the Bellman equation until it converges to the true value function for the policy. Specifically, we can use the following update rule for each state $s$:
+To be able to find an optimal policy, we first need to be able to evaluate how good a given policy is. This is done through the policy evaluation step, where we compute the value function $v_\pi$ for the current policy. As mentioned earlier, the Bellman Equations gives us a system of linear equations. While we could solve this analytically, it is computationally expensive for large state spaces, specifically it requires inverting a matrix of size $|\mathcal{S}| \times |\mathcal{S}|$ which is $O(|\mathcal{S}|^3)$ in time complexity:
+
+$$
+\mathbf{v}_\pi = (\mathbf{I} - \gamma \mathbf{P}_\pi)^{-1} \mathbf{r}_\pi.
+$$
+
+Instead, we can use an iterative approach known as **iterative policy evaluation**. The idea is to start with an initial guess for the value function (e.g., all zeros) and then repeatedly update the value function using the Bellman equation until it converges to the true value function for the policy. For this we first define the **Bellman expectation operator** $\mathcal{T}^\pi$ which takes a value function $v$ as input and produces a new value function as output by applying the Bellman equation for policy $\pi$:
+
+$$
+(\mathcal{T}^\pi v)(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v(s') \right].
+$$
+
+The bellman equation itself can then be seen as a fixed point of this operator:
+
+$$
+v_\pi = \mathcal{T}^\pi v_\pi.
+$$
+
+More generally, a fixed point of a function or operator is a point that is mapped to itself by the function $F(x^*) = x^*$. In our case, the value function $v_\pi$ is a fixed point of the Bellman expectation operator $\mathcal{T}^\pi$ because applying the operator to $v_\pi$ yields $v_\pi$ itself. To then find this fixed point, we use **fixed-point iteration** where we start with an initial guess $v_0$ and then repeatedly improve our point by applying the operator:
+
+$$
+v_{k+1} = \mathcal{T}^\pi v_k.
+$$
+
+This gives us the iterative update rule for the value function:
 
 $$
 v_{k+1}(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_k(s') \right].
@@ -517,11 +541,17 @@ $$
 \max_{s \in \mathcal{S}} |v_{k+1}(s) - v_k(s)| < \theta.
 $$
 
-How is the above derived?
+Formally, this iterative process is guaranteed to converge to the true value function $v_\pi$ for the policy $\pi$ as long as the discount factor $\gamma < 1$ as the Bellman expectation operator $\mathcal{T}^\pi$ is then a **contraction mapping** with respect to the max-norm. This means that applying the operator brings value functions closer together, ensuring convergence to a unique fixed point:
+
+$$
+\| \mathcal{T}^\pi v - \mathcal{T}^\pi w \|_\infty \leq \gamma \| v - w \|_\infty.
+$$
+
+Intuitively, you can also think of that at each "sweep" through all states, we are getting information about the rewards which can then be used to update the values of other states in the next sweep, and over time this information propagates through the state space until all values are accurate. 
 
 Here we can see the connection to dynamic programming again, as we are caching the results of subproblems (the value of each state) and using them to compute the values of other states iteratively. This process is guaranteed to converge to the true value function $v_\pi$ for the policy $\pi$ as long as the discount factor $\gamma < 1$. 
 
-This algorithm can also be viewed as a form of **fixed-point iteration** ??? explanation and formal definition?
+This algorithm can also be viewed as a form of **fixed-point iteration** ??? explanation and formal definition? what is a fixed pointe iteration???
 Bellman expectation operator?
 
 {{< figure 
@@ -535,21 +565,25 @@ Bellman expectation operator?
 
 Once we have evaluated the current policy and obtained its value function $v_\pi$, we can use this information to improve the policy. The idea is to use the value function to identify better actions in each state, leading to a new policy that is at least as good as the current one. This process is known as **policy improvement**.
 
-The idea is rather simple. Consider we are in some state $s$ and the current policy selects action $\pi(s)$. If we then were to find an action which isn't $\pi(s)$ but leads to a higher expected return according to the value function, then we could improve the policy by switching to that action instead, so $q_\pi(s,a) > v_\pi(s)$ for some action $a \neq \pi(s)$. The reason this works is because in both cases after the initial action we follow the same policy $\pi$ thereafter, so if taking action $a$ now leads to a higher expected return than taking action $\pi(s)$ now, then the new policy which takes action $a$ in state $s$ and follows $\pi$ thereafter must be better than the old policy. 
-
-So if we find a policy $\pi'$ such that for all states $s$:
+The idea is rather simple. Consider we are in some state $s$ and the current policy selects action $\pi(s)$. If we then were to find an action which isn't $\pi(s)$ but leads to a higher expected return according to the value function, then we could improve the policy by switching to that action instead, so $q_\pi(s,a) > v_\pi(s)$ for some action $a \neq \pi(s)$. The reason this works is because in both cases after the initial action we follow the same policy $\pi$ thereafter, so if taking action $a$ now leads to a higher expected return than taking action $\pi(s)$ now, then the new policy which takes action $a$ in state $s$ and follows $\pi$ thereafter must be better than the old policy. Formally if we fix any state $s$ then for the current policy $\pi$ we have:
 
 $$
-q_\pi(s, \pi'(s)) \geq v_\pi(s),
+v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) q_\pi(s,a) \leq \max_a q_\pi(s,a) = q_\pi(s, \arg\max_a q_\pi(s,a)).
 $$
 
-then the new policy $\pi'$ is guaranteed to be at least as good as the old policy $\pi$. So how do we find such a policy? The answer is simple: we can simply choose the action that maximizes the action-value function in each state so we get the **greedy policy** with respect to the action-value function:
+we can then simply set $\pi'(s) = \arg\max_a q_\pi(s,a)$ to get a new policy $\pi'$ which is guaranteed to be at least as good as $\pi$ in state $s$:
+
+$$
+v_\pi(s) \leq q_\pi(s, \pi'(s)) = v_{\pi'}(s).
+$$
+
+This is known as the **policy improvement theorem** and the picking of the action that maximizes the action-value function is known as the **greedy policy improvement**, as we are always choosing the action that looks best according to the current value function:
 
 $$
 \pi'(s) = \arg\max_a q_\pi(s,a).
 $$
 
-However, we don't have the action-value function $q_\pi$ directly, but we can compute it from the value function $v_\pi$ using the Bellman equation for the action-value function:
+However, in practice we don't have the action-value function $q_\pi$ directly, but we can compute it from the value function $v_\pi$ using the Bellman equation for the action-value function:
 
 $$
 q_\pi(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
@@ -599,30 +633,49 @@ In this example, we can see that the policy iteration algorithm quickly converge
 
 ### Value Iteration
 
-* Combining iteration and improvement into one step
-* When value iteration is preferred
-* Convergence characteristics
+The issue with policy iteration is that the policy evaluation step can be computationally expensive, especially for large state spaces, as it requires solving a system of linear equations or performing many iterations of value updates. Especially as the policy evaluation becomes the true value function only in the limit of infinite iterations, which is impractical.
+
+To address this, we can use a more efficient algorithm known as **value iteration** where the idea is to stop the policy evaluation step early, before it has fully converged to the true value function for the current policy and then perform the policy improvement step. Specifically, in value iteration, we perform a single sweep of updates to the value function using the Bellman optimality equation, effectively combining the policy evaluation and policy improvement steps into a single update.
+
+The idea of value iteration is to combine the policy evaluation and policy improvement steps into a single update.
+
+$$
+\begin{align*}
+v_{k+1}(s) &= \max_a \mathbb{E} [ R_{t+1} + \gamma v_k(S_{t+1}) \mid S_t = s, A_t = a ] \\
+&= \max_a \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_k(s') \right].
+\end{align*}
+$$
+
+Here the inner sum term looks similar to the policy evaluation update, so we are collecting the immediate return for each action $a$ in state $s$ based on the current value function $v_k$, and then we are optimizing over actions by taking the maximum. This effectively performs a greedy policy improvement step at each iteration, as we are always choosing the action that looks best according to the current value function.
+
+{{< figure 
+    src="/images/ml/rlValueIteration.png"
+    caption="Pseudo-code illustration of the value iteration algorithm."
+    alt="Pseudo-code illustration of the value iteration algorithm."
+    width="400"
+>}}
+
+{{< callout type="example" >}}
+In our grid world example, we can apply value iteration to find the optimal policy for the agent. We can initialize $v_0(s) = 0$ for all states. At the very beginning, the only place where rewards “enter” the system are the immediate rewards near $A$ and $B$.
+
+On the first sweep, $v_1$ will become non-zero only in states that can reach $A$ or $B$ in one step, because we are looking at $r + \gamma v_0(s') = r$ and $v_0$ is zero everywhere. On the second sweep, values propagate one step further back: states that are two steps away from $A$ and $B$ now start to get positive values, and so on.
+
+With each sweep, this “wave” of value flows backwards through the grid, roughly at one step per iteration, until every state’s value reflects the best possible path to $A$ or $B$ (balanced against the $-1$ penalties and discounting). The resulting $v_*$ is identical to the optimal value function you would get from policy iteration, but value iteration jumped straight towards it without explicitly keeping track of a policy during the iterations.
+
+Once the value function has converged, we can derive the optimal policy by choosing the action that maximizes the expected return in each state based on the final value function.
+{{< /callout >}}
 
 ## Reinforcement Learning
 
-now we **don’t know** the MDP model (transition/reward functions).
-
-Transition from planning to learning when the model is unknown.
-
-* Episodic vs continual tasks
+differentiate between planning and RL
+tabular?
 * Online vs offline RL
-
-Model-Based RL:
-
-* Learning the transition probabilities and rewards (e.g., MLE/MAP)
-* Planning with a learned model
-* The Rmax algorithm
-
-Model-Free RL Overview:
-
 * On-policy vs off-policy
-* Exploration vs exploitation strategies
-* ε-greedy and softmax exploration
+* epsilon-greedy and softmax exploration
+* The Rmax algorithm?
+* Model-based(Learning the transition probabilities and rewards (e.g., MLE/MAP)???) planning with learned model? vs model-free RL
+
+now we **don’t know** the MDP model (transition/reward functions).
 
 ### Monte Carlo Methods
 
