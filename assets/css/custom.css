@@ -162,3 +162,7 @@
 /* GenericInserted */ .chroma .gi { color:#98c379;font-weight:bold }
 }
 
+/* Make the horizontal ruler thicker */
+hr {
+    border-top-width: 3px;
+}
