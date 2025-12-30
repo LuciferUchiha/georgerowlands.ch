@@ -186,7 +186,7 @@ $$
 \delta_t = r_{t+1} + \gamma v_\pi(s_{t+1}) - v_\pi(s_t).
 $$
 
-We can also rewrite the update rule in terms of the TD error:
+This is where the name temporal-difference learning comes from, as we are learning from the difference between consecutive time steps. We can also rewrite the update rule in terms of the TD error:
 
 $$
 v_\pi(s_t) \leftarrow v_\pi(s_t) + \alpha \left[r_{t+1} + \gamma v_\pi(s_{t+1}) - v_\pi(s_t) \right] = v_\pi(s_t) + \alpha \delta_t.
@@ -202,11 +202,7 @@ Again, once we have estimated the value function using TD learning, we can use i
 
 ### SARSA
 
-In Monte Carlo policy evaluation and TD learning, we focused on estimating the state-value function $v_\pi(s)$ for a given policy $\pi$ and then applied some form of policy improvement to derive a better policy.
-
-However, in many scenarios, it is more useful to estimate the action-value function $q_\pi(s,a)$, which gives the expected return for taking action $a$ in state $s$ and then following policy $\pi$. This leads us to **SARSA (State-Action-Reward-State-Action)**, which results in not just estimating the action-value function but also learning a policy simultaneously, making it an on-policy control method.
-
-Similarly to TD learning, SARSA updates the action-value estimates based on the observed reward and the estimated value of the next state-action pair. The update rule for SARSA is as follows:
+In Monte Carlo policy evaluation and TD learning, we focused on estimating the state-value function $v_\pi(s)$ for a given policy $\pi$ and then applied some form of policy improvement to derive a better policy. However, in many scenarios, it is more useful to estimate the action-value function $q_\pi(s,a)$, which gives the expected return for taking action $a$ in state $s$ and then following policy $\pi$. This leads us to **SARSA (State-Action-Reward-State-Action)**, which results in not just estimating the action-value function but also learning a policy simultaneously, making it an on-policy control method. SARAS uses the same TD learning principles but focuses on the action-value function instead of the state-value function by updating the action-value estimates based on the observed reward and the estimated value of the next state-action pair:
 
 $$
 q_\pi(s_t, a_t) \leftarrow (1 - \alpha) q_\pi(s_t, a_t) + \alpha \left[ r_{t+1} + \gamma q_\pi(s_{t+1}, a_{t+1}) \right],

@@ -243,7 +243,13 @@ $$
 \phi \leftarrow \phi + \alpha \hat{\nabla}_\phi J_T(\phi).
 $$
 
-where $\alpha$ is the learning rate. Intuitively, the REINFORCE algorithm increases the probability of actions that lead to higher returns and decreases the probability of actions that lead to lower returns.
+where $\alpha$ is the learning rate. Equivalently, we can express this as minimizing the following **policy loss**:
+
+$$
+L_{REINFORCE}(\phi) = -\frac{1}{N} \sum_{i=1}^{N} \left[ G_{0:T}^{(i)} \sum_{t=0}^{T-1} \log \pi_\phi(a_t^{(i)} | s_t^{(i)}) \right]
+$$
+
+The negative sign converts the gradient ascent problem into a gradient descent problem, which is the standard form used by most deep learning frameworks. Intuitively, the REINFORCE algorithm increases the probability of actions that lead to higher returns and decreases the probability of actions that lead to lower returns.
 
 However, there is a major issue with REINFORCE, which is that despite being an unbiased estimator, the policy gradient estimate has very high variance due to the use of the full return $G_{0:T}$. This high variance can lead to slow convergence and instability during training. To address this, we can introduce **baselines** to reduce the variance of the policy gradient estimate. The key idea is that subtracting a baseline $b$ from the return does not change the expected value of the policy gradient, but it can significantly reduce its variance:
 
@@ -295,6 +301,8 @@ $$
 \hat{\nabla}_\phi J_T(\phi) = \frac{1}{N} \sum_{i=1}^{N} \left[ \sum_{t=0}^{T-1} \left( G_{t:T}^{(i)} \nabla_\phi \log \pi_\phi(a_t^{(i)} | s_t^{(i)}) \right) \right]
 $$
 
+Intuitively, this means that at each time step $t$, we update the policy based on the rewards that are actually influenced by the action taken at that time step, removing any causality-violating information from future rewards. Hence, it is also often referred to as the causality trick.
+
 Another popular choice is to use independent baseline such as the average return across the sampled trajectories:
 
 $$
@@ -315,63 +323,369 @@ However, even with baselines, the REINFORCE algorithm can still suffer from high
 
 ### Actor–Critic
 
-reinforce where we use advantage as a baseline? this means we need to learn a value function as well hence the critic?
+We saw in the Gradient theorem that we need to compute the expected return $G_{0:T}$ to estimate the policy gradient. In the REINFORCE algorithm, we used Monte Carlo estimates of the return, which can have high variance due to multiplying a noisy reward signal over long trajectories with a high dimensional policy gradient. 
 
-Hybrid methods combining TD learning with policy gradients.
+To reduce this variance, we introduce the idea of an **Actor-Critic** method. The key idea is that rather then using the full return $G_{0:T}$, we can use a learned value function to estimate the expected return, which can provide lower-variance estimates. This estimated value function is called the **critic**, while the policy being optimized is called the **actor**. The critic evaluates the actions taken by the actor and provides feedback to improve the policy, in a way the critic can also be thought of as bootstrapping the return estimates or providing a learned baseline for the policy gradient.
 
-But also a version where we start with Q Learning rather then TD learning?
+Specifically, we can use  **Temporal Difference (TD) learning** (such as SARSA or Q-learning) to estimate the action-value function $q_\pi(s,a)$ or state-value function $v_\pi(s)$, which can then be used to compute the policy gradient, making it a **model-free** hybrid method of value-based and policy-based methods. The most common approach is the **online actor-critic** method, also called **Q-Actor-Critic (Q-AC)**, which uses the action-value function to estimate the expected return. This works out well since we can rewrite the policy gradient using the action-value function:
 
-* Actor updates the policy
-* Critic estimates value function
-* Lower variance than pure policy gradients
+$$
+\nabla_\phi J_T(\phi) = \mathbb{E}_{\tau \sim \Pi_\phi} \left[ \sum_{t=0}^{T-1} q_\pi(s_t, a_t) \nabla_\phi \log \pi_\phi(a_t | s_t) \right]
+$$
 
-online/q actor critic? We additionally learn an action-value function $q_\pi(s,a; w)$ parameterized by $w$ using TD learning such as SARSA or Q-learning. The critic provides an estimate of returns to the actor, which uses this information to update the policy parameters $\phi$. 
+{{< callout type="proof" >}}
 
-by using the bootstrapped value estimates from the critic, we can reduce the variance of the policy gradient estimate however this introduces bias since the value estimates may not be accurate.
+{{< /callout >}}
 
-#### Advantage Actor–Critic
+To actually implement this, we need to learn the action-value function $q_\pi(s,a)$ using TD learning. We can use the SARSA update rule to learn the action-value function:
 
-what if also learned a state-value function 
- and use it as a baseline to compute advantage estimates. End up just learning the advantage function directly.
+$$
+\delta_{TD} = r_{t+1} + \gamma q_\pi(s_{t+1}, a_{t+1}) - q_\pi(s_t, a_t)
+$$
 
- Things with positive negative?
+where $a_{t+1} \sim \pi_\phi(\cdot | s_{t+1})$ is the action taken in the next state according to the current policy. We can then use this TD error $\delta_{TD}$ to update the action-value function using stochastic gradient descent:
 
-Introduce Advantage function to reduce variance.
+$$
+q_\pi(s_t, a_t) \leftarrow q_\pi(s_t, a_t) + \alpha \delta_{TD}
+$$
 
-Balance bias-variance trade-off of the policy gradient estimate results in GAE?
+We can then use the learned action-value function to compute the policy gradient estimate and update the policy parameters via stochastic gradient ascent:
+
+$$
+\phi \leftarrow \phi + \alpha \hat{\nabla}_\phi J_T(\phi) = \phi + \alpha \delta_{TD} \nabla_\phi \log \pi_\phi(a_t | s_t)
+$$
+
+The corresponding **loss functions** for the Q-Actor-Critic method are for the critic:
+
+$$
+L_{Q}(\theta) = \frac{1}{2} \left( r + \gamma q_\pi(s', a'; \theta^{old}) - q_\pi(s, a; \theta) \right)^2
+$$
+
+just like in Q-learning, where we try to minimize the squared Bellman error for the action-value function, and for the actor:
+
+$$
+L_{\pi}(\phi) = -q_\pi(s, a; \theta) \log \pi_\phi(a | s)
+$$
+
+where we try to maximize the expected action-value under the current policy, which is equivalent to minimizing the negative expected action-value.Importantly the learning rates for the actor and critic can be different, i.e., we can use $\alpha_{actor}$ and $\alpha_{critic}$. This method effectively combines the benefits of value-based and policy-based methods, allowing for more efficient learning and better convergence properties by reducing the variance of the policy gradient estimates. However, remember that since we are using bootstrapping to estimate the action-value function, the policy gradient estimate can be biased, which can lead to suboptimal policies if not handled carefully, in comparison the REINFORCE algorithm is unbiased but has high variance. So we are again facing a bias-variance trade-off.
+
+{{< figure 
+    src="/images/ml/rlActorCritic.png"
+    caption="Architecture of an Actor-Critic method with separate networks for the actor (policy) and critic (value function)."
+    alt="Architecture of an Actor-Critic method with separate networks for the actor (policy) and critic (value function)."
+    width="600"
+>}}
+
+#### Advantage Actor–Critic (A2C)
+
+An issue with the above Q-AC method is not only did we introduce bias through bootstrapping, but the variance can still be high since the action-value function $Q$ can have high variance itself and can be hard to learn. Depending on the design of the reward function, the action-value function can vary significantly for different actions in the same state, leading to noisy estimates. Because we are multiplying the action-value function with the policy gradient depending on the reward function design this can lead to destructively large updates. In addition if for example the reward function is always positive, the action-value function will also always be positive, leading to consistently positive updates to the policy parameters, despite some actions being worse than others. To mitigate this, we can use the **Advantage function** instead of the action-value function in the policy gradient estimate:
+
+$$
+A_\pi(s,a) = q_\pi(s,a) - v_\pi(s)
+$$
+
+The advantage function measures how much better or worse an action is compared to the average action in that state, as given by the state-value function. By using the advantage function, we can center the action-value estimates around the state-value, which helps reduce variance and stabilize learning. If the action taken is better than average, the advantage will be positive, leading to an increase in the probability of taking that action. Conversely, if the action is worse than average, the advantage will be negative, leading to a decrease in the probability of taking that action. This centering effect helps ensure that the policy updates are more balanced and less sensitive to the absolute values of the action-value function. 
+
+So the policy gradient estimate becomes:
+
+$$
+\hat{\nabla}_\phi J_T(\phi) = \mathbb{E}_{\tau \sim \Pi_\phi} \left[ \sum_{t=0}^{T-1} (q_\pi(s_t, a_t) - v_\pi(s_t)) \nabla_\phi \log \pi_\phi(a_t | s_t) \right] = \mathbb{E}_{\tau \sim \Pi_\phi} \left[ \sum_{t=0}^{T-1} A_\pi(s_t, a_t) \nabla_\phi \log \pi_\phi(a_t | s_t) \right]
+$$
+
+So if we learn both the action-value function $q_\pi(s,a)$ and the state-value function $v_\pi(s)$ using TD learning, we can compute the advantage function and use it in the policy gradient estimate. We can also see that if $q_\pi(s,a)$ represents the expected return following the bellman equation then the state-value function $v_\pi(s)$ can be used as a baseline to reduce variance in the policy gradient estimate.
+
+A naive approach would be to learn both $q_\pi(s,a)$ and $v_\pi(s)$ separately using TD learning, but this can be inefficient and redundant since both functions are related. Specifically remember that the action-value function can be expressed in terms of the state-value function and the policy:
+
+$$
+\begin{align*}
+q_\pi(s,a) &= \mathbb{E}_\pi \left[ G_t | S_t = s, A_t = a \right] \\
+&= \mathbb{E}_\pi \left[ R_{t+1} + \gamma v_\pi(S_{t+1}) | S_t = s, A_t = a \right] \\
+&\approx r + \gamma v_\pi(s')
+\end{align*}
+$$
+
+So instead of learning both functions separately, we can just learn the state-value function $v_\pi(s)$ and use it to then calculate the approximated action-value function and thus the advantage function:
+
+$$
+A_\pi(s,a) = q_\pi(s,a) - v_\pi(s) \approx r + \gamma v_\pi(s') - v_\pi(s)
+$$
+
+Notice that the term on the right is exactly the TD error $\delta_{TD}$ we used to update the action-value function in the Q-AC method. So we can use the TD error as an unbiased estimate of the advantage function:
+
+$$
+\hat{A}_\pi(s,a) \approx r + \gamma v_\pi(s') - v_\pi(s) = \delta_{TD}
+$$
+
+This leads to the **Advantage Actor-Critic (A2C)** method, where we only learn the state-value function $v_\pi(s)$ using TD learning and use the TD error as an estimate of the advantage function in the policy gradient estimate. So we update the critic, i.e., the state-value function, using the TD error:
+
+$$
+v_\pi(s_t) \leftarrow v_\pi(s_t) + \alpha \delta_{TD}
+$$
+
+The loss function for the critic can be defined as the squared TD error:
+
+$$
+L_{V}(s, r, s'; \theta) =  \frac{1}{2} \left( r + \gamma v_\pi(s'; \theta^{old}) - v_\pi(s; \theta) \right)^2,
+$$
+
+And we update the actor, i.e., the policy, using the TD error as an estimate of the advantage function:
+
+$$
+\phi \leftarrow \phi + \alpha A_\pi(s_t, a_t) \nabla_\phi \log \pi_\phi(a_t | s_t) = \phi + \alpha \delta_{TD} \nabla_\phi \log \pi_\phi(a_t | s_t)
+$$
+
+The corresponding actor loss for A2C is:
+
+$$
+L_{\pi}(\phi) = -A_\pi(s, a) \log \pi_\phi(a | s) = -\delta_{TD} \log \pi_\phi(a | s)
+$$
+
+{{< figure 
+    src="/images/ml/rlA2C.png"
+    caption="Architecture of the Advantage Actor-Critic (A2C) method."
+    alt="Architecture of the Advantage Actor-Critic (A2C) method."
+    width="300"
+>}}
+
+#### Generalized Advantage Estimation (GAE)
+
+Using the one-step TD error as an estimate of the advantage function in the A2C method reduces variances compared to using the full return, but it instead introduces bias due to bootstrapping. To balance this bias-variance trade-off, we can use **n-step returns** to estimate the advantage function. The n-step return considers rewards over multiple time steps before bootstrapping, which can help reduce bias while still keeping variance manageable:
+
+- **1-step TD Error**: $\delta_t^{(1)} = r_{t+1} + \gamma v_\pi(s_{t+1}) - v_\pi(s_t)$.
+- **2-step TD Error**: $\delta_t^{(2)} = r_{t+1} + \gamma r_{t+2} + \gamma^2 v_\pi(s_{t+2}) - v_\pi(s_t)$.
+- **n-step TD Error**: $\delta_t^{(n)} = \sum_{k=0}^{n-1} \gamma^k r_{t+k+1} + \gamma^n v_\pi(s_{t+n}) - v_\pi(s_t)$.
+
+Using n-step returns, we can define the advantage estimate as:
+
+$$
+A_t^{GAE(\lambda)} = \sum_{k=0}^{\infty} (\gamma \lambda)^k \delta_{t+k} = \delta_t + \gamma \lambda \delta_{t+1} + (\gamma \lambda)^2 \delta_{t+2} + \cdots + (\gamma \lambda)^{n-1} \delta_{t+n-1}
+$$
+
+where $\delta_{t+k}$ is the TD error at time step $t+k$, and $\lambda \in [0,1]$ is a parameter that controls the bias-variance trade-off. When $\lambda = 0$, we recover the one-step TD error, which has low variance but high bias and results in the loss:
+
+$$
+L_{V}(s, r, s'; \theta) =  \frac{1}{2} \left( r + \gamma v_\pi(s'; \theta^{old}) - v_\pi(s; \theta) \right)^2,
+$$
+
+When $\lambda = 1$, we recover the full return loss from the Monte Carlo method, which is unbiased but has high variance:
+
+$$
+L_{V}(s, r, s'; \theta) =  \frac{1}{2} \left( G_{0:T} - v_\pi(s; \theta) \right)^2,
+$$
+
+By choosing an intermediate value for $\lambda$, we can balance bias and variance in the advantage estimates. In practice, values of $\lambda$ between 0.9 and 0.99 are often used to achieve a good balance. We can rewrite the advantage as follows:
+
+$$
+\begin{align*}
+A_t^{GAE(\lambda)} &= (r_{t+1} + \gamma v_\pi(s_{t+1})) - v_\pi(s_t) + \gamma \lambda \left( (r_{t+2} + \gamma v_\pi(s_{t+2})) - v_\pi(s_{t+1}) \right) + (\gamma \lambda)^2 \left( (r_{t+3} + \gamma v_\pi(s_{t+3})) - v_\pi(s_{t+2}) \right) + \cdots \\
+&= \hat{V}_t^{\lambda} - v_\pi(s_t)
+\end{align*}
+$$
+
+where $\hat{V}_t^{\lambda}$ is the $\lambda$-return defined as:
+
+$$
+\hat{V}_t^{\lambda} = (1 - \lambda) \sum_{n=1}^{\infty} \lambda^{n-1} V_t^{(n)}
+$$
+
+and $V_t^{(n)}$ is the n-step return:
+
+$$
+V_t^{(n)} = \sum_{k=0}^{n-1} \gamma^k r_{t+k+1} + \gamma^n v_\pi(s_{t+n})
+$$
+
+This is kind of like a weighted telecoping sum of n-step returns, where the weights decrease exponentially with $n$ controlled by $\lambda$. Using this $\lambda$-return, we can define the critic loss as:
+
+$$
+L_{V}(s, r, s'; \theta) =  \frac{1}{2} \left( \hat{V}_t^{\lambda} - v_\pi(s; \theta) \right)^2,
+$$
+
+The actor loss remains the same as in A2C, using the GAE advantage estimates:
+
+$$
+L_{\pi}(\phi) = -A_t^{GAE(\lambda)} \log \pi_\phi(a | s)
+$$
+
+{{< figure 
+    src="/images/ml/rlTDLambda.webp"
+    caption="Impact of the lambda parameter in TD(λ) on bias and variance."
+    alt="Impact of the lambda parameter in TD(λ) on bias and variance."
+    width="600"
+>}}
+
+#### Asynchronous Advantage Actor-Critic (A3C)
+
+Google deepmind's A3C algorithm. For now we will skip this.
 
 ### Trust Region Policy Optimization (TRPO)
 
-This is the clipped version? to increase sample efficiency and stability.
+A major limitation of the methods above is sample inefficiency. Because they are on-policy, we collect data, perform one gradient update, and then must discard the data. The idea of Trust Region Policy Optimization (TRPO) is to enable faster convergence by defining a trust region constraint on the policy updates, allowing multiple updates per batch of data, while ensuring that the policy does not change too much in a single update, which could lead to performance collapse. The key idea is to optimize a surrogate objective function subject to a constraint on the KL-divergence between the old and new policies to ensure that the new policy is not too different from the old policy:
+
+$$
+\phi \leftarrow \arg\max_\phi \hat{J(\phi)} \quad \text{subject to} \quad D_{KL}(\pi_{\phi^{old}} || \pi_\phi) \leq \delta
+$$
+
+where $\hat{J(\phi)}$ is the surrogate objective function, $D_{KL}(\pi_{\phi^{old}} || \pi_\phi)$ is the KL-divergence between the old policy $\pi_{\phi^{old}}$ and the new policy $\pi_\phi$, and $\delta$ is a small positive constant that defines the size of the trust region. 
+
+{{< figure 
+    src="/images/ml/rlTRPO.png"
+    caption="Trust Region Policy Optimization (TRPO) constrains policy updates to stay within a trust region defined by the KL-divergence between the old and new policies."
+    alt="Trust Region Policy Optimization (TRPO) constrains policy updates to stay within a trust region defined by the KL-divergence between the old and new policies."
+    width="400"
+>}}
+
+The surrogate objective function will now not only receive data from the current policy but also from the old policy. To make sure we are optimizing the expected return of the new policy, we need to correct for the fact that the data was collected under the old policy. This is done using **importance sampling** with the importance sampling ratio:
+
+$$
+w_t(a_t, s_t) = \frac{\pi_\phi(a_t | s_t)}{\pi_{\phi^{old}}(a_t | s_t)}
+$$
+
+This ratio corrects for the difference in action probabilities between the old and new policies and avoid destructive updates. Intuitively, if the new policy assigns a higher probability to an action than the old policy did, the importance weight will be greater than 1, increasing the contribution of that action to the surrogate objective. Conversely, if the new policy assigns a lower probability, the weight will be less than 1, reducing its contribution. This ensures that the surrogate objective accurately reflects the expected return under the new policy, even though the data was collected under the old policy. If we now use this importance sampling ratio to reweight the advantage estimates in the policy gradient estimate, we obtain the surrogate objective function:
+
+$$
+\hat{J(\phi)} = \mathbb{E}_{\tau \sim \Pi_{\phi^{old}}} \left[ \sum_{t=0}^{T-1} w_t(a_t, s_t) A_{\pi_{\phi^{old}}}(s_t, a_t) \right]
+$$
+
+So we update the critc (value function) as usual using TD learning, but we update the actor (policy) by solving the constrained optimization problem above.
+
+$$
+\phi \leftarrow \arg\max_\phi \mathbb{E}_{\tau \sim \Pi_{\phi^{old}}} \left[ \sum_{t=0}^{T-1} \frac{\pi_\phi(a_t | s_t)}{\pi_{\phi^{old}}(a_t | s_t)} A_{\pi_{\phi^{old}}}(s_t, a_t) \right] \quad \text{subject to} \quad D_{KL}(\pi_{\phi^{old}} || \pi_\phi) \leq \delta
+$$
+
+The problem with this constrained optimization problem is that it is difficult to solve directly. Instead, TRPO uses a second-order approximation of the KL-divergence constraint and a linear approximation of the surrogate objective to derive a closed-form solution for the policy update. This involves calculating the Fisher Information Matrix, which captures the curvature of the KL-divergence constraint, and using it to compute a natural gradient step that respects the trust region constraint. However, the computation of the Fisher Information Matrix and its inverse can be computationally expensive, especially for high-dimensional policy parameterizations.
 
 ### Proximal Policy Optimization (PPO)
-A stable and practical policy gradient method.
 
-* Avoiding destructive large policy updates
-* Clipped surrogate objective
-* Why PPO works well in practice
+Proximal Policy Optimization (PPO) was introduced by OpenAI as a simpler alternative to TRPO that achieves similar performance with much less computational overhead. PPO retains the benefits of TRPO (avoiding destructively large policy updates) and improving sample efficiency, while using only first-order optimization methods like standard stochastic gradient descent (SGD). This makes it significantly easier to implement and tune, which is why it has become one of the most popular algorithms in practice, including being used to improve Large Language Models via Reinforcement Learning from Human Feedback (RLHF) as shown in the InstructGPT paper by OpenAI.
 
-special case of TRPO?
+{{< figure 
+    src="/images/ml/rlInstructGPT.jpg"
+    caption="The training of InstructGPT involves a combination of supervised fine-tuning and reinforcement learning using PPO to align the model with human preferences."
+    alt="The training of InstructGPT involves a combination of supervised fine-tuning and reinforcement learning using PPO to align the model with human preferences."
+    width="600"
+>}}
 
-### Group Related Policy Optimization (GRPO)
+The key insight of PPO is to replace the hard KL-divergence constraint of TRPO with a clipped surrogate objective that automatically prevents large policy updates. Let $r_t(\phi) = \frac{\pi_\phi(a_t | s_t)}{\pi_{\phi^{old}}(a_t | s_t)}$ denote the probability ratio between the new and old policies. The **clipped surrogate objective** is:
 
-### Maximum Entropy RL (MERL)
+$$
+L^{CLIP}(\phi) = \mathbb{E}_t \left[ \min \left( r_t(\phi) A_t, \text{clip}(r_t(\phi), 1-\epsilon, 1+\epsilon) A_t \right) \right]
+$$
 
-motivates exploration by augmenting the reward with an entropy term.
+where $\epsilon$ is a hyperparameter (typically 0.1 or 0.2) that defines how far the new policy can deviate from the old policy. By taking the minimum, the objective function ignores changes in probability that move outside the trust region defined by $[1-\epsilon, 1+\epsilon]$. This prevents the policy from changing too much in a single update, similar to the KL-divergence constraint in TRPO, but without the need for complex second-order optimization.
 
-soft actor-critic (SAC)?
+The intuition behind the $\min$ operation is as follows:
+- When the action was better than expected, with advantage $A_t > 0$, we want to increase $r_t(\phi)$ to make this action more likely. However, the clipping prevents $r_t(\phi)$ from exceeding $1+\epsilon$, limiting how much we can increase the probability.
+- When the action was worse than expected, with advantage $A_t < 0$, we want to decrease $r_t(\phi)$ to make this action less likely. The clipping prevents $r_t(\phi)$ from falling below $1-\epsilon$, limiting how much we can decrease the probability.
+
+This creates a "trust region" effect similar to TRPO but without the computational complexity of solving a constrained optimization problem, instead we just simply optimize the clipped objective using standard gradient ascent methods:
+
+$$
+\phi \leftarrow \phi + \alpha \nabla_\phi L^{CLIP}(\phi)
+$$
+
+{{< figure 
+    src="/images/ml/rlPPO.png"
+    caption="Visualization of the PPO clipped surrogate objective. The clipping prevents large policy updates that would lead to destructive performance drops."
+    alt="Visualization of the PPO clipped surrogate objective. The clipping prevents large policy updates that would lead to destructive performance drops."
+    width="400"
+>}}
 
 ### Deep Deterministic Policy Gradient (DDPG)
 
-T3, twin delayed DDPG (TD3)? Similar idea to DQN and double DQN to reduce overestimation bias.
+So far all the policy gradient methods are on-policy methods, except for TRPO and PPO which are kind of in-between on-policy and off-policy. Deep Deterministic Policy Gradient (DDPG) is on the other hand a off-policy actor-critic algorithm designed it does this by combining the ideas from Deep Q-Networks (DQN) with deterministic policy gradients for continuous action spaces (hence the deterministic in the name). Unlike stochastic policy gradient methods, DDPG learns a deterministic policy $\mu_\phi(s)$ that directly outputs the action to take in a given state, rather than a probability distribution over actions. 
+
+DDPG combines ideas from DQN (experience replay and target networks) with the deterministic policy gradient theorem. We start with the 2 networks from DQN, a Q-network $q(s,a; \theta)$ parameterized by $\theta$ to estimate the action-value function, and a target Q-network $q(s,a; \theta^{old})$ parameterized by $\theta^{old}$ to provide stable target values. In addition, we introduce a policy network $\mu_\phi(s)$ parameterized by $\phi$ to represent the deterministic policy. In DQN, we used the bootstrapped squared Bellman error to train the Q-network:
+
+$$
+\hat{L}_Q(\theta) = \mathbb{E}_{(s,a,r,s') \sim D} \left[ \left( r + \gamma \max_{a'} q(s', a'; \theta^{old}) - q(s, a; \theta) \right)^2 \right]
+$$
+
+In DDPG, we modify this to use our deterministic policy to select the action in the next state for the target:
+
+$$
+\hat{L}_Q(\theta) = \mathbb{E}_{(s,a,r,s') \sim D} \left[ \left( r + \gamma q(s', \mu_\phi(s'); \theta^{old}) - q(s, a; \theta) \right)^2 \right]
+$$
+
+The goal of the actor is to pick actions that maximize the critic's estimated value. Since the action space is continuous and the Q-function is differentiable with respect to the action $a$, we can use the chain rule to compute the gradient of the expected return with respect to the policy parameters $\phi$:
+
+$$
+\nabla_\phi J(\phi) = \mathbb{E}_{s \sim D} \left[ \nabla_a q(s, a; \theta) |_{a=\mu_\phi(s)} \nabla_\phi \mu_\phi(s) \right]
+$$
+
+This can be expressed as the following **actor loss** (to be minimized):
+
+$$
+L_\mu(\phi) = -\mathbb{E}_{s \sim D} \left[ Q_\theta(s, \mu_\phi(s)) \right]
+$$
+
+{{< callout type="proof" >}}
+Key insight is that since the policy is deterministic, we can directly differentiate through the Q-function with respect to the action chosen by the policy. This allows us to compute how changes in the policy parameters $\phi$ affect the expected return by considering how they change the actions selected by the policy and how those actions affect the Q-values estimated by the critic.
+{{< /callout >}}
+
+However, since the policy is deterministic, we need to ensure sufficient exploration during training. This is typically done by adding noise to the actions selected by the policy during data collection:
+
+$$
+a_t = \mu_\phi(s_t) + \epsilon_t \quad \text{where} \quad \epsilon_t \sim \mathcal{N}(0, \sigma^2)
+$$
+
+This encourages exploration of the action space while still allowing the policy to learn a deterministic mapping from states to actions.
+
+**Twin Delayed DDPG (TD3)** extends DDPG to address overestimation bias (similar to Double DQN) by using two critic networks and taking the minimum Q-value for the target and delaying policy updates. We also just like before add some noise to the target action to smooth out Q-value estimates.
 
 ### Stochastic Value Gradients (SVG)
 
+also off-policy actor-critic extension of DDPG to stochastic policies. Instead of learning a deterministic policy $\mu_\phi(s)$, SVG learns a stochastic policy $\pi_\phi(a | s)$ that outputs a distribution over actions given a state. The key idea is to use the reparameterization trick to express the stochastic policy in terms of a deterministic function and some independent noise:
+
+$$
+a = g_\phi(s, \epsilon) \quad \text{where} \quad \epsilon \sim p(\cdot)
+$$
+
+where $g_\phi(s, \epsilon)$ is a deterministic function parameterized by $\phi$ that takes the state $s$ and some noise $\epsilon$ sampled from some known distribution $p(\cdot)$ to produce an action $a$. For example, if $p$ is a Gaussian, $a = \mu_\phi(s) + \sigma_\phi(s) \cdot \epsilon$ where $\mu_\phi(s)$ and $\sigma_\phi(s)$ are the mean and standard deviation output by the policy network.
+
+Then we can differentiate the expected Q-value with respect to $\phi$:
+
+$$
+\nabla_\phi J(\phi) = \nabla_\phi \mathbb{E}_{\epsilon} [Q(s, g(\epsilon; s, \phi))] = \mathbb{E}_{\epsilon} [\nabla_a Q(s, a)|_{a=g(\epsilon; s, \phi)} \cdot \nabla_\phi g(\epsilon; s, \phi)]
+$$
+
+This allows us to train stochastic policies using the low-variance "pathwise" gradients (chain rule) of DDPG rather than the high-variance score function gradients of REINFORCE, while still being off-policy. If the policy is deterministic, SVG reduces to DDPG.
+
+### Maximum Entropy RL (MERL)
+
+Crucial aspect of reinforcement learning is the exploration-exploitation trade-off. Traditional RL methods often struggle with exploration, especially in high-dimensional or sparse reward environments. An idea from information theory called **Maximum Entropy Reinforcement Learning** addresses this by encouraging policies to be as random as possible while still achieving high returns. This is done by augmenting the standard RL objective with an entropy term that promotes exploration:
+
+$$
+J(\pi) = \sum_{t=0}^{T} \mathbb{E}_{(s_t, a_t) \sim \rho_\pi} \left[ r(s_t, a_t) + \alpha H(\pi(\cdot | s_t)) \right]
+$$
+
+where $\alpha$ is the temperature parameter controlling the trade-off between reward maximization and entropy maximization. Entropy $H(\pi(\cdot | s_t))$ is defined as:
+
+$$
+H(\pi(\cdot | s_t)) = -\mathbb{E}_{a_t \sim \pi(\cdot | s_t)} [\log \pi(a_t | s_t)]
+$$
+
+Entropy can be interpreted as a measure of uncertainty or randomness in the policy's action distribution. Low entropy means the policy is more deterministic ("peaked"), while high entropy means the policy is more stochastic ("spread out"). By maximizing entropy, we encourage the policy to explore more diverse actions, which can help discover better strategies and avoid premature convergence to suboptimal policies. 
+
+{{< figure 
+    src="/images/ml/entropy.jpg"
+    caption="Entropy measures the uncertainty in a probability distribution. Higher entropy indicates a more uniform distribution, while lower entropy indicates a more concentrated distribution."
+    alt="Entropy measures the uncertainty in a probability distribution. Higher entropy indicates a more uniform distribution, while lower entropy indicates a more concentrated distribution."
+    width="400"
+>}}
+
+Popular algorithms that utilize this framework include Soft Actor-Critic (SAC) (discussed next) and an entropy-augmented version of Proximal Policy Optimization (PPO):
+
+$$
+L_{PPO}(\phi) = \mathbb{E}_t \left[ \min \left( r_t(\phi) A_t, \text{clip}(r_t(\phi), 1-\epsilon, 1+\epsilon) A_t \right) + \alpha H(\pi_\phi(\cdot | s_t)) \right]
+$$
+
+Note that the entropy term had a minus sign in the definition, but here it is added to the objective since we are minimizing the loss but aiming to maximize entropy.
+
 ### Soft Actor-Critic (SAC)
 
-soft Q-learning?
+Soft Actor-Critic (SAC) is state of the art off-policy actor-critic algorithm that combines the benefits of maximum entropy reinforcement learning, the stability of actor-critic methods, and the sample efficiency of off-policy learning. 
 
-soft actor-critic (SAC)?
+also MPO which stands for Maximum a Posteriori Policy Optimization.
 
 ## Model-Based
 
