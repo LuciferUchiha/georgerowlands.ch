@@ -1,0 +1,542 @@
+---
+title: Markov Decision Processes
+type: docs
+weight: 1
+---
+
+To turn our intuitive picture of [Reinforcement Learning](/garden/ml/rl/) into a precise mathematical framework, we need a way to describe an agent interacting with an environment over time. For this purpose, we extend the [Markov Chain framework](). If a Markov Chain is a stochastic process over states, a Markov Decision Process (MDP) is a stochastic process over states where the transitions are controlled by actions and motivated by rewards. Many ordinary systems fit naturally into this form: a robot navigating a room, an algorithm playing a game, an elevator responding to button presses, or even a user browsing through a website. We formally define an MDP as a tuple:
+
+$$
+(\mathcal{S}, \mathcal{A}, P, R, p_0, \gamma)
+$$
+
+where:
+- $\mathcal{S}$ is the set of possible states the environment can be in, also called the **state space**. States can be discrete (e.g., positions on a grid) or continuous (e.g., the position and velocity of a robot). We often also split the state space into **terminal states** $\mathcal{S}_T$ (e.g., game over) and **non-terminal states** $\mathcal{S}_{NT}$ (e.g., ongoing game) and define $\mathcal{S} = \mathcal{S}_T \cup \mathcal{S}_{NT}$.
+- $\mathcal{A}(s)$ is the set of actions the agent can take in state $s$, the union over all the states gives the full **action space** $\mathcal{A} = \bigcup_{s \in \mathcal{S}} \mathcal{A}(s)$. Actions can also be discrete (e.g., move left, right, up, down) or continuous (e.g., steering angle, acceleration).
+- $\mathbb{P}(s'|s,a)$ is the **transition probability function**, giving the probability of moving to state $s'$ when action $a$ is taken in state $s$.
+- $r(s,a, s')$ is the **reward function**, specifying the expected reward received after taking action $a$ in state $s$.
+- $p_0(s)$ is the **initial state distribution**, defining the probability of starting in each state at time step $t=0$.
+- $\gamma \in [0,1]$ is the **discount factor**, which determines the importance of future rewards.
+
+{{< figure 
+    src="/images/ml/rlMDP.png"
+    caption="Illustration of an MDP with states, actions, transitions, and rewards."
+    alt="Illustration of an MDP with states, actions, transitions, and rewards."
+>}}
+
+The process of the MDP can then be seen as a stochastic process over **discrete time steps** $t = 0, 1, 2, ...$, where we start at time step $t=0$ by sampling an initial state $s_0$ from the initial state distribution $p_0(s)$. Then, at each time step the environment is in some state $s_t \in \mathcal{S}$. **The agent observes this state and selects an action** $a_t \in \mathcal{A}$. The set of actions available may depend on the current state, i.e., $\mathcal{A}(s_t)$, for example think of a chess game where a piece can not leave the board. After taking action $a_t$, **the environment transitions to a new state** $s_{t+1}$ according to the transition probabilities $P(s_{t+1}|s_t, a_t)$ and **the agent receives a reward**, $r_t = r(s_t, a_t, s_{t+1})$ (the reward function can also just depend on the state and action, i.e., $r(s_t, a_t)$). This process then repeats at the next time step. Notice that just like Markov Chains, MDPs also satisfy the **Markov property**: the future state $s_{t+1}$ depends only on the current state $s_t$ and action $a_t$, not on any previous states or actions:
+
+$$
+\mathbb{P}(s_{t+1}|s_t, a_t, s_{t-1}, a_{t-1}, ..., s_0, a_0) = \mathbb{P}(s_{t+1}|s_t, a_t)
+$$
+
+Importantly, these transitions are proper probabilities, meaning that they are all non-negative and sum to one:
+
+$$
+\sum_{s' \in \mathcal{S}} P(s'|s,a) = 1 \quad \forall s \in \mathcal{S}, a \in \mathcal{A}
+$$
+
+Another important note is that just because a certain action is available in a state, it does not mean that taking that action will always lead to the same next state. The transition function $P(s'|s,a)$ is generally stochastic, meaning that taking the same action in the same state can lead to different next states with certain probabilities. This stochasticity captures the inherent uncertainty allows us to model a wide range of real-world scenarios where outcomes are not deterministic. Think of the game of Blackjack, where the same action (e.g., "hit") can lead to different next states depending on the random draw of the next card.
+
+The choices the agent makes at each time step are determined by its **policy** $\pi(a|s)$, which specifies the probability of taking action $a$ when in state $s$. A policy can be **deterministic**, mapping each state to a specific action, or **stochastic**, assigning probabilities to each possible action in a state:
+
+$$
+\pi(a|s) = \mathbb{P}(a_t = a | s_t = s) \text{ stochastic policy } \quad \text{or} \quad a = \pi(s) \text{ deterministic policy }
+$$
+
+When the agent follows a policy $\pi$ in an MDP, it generates a sequence of states, actions, and rewards over time. These chains of states, actions, and rewards generated by following this process are called **trajectories** or **episodes**. A trajectory starting at time step $t=0$ and ending at time step $T$ can be represented as a tuple:
+
+$$
+\tau = (s_0, a_0, R_1, s_1, a_1, R_2, s_2, a_2, R_3, ..., s_{T-1}, a_{T-1}, R_T, s_T)
+$$
+
+The goal of the agent is to maximize the total amount of reward it receives. To understand this better, we need to define how rewards are structured over time. Just like the transitions, the reward can be stochastic, meaning that the same state-action-next state transition can yield different rewards at different times. For example, in a stock trading environment, taking the action "buy" in a certain market state may lead to different profits or losses depending on market fluctuations. We denote the **random variable for the reward** received at time step $t+1$ after taking action $a_t$ in state $s_t$ and transitioning to state $s_{t+1}$ as:
+
+$$
+R_{t+1} \sim r(s_t, a_t, s_{t+1})
+$$
+
+a **realization** of this random variable is denoted as a lowercase letter $r \in \mathbb{R}$, i.e., the actual scalar reward received at that time step. The actual **expected reward function** $r(s, a, s')$ gives the expected value of this random variable. Or in other words, the average reward we would expect to receive if we were to take action $a$ in state $s$ and transition to state $s'$ multiple times:
+
+$$
+r(s, a, s') = \mathbb{E}[R_{t+1} | s_t = s, a_t = a, s_{t+1} = s']
+$$
+
+We also often want to know the expected reward for taking action $a$ in state $s$ regardless of the next state. We can compute this by marginalizing over all possible next states which results in the **expected immediate reward function**:
+
+$$
+r(s, a) = \mathbb{E}[R_{t+1} | s_t = s, a_t = a] = \sum_{s' \in \mathcal{S}}\mathbb{P}(s'|s,a) \cdot r(s, a, s')
+$$
+
+However, what does this mean in practice? Depending on the task, the task may be **episodic**, meaning that it naturally breaks down into separate episodes with a clear starting and ending point (e.g., a game of chess). We can also force a task to be episodic by defining a maximum time horizon or by introducing terminal states. Alternatively, the task may be **continuing**, where the agent interacts with the environment indefinitely without a natural endpoint (e.g., controlling a thermostat). In either case, we define the **return** $G_0$ as a random variable corresponding to the total accumulated reward from time step $t = 0$ onward. In episodic tasks, this is simply the sum of rewards until the end of the episode:
+
+$$
+G_0 = \sum_{t=0}^{T-1} R_{t+1} \quad \text{(episodic tasks)}
+\qquad \text{or} \qquad
+G_0 = \sum_{t=0}^{\infty} R_{t+1} \quad \text{(continuing tasks)}.
+$$
+
+However, in continuing tasks, summing all future rewards may lead to an infinite return if the rewards do not diminish over time. To address this, we introduce a **discount factor** (\gamma \in [0,1)) that reduces the importance of future rewards exponentially over time and therefore focuses the agent more on immediate rewards. The discounted return is defined as:
+
+$$
+G_0 = \sum_{t=0}^{\infty} \gamma^{t} R_{t+1}
+= R_{1} + \gamma R_{2} + \gamma^2 R_3 + \cdots
+\quad \text{(discounted return for continuing tasks)}.
+$$
+
+The discount factor (\gamma) controls the trade-off between immediate and future rewards. A value of (\gamma = 0) makes the agent only care about immediate rewards, while a value close to (1) encourages the agent to consider long-term consequences of its actions. In episodic tasks, we can also apply discounting to prioritize earlier rewards within the episode:
+
+$$
+G_0 = \sum_{t=0}^{T-1} \gamma^t R_{t+1}
+= R_1 + \gamma R_2 + \gamma^2 R_3 + \cdots
+\quad \text{(discounted return for episodic tasks)}.
+$$
+
+To correctly assign credit to the actions that caused later rewards, we define the **return from time step (t)**, which only includes rewards received after taking action (a_t). This is known as the **reward-to-go**:
+
+$$
+\begin{align*}
+G_0 &= R_{1} + \gamma R_2 + \gamma^2 R_3 + \cdots, \
+G_1 &= R_{2} + \gamma R_3 + \gamma^2 R_4 + \cdots, \
+G_2 &= R_{3} + \gamma R_4 + \gamma^2 R_5 + \cdots.
+\end{align*}
+$$
+
+More generally, the reward-to-go from time step (t) is:
+
+$$
+G_t = \sum_{k=0}^{T-t-1} \gamma^{k} R_{t+1+k}
+= R_{t+1} + \gamma R_{t+2} + \gamma^{2} R_{t+3} + \cdots.
+$$
+
+We can also express the reward-to-go recursively:
+
+$$
+G_t = R_{t+1} + \gamma G_{t+1}.
+$$
+
+This simple recursive structure is extremely important for reinforcement learning, as it underlies the Bellman equations and forms the basis for most algorithms. The choice of discount factor (\gamma) can significantly impact the agent's behavior and is often treated as a hyperparameter to be tuned based on the specific task and desired trade-off between immediate and future rewards. The same goes for the reward function itself, which needs to be designed carefully to encourage the desired behavior from the agent. This process of designing the reward function is known as **reward shaping** and can be quite challenging, as poorly designed rewards can lead to unintended behaviors. For example, if we don't give the agent a penalty for not doing anything, it might learn to just stay still to avoid negative rewards, in a way becoming "scared" to act and explore the environment.
+
+{{< callout type="example" >}}
+A typical example of an MDP is a grid world where an agent can move in four directions (up, down, left, right) on a grid. For simplicity, we assume that the agent can move in any direction unless it hits a wall. The states $\mathcal{S}$ are the grid cells, the actions $\mathcal{A}$ are the four possible movements, and the transition probabilities $P(s'|s,a)$ are deterministic (i.e., moving in a direction always leads to the adjacent cell unless blocked). 
+
+However, there is an exception. We mark 2 special cells $A$ and $B$. If the agent moves into cell $A$, it is teleported to cell $A'$ and receives a reward of $+10$. Similarly, moving into cell $B$ teleports the agent to cell $B'$ with a reward of $+5$. All other movements yield a reward of -1 to encourage the agent to explore. If this were not the case, the agent might learn to just stay still to avoid negative rewards. The initial state distribution $p_0(s)$ is uniform over states.
+
+{{< figure 
+    src="/images/ml/rlGridWorld.webp"
+    caption="A simple grid world MDP with teleportation states A and B."
+    alt="A simple grid world MDP with teleportation states A and B."
+>}}
+{{< /callout >}}
+
+## Partial Observability
+
+In the definition of MDPs above, we assumed that the agent has full knowledge of the current state $s_t$ at each time step. However, in many real-world scenarios, the agent may not have access to the complete state information. Instead, it receives **observations** that provide partial information about the underlying state. This leads us to the concept of **Partially Observable Markov Decision Processes (POMDPs)**. For example in the Grid World example above, the agent could see the entire grid and know exactly where it is. But what if the agent could only see a 3x3 window around its current position? Or another common example is the game of Poker or Blackjack, where the agent does not know the opponent's cards or the deck composition. In such cases, the agent must make decisions based on incomplete information.
+
+In a POMDP, we extend the MDP framework by introducing an **observation space** $\mathcal{O}$ and an **observation function** $O(o|s)$, which defines the probability of receiving observation $o_t$ when the environment is in state $s_t$. The agent's policy then depends on the history of observations and actions rather than the full state. 
+
+$$
+o_t \sim O(o|s_t)
+$$
+
+{{< figure 
+    src="/images/ml/rlPOMDP.png"
+    caption="Illustration of an POMDP with observations, states, actions, transitions, and rewards."
+    alt="Illustration of an POMDP with observations, states, actions, transitions, and rewards."
+>}}
+
+The biggest challenge in POMDPs is that the observations may no longer satisfy the Markov property, as the current observation may not contain all the necessary information to predict future states. To address this, agents often maintain a **belief state**, which is a probability distribution over possible states given the history of observations and actions. The agent can then use this belief state to make decisions, effectively transforming the POMDP into a fully observable MDP over belief states. However, solving POMDPs is generally more complex than solving MDPs due to the added uncertainty and the need to reason about hidden states.
+
+## Value Functions
+
+To make good decisions in an MDP, the agent needs a way to evaluate how good different states and actions are in terms of expected future rewards. This is where **value functions** come into play. Value functions provide a way to quantify the long-term desirability of states and actions under a given policy. They essentially answer the question: "If I am in this state (or take this action), how much reward can I expect to accumulate in the future?"
+
+We now no longer just care about immediate rewards or rewards of particular trajectories, but about the **expected return** when following a certain policy. For example eating a cookie now might give you a small immediate reward, but if it leads to health problems later, the long-term expected return might be negative. Conversely, exercising now might be effortful (negative immediate reward), but it could lead to better health and more rewards in the future. 
+
+### State-Value Function
+
+First we define the so-called **state-value function** or also just **value function**, which tells us how good it is to be in a certain state when following a particular policy $\pi$, or more specifically, the expected return starting from that state and following the policy thereafter:
+
+$$
+v_\pi(s) = \mathbb{E}_\pi [ G_t \mid S_t = s ] = \mathbb{E}_\pi \left[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \mid S_t = s \right].
+$$
+
+The value function only depends on the policy $\pi$ and the state $s$, not on the specific time step $t$, because of the Markov property and by taking the expectation over all possible future trajectories we take out the randomness. The precise expectation with the sums written out only depends on the discount factor $\gamma$:
+
+$$
+v_\pi(s) = \mathbb{E}_\pi [ G_t \mid S_t = s ] = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \, v_\pi(s') \right]
+$$
+
+Or we could write it in terms of the expected immediate reward function (same counts for all other equations below that use the sum over the realizations of the reward):
+
+$$
+v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \left[ r(s,a) + \gamma \sum_{s' \in \mathcal{S}} \mathbb{P}(s'|s,a) v_\pi(s') \right].
+$$
+
+Intuitively, $v_\pi(s)$ tells us the long-term expected return if we start in state $s$ and then follow policy $\pi$. If $v_\pi(s)$ is high, it means that being in state $s$ is desirable under policy $\pi$, as it leads to high expected future rewards. Conversely, if $v_\pi(s)$ is low or negative, it indicates that being in state $s$ is not beneficial when following policy $\pi$. Importantly, the value function depends on the policy $\pi$, for example if one policy is a Grandmaster at chess and another is a beginner, the value of being in a certain board position will differ significantly between the two policies because you would expect the Grandmaster to be able to convert that position into a win much more often than the beginner which might blunder away the advantage.
+
+### Action-Value Function
+
+However, the state-value function only tells us how good it is to be in a certain state, it doesn't directly tell us what to do in that state. This leads us to the **action-value function** also called **Q-Function** which tells us the expected return of if we start in state $s$, take action $a$ (which might be subpotimal or not according to the policy), and then follow policy $\pi$ thereafter:
+
+$$
+q_\pi(s,a) = \mathbb{E}_\pi [ G_t \mid S_t = s, A_t = a ] = \mathbb{E}_\pi \left[ \sum_{k=0}^{\infty} \gamma^k R_{t+1+k} \mid S_t = s, A_t = a \right].
+$$
+
+The distinction is simple but powerful:
+- $v_\pi(s)$ tells us the expected return of being in state $s$ and behaving "normally", i.e. following policy $\pi$.
+- $q_\pi(s,a)$ tells us the expected return of being in state $s$, taking action $a$ (which might be good or bad), and then behaving "normally" again.
+
+These two functions are crucial. As remember that the agent can't see into the future. The reward signal is delayed and noisy, a decision now might have consequences far later. Value functions compress the entire uncertain future into a **single numeric prediction** and therefore allow us to evaluate how good different states and actions are in terms of expected future rewards, which in turn enables us to make informed decisions about which actions to take in order to maximize the long-term reward. In this sense, value functions provide the agent with a **map of the future**, telling it which states and which decisions are promising.
+
+In fact, the two functions are also closely related. We can easily notice above that the state-value function can be expressed in terms of the action-value function as:
+
+$$
+v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \, q_\pi(s,a).
+$$
+
+Intuitively, this is rather straightforward: the value of being in state $s$ is simply the expected value of taking each possible action $a$ in that state, weighted by how likely the policy $\pi$ is to choose that action. 
+
+This relationship is extremely important, as in practice it is often easier to estimate action-values directly, and then derive state-values from them. 
+
+An important note is that if the policy $\pi$ is deterministic, meaning it always chooses the same action $a = \pi(s)$ in state $s$. Because of this marginalizing over the actions disappears and we simply have:
+
+$$
+v_\pi(s) = q_\pi(s, \pi(s)).
+$$
+
+Similarly, we can also express the action-value function in terms of the state-value function as:
+
+$$
+q_\pi(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \, v_\pi(s') \right] = r(s,a) + \gamma \sum_{s' \in \mathcal{S}} \mathbb{P}(s'|s,a) v_\pi(s').
+$$
+
+Here, we also clearly see that the action-value function decomposes into the immediate expected reward for taking action $a$ in state $s$, plus the discounted expected value of the next state $s'$ we transition to after taking that action.
+
+{{< callout type="proof" >}}
+To see why the action-value function can be expressed in terms of the state-value function, we start from the definition of the action-value function and then rollout the expectation and the linearity of expectation:
+
+$$
+\begin{align*}
+q_\pi(s,a) &= \mathbb{E}_\pi [ G_t \mid S_t = s, A_t = a ] \\
+&= \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a ] \\
+&= \mathbb{E}_\pi [ R_{t+1} \mid S_t = s, A_t = a ] + \gamma \, \mathbb{E}_\pi [ G_{t+1} \mid S_t = s, A_t = a ] \\
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \cdot \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a, S_{t+1} = s' ] \\
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \, \mathbb{E}_\pi [ G_{t+1} \mid S_{t+1} = s' ] \right] \\
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \, v_\pi(s') \right].
+\end{align*}
+$$
+
+{{< /callout >}}
+
+{{< callout type="example" >}}
+If we go back to our grid world example, we can see how the value functions help us evaluate states and actions. 
+
+If the agent starts in some state $s$, then:
+- $v_\pi(s)$ will be large if the policy tends to reach high-reward teleportation states like $A$ or $B$ quickly.
+- If $v_\pi(s)$ is small or negative, it indicates that the policy often leads to long paths with many $-1$ penalties before reaching a teleportation state.
+
+If we look at action-values, $q_\pi(s,a)$ distinguishes between the possible actions in state $s$. For example, if “move down” leads directly into the teleportation cell $A$, then:
+
+- $q_\pi(s,\text{down})$ will be large.
+- while $q_\pi(s,\text{left})$ will be smaller because it leads to a longer sequence of penalties.
+
+{{< figure 
+    src="/images/ml/rlGridWorldValue.webp"
+    caption="The state-value function of a policy in the grid world example."
+    alt="The state-value function of a policy in the grid world example."
+>}}
+
+From this value function, it is easy to see which states are desirable (those near teleportation states) and which actions are preferable in each state (those leading towards teleportation states). This information can then be used to also induce a policy which always chooses the best action which leads it to a higher value state.
+{{< /callout >}}
+
+## Bellman Expectation Equations
+
+The definition of the value functions above is useful for understanding what they represent, but it does not provide a practical way to compute them as they define value as an expectation over all possible future trajectories, which can be infinite in length. This would mean we would theoretically have to simulate the agent in all states and actions for an infinite amount of time to compute the value functions exactly, which would be intractable in all but the simplest cases.
+
+Instead, we can exploit the recursive structure of the return $G_t$ to derive a set of equations known as the **Bellman expectation equations**. These equations express the value functions in terms of themselves, allowing us to compute them iteratively. Specifically, we define the **Bellman expectation equation for the state-value function** as follows:
+
+$$
+v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
+$$
+
+It states that the value of a state under policy $\pi$ is equal to the expected immediate reward plus the expected discounted value of the next state, averaged over all possible actions and next states according to the policy and transition probabilities.
+
+We can also express this more compactly by combining the sums back into a single expectation over the next reward and state:
+
+$$
+\begin{align*}
+v_\pi(s) &= \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right] \\
+&= \mathbb{E}_{a_t \sim \pi(\cdot|s), s_{t+1}, R_{t+1} \sim \mathbb{P}(\cdot|s,a_t)} [ R_{t+1} + \gamma v_\pi(S_{t+1}) \mid S_t = s ] \\
+&= \mathbb{E}_\pi [ R_{t+1} + \gamma v_\pi(S_{t+1}) \mid S_t = s ].
+\end{align*}
+$$
+
+using the definition of the state-value function in terms of the action-value function $v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \, q_\pi(s,a)$, we can also write the Bellman equation as:
+
+$$
+\begin{align*}
+v_\pi(s) &= \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right] \\
+&= \sum_{a \in \mathcal{A}} \pi(a \mid s) \, q_\pi(s,a).
+\end{align*}
+$$
+
+{{< callout type="proof" >}}
+Remember that the return can be expressed recursively as:
+
+$$
+G_t = R_{t+1} + \gamma G_{t+1}.
+$$
+
+This can also be observed as follows:
+
+$$
+\begin{align*}
+v_\pi(s) &= \mathbb{E}_\pi [ G_t \mid S_t = s ] \\
+&= \mathbb{E}_\pi [ R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots \mid S_t = s ] \\
+&= \mathbb{E}_\pi [ R_{t+1} + \gamma (R_{t+2} + \gamma R_{t+3} + \cdots) \mid S_t = s ] \\
+&= \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s ].
+\end{align*}
+$$
+
+So by linearity of expectation we could separate the immediate reward and the future return:
+
+$$
+v_\pi(s) = \mathbb{E}_\pi [ R_{t+1} \mid S_t = s ] + \gamma \, \mathbb{E}_\pi [ G_{t+1} \mid S_t = s ].
+$$
+
+We can further expand these expectations by "unrolling" the randomness in the environment's dynamics and the agent's policy. First, we use the policy to condition on the action taken at time step $t$:
+
+$$
+\begin{align*}
+v_\pi(s) &= \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s ] \\
+&= \sum_{a \in \mathcal{A}} \pi(a \mid s) \, \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a ].
+\end{align*}
+$$
+
+Now we are given the action $a$ taken in state $s$, so we can use these and to get the next state $s'$ and reward $r$ according to the environment's transition probabilities, $\mathbb{P}(S_{t+1} = s', R_{t+1} = r \mid S_t = s, A_t = a)$ and apply the law of total expectation:
+
+$$
+\begin{align*}
+\mathbb{E} [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a ]
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \, \mathbb{E} [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a, S_{t+1} = s', R_{t+1} = r ] \\
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \, \mathbb{E} [ G_{t+1} \mid S_{t+1} = s' ] \right] 
+\end{align*}
+$$
+
+Notice that above we used the markov property to drop the conditioning on $S_t$ and $A_t$ in the second term. Finally, we can recognize that the expectation of the return from time step $t+1$ given that we are in state $s'$ is just the value function at state $s'$:
+
+$$
+\mathbb{E} [ G_{t+1} \mid S_{t+1} = s' ] = v_\pi(s').
+$$
+
+Putting everything together, we arrive at the **Bellman expectation equation for the state-value function**:
+
+$$
+v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
+$$
+{{< /callout >}}
+
+Importantly we get such a Bellman expectation equation for each state $s \in \mathcal{S}$, resulting in a system of $|\mathcal{S}|$ linear equations with $|\mathcal{S}|$ unknowns (the values $v_\pi(s)$). This system can be solved using standard linear algebra techniques, such as matrix inversion or iterative methods like value iteration. Specifically, if we collect the values $v_\pi(s)$ into a vector $\mathbf{v}_\pi$:
+
+$$
+\mathbf{v}_\pi = \begin{bmatrix}
+v_\pi(s_1) \\
+v_\pi(s_2) \\
+\vdots \\
+v_\pi(s_{|\mathcal{S}|})
+\end{bmatrix},
+$$
+
+and define the state transition matrix $\mathbf{P}_\pi$ as an $|\mathcal{S}| \times |\mathcal{S}|$ matrix where each entry $(i,j)$ represents the probability of transitioning from state $s_i$ to state $s_j$ under policy $\pi$:
+
+$$
+\mathbf{P}_\pi(i,j) = \sum_{a \in \mathcal{A}} \pi(a \mid s_i) \mathbb{P}(s_j \mid s_i, a) \quad \text{where} \quad \mathbb{P}(s_j \mid s_i, a) = \sum_{r \in \mathbb{R}} \mathbb{P}(s_j, r \mid s_i, a)
+$$
+
+and the reward vector $\mathbf{r}_\pi$ as:
+
+$$
+\mathbf{r}_\pi = \begin{bmatrix}
+r_\pi(s_1) \\
+r_\pi(s_2) \\
+\vdots \\
+r_\pi(s_{|\mathcal{S}|})
+\end{bmatrix} \quad \text{where} \quad r_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \cdot r
+$$
+
+we can rewrite the Bellman equation in matrix form as:
+
+$$
+\mathbf{v}_\pi = \mathbf{r}_\pi + \gamma \mathbf{P}_\pi \mathbf{v}_\pi.
+$$
+
+From the MDP we know all the components on the right-hand side except for $\mathbf{v}_\pi$, so we can rearrange this system so that we can solve for $\mathbf{v}_\pi$:
+
+$$
+\begin{align*}
+\mathbf{Ax} &= \mathbf{b} \\
+(\mathbf{I} - \gamma \mathbf{P}_\pi) \mathbf{v}_\pi &= \mathbf{r}_\pi  \\
+\mathbf{v}_\pi &= (\mathbf{I} - \gamma \mathbf{P}_\pi)^{-1} \mathbf{r}_\pi.
+\end{align*}
+$$
+
+For small problems, we can directly compute the inverse of matrix $\mathbf{A}$ to find the value function but for larger problems, iterative methods like value iteration or policy evaluation are more practical. The inverse $(\mathbf{I} - \gamma \mathbf{P}_\pi)^{-1}$ exists as long as $\gamma < 1$ and the MDP is well-defined (i.e., the transition probabilities are valid summing to one). Don't ask me why though, I am not a mathematician (something with the Bellman operator being a contraction mapping and therefore having a unique fixed point, meaning the linear system has a unique solution and therefore the matrix is invertible).
+
+If we now go back to the action-value function, we can also define a **Bellman expectation equation for the action-value function**:
+
+$$
+q_\pi(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \sum_{a' \in \mathcal{A}} \pi(a' \mid s') \, q_\pi(s',a') \right].
+$$
+
+which we can also express as an expectation:
+
+$$
+q_\pi(s,a) = \mathbb{E}_\pi [ R_{t+1} + \gamma v_\pi(S_{t+1}) \mid S_t = s, A_t = a ].
+$$
+
+or again if we use the definition of the state-value function $v_\pi(s) = \sum_{a' \in \mathcal{A}} \pi(a' \mid s) \, q_\pi(s,a')$, we can also write the Bellman expectation equation as:
+
+$$
+\begin{align*}
+q_\pi(s,a) &= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \sum_{a' \in \mathcal{A}} \pi(a' \mid s') \, q_\pi(s',a') \right] \\
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
+\end{align*}
+$$
+
+{{< callout type="proof" >}}
+We can derive the equation for the action-value function $q_\pi(s,a)$ in a similar manner as we did for the state-value function. Starting from the definition of the action-value function, we have:
+
+$$
+\begin{align*}
+q_\pi(s,a) &= \mathbb{E}_\pi [ G_t \mid S_t = s, A_t = a ] \\
+&= \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a ].
+\end{align*}
+$$
+
+and then again we can expand the expectation by conditioning on the next state $s'$ and reward $r$:
+
+$$
+\begin{align*}
+q_\pi(s,a) &= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \, \mathbb{E}_\pi [ R_{t+1} + \gamma G_{t+1} \mid S_t = s, A_t = a, S_{t+1} = s', R_{t+1} = r ] \\
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \, \mathbb{E}_\pi [ G_{t+1} \mid S_{t+1} = s' ] \right].
+\end{align*}
+$$
+
+Just like before, we recognize that the expectation of the return from time step $t+1$ given that we are in state $s'$ is just the value function at state $s'$:
+
+$$
+q_\pi(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
+$$
+
+We can now again use the relationship between state-values and action-values to express this entirely in terms of action-values:
+
+$$
+\begin{align*}
+q_\pi(s,a) &= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right] \\
+&= \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \sum_{a' \in \mathcal{A}} \pi(a' \mid s') \, q_\pi(s',a') \right].
+\end{align*}
+$$
+
+Giving us the final form of the **Bellman expectation equation for the action-value function**.
+{{< /callout >}}
+
+So in summary, the Bellman equations provide a recursive way to compute the value functions by expressing them in terms of themselves. This allows us to use iterative methods to compute the value functions efficiently, which is crucial for solving MDPs and finding optimal policies. We have also shown that the state-value and action-value functions are closely related, with the state-value function being the expectation of the action-value function under the policy and that we can also compute the value functions using linear algebra techniques for small problems.
+
+- **Bellman expectation state-value equation**:
+
+$$
+v_\pi(s) = \sum_{a \in \mathcal{A}} \pi(a \mid s) \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_\pi(s') \right].
+$$
+
+- **Bellman expectation action-value equation**:
+
+$$
+q_\pi(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \sum_{a' \in \mathcal{A}} \pi(a' \mid s') \, q_\pi(s',a') \right].
+$$
+
+## Bellman Optimality Equations
+
+The Bellman expectation equations allow us to compute the value functions iteratively and therefore evaluate how good a specific policy $\pi$ is. However, our ultimate goal is not just to evaluate a fixed policy, but to find the **optimal policy** $\pi^*$ that maximizes the expected return from every state. So in other words, we want to find the **optimal state-value function** $v_*(s)$ which corresponds to the maximum value achievable from state $s$ under any policy:
+
+$$
+v_*(s) = \max_\pi v_\pi(s)
+$$
+
+Similarly, we define the **optimal action-value function** $q_*(s,a)$ as the maximum expected return achievable from state $s$ by taking action $a$ and then following the optimal policy thereafter:
+
+$$
+q_*(s,a) = \max_\pi q_\pi(s,a)
+$$
+
+These value functions correspond to the best possible behaviour achievable in the MDP and induced by at least one optimal policy $\pi^*$ and therefore an optimal policy can be derived from them. Intuitively, an optimal policy shouldn't just average over actions like a random policy but instead should select the best action. This intuition is formalized by the **Bellman Optimality Equations**.
+
+To derive the Bellman optimality equation for the state-value function, we consider the value of a state $s$ under the optimal policy. The value of state $s$ is the expected return of taking the best possible action $a$ in state $s$, and then following the optimal policy thereafter. Therefore, instead of summing over actions weighted by the policy probabilities, we take the maximum over all possible actions:
+
+$$
+v_*(s) = \max_a \mathbb{E} [ R_{t+1} + \gamma v_*(S_{t+1}) \mid S_t = s, A_t = a ].
+$$
+
+if we expand the expectation as before, we get the **Bellman optimality equation for the state-value function**:
+
+$$
+v_*(s) = \max_a \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_*(s') \right].
+$$
+
+We now notice that we can also express this in terms of the optimal action-value function by using the defintion of the action-value function in terms of the state-value function:
+
+$$
+q_*(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma v_*(s') \right].
+$$
+
+Substituting this into the Bellman optimality equation for the state-value function gives us:
+
+$$
+v_*(s) = \max_a q_*(s,a).
+$$
+
+Similarly, we can derive the Bellman optimality equation for the action-value function. The value of taking action $a$ in state $s$ under the optimal policy is the expected return of taking action $a$, and then following the optimal policy thereafter. Therefore, we again take the maximum over all possible actions in the next state:
+
+$$
+q_*(s,a) = \mathbb{E} [ R_{t+1} + \gamma \max_{a'} q_*(S_{t+1}, a') \mid S_t = s, A_t = a ].
+$$
+
+Expanding the expectation gives us the **Bellman optimality equation for the action-value function**:
+
+$$
+q_*(s,a) = \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P}(s', r \mid s, a) \left[ r + \gamma \max_{a'} q_*(s',a') \right].
+$$
+
+which also matches if we had above replaced $v_*(s')$ with $\max_{a'} q_*(s',a')$ directly. So we can see that if we have one of the optimal value functions, we can easily derive the other using these relationships. Specifically if we have the optimal action-value function, we can easily derive the optimal policy by simply acting greedily with respect to it (i.e., choosing the action with the highest action-value in each state). This is also known as the **greedy policy** with respect to the action-value function:
+
+$$
+\pi^*(s) = \arg\max_a q_*(s,a) = \arg\max_a [r(s,a) + \gamma \sum_{s' \in \mathcal{S}} \mathbb{P}(s' \mid s, a) v_*(s')].
+$$
+
+This link between the policy being optimal and it being greedy with respect to the optimal action-value function is extremely important, as it allows us to derive optimal policies directly from the value functions.
+
+Importantly we now get non-linear equations because of the max operator, so we can no longer solve this using linear algebra techniques. However, instead we notice that these equations satisfy the conditions for **dynamic programming** methods, which allow us to compute the optimal value functions recursively/iteratively. The idea of dynamic programming is to break down a complex problem into simpler subproblems and solve them recursively where importantly solutions to subproblems are stored and reused to avoid redundant computations and the solution for a subproblem is used to solve larger problems. This matches Bellman's **principle of optimality**, which states that "an optimal policy has the property that whatever the initial state and initial decision are, the remaining decisions must constitute an optimal policy with regard to the state resulting from the first decision." in computer science this is known as **optimal substructure**. 
+
+{{< callout type="example" >}}
+In our grid world example, the optimal state-value function $v_*(s)$ will assign high values to states that are close to the teleportation cells $A$ and $B$, as these lead to high rewards quickly. 
+
+So if we are given the optimal value function, we can easily derive the optimal policy $\pi^*$ using the greedy approach, which simply chooses the action that leads to the highest expected value in the next state:
+
+$$
+\pi^*(s) = \arg\max_a \sum_{s' \in \mathcal{S}, r \in \mathbb{R}} \mathbb{P(s', r \mid s, a) \left[ r + \gamma v_*(s') \right]}.
+$$
+
+In our grid world example, if we take an action the resulting state is deterministic, so the optimal policy simply chooses the action that leads to the neighboring state with the highest value:
+
+$$
+\pi^*(s) = \arg\max_a v_*(s').
+$$
+
+For example, if the agent is in the state just above teleportation cell $A$, the optimal action would be to move down into cell $A$ to receive the high reward and teleport to $A'$. If there is a tie between multiple actions leading to equally good states, or all neighboring states have low values, the optimal policy can choose any of those actions arbitrarily as it can't stay in place.
+
+{{< figure 
+    src="/images/ml/rlGridWorldOptimal.png"
+    caption="The optimal state-value function in the grid world example and the corresponding greedy policy."
+    alt="The optimal state-value function in the grid world example and the corresponding greedy policy."
+>}}
+{{< /callout >}}

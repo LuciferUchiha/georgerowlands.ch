@@ -1,5 +1,5 @@
 ---
-title: Reinforcement Learning
+title: Reinforcement Learning Full
 type: docs
 weight: 24
 ---
