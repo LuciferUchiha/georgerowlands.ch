@@ -681,6 +681,10 @@ $$
 
 Note that the entropy term had a minus sign in the definition, but here it is added to the objective since we are minimizing the loss but aiming to maximize entropy.
 
+{{< callout type="todo" >}}
+MDPS can also be used for the reverse diffusion process in generative modeling. Here the maximum entropy principle can help ensure we don't collapse to a single mode but rather explore the full data distribution.
+{{< /callout >}}
+
 ### Soft Actor-Critic (SAC)
 
 Soft Actor-Critic (SAC) is state of the art off-policy actor-critic algorithm that combines the benefits of maximum entropy reinforcement learning, the stability of actor-critic methods, and the sample efficiency of off-policy learning. 
@@ -693,15 +697,172 @@ World models
 
 ### Model Predictive Control (MPC)
 
-random shooting methods
+Idea?
 
-for stochastic dynamics we use:
+#### Known Dynamics
 
-trajectory sampling methods like thompson sampling?
+known deterministic dynamics we can use:
 
-### Pilco?
+$$
+s_{t+1} = f(s_t, a_t)
+$$
 
-### Pets?
+then objective becomes:
+
+$$
+\max_{a_{0:\infty}} \sum_{t=0}^{\infty} \gamma^t r(s_t, a_t) \quad \text{subject to} \quad s_{t+1} = f(s_t, a_t)
+$$
+
+meaning and interpretation of the above? 
+
+Cant work with infinite horizon so we use finite horizon $H$ and replan at each time step:
+
+$$
+\max_{a_{0:H-1}} \sum_{t=0}^{H-1} \gamma^t r(s_t, a_t) \quad \text{subject to} \quad s_{t+1} = f(s_t, a_t)
+$$
+
+for deterministic dynamics we can unroll the dynamics and use:
+
+$$
+s_i(a_{t:i-1}) = f(f(...f(s_t, a_t), a_{t+1}), ..., a_{i-1})
+$$
+
+So at each time step we just need to maximize:
+
+$$
+J_H(a_{t:t+H-1}) = \sum_{i=t}^{t+H-1} \gamma^{i-t} r(s_i(a_{t:i-1}), a_i)
+$$
+
+For continous actions, differentiable dynamics and reward functions we can analytically compute the gradient of the objective wrt the actions by backpropagating through time. However, for large horizons and complex dynamics this can be computationally expensive and suffer from vanishing/exploding gradients and local optima. Instead heuristic global optimization methods can be used.
+
+random shooting methods? generate m sets of action sequences of length H $a_{t:t+H-1}^(j)$ from some proposal distribution (e.g. uniform or gaussian around previous best sequence) and then pick the best one:
+
+$$
+a_{t:t+H-1}^* = \arg\max_{j=1,...,m} J_H(a_{t:t+H-1}^{(j)})
+$$
+
+monte carlo tree search using in AlphaZero can be seen as a more sophisticated version of this.
+
+suppose we also learned a value function $v_\theta(s)$ using off-policy RL such as DDPG. Then we can augment the objective with the value function at the end of the horizon:
+
+$$
+J_H(a_{t:t+H-1}) = \sum_{i=t}^{t+H-1} \gamma^{i-t} r(s_i(a_{t:i-1}), a_i) + \gamma^H v_\theta(s_{t+H}(a_{t:t+H-1}))
+$$
+
+intuttion and the idea? 
+
+If H=1 then we just get back our greedy policy with respect to the value function.
+
+#### Stochastic Dynamics
+
+IF we have stochastic dynamics we can use the expectation over the dynamics:
+
+$$
+\max_{a_{t:t+H-1}} \mathbb{E}_{s_{t+1:t+H}} \left[ \sum_{i=t}^{t+H-1} \gamma^{i-t} r(s_i, a_i) + \gamma^H v_\theta(s_{t+H}) | a_{t:t+H-1} \right]
+$$
+
+to optimize this we run into the usual problem of high dimensional integrals. We can use monte carlo trajectory sampling to estimate the expectation. What does this look like?
+
+#### Reparameterizable Policies and Dynamics
+
+If the policy is reparameterizable so $a_t = \pi_\phi(s_t, \epsilon_t)$ with $\epsilon_t \sim p(\cdot)$ then we can backpropagate through the sampled trajectories to compute gradients wrt the policy parameters $\phi$.
+
+links to DDPG? Specificially for H=0 we just get back the DDPG objective.
+
+$$
+J(\phi) = \mathbb{E}_{?} \left[ \sum_{t=0}^{H-1} \gamma^t r(s_t, \pi_\phi(s_t)) + \gamma^H q_\theta(s_H, \pi_\phi(s_H)) | \phi \right]
+$$
+
+If the transition model is reparameterizable we can also backpropagate through the dynamics model to compute gradients wrt the actions directly? We can obtain unbiased estimates of J_H:
+
+$$
+\hat{J}_H(a_{t:t+H-1}) = \frac{1}{N} \sum_{i=1}^{N} \left[ \sum_{j=t}^{t+H-1} \gamma^{j-t} r(s_j(a_{t:j-1}, \epsilon_{t:j-1}^{(i)}), a_j) + \gamma^H v_\theta(s_{t+H}(a_{t:t+H-1}, \epsilon_{t:t+H-1}^{(i)})) \right]
+$$
+
+where $\epsilon_{t:j-1}^{(i)}$ are sampled noise variables for the dynamics model. Again we can use analytical gradients or shooting methods to optimize this objective.
+
+#### Unknown Dynamics
+
+So far, have assumed a known (deterministic or stochastic) transition model f and known reward r.
+
+natural approach is to start with an initial policy and collect data by rolling out the policy in the real environment to obtain a dataset D of transitions (s,a,s',r). Then we can learn a dynamics model $\hat{f}$ and reward model $\hat{r}$ from this data and plan a new policy. 
+
+How do we learn the dynamics model and trade exploration vs exploitation?
+
+key insight is conditionally indepedent observed transitions and rewards given the current state and action. So we can learn the dynamics and reward models off-policy using supervised learning from a replay buffer of collected transitions.
+
+essentially a regression (density estimation) problem. Focus on learning transition dynamics, reward model is similar.
+
+as running example conditional gaussian dynamics model:
+
+$$
+s_{t+1} \sim \mathcal{N}(\mu_\theta(s_t, a_t), \Sigma_\theta(s_t, a_t))
+$$
+
+we can represent $\Sigma_\theta(s_t, a_t)$ as a lower-triangular matrix using the Cholesky decomposition to ensure positive definiteness So we only need $\frac{d(d+1)}{2}$ parameters for a d-dimensional state space. and it allows for reparameterization and efficient sampling.
+
+An initial approach is to use MAP estimation which needs a likelihood and prior as a regularizer. So we set up a bayesian neural network with gaussian prior to learn the mean and covariance of the dynamics model. We can optimize the following loss using SGD:
+
+$$
+\hat{\theta} = \arg\min_\theta -\log p(\theta) + \sum_{t=0}^{T} log \mathcal{N}(s_{t+1} | \mu_\theta(s_t, a_t), \Sigma_\theta(s_t, a_t))
+$$
+
+problem with MAP is that it only gives a point estimate of the parameters and does not capture model uncertainty which is crucial for exploration. In particular when planning over long horizons, small errors in the dynamics model can compound and also be exploited by the planning algorithm to find unrealistic trajectories with high predicted reward. To address this, we can use Bayesian neural networks or ensembles of neural networks to capture model uncertainty. But didnt we do this above? I think we skipped ahead above? So we model the transition using gaussian process or bayesian neural network to capture uncertainty in the dynamics. This uncertainty can then be used during planning to avoid overconfident predictions and encourage exploration of uncertain regions of the state-action space.
+
+epistemtic uncertainity in $p(f | D)$ vs aleatoric uncertainty in $p(s' | s,a,f)$ 
+
+approximative inference?
+
+represent our approximate posterior distribution over dynamics models:
+
+$$
+\mathbb{P}(s_{t+1} | s_t, a_t, D) \approx \frac{1}{M} \sum_{i=1}^{M} \mathcal{N}(s_{t+1} | \mu_{\theta_i}(s_t, a_t), \Sigma_{\theta_i}(s_t, a_t))
+$$
+
+where $\theta_i$ are samples from the approximate posterior over model parameters. the epistemic uncertainty is captured by the variance across the ensemble predictions, so the index i of the mixture components. The aleatoric uncertainty is captured by the covariance matrices $\Sigma_{\theta_i}$ of each gaussian component.
+
+Greedy explotation for model-based RL: Plan a new policy to (approximately) maximize expected return under the learned dynamics model. roll out the current policy in the real environment to collect more data and update the dynamics model via the posterior. repeat.
+
+### Pets
+
+Uses an ensemble of neural networks each predicting 
+conditional Gaussian transition distributions
+§ Trajectory sampling is used to evaluate performance
+§ MPC used for planning
+
+### Sim-to-Real Gap
+
+brief idea and how it can be addressed with bayesian inference over dynamics models.paper from 2024 Learning with simulation prior.
+
+can exploit prior directly and therefore converge faster.
+
+However still need enough exploration: Thomposon Sampling
+
+Another way is to use optimistic exploration strategies such as optimism in the face of uncertainty (OFU). The idea is to augment the reward function with an exploration bonus that encourages the agent to visit uncertain states. Idea is to keep a set of "plausible" dynamics models that explain the observed data. Then at each time step, we plan a policy that maximizes the expected return under the most optimistic model in this set. This encourages exploration of uncertain regions of the state-action space, as the agent is incentivized to visit states where the dynamics are less certain.
+
+In general joint maximization over pi and f is intractable so instead we can use optimism via intrinsic rewards. so we use the mean of the posterior dynamics model at episode n to plan the policy, but augment the reward function with an exploration bonus based on the model uncertainty which corresponds to epistemic uncertainty:
+
+$$
+\mathbbE}_{s_{0:\infty} \sim \pi, \hat{f}_n} \left[ \sum_{t=0}^{\infty} \gamma^t (r(s_t, a_t) + \lambda_n \|\sigma_n(s_t, a_t)\|^2) \right]
+$$
+
+where $\sigma_n(s_t, a_t)$ captures the epistemic uncertainty of the dynamics model at episode n and $\lambda_n$ is a scaling factor that controls the trade-off between exploration and exploitation. Here $\|\sigma_n(s_t, a_t)\|^2$ becomes the intrinsic reward that encourages the agent to visit uncertain states.
+
+### Safe Exploration
+
+In high-stakes applications, exploration is a 
+dangerous proposition
+§ Need to guarantee safety (avoid unsafe states)
+§ How can we ensure this in case of unknown models?
+
+Plan using confidence intervals on the dynamics model 
+
+use the dynamics to be optimistic for the rewards 
+and pessimistic for the costs. becomes a constrained optimization problem. what is the contrsaint? c(s) = if the state is unsafe?
+
+Solve optimistic/pessimistic CMDP via 
+augmented Langrangian method (LAMBDA)
+
 
 ### Hallucinated upper confidence reinforcement learning
 
