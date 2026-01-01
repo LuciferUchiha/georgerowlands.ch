@@ -136,8 +136,14 @@ $$
 -2\mathbf{A}^T\mathbf{b} + 2\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}} = 0
 $$
 
-{{< callout type="todo" >}}
-Show calculation of the gradient of $g(\hat{\mathbf{x}})$.
+{{< callout type="proof" title="Gradient Calculation" >}}
+To find the gradient of $g(\hat{\mathbf{x}}) = \mathbf{b}^T\mathbf{b} - 2\hat{\mathbf{x}}^T\mathbf{A}^T\mathbf{b} + \hat{\mathbf{x}}^T\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}}$ with respect to $\hat{\mathbf{x}}$, we look at each term:
+
+1.  $\mathbf{b}^T\mathbf{b}$ is a constant with respect to $\hat{\mathbf{x}}$, so its gradient is $\mathbf{0}$.
+2.  $-2\hat{\mathbf{x}}^T\mathbf{A}^T\mathbf{b}$ is a linear term. Let $\mathbf{c} = \mathbf{A}^T\mathbf{b}$. Then we have $-2\hat{\mathbf{x}}^T\mathbf{c}$. The gradient of $\hat{\mathbf{x}}^T\mathbf{c}$ is $\mathbf{c}$, so the gradient is $-2\mathbf{A}^T\mathbf{b}$.
+3.  $\hat{\mathbf{x}}^T\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}}$ is a quadratic form. Let $\mathbf{M} = \mathbf{A}^T\mathbf{A}$. Since $\mathbf{M}$ is symmetric, the gradient of $\hat{\mathbf{x}}^T\mathbf{M}\hat{\mathbf{x}}$ is $2\mathbf{M}\hat{\mathbf{x}}$. Thus, the gradient is $2\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}}$.
+
+Summing these gives the result: $\nabla g(\hat{\mathbf{x}}) = -2\mathbf{A}^T\mathbf{b} + 2\mathbf{A}^T\mathbf{A}\hat{\mathbf{x}}$.
 {{< /callout >}}
 
 After further simplifying the above we get the so-called **normal equations**. The normal equations are a set of very important equations in linear algebra and computer science. We will be revisiting them in the context of solving the least squares problem further down the line.
@@ -376,8 +382,8 @@ $$
 
 Importantly, note that in general only $\mathbf{Q}^T\mathbf{Q}$ is the identity matrix for orthogonal matrices, not $\mathbf{Q}\mathbf{Q}^T$. The latter is the identity matrix only if $\mathbf{Q}$ is square, i.e. $m = n$, which would mean that we were projecting onto the whole space $\mathbb{R}^m$. 
 
-{{< callout type="todo" >}}
-This is related to the change of basis? As then each vector $\mathbf{x} \in \mathbb{R}^n$ can be expressed as a linear combination of the orthonormal columns of $\mathbf{Q}$.
+{{< callout type="info" >}}
+This is indeed related to a **change of basis**. If $\mathbf{Q}$ is a square orthogonal matrix, its columns form an orthonormal basis for $\mathbb{R}^m$. The operation $\mathbf{Q}^T\mathbf{b}$ computes the coordinates of $\mathbf{b}$ in this new basis. Multiplying these coordinates by $\mathbf{Q}$ (i.e., $\mathbf{Q}(\mathbf{Q}^T\mathbf{b})$) reconstructs the vector $\mathbf{b}$ from these coordinates. When $\mathbf{Q}$ is not square ($m > n$), $\mathbf{Q}^T\mathbf{b}$ gives the coordinates of the projection of $\mathbf{b}$ in the basis of the subspace $C(\mathbf{Q})$.
 {{< /callout >}}
 
 {{< callout type="example" >}}
@@ -400,241 +406,6 @@ $$
 $$
 
 Thus, the projection of $\mathbf{b}$ onto the $xy$-plane is $\begin{bmatrix} 3 \\ 4 \\ 0 \end{bmatrix}$.
-{{< /callout >}}
-
-## Least Squares
-
-The **least squares problem** is a cornerstone of linear algebra and optimization, with significant applications in data science, machine learning, and statistics. In machine learning, it often appears as an introductory problem under the name **linear regression**. Its goal is to find the best approximation of a set of observations by minimizing the error between observed outcomes and predicted values. This technique is widely used in practical applications, such as predicting **house prices** based on so called **features** like size, age, or location.
-
-Suppose we are tasked with predicting house prices based on the size of the house. We are given a set of data points $(t_1, b_1), (t_2, b_2), \ldots, (t_n, b_n)$, where:
-- $t_k$: Is the measured size of the house (independent variable, or feature) for the $k$-th data point.
-- $b_k$: the actual observed price of the house (dependent variable, or outcome) for the $k$-th data point.
-
-{{< figure
-  src="/images/maths/leastSquares.png"
-  alt="On the x-axis we have some feature such as the size of the house and on the y-axis we have the price of the house. The dots represent the observed data points and the line is the best-fitting line that we are trying to find."
-  caption="On the x-axis we have some feature such as the size of the house and on the y-axis we have the price of the house. The dots represent the observed data points and the line is the best-fitting line that we are trying to find."
->}}
-
-If we then assume that there is a linear relationship between the size of the house and its price. So the price of house is dependent on the size of the house. The linear part means that the relationship can be expressed as a line. This is why the problem is also often referred to as "fitting a line to the data". 
-
-So there is some linear function that given the size of the house can predict the price of the house. We aim to find this function. We know that a linear function is defined as follows:
-
-$$
-y = a_0 + a_1 x
-$$
-
-Where $x$ is our input feature, $y$ is the output and $a_0$ and $a_1$ are the parameters of the function. In our case $x$ is the size of the house and $y$ is the price of the house. So we want to find the parameters $a_0$ and $a_1$ such that the predicted price $\hat{b}_k$ is given by:
-
-$$
-\hat{b}_k = a_0 + a_1 t_k,
-$$
-
-where the predicted price $\hat{b}_k$ is as close as possible to the observed price $b_k$. The difference between the observed price $b_k$ and the predicted price $\hat{b}_k$ is called the **error** for the $k$-th observation. To find the best-fitting line, we minimize the **sum of squared errors** across all observations:
-
-$$
-\min_{a_0, a_1} \sum_{k=1}^n \left(b_k - (a_0 + a_1 t_k)\right)^2.
-$$
-
-This least squares formulation has numerous practical applications for modeling any linear relationship between variables. As we are doing linear algebra let us represent the data in terms of matrices and vectors. So we define the following:
-- The vector containing the observed outcomes (house prices) is $\mathbf{b} = \begin{bmatrix} b_1 \\ b_2 \\ \vdots \\ b_n \end{bmatrix}$.
-- The vector of coefficients (parameters to be determined) is $\mathbf{x} = \begin{bmatrix} a_0 \\ a_1 \end{bmatrix}$.
-- The matrix containing the features is $\mathbf{A} = \begin{bmatrix} 1 & t_1 \\ 1 & t_2 \\ \vdots & \vdots \\ 1 & t_n \end{bmatrix}$. The reason why we concatenate a column of ones to the start of the feature matrix for $\mathbf{A}$ is that we want to include the intercept term $a_0$ in our linear model. This allows us to express the linear function in matrix form, where the first column corresponds to the intercept and the second column corresponds to the feature values $t_k$. So we want to just add the term $a_0$ to the term $a_1 t_k$. 
-
-Our predicted outcomes for all inputs are then given by:
-
-$$
-\hat{\mathbf{b}} = \mathbf{A}\mathbf{x}.
-$$
-
-The error vector, representing the difference between observed outcomes and predicted outcomes can then be written as:
-
-$$
-\mathbf{e} = \mathbf{b} - \hat{\mathbf{b}} = \mathbf{b} - \mathbf{A}\mathbf{x}.
-$$
-
-The least squares problem is then to find $\mathbf{x}$ that minimizes the squared norm of the error vector:
-
-$$
-\min_{\mathbf{x} \in \mathbb{R}^2} \|\mathbf{b} - \mathbf{A}\mathbf{x}\|^2.
-$$
-
-Hence the name **least squares**. The goal is to find the coefficients $\mathbf{x}$ that minimize the squared error between the observed prices and the predicted prices based on the linear model. This matrix formulation generalizes easily to cases with multiple features. For example, if we also have the **age of the house** as an additional feature, the matrix $\mathbf{A}$ would include an additional column corresponding to this feature:
-
-$$
-\mathbf{A} = \begin{bmatrix} 1 & t_1 & s_1 \\ 1 & t_2 & s_2 \\ \vdots & \vdots & \vdots \\ 1 & t_n & s_n \end{bmatrix},
-$$
-
-where $s_k$ is for example the age of the $k$-th house. The least squares problem remains the same, but now we have more coefficients to determine, and the vector $\mathbf{x}$ would be:
-
-$$
-\mathbf{x} = \begin{bmatrix} a_0 \\ a_1 \\ a_2 \end{bmatrix},
-$$
-
-where $a_2$ is the coefficient for the age of the house. More generally, for a given matrix $\mathbf{A} \in \mathbb{R}^{m \times n}$ (where $m$ is the number of observations and $n$ is the number of features plus one for the intercept) and a vector $\mathbf{b} \in \mathbb{R}^m$, we aim to find the vector $\mathbf{x} \in \mathbb{R}^n$ that minimizes:
-
-$$
-\min_{\mathbf{x} \in \mathbb{R}^n} \|\mathbf{b} - \mathbf{A}\mathbf{x}\|^2.
-$$
-
-From the above formulation we can see that the when we are trying to minimize the squared norm of the error we are actually looking for the projection of $\mathbf{b}$ onto the column space of $\mathbf{A}$:
-
-$$
-\min_{\mathbf{x} \in \mathbb{R}^n} \|\mathbf{b} - \mathbf{A}\mathbf{x}\|^2 = \|\mathbf{b} - \text{proj}_{C(\mathbf{A})}(\mathbf{b})\|^2.
-$$
-
-This actually makes sense as we are given some vector and we are trying to create it as a linear combination of the columns of $\mathbf{A}$. Because we have now noticed that we are looking for the projection of $\mathbf{b}$ onto the column space of $\mathbf{A}$ we can use our knowledge of projections to solve the least squares problem. We know that the solution to the least squares problem is derived using the **normal equations**. By setting the gradient of the squared error to zero, we obtain:
-
-$$
-\mathbf{A}^T\mathbf{A}\mathbf{x} = \mathbf{A}^T\mathbf{b}.
-$$
-
-If we then assume that the columns of $\mathbf{A}$ are linearly independent, we know that $\mathbf{A}^T\mathbf{A}$ is invertible and that we can solve for $\mathbf{x}$:
-
-$$
-\mathbf{x} = (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b}.
-$$
-
-To solve the least squares problem, the columns of $\mathbf{A}$ must be **linearly independent**. Linear independence ensures that $\mathbf{A}^T\mathbf{A}$ is invertible, which is crucial for deriving the solution. For example, if all the feature values $t_k$ are identical (e.g., $t_i = t_j$ for all $i \neq j$), then the column would be a multiple of the first column and the columns of $\mathbf{A}$ would not span a sufficiently large space, making it impossible to uniquely determine the coefficients $\mathbf{x}$. Linear independence of the columns of $\mathbf{A}$ ensures that the data provides enough information to determine a unique solution.
-
-{{< callout type="todo" >}}
-Isn't this why regularization is used, i.e adding the identity matrix scaled by some small value $\lambda$ to matrix $\mathbf{A}$ to make the columns linearly independent and thus $\mathbf{A}^T\mathbf{A}$ invertible?
-{{< /callout >}}
-
-If we look more closely at the what the matrix multiplication is doing we can actually derive an explicit formula for the coefficients $\mathbf{x}$. First let's remember what the matrix multiplication of $\mathbf{A}^T\mathbf{A}$ looks like:
-
-$$
-\begin{align*}
-\mathbf{A}^T\mathbf{A} &= \begin{bmatrix}
-a_{11} & a_{12} & \cdots & a_{1n} \\
-a_{21} & a_{22} & \cdots & a_{2n} \\
-\vdots & \vdots & \ddots & \vdots \\
-a_{m1} & a_{m2} & \cdots & a_{mn}
-\end{bmatrix} 
-\begin{bmatrix}
-a_{11} & a_{21} & \cdots & a_{m1} \\
-a_{12} & a_{22} & \cdots & a_{m2}
-\end{bmatrix} \\ 
-&= \begin{bmatrix}
-(a_{11}^2 + a_{12}^2 + \cdots + a_{1m}^2) & (a_{11}a_{21} + a_{12}a_{22} + \cdots + a_{1m}a_{2m}) & \cdots & (a_{11}a_{n1} + a_{12}a_{n2} + \cdots + a_{1m}a_{nm}) \\
-(a_{21}a_{11} + a_{22}a_{12} + \cdots + a_{2m}a_{1m}) & (a_{21}^2 + a_{22}^2 + \cdots + a_{2m}^2) & \cdots & (a_{21}a_{n1} + a_{22}a_{n2} + \cdots + a_{2m}a_{nm}) \\
-\vdots & \vdots & \ddots & \vdots \\
-(a_{m1}a_{11} + a_{m2}a_{12} + \cdots + a_{mm}a_{1m}) & (a_{m1}a_{21} + a_{m2}a_{22} + \cdots + a_{mm}a_{2m}) & \cdots & (a_{m1}a_{n1} + a_{m2}a_{n2} + \cdots + a_{mm}a_{nm})
-\end{bmatrix}
-\end{align*}
-$$
-
-So we remember that the diagonal elements of $\mathbf{A}^T\mathbf{A}$ are the sums of squares of the columns of $\mathbf{A}$, and the off-diagonal elements are the sums of products of different columns. More specifically for the case where we have one feature (the size of the house) where $\mathbf{A} \in \mathbb{R}^{m \times 2}$, we have that the first column of $\mathbf{A}$ is all ones and the second column is the feature values $t_k$. So the first diagonal element of $\mathbf{A}^T\mathbf{A}$ is the sum of squares of the first column, which is simply $m$ (the number of observations), and the second diagonal element is the sum of squares of the feature values. The off diagonal element is the sum of the feature values multiplied by the ones, which is simply the sum of the feature values. 
-
-If we then just multiply the matrix $\mathbf{A}^T$ with the vector $\mathbf{b}$, representing the observed prices, we get just a linear combination of the observed prices and the feature values. Specifically, the first element is the sum of the observed prices and the second element is the sum of the observed prices multiplied by the feature values. So we can write:
-
-$$
-\begin{bmatrix} a_0 \\ a_1 \end{bmatrix} = 
-\begin{bmatrix}
-m & \sum_{k=1}^{m} t_k \\
-\sum_{k=1}^{m} t_k & \sum_{k=1}^{m} t_k^2
-\end{bmatrix}^{-1}
-\begin{bmatrix}
-\sum_{k=1}^{m} b_k \\
-\sum_{k=1}^{m} b_k t_k
-\end{bmatrix}.
-$$
-
-Where $m$ is the number of observations (houses), $\sum_{k=1}^{m} t_k$ is the sum of the feature values (sizes of houses) and $\sum_{k=1}^{m} b_k t_k$ is the sum of the product of observed prices and feature values which together give us the coefficient $a_0$ and $a_1$ for the intercept and the slope of the line respectively.
-
-If the columns of $\mathbf{A}$ are pairwise orthogonal, then the matrix $\mathbf{A}^T\mathbf{A}$ is diagonal as each element is the dot product of two columns which is zero for different columns and the sum of squares for the same column. If $\mathbf{A} \in \mathbb{R}^{m \times 2}$, then the columns are orthogonal if the feature values $t_k$ are such that $\sum_{k=1}^{m} t_k = 0$. This is because when we calculate the dot product of the first column (all ones) and the second column (the feature values), we get:
-
-$$
-\sum_{k=1}^{m} 1 \cdot t_k = \sum_{k=1}^{m} t_k.
-$$
-
-So if they are orthogonal we can simplify the matrix $\mathbf{A}^T\mathbf{A}$ to:
-
-$$
-\begin{bmatrix} a_0 \\ a_1 \end{bmatrix} =
-\begin{bmatrix}
-m & 0 \\
-0 & \sum_{k=1}^{m} t_k^2
-\end{bmatrix}^{-1}
-\begin{bmatrix}
-\sum_{k=1}^{m} b_k \\
-\sum_{k=1}^{m} b_k t_k
-\end{bmatrix}
-$$
-
-And because the inverse of a diagonal matrix is simply the reciprocal of the diagonal elements, we can write:
-
-$$
-\begin{bmatrix} a_0 \\ a_1 \end{bmatrix} =
-\begin{bmatrix}\frac{1}{m} & 0 \\
-0 & \frac{1}{\sum_{k=1}^{m} t_k^2}
-\end{bmatrix}
-\begin{bmatrix}\sum_{k=1}^{m} b_k \\
-\sum_{k=1}^{m} b_k t_k
-\end{bmatrix} = 
-\begin{bmatrix}\frac{1}{m} \sum_{k=1}^{m} b_k \\
-\frac{1}{\sum_{k=1}^{m} t_k^2} \sum_{k=1}^{m} b_k t_k
-\end{bmatrix}
-$$
-
-{{< callout type="example" title="One Feature Case" >}}
-Suppose we have the following data points representing the size of houses and their prices:
-
-$$
-\mathbf{A} = \begin{bmatrix} 1 & 50 \\ 1 & 80 \\ 1 & 100 \end{bmatrix}, \quad \mathbf{b} = \begin{bmatrix} 200 \\ 300 \\ 400 \end{bmatrix}
-$$
-
-To then find the coefficients $\mathbf{x} = \begin{bmatrix} a_0 \\ a_1 \end{bmatrix}$, we first calculate $\mathbf{A}^T\mathbf{A}$:
-
-$$
-\mathbf{A}^T\mathbf{A} = \begin{bmatrix} 1 & 1 & 1 \\ 50 & 80 & 100 \end{bmatrix} \begin{bmatrix} 1 & 50 \\ 1 & 80 \\ 1 & 100 \end{bmatrix} = \begin{bmatrix} 3 & 230 \\ 230 & 18900 \end{bmatrix}
-$$
-
-Then we calculate $\mathbf{A}^T\mathbf{b}$:
-
-$$
-\mathbf{A}^T\mathbf{b} = \begin{bmatrix} 1 & 1 & 1 \\ 50 & 80 & 100 \end{bmatrix} \begin{bmatrix} 200 \\ 300 \\ 400 \end{bmatrix} = \begin{bmatrix} 900 \\ 74000 \end{bmatrix}
-$$
-
-We can then either calculate the inverse of $\mathbf{A}^T\mathbf{A}$ and multiply it with $\mathbf{A}^T\mathbf{b}$ to calculate:
-
-$$
-\mathbf{x} = (\mathbf{A}^T\mathbf{A})^{-1}\mathbf{A}^T\mathbf{b} = \begin{bmatrix} 3 & 230 \\ 230 & 18900 \end{bmatrix}^{-1} \begin{bmatrix} 900 \\ 74000 \end{bmatrix}
-$$
-
-Or we can solve the normal equations directly so finding the solution to the least squares problem:
-
-$$
-\mathbf{A}^T\mathbf{A}\mathbf{x} = \mathbf{A}^T\mathbf{b}
-$$
-
-So we can write the system of equations as:
-
-$$
-\begin{bmatrix} 3 & 230 \\ 230 & 18900 \end{bmatrix} \begin{bmatrix} a_0 \\ a_1 \end{bmatrix} = \begin{bmatrix} 900 \\ 74000 \end{bmatrix}
-$$
-
-solving this system gives us the coefficients $a_0=-\frac{50}{19}$ and $a_1=\frac{75}{19}$. So the best-fitting line is:
-
-$$
-\hat{b_k} = -\frac{50}{19} + \frac{75}{19} t_k
-$$
-{{< /callout >}}
-
-{{< callout type="example" title="2 Features Case" >}}
-Add an extra column to the matrix $\mathbf{A}$ for the age of the house, so we have:
-{{< /callout >}}
-
-### Fitting a Parabola
-
-{{< callout type="todo" >}}
-polynomial regression rather than linear regression.
-
-Nothing special just add an extra column where we have t^2 so:
-
-$$
-\hat{b_k} = a_0 + a_1 t_k + a_2 t_k^2,
-$$
 {{< /callout >}}
 
 ## Projections of Sets and the Farkas Lemma

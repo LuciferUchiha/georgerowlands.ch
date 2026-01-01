@@ -242,21 +242,17 @@ $$
 Both estimators are unbiased because their bias is zero, but they have different variances and therefore different MSEs. Because the sample mean estimator $T^{(2)}$ uses all the data, and so its variance (and MSE) is much smaller than that of the estimator that uses only the last observation $T^{(1)}$. We could interpret this as the estimator extracting more information from the data as it incorporates all available observations, rather than just the last one. 
 
 This means that, even though both estimators are correct on average, the sample mean estimator is much more reliable and concentrated around the true value. Especially as the sample size increases, the variance and the MSE of the sample mean estimator tends to zero which implies that it becomes a very good estimator for the true parameter $\theta$.
-
-{{< callout type="todo" >}}
-Would a concrete number example make sense here and help?
-{{< /callout >}}
 {{< /callout >}}
 
 ## Maximum Likelihood Estimation (MLE)
 
-{{< callout type="todo" >}}
-Why is the MLE estimator nice?
-1. It is **consistent**: As the sample size increases, the MLE converges in probability to the true parameter value and is also asymptotically unbiased.
-2. It is **efficient**: Among all consistent estimators, the MLE achieves the lowest possible variance in the limit as the sample size goes to infinity. Something with central limit theorem?
-{{< /callout >}}
+The **maximum likelihood estimation (MLE)** method is a powerful and widely used technique in statistics for estimating the parameters of a statistical model. It is based on the principle of **likelihood**, which measures how well a particular set of parameters explains the observed data. The ML-method (where “ML” for once doesn't mean machine learning but maximum likelihood!) is a **systematic approach to constructing estimators** that are often very good and have desirable properties:
 
-The **maximum likelihood estimation (MLE)** method is a powerful and widely used technique in statistics for estimating the parameters of a statistical model. It is based on the principle of **likelihood**, which measures how well a particular set of parameters explains the observed data. The ML-method (where “ML” for once doesn't mean machine learning but maximum likelihood!) is a **systematic approach to constructing estimators** that are often very good and have desirable properties. The idea is to choose parameter values that make the observed data as "likely" as possible, according to our chosen model family.
+1.  **Consistency**: As the sample size increases ($n \to \infty$), the MLE converges in probability to the true parameter value.
+2.  **Efficiency**: Among all consistent estimators, the MLE achieves the lowest possible variance in the limit as the sample size goes to infinity (it achieves the Cramér-Rao lower bound asymptotically).
+3.  **Asymptotic Normality**: As $n \to \infty$, the distribution of the MLE becomes approximately normal.
+
+The idea is to choose parameter values that make the observed data as "likely" as possible, according to our chosen model family.
 
 Suppose we have collected a sample of data points $x_1, x_2, \ldots, x_n$, which we treat as a realization of random variables $X_1, X_2, \ldots, X_n$. As before, we assume these are **i.i.d.** random variables, each distributed according to some family $P_\theta$, parameterized by the unknown $\theta \in \Theta$.
 
@@ -581,8 +577,29 @@ $$
 = \frac{n-1}{n}\sigma^2
 $$
 
-{{< callout type="todo" >}}
-How was this expectation calculated? Is it possible without variance?
+{{< callout type="proof" title="Expectation of MLE Variance" >}}
+To calculate this expectation, we use the identity $\sum_{i=1}^n (X_i - \bar{X}_n)^2 = \sum_{i=1}^n (X_i - \mu)^2 - n(\bar{X}_n - \mu)^2$.
+
+Taking the expectation:
+
+$$
+\begin{align*}
+\mathbb{E}\left[ \sum_{i=1}^n (X_i - \bar{X}_n)^2 \right] &= \sum_{i=1}^n \mathbb{E}[(X_i - \mu)^2] - n \mathbb{E}[(\bar{X}_n - \mu)^2] \\
+&= \sum_{i=1}^n \text{Var}(X_i) - n \text{Var}(\bar{X}_n)
+\end{align*}
+$$
+
+We know that $\text{Var}(X_i) = \sigma^2$ and $\text{Var}(\bar{X}_n) = \frac{\sigma^2}{n}$. Thus:
+
+$$
+\begin{align*}
+\mathbb{E}\left[ \sum_{i=1}^n (X_i - \bar{X}_n)^2 \right] &= n\sigma^2 - n\left(\frac{\sigma^2}{n}\right) \\
+&= n\sigma^2 - \sigma^2 \\
+&= (n-1)\sigma^2
+\end{align*}
+$$
+
+Dividing by $n$ gives the result $\frac{n-1}{n}\sigma^2$.
 {{< /callout >}}
 
 So, because $\frac{n-1}{n} \sigma^2 < \sigma^2$, the MLE estimator systematically underestimates the true variance. This is the one drawback of the momentum estimator. However, as $n$ goes to infinity the bias goes to zero. So we say that the estimator is **asymptotically unbiased**. This means that as we collect more data, the bias becomes negligible and the estimator approaches the true parameter value.
@@ -604,10 +621,10 @@ S^2 &= \frac{n}{n-1} T_{\sigma^2} \\
 \end{align*}
 $$
 
-{{< callout type="todo" >}}
-Why are we allowed to just make this multiplication? Doesn't this have an effect on the model and paramter choice?
+{{< callout type="info" title="Bias vs. MSE" >}}
+We are allowed to multiply by a constant because we are simply constructing a *new* estimator $S^2$ based on the old one. This doesn't change the model or parameters; it just changes how we estimate them.
 
-Wont it now be less accurate then the original MLE estimator?
+However, there is a trade-off. While $S^2$ is **unbiased**, it actually has a higher **Mean Squared Error (MSE)** than the biased MLE estimator $T_{\sigma^2}$. The MLE minimizes the MSE, which balances bias and variance. By forcing the bias to zero, we increase the variance enough that the total error (MSE) increases. In many applications, minimizing MSE is preferred, but in classical statistics, unbiasedness is often prioritized.
 {{< /callout >}}
 
 and for observed data:
