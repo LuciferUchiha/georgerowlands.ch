@@ -40,9 +40,19 @@ are two possible outcomes: heads or tails and that the probability of each outco
 It turns out that flipping a coin isn't actually fair, i.e the probability of heads and tails isn't 0.5. You can 
 watch [this video by Numberphile](https://www.youtube.com/watch?v=AYnJv68T3MM) to know more. The spanish coin is for example slightly heavier on one side and therefore has a higher probability of landing on that side. The same could be true for certain dice dependin on material and the layout of the face values such as [discussed here](https://boardgames.stackexchange.com/questions/13398/why-do-the-opposing-sides-of-a-d20-generally-add-up-to-21/13408#13408).
 
-### Law of Large Numbers
+### Frequentist vs Bayesian Interpretation
 
-The interesting thing about random experiments is when you perform the experiment once you can not predict the outcome. But if you perform the experiment multiple times you can predict the outcome with better certaincy. The intuition behind this is rather simple, the more times you perform the experiment the more information you have about the system and the better your able to model it and come up with some statistics about the system. For example, if you threw a weirdly shaped dice once you could not predict the outcome. But if you performed the experiment 1000 times you could possibly predict the outcome with a higher degree of certainty. This is called the law of large numbers. 
+We have discussed random experiments and outcomes, but what does it actually mean when we say the probability of heads is $0.5$? There are two main schools of thought on how to interpret probabilities:
+
+The first is the frequentist view which defines an event's probability as the limit of its relative frequency in a large number of trials. Ideally, if we could repeat the random experiment an infinite number of times, the proportion of times the event occurs would be its probability.
+
+This is closely related to the [Law of Large Numbers](/garden/maths/probabilityStatistics/largeSamples#law-of-large-numbers), which states that as the number of trials increases, the average of the results (or relative frequency) will converge to the expected value (or true probability). For example, if you flip a fair coin 1000 times, you expect roughly 500 heads. The more you flip, the closer the ratio $\frac{\text{heads}}{\text{total flips}}$ gets to $0.5$.
+
+The alterantive Bayesian view interprets probability as a measure of a "degree of belief" or "certainty" about an event. This belief can be subjective and is based on prior knowledge or "priors". As new evidence or data becomes available, this belief is updated.
+
+For example, if you are betting on a horse race, you might assign a probability to a horse winning based on its past performance, the jockey, and track conditions. This isn't necessarily based on repeating the race infinite times (which is impossible), but on your assessment of the available information.
+
+For the purpose of these notes, we will primarily follow the **axiomatic approach** (Kolmogorov) which is compatible with the Frequentist view. We will generally assume that the probabilities are known properties of the experiment (e.g., a fair die has $P(1)=1/6$) or are given parameters of a model, rather than subjective beliefs that need updating.
 
 ## Sample Space
 
