@@ -243,6 +243,49 @@ $$
 So the average value of a uniformly distributed random variable on $[-2,2]$ is $0$. 
 {{< /callout >}}
 
+### Law of the Unconscious Statistician (LOTUS)
+
+We often want to compute the expected value of a function of a random variable, say $Y = g(X)$. The direct approach would be to first find the distribution of $Y$ (its PMF or PDF) and then apply the definition of expectation. However, this can be tedious and often difficult.
+
+The **Law of the Unconscious Statistician (LOTUS)** allows us to compute $\mathbb{E}[g(X)]$ directly using the distribution of $X$, without explicitly finding the distribution of $g(X)$.
+
+For a discrete random variable $X$:
+
+$$
+\mathbb{E}[g(X)] = \sum_{x} g(x) \mathbb{P}(X=x)
+$$
+
+For a continuous random variable $X$:
+
+$$
+\mathbb{E}[g(X)] = \int_{-\infty}^{\infty} g(x) f_X(x) dx
+$$
+
+The name comes from the idea that a statistician might "unconsciously" use the distribution of $X$ to calculate the mean of $g(X)$ without realizing they are technically using a theorem. It is "unconscious" because it feels like the natural definition, even though $g(X)$ is a new random variable with its own distribution.
+
+{{< callout type="proof" >}}
+**Discrete Case:** Let $Y = g(X)$. We group the sum by the values $y$ that $g(x)$ can take:
+$$
+\begin{align*}
+\mathbb{E}[g(X)] &= \sum_{x} g(x) \mathbb{P}(X=x) \\
+&= \sum_{y} \sum_{x: g(x)=y} y \mathbb{P}(X=x) \\
+&= \sum_{y} y \sum_{x: g(x)=y} \mathbb{P}(X=x) \\
+&= \sum_{y} y \mathbb{P}(Y=y) \\
+&= \mathbb{E}[Y]
+\end{align*}
+$$
+{{< /callout >}}
+
+{{< callout type="example" title="Square of a Random Variable" >}}
+Let $X$ be a random variable with PDF $f(x)$. To find $\mathbb{E}[X^2]$, we don't need the PDF of $Y=X^2$. We just integrate:
+
+$$
+\mathbb{E}[X^2] = \int_{-\infty}^{\infty} x^2 f(x) dx
+$$
+
+This is extremely useful for calculating variance, where we need $\mathbb{E}[X^2]$.
+{{< /callout >}}
+
 ### Linearity of Expectation
 
 One of the most powerful and useful properties of expectation is linearity. The expectation of a sum is the sum of the expectations even if the random variables are dependent! So we have:
@@ -406,13 +449,7 @@ When we study random variables, it is tempting to summarize their behavior with 
 Think of expectation as the "center of mass" of a probability distribution, but not its shape or spread. Two random variables can have the same mean, but their outcomes may be clustered tightly around that mean (low variance), or spread very far apart (high variance), or distributed in totally different ways.
 Expectation does **not** uniquely characterize a distribution. Different random variables can have the same mean but very different shapes (e.g., uniform and normal distributions with the same mean).
 
-The same idea applies to any transformation of the random variable i.e. applying a function $g:\mathbb{R} \to \mathbb{R}$ to $X$. The value $\mathbb{E}[g(X)]$ is called a moment (when $g(x) = x^k$), and can capture more information about the distribution:
-
-$$
-\mathbb{E}[g(X)] = \int_{-\infty}^{\infty} g(x) f(x) dx \quad \text{or} \quad \mathbb{E}[g(X)] = \sum_{x \in W} g(x) \cdot \mathbb{P}(X = x)
-$$
-
-This follows from the definition of expectation, where we replace $X$ with $g(X)$, effectively transforming the random variable before computing its expected value. The expectation of a transformed random variable is the average value of the function $g$ applied to the outcomes of $X$, weighted by their probabilities.
+The same idea applies to any transformation of the random variable i.e. applying a function $g:\mathbb{R} \to \mathbb{R}$ to $X$. Using the **Law of the Unconscious Statistician**, we can compute $\mathbb{E}[g(X)]$, which is called a moment when $g(x) = x^k$. These moments can capture more information about the distribution.
 
 However, even knowing all moments $\mathbb{E}[X], \mathbb{E}[X^2], \mathbb{E}[X^3], \ldots$ is not always enough to fully determine the distribution. But in many practical cases, the sequence of all moments uniquely characterizes the distribution, while the mean alone never does.
 
@@ -829,6 +866,130 @@ $$
 $$
 
 However, $X$ and $Y$ are **not independent** (since knowing $Y$ tells you about $X$), but their covariance is zero. 
+{{< /callout >}}
+
+## Conditional Expectation
+
+Just as we have conditional probability $\mathbb{P}(A|B)$, we can define **conditional expectation** $\mathbb{E}[X|Y]$. This asks: "What is the average value of $X$, given that we know $Y$ has taken a specific value $y$?"
+
+If $X$ and $Y$ are discrete, the conditional expectation of $X$ given $Y=y$ is:
+
+$$
+\mathbb{E}[X | Y=y] = \sum_x x \cdot \mathbb{P}(X=x | Y=y)
+$$
+
+where $\mathbb{P}(X=x | Y=y) = \frac{\mathbb{P}(X=x, Y=y)}{\mathbb{P}(Y=y)}$.
+
+If they are continuous:
+
+$$
+\mathbb{E}[X | Y=y] = \int_{-\infty}^{\infty} x \cdot f_{X|Y}(x|y) dx
+$$
+
+where $f_{X|Y}(x|y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}$.
+
+Crucially, $\mathbb{E}[X | Y=y]$ is a number that depends on the value $y$. If we let $Y$ vary, then $\mathbb{E}[X|Y]$ becomes a **random variable** itself! It is a function of $Y$, specifically $g(Y) = \mathbb{E}[X | Y=y]$.
+
+### Law of Total Expectation (Tower Property)
+
+Since $\mathbb{E}[X|Y]$ is a random variable, we can ask what its expectation is. The **Law of Total Expectation** (also known as the **Tower Property** or **Iterated Expectation**) states that the expected value of the conditional expectation is the unconditional expectation:
+
+$$
+\mathbb{E}[\mathbb{E}[X|Y]] = \mathbb{E}[X]
+$$
+
+The intuition of it that if you want to estimate the average height of the entire population ($\mathbb{E}[X]$), you can first estimate the average height within each sub-group (e.g., by age $Y$), giving $\mathbb{E}[X|Y]$, and then average those sub-group averages (weighted by the size of each group).
+
+{{< callout type="proof" >}}
+**Discrete Case:**
+
+$$
+\begin{align*}
+\mathbb{E}[\mathbb{E}[X|Y]] &= \sum_y \mathbb{E}[X|Y=y] \cdot \mathbb{P}(Y=y) \\
+&= \sum_y \left( \sum_x x \cdot \mathbb{P}(X=x|Y=y) \right) \mathbb{P}(Y=y) \\
+&= \sum_y \sum_x x \cdot \frac{\mathbb{P}(X=x, Y=y)}{\mathbb{P}(Y=y)} \cdot \mathbb{P}(Y=y) \\
+&= \sum_x x \sum_y \mathbb{P}(X=x, Y=y) \\
+&= \sum_x x \cdot \mathbb{P}(X=x) \\
+&= \mathbb{E}[X]
+\end{align*}
+$$
+{{< /callout >}}
+
+{{< callout type="example" title="Random Sum of Random Variables" >}}
+Suppose you flip a coin $N$ times, where $N \sim \text{Poisson}(\lambda)$ is itself random. Let $X_i$ be the outcome of the $i$-th flip (1 for heads, 0 for tails), independent of $N$. What is the expected total number of heads $S = \sum_{i=1}^N X_i$?
+
+Using the Tower Property conditioning on $N$:
+
+$$
+\mathbb{E}[S] = \mathbb{E}[\mathbb{E}[S|N]]
+$$
+
+Given $N=n$, $S$ is a sum of $n$ fixed Bernoulli trials, so $\mathbb{E}[S|N=n] = n p$. Thus, as a random variable, $\mathbb{E}[S|N] = N p$.
+
+$$
+\mathbb{E}[S] = \mathbb{E}[N p] = p \mathbb{E}[N] = p \lambda
+$$
+{{< /callout >}}
+
+### Law of Total Variance
+
+We can also decompose the variance of $X$ using conditioning. The **Law of Total Variance** (or **Eve's Law**) states:
+
+$$
+\text{Var}(X) = \mathbb{E}[\text{Var}(X|Y)] + \text{Var}(\mathbb{E}[X|Y])
+$$
+
+You can interpret this as breaking down the total variance of $X$ into two components:
+1.  **Intra-group variance** ($\mathbb{E}[\text{Var}(X|Y)]$): The average spread of $X$ within each group defined by $Y$.
+2.  **Inter-group variance** ($\text{Var}(\mathbb{E}[X|Y])$): The spread of the means of the groups.
+
+{{< callout type="proof" >}}
+Recall $\text{Var}(X) = \mathbb{E}[X^2] - (\mathbb{E}[X])^2$.
+From the Tower Property:
+1. $\mathbb{E}[X] = \mathbb{E}[\mathbb{E}[X|Y]]$
+2. $\mathbb{E}[X^2] = \mathbb{E}[\mathbb{E}[X^2|Y]]$
+
+Also, $\text{Var}(X|Y) = \mathbb{E}[X^2|Y] - (\mathbb{E}[X|Y])^2$, so $\mathbb{E}[X^2|Y] = \text{Var}(X|Y) + (\mathbb{E}[X|Y])^2$.
+
+Substitute this into the expression for $\mathbb{E}[X^2]$:
+
+$$
+\begin{align*}
+\text{Var}(X) &= \mathbb{E}[\text{Var}(X|Y) + (\mathbb{E}[X|Y])^2] - (\mathbb{E}[\mathbb{E}[X|Y]])^2 \\
+&= \mathbb{E}[\text{Var}(X|Y)] + \left( \mathbb{E}[(\mathbb{E}[X|Y])^2] - (\mathbb{E}[\mathbb{E}[X|Y]])^2 \right)
+\end{align*}
+$$
+
+The term in the parenthesis is exactly the variance of the random variable $Z = \mathbb{E}[X|Y]$.
+Thus, $\text{Var}(X) = \mathbb{E}[\text{Var}(X|Y)] + \text{Var}(\mathbb{E}[X|Y])$.
+{{< /callout >}}
+
+{{< callout type="example" title="Random Sum Variance" >}}
+Continuing the previous example with $S = \sum_{i=1}^N X_i$, where $N \sim \text{Poisson}(\lambda)$ and $X_i \sim \text{Bernoulli}(p)$. We know:
+- $\mathbb{E}[S|N] = Np$
+- $\text{Var}(S|N) = N p(1-p)$ (Variance of sum of $N$ Bernoullis)
+
+Using Total Variance:
+
+$$
+\begin{align*}
+\text{Var}(S) &= \mathbb{E}[\text{Var}(S|N)] + \text{Var}(\mathbb{E}[S|N]) \\
+&= \mathbb{E}[N p(1-p)] + \text{Var}(N p) \\
+&= p(1-p) \mathbb{E}[N] + p^2 \text{Var}(N)
+\end{align*}
+$$
+
+Since $N \sim \text{Poisson}(\lambda)$, $\mathbb{E}[N] = \lambda$ and $\text{Var}(N) = \lambda$.
+
+$$
+\begin{align*}
+\text{Var}(S) &= p(1-p)\lambda + p^2 \lambda \\
+&= \lambda (p - p^2 + p^2) \\
+&= \lambda p
+\end{align*}
+$$
+
+Interestingly, for this specific case, the variance equals the mean!
 {{< /callout >}}
 
 ## Approximating Expectation and Probabilities
