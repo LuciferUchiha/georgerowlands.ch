@@ -146,9 +146,9 @@ we could then also take the joint distribution of $(X, Z)$:
 | 1                | 0   | 1/4 | 1/4 |
 {{< /callout >}}
 
-## Marginal Distributions
+## Marginal Distributions (Sum Rule)
 
-Suppose we want to "forget" about one of the variables, say $Y$, and just look at the distribution of $X$ on its own. The resulting distribution is called the **marginal distribution** of $X$. Formally:
+Suppose we want to "forget" about one of the variables, say $Y$, and just look at the distribution of $X$ on its own. The resulting distribution is called the **marginal distribution** of $X$. This process is often referred to as **marginalization** or the **sum rule** for random variables, as it corresponds to the Law of Total Probability for events. Formally:
 
 $$
 p_X(x) = \mathbb{P}(X = x) = \sum_{y \in W_Y} p(x, y)
@@ -171,6 +171,30 @@ $$
 
 Show two differently defined joint distributions that have the same marginals. For example, the joint distribution of $(X, Y)$ and $(X, X)$ both have the same marginals?
 {{< /callout >}}
+
+## Conditional Distributions and the Product Rule
+
+Just as we defined conditional probability for events, we can define the **conditional probability mass function** for discrete random variables. The probability that $X=x$ given that $Y=y$ is:
+
+$$
+p_{X|Y}(x|y) = \mathbb{P}(X=x | Y=y) = \frac{\mathbb{P}(X=x, Y=y)}{\mathbb{P}(Y=y)} = \frac{p(x,y)}{p_Y(y)}
+$$
+
+provided $p_Y(y) > 0$. This tells us the probability distribution of $X$ when we know that $Y$ has taken the value $y$.
+
+By rearranging this formula, we obtain the **product rule** (or chain rule) for random variables, which allows us to factorize a joint distribution into a product of conditional and marginal distributions:
+
+$$
+p(x, y) = p_{X|Y}(x|y) \cdot p_Y(y)
+$$
+
+This is completely analogous to the product rule for events $\mathbb{P}(A \cap B) = \mathbb{P}(A|B)\mathbb{P}(B)$. It is extremely useful because it is often easier to model systems by specifying a marginal distribution for one variable and a conditional distribution for the other, rather than specifying the joint distribution directly.
+
+This rule extends to $n$ random variables as the **chain rule**:
+
+$$
+p(x_1, x_2, \ldots, x_n) = p(x_1) \cdot p(x_2 | x_1) \cdot p(x_3 | x_1, x_2) \cdots p(x_n | x_1, \ldots, x_{n-1})
+$$
 
 ## Expectation of Joint Distributions
 

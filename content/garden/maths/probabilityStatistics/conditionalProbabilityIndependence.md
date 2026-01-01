@@ -306,31 +306,35 @@ $$
 So now clearly the two events are not independent of each other. What is happening here? The reason for this is that within event $B$ the number of outcomes where the event $A$ has an influence is the same as for the ones it doesn't. In other words the number of outcomes where the first die is even is 3 and the number of outcomes where the first die is odd is also 3. So the event has no influence. However, in event $C$ the number of outcomes where the first die is even is 2 and the number of outcomes where the first die is odd is 3. So the parity of the first die matters.
 {{< /callout >}}
 
-## Multiplication Rule
+## Product Rule
 
-By rearranging the formula for conditional probability, we actually get a formula for the intersection of two events, so in other words a formula for when two events happen at the same time. This is called the **multiplication rule**. Why this is called the multiplication rule we will see later when we talk about stochastic independence and multi-stage random experiments. We get the multiplication rule by rearranging the formula for conditional probability by multiplying both sides by $\mathbb{P}(B)$:
+By rearranging the formula for conditional probability, we actually get a formula for the intersection of two events, so in other words a formula for when two events happen at the same time. This is called the **product rule**. We get the product rule by rearranging the formula for conditional probability by multiplying both sides by $\mathbb{P}(B)$:
 
 $$
 \mathbb{P}(A | B) = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(B)} \Leftrightarrow \mathbb{P}(A \cap B) = \mathbb{P}(A | B) \cdot \mathbb{P}(B)
 $$
 
-This is the multiplication rule for two events. However, this also works the other way around. So in other words if we have the probability of $B$ given $A$, we can also rearrange the formula for conditional probability to get the multiplication rule in the other direction: 
+This is the product rule for two events. However, this also works the other way around. So in other words if we have the probability of $B$ given $A$, we can also rearrange the formula for conditional probability to get the product rule in the other direction: 
 
 $$
 \mathbb{P}(B | A) = \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(A)} \Leftrightarrow \mathbb{P}(A \cap B) = \mathbb{P}(B | A) \cdot \mathbb{P}(A)
 $$
 
-So from this we can see that the multiplication rule is symmetric or more formally we have:
+So from this we can see that the product rule is symmetric or more formally we have:
 
 $$
 \mathbb{P}(A \cap B) = \mathbb{P}(A | B) \cdot \mathbb{P}(B) = \mathbb{P}(B | A) \cdot \mathbb{P}(A)
 $$
 
-This can be extended to more than two events. For $n$ events $A_1, A_2, \ldots, A_n$ we have:
+This can be extended to more than two events, referred to as the **chain rule** of probability. For $n$ events $A_1, A_2, \ldots, A_n$ we have:
 
 $$
 \mathbb{P}(A_1 \cap A_2 \cap \ldots \cap A_n) = \mathbb{P}(A_1) \cdot \mathbb{P}(A_2 | A_1) \cdot \mathbb{P}(A_3 | A_1 \cap A_2) \cdots \mathbb{P}(A_n | A_1 \cap A_2 \cap \ldots \cap A_{n-1})
 $$
+
+{{< callout type="note" >}}
+Do not confuse the **chain rule** in probability with the chain rule in calculus (differentiation). While they share the same name and a similar "chaining" structure, they apply to completely different mathematical concepts.
+{{< /callout >}}
 
 {{< callout type="proof" >}}
 The proof of the above is rather simple if we use the definition of conditional probability we get:
@@ -353,7 +357,7 @@ Let $A$ be the event "the first card is an ace" and $B$ be the event "the second
 
 If the first card is an ace, there are now 3 aces left out of 51 cards. So, the probability that the **second card** is an ace given the first was an ace is $\mathbb{P}(B \mid A) = \frac{3}{51}$.
 
-By the multiplication rule the probability that both cards drawn are aces is:
+By the product rule the probability that both cards drawn are aces is:
 
 $$
 \begin{align*}
@@ -368,8 +372,8 @@ $$
 
 A **multi-stage random experiment** consists of several random steps performed in sequence. Each step can depend on the outcomes of previous steps. These can be visualized with **tree diagrams** (or event trees), where each branch represents a possible outcome at a given stage, and each full path represents a sequence of outcomes leading to a final event. We can then use 2 simple rules to calculate the probabilities of events in these multi-stage experiments:
 
-1. **Multiplication Rule:**
-   The probability of a specific path (sequence of outcomes) is the **product** of the conditional probabilities along the path. This is because each stage's outcome is "conditioned" on the previous outcomes so it follows directly from the multiplication rule for conditional probabilities:
+1. **Product Rule:**
+   The probability of a specific path (sequence of outcomes) is the **product** of the conditional probabilities along the path. This is because each stage's outcome is "conditioned" on the previous outcomes so it follows directly from the product rule for conditional probabilities:
 
 $$
 \mathbb{P}(A_1 \cap A_2 \cap \ldots \cap A_n) = \mathbb{P}(A_1)\cdot\mathbb{P}(A_2|A_1)\cdot\mathbb{P}(A_3|A_1\cap A_2)\cdots\mathbb{P}(A_n|A_1\cap\cdots\cap A_{n-1})
@@ -451,9 +455,9 @@ The tree diagram for this experiment would look like this:
 >}}
 {{< /callout >}}
 
-## Law of Total Probability
+## Sum Rule (Law of Total Probability)
 
-In some cases we may have a bunch of conditional probabilities so, the probabilities of an event $A$ given that another event $B$ has already occurred but we actually want to know the total probability of $A$. This leads to the **law of total probability**. 
+In some cases we may have a bunch of conditional probabilities so, the probabilities of an event $A$ given that another event $B$ has already occurred but we actually want to know the total probability of $A$. This leads to the **law of total probability**, also often referred to as the **sum rule** or **marginalization**.
 
 More precisely, if we have the exhaustive mutually exclusive events $B_1, B_2, \ldots, B_n$ so in other words $B_1 \cup B_2 \cup \ldots \cup B_n = \Omega$ and $B_i \cap B_j = \emptyset$ for $i \neq j$. You can also think of these events $B_i$ as [partitions](/maths/discrete/setTheory#partitions) of the sample space $\Omega$. Then we can write the total probability of an event $A$ as follows:
 
@@ -461,7 +465,7 @@ $$
 \mathbb{P}(A) = \sum_{i=1}^{n} \mathbb{P}(A | B_i) \cdot \mathbb{P}(B_i) = \sum_{i=1}^{n} \mathbb{P}(A \cap B_i)
 $$
 
-This comes from the multiplication rule and the fact that the events $A_i$ are mutually exclusive. Each term in the sum represents the probability of $B$ occurring given that one of the events $A_i$ has occurred which from the multiplication rule is the same as the events $A_i$ happening and $B$ happening at the same time, so $A_i \cap B$. Because the events $A_i$ are exhaustive they cover the entire sample space $\Omega$, so when we sum over all the events $A_i$ we get the total probability of $B$. We can also prove this formally using the distributivity of set operations. We have:
+This comes from the product rule and the fact that the events $A_i$ are mutually exclusive. Each term in the sum represents the probability of $B$ occurring given that one of the events $A_i$ has occurred which from the product rule is the same as the events $A_i$ happening and $B$ happening at the same time, so $A_i \cap B$. Because the events $A_i$ are exhaustive they cover the entire sample space $\Omega$, so when we sum over all the events $A_i$ we get the total probability of $B$. We can also prove this formally using the distributivity of set operations. We have:
 
 $$
 A = A \cap \Omega = A \cap (B_1 \cup B_2 \cup \ldots \cup B_n) = (A \cap B_1) \cup (A \cap B_2) \cup \ldots \cup (A \cap B_n)
@@ -496,7 +500,7 @@ This means that the probability of the team winning is 0.6 or 60% with the given
 
 ## Bayes' Theorem
 
-Another common case is we are given a conditional probability and we want to know the reverse of the conditional probability. So we have the probability of an event $B$ given that another event $A$ has already occurred, so $\mathbb{P}(B | A)$ and we want to know the probability of $A$ given that $B$ has already occurred, so $\mathbb{P}(A | B)$. This is called **Bayes' theorem**. Bayes' theorem follows from the multiplication rule and the law of total probability. More formally if we again have the events $B_1, B_2, \ldots, B_n$ which partition the sample space $\Omega$ then we can write Bayes' theorem as follows for the events $A$ and $B_i$:
+Another common case is we are given a conditional probability and we want to know the reverse of the conditional probability. So we have the probability of an event $B$ given that another event $A$ has already occurred, so $\mathbb{P}(B | A)$ and we want to know the probability of $A$ given that $B$ has already occurred, so $\mathbb{P}(A | B)$. This is called **Bayes' theorem**. Bayes' theorem follows from the product rule and the sum rule. More formally if we again have the events $B_1, B_2, \ldots, B_n$ which partition the sample space $\Omega$ then we can write Bayes' theorem as follows for the events $A$ and $B_i$:
 
 $$
 \mathbb{P}(B_i | A) = \frac{\mathbb{P}(B_i \cap A)}{\mathbb{P}(A)} = \frac{\mathbb{P}(A | B_i) \cdot \mathbb{P}(B_i)}{\sum_{j=1}^{n} \mathbb{P}(A | B_j) \cdot \mathbb{P}(B_j)}
