@@ -293,6 +293,26 @@ p(x, y) = \mathbb{P}(X = x, Y = y) = \begin{cases}
 $$
 {{< /callout >}}
 
+## Conditional Independence
+
+Just as with events, we can define **conditional independence** for random variables. Two random variables $X$ and $Y$ are conditionally independent given a third variable $Z$ if their joint distribution, conditioned on $Z$, factorizes into the product of their conditional marginals.
+
+For discrete random variables, this means:
+
+$$
+p_{X,Y|Z}(x, y \mid z) = p_{X|Z}(x \mid z) \cdot p_{Y|Z}(y \mid z)
+$$
+
+or equivalently:
+
+$$
+p_{X|Y,Z}(x \mid y, z) = p_{X|Z}(x \mid z)
+$$
+
+This says that if we already know $Z$, then knowing $Y$ gives us no extra information about $X$.
+
+This concept is fundamental in bayesian learning, where we simplify complex joint distributions by assuming that variables are only directly dependent on a few "parents" and are conditionally independent of everything else given those parents. This allows us to break down a massive joint distribution $p(x_1, \ldots, x_n)$ into smaller, manageable conditional probabilities.
+
 ## Continuous Joint Distributions
 
 So far, we've talked about joint distributions for discrete random variables (like dice and coins), where probabilities are assigned to individual outcomes. But what if our random variables are **continuous**, for example the height and weight of a randomly chosen person, or the $x$ and $y$ coordinates of a point randomly dropped inside a region? In this case, the probability of any single, exact outcome is zero, and we describe probabilities in terms of densities over regions.

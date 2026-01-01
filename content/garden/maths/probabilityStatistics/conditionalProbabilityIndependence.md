@@ -306,6 +306,44 @@ $$
 So now clearly the two events are not independent of each other. What is happening here? The reason for this is that within event $B$ the number of outcomes where the event $A$ has an influence is the same as for the ones it doesn't. In other words the number of outcomes where the first die is even is 3 and the number of outcomes where the first die is odd is also 3. So the event has no influence. However, in event $C$ the number of outcomes where the first die is even is 2 and the number of outcomes where the first die is odd is 3. So the parity of the first die matters.
 {{< /callout >}}
 
+## Conditional Independence
+
+We have seen that two events $A$ and $B$ are independent if knowing $B$ gives us no information about $A$. However, in the real world, true independence is rare. Often, events are related through some common cause or context. This leads us to the concept of **conditional independence**.
+
+Two events $A$ and $B$ are said to be **conditionally independent** given a third event $C$ if, once we know that $C$ has occurred, knowing $B$ provides no additional information about $A$. Formally, this is defined as:
+
+$$
+\mathbb{P}(A \cap B \mid C) = \mathbb{P}(A \mid C) \cdot \mathbb{P}(B \mid C)
+$$
+
+or equivalently (if $\mathbb{P}(B \cap C) > 0$):
+
+$$
+\mathbb{P}(A \mid B \cap C) = \mathbb{P}(A \mid C)
+$$
+
+This is a "weaker" form of independence because $A$ and $B$ might be dependent in general (unconditionally), but become independent when we fix the condition $C$. This is extremely useful in practice, especially in fields like machine learning (e.g., Naive Bayes classifiers) and causal inference, where we model complex systems by assuming that variables are independent given their direct causes.
+
+{{< callout type="example" title="Shoe Size and Reading Ability" >}}
+Consider two events for a randomly selected child:
+- $A$: The child has a large shoe size.
+- $B$: The child has high reading ability.
+
+Are $A$ and $B$ independent? Surprisingly, no! They are positively correlated. If you pick a child with large feet, they are likely to be older, and older children tend to read better. So, knowing someone has large feet does give you information about their reading ability (it suggests they are older).
+
+$$
+\mathbb{P}(A \cap B) \neq \mathbb{P}(A) \cdot \mathbb{P}(B)
+$$
+
+However, if we condition on the child's **age** (let $C$ be the event "the child is 10 years old"), then shoe size and reading ability likely become independent. Among 10-year-olds, knowing a child has big feet doesn't tell you much about their reading skills.
+
+$$
+\mathbb{P}(A \cap B \mid C) = \mathbb{P}(A \mid C) \cdot \mathbb{P}(B \mid C)
+$$
+
+Here, $A$ and $B$ are **conditionally independent** given $C$, even though they are dependent unconditionally. The variable "Age" is a **confounder** that creates a spurious correlation between shoe size and reading ability.
+{{< /callout >}}
+
 ## Product Rule
 
 By rearranging the formula for conditional probability, we actually get a formula for the intersection of two events, so in other words a formula for when two events happen at the same time. This is called the **product rule**. We get the product rule by rearranging the formula for conditional probability by multiplying both sides by $\mathbb{P}(B)$:
