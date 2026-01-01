@@ -286,6 +286,26 @@ $$
 This is extremely useful for calculating variance, where we need $\mathbb{E}[X^2]$.
 {{< /callout >}}
 
+{{< callout type="example" title="Gambling Game Variance" >}}
+Recall our gambling game where the winnings $X$ are defined by the die roll $\omega$:
+$$
+X(\omega) = \begin{cases}
+-1 & \text{ if } \omega \in \{1, 2, 3\} \\
+0 & \text{ if } \omega = 4 \\
+2 & \text{ if } \omega \in \{5, 6\}
+\end{cases}
+$$
+We already found $\mathbb{E}[X] = 1/6$. To find the variance, we first need $\mathbb{E}[X^2]$. Using LOTUS with $g(x) = x^2$:
+$$
+\begin{align*}
+\mathbb{E}[X^2] &= (-1)^2 \cdot \mathbb{P}(X=-1) + 0^2 \cdot \mathbb{P}(X=0) + 2^2 \cdot \mathbb{P}(X=2) \\
+&= 1 \cdot \frac{3}{6} + 0 \cdot \frac{1}{6} + 4 \cdot \frac{2}{6} \\
+&= \frac{3}{6} + \frac{8}{6} = \frac{11}{6}
+\end{align*}
+$$
+Then $\text{Var}(X) = \mathbb{E}[X^2] - (\mathbb{E}[X])^2 = \frac{11}{6} - (\frac{1}{6})^2 = \frac{66}{36} - \frac{1}{36} = \frac{65}{36} \approx 1.806$.
+{{< /callout >}}
+
 ### Linearity of Expectation
 
 One of the most powerful and useful properties of expectation is linearity. The expectation of a sum is the sum of the expectations even if the random variables are dependent! So we have:
@@ -889,6 +909,29 @@ $$
 where $f_{X|Y}(x|y) = \frac{f_{X,Y}(x,y)}{f_Y(y)}$.
 
 Crucially, $\mathbb{E}[X | Y=y]$ is a number that depends on the value $y$. If we let $Y$ vary, then $\mathbb{E}[X|Y]$ becomes a **random variable** itself! It is a function of $Y$, specifically $g(Y) = \mathbb{E}[X | Y=y]$.
+
+{{< callout type="example" title="Gambling Game Conditioned on Parity" >}}
+Let's use the gambling game again. Let $Y$ be the indicator variable for the event "the die roll is even". So $Y=1$ if $\omega \in \{2, 4, 6\}$ and $Y=0$ if $\omega \in \{1, 3, 5\}$.
+
+If we know the roll is even ($Y=1$), the possible outcomes are $\{2, 4, 6\}$, each with probability $1/3$ (conditioned on $Y=1$). The values of $X$ are $X(2)=-1, X(4)=0, X(6)=2$.
+$$
+\mathbb{E}[X | Y=1] = -1 \cdot \frac{1}{3} + 0 \cdot \frac{1}{3} + 2 \cdot \frac{1}{3} = \frac{1}{3}
+$$
+
+If we know the roll is odd ($Y=0$), the outcomes are $\{1, 3, 5\}$. The values are $X(1)=-1, X(3)=-1, X(5)=2$.
+$$
+\mathbb{E}[X | Y=0] = -1 \cdot \frac{1}{3} + -1 \cdot \frac{1}{3} + 2 \cdot \frac{1}{3} = 0
+$$
+
+We can verify the Law of Total Expectation:
+$$
+\begin{align*}
+\mathbb{E}[X] &= \mathbb{E}[X|Y=1]\mathbb{P}(Y=1) + \mathbb{E}[X|Y=0]\mathbb{P}(Y=0) \\
+&= \frac{1}{3} \cdot \frac{1}{2} + 0 \cdot \frac{1}{2} = \frac{1}{6}
+\end{align*}
+$$
+This matches our original calculation!
+{{< /callout >}}
 
 ### Law of Total Expectation (Tower Property)
 
