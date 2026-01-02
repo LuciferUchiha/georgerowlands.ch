@@ -59,7 +59,9 @@ The choice of prior $\mathbb{P}(\theta)$ is a critical step in Bayesian inferenc
 * **Non-informative Priors**: If we have no prior knowledge, we might want a prior that influences the posterior as little as possible. This is known as the **Principle of Indifference** (attributed to Laplace). For a discrete variable with $K$ outcomes, this implies a uniform distribution ($1/K$).
 * **Maximum Entropy Priors**: A more general principle, proposed by Jaynes, is to choose the prior that has the maximum entropy (is the most "random") while satisfying any known constraints (like a known mean or variance). This ensures we make the fewest assumptions possible. For a bounded interval, this yields a uniform distribution. For a fixed mean and variance on $(-\infty, \infty)$, the maximum entropy distribution is the **Gaussian**. This provides a theoretical justification for using Gaussian priors when we only know the scale of the parameters.
 
+{{< callout type="warning" title="Cromwell's Rule" >}}
 It is also important to observe **Cromwell's Rule**: one should never assign a prior probability of 0 or 1 to any event (unless logically impossible/certain). If the prior is 0, no amount of data can ever change the posterior to be non-zero (as the prior multiplies the likelihood).
+{{< /callout >}}
 
 ## MLE and MAP
 
@@ -206,6 +208,28 @@ $$
 
 where $\lambda = \frac{\sigma_n^2}{\sigma_p^2}$ is the regularization parameter that balances data fit and weight magnitude. Thus, we have shown that **MAP estimation with a Gaussian prior on the weights leads to Ridge Regression**.
 
+Now, let's derive the explicit solution for $\hat{w}_{\text{MAP}}$ by minimizing this objective function. This will reveal the origin of the regularization term $(X^T X + \lambda I)$ often seen in Ridge Regression. We start by taking the gradient of the objective function $J(w)$ with respect to $w$ and setting it to zero:
+
+$$
+\begin{align*}
+\nabla_w J(w) &= \nabla_w \left( (y - Xw)^T (y - Xw) + \lambda w^T w \right) \\
+&= \nabla_w \left( y^T y - 2w^T X^T y + w^T X^T X w + \lambda w^T w \right) \\
+&= -2X^T y + 2X^T X w + 2\lambda w
+\end{align*}
+$$
+
+Setting the gradient to zero:
+
+$$
+\begin{align*}
+-2X^T y + 2X^T X w + 2\lambda w &= 0 \\
+(X^T X + \lambda I) w &= X^T y \\
+w &= (X^T X + \lambda I)^{-1} X^T y
+\end{align*}
+$$
+
+Ridge regression is particularly useful because it is more robust to **multicollinearity** than standard linear regression. Multicollinearity occurs when multiple independent inputs are highly correlated, making the matrix $X^T X$ close to singular and the OLS estimate highly volatile. The regularization term adds a positive constant to the diagonal ($X^T X + \lambda I$), stabilizing the inversion and introducing a bias towards zero to reduce variance.
+
 Another common prior is the Laplace prior, which is like a very peaked distribution around zero. This prior encourages sparsity in the weights, meaning it pushes many weights to be exactly zero. This is useful when we believe that only a few features are relevant for predicting the target. Formally, we assume:
 
 $$
@@ -334,10 +358,14 @@ $$
 \text{Var}[y_*] = \underbrace{\sigma_n^2}_{\text{Aleatoric}} + \underbrace{x_*^T A^{-1} x_*}_{\text{Epistemic}}
 $$
 
-We can interpret these two sources of uncertainty:
+This decomposition can be formally derived using the **Law of Total Variance**:
 
-1.  **Aleatoric Uncertainty ($\sigma_n^2$)**: The inherent noise in the data. This is irreducible; no matter how much data we collect, the noise remains.
-2.  **Epistemic Uncertainty ($x_*^T A^{-1} x_*$)**: The uncertainty in our model parameters $w$. This **can be reduced** by collecting more data (which increases the precision $A$) or by choosing better priors.
+$$
+\text{Var}[y_* \mid x_*] = \underbrace{\mathbb{E}_{w}[\text{Var}[y_* \mid x_*, w]]}_{\text{Aleatoric}} + \underbrace{\text{Var}_{w}[\mathbb{E}[y_* \mid x_*, w]]}_{\text{Epistemic}}
+$$
+
+1. **Aleatoric Uncertainty ($\sigma_n^2$)**: The expected variance of the data given the model parameters. This represents the inherent noise in the data ("irreducible noise"). No matter how much data we collect, this noise remains.
+2. **Epistemic Uncertainty ($x_*^T A^{-1} x_*$)**: The variance of the expected prediction across all possible models (weights). This represents our uncertainty about the model itself ("model uncertainty"). This **can be reduced** by collecting more data (which increases the precision $A$) or by choosing better priors.
 
 The epistemic uncertainty is highest in regions of the input space where we have little or no training data. As we gather more data in those regions, the posterior over weights becomes more concentrated, reducing this uncertainty. This is not easily shown mathematically, but can be visualized by plotting the predictive distribution as we add more data points. Intuitively you can think of it as the model saying "I don't know much about this region, so my predictions here are uncertain and I should be cautious."
 
@@ -423,7 +451,162 @@ $$
 
 These equations constitute the **Recursive Least Squares (RLS)** algorithm, which is widely used in signal processing and control systems for real-time estimation.
 
-### Bayesian Decision Theory
+## Non-linear Regression and Kernels
+
+So far, we have assumed that the relationship between the inputs $\mathbf{x}$ and the target $y$ is linear: $y = \mathbf{w}^T \mathbf{x} + \varepsilon$. However, many real-world relationships are non-linear. To handle this while keeping the convenient mathematical properties of linear regression, we can map the input vectors $\mathbf{x}$ into a high-dimensional feature space using a set of **basis functions** $\boldsymbol{\phi}(\mathbf{x})$.
+
+$$
+\mathbf{x} \in \mathbb{R}^d \xrightarrow{\boldsymbol{\phi}} \boldsymbol{\phi}(\mathbf{x}) \in \mathbb{R}^M
+$$
+
+Our model then becomes a linear combination of these basis functions:
+
+$$
+f(\mathbf{x}) = \mathbf{w}^T \boldsymbol{\phi}(\mathbf{x})
+$$
+
+For example, in **Polynomial Regression**, if $x$ is a scalar, we might choose $\boldsymbol{\phi}(x) = [1, x, x^2, \dots, x^M]^T$. This allows us to fit a polynomial curve to the data while still solving a linear system for the weights $\mathbf{w}$.
+
+### Challenges with Explicit Features
+
+While powerful, explicitly constructing the feature vector $\boldsymbol{\phi}(\mathbf{x})$ has significant drawbacks, particularly as the dimensionality $d$ of the input or the degree $P$ of the polynomial increases:
+
+1. **Exponential Growth**: The number of terms in a polynomial expansion grows exponentially with the degree. For a polynomial of degree $P$ in $d$ dimensions, the number of terms is $\binom{d+P}{P}$. For example, with $d=100$ and $P=3$, the feature dimension $M$ exceeds 170,000. This leads to massive computational and storage costs.
+2. **Overfitting**: High-degree polynomials with many parameters are prone to overfitting, capturing noise rather than the underlying signal.
+3. **Numerical Instability**: High powers of input features can lead to very large or very small numbers, causing numerical precision issues during matrix inversion.
+
+### The Kernel Trick
+
+We can overcome these challenges by observing that in the dual formulation of Ridge Regression (and many other algorithms), the feature vectors only ever appear in the form of **inner products** $\boldsymbol{\phi}(\mathbf{x})^T \boldsymbol{\phi}(\mathbf{x}')$.
+
+This leads to the **Kernel Trick**: we define a **kernel function** $k(\mathbf{x}, \mathbf{x}')$ that computes this inner product directly, without ever evaluating the feature vectors $\boldsymbol{\phi}(\mathbf{x})$.
+
+$$
+k(\mathbf{x}, \mathbf{x}') = \boldsymbol{\phi}(\mathbf{x})^T \boldsymbol{\phi}(\mathbf{x}')
+$$
+
+{{< callout type="example" title="Quadratic Kernel" >}}
+To see how this works, consider a 2-dimensional input $\mathbf{x} = [x_1, x_2]^T$ and a quadratic polynomial kernel $k(\mathbf{x}, \mathbf{z}) = (\mathbf{x}^T \mathbf{z})^2$.
+
+$$
+\begin{align*}
+k(\mathbf{x}, \mathbf{z}) &= (x_1 z_1 + x_2 z_2)^2 \\
+&= x_1^2 z_1^2 + 2 x_1 z_1 x_2 z_2 + x_2^2 z_2^2 \\
+&= \begin{bmatrix} x_1^2 & \sqrt{2} x_1 x_2 & x_2^2 \end{bmatrix} \begin{bmatrix} z_1^2 \\ \sqrt{2} z_1 z_2 \\ z_2^2 \end{bmatrix} \\
+&= \boldsymbol{\phi}(\mathbf{x})^T \boldsymbol{\phi}(\mathbf{z})
+\end{align*}
+$$
+
+Here, the implicit feature mapping is $\boldsymbol{\phi}(\mathbf{x}) = [x_1^2, \sqrt{2} x_1 x_2, x_2^2]^T$. We computed the inner product in this 3-dimensional space by performing a simple scalar operation in the original 2-dimensional space. This gain becomes immense for higher degrees and dimensions.
+{{< /callout >}}
+
+### Dual Representations and Kernel Ridge Regression
+
+We can reformulate the Ridge Regression solution to depend only on the kernel matrix $\mathbf{K}$, where $K_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$. This is often called the **dual formulation**. Recall the primal solution for the weights:
+
+$$
+\mathbf{w} = (\mathbf{X}^T \mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^T \mathbf{y}
+$$
+
+Using the matrix identity $(\mathbf{P}^{-1} + \mathbf{B}^T \mathbf{R}^{-1} \mathbf{B})^{-1} \mathbf{B}^T \mathbf{R}^{-1} = \mathbf{P} \mathbf{B}^T (\mathbf{B} \mathbf{P} \mathbf{B}^T + \mathbf{R})^{-1}$, we can rewrite this as:
+
+$$
+\mathbf{w} = \mathbf{X}^T (\mathbf{X} \mathbf{X}^T + \lambda \mathbf{I})^{-1} \mathbf{y}
+$$
+
+Here, $\mathbf{X} \mathbf{X}^T$ is exactly the kernel matrix $\mathbf{K}$. Let's define the vector of **dual variables** $\boldsymbol{\alpha}$:
+
+$$
+\boldsymbol{\alpha} = (\mathbf{K} + \lambda \mathbf{I})^{-1} \mathbf{y}
+$$
+
+Then the weights are a linear combination of the input data: $\mathbf{w} = \mathbf{X}^T \boldsymbol{\alpha} = \sum_{i=1}^n \alpha_i \mathbf{x}_i$.
+
+For a new input $\mathbf{x}_*$, the prediction becomes a weighted sum of kernel evaluations:
+
+$$
+\hat{y}_* = \mathbf{w}^T \mathbf{x}_* = (\mathbf{X}^T \boldsymbol{\alpha})^T \mathbf{x}_* = \boldsymbol{\alpha}^T \mathbf{X} \mathbf{x}_* = \sum_{i=1}^n \alpha_i k(\mathbf{x}_i, \mathbf{x}_*)
+$$
+
+**Interpretation of $\boldsymbol{\alpha}$**:
+The coefficients $\alpha_i$ determine the influence of each training example $(\mathbf{x}_i, y_i)$ on the prediction.
+*   The prediction at $\mathbf{x}_*$ is a sum of contributions from all training points.
+*   The contribution of point $i$ is proportional to its similarity to the new point, measured by $k(\mathbf{x}_i, \mathbf{x}_*)$.
+*   The weight $\alpha_i$ scales this contribution. Intuitively, $\alpha_i$ is related to the prediction error (residual) for point $i$. Points that are harder to fit or have larger target values tend to have larger $\alpha_i$.
+
+**Relation to Noise ($\sigma_n^2$)**:
+Recall that in Bayesian Linear Regression, the regularization parameter $\lambda$ emerged as the ratio of noise variance to prior variance: $\lambda = \sigma_n^2 / \sigma_p^2$. If we assume a unit prior variance ($\sigma_p^2=1$), then $\lambda$ is exactly the noise variance $\sigma_n^2$.
+Thus, the term $(\mathbf{K} + \lambda \mathbf{I})^{-1}$ in the definition of $\boldsymbol{\alpha}$ can be seen as accounting for the noise in the observations.
+
+### From Kernels to Gaussian Processes
+
+Kernel Ridge Regression gives us a single **point estimate** $\hat{y}_*$ for a new input. However, as Bayesians, we want a **full predictive distribution** to quantify our uncertainty. This leads us to the **Function-Space View**, also known as **Gaussian Processes (GPs)**.
+
+Instead of placing a prior on the weights $\mathbf{w}$ (the **weight-space view**) and deriving the distribution of functions, we can place a prior directly on the function values $f(\mathbf{x})$ themselves (the **function-space view**).
+
+To see the connection, recall that $f(\mathbf{x}) = \mathbf{w}^T \boldsymbol{\phi}(\mathbf{x})$. If we assume a zero-mean isotropic Gaussian prior on the weights $\mathbf{w} \sim \mathcal{N}(\mathbf{0}, \sigma_p^2 \mathbf{I})$, then the vector of function values $\mathbf{f}$ for any set of inputs $\mathbf{X}$ is a linear transformation of $\mathbf{w}$:
+
+$$
+\mathbf{f} = \boldsymbol{\Phi} \mathbf{w}
+$$
+
+Since a linear transformation of a Gaussian is still Gaussian, $\mathbf{f}$ follows a Gaussian distribution:
+
+* **Mean**: $\mathbb{E}[\mathbf{f}] = \boldsymbol{\Phi} \mathbb{E}[\mathbf{w}] = \mathbf{0}$
+* **Covariance**: $\text{Cov}[\mathbf{f}] = \mathbb{E}[\mathbf{f} \mathbf{f}^T] = \boldsymbol{\Phi} \mathbb{E}[\mathbf{w} \mathbf{w}^T] \boldsymbol{\Phi}^T = \boldsymbol{\Phi} (\sigma_p^2 \mathbf{I}) \boldsymbol{\Phi}^T = \sigma_p^2 \boldsymbol{\Phi} \boldsymbol{\Phi}^T = \mathbf{K}$
+
+Here, the kernel matrix $\mathbf{K}$ is defined with the scaling factor $\sigma_p^2$ included, i.e., $K_{ij} = k(\mathbf{x}_i, \mathbf{x}_j) = \sigma_p^2 \boldsymbol{\phi}(\mathbf{x}_i)^T \boldsymbol{\phi}(\mathbf{x}_j)$.
+
+Thus, we have:
+
+$$
+\mathbf{f} \mid \mathbf{X} \sim \mathcal{N}(\mathbf{0}, \mathbf{K})
+$$
+
+The kernel function $k(\mathbf{x}, \mathbf{x}')$ now defines the covariance between any two function values, encoding our assumptions about the smoothness and structure of the function. If $\mathbf{x}$ and $\mathbf{x}'$ are close, $k(\mathbf{x}, \mathbf{x}')$ is large, implying $f(\mathbf{x})$ and $f(\mathbf{x}')$ are highly correlated.
+
+#### Definition of a Gaussian Process
+
+This logic extends to an infinite number of points. A **Gaussian Process** is defined as a collection of random variables, any finite number of which have a joint Gaussian distribution. It effectively defines a distribution over functions $f(\mathbf{x})$ over an **infinite domain**.
+
+$$
+f(\mathbf{x}) \sim \mathcal{GP}(m(\mathbf{x}), k(\mathbf{x}, \mathbf{x}'))
+$$
+
+where $m(\mathbf{x})$ is the mean function (usually assumed to be 0) and $k(\mathbf{x}, \mathbf{x}')$ is the covariance function (kernel).
+
+To make predictions, we consider the joint distribution of the observed noisy targets $\mathbf{y}$ and the function value $f_*$ at a new point $\mathbf{x}_*$.
+Since $\mathbf{y} = \mathbf{f} + \boldsymbol{\varepsilon}$ with $\boldsymbol{\varepsilon} \sim \mathcal{N}(\mathbf{0}, \sigma_n^2 \mathbf{I})$, the covariance of the data includes the noise term:
+
+$$
+\begin{pmatrix} \mathbf{y} \\ f_* \end{pmatrix} \sim \mathcal{N}\left( \begin{pmatrix} \mathbf{0} \\ 0 \end{pmatrix}, \begin{pmatrix} \mathbf{K} + \sigma_n^2 \mathbf{I} & \mathbf{k}_* \\ \mathbf{k}_*^T & k(\mathbf{x}_*, \mathbf{x}_*) \end{pmatrix} \right)
+$$
+
+where $\mathbf{k}_* = [k(\mathbf{x}_1, \mathbf{x}_*), \dots, k(\mathbf{x}_n, \mathbf{x}_*)]^T$.
+
+Conditioning on the observed data $\mathbf{y}$ (using the standard Gaussian formulas), we get the predictive distribution:
+
+$$
+\mathbb{P}(f_* \mid \mathbf{x}_*, \mathbf{X}, \mathbf{y}) = \mathcal{N}(\mu_*, \sigma_*^2)
+$$
+
+with:
+
+$$
+\begin{align*}
+\mu_* &= \mathbf{k}_*^T (\mathbf{K} + \sigma_n^2 \mathbf{I})^{-1} \mathbf{y} \\
+\sigma_*^2 &= k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T (\mathbf{K} + \sigma_n^2 \mathbf{I})^{-1} \mathbf{k}_*
+\end{align*}
+$$
+
+**Unifying the Views**:
+Notice that the mean $\mu_*$ is **identical** to the Kernel Ridge Regression prediction derived earlier, if we identify $\lambda = \sigma_n^2$.
+$$
+\mu_* = \mathbf{k}_*^T \underbrace{(\mathbf{K} + \sigma_n^2 \mathbf{I})^{-1} \mathbf{y}}_{\boldsymbol{\alpha}} = \sum_{i=1}^n \alpha_i k(\mathbf{x}_i, \mathbf{x}_*)
+$$
+The Gaussian Process framework gives us the same best guess (mean) as the dual formulation, but it **also** provides the predictive variance $\sigma_*^2$, which quantifies our uncertainty. This variance grows when the test point $\mathbf{x}_*$ is far from the training data (where $\mathbf{k}_*$ is small), naturally capturing epistemic uncertainty.
+
+## Bayesian Decision Theory
 
 Once we have the predictive posterior distribution $\mathbb{P}(y_* \mid x_*, \mathcal{D})$, how do we use it to make decisions? In many applications, we need to select a specific action or prediction $a$. **Decision Theory** formalizes this by introducing a **loss function** $L(y, a)$ (or equivalently a utility function) that quantifies the cost of taking action $a$ when the true outcome is $y$.
 
@@ -465,16 +648,3 @@ where $\Phi^{-1}$ is the quantile function (inverse CDF) of the standard normal.
 * **If $c_1 < c_2$** (overestimation is worse), we predict lower than the mean (pessimistic/conservative).
 
 This highlights a key advantage of the Bayesian approach: by maintaining the full predictive distribution, we can decouple the *inference* (learning the distribution) from the *decision* (choosing an action based on a specific loss function).
-
-## Kernel Trick and Basis Functions
-
-Linear models are limited to linear relationships. We can extend them by mapping inputs to a high-dimensional feature space using basis functions $\phi(x)$:
-
-$$
-y = w^T \phi(x) + \varepsilon
-$$
-
-However, if $\phi(x)$ is very high-dimensional (or infinite), computing with it is expensive.
-We observe that in the dual representation (function-space view), the solution only depends on inner products $\phi(x)^T \phi(x')$.
-
-We can define a **Kernel Function** $k(x, x') = \phi(x)^T \phi(x')$ to compute this inner product directly. This allows us to work with infinite-dimensional feature spaces (like the RBF kernel) efficiently, leading to **Gaussian Processes**.

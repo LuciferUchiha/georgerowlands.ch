@@ -45,6 +45,8 @@ How do we make predictions with GPs? prior is GP with mean function and covarian
 Closed form formulas for prediction!
 èosterior covariance k’ does not depend on y_A
 
+The Normalized Feature Map
+
 why can we without loss of generality assume zero mean function? show
 
 sample from GP? forward sampling?
