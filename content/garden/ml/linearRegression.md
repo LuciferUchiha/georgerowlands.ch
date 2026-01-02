@@ -55,7 +55,13 @@ $$
 \hat{y}_i = w_0 + w_1 x_i,
 $$
 
-where the predicted price $\hat{y}_i$ is as close as possible to the observed price $y_i$. The difference between the observed price $y_i$ and the predicted price $\hat{y}_i$ is called the **error** for the $i$-th observation. To find the best-fitting line, we minimize the **sum of squared errors** across all observations:
+where the predicted price $\hat{y}_i$ is as close as possible to the observed price $y_i$. The difference between the observed price $y_i$ and the predicted price $\hat{y}_i$ is called the **error** for the $i$-th observation. To find the best-fitting line, we minimize the **sum of squared errors** across all observations. Note that minimizing the sum of squared errors is equivalent to minimizing the **Mean Squared Error (MSE)**, which is often used as the cost function $J(\mathbf{w})$:
+
+$$
+J(\mathbf{w}) = \text{MSE} = \frac{1}{N} \sum_{i=1}^N (y_i - \hat{y}_i)^2
+$$
+
+Since $N$ is a positive constant, minimizing the MSE yields the same parameters as minimizing the sum of squared errors:
 
 $$
 \min_{w_0, w_1} \sum_{i=1}^N \left(y_i - (w_0 + w_1 x_i)\right)^2.
@@ -323,7 +329,40 @@ This allows us to tune hyperparameters without touching the final test set, prev
 
 ## Bias and Variance of OLS Estimator
 
-TODO: derive bias and variance of OLS estimator, use Gauss-Markov theorem to show that OLS is the best linear unbiased estimator. Show the problem of high variance in OLS when features are correlated. In particular some numbers in the matrix inverse can become very large leading to high variance?
+We can analyze the properties of the OLS estimator $\hat{\mathbf{w}} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}$ by looking at its expectation (bias) and variance. Recall that our model assumption is $\mathbf{y} = \mathbf{X}\mathbf{w} + \boldsymbol{\epsilon}$, where $E[\boldsymbol{\epsilon}] = \mathbf{0}$ and $Cov(\boldsymbol{\epsilon}) = \sigma^2\mathbf{I}$.
+
+First, let's check if the estimator is unbiased. We take the expectation of $\hat{\mathbf{w}}$:
+
+$$
+\begin{align*}
+E[\hat{\mathbf{w}}] &= E[(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}] \\
+&= (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T E[\mathbf{y}] \\
+&= (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T E[\mathbf{X}\mathbf{w} + \boldsymbol{\epsilon}] \\
+&= (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T (\mathbf{X}\mathbf{w} + E[\boldsymbol{\epsilon}]) \\
+&= (\mathbf{X}^T\mathbf{X})^{-1}(\mathbf{X}^T\mathbf{X})\mathbf{w} \\
+&= \mathbf{I}\mathbf{w} = \mathbf{w}
+\end{align*}
+$$
+
+Since $E[\hat{\mathbf{w}}] = \mathbf{w}$, the OLS estimator is **unbiased**. This means that on average, across many different training sets, the estimated coefficients will equal the true coefficients.
+
+Next, we calculate the variance of the estimator. The variance of a vector-valued random variable is a covariance matrix.
+
+$$
+\begin{align*}
+Var(\hat{\mathbf{w}}) &= Var((\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}) \\
+&= (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T Var(\mathbf{y}) ((\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T)^T \\
+&= (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T (\sigma^2 \mathbf{I}) \mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1} \\
+&= \sigma^2 (\mathbf{X}^T\mathbf{X})^{-1}(\mathbf{X}^T \mathbf{X})(\mathbf{X}^T\mathbf{X})^{-1} \\
+&= \sigma^2 (\mathbf{X}^T\mathbf{X})^{-1}
+\end{align*}
+$$
+
+So the covariance matrix of the weights is proportional to the inverse of the covariance matrix of the features (Gram matrix). The **Gauss-Markov Theorem** states that under the assumptions of the linear regression model (errors have expectation zero, are uncorrelated and have equal variances), the OLS estimator is the **Best Linear Unbiased Estimator (BLUE)**.
+
+While OLS has the lowest variance among unbiased estimators, this variance can still be very high. This happens when the features are highly correlated (**multicollinearity**). If features are correlated, the columns of $\mathbf{X}$ are nearly linearly dependent. This means the matrix $\mathbf{X}^T\mathbf{X}$ is close to being singular (non-invertible). In terms of eigendecomposition, $\mathbf{X}^T\mathbf{X}$ will have some very small eigenvalues $\lambda_i \approx 0$. The inverse matrix $(\mathbf{X}^T\mathbf{X})^{-1}$ has eigenvalues $1/\lambda_i$. If $\lambda_i$ is small, $1/\lambda_i$ becomes huge. Since the variance of the weights is given by $\sigma^2 (\mathbf{X}^T\mathbf{X})^{-1}$, these huge eigenvalues translate directly into **huge variance** for the estimated coefficients.
+
+Intuitively, if two features are highly correlated, the model can shift a large positive weight to one and a large negative weight to the other without changing the prediction much. This instability means the specific weights we find are very sensitive to the specific noise in our training data.
 
 ## Regularization
 
@@ -357,7 +396,28 @@ $$
 
 Here, we can also see why Ridge helps with multicollinearity. Adding $\lambda\mathbf{I}$ to $\mathbf{X}^T\mathbf{X}$ ensures that the matrix is always invertible as it adds $\lambda$ to the diagonal elements, effectively increasing the eigenvalues of the matrix. This stabilizes the inversion process and reduces the sensitivity of the weights to small changes in the data.
 
-TODO: Derive bias and variance of Ridge estimator.
+We can derive the bias and variance of the Ridge estimator $\hat{\mathbf{w}}_{Ridge} = (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{y}$ just like for the OLS estimator. Let $\mathbf{H}_\lambda = (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{X}$. We start with the bias:
+
+$$
+\begin{align*}
+E[\hat{\mathbf{w}}_{Ridge}] &= E[(\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{y}] \\
+&= (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T \mathbf{X}\mathbf{w} \\
+&= \mathbf{H}_\lambda \mathbf{w}
+\end{align*}
+$$
+
+Since $\mathbf{H}_\lambda \neq \mathbf{I}$ (unless $\lambda=0$), $E[\hat{\mathbf{w}}_{Ridge}] \neq \mathbf{w}$, so Ridge regression is **biased**. The bias is $E[\hat{\mathbf{w}}_{Ridge}] - \mathbf{w} = (\mathbf{H}_\lambda - \mathbf{I})\mathbf{w}$. Note that as $\lambda$ increases, the bias increases because $\mathbf{H}_\lambda$ shrinks the weights more towards zero. Next, we compute the variance:
+
+$$
+\begin{align*}
+Var(\hat{\mathbf{w}}_{Ridge}) &= Var((\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{y}) \\
+&= (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T Var(\mathbf{y}) ((\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T)^T \\
+&= (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T (\sigma^2 \mathbf{I}) \mathbf{X}(\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1} \\
+&= \sigma^2 (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{X}(\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}
+\end{align*}
+$$
+
+It can be shown that the variance of the Ridge estimator is strictly smaller than the variance of the OLS estimator. By introducing a small amount of bias (controlled by $\lambda$), we can drastically reduce the variance, often leading to a lower Mean Squared Error (MSE). This is the essence of the **Bias-Variance Tradeoff** in regularization.
 
 ### Lasso Regression
 
@@ -371,9 +431,35 @@ $$
 
 Unlike Ridge, Lasso does not have a closed-form solution (due to the non-differentiability of the absolute value at 0) Since the $L_1$ term is not differentiable at zero, we cannot use standard gradient descent or closed-form solutions. Instead, we often use **Coordinate Descent**. The idea is to optimize one weight $w_j$ at a time while holding all others fixed. This has a closed-form solution for each step (using the soft-thresholding operator) and converges to the global minimum.
 
- However, it has a very useful property: it promotes **sparsity**. It tends to force the coefficients of less important features to be exactly zero. This effectively performs feature selection.
+However, it has a very useful property: it promotes **sparsity**. It tends to force the coefficients of less important features to be exactly zero. This effectively performs feature selection.
 
-TODO: show mathmatical derivation of why Lasso leads to sparsity.
+To understand why Lasso leads to sparsity, let's consider the simplest case: a single feature with an orthonormal design matrix (so $\mathbf{X}^T\mathbf{X} = 1$). The objective function becomes:
+
+$$
+\min_{w} \frac{1}{2}(y - w)^2 + \lambda |w|
+$$
+
+This is a convex problem, but $|w|$ is not differentiable at $w=0$. We can solve this using subgradients. The optimality condition is that 0 must be in the subdifferential of the objective function with respect to $w$:
+
+$$
+-(y - w) + \lambda \partial |w| = 0 \implies w - y + \lambda s = 0
+$$
+
+where $s \in \partial |w|$ is the subgradient of the absolute value function:
+- $s = \text{sign}(w)$ if $w \neq 0$
+- $s \in [-1, 1]$ if $w = 0$
+
+We can analyze the solution $\hat{w}$ based on the value of $y$:
+1.  **If $y > \lambda$**: We must have $w > 0$, so $s=1$. Then $w - y + \lambda = 0 \implies \hat{w} = y - \lambda$.
+2.  **If $y < -\lambda$**: We must have $w < 0$, so $s=-1$. Then $w - y - \lambda = 0 \implies \hat{w} = y + \lambda$.
+3.  **If $-\lambda \le y \le \lambda$**: We can satisfy the condition with $w=0$. The equation becomes $-y + \lambda s = 0 \implies s = y/\lambda$. Since $|y| \le \lambda$, we have $|s| \le 1$, which is a valid subgradient at 0. So $\hat{w} = 0$.
+
+This solution is known as the **Soft Thresholding** operator:
+$$
+\hat{w} = \text{sign}(y) \max(|y| - \lambda, 0)
+$$
+
+Crucially, whenever the OLS estimate $y$ is small (specifically, within the interval $[-\lambda, \lambda]$), the Lasso estimate is **exactly zero**. This logic extends to the multivariate case (via Coordinate Descent), causing many coefficients to be driven to zero.
 
 {{< figure 
   src="/images/ml/ridgeLasso.png" 
@@ -386,7 +472,7 @@ In the figure above, we can see how Ridge regression shrinks all coefficients to
 - **Ridge ($L_2$)**: The constraint region is a circle. The OLS contours typically touch the circle at a point where $w_j \neq 0$.
 - **Lasso ($L_1$)**: The constraint region is a diamond with corners on the axes. The OLS contours are much more likely to touch the diamond at a **corner** (where one or more $w_j = 0$).
 
-TODO: derive bias and variance of Lasso estimator and compare to Ridge and OLS.
+Unlike OLS and Ridge, Lasso does not have a simple closed-form expression for its bias and variance due to the non-linear selection operation. However, we can characterize them qualitatively:
 
 ## Polynomial Regression
 
