@@ -159,6 +159,12 @@ $$
 Matching the terms yields the expressions for $\boldsymbol{\mu}_{A|B}$ and $\boldsymbol{\Sigma}_{A|B}$. The fact that the result is a quadratic form in the exponent proves that the conditional distribution is indeed Gaussian.
 {{< /callout >}}
 
+{{< figure 
+    src="/images/maths/multivariateGaussianMarginal.png"
+    caption="In the left distribution, $X$ and $Y$ are correlated. After observing $Y = y$, the conditional distribution of $X$ (right) has a mean shifted towards $y$ and reduced variance."
+    alt="Conditional distribution of X given Y in a bivariate Gaussian."
+>}}
+
 ### Affine Transformations
 
 An **affine transformation** is a linear transformation followed by a translation. It takes the form $\mathbf{y} = \mathbf{A}\mathbf{x} + \mathbf{b}$, where $\mathbf{A}$ is a matrix and $\mathbf{b}$ is a vector. This generalizes the univariate case $Y = aX + b$.
