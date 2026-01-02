@@ -52,7 +52,7 @@ The covariance matrix has two important properties:
 In the definition of the PDF above, we require $\boldsymbol{\Sigma}$ to be invertible. A symmetric matrix is invertible if and only if it is **positive definite (PD)** (i.e., $\mathbf{v}^T \boldsymbol{\Sigma} \mathbf{v} > 0$ for all $\mathbf{v} \neq 0$). This is equivalent to saying that all its [eigenvalues](/garden/maths/linearAlgebra/eigendecomposition) are strictly positive. If an eigenvalue were 0, the distribution would be "flat" in the direction of the corresponding eigenvector, effectively collapsing to a lower-dimensional subspace (a "degenerate" Gaussian), and the PDF would not be well-defined in $\mathbb{R}^n$.
 
 {{< figure 
-    src="/images/multivariateGaussian.png"
+    src="/images/maths/multivariateGaussian.png"
     caption="Contour plots of bivariate Gaussian distributions with different covariance matrices. The ellipses represent level sets of the PDF."
     alt="Contour plots of bivariate Gaussian distributions with different covariance matrices."
 >}}

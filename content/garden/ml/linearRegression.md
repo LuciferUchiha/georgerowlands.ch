@@ -5,7 +5,7 @@ weight: 6
 ---
 
 
-Linear regression is one of the most fundamental algorithms in machine learning. It is a linear approach to modeling the relationship between a scalar response (or dependent variable) and one or more explanatory variables (or independent variables). In particular, linear regression attempts to model the relationship by fitting a linear equation to observed data. So we assume that the target value $y$ is a linear combination of the input features $\mathbf{x}$ plus some noise. For a single data point $(\mathbf{x}, y)$, the model is given by:
+Linear regression is one of the most fundamental algorithms in machine learning. It is a linear approach to modeling the relationship between a scalar response (or dependent variable) and one or more explanatory variables (also called features or independent variables). In particular, linear regression attempts to model the relationship by fitting a linear equation to observed data. So we assume that the target value $y$ is a linear combination of the input features $\mathbf{x}$ plus some noise. For a single data point $(\mathbf{x}, y)$, the model is given by:
 
 $$
 y = \mathbf{w}^T\mathbf{x} + \epsilon
@@ -14,7 +14,7 @@ $$
 where:
 - $\mathbf{x} \in \mathbb{R}^D$ is the input feature vector (often with a bias term $x_0 = 1$).
 - $\mathbf{w} \in \mathbb{R}^D$ is the weight vector (parameters) we want to learn.
-- $\epsilon$ is the error term (noise), typically assumed to be Gaussian distributed $\epsilon \sim \mathcal{N}(0, \sigma^2)$.
+- $\epsilon$ is the error term (noise), typically assumed to be Gaussian distributed $\epsilon \sim \mathcal{N}(0, \sigma^2)$. This noise term comes from the assumption that our observations are subject to some random noise or measurement error.
 
 For a dataset of $N$ samples, we can write this in matrix notation:
 
@@ -29,7 +29,7 @@ where:
 
 ## Ordinary Least Squares (OLS)
 
-Now that we have defined the model structure, we need a way to estimate the parameters $\mathbf{w}$. The most common method is **Ordinary Least Squares (OLS)**. The intuition is simple: we want to find the line (or hyperplane) that minimizes the discrepancy between the actual target values and the values predicted by our model.
+Now that we have defined the model structure, we need a way to estimate the parameters $\mathbf{w}$. The most common method is **Ordinary Least Squares (OLS)**. The intuition is simple: we want to find the line (or hyperplane) that minimizes the discrepancy between the actual target values and the values predicted by our model. For now we will ignore the noise term and just focus on fitting the model to the data.
 
 Suppose we are tasked with predicting house prices based on the size of the house. We are given a set of data points $(x_1, y_1), (x_2, y_2), \ldots, (x_N, y_N)$, where:
 - $x_i$: Is the measured size of the house (independent variable, or feature) for the $i$-th data point.
@@ -120,9 +120,9 @@ $$
 \mathbf{w} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}.
 $$
 
-To solve the least squares problem, the columns of $\mathbf{X}$ must be **linearly independent**. Linear independence ensures that $\mathbf{X}^T\mathbf{X}$ is invertible, which is crucial for deriving the solution. For example, if all the feature values $x_i$ are identical (e.g., $x_i = x_j$ for all $i \neq j$), then the column would be a multiple of the first column and the columns of $\mathbf{X}$ would not span a sufficiently large space, making it impossible to uniquely determine the coefficients $\mathbf{w}$. Linear independence of the columns of $\mathbf{X}$ ensures that the data provides enough information to determine a unique solution. If the columns are not linearly independent (or close to it, a condition known as multicollinearity), $\mathbf{X}^T\mathbf{X}$ becomes singular or ill-conditioned. This is a key motivation for **regularization**, where we add a term (like $\lambda \mathbf{I}$) to make the matrix invertible.
+To solve the least squares problem, the columns of $\mathbf{X}$ must be **linearly independent**. Linear independence ensures that $\mathbf{X}^T\mathbf{X}$ is invertible, which is crucial for deriving the solution. For example, if all the feature values $x_i$ are identical (e.g., $x_i = x_j$ for all $i \neq j$), then the column would be a multiple of the first column and the columns of $\mathbf{X}$ would not span a sufficiently large space, making it impossible to uniquely determine the coefficients $\mathbf{w}$. Linear independence of the columns of $\mathbf{X}$ ensures that the data provides enough information to determine a unique solution. If the columns are not linearly independent (or close to it, a condition known as multicollinearity), $\mathbf{X}^T\mathbf{X}$ becomes non-invertible (singular) or ill-conditioned. This is a key motivation for **regularization**, where we add a term (like $\lambda \mathbf{I}$) to make the matrix invertible.
 
-If we look more closely at the what the matrix multiplication is doing we can actually derive an explicit formula for the coefficients $\mathbf{w}$. First let's remember what the matrix multiplication of $\mathbf{X}^T\mathbf{X}$ looks like:
+If we look more closely at the what the matrix multiplication is doing we can actually derive an explicit formula for the coefficients $\mathbf{w}$ when we only have one feature (plus the intercept). This will help us understand what the normal equations are actually doing. First let's remember what the matrix multiplication of $\mathbf{X}^T\mathbf{X}$ looks like:
 
 $$
 \begin{align*}
@@ -244,18 +244,33 @@ $$
 
 While OLS gives us the optimal parameters for the training data, this is not the end of the story. A model that fits the training data perfectly might fail miserably when predicting on new data. This brings us to the core challenge of machine learning.
 
-## Generalization, Overfitting, and Underfitting
+## Overfitting, and Underfitting
 
-The ultimate goal of machine learning is **generalization**: the ability of a model to perform well on unseen data. We typically train our model on a **training set**, but we care about its performance on a held-out **test set**.
+The ultimate goal of machine learning is **generalization**: the ability of a model to perform well on unseen data. We typically train our model on a **training set**, but we care about its performance on a held-out **test set**. There are two common pitfalls that can prevent good generalization:
+- **Underfitting**: Occurs when the model is too simple to capture the underlying structure of the data. For example, trying to fit a straight line to data that is clearly quadratic. The model has high **bias** and fails to learn the patterns in the training data. The mathmatical definition for a model/estimator is:
 
-*   **Underfitting**: Occurs when the model is too simple to capture the underlying structure of the data. For example, trying to fit a straight line to data that is clearly quadratic. The model has high **bias**.
-*   **Overfitting**: Occurs when the model is too complex and learns the noise in the training data as if it were signal. The model fits the training data perfectly but fails to generalize to new data. The model has high **variance**.
+$$
+\text{Bias} = E[\hat{f}(\mathbf{x})] - f(\mathbf{x})
+$$
 
-{{< figure src="/images/ml/overfitting_underfitting.png" caption="Illustration of Underfitting (High Bias), Optimal Fit, and Overfitting (High Variance)." >}}
+where $\hat{f}(\mathbf{x})$ is the prediction of the model and $f(\mathbf{x})$ is the true underlying function. High bias means that the model's predictions are systematically off from the true values.
 
-## Bias-Variance Tradeoff
+- **Overfitting**: Occurs when the model is too complex and learns the noise in the training data as if it were signal. The model fits the training data perfectly but fails to generalize to new data. The model has high **variance**. The mathematical definition for variance is:
 
-The relationship between model complexity and error is quantified by the **Bias-Variance Decomposition**. The expected test error can be decomposed into three terms: **Bias**, **Variance**, and **Irreducible Error**. 
+$$
+\text{Variance} = E[(\hat{f}(\mathbf{x}) - E[\hat{f}(\mathbf{x})])^2]
+$$
+
+where $\hat{f}(\mathbf{x})$ is the prediction of the model. High variance means that the model's predictions vary significantly with different training sets.
+
+{{< figure 
+  src="/images/ml/overfittingUnderfitting.svg" 
+  caption="Illustration of Underfitting (High Bias), Optimal Fit, and Overfitting (High Variance)." 
+  alt="Illustration of Underfitting (High Bias), Optimal Fit, and Overfitting (High Variance)."
+  width="600"
+>}}
+
+This is also what ultimately leads us to the **Bias-Variance Tradeoff**. As we increase model complexity (e.g., adding more features, using higher degree polynomials), bias typically decreases, but variance increases. The goal is to find the sweet spot that minimizes the total error. The relationship between model complexity and error can also be quantified by the **Bias-Variance Decomposition**. The expected test error can be decomposed into three terms: **Bias**, **Variance**, and **Irreducible Error**. 
 
 Let's assume the true relationship is $y = f(\mathbf{x}) + \epsilon$, where $E[\epsilon] = 0$ and $Var(\epsilon) = \sigma^2$. We estimate $f(\mathbf{x})$ with our model $\hat{f}(\mathbf{x})$. We want to analyze the expected squared error at a query point $\mathbf{x}$:
 
@@ -294,43 +309,37 @@ E[(y - \hat{f}(\mathbf{x}))^2] = \underbrace{(f(\mathbf{x}) - E[\hat{f}(\mathbf{
 $$
 
 We can interpret the three terms as follows:
+- **Bias**: The difference between the average prediction of our model and the correct value. High bias means the model is too simple to capture the underlying structure of the data (underfitting).
+- **Variance**: The variability of the model prediction for a given data point across different realizations of the training set. High variance means the model is too sensitive to the noise in the training data (overfitting).
+- **Irreducible Error**: The noise inherent in the problem itself. We cannot reduce this term.
 
-*   **Bias**: The difference between the average prediction of our model and the correct value. High bias means the model is too simple to capture the underlying structure of the data (underfitting).
-*   **Variance**: The variability of the model prediction for a given data point across different realizations of the training set. High variance means the model is too sensitive to the noise in the training data (overfitting).
-*   **Irreducible Error**: The noise inherent in the problem itself. We cannot reduce this term.
-
-As we increase model complexity (e.g., adding more features, using higher degree polynomials), bias typically decreases, but variance increases. The goal is to find the sweet spot that minimizes the total error.
-
-### Cross-Validation
-
-To estimate the test error and find the optimal model complexity (or hyperparameters), we use **Cross-Validation**. The most common method is **$k$-fold Cross-Validation**:
+A common technique to assess model performance and generalization is to split the dataset into training and test sets. The model is trained on the training set, and its performance is evaluated on the test set using metrics like Mean Squared Error (MSE) or R-squared ($R^2$). Performing this split once can lead to high variance in the performance estimate, especially with small datasets, so instead we often use cross-validation, where the data is split multiple times to get a more robust estimate of test error. This helps in selecting model hyperparameters not just based on training performance but also on validation performance. The most common method is **$k$-fold Cross-Validation**:
 
 1.  Split the training data into $k$ equal-sized folds.
-2.  For each fold $i \in \{1, \dots, k\}$:
-    *   Train the model on the other $k-1$ folds.
-    *   Validate (test) the model on fold $i$.
+2.  For each fold $i \in \{1, \dots, k\}$ we validate (test) the model on fold $i$ and we train the model on the other $k-1$ folds.
 3.  Average the validation errors to get an estimate of the test error.
 
-This allows us to tune hyperparameters (like the regularization strength $\lambda$ in Ridge/Lasso) without touching the final test set, preventing data leakage.
+This allows us to tune hyperparameters without touching the final test set, preventing data leakage.
+
+## Bias and Variance of OLS Estimator
+
+TODO: derive bias and variance of OLS estimator, use Gauss-Markov theorem to show that OLS is the best linear unbiased estimator. Show the problem of high variance in OLS when features are correlated. In particular some numbers in the matrix inverse can become very large leading to high variance?
 
 ## Regularization
 
-We established that high variance (overfitting) is a major issue, often caused by the model being too complex or the data being insufficient. In Linear Regression, this often manifests when features are highly correlated (**multicollinearity**), causing the matrix $\mathbf{X}^T\mathbf{X}$ to be close to singular (non-invertible), making the OLS solution unstable. Small changes in the data can lead to large changes in the weights $\mathbf{w}$, which is a symptom of high variance (overfitting).
+So we have established that OLS is unbiased and has the lowest variance among all linear unbiased estimators (Gauss-Markov theorem). However, in practice, OLS can still lead to overfitting, especially when when features are highly correlated (**multicollinearity**), causing the matrix $\mathbf{X}^T\mathbf{X}$ to be close to singular (non-invertible), making the OLS solution unstable. So small changes in the data can lead to large changes in the weights $\mathbf{w}$, due to the high variance of the estimator.
 
-To combat this, we can add a regularization term to the loss function that penalizes large weights.
+To combat this, we can introduce **regularization** to trade introduce some bias in exchange for a significant reduction in variance. Regularization adds a penalty term to the loss function that discourages complex models. This helps prevent overfitting and improves generalization.
 
-### Ridge Regression ($L_2$ Regularization)
+### Ridge Regression
 
-Ridge regression adds a penalty proportional to the square of the magnitude of the coefficients.
+An effective way to reduce variance and handle multicollinearity is **Ridge Regression** (also known as $L_2$ regularization). Here, we modify the OLS loss function by adding a penalty term proportional to the square of the $L_2$ norm of the weight vector $\mathbf{w}$. The idea is to discourage complex models by penalizing large coefficients, as if we have a large weight then due to the nature of matrix multiplication a small change in the input features can lead to a large change in the output prediction.
 
 $$
 \mathcal{L}_{Ridge}(\mathbf{w}) = ||\mathbf{y} - \mathbf{X}\mathbf{w}||^2 + \lambda ||\mathbf{w}||_2^2
 $$
 
-where $\lambda \geq 0$ is a hyperparameter controlling the strength of regularization.
-
-**Closed Form Solution:**
-We can derive the solution by taking the gradient and setting it to zero:
+where $\lambda \geq 0$ is a hyperparameter controlling the strength of regularization. Just like for OLS, we can derive a closed-form solution for Ridge Regression. We can derive the solution by taking the gradient and setting it to zero:
 
 $$
 \begin{align*}
@@ -340,27 +349,19 @@ $$
 \end{align*}
 $$
 
+Solving for $\mathbf{w}$ gives us the Ridge Regression estimator:
+
 $$
 \hat{\mathbf{w}}_{Ridge} = (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{y}
 $$
 
-Adding $\lambda\mathbf{I}$ to $\mathbf{X}^T\mathbf{X}$ ensures that the matrix is always invertible (it adds $\lambda$ to the eigenvalues), solving the multicollinearity problem and reducing variance at the cost of introducing some bias.
+Here, we can also see why Ridge helps with multicollinearity. Adding $\lambda\mathbf{I}$ to $\mathbf{X}^T\mathbf{X}$ ensures that the matrix is always invertible as it adds $\lambda$ to the diagonal elements, effectively increasing the eigenvalues of the matrix. This stabilizes the inversion process and reduces the sensitivity of the weights to small changes in the data.
 
-**Interpretation:**
-The term $\lambda ||\mathbf{w}||_2^2$ penalizes large weights. By forcing weights to be small, we prevent the model from fitting the noise in the training data (overfitting). This directly relates to the **Bias-Variance Tradeoff**:
-*   **Low $\lambda$**: The model behaves like OLS. Low bias, high variance (prone to overfitting).
-*   **High $\lambda$**: The weights are shrunk towards zero. High bias (underfitting), low variance.
+TODO: Derive bias and variance of Ridge estimator.
 
-**Bias and Variance of Ridge Estimator:**
-The Ridge estimator is $\hat{\mathbf{w}}_{Ridge} = (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}\mathbf{X}^T\mathbf{y}$.
-It can be shown that:
-*   **Bias**: $E[\hat{\mathbf{w}}_{Ridge}] - \mathbf{w} = - \lambda (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1} \mathbf{w} \neq 0$. Ridge is a **biased estimator**.
-*   **Variance**: $Var(\hat{\mathbf{w}}_{Ridge}) = \sigma^2 (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1} \mathbf{X}^T\mathbf{X} (\mathbf{X}^T\mathbf{X} + \lambda\mathbf{I})^{-1}$.
-As $\lambda$ increases, the bias magnitude increases, but the variance decreases (the matrix inverse terms become smaller).
+### Lasso Regression
 
-### Lasso Regression ($L_1$ Regularization)
-
-A limitation of Ridge Regression is that it shrinks all weights towards zero but rarely sets them *exactly* to zero. This means the final model still includes all input features, which can be a problem for **interpretability** if we have thousands of features.
+A limitation of Ridge Regression is that it shrinks all weights towards zero but rarely sets them exactly to zero. This means the final model can still includes all input features, which isn't ideal if features are correlated, irrelevant, or redundant. This can also be a problem for **interpretability** if we have thousands of features.
 
 **Lasso** (Least Absolute Shrinkage and Selection Operator) addresses this by adding a penalty proportional to the absolute value of the coefficients. This encourages **sparsity**, meaning many weights become exactly zero. This effectively performs **feature selection**, giving us a simpler, more interpretable model that only relies on the most important features.
 
@@ -368,35 +369,45 @@ $$
 \mathcal{L}_{Lasso}(\mathbf{w}) = ||\mathbf{y} - \mathbf{X}\mathbf{w}||^2 + \lambda ||\mathbf{w}||_1
 $$
 
-**Sparsity:**
-Unlike Ridge, Lasso does not have a closed-form solution (due to the non-differentiability of the absolute value at 0). However, it has a very useful property: it promotes **sparsity**. It tends to force the coefficients of less important features to be exactly zero. This effectively performs feature selection.
+Unlike Ridge, Lasso does not have a closed-form solution (due to the non-differentiability of the absolute value at 0) Since the $L_1$ term is not differentiable at zero, we cannot use standard gradient descent or closed-form solutions. Instead, we often use **Coordinate Descent**. The idea is to optimize one weight $w_j$ at a time while holding all others fixed. This has a closed-form solution for each step (using the soft-thresholding operator) and converges to the global minimum.
 
-**Solving Lasso:**
-Since the $L_1$ term is not differentiable at zero, we cannot use standard gradient descent or closed-form solutions. Instead, we often use **Coordinate Descent**. The idea is to optimize one weight $w_j$ at a time while holding all others fixed. This has a closed-form solution for each step (using the soft-thresholding operator) and converges to the global minimum.
+ However, it has a very useful property: it promotes **sparsity**. It tends to force the coefficients of less important features to be exactly zero. This effectively performs feature selection.
 
-**Geometric Interpretation:**
-Why does $L_1$ lead to sparsity while $L_2$ does not?
-Imagine the contours of the OLS loss function (ellipses) and the constraint region defined by the regularization term ($||\mathbf{w}|| \leq C$).
-*   **Ridge ($L_2$)**: The constraint region is a circle (or hypersphere). The OLS contours typically touch the circle at a point where $w_j \neq 0$.
-*   **Lasso ($L_1$)**: The constraint region is a diamond (or polytope) with corners on the axes. The OLS contours are much more likely to touch the diamond at a **corner** (where one or more $w_j = 0$).
+TODO: show mathmatical derivation of why Lasso leads to sparsity.
 
-{{< figure src="/images/ml/l1_vs_l2.png" caption="Geometric interpretation of L1 (Lasso) vs L2 (Ridge) regularization. The L1 diamond shape encourages solutions on the axes (sparse)." >}}
+{{< figure 
+  src="/images/ml/ridgeLasso.png" 
+  caption="Comparison of Ridge and Lasso Regression. Ridge shrinks coefficients but keeps all features, while Lasso sets some coefficients to zero, effectively performing feature selection." 
+  alt="Comparison of Ridge and Lasso Regression. Ridge shrinks coefficients but keeps all features, while Lasso sets some coefficients to zero, effectively performing feature selection."
+  width="600"
+>}}
+
+In the figure above, we can see how Ridge regression shrinks all coefficients towards zero but keeps them non-zero, while Lasso regression sets some coefficients exactly to zero, effectively selecting a subset of features. Visuallly, if we imagine the contours of the OLS loss function (ellipses) and the constraint region defined by the regularization term ($||\mathbf{w}|| \leq C$).
+- **Ridge ($L_2$)**: The constraint region is a circle. The OLS contours typically touch the circle at a point where $w_j \neq 0$.
+- **Lasso ($L_1$)**: The constraint region is a diamond with corners on the axes. The OLS contours are much more likely to touch the diamond at a **corner** (where one or more $w_j = 0$).
+
+TODO: derive bias and variance of Lasso estimator and compare to Ridge and OLS.
 
 ## Polynomial Regression
 
 Regularization helps us constrain a model that is too complex. But what if our linear model is too simple (high bias)? What if the relationship between our features and target is fundamentally non-linear? For example, what if the data follows a parabolic curve? We can still use the machinery of linear regression by transforming the input features into a higher-dimensional space using a **feature map** $\phi(\mathbf{x})$. This is known as **basis function expansion**.
 
-{{< figure src="/images/ml/polynomial_regression.png" caption="Fitting a non-linear function using polynomial features." >}}
+{{< figure
+  src="/images/ml/polynomialRegression.png" 
+  caption="The polynomial of degree 15 fits the training data perfectly but generalizes poorly to new data (overfitting). The polynomial of degree 4 captures the underlying trend better."
+  alt="The polynomial of degree 15 fits the training data perfectly but generalizes poorly to new data (overfitting). The polynomial of degree 4 captures the underlying trend better."
+  width="600"
+>}}
 
-For a 1D input $x$, we can use polynomial features:
+If we have a single feature $x$, we can create polynomial features up to degree $d$ by using the feature map:
 
 $$
-\phi(x) = [1, x, x^2, \dots, x^M]^T
+\phi(x) = [1, x, x^2, \dots, x^d]^T.
 $$
 
 The model becomes:
 $$
-y = \mathbf{w}^T\phi(x) = w_0 + w_1 x + w_2 x^2 + \dots + w_M x^M
+y = \mathbf{w}^T\phi(x) = w_0 + w_1 x + w_2 x^2 + \dots + w_d x^d
 $$
 
 This is still a **linear model** because it is linear in the parameters $\mathbf{w}$, even though it is non-linear in $x$. We can solve this using OLS with the transformed design matrix $\boldsymbol{\Phi}$.
@@ -404,10 +415,7 @@ This is still a **linear model** because it is linear in the parameters $\mathbf
 While polynomial regression allows us to fit non-linear data, it has significant drawbacks:
 
 1.  **Overfitting**: High-degree polynomials can fit the training data perfectly but oscillate wildly between data points (Runge's phenomenon), leading to terrible generalization.
-2.  **Non-local effects**: Changing a data point in one region affects the polynomial fit everywhere.
-3.  **Extrapolation**: Polynomials go to $\pm \infty$ as $x \to \pm \infty$, making them poor for extrapolation.
+2.  **Non-local effects**: Changing a data point in one region affects the polynomial fit everywhere. You can think of this if the function where like a piece of string that is fixed at certain points (the data points) but can move freely in between. So if we change one of the fixed points the whole string will be affected.
+3.  **Curse of Dimensionality**: The number of polynomial features grows rapidly with the number of original features and the degree of the polynomial, leading to computational challenges and overfitting. Specifically, for $n$ features and polynomial degree $d$, the number of polynomial features is given by the binomial coefficient $\binom{n+d}{d}$, which grows combinatorially with $n$ and $d$, specifically $O(n^d)$, which can become infeasible for even moderate $n$ and $d$.
 
-To address these issues, we often need to carefully tune the degree $M$ or use strong regularization. Later, we will see how **Gaussian Processes** provide a more principled, non-parametric approach to regression that avoids the need to manually specify basis functions.
-
-**Curse of Dimensionality:**
-A major practical issue with polynomial regression is the explosion in the number of features. If we have $D$ original features and want to include all polynomial terms up to degree $M$, the number of features grows as $O(D^M)$. This makes the model computationally expensive and prone to severe overfitting without massive amounts of data. 
+To address these issues, we often need to carefully tune the degree $d$ or use strong regularization. Later, we will see how **Gaussian Processes** provide a more principled, non-parametric approach to regression that avoids the need to manually specify basis functions.
