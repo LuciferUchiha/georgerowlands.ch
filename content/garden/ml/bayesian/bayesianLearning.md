@@ -4,76 +4,6 @@ type: docs
 weight: 1
 ---
 
-/garden/maths/probabilitystatistics/multivariategaussian/ might be useful and http://localhost:1313/garden/maths/probabilitystatistics/estimators/#maximum-likelihood-estimation-mle
-
----
-title: Bayesian Learning
-type: docs
-weight: 1
----
-
-<!--
-Rough Outline:
-probabilistic inference
-
-bayesian inference with priors and posteriors. prior is prob of model?, likelihood is prob of data given model? posterior is prob of model given data?
-
-{{< figure 
-    src="/images/ml/bayesPriorLikelihoodPosterior.webp"
-    caption="Bayes' Theorem relates the prior, likelihood, and posterior distributions."
-    alt="Bayes' Theorem relates the prior, likelihood, and posterior distributions."
->}}
-
-conjugate priors and 
-
-Reminder of MLE and then introduce MAP as MLE with prior as regularization
-
-bayesian linear regression
-
-{{< figure 
-    src="/images/ml/bayesLinearRegression.gif"
-    caption="Bayesian Linear Regression with on the right the samples from the posterior distribution over functions as new data points are observed. On the left, the uncertainty in the weights is shown."
-    alt="Bayesian Linear Regression with on the right the samples from the posterior distribution over functions as new data points are observed. On the left, the uncertainty in the weights is shown."
->}}
-
-continos model assumptions?
-seen linear regresion using OLS (not connected to probabilistic view yet)
-
-bayesian graphical model introduction and then show the graph for bayesian linear regression
-
-MLE results in linear regression?
-
-OLSE gauss markov theorem?
-
-Then use MAP with gaussian prior to get ridge regression show full derivation of posterior and predictive posterior distribution
-
-Making predictions in BLR for test points using poseterior and f^*
-
-Ridge regression can be viewed as approximating the full posterior by (placing all mass on) its mode???
-
-ridge predicts using MAP estimate of weights, Bayesian linear regression predicts using full posterior predictive distribution i.e average over all possible weights weighted by their posterior probability? This part is key to
-
-somewhere epistemic vs aleatoric uncertainty
-
-aleatoric can't be reduced with more data (inherent noise in data) epistemic can be reduced with more data (uncertainty in model parameters) are additive in predictive uncertainty?
-
-{{< figure 
-    src="/images/ml/bayesAleatoricEpistemicUncertainty.png"
-    caption="Predictive distribution in Bayesian Linear Regression showing uncertainty."
-    alt="Predictive distribution in Bayesian Linear Regression showing uncertainty."
->}}
-
-lasso regression as laplace prior???
-
-How do we choose hyperparameters like the prior variance or noise variance? one way would be to use cross validation but in bayesian approach we can also do evidence maximization / type II MLE where we treat these hyperparameters as parameters to be estimated by maximizing the marginal likelihood (evidence) of the data integrating out the model parameters. Define evidence and show how to compute it for bayesian linear regression. then show how to optimize it w.r.t hyperparameters?
-
-recursive bayesian learning(Online Bayesian Linear Regression) this is where we update our posterior as new data comes in rather than recomputing from scratch each time what performance benefits does it give us?
-
-If d is large, computing the inverse every round is very expensive. Can you use the recursive structure
-you found in the previous question to reduce the computational complexity of every round to O(d^2)? Shermann-Morrison formula or woodbury identity?
-
-Bayesian decision theory, pick the action that minimizes the expected cost for sqaured loss this is the mean of the predictive posterior what about for asymmetric loss functions with over and underestimation costs?
-
 Can apply linear method (like BLR) on nonlinearly
 transformed data. However, computational cost increases
 with dimensionality of the feature space!
@@ -86,9 +16,6 @@ weight vs function space view?
 prediction in weight space vs function space? Were given X, y and want to predict y^* for new x^*
 
 infinite domains resulting in gaussian processes
-
-so much to cover here!
--->
 
 ## Probabilistic Inference
 
@@ -123,6 +50,16 @@ Computing the posterior often involves a difficult integration for the marginal 
 If the posterior distribution $\mathbb{P}(\theta \mid \mathcal{D})$ ends up being in the same probability distribution family as the prior $\mathbb{P}(\theta)$, we say the prior is **conjugate** to the likelihood. This allows for closed-form updates: we simply update the parameters of the distribution (e.g., mean and variance in the Gaussian case) rather than computing complex integrals. 
 
 One common example is the **Gaussian-Gaussian** conjugacy, where a Gaussian prior combined with a Gaussian likelihood results in a Gaussian posterior.
+
+### Where do priors come from?
+
+The choice of prior $\mathbb{P}(\theta)$ is a critical step in Bayesian inference. Different priors can lead to different posteriors, especially when data is scarce.
+
+* **Subjective Priors**: These encode specific domain knowledge or expert opinion. For example, a doctor might have a strong prior belief about the prevalence of a disease based on historical data.
+* **Non-informative Priors**: If we have no prior knowledge, we might want a prior that influences the posterior as little as possible. This is known as the **Principle of Indifference** (attributed to Laplace). For a discrete variable with $K$ outcomes, this implies a uniform distribution ($1/K$).
+* **Maximum Entropy Priors**: A more general principle, proposed by Jaynes, is to choose the prior that has the maximum entropy (is the most "random") while satisfying any known constraints (like a known mean or variance). This ensures we make the fewest assumptions possible. For a bounded interval, this yields a uniform distribution. For a fixed mean and variance on $(-\infty, \infty)$, the maximum entropy distribution is the **Gaussian**. This provides a theoretical justification for using Gaussian priors when we only know the scale of the parameters.
+
+It is also important to observe **Cromwell's Rule**: one should never assign a prior probability of 0 or 1 to any event (unless logically impossible/certain). If the prior is 0, no amount of data can ever change the posterior to be non-zero (as the prior multiplies the likelihood).
 
 ## MLE and MAP
 
@@ -295,6 +232,44 @@ $$
 
 This is exactly the objective for **Lasso Regression**! Thus, we have shown that **MAP estimation with a Laplace prior on the weights leads to Lasso Regression**.
 
+## Properties of the Gaussian
+
+Before deriving Bayesian Linear Regression, it is useful to recall some key properties of the Multivariate Gaussian distribution that make it tractable for inference. A Gaussian random vector $\mathbf{x} \sim \mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$ has the PDF:
+
+$$
+\mathcal{N}(\mathbf{x} \mid \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \frac{1}{\sqrt{\det(2\pi\boldsymbol{\Sigma})}} \exp\left( -\frac{1}{2}(\mathbf{x}-\boldsymbol{\mu})^T \boldsymbol{\Sigma}^{-1}(\mathbf{x}-\boldsymbol{\mu}) \right)
+$$
+
+The precision matrix $\boldsymbol{\Lambda} = \boldsymbol{\Sigma}^{-1}$ is often used in Bayesian derivations. Crucially, Gaussians are **closed under marginalization and conditioning**.
+
+Given a partitioned Gaussian vector $\mathbf{x} = \begin{pmatrix} \mathbf{x}_A \\ \mathbf{x}_B \end{pmatrix}$ with $\boldsymbol{\mu} = \begin{pmatrix} \boldsymbol{\mu}_A \\ \boldsymbol{\mu}_B \end{pmatrix}$ and $\boldsymbol{\Sigma} = \begin{pmatrix} \boldsymbol{\Sigma}_{AA} & \boldsymbol{\Sigma}_{AB} \\ \boldsymbol{\Sigma}_{BA} & \boldsymbol{\Sigma}_{BB} \end{pmatrix}$:
+
+1. **Marginalization**: The marginal distribution of any subset of variables is also Gaussian.
+
+$$
+\mathbb{P}(\mathbf{x}_A) = \mathcal{N}(\mathbf{x}_A \mid \boldsymbol{\mu}_A, \boldsymbol{\Sigma}_{AA})
+$$
+
+This is intuitive: we simply drop the variables we don't care about and the corresponding rows/columns in the covariance matrix.
+
+2. **Conditioning**: The conditional distribution of one subset given another is also Gaussian.
+
+$$
+\mathbb{P}(\mathbf{x}_A \mid \mathbf{x}_B) = \mathcal{N}(\mathbf{x}_A \mid \boldsymbol{\mu}_{A|B}, \boldsymbol{\Sigma}_{A|B})
+$$
+
+where:
+
+$$
+\boldsymbol{\mu}_{A|B} = \boldsymbol{\mu}_A + \boldsymbol{\Sigma}_{AB}\boldsymbol{\Sigma}_{BB}^{-1}(\mathbf{x}_B - \boldsymbol{\mu}_B)
+$$
+
+$$
+\boldsymbol{\Sigma}_{A|B} = \boldsymbol{\Sigma}_{AA} - \boldsymbol{\Sigma}_{AB}\boldsymbol{\Sigma}_{BB}^{-1}\boldsymbol{\Sigma}_{BA}
+$$
+
+These properties allow us to perform inference in closed form. In Bayesian Linear Regression, the joint distribution of the weights and the target values is Gaussian, so the posterior (conditional) and predictive (marginal) distributions are also Gaussian.
+
 ## Bayesian Linear Regression
 
 While MLE and MAP provide useful point estimates, they discard valuable information about the reliability of those estimates. **Bayesian Linear Regression (BLR)** addresses this by computing the **full posterior distribution** $\mathbb{P}(w \mid X, y)$ rather than a single "best" weight vector. This distribution captures our uncertainty, which is crucial when data is scarce or noisy. A wide posterior indicates low confidence, while a narrow posterior suggests high confidence.
@@ -447,6 +422,49 @@ m_{N+1} = m_N + S_{N+1} \sigma_n^{-2} x_{N+1} (y_{N+1} - m_N^T x_{N+1})
 $$
 
 These equations constitute the **Recursive Least Squares (RLS)** algorithm, which is widely used in signal processing and control systems for real-time estimation.
+
+### Bayesian Decision Theory
+
+Once we have the predictive posterior distribution $\mathbb{P}(y_* \mid x_*, \mathcal{D})$, how do we use it to make decisions? In many applications, we need to select a specific action or prediction $a$. **Decision Theory** formalizes this by introducing a **loss function** $L(y, a)$ (or equivalently a utility function) that quantifies the cost of taking action $a$ when the true outcome is $y$.
+
+The optimal action is the one that minimizes the **expected loss** (or risk) under the posterior distribution:
+
+$$
+a^*(x_*) = \arg\min_{a} \mathbb{E}_{y_* \sim \mathbb{P}(y_* \mid x_*, \mathcal{D})} [L(y_*, a)] = \arg\min_{a} \int L(y_*, a) \mathbb{P}(y_* \mid x_*, \mathcal{D}) dy_*
+$$
+
+Different loss functions lead to different optimal decisions:
+
+1. **Squared Loss**: $L(y, a) = (y - a)^2$.
+   Minimizing the expected squared error leads to the **posterior mean**:
+
+$$
+a^*(x_*) = \mathbb{E}[y_* \mid x_*, \mathcal{D}]
+$$
+
+This justifies why we often use the mean of the predictive distribution as our point prediction.
+
+2. **Absolute Loss**: $L(y, a) = |y - a|$.
+   Minimizing the expected absolute error leads to the **posterior median**. This is more robust to outliers than the mean.
+
+3. **Asymmetric Loss**: Sometimes overestimation is more costly than underestimation (or vice versa). Consider the loss:
+
+$$
+L(y, a) = c_1 \max(y-a, 0) + c_2 \max(a-y, 0)
+$$
+
+where $c_1$ is the cost of underestimation and $c_2$ is the cost of overestimation.
+If the predictive distribution is Gaussian $y_* \sim \mathcal{N}(\mu, \sigma^2)$, the optimal decision shifts away from the mean:
+
+$$
+a^*(x_*) = \mu + \sigma \Phi^{-1}\left(\frac{c_1}{c_1 + c_2}\right)
+$$
+
+where $\Phi^{-1}$ is the quantile function (inverse CDF) of the standard normal.
+* **If $c_1 > c_2$** (underestimation is worse), we predict higher than the mean (optimistic/safe).
+* **If $c_1 < c_2$** (overestimation is worse), we predict lower than the mean (pessimistic/conservative).
+
+This highlights a key advantage of the Bayesian approach: by maintaining the full predictive distribution, we can decouple the *inference* (learning the distribution) from the *decision* (choosing an action based on a specific loss function).
 
 ## Kernel Trick and Basis Functions
 
