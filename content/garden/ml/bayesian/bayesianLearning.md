@@ -4,21 +4,6 @@ type: docs
 weight: 1
 ---
 
-Can apply linear method (like BLR) on nonlinearly
-transformed data. However, computational cost increases
-with dimensionality of the feature space!
-
-kernel trick Express problem s.t. it only depends on inner products
-§ Replace inner products by kernels
-
-weight vs function space view?
-
-prediction in weight space vs function space? Were given X, y and want to predict y^* for new x^*
-
-infinite domains resulting in gaussian processes
-
-## Probabilistic Inference
-
 Probabilistic inference is the process of updating our beliefs about uncertain quantities (such as model parameters or future observations) in light of new evidence (data). Unlike logical inference, which deals with certainties (such as $A \implies B$), probabilistic inference deals with plausibilities.
 
 As humans, we make plausible inferences constantly. For example, if we see wet ground, we might infer it rained. If we then check and see the sky is blue, we might update that belief to someone used sprinklers instead. 
@@ -500,15 +485,17 @@ $$
 Here, the implicit feature mapping is $\boldsymbol{\phi}(\mathbf{x}) = [x_1^2, \sqrt{2} x_1 x_2, x_2^2]^T$. We computed the inner product in this 3-dimensional space by performing a simple scalar operation in the original 2-dimensional space. This gain becomes immense for higher degrees and dimensions.
 {{< /callout >}}
 
-### Dual Representations and Kernel Ridge Regression
+### Kernel Ridge Regression
 
-We can reformulate the Ridge Regression solution to depend only on the kernel matrix $\mathbf{K}$, where $K_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$. This is often called the **dual formulation**. Recall the primal solution for the weights:
+We can reformulate the Ridge Regression solution to depend only on the kernel matrix $\mathbf{K}$, where $K_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$. This is often called the **dual formulation**. 
+
+Recall the primal solution for the weights:
 
 $$
 \mathbf{w} = (\mathbf{X}^T \mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^T \mathbf{y}
 $$
 
-Using the matrix identity $(\mathbf{P}^{-1} + \mathbf{B}^T \mathbf{R}^{-1} \mathbf{B})^{-1} \mathbf{B}^T \mathbf{R}^{-1} = \mathbf{P} \mathbf{B}^T (\mathbf{B} \mathbf{P} \mathbf{B}^T + \mathbf{R})^{-1}$, we can rewrite this as:
+where $\mathbf{X}$ is the design matrix with rows $\boldsymbol{\phi}(\mathbf{x}_i)^T$. Using the **Woodbury matrix identity****Woodbury matrix identity** $(\mathbf{P}^{-1} + \mathbf{B}^T \mathbf{R}^{-1} \mathbf{B})^{-1} \mathbf{B}^T \mathbf{R}^{-1} = \mathbf{P} \mathbf{B}^T (\mathbf{B} \mathbf{P} \mathbf{B}^T + \mathbf{R})^{-1}$, we can rewrite this as:
 
 $$
 \mathbf{w} = \mathbf{X}^T (\mathbf{X} \mathbf{X}^T + \lambda \mathbf{I})^{-1} \mathbf{y}
@@ -530,9 +517,9 @@ $$
 
 **Interpretation of $\boldsymbol{\alpha}$**:
 The coefficients $\alpha_i$ determine the influence of each training example $(\mathbf{x}_i, y_i)$ on the prediction.
-*   The prediction at $\mathbf{x}_*$ is a sum of contributions from all training points.
-*   The contribution of point $i$ is proportional to its similarity to the new point, measured by $k(\mathbf{x}_i, \mathbf{x}_*)$.
-*   The weight $\alpha_i$ scales this contribution. Intuitively, $\alpha_i$ is related to the prediction error (residual) for point $i$. Points that are harder to fit or have larger target values tend to have larger $\alpha_i$.
+- The prediction at $\mathbf{x}_*$ is a sum of contributions from all training points.
+- The contribution of point $i$ is proportional to its similarity to the new point, measured by $k(\mathbf{x}_i, \mathbf{x}_*)$.
+- The weight $\alpha_i$ scales this contribution. Intuitively, $\alpha_i$ is related to the prediction error (residual) for point $i$. Points that are harder to fit or have larger target values tend to have larger $\alpha_i$.
 
 **Relation to Noise ($\sigma_n^2$)**:
 Recall that in Bayesian Linear Regression, the regularization parameter $\lambda$ emerged as the ratio of noise variance to prior variance: $\lambda = \sigma_n^2 / \sigma_p^2$. If we assume a unit prior variance ($\sigma_p^2=1$), then $\lambda$ is exactly the noise variance $\sigma_n^2$.
@@ -552,20 +539,18 @@ $$
 
 Since a linear transformation of a Gaussian is still Gaussian, $\mathbf{f}$ follows a Gaussian distribution:
 
-* **Mean**: $\mathbb{E}[\mathbf{f}] = \boldsymbol{\Phi} \mathbb{E}[\mathbf{w}] = \mathbf{0}$
-* **Covariance**: $\text{Cov}[\mathbf{f}] = \mathbb{E}[\mathbf{f} \mathbf{f}^T] = \boldsymbol{\Phi} \mathbb{E}[\mathbf{w} \mathbf{w}^T] \boldsymbol{\Phi}^T = \boldsymbol{\Phi} (\sigma_p^2 \mathbf{I}) \boldsymbol{\Phi}^T = \sigma_p^2 \boldsymbol{\Phi} \boldsymbol{\Phi}^T = \mathbf{K}$
+- **Mean**: $\mathbb{E}[\mathbf{f}] = \boldsymbol{\Phi} \mathbb{E}[\mathbf{w}] = \mathbf{0}$
+- **Covariance**: $\text{Cov}[\mathbf{f}] = \mathbb{E}[\mathbf{f} \mathbf{f}^T] = \boldsymbol{\Phi} \mathbb{E}[\mathbf{w} \mathbf{w}^T] \boldsymbol{\Phi}^T = \boldsymbol{\Phi} (\sigma_p^2 \mathbf{I}) \boldsymbol{\Phi}^T = \sigma_p^2 \boldsymbol{\Phi} \boldsymbol{\Phi}^T = \mathbf{K}$
 
 Here, the kernel matrix $\mathbf{K}$ is defined with the scaling factor $\sigma_p^2$ included, i.e., $K_{ij} = k(\mathbf{x}_i, \mathbf{x}_j) = \sigma_p^2 \boldsymbol{\phi}(\mathbf{x}_i)^T \boldsymbol{\phi}(\mathbf{x}_j)$.
 
 Thus, we have:
 
 $$
-\mathbf{f} \mid \mathbf{X} \sim \mathcal{N}(\mathbf{0}, \mathbf{K})
+\mathbf{f} \mid \mathbf{X} \sim \mathcal{N}(\mathbf{0}, \mathbf{X} \mathbf{X}^T) = \mathcal{N}(\mathbf{0}, \mathbf{K})
 $$
 
 The kernel function $k(\mathbf{x}, \mathbf{x}')$ now defines the covariance between any two function values, encoding our assumptions about the smoothness and structure of the function. If $\mathbf{x}$ and $\mathbf{x}'$ are close, $k(\mathbf{x}, \mathbf{x}')$ is large, implying $f(\mathbf{x})$ and $f(\mathbf{x}')$ are highly correlated.
-
-#### Definition of a Gaussian Process
 
 This logic extends to an infinite number of points. A **Gaussian Process** is defined as a collection of random variables, any finite number of which have a joint Gaussian distribution. It effectively defines a distribution over functions $f(\mathbf{x})$ over an **infinite domain**.
 
@@ -573,7 +558,13 @@ $$
 f(\mathbf{x}) \sim \mathcal{GP}(m(\mathbf{x}), k(\mathbf{x}, \mathbf{x}'))
 $$
 
-where $m(\mathbf{x})$ is the mean function (usually assumed to be 0) and $k(\mathbf{x}, \mathbf{x}')$ is the covariance function (kernel).
+where $m(\mathbf{x})$ is the mean function (usually assumed to be 0) and $k(\mathbf{x}, \mathbf{x}')$ is the covariance function (kernel). Why an infinite domain? Because for any finite set of inputs $\{\mathbf{x}_1, \dots, \mathbf{x}_n\}$, the corresponding function values $\{f(\mathbf{x}_1), \dots, f(\mathbf{x}_n)\}$ have a joint Gaussian distribution:
+
+$$
+\begin{pmatrix} f(\mathbf{x}_1) \\ \vdots \\ f(\mathbf{x}_n) \end{pmatrix} \sim \mathcal{N}\left( \begin{pmatrix} m(\mathbf{x}_1) \\ \vdots \\ m(\mathbf{x}_n) \end{pmatrix}, \begin{pmatrix} k(\mathbf{x}_1, \mathbf{x}_1) & \cdots & k(\mathbf{x}_1, \mathbf{x}_n) \\ \vdots & \ddots & \vdots \\ k(\mathbf{x}_n, \mathbf{x}_1) & \cdots & k(\mathbf{x}_n, \mathbf{x}_n) \end{pmatrix} \right)
+$$
+
+where the covariance matrix is defined by the kernel function evaluated at all pairs of input points. Because the kernel function can be evaluated for any input pair, we can consider function values at infinitely many points.
 
 To make predictions, we consider the joint distribution of the observed noisy targets $\mathbf{y}$ and the function value $f_*$ at a new point $\mathbf{x}_*$.
 Since $\mathbf{y} = \mathbf{f} + \boldsymbol{\varepsilon}$ with $\boldsymbol{\varepsilon} \sim \mathcal{N}(\mathbf{0}, \sigma_n^2 \mathbf{I})$, the covariance of the data includes the noise term:
@@ -644,7 +635,7 @@ a^*(x_*) = \mu + \sigma \Phi^{-1}\left(\frac{c_1}{c_1 + c_2}\right)
 $$
 
 where $\Phi^{-1}$ is the quantile function (inverse CDF) of the standard normal.
-* **If $c_1 > c_2$** (underestimation is worse), we predict higher than the mean (optimistic/safe).
-* **If $c_1 < c_2$** (overestimation is worse), we predict lower than the mean (pessimistic/conservative).
+- **If $c_1 > c_2$** (underestimation is worse), we predict higher than the mean (optimistic/safe).
+- **If $c_1 < c_2$** (overestimation is worse), we predict lower than the mean (pessimistic/conservative).
 
 This highlights a key advantage of the Bayesian approach: by maintaining the full predictive distribution, we can decouple the *inference* (learning the distribution) from the *decision* (choosing an action based on a specific loss function).
