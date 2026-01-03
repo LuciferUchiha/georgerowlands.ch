@@ -236,13 +236,33 @@ This is the most widely used kernel. It produces **infinitely differentiable** (
 - **Lengthscale** $\ell$: Controls how quickly the function varies. Large $\ell$ means the function changes slowly (smooth, broad variations). Small $\ell$ means the function can change rapidly (wiggly).
 - **Signal variance** $\sigma_f^2$: Controls the vertical scale of variations. Large $\sigma_f^2$ means the function can take values far from zero.
 
-**Feature space interpretation**: The RBF kernel corresponds to an **infinite-dimensional** feature space! You can show (using the Taylor expansion of the exponential) that:
+**Feature space interpretation**: The RBF kernel corresponds to an **infinite-dimensional** feature space. To see why, consider extending polynomial regression to all degrees. A naive feature map would be:
 
 $$
-\exp\left(-\frac{\|\mathbf{x} - \mathbf{x}'\|_2^2}{2\ell^2}\right) = \exp\left(-\frac{\|\mathbf{x}\|_2^2}{2\ell^2}\right) \exp\left(-\frac{\|\mathbf{x}'\|_2^2}{2\ell^2}\right) \sum_{\boldsymbol{\alpha} \in \mathbb{N}^d} \frac{(\mathbf{x}/\ell)^{\boldsymbol{\alpha}} (\mathbf{x}'/\ell)^{\boldsymbol{\alpha}}}{\boldsymbol{\alpha}!}
+\tilde{\boldsymbol{\phi}}(\mathbf{x}) = [\mathbf{x}^{\boldsymbol{\alpha}}]_{\boldsymbol{\alpha} \in \mathbb{N}^d}
 $$
 
-This is an inner product in an infinite-dimensional space with features $\phi_{\boldsymbol{\alpha}}(\mathbf{x}) = \exp(-\|\mathbf{x}\|_2^2/2\ell^2) \frac{\mathbf{x}^{\boldsymbol{\alpha}}}{\sqrt{\boldsymbol{\alpha}!}}$. The kernel trick allows us to work with this infinite-dimensional representation implicitly!
+where $\mathbf{x}^{\boldsymbol{\alpha}} = x_1^{\alpha_1} \cdots x_d^{\alpha_d}$ are all possible monomials. However, the inner product $\tilde{\boldsymbol{\phi}}(\mathbf{x})^T \tilde{\boldsymbol{\phi}}(\mathbf{x}')$ **diverges** for most $\mathbf{x}, \mathbf{x}'$ because the infinite sum of monomial products grows unboundedly.
+
+The solution is to introduce a **normalized feature map** that ensures convergence:
+
+$$
+\boldsymbol{\phi}(\mathbf{x}) = \exp\left(-\frac{\|\mathbf{x}\|_2^2}{2\ell^2}\right) \left[\frac{(\mathbf{x}/\ell)^{\boldsymbol{\alpha}}}{\sqrt{\boldsymbol{\alpha}!}}\right]_{\boldsymbol{\alpha} \in \mathbb{N}^d}
+$$
+
+The exponential prefactor ensures each component decays as $\|\mathbf{x}\|$ grows, while the factorial normalization $\sqrt{\boldsymbol{\alpha}!}$ ensures the sum converges. Computing the inner product:
+
+$$
+\boldsymbol{\phi}(\mathbf{x})^T \boldsymbol{\phi}(\mathbf{x}') = \exp\left(-\frac{\|\mathbf{x}\|_2^2}{2\ell^2}\right) \exp\left(-\frac{\|\mathbf{x}'\|_2^2}{2\ell^2}\right) \sum_{\boldsymbol{\alpha} \in \mathbb{N}^d} \frac{(\mathbf{x}/\ell)^{\boldsymbol{\alpha}} (\mathbf{x}'/\ell)^{\boldsymbol{\alpha}}}{\boldsymbol{\alpha}!}
+$$
+
+Using the multinomial series expansion $\sum_{\boldsymbol{\alpha} \in \mathbb{N}^d} \frac{\mathbf{u}^{\boldsymbol{\alpha}} \mathbf{v}^{\boldsymbol{\alpha}}}{\boldsymbol{\alpha}!} = \exp(\mathbf{u}^T \mathbf{v})$, this simplifies to:
+
+$$
+\boldsymbol{\phi}(\mathbf{x})^T \boldsymbol{\phi}(\mathbf{x}') = \exp\left(-\frac{\|\mathbf{x}\|_2^2 + \|\mathbf{x}'\|_2^2 - 2\mathbf{x}^T\mathbf{x}'}{2\ell^2}\right) = \exp\left(-\frac{\|\mathbf{x} - \mathbf{x}'\|_2^2}{2\ell^2}\right)
+$$
+
+Thus, the RBF kernel naturally emerges as the inner product in an infinite-dimensional space of normalized polynomial features. The kernel trick allows us to work with this infinite-dimensional representation implicitly!
 
 {{< figure 
     src="/images/ml/gpGaussianKernel.webp"
@@ -470,6 +490,7 @@ where $\boldsymbol{\alpha} = (\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf
 
 1. **The prediction is a weighted combination of kernel evaluations**: Each training point "votes" on the prediction, weighted by $\alpha_i$ and by its similarity to $\mathbf{x}_*$ (measured by the kernel).
 2. **Identical to Kernel Ridge Regression**: If we identify $\lambda = \sigma_n^2$, this is exactly the Kernel Ridge Regression predictor! GP regression and kernel ridge regression give the same point predictions—but GP regression also provides uncertainty quantification and allows us to extend to a full posterior over functions.
+3. **Noiseless limit**: In the limiting case $\sigma_n^2 \to 0$, we get $\mu_* = \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{y}$, which is equivalent to the kernelized Ordinary Least Squares Estimator (OLSE). In this case, the GP posterior mean interpolates exactly through all training points.
 
 ### Predictive Variance
 
