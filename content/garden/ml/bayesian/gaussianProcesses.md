@@ -90,7 +90,7 @@ where $\mu : \mathcal{X} \to \mathbb{R}$ is the mean function and $k : \mathcal{
 2. The collection is **consistent under marginalization**: if you take a joint distribution for $n$ variables and marginalize out one of them, you recover the joint distribution for the remaining $n-1$ variables:
 
 $$
-\mathbb{P}(f_{\mathbf{x}_1}, \ldots, f_{\mathbf{x}_{n-1}}) = \int \mathbb{P}(f_{\mathbf{x}_1}, \ldots, f_{\mathbf{x}_n}) \, df_{\mathbf{x}_n}
+p(f_{\mathbf{x}_1}, \ldots, f_{\mathbf{x}_{n-1}}) = \int p(f_{\mathbf{x}_1}, \ldots, f_{\mathbf{x}_n}) \, df_{\mathbf{x}_n}
 $$
 
 The consistency property ensures that the GP is well-defined as we consider different finite subsets of the infinite collection. Importantly, this means we can define a GP by specifying only the finite-dimensional distributions for all possible finite subsets, as long as they satisfy the marginalization property. Therefore a GP is completely specified by its **mean function** $\mu : \mathcal{X} \to \mathbb{R}$ and **kernel function** (covariance) $k : \mathcal{X} \times \mathcal{X} \to \mathbb{R}$:
@@ -432,7 +432,7 @@ This means that solutions to regularized optimization over the generally **infin
 **Connection to GP Regression:** The MAP estimate of a Gaussian Process corresponds to the solution of:
 
 $$
-\hat{f} = \arg\min_{f \in \mathcal{H}_k(\mathcal{X})} -\log \mathbb{P}(\mathbf{y} \mid \mathbf{X}, f) + \frac{1}{2}\|f\|_k^2
+\hat{f} = \arg\min_{f \in \mathcal{H}_k(\mathcal{X})} -\log p(\mathbf{y} \mid \mathbf{X}, f) + \frac{1}{2}\|f\|_k^2
 $$
 
 The first term measures the quality of fit (likelihood), while the regularization term $\frac{1}{2}\|f\|_k^2$ limits the complexity of $\hat{f}$, preventing overfitting. This regularization is necessary because in expressive RKHSs, many functions can interpolate the training data perfectly.
@@ -581,15 +581,15 @@ This method is efficient and numerically stable. The complexity is $O(m^3)$ for 
 Another method is **forward sampling** (also called sequential sampling). Here, we sample each function value one at a time, conditioning on previously sampled values using the chain rule of probability:
 
 $$
-\mathbb{P}(f_1, \ldots, f_m) = \mathbb{P}(f_1) \prod_{i=2}^m \mathbb{P}(f_i \mid f_1, \ldots, f_{i-1})
+p(f_1, \ldots, f_m) = p(f_1) \prod_{i=2}^m p(f_i \mid f_1, \ldots, f_{i-1})
 $$
 
 We can sample points **sequentially**, each time conditioning on previously sampled values. 
 
 **Algorithm**:
-1. Sample $f_1 \sim \mathbb{P}(f_1) = \mathcal{N}(\mu(\mathbf{x}_1), k(\mathbf{x}_1, \mathbf{x}_1))$
-2. Sample $f_2 \sim \mathbb{P}(f_2 \mid f_1)$ (using GP conditioning formulas)
-3. Sample $f_3 \sim \mathbb{P}(f_3 \mid f_1, f_2)$
+1. Sample $f_1 \sim p(f_1) = \mathcal{N}(\mu(\mathbf{x}_1), k(\mathbf{x}_1, \mathbf{x}_1))$
+2. Sample $f_2 \sim p(f_2 \mid f_1)$ (using GP conditioning formulas)
+3. Sample $f_3 \sim p(f_3 \mid f_1, f_2)$
 4. And so on...
 
 This is also known as **ancestral sampling**. Each conditional is Gaussian, so sampling is straightforward. However, each step requires updating the conditional distribution, which involves solving a linear system. The overall complexity is therefore also $O(m^3)$.
@@ -619,7 +619,7 @@ $$
 We then score each $\theta_j$ according to how well $\hat{f}_j$ predicts the validation data:
 
 $$
-\hat{\theta} = \arg\max_{\theta_j} \mathbb{P}(\mathbf{y}^{\text{val}} \mid \mathbf{X}^{\text{val}}, \hat{f}_j)
+\hat{\theta} = \arg\max_{\theta_j} p(\mathbf{y}^{\text{val}} \mid \mathbf{X}^{\text{val}}, \hat{f}_j)
 $$
 
 This ensures that the model $\hat{f}_j$ does not depend on $\mathcal{D}_{\text{val}}$, preventing overfitting to the validation set.
@@ -639,20 +639,20 @@ While this approach is effective at preventing overfitting compared to using the
 Instead of optimizing hyperparameters for a specific point estimate $\hat{f}$, the Bayesian approach optimizes across **all realizations** of $f$ by maximizing the **marginal likelihood** (also called the **evidence**):
 
 $$
-\hat{\theta}_{\text{MLE}} = \arg\max_\theta \mathbb{P}(\mathbf{y} \mid \mathbf{X}, \theta)
+\hat{\theta}_{\text{MLE}} = \arg\max_\theta p(\mathbf{y} \mid \mathbf{X}, \theta)
 $$
 
-Notice the key difference from cross-validation: we use the marginal likelihood $\mathbb{P}(\mathbf{y} \mid \mathbf{X}, \theta)$ which integrates over all possible functions, rather than evaluating a single point estimate on held-out data.
+Notice the key difference from cross-validation: we use the marginal likelihood $p(\mathbf{y} \mid \mathbf{X}, \theta)$ which integrates over all possible functions, rather than evaluating a single point estimate on held-out data.
 
 Using the definition of marginal likelihood via Bayes' rule and the product rule, we can expand:
 
 $$
-\mathbb{P}(\mathbf{y} \mid \mathbf{X}, \theta) = \int \mathbb{P}(\mathbf{y} \mid \mathbf{f}, \mathbf{X}) \mathbb{P}(\mathbf{f} \mid \mathbf{X}, \theta) \, d\mathbf{f}
+p(\mathbf{y} \mid \mathbf{X}, \theta) = \int p(\mathbf{y} \mid \mathbf{f}, \mathbf{X}) p(\mathbf{f} \mid \mathbf{X}, \theta) \, d\mathbf{f}
 $$
 
 This integral asks: "averaging over all functions $f$ weighted by the prior, how likely is the observed data $\mathbf{y}$?" 
 
-For GPs, this integral has a **closed-form solution**! Since both the likelihood $\mathbb{P}(\mathbf{y} \mid \mathbf{f}, \mathbf{X}) = \mathcal{N}(\mathbf{y} \mid \mathbf{f}, \sigma_n^2 \mathbf{I}_n)$ and prior $\mathbb{P}(\mathbf{f} \mid \mathbf{X}, \theta) = \mathcal{N}(\mathbf{f} \mid \mathbf{0}, \mathbf{K}_\theta)$ are Gaussian, the marginal distribution is also Gaussian:
+For GPs, this integral has a **closed-form solution**! Since both the likelihood $p(\mathbf{y} \mid \mathbf{f}, \mathbf{X}) = \mathcal{N}(\mathbf{y} \mid \mathbf{f}, \sigma_n^2 \mathbf{I}_n)$ and prior $p(\mathbf{f} \mid \mathbf{X}, \theta) = \mathcal{N}(\mathbf{f} \mid \mathbf{0}, \mathbf{K}_\theta)$ are Gaussian, the marginal distribution is also Gaussian:
 
 $$
 \mathbf{y} \mid \mathbf{X}, \theta \sim \mathcal{N}(\mathbf{0}, \mathbf{K}_\theta + \sigma_n^2 \mathbf{I}_n)
@@ -677,13 +677,13 @@ $$
 Equivalently, we can write the log marginal likelihood (to be maximized) as:
 
 $$
-\log \mathbb{P}(\mathbf{y} \mid \mathbf{X}, \theta) = -\frac{1}{2} \mathbf{y}^T \mathbf{K}_y^{-1} \mathbf{y} - \frac{1}{2} \log |\mathbf{K}_y| - \frac{n}{2} \log 2\pi
+\log p(\mathbf{y} \mid \mathbf{X}, \theta) = -\frac{1}{2} \mathbf{y}^T \mathbf{K}_y^{-1} \mathbf{y} - \frac{1}{2} \log |\mathbf{K}_y| - \frac{n}{2} \log 2\pi
 $$
 
 This objective has a beautiful interpretation:
 
 $$
-\log \mathbb{P}(\mathbf{y} \mid \mathbf{X}, \theta) = \underbrace{-\frac{1}{2} \mathbf{y}^T \mathbf{K}_y^{-1} \mathbf{y}}_{\text{Data Fit}} \underbrace{- \frac{1}{2} \log |\mathbf{K}_y|}_{\text{Complexity Penalty}} - \frac{n}{2} \log 2\pi
+\log p(\mathbf{y} \mid \mathbf{X}, \theta) = \underbrace{-\frac{1}{2} \mathbf{y}^T \mathbf{K}_y^{-1} \mathbf{y}}_{\text{Data Fit}} \underbrace{- \frac{1}{2} \log |\mathbf{K}_y|}_{\text{Complexity Penalty}} - \frac{n}{2} \log 2\pi
 $$
 
 - **Data Fit Term**: Measures the "alignment" of $\mathbf{y}$ with $\mathbf{K}_y$—how well the model explains the observed data. Small values indicate a good fit.
@@ -702,7 +702,7 @@ This automatic trade-off embodies **Occam's Razor**: among models that fit the d
 The log marginal likelihood is typically differentiable with respect to the hyperparameters $\theta$ (for common kernels like RBF, Matérn, etc.). The gradient can be computed in closed form:
 
 $$
-\frac{\partial}{\partial \theta_j} \log \mathbb{P}(\mathbf{y} \mid \mathbf{X}, \theta) = \frac{1}{2} \text{tr}\left( (\boldsymbol{\alpha} \boldsymbol{\alpha}^T - \mathbf{K}_y^{-1}) \frac{\partial \mathbf{K}_y}{\partial \theta_j} \right)
+\frac{\partial}{\partial \theta_j} \log p(\mathbf{y} \mid \mathbf{X}, \theta) = \frac{1}{2} \text{tr}\left( (\boldsymbol{\alpha} \boldsymbol{\alpha}^T - \mathbf{K}_y^{-1}) \frac{\partial \mathbf{K}_y}{\partial \theta_j} \right)
 $$
 
 where $\boldsymbol{\alpha} = \mathbf{K}_y^{-1} \mathbf{y}$. This allows us to use gradient-based optimization methods (gradient descent, L-BFGS, etc.) to find optimal hyperparameters.
@@ -730,7 +730,7 @@ The marginal likelihood naturally guards against overfitting, even without a sep
 | **Overfit** (too complex) | Large for few $f$ | Small for most $f$ | Small (prior spread thin) |
 | **Just right** | Moderate for many $f$ | Moderate | **Large** (balanced) |
 
-For an **underfit model** (too simple $\theta$), the likelihood is mostly small because the restricted function class cannot describe the data well, while the prior is large since probability mass is concentrated on fewer functions. For an **overfit model** (too complex $\theta$), the likelihood is large for some functions (those that would be selected by minimizing training error alone) but small for most functions. The prior is small because probability mass must be spread across many more functions. In both cases, one term in the product $\mathbb{P}(\mathbf{y} \mid \mathbf{X}, \theta) = \int \mathbb{P}(\mathbf{y} \mid f) \mathbb{P}(f \mid \theta) df$ will be small.
+For an **underfit model** (too simple $\theta$), the likelihood is mostly small because the restricted function class cannot describe the data well, while the prior is large since probability mass is concentrated on fewer functions. For an **overfit model** (too complex $\theta$), the likelihood is large for some functions (those that would be selected by minimizing training error alone) but small for most functions. The prior is small because probability mass must be spread across many more functions. In both cases, one term in the product $p(\mathbf{y} \mid \mathbf{X}, \theta) = \int p(\mathbf{y} \mid f) p(f \mid \theta) df$ will be small.
 
 Hence, maximizing the marginal likelihood naturally encourages trading off between a large likelihood and a large prior. This is the embodiment of **Occam's Razor**: among models that explain the data well, prefer simpler ones.
 
@@ -739,10 +739,10 @@ Hence, maximizing the marginal likelihood naturally encourages trading off betwe
 We can take the Bayesian perspective one step further by placing **priors on the hyperparameters** themselves (called hyperpriors). Using Bayes' rule and taking the negative log, we obtain the MAP estimate:
 
 $$
-\hat{\theta}_{\text{MAP}} = \arg\max_\theta \mathbb{P}(\theta \mid \mathbf{X}, \mathbf{y}) = \arg\min_\theta \left[ -\log \mathbb{P}(\mathbf{y} \mid \mathbf{X}, \theta) - \log \mathbb{P}(\theta) \right]
+\hat{\theta}_{\text{MAP}} = \arg\max_\theta p(\theta \mid \mathbf{X}, \mathbf{y}) = \arg\min_\theta \left[ -\log p(\mathbf{y} \mid \mathbf{X}, \theta) - \log p(\theta) \right]
 $$
 
-The hyperprior $\mathbb{P}(\theta)$ acts as a **regularizer**, adding a penalty term that prevents hyperparameters from taking extreme values. Common choices include:
+The hyperprior $p(\theta)$ acts as a **regularizer**, adding a penalty term that prevents hyperparameters from taking extreme values. Common choices include:
 - **Log-normal priors** on lengthscales: $\log \ell \sim \mathcal{N}(\mu_\ell, \sigma_\ell^2)$, ensuring positivity while penalizing very small or very large values
 - **Gamma priors** on noise variance: encouraging small but non-zero noise
 - **Half-Cauchy priors** for robust regularization with heavy tails
@@ -750,7 +750,7 @@ The hyperprior $\mathbb{P}(\theta)$ acts as a **regularizer**, adding a penalty 
 Maximizing the marginal likelihood to select hyperparameters is known as **Empirical Bayes** or **Type II Maximum Likelihood**. In principle, we could go even further and integrate out the hyperparameters entirely to obtain the **fully Bayesian** predictive distribution:
 
 $$
-\mathbb{P}(f_* \mid \mathbf{x}_*, \mathbf{X}, \mathbf{y}) = \int \mathbb{P}(f_* \mid \mathbf{x}_*, \mathbf{X}, \mathbf{y}, \theta) \mathbb{P}(\theta \mid \mathbf{X}, \mathbf{y}) \, d\theta
+p(f_* \mid \mathbf{x}_*, \mathbf{X}, \mathbf{y}) = \int p(f_* \mid \mathbf{x}_*, \mathbf{X}, \mathbf{y}, \theta) p(\theta \mid \mathbf{X}, \mathbf{y}) \, d\theta
 $$
 
 However, this integral is generally **intractable**. Maximizing the marginal likelihood to select hyperparameters is known as **Empirical Bayes** or **Type II Maximum Likelihood**. 
@@ -812,13 +812,13 @@ Let $\mathbf{u} = [f(\mathbf{z}_1), \ldots, f(\mathbf{z}_m)]^T \in \mathbb{R}^m$
 The original GP can be recovered via marginalization:
 
 $$
-\mathbb{P}(f_*, \mathbf{f}) = \int \mathbb{P}(f_*, \mathbf{f}, \mathbf{u}) \, d\mathbf{u} = \int \mathbb{P}(f_* \mid \mathbf{u}) \mathbb{P}(\mathbf{f} \mid \mathbf{u}) \mathbb{P}(\mathbf{u}) \, d\mathbf{u}
+p(f_*, \mathbf{f}) = \int p(f_*, \mathbf{f}, \mathbf{u}) \, d\mathbf{u} = \int p(f_* \mid \mathbf{u}) p(\mathbf{f} \mid \mathbf{u}) p(\mathbf{u}) \, d\mathbf{u}
 $$
 
 The key approximation is to assume that $\mathbf{f}$ and $f_*$ are **conditionally independent given $\mathbf{u}$**:
 
 $$
-\mathbb{P}(f_*, \mathbf{f}) \approx \int \mathbb{P}(f_* \mid \mathbf{u}) \mathbb{P}(\mathbf{f} \mid \mathbf{u}) \mathbb{P}(\mathbf{u}) \, d\mathbf{u}
+p(f_*, \mathbf{f}) \approx \int p(f_* \mid \mathbf{u}) p(\mathbf{f} \mid \mathbf{u}) p(\mathbf{u}) \, d\mathbf{u}
 $$
 
 This means that once we know the function values at the inducing points, knowing $\mathbf{f}$ provides no additional information about $f_*$. The inducing points act as a "sufficient summary" of the training data.
@@ -826,11 +826,11 @@ This means that once we know the function values at the inducing points, knowing
 Using the GP conditioning formulas, the **exact conditionals** (also called training and testing conditionals) are:
 
 $$
-\mathbb{P}(\mathbf{f} \mid \mathbf{u}) = \mathcal{N}(\mathbf{K}_{fu} \mathbf{K}_{uu}^{-1} \mathbf{u}, \; \mathbf{K}_{ff} - \mathbf{Q}_{ff})
+p(\mathbf{f} \mid \mathbf{u}) = \mathcal{N}(\mathbf{K}_{fu} \mathbf{K}_{uu}^{-1} \mathbf{u}, \; \mathbf{K}_{ff} - \mathbf{Q}_{ff})
 $$
 
 $$
-\mathbb{P}(f_* \mid \mathbf{u}) = \mathcal{N}(\mathbf{k}_{*u} \mathbf{K}_{uu}^{-1} \mathbf{u}, \; k_{**} - Q_{**})
+p(f_* \mid \mathbf{u}) = \mathcal{N}(\mathbf{k}_{*u} \mathbf{K}_{uu}^{-1} \mathbf{u}, \; k_{**} - Q_{**})
 $$
 
 where we define $\mathbf{Q}_{ab} := \mathbf{K}_{au} \mathbf{K}_{uu}^{-1} \mathbf{K}_{ub}$ as the covariance "explained" by the inducing points. Intuitively, $\mathbf{K}_{ff}$ represents the prior covariance and $\mathbf{Q}_{ff}$ represents the covariance that can be captured through the inducing points.
@@ -849,7 +849,7 @@ $$
 q_{\text{SoR}}(f_* \mid \mathbf{u}) = \mathcal{N}(\mathbf{k}_{*u} \mathbf{K}_{uu}^{-1} \mathbf{u}, \; \mathbf{0})
 $$
 
-Compare this to the exact conditional $\mathbb{P}(\mathbf{f} \mid \mathbf{u}) = \mathcal{N}(\mathbf{K}_{fu} \mathbf{K}_{uu}^{-1} \mathbf{u}, \; \mathbf{K}_{ff} - \mathbf{Q}_{ff})$. We are essentially ignoring all uncertainty not captured by the inducing points.
+Compare this to the exact conditional $p(\mathbf{f} \mid \mathbf{u}) = \mathcal{N}(\mathbf{K}_{fu} \mathbf{K}_{uu}^{-1} \mathbf{u}, \; \mathbf{K}_{ff} - \mathbf{Q}_{ff})$. We are essentially ignoring all uncertainty not captured by the inducing points.
 
 **Why "Subset of Regressors"?** The name comes from the resulting predictive mean, which can be written as:
 
@@ -884,7 +884,7 @@ $$
 The notation $\text{diag}(\mathbf{A})$ means we keep only the diagonal elements of $\mathbf{A}$, setting off-diagonal elements to zero. This corresponds to assuming that the training points are **conditionally independent** given $\mathbf{u}$:
 
 $$
-q(\mathbf{f} \mid \mathbf{u}) = \prod_{i=1}^n \mathbb{P}(f_i \mid \mathbf{u})
+q(\mathbf{f} \mid \mathbf{u}) = \prod_{i=1}^n p(f_i \mid \mathbf{u})
 $$
 
 FITC retains the individual variances $k(\mathbf{x}_i, \mathbf{x}_i) - Q_{ii}$ at each training point, capturing how much uncertainty is "left over" after projecting through the inducing points. However, it ignores the correlations between training points (the off-diagonal terms). This results in a **non-degenerate** GP that maintains reasonable predictive variances even far from inducing points. The predictive variance now correctly reflects uncertainty in regions where both training data and inducing points are sparse.
