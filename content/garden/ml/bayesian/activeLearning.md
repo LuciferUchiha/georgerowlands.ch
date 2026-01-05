@@ -21,6 +21,7 @@ The key insight from Bayesian learning is that our models not only make predicti
     src="/images/ml/bayesActiveLearning.webp"
     alt="After selecting a new data point, the model's uncertainty is reduced in that region."
     caption="After selecting a new data point, the model's uncertainty is reduced in that region."
+    width="600"
 >}}
 
 ## Bayesian Learning with Gaussian Processes
@@ -106,6 +107,7 @@ Rearranging gives $H[X] - H[X \mid Y] = H[Y] - H[Y \mid X]$, establishing symmet
     src="/images/ml/informationMutual.png"
     alt="Venn diagram showing the relationship between entropy, conditional entropy, joint entropy, and mutual information."
     caption="Venn diagram showing the relationship between entropy, conditional entropy, joint entropy, and mutual information."
+    width="400"
 >}}
 
 The Venn diagram provides a visual intuition for how these quantities relate. Each circle represents the total uncertainty (entropy) in that variable. The **joint entropy** $H[X,Y]$ is the area of the union: the total uncertainty when considering both variables together. The **mutual information** $I(X;Y)$ is the intersection: the shared uncertainty, or equivalently, the information that each variable contains about the other. The **conditional entropies** $H[X \mid Y]$ and $H[Y \mid X]$ are the non-overlapping parts of each circle: the uncertainty that remains in one variable after observing the other.
@@ -176,6 +178,7 @@ This formulation connects active learning to **optimal experimental design** in 
     src="/images/ml/informationGain.png"
     alt="High vs low information gain point selection."
     caption="Information gain depends on where we observe. The middle panel shows points with high information gain (large uncertainty reduction), while the right panel shows points with low information gain (small uncertainty reduction)."
+    width="600"
 >}}
 
 ### The Combinatorial Challenge
@@ -212,6 +215,7 @@ Submodularity can be viewed as a discrete analogue of concavity for continuous f
     src="/images/ml/submodularity.webp"
     alt="Submodularity as the discrete analogue of concavity."
     caption="Submodularity is the discrete analogue of concavity. Just as a concave function has decreasing slopes, a submodular function has decreasing marginal gains."
+    width="450"
 >}}
 
 A function $F$ is **monotone** if $F(A) \leq F(B)$ whenever $A \subseteq B$. Monotonicity means that adding elements never decreases the function value, so more observations are always at least as good as fewer. If $F$ is both monotone and submodular, we say it is **monotone submodular**. 
@@ -433,6 +437,7 @@ The difference gives the BALD acquisition function. This can be computed efficie
     src="/images/ml/bayesActiveVsUniform.png"
     alt="MNIST classification accuracy using BALD active learning vs random sampling. BALD selects informative points that improve accuracy faster."
     caption="MNIST classification accuracy using BALD active learning vs random sampling. BALD selects informative points that improve accuracy faster."
+    width="600"
 >}}
 
 ## Transductive Active Learning
