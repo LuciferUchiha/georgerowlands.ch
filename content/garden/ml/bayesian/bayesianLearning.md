@@ -1,5 +1,5 @@
 ---
-title: Bayesian Linear Regression
+title: Bayesian Learning
 type: docs
 weight: 1
 ---
