@@ -321,6 +321,50 @@ where $\mu$ and $\sigma$ are the mean and standard deviation of the returns acro
 
 However, even with baselines, the REINFORCE algorithm can still suffer from high variance and is not garantueed to converge to a local optimum due to getting stuck in poor local optima. 
 
+```python title="REINFORCE Algorithm Pseudo-code"
+Inputs: policy pi_phi(a|s), discount gamma, step size alpha
+Option: standardize_returns = True/False
+
+repeat (over training iterations):
+    D = empty list                                        # batch of trajectories
+
+    for episode = 1..E:
+        tau = rollout(env, pi_phi)                        # tau has (s_t, a_t, r_t), t=0..T-1
+        append tau to D
+    end for
+
+    # compute reward-to-go for all timesteps in the batch
+    G_all = empty list                                    # will store all G[t] across all trajectories
+    for each trajectory tau in D:
+        for t = 0..T-1:
+            G[t] = sum_{k=t..T-1} (gamma^(k-t) * r[k])
+            append G[t] to G_all
+        end for
+        store G[t] with tau
+    end for
+
+    # optional standardization (across the whole batch)
+    if standardize_returns:
+        mu    = mean(G_all)
+        sigma = std(G_all) + 1e-8
+    end if
+
+    # policy update
+    grad = 0
+    for each trajectory tau in D:
+        for t = 0..T-1:
+            if standardize_returns:
+                G_hat = (G[t] - mu) / sigma
+            else:
+                G_hat = G[t]
+            end if
+            grad += G_hat * grad_phi log pi_phi(a[t] | s[t])
+        end for
+    end for
+    phi = phi + alpha * grad                               # gradient ascent
+until done
+```
+
 ### Actor–Critic
 
 We saw in the Gradient theorem that we need to compute the expected return $G_{0:T}$ to estimate the policy gradient. In the REINFORCE algorithm, we used Monte Carlo estimates of the return, which can have high variance due to multiplying a noisy reward signal over long trajectories with a high dimensional policy gradient. 
@@ -447,6 +491,35 @@ $$
     width="300"
 >}}
 
+```python title="Advantage Actor-Critic (A2C) Algorithm Pseudo-code"
+Algorithm: A2C (one-step TD advantage)
+
+Inputs: policy pi_phi(a|s), value V_theta(s),
+        discount gamma, actor step alpha_pi, critic step alpha_v
+
+repeat (over training iterations):
+    s = env.reset()
+
+    while not done:
+        a ~ pi_phi(. | s)                            # sample action from policy
+        s_next, r, done = env.step(a)
+
+        # critic target and TD error
+        v      = V_theta(s)
+        v_next = 0 if done else V_theta(s_next)
+        delta  = r + gamma * v_next - v              # TD error = advantage estimate
+
+        # critic update: minimize (delta^2)
+        theta = theta - alpha_v * grad_theta (delta^2)
+
+        # actor update: maximize log pi * advantage  (or minimize negative)
+        phi = phi + alpha_pi * ( delta * grad_phi log pi_phi(a | s) )
+
+        s = s_next
+    end while
+until done
+```
+
 #### Generalized Advantage Estimation (GAE)
 
 Using the one-step TD error as an estimate of the advantage function in the A2C method reduces variances compared to using the full return, but it instead introduces bias due to bootstrapping. To balance this bias-variance trade-off, we can use **n-step returns** to estimate the advantage function. The n-step return considers rewards over multiple time steps before bootstrapping, which can help reduce bias while still keeping variance manageable:
@@ -512,6 +585,39 @@ $$
     alt="Impact of the lambda parameter in TD(λ) on bias and variance."
     width="600"
 >}}
+
+```python title="Advantage Actor-Critic with GAE (A2C-GAE) Algorithm Pseudo-code"
+Algorithm: Actor-Critic with GAE(lambda) + K critic updates
+
+Inputs: pi_phi(a|s), V_theta(s), gamma, lambda
+Hyperparams: actor stepsize alpha_pi, critic stepsize alpha_v
+Loop params: critic_updates K
+
+repeat (over epochs):
+    D = collect trajectories using pi_phi                 # store (s_t, a_t, r_t, done_t)
+
+    # compute values and GAE advantages (and value targets)
+    for each trajectory in D:
+        A_next = 0
+        for t = T-1 down to 0:
+            v      = V_theta(s[t])
+            v_next = 0 if done[t] else V_theta(s[t+1])
+            delta  = r[t] + gamma * v_next - v
+            A[t]   = delta + gamma * lambda * A_next
+            R[t]   = A[t] + v                              # value target
+            A_next = A[t]
+        end for
+    end for
+
+    # critic update: do multiple gradient steps on the same batch targets R_t
+    for k = 1..K:
+        theta = theta - alpha_v * grad_theta mean( (V_theta(s_t) - R_t)^2 )
+    end for
+
+    # actor update (uses A_t computed above)
+    phi = phi + alpha_pi * grad_phi mean( log pi_phi(a_t|s_t) * A_t )
+until done
+```
 
 #### Asynchronous Advantage Actor-Critic (A3C)
 
@@ -589,6 +695,82 @@ $$
     alt="Visualization of the PPO clipped surrogate objective. The clipping prevents large policy updates that would lead to destructive performance drops."
     width="400"
 >}}
+
+```python title="Proximal Policy Optimization (PPO) Algorithm Pseudo-code"
+Algorithm: PPO (clipped surrogate) + GAE(lambda) + minibatches
+
+Inputs: policy pi_phi(a|s), value V_theta(s)
+Hyperparams: gamma, lambda, clip_eps, actor step alpha_pi, critic step alpha_v
+Loop params: episodes_per_epoch E, ppo_epochs N, minibatch_size B
+
+repeat (over epochs):
+    D = empty buffer
+
+    # 1) collect on-policy data with current policy
+    for episode = 1..E:
+        tau = rollout(env, pi_phi)                         # store (s_t, a_t, r_t, done_t, s_{t+1})
+        add tau to D
+    end for
+
+    # 2) compute values, next values, old log-probs (frozen), GAE advantages, and value targets
+    for each trajectory in D:
+        T = length(trajectory)
+        A_next = 0
+
+        for t = 0..T-1:
+            s_t = s[t]; a_t = a[t]
+            v[t] = V_theta(s_t)
+            logp_old[t] = log pi_phi(a_t | s_t)            # store and detach (freeze)
+        end for
+
+        for t = T-1 down to 0:
+            if done[t]:
+                v_next = 0
+            else:
+                v_next = v[t+1]                            # value of next state (already computed)
+            end if
+
+            delta = r[t] + gamma * v_next - v[t]
+            A[t]  = delta + gamma * lambda * A_next        # GAE recursion
+            R[t]  = A[t] + v[t]                            # value target
+            A_next = A[t]
+        end for
+    end for
+
+    # (optional but common) normalize advantages across the whole buffer D
+    A_mu    = mean(all A[t] in D)
+    A_sigma = std(all A[t] in D) + 1e-8
+    for all timesteps in D:
+        A[t] = (A[t] - A_mu) / A_sigma
+    end for
+
+    # 3) PPO optimization: multiple epochs, minibatches
+    for ppo_epoch = 1..N:
+        shuffle all timesteps in D
+        partition D into minibatches of size B
+
+        for minibatch M:
+            # recompute new log-probs under current policy
+            logp = log pi_phi(a|s) for (s,a) in M
+
+            # importance ratio
+            ratio = exp(logp - logp_old)                   # elementwise
+
+            # PPO clipped objective (maximize)
+            obj1 = ratio * A
+            obj2 = clip(ratio, 1-clip_eps, 1+clip_eps) * A
+            L_clip = mean( min(obj1, obj2) )
+
+            # critic loss (minimize)
+            L_V = mean( (V_theta(s) - R)^2 )
+
+            # updates (conceptual gradient steps)
+            phi   = phi   + alpha_pi * grad_phi   L_clip
+            theta = theta - alpha_v  * grad_theta L_V
+        end for
+    end for
+until done
+```
 
 ### Deep Deterministic Policy Gradient (DDPG)
 
