@@ -112,7 +112,7 @@ Just as a multivariate Gaussian $\mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigm
 - The mean vector $\boldsymbol{\mu} \in \mathbb{R}^n$ becomes the mean function $\mu(\mathbf{x})$
 - The covariance matrix $\boldsymbol{\Sigma} \in \mathbb{R}^{n \times n}$ becomes the kernel function $k(\mathbf{x}, \mathbf{x}')$
 
-At any location $\mathbf{x}$ in the domain, the GP gives us a distribution over the function value $f(\mathbf{x})$. The mean function tells us the expected value, and the kernel tells us how function values at different locations are correlated. This is the key property that makes GPs tractable: although we're dealing with an infinite-dimensional object (a distribution over functions), any finite-dimensional "slice" is just a multivariate Gaussian, which we know how to work with.
+At any location $\mathbf{x}$ in the domain, the GP gives us a distribution over the function value $f(\mathbf{x})$. The mean function tells us the expected value, and the kernel tells us how function values at different locations are correlated. This is the key property that makes GPs tractable: although we're dealing with an infinite-dimensional object (a distribution over functions), any finite-dimensional "slice" is just a multivariate Gaussian, which we know how to work with. We will formalize this tractability with a concrete [algorithm](#algorithm) later in these notes.
 
 For notational simplicity, the mean function is commonly taken to be zero: $\mu(\mathbf{x}) = 0$. This might seem restrictive, but it is not. If we have a GP with non-zero mean $f \sim \mathcal{GP}(\mu, k)$, we can always write:
 
@@ -552,51 +552,123 @@ A key benefit is that we can sample functions from both the prior and posterior 
     alt="GP regression: the posterior mean (blue line) interpolates the training data, while the shaded region shows the predictive uncertainty. Samples from the posterior (thin lines) all pass near the observed points."
 >}}
 
+## Algorithm
+
+The GP regression algorithm consists of two phases: a **training phase** where we compute the necessary quantities from the training data, and a **prediction phase** where we use these quantities to make predictions at new test points.
+
+During training, we need to solve the linear system $\mathbf{K}_y^{-1} \mathbf{y}$ where $\mathbf{K}_y = \mathbf{K} + \sigma_n^2 \mathbf{I}_n$ is the noisy kernel matrix. Rather than computing the matrix inverse directly (which is numerically unstable and computationally expensive), we use the [Cholesky decomposition](/garden/maths/linearalgebra/eigendecomposition/#cholesky-decomposition) $\mathbf{K}_y = \mathbf{L}\mathbf{L}^T$ where $\mathbf{L}$ is a lower triangular matrix. This decomposition exists and is unique for any positive definite matrix, which $\mathbf{K}_y$ is guaranteed to be (since $\mathbf{K}$ is a valid [Gram matrix](/garden/maths/linearalgebra/eigendecomposition/#gram-matrix) and therefore positive semi-definite, and $\sigma_n^2 \mathbf{I}_n$ adds positive values to the diagonal making it strictly positive definite).
+
+The Cholesky decomposition allows us to solve $\mathbf{K}_y^{-1} \mathbf{y}$ efficiently via two triangular solves: first we solve $\mathbf{L} \boldsymbol{\alpha}' = \mathbf{y}$ for $\boldsymbol{\alpha}'$ using forward substitution, then we solve $\mathbf{L}^T \boldsymbol{\alpha} = \boldsymbol{\alpha}'$ for $\boldsymbol{\alpha}$ using back substitution. The result is $\boldsymbol{\alpha} = \mathbf{K}_y^{-1} \mathbf{y} \in \mathbb{R}^n$, which we store for use during prediction. Computing the Cholesky decomposition takes $O(n^3)$ time and storing both $\mathbf{L}$ and the kernel matrix requires $O(n^2)$ space. The triangular solves each take $O(n^2)$ time, which is dominated by the decomposition cost.
+
+A key benefit of using Cholesky is that we can reuse $\mathbf{L}$ for multiple operations: computing $\boldsymbol{\alpha} = \mathbf{K}_y^{-1} \mathbf{y}$ for predictions, computing $\mathbf{K}_y^{-1} \mathbf{k}_*$ for variance calculations, and computing the log-determinant $\log |\mathbf{K}_y| = 2 \sum_{i=1}^n \log L_{ii}$ needed for [hyperparameter optimization](#maximizing-the-marginal-likelihood).
+
+During prediction, for each test point $\mathbf{x}_*$ we first compute the kernel vector $\mathbf{k}_* = [k(\mathbf{x}_1, \mathbf{x}_*), \ldots, k(\mathbf{x}_n, \mathbf{x}_*)]^T \in \mathbb{R}^n$ containing the covariances between the test point and all $n$ training points. This requires $n$ kernel evaluations, each taking $O(d)$ time for a $d$-dimensional input, giving $O(nd)$ total.
+
+The [predictive mean](#predictive-mean) is then simply the dot product $\mu_* = \mathbf{k}_*^T \boldsymbol{\alpha}$, which takes $O(n)$ time since $\boldsymbol{\alpha}$ was precomputed during training. This can also be written as $\mu_* = \sum_{i=1}^n \alpha_i k(\mathbf{x}_i, \mathbf{x}_*)$, showing that the prediction is a weighted sum of kernel evaluations.
+
+For the [predictive variance](#predictive-variance), we need to compute $\sigma_*^2 = k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T \mathbf{K}_y^{-1} \mathbf{k}_*$. The term $\mathbf{K}_y^{-1} \mathbf{k}_*$ requires solving another linear system. Using the stored Cholesky factor $\mathbf{L}$, we solve $\mathbf{L} \mathbf{v} = \mathbf{k}_*$ for $\mathbf{v}$ via forward substitution (taking $O(n^2)$ time), and then the variance is $\sigma_*^2 = k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{v}^T \mathbf{v}$. If only point predictions are needed (not uncertainty estimates), the variance computation can be skipped, reducing prediction to $O(n)$ per test point.
+
+```python title="GP Regression Algorithm"
+Inputs: training data {(x_i, y_i)}_{i=1}^n, kernel k(x, x'), noise variance sigma_n^2
+        test points {x_j^*}_{j=1}^m
+
+# Training Phase
+K = kernel_matrix(X, X)                    # K[i,j] = k(x_i, x_j), O(n^2 d)
+K_y = K + sigma_n^2 * I_n                  # add noise to diagonal
+L = cholesky(K_y)                          # K_y = L @ L.T, O(n^3)
+alpha = solve_triangular(L.T,              # alpha = K_y^{-1} @ y, O(n^2)
+            solve_triangular(L, y))
+
+# Prediction Phase
+for each test point x_star in {x_j^*}:
+    k_star = [k(x_i, x_star) for i in 1..n]   # kernel vector, O(nd)
+    mu_star = k_star.T @ alpha                # predictive mean, O(n)
+    
+    v = solve_triangular(L, k_star)           # O(n^2)
+    sigma_star_sq = k(x_star, x_star) - v.T @ v   # predictive variance, O(n)
+    
+    yield (mu_star, sigma_star_sq)
+```
+
+The overall complexity is $O(n^3)$ for training (dominated by Cholesky decomposition) and $O(n^2)$ per test point for prediction with variance, or $O(n)$ per test point for mean-only prediction. The space complexity is $O(n^2)$ for storing the Cholesky factor. For large $n$, this cubic training cost becomes prohibitive, motivating the [sparse approximation methods](#improving-scalability) discussed later.
+
+| Phase | Time | Space |
+|-------|------|-------|
+| Training | $O(n^2 d + n^3)$ | $O(n^2)$ |
+| Prediction ($m$ points, with variance) | $O(mnd + mn^2)$ | $O(n)$ |
+| Prediction ($m$ points, mean only) | $O(mnd + mn)$ | $O(n)$ |
+
+Note that this algorithm is essentially identical to kernelized Ridge Regression (where $\lambda = \sigma_n^2$). The key difference is that GPs also provide the predictive variance $\sigma_*^2$, which requires the additional $O(n^2)$ triangular solve per test point.
+
 ## Sampling from a Gaussian Process
 
-Often we want to visualize the GP by drawing sample functions from the prior or posterior. Since we can only represent a function at a finite number of points, we choose a set of $m$ test points $\mathbf{X}_* = \{\mathbf{x}_1^*, \ldots, \mathbf{x}_m^*\}$ and sample the vector $\mathbf{f}_* = [f(\mathbf{x}_1^*), \ldots, f(\mathbf{x}_m^*)]^T \in \mathbb{R}^m$. Sampling from the prior shows what functions the GP considers plausible *before* seeing any data. Sampling from the posterior shows the uncertainty remaining *after* conditioning on observations. 
+Often we want to visualize the GP by drawing sample functions. Since we can only represent a function at a finite number of points, we choose a dense set of $m$ test points $\mathbf{X}_* = \{\mathbf{x}_1^*, \ldots, \mathbf{x}_m^*\}$ and sample the vector $\mathbf{f}_* = [f(\mathbf{x}_1^*), \ldots, f(\mathbf{x}_m^*)]^T \in \mathbb{R}^m$. By connecting these points, we obtain a visualization of a sampled function.
 
-There are two common methods for sampling from the multivariate Gaussian distribution:
-
-### Cholesky Decomposition
-
-To sample $\mathbf{f} \sim \mathcal{N}(\boldsymbol{\mu}, \mathbf{K})$ where $\mathbf{f} \in \mathbb{R}^m$, we use the fact that if $\boldsymbol{\varepsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}_m)$, then:
+**Sampling from the Prior:** Before observing any data, we can sample functions from the GP prior $f \sim \mathcal{GP}(\mu, k)$ to visualize what kinds of functions our choice of kernel considers plausible. At the test points $\mathbf{X}_*$, the prior distribution is:
 
 $$
-\mathbf{f} = \boldsymbol{\mu} + \mathbf{L} \boldsymbol{\varepsilon}
+\mathbf{f}_* \sim \mathcal{N}(\boldsymbol{\mu}_*, \mathbf{K}_*)
 $$
 
-where $\mathbf{L}$ is the **Cholesky decomposition** of $\mathbf{K}$: $\mathbf{K} = \mathbf{L}\mathbf{L}^T$ with $\mathbf{L}$ lower triangular.
+where $\boldsymbol{\mu}_* = [\mu(\mathbf{x}_1^*), \ldots, \mu(\mathbf{x}_m^*)]^T$ is the prior mean (typically zero) and $\mathbf{K}_* \in \mathbb{R}^{m \times m}$ is the kernel matrix at test points with $(K_*)_{ij} = k(\mathbf{x}_i^*, \mathbf{x}_j^*)$.
 
-**Algorithm**:
-1. Compute the $m \times m$ kernel matrix $\mathbf{K}$ at the test points
-2. Compute Cholesky decomposition $\mathbf{K} = \mathbf{L}\mathbf{L}^T$
-3. Sample $\boldsymbol{\varepsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}_m)$
-4. Return $\mathbf{f} = \boldsymbol{\mu} + \mathbf{L}\boldsymbol{\varepsilon}$
+**Sampling from the Posterior:** After conditioning on observed data $(\mathbf{X}, \mathbf{y})$, we can sample from the [posterior GP](#posterior-over-functions) to visualize the uncertainty remaining after learning. At the test points, the posterior distribution is:
 
-This method is efficient and numerically stable. The complexity is $O(m^3)$ for the Cholesky decomposition of the $m \times m$ matrix. This is the most common way to sample from a GP.
+$$
+\mathbf{f}_* \mid \mathbf{X}, \mathbf{y} \sim \mathcal{N}(\boldsymbol{\mu}'_*, \mathbf{K}'_*)
+$$
 
-### Forward Sampling
+where the posterior mean is $\boldsymbol{\mu}'_* = \mathbf{K}_{*n} (\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{y}$ and the posterior covariance is $\mathbf{K}'_* = \mathbf{K}_* - \mathbf{K}_{*n} (\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{K}_{*n}^T$, with $\mathbf{K}_{*n} \in \mathbb{R}^{m \times n}$ containing covariances between test and training points.
 
-Another method is **forward sampling** (also called sequential sampling). Here, we sample each function value one at a time, conditioning on previously sampled values using the chain rule of probability:
+To sample from a multivariate Gaussian $\mathbf{f} \sim \mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$, we use the [Cholesky decomposition](/garden/maths/linearalgebra/eigendecomposition/#cholesky-decomposition). The key insight is that if $\boldsymbol{\varepsilon} \sim \mathcal{N}(\mathbf{0}, \mathbf{I}_m)$ is a vector of independent standard normals, then $\mathbf{f} = \boldsymbol{\mu} + \mathbf{L} \boldsymbol{\varepsilon}$ has the desired distribution, where $\mathbf{L}$ is the lower triangular Cholesky factor satisfying $\boldsymbol{\Sigma} = \mathbf{L}\mathbf{L}^T$. This works because $\text{Cov}[\mathbf{L}\boldsymbol{\varepsilon}] = \mathbf{L} \text{Cov}[\boldsymbol{\varepsilon}] \mathbf{L}^T = \mathbf{L} \mathbf{I} \mathbf{L}^T = \boldsymbol{\Sigma}$.
+
+```python title="Sampling from GP Prior"
+Inputs: mean function mu(x), kernel k(x, x'), test points {x_j^*}_{j=1}^m
+
+K_star = kernel_matrix(X_star, X_star)     # K_star[i,j] = k(x_i^*, x_j^*), O(m^2 d)
+mu_star = [mu(x) for x in X_star]          # prior mean (often zero), O(m)
+
+L = cholesky(K_star)                       # K_star = L @ L.T, O(m^3)
+epsilon = sample_standard_normal(m)        # epsilon ~ N(0, I_m)
+f_star = mu_star + L @ epsilon             # sample from prior, O(m^2)
+
+return f_star
+```
+
+```python title="Sampling from GP Posterior"
+Inputs: kernel k(x, x'), training data (X, y), noise variance sigma_n^2
+    test points {x_j^*}_{j=1}^m
+    (optionally reuse L, alpha from training phase)
+
+# Compute posterior mean and covariance at test points
+K_star = kernel_matrix(X_star, X_star)     # prior covariance, O(m^2 d)
+K_star_n = kernel_matrix(X_star, X)        # cross-covariance, O(mnd)
+
+mu_star = K_star_n @ alpha                 # posterior mean, O(mn)
+v = solve_triangular(L, K_star_n.T)        # reuse L from training, O(mn^2)
+K_post = K_star - v.T @ v                  # posterior covariance, O(m^2 n)
+
+# Sample using Cholesky
+L_post = cholesky(K_post)                  # O(m^3)
+epsilon = sample_standard_normal(m)        # epsilon ~ N(0, I_m)
+f_star = mu_star + L_post @ epsilon        # sample from posterior, O(m^2)
+
+return f_star
+```
+
+The complexity of Cholesky sampling is $O(m^3)$ for the decomposition of the $m \times m$ covariance matrix. For posterior sampling, there is an additional $O(mn^2)$ cost to compute the posterior covariance using the stored Cholesky factor from training.
+
+An alternative approach is **forward sampling** (also called ancestral or sequential sampling), which samples each function value one at a time by conditioning on previously sampled values. Using the chain rule of probability:
 
 $$
 p(f_1, \ldots, f_m) = p(f_1) \prod_{i=2}^m p(f_i \mid f_1, \ldots, f_{i-1})
 $$
 
-We can sample points **sequentially**, each time conditioning on previously sampled values. 
-
-**Algorithm**:
-1. Sample $f_1 \sim p(f_1) = \mathcal{N}(\mu(\mathbf{x}_1), k(\mathbf{x}_1, \mathbf{x}_1))$
-2. Sample $f_2 \sim p(f_2 \mid f_1)$ (using GP conditioning formulas)
-3. Sample $f_3 \sim p(f_3 \mid f_1, f_2)$
-4. And so on...
-
-This is also known as **ancestral sampling**. Each conditional is Gaussian, so sampling is straightforward. However, each step requires updating the conditional distribution, which involves solving a linear system. The overall complexity is therefore also $O(m^3)$.
+We first sample $f_1 \sim \mathcal{N}(\mu(\mathbf{x}_1^*), k(\mathbf{x}_1^*, \mathbf{x}_1^*))$, then sample $f_2$ from the GP conditioned on $f_1$, then sample $f_3$ conditioned on $f_1, f_2$, and so on. Each conditional is univariate Gaussian (derived from the GP conditioning formulas), so sampling is straightforward. However, each step requires updating the conditional distribution, which involves solving a growing linear system. The overall complexity is therefore also $O(m^3)$, the same as Cholesky sampling, but with higher constant factors due to the repeated conditioning operations. For this reason, Cholesky sampling is preferred in practice.
 
 {{< figure 
     src="/images/ml/gpSampling.png"
-    caption="Samples from a GP prior (left) and posterior (right). The posterior samples are constrained to pass through the observed data points."
+    caption="Samples from a GP prior (left) and posterior (right). The posterior samples are constrained to pass through (or near) the observed data points, while the prior samples show what functions the kernel considers plausible before seeing any data."
     alt="Samples from a GP prior (left) and posterior (right). The posterior samples are constrained to pass through the observed data points."
 >}}
 
@@ -755,24 +827,25 @@ $$
 
 However, this integral is generally **intractable**. Maximizing the marginal likelihood to select hyperparameters is known as **Empirical Bayes** or **Type II Maximum Likelihood**. 
 
-## Computational Complexity
+## Improving Scalability
 
-The main computational bottleneck in GP regression comes from two operations:
+As shown in the [Algorithm](#algorithm) section, the main computational bottlenecks in GP regression arise from:
 
-1. **Solving the linear system** $(\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{y}$ which is needed for the predictive mean
-2. **Computing the log-determinant** $\log |\mathbf{K}_y|$ — needed for marginal likelihood evaluation during hyperparameter optimization
+1. **Cholesky decomposition** of $\mathbf{K}_y$ (Step 3 in the algorithm) — $O(n^3)$ time, needed for solving the linear system
+2. **Storing the kernel matrix** $\mathbf{K}_y$ — $O(n^2)$ memory
+3. **Computing the log-determinant** $\log |\mathbf{K}_y|$ during [hyperparameter optimization](#hyperparameter-optimization) — $O(n^3)$ per iteration
 
-**Complexity breakdown:**
-- **Training (forming $\mathbf{K}_y$)**: Computing all $n^2$ pairwise kernel evaluations takes $O(n^2)$ time
-- **Training (Cholesky decomposition)**: Decomposing the $n \times n$ matrix $\mathbf{K}_y = \mathbf{L}\mathbf{L}^T$ takes $O(n^3)$ time. This gives us both the inverse (via backsubstitution) and the log-determinant ($\log |\mathbf{K}_y| = 2 \sum_i \log L_{ii}$)
-- **Storage**: Storing the $n \times n$ kernel matrix requires $O(n^2)$ memory
-- **Prediction (mean)**: After training, computing $\mu_* = \mathbf{k}_*^T \boldsymbol{\alpha}$ where $\boldsymbol{\alpha} = \mathbf{K}_y^{-1} \mathbf{y} \in \mathbb{R}^n$ is precomputed, takes $O(n)$ per test point
-- **Prediction (variance)**: Computing $\sigma_*^2 = k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T \mathbf{K}_y^{-1} \mathbf{k}_*$ requires solving another linear system, taking $O(n^2)$ per test point (or $O(n)$ if using Cholesky factors)
+Recall from the [complexity analysis](#complexity-analysis) that:
+
+| Operation | Time | Space |
+|-----------|------|-------|
+| Training (Cholesky) | $O(n^3)$ | $O(n^2)$ |
+| Prediction (variance) | $O(n^2)$ per point | $O(n)$ |
+| Hyperparameter optimization | $O(T \cdot n^3)$ | $O(n^2)$ |
 
 For comparison, Bayesian Linear Regression with $d$-dimensional features takes $O(nd^2 + d^3)$ time for training and supports efficient online updates via the Sherman-Morrison formula. GPs with $n$ data points are equivalent to BLR with $n$ "features" (one per data point), explaining the $O(n^3)$ scaling.
 
-This cubic complexity makes standard GPs impractical for datasets with more than a few thousand points. We therefore turn to approximate methods to scale GPs to larger datasets. 
-
+This cubic complexity makes standard GPs impractical for datasets with more than a few thousand points. We therefore turn to approximate methods that reduce or avoid the $O(n^3)$ Cholesky decomposition and $O(n^2)$ storage requirements. 
 
 ### Kernel Function Approximation
 

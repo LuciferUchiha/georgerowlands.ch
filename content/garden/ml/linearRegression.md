@@ -366,7 +366,13 @@ Intuitively, if two features are highly correlated, the model can shift a large 
 
 ## Regularization
 
-So we have established that OLS is unbiased and has the lowest variance among all linear unbiased estimators (Gauss-Markov theorem). However, in practice, OLS can still lead to overfitting, especially when when features are highly correlated (**multicollinearity**), causing the matrix $\mathbf{X}^T\mathbf{X}$ to be close to singular (non-invertible), making the OLS solution unstable. So small changes in the data can lead to large changes in the weights $\mathbf{w}$, due to the high variance of the estimator.
+So we have established that OLS is unbiased and has the lowest variance among all linear unbiased estimators by Gauss-Markov theorem: For any linear estimator $\tilde{\theta} = \mathbf{c}^T \mathbf{y}$ that is unbiased (i.e., $E[\tilde{\theta}] = \theta$) for $\theta = \mathbf{a}^T \mathbf{w}$, we have:
+
+$$
+\mathbf{Var}(\tilde{\theta}) \geq \mathbf{Var}(\hat{\theta})
+$$
+
+However, in practice, OLS can still lead to overfitting, especially when when features are highly correlated (**multicollinearity**), causing the matrix $\mathbf{X}^T\mathbf{X}$ to be close to singular (non-invertible), making the OLS solution unstable. So small changes in the data can lead to large changes in the weights $\mathbf{w}$, due to the high variance of the estimator.
 
 To combat this, we can introduce **regularization** to trade introduce some bias in exchange for a significant reduction in variance. Regularization adds a penalty term to the loss function that discourages complex models. This helps prevent overfitting and improves generalization.
 
