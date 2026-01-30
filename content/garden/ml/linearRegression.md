@@ -425,6 +425,55 @@ $$
 
 It can be shown that the variance of the Ridge estimator is strictly smaller than the variance of the OLS estimator. By introducing a small amount of bias (controlled by $\lambda$), we can drastically reduce the variance, often leading to a lower Mean Squared Error (MSE). This is the essence of the **Bias-Variance Tradeoff** in regularization.
 
+### Training with Noisy Targets
+
+An interesting property of the squared error loss is that it remains unchanged in expectation when we replace the true targets with random estimates, as long as those estimates are unbiased. This observation has practical applications in scenarios where we cannot directly observe clean target values.
+
+Consider the standard regression problem where we minimize the sum of squared errors:
+
+$$
+\min_{\mathbf{w}} \sum_{i=1}^n (y_i - f_{\mathbf{w}}(\mathbf{x}_i))^2
+$$
+
+Now suppose instead of the true targets $y_i$, we only have access to noisy estimates $\hat{y}_i$ where $\mathbb{E}[\hat{y}_i] = y_i$. We can show that minimizing the loss with these noisy targets gives us the same expected result.
+
+{{< callout type="proof" >}}
+We want to show that the difference between the expected noisy loss and the true loss does not depend on the model parameters. Let's expand the expected loss with noisy targets:
+
+$$
+\begin{align*}
+\mathbb{E}_{\hat{y}} \left[ \frac{1}{n} \sum_{i=1}^n (\hat{y}_i - f_{\mathbf{w}}(\mathbf{x}_i))^2 \right] &= \frac{1}{n} \sum_{i=1}^n \mathbb{E}_{\hat{y}_i} \left[ \hat{y}_i^2 - 2\hat{y}_i f_{\mathbf{w}}(\mathbf{x}_i) + f_{\mathbf{w}}(\mathbf{x}_i)^2 \right] \\
+&= \frac{1}{n} \sum_{i=1}^n \left[ \mathbb{E}[\hat{y}_i^2] - 2f_{\mathbf{w}}(\mathbf{x}_i)\mathbb{E}[\hat{y}_i] + f_{\mathbf{w}}(\mathbf{x}_i)^2 \right] \\
+&= \frac{1}{n} \sum_{i=1}^n \left[ \mathbb{E}[\hat{y}_i^2] - 2f_{\mathbf{w}}(\mathbf{x}_i) y_i + f_{\mathbf{w}}(\mathbf{x}_i)^2 \right]
+\end{align*}
+$$
+
+where we used the fact that $\mathbb{E}[\hat{y}_i] = y_i$. Now using the identity $\mathbb{E}[\hat{y}_i^2] = \text{Var}(\hat{y}_i) + (\mathbb{E}[\hat{y}_i])^2 = \text{Var}(\hat{y}_i) + y_i^2$:
+
+$$
+\begin{align*}
+&= \frac{1}{n} \sum_{i=1}^n \left[ \text{Var}(\hat{y}_i) + y_i^2 - 2f_{\mathbf{w}}(\mathbf{x}_i) y_i + f_{\mathbf{w}}(\mathbf{x}_i)^2 \right] \\
+&= \frac{1}{n} \sum_{i=1}^n (y_i - f_{\mathbf{w}}(\mathbf{x}_i))^2 + \frac{1}{n} \sum_{i=1}^n \text{Var}(\hat{y}_i)
+\end{align*}
+$$
+
+The key insight is that the difference between the expected noisy loss and the true loss is:
+
+$$
+\mathbb{E}_{\hat{y}} \left[ \frac{1}{n} \sum_{i=1}^n (\hat{y}_i - f_{\mathbf{w}}(\mathbf{x}_i))^2 \right] - \frac{1}{n} \sum_{i=1}^n (y_i - f_{\mathbf{w}}(\mathbf{x}_i))^2 = \frac{1}{n} \sum_{i=1}^n \text{Var}(\hat{y}_i)
+$$
+
+Importantly, this difference does not depend on the model parameters $\mathbf{w}$. Therefore, the $\mathbf{w}$ that minimizes the expected noisy error is exactly the same $\mathbf{w}$ that minimizes the true error. As we collect more independent noisy samples for each target, the variance term approaches zero by the law of large numbers, and our estimate converges to the true minimum.
+{{< /callout >}}
+
+**Practical Applications**: This result has important applications where we cannot directly observe clean target values:
+
+1. **Self-Supervised Learning**: We can train models using corrupted versions of the data as both inputs and targets, as long as the corruption is unbiased.
+
+2. **Data Augmentation**: When the original training set is small, we can generate multiple noisy versions of each target value to increase the effective training set size without introducing bias.
+
+The key requirement in all these applications is that the noise in $\hat{y}_i$ must be unbiased, meaning $\mathbb{E}[\hat{y}_i] = y_i$. If this condition holds, we can train robust models even without access to clean target values.
+
 ### Lasso Regression
 
 A limitation of Ridge Regression is that it shrinks all weights towards zero but rarely sets them exactly to zero. This means the final model can still includes all input features, which isn't ideal if features are correlated, irrelevant, or redundant. This can also be a problem for **interpretability** if we have thousands of features.

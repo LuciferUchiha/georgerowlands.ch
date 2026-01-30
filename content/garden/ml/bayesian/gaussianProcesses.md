@@ -128,7 +128,11 @@ In practice, we often subtract the empirical mean from the data before applying 
 
 ## Kernel Functions
 
-As already shown above the mean can be assumed to be zero without loss of generality. Thus, a Gaussian Process is fully specified by its kernel function $k(\mathbf{x}, \mathbf{x}')$ and is the heart of a Gaussian Process. It encodes our assumptions about the functions we expect to see: how smooth they are, whether they're periodic, how quickly they vary, and more. 
+As already shown above the mean can be assumed to be zero without loss of generality. Thus, a Gaussian Process is fully specified by its kernel function $k(\mathbf{x}, \mathbf{x}')$ and is the heart of a Gaussian Process. It encodes our assumptions about the functions we expect to see: how smooth they are, whether they're periodic, how quickly they vary, and more.
+
+{{< callout type="info" title="Interactive Visualization" >}}
+For an excellent interactive visualization of how different kernels and their hyperparameters affect GP behavior, see [A Visual Exploration of Gaussian Processes](https://distill.pub/2019/visual-exploration-gaussian-processes/) by Görtler et al. This resource provides intuitive animations showing how kernels shape the prior distribution over functions and how GPs learn from data.
+{{< /callout >}}
 
 Intuitively, the kernel measures the **similarity** or **correlation** between function values at two points:
 
@@ -179,9 +183,28 @@ $$
 k(\mathbf{x}, \mathbf{x}') = \sigma_p^2 \, \mathbf{x}^T \mathbf{x}'
 $$
 
-The linear kernel corresponds to standard Bayesian Linear Regression. The implicit feature map is $\boldsymbol{\phi}(\mathbf{x}) = \mathbf{x}$ (the identity). Functions drawn from a GP with a linear kernel are linear functions (hyperplanes). Importantly, the linear kernel is **not stationary** since $k(\mathbf{x}, \mathbf{x}) = \sigma_p^2 \|\mathbf{x}\|_2^2$ depends on the absolute position of $\mathbf{x}$. Points at the origin have zero prior variance, while points far from the origin have large variance—the process does not "look the same" everywhere.
+The linear kernel corresponds to standard Bayesian Linear Regression. The implicit feature map is $\boldsymbol{\phi}(\mathbf{x}) = \mathbf{x}$ (the identity). Functions drawn from a GP with a linear kernel are linear functions (hyperplanes).
 
-{{< figure 
+**Validity:** We can verify that the linear kernel is a valid kernel by showing it satisfies the two required properties:
+
+1. **Symmetry**: $k(\mathbf{x}, \mathbf{x}') = \sigma_p^2 \mathbf{x}^T \mathbf{x}' = \sigma_p^2 \sum_{i=1}^d x_i x'_i = \sigma_p^2 \sum_{i=1}^d x'_i x_i = \sigma_p^2 (\mathbf{x}')^T \mathbf{x} = k(\mathbf{x}', \mathbf{x})$
+
+2. **Positive semi-definiteness**: For any set of points $\{\mathbf{x}_1, \ldots, \mathbf{x}_m\}$ and any vector $\boldsymbol{\alpha} \in \mathbb{R}^m$, we need to show that $\boldsymbol{\alpha}^T \mathbf{K} \boldsymbol{\alpha} \geq 0$. Let $\mathbf{X} \in \mathbb{R}^{m \times d}$ be the matrix with rows $\mathbf{x}_i^T$. Then $\mathbf{K} = \sigma_p^2 \mathbf{X} \mathbf{X}^T$, and:
+
+$$
+\begin{align*}
+\boldsymbol{\alpha}^T \mathbf{K} \boldsymbol{\alpha} &= \sigma_p^2 \boldsymbol{\alpha}^T \mathbf{X} \mathbf{X}^T \boldsymbol{\alpha} \\
+&= \sigma_p^2 (\mathbf{X}^T \boldsymbol{\alpha})^T (\mathbf{X}^T \boldsymbol{\alpha}) \\
+&= \sigma_p^2 \left\| \mathbf{X}^T \boldsymbol{\alpha} \right\|_2^2 \\
+&\geq 0
+\end{align*}
+$$
+
+Thus, the linear kernel is valid.
+
+Importantly, the linear kernel is **not stationary** since $k(\mathbf{x}, \mathbf{x}) = \sigma_p^2 \|\mathbf{x}\|_2^2$ depends on the absolute position of $\mathbf{x}$. Points at the origin have zero prior variance, while points far from the origin have large variance—the process does not "look the same" everywhere.
+
+{{< figure
     src="/images/ml/gpLinearKernel.webp"
     caption="Samples from a GP prior with a linear kernel. Notice how all sampled functions are linear (straight lines through the origin)."
     alt="Samples from a GP prior with a linear kernel. Notice how all sampled functions are linear (straight lines through the origin)."
@@ -358,14 +381,54 @@ where $\alpha > 0$ is a shape parameter controlling the relative weighting of la
 
 One of the powerful properties of kernels is that they can be **combined to create new valid kernels**. This allows us to build complex models from simple building blocks.
 
-Given valid kernels $k_1$ and $k_2$, the following are also valid kernels:
+Given valid kernels $k_1$ and $k_2$ with corresponding feature maps $\boldsymbol{\phi}_1$ and $\boldsymbol{\phi}_2$ (which may be infinite-dimensional), the following operations preserve validity:
 
-1. **Sum**: $k(\mathbf{x}, \mathbf{x}') = k_1(\mathbf{x}, \mathbf{x}') + k_2(\mathbf{x}, \mathbf{x}')$
-2. **Product**: $k(\mathbf{x}, \mathbf{x}') = k_1(\mathbf{x}, \mathbf{x}') \cdot k_2(\mathbf{x}, \mathbf{x}')$
-3. **Scaling**: $k(\mathbf{x}, \mathbf{x}') = c \cdot k_1(\mathbf{x}, \mathbf{x}')$ for any $c > 0$
-4. **Function composition**: $k(\mathbf{x}, \mathbf{x}') = g(k_1(\mathbf{x}, \mathbf{x}'))$ for certain functions $g$ (e.g., polynomials with positive coefficients, or $g = \exp$)
+**1. Scaling**: For any constant $c > 0$, $k(\mathbf{x}, \mathbf{x}') = c k_1(\mathbf{x}, \mathbf{x}')$ is valid.
 
-**Why does addition work?** If $f_1 \sim \mathcal{GP}(0, k_1)$ and $f_2 \sim \mathcal{GP}(0, k_2)$ are independent, then their sum $f = f_1 + f_2 \sim \mathcal{GP}(0, k_1 + k_2)$. The covariance of a sum of independent variables is the sum of their covariances. The same can be shown for the other operations. This also makes sense if you think about the polynomial kernel being built from sums and products of linear kernels.
+{{< callout type="proof" >}}
+Let $\boldsymbol{\phi}(\mathbf{x}) = \sqrt{c} \boldsymbol{\phi}_1(\mathbf{x})$. Then $k(\mathbf{x}, \mathbf{x}') = \boldsymbol{\phi}(\mathbf{x})^T \boldsymbol{\phi}(\mathbf{x}') = c \boldsymbol{\phi}_1(\mathbf{x})^T \boldsymbol{\phi}_1(\mathbf{x}') = c k_1(\mathbf{x}, \mathbf{x}')$.
+{{< /callout >}}
+
+**2. Addition**: $k(\mathbf{x}, \mathbf{x}') = k_1(\mathbf{x}, \mathbf{x}') + k_2(\mathbf{x}, \mathbf{x}')$ is valid.
+
+{{< callout type="proof" >}}
+Let $\boldsymbol{\phi}(\mathbf{x}) = [\boldsymbol{\phi}_1(\mathbf{x})^T, \boldsymbol{\phi}_2(\mathbf{x})^T]^T$ be the concatenation of the two feature maps. Then:
+
+$$
+k(\mathbf{x}, \mathbf{x}') = \boldsymbol{\phi}(\mathbf{x})^T \boldsymbol{\phi}(\mathbf{x}') = \boldsymbol{\phi}_1(\mathbf{x})^T \boldsymbol{\phi}_1(\mathbf{x}') + \boldsymbol{\phi}_2(\mathbf{x})^T \boldsymbol{\phi}_2(\mathbf{x}') = k_1(\mathbf{x}, \mathbf{x}') + k_2(\mathbf{x}, \mathbf{x}')
+$$
+
+Alternatively, if $\mathbf{K}_1$ and $\mathbf{K}_2$ are both PSD, then for any $\boldsymbol{\alpha}$: $\boldsymbol{\alpha}^T (\mathbf{K}_1 + \mathbf{K}_2) \boldsymbol{\alpha} = \boldsymbol{\alpha}^T \mathbf{K}_1 \boldsymbol{\alpha} + \boldsymbol{\alpha}^T \mathbf{K}_2 \boldsymbol{\alpha} \geq 0$.
+{{< /callout >}}
+
+Intuitively, if $f_1 \sim \mathcal{GP}(0, k_1)$ and $f_2 \sim \mathcal{GP}(0, k_2)$ are independent, then their sum $f = f_1 + f_2 \sim \mathcal{GP}(0, k_1 + k_2)$. The covariance of a sum of independent variables is the sum of their covariances.
+
+**3. Polynomial with positive coefficients**: If $p(z) = \sum_{i=0}^d c_i z^i$ is a polynomial with $c_i \geq 0$, then $k(\mathbf{x}, \mathbf{x}') = p(k_1(\mathbf{x}, \mathbf{x}'))$ is valid.
+
+{{< callout type="proof" >}}
+This follows directly from rules 1 and 2. Each term $c_i k_1(\mathbf{x}, \mathbf{x}')^i$ is valid: $k_1^i$ is valid by repeated application of rule 4 (product), and scaling by $c_i > 0$ is valid by rule 1. The sum of these valid kernels is valid by rule 2.
+{{< /callout >}}
+
+**4. Product of kernels**: $k(\mathbf{x}, \mathbf{x}') = k_1(\mathbf{x}, \mathbf{x}') k_2(\mathbf{x}, \mathbf{x}')$ is valid.
+
+{{< callout type="proof" >}}
+Let $\boldsymbol{\phi}_1(\mathbf{x}) = [f_1(\mathbf{x}), f_2(\mathbf{x}), \ldots]^T$ and $\boldsymbol{\phi}_2(\mathbf{x}) = [g_1(\mathbf{x}), g_2(\mathbf{x}), \ldots]^T$. Then:
+
+$$
+\begin{align*}
+k_1(\mathbf{x}, \mathbf{x}') k_2(\mathbf{x}, \mathbf{x}') &= \left( \sum_i f_i(\mathbf{x}) f_i(\mathbf{x}') \right) \left( \sum_j g_j(\mathbf{x}) g_j(\mathbf{x}') \right) \\
+&= \sum_{i,j} h_{ij}(\mathbf{x}) h_{ij}(\mathbf{x}')
+\end{align*}
+$$
+
+where $h_{ij}(\mathbf{x}) = f_i(\mathbf{x}) g_j(\mathbf{x})$. This is an inner product with feature map containing all pairwise products.
+{{< /callout >}}
+
+**5. Exponentiation**: $k(\mathbf{x}, \mathbf{x}') = \exp(k_1(\mathbf{x}, \mathbf{x}'))$ is valid.
+
+{{< callout type="proof" >}}
+Using the Taylor series: $\exp(k_1(\mathbf{x}, \mathbf{x}')) = \sum_{r=0}^\infty \frac{k_1(\mathbf{x}, \mathbf{x}')^r}{r!}$. Each term $k_1^r$ is valid (by rule 4), scaling by $1/r!$ preserves validity (rule 1), and the sum of valid kernels is valid (rule 2).
+{{< /callout >}}
 
 Intuitively, composing kernels allows us to model more complex behaviors:
 - **Sum** acts like an OR: the kernel is large if *either* $k_1$ or $k_2$ is large. Use this to model a function as the sum of components (e.g., trend + periodicity + noise).
@@ -443,30 +506,49 @@ This connection shows that the kernel function $k$ generalizes the inner product
 
 Now we arrive at the core of Gaussian Process regression: given observed data, how do we learn from our data and make predictions about function values at new locations?
 
-We start by observing $n$ training points with inputs $\mathbf{X} = \{\mathbf{x}_1, \ldots, \mathbf{x}_n\}$ where each $\mathbf{x}_i \in \mathbb{R}^d$, and noisy labels $\mathbf{y} = [y_1, \ldots, y_n]^T \in \mathbb{R}^n$. We assume the labels are corrupted by Gaussian noise:
+We place a GP prior on the function: $f \sim \mathcal{GP}(\mu, k)$. For simplicity, we'll use a zero mean function $\mu(\mathbf{x}) = 0$. Let's denote:
+- $\mathbf{f} = [f(\mathbf{x}_1), \ldots, f(\mathbf{x}_n)]^T \in \mathbb{R}^n$: function values at the $n$ training points $\mathbf{X} = \{\mathbf{x}_1, \ldots, \mathbf{x}_n\}$
+- $f_* = f(\mathbf{x}_*)$: function value at a new test point $\mathbf{x}_*$
+
+The key insight is that the prior tells us the joint distribution of **all** function values, both at training points and at the test point. Since $\mathbf{f}$ and $f_*$ are jointly drawn from the GP, they are jointly Gaussian.
+
+### Noiseless GP Prediction
+
+In the simplest case, suppose we observe the noise-free function values $\mathbf{f}$ at the training points. The joint distribution under the prior is:
 
 $$
-y_i = f(\mathbf{x}_i) + \varepsilon_i, \quad \varepsilon_i \sim \mathcal{N}(0, \sigma_n^2)
-$$
-
-We place a GP prior on the function: $f \sim \mathcal{GP}(\mu, k)$. For simplicity, we'll use a zero mean function $\mu(\mathbf{x}) = 0$. Our goal is to predict the function value $f_*$ at a new test point $\mathbf{x}_*$.
-
-The key insight is that the prior tells us the joint distribution of **all** function values—both at training points and at the test point. Let's denote:
-- $\mathbf{f} = [f(\mathbf{x}_1), \ldots, f(\mathbf{x}_n)]^T \in \mathbb{R}^n$: function values at the $n$ training points
-- $f_* = f(\mathbf{x}_*)$: function value at the test point
-
-Since $\mathbf{f}$ and $f_*$ are jointly drawn from the GP, they are jointly Gaussian. The training observations $\mathbf{y} = \mathbf{f} + \boldsymbol{\varepsilon}$ are also jointly Gaussian with $f_*$ (a linear transformation of Gaussians is Gaussian). Therefre the joint distribution is:
-
-$$
-\begin{bmatrix} \mathbf{y} \\ f_* \end{bmatrix} \mid \mathbf{X}, \mathbf{x}_* \sim \mathcal{N}\left( \begin{bmatrix} \mathbf{0} \\ 0 \end{bmatrix}, \begin{bmatrix} \mathbf{K} + \sigma_n^2 \mathbf{I}_n & \mathbf{k}_* \\ \mathbf{k}_*^T & k(\mathbf{x}_*, \mathbf{x}_*) \end{bmatrix} \right)
+\begin{bmatrix} \mathbf{f} \\ f_* \end{bmatrix} \mid \mathbf{X}, \mathbf{x}_* \sim \mathcal{N}\left( \begin{bmatrix} \mathbf{0} \\ 0 \end{bmatrix}, \begin{bmatrix} \mathbf{K} & \mathbf{k}_* \\ \mathbf{k}_*^T & k(\mathbf{x}_*, \mathbf{x}_*) \end{bmatrix} \right)
 $$
 
 where:
 - $\mathbf{K} \in \mathbb{R}^{n \times n}$ is the kernel matrix of training points: $K_{ij} = k(\mathbf{x}_i, \mathbf{x}_j)$
 - $\mathbf{k}_* = [k(\mathbf{x}_1, \mathbf{x}_*), \ldots, k(\mathbf{x}_n, \mathbf{x}_*)]^T \in \mathbb{R}^n$ is the vector of covariances between training points and the test point
-- $\sigma_n^2 \mathbf{I}_n$ accounts for the observation noise on $\mathbf{y}$ (but not on $f_*$, which is noise-free)
 
-To make predictions, we **condition** on the observed data $\mathbf{y}$. Using the standard formulas for conditioning a multivariate Gaussian (see [Properties of the Gaussian](/garden/ml/bayesian/bayesianLearning/#properties-of-the-gaussian)), we obtain:
+Using the standard formulas for conditioning a multivariate Gaussian (see [Properties of the Gaussian](/garden/ml/bayesian/bayesianLearning/#properties-of-the-gaussian)), we obtain the posterior predictive distribution:
+
+$$
+f_* \mid \mathbf{X}, \mathbf{f}, \mathbf{x}_* \sim \mathcal{N}(\mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{f}, \; k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{k}_*)
+$$
+
+In the noiseless case, the GP interpolates exactly through the training data. At any training point $\mathbf{x}_i$, the predictive variance is zero and the mean equals $f(\mathbf{x}_i)$.
+
+### GP Prediction with Noise
+
+In practice, we rarely observe noise-free function values. Instead, we observe $n$ training points with inputs $\mathbf{X} = \{\mathbf{x}_1, \ldots, \mathbf{x}_n\}$ where each $\mathbf{x}_i \in \mathbb{R}^d$, and noisy labels $\mathbf{y} = [y_1, \ldots, y_n]^T \in \mathbb{R}^n$. We assume the labels are corrupted by Gaussian noise:
+
+$$
+y_i = f(\mathbf{x}_i) + \varepsilon_i, \quad \varepsilon_i \sim \mathcal{N}(0, \sigma_n^2)
+$$
+
+The training observations $\mathbf{y} = \mathbf{f} + \boldsymbol{\varepsilon}$ are jointly Gaussian with $f_*$ (a linear transformation of Gaussians is Gaussian). The joint distribution is:
+
+$$
+\begin{bmatrix} \mathbf{y} \\ f_* \end{bmatrix} \mid \mathbf{X}, \mathbf{x}_* \sim \mathcal{N}\left( \begin{bmatrix} \mathbf{0} \\ 0 \end{bmatrix}, \begin{bmatrix} \mathbf{K} + \sigma_n^2 \mathbf{I}_n & \mathbf{k}_* \\ \mathbf{k}_*^T & k(\mathbf{x}_*, \mathbf{x}_*) \end{bmatrix} \right)
+$$
+
+where $\sigma_n^2 \mathbf{I}_n$ accounts for the observation noise on $\mathbf{y}$ (but not on $f_*$, which is the noise-free function value).
+
+To make predictions, we **condition** on the observed data $\mathbf{y}$. Using the Gaussian conditioning formulas, we obtain:
 
 $$
 f_* \mid \mathbf{X}, \mathbf{y}, \mathbf{x}_* \sim \mathcal{N}(\mu_*, \sigma_*^2)
@@ -514,11 +596,63 @@ From this we can also see several important properties:
 
 The predictive variance naturally decomposes into epistemic and aleatoric components. As we observe more data, the epistemic uncertainty (model uncertainty) decreases, while the aleatoric uncertainty (observation noise) remains constant—it represents irreducible randomness in the data.
 
-{{< figure 
+{{< figure
     src="/images/ml/gpUncertainty.gif"
     caption="As more data is observed, epistemic uncertainty (green shaded region) decreases while aleatoric uncertainty (observation noise) remains constant."
     alt="As more data is observed, epistemic uncertainty (green shaded region) decreases while aleatoric uncertainty (observation noise) remains constant."
 >}}
+
+### Connection Between Noiseless and Noisy Predictions
+
+We can verify that the noisy predictive distribution $p(f_* \mid \mathbf{y})$ can be obtained by integrating the noiseless prediction over the posterior $p(\mathbf{f} \mid \mathbf{y})$:
+
+$$
+p(f_* \mid \mathbf{y}) = \int p(f_* \mid \mathbf{f}) p(\mathbf{f} \mid \mathbf{y}) d\mathbf{f}
+$$
+
+To verify this, we first need the posterior of the latent function values given the noisy observations. The joint distribution of $\mathbf{f}$ and $\mathbf{y}$ is:
+
+$$
+\begin{bmatrix} \mathbf{f} \\ \mathbf{y} \end{bmatrix} \mid \mathbf{X} \sim \mathcal{N}\left( \begin{bmatrix} \mathbf{0} \\ \mathbf{0} \end{bmatrix}, \begin{bmatrix} \mathbf{K} & \mathbf{K} \\ \mathbf{K} & \mathbf{K} + \sigma_n^2 \mathbf{I}_n \end{bmatrix} \right)
+$$
+
+Using Gaussian conditioning, the posterior over the noise-free function values is:
+
+$$
+\mathbf{f} \mid \mathbf{y} \sim \mathcal{N}\left( \mathbf{K}(\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{y}, \; \mathbf{K} - \mathbf{K}(\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{K} \right)
+$$
+
+Now we can verify the integral using the property that for Gaussian random variables, if $\mathbf{x}_1 \mid \mathbf{x}_2 \sim \mathcal{N}(\mathbf{H}\mathbf{x}_2, \mathbf{\Sigma}_1)$ and $\mathbf{x}_2 \sim \mathcal{N}(\boldsymbol{\mu}_2, \mathbf{\Sigma}_2)$, then:
+
+$$
+\int \mathcal{N}(\mathbf{x}_1; \mathbf{H}\mathbf{x}_2, \mathbf{\Sigma}_1) \mathcal{N}(\mathbf{x}_2; \boldsymbol{\mu}_2, \mathbf{\Sigma}_2) d\mathbf{x}_2 = \mathcal{N}(\mathbf{x}_1; \mathbf{H}\boldsymbol{\mu}_2, \mathbf{\Sigma}_1 + \mathbf{H}\mathbf{\Sigma}_2\mathbf{H}^T)
+$$
+
+From the noiseless prediction, we have $f_* \mid \mathbf{f} \sim \mathcal{N}(\mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{f}, \; k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{k}_*)$, and from above, $\mathbf{f} \mid \mathbf{y} \sim \mathcal{N}(\boldsymbol{\mu}_{\mathbf{f}}, \mathbf{\Sigma}_{\mathbf{f}})$ where:
+- $\boldsymbol{\mu}_{\mathbf{f}} = \mathbf{K}(\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{y}$
+- $\mathbf{\Sigma}_{\mathbf{f}} = \mathbf{K} - \mathbf{K}(\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{K}$
+
+Applying the Gaussian integral formula with $\mathbf{H} = \mathbf{k}_*^T \mathbf{K}^{-1}$ and $\mathbf{\Sigma}_1 = k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{k}_*$, we obtain:
+
+$$
+\begin{align*}
+p(f_* \mid \mathbf{y}) &= \mathcal{N}\left( f_*; \mathbf{k}_*^T \mathbf{K}^{-1} \boldsymbol{\mu}_{\mathbf{f}}, \; k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{k}_* + \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{\Sigma}_{\mathbf{f}} \mathbf{K}^{-1} \mathbf{k}_* \right)
+\end{align*}
+$$
+
+Simplifying the mean: $\mathbf{k}_*^T \mathbf{K}^{-1} \boldsymbol{\mu}_{\mathbf{f}} = \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{K}(\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{y} = \mathbf{k}_*^T (\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{y}$.
+
+For the variance, substituting $\mathbf{\Sigma}_{\mathbf{f}} = \mathbf{K} - \mathbf{K}(\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{K}$ and simplifying:
+
+$$
+\begin{align*}
+&k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{k}_* + \mathbf{k}_*^T \mathbf{K}^{-1} \left[\mathbf{K} - \mathbf{K}(\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{K}\right] \mathbf{K}^{-1} \mathbf{k}_* \\
+&= k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{k}_* + \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{k}_* - \mathbf{k}_*^T \mathbf{K}^{-1} \mathbf{K}(\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{K} \mathbf{K}^{-1} \mathbf{k}_* \\
+&= k(\mathbf{x}_*, \mathbf{x}_*) - \mathbf{k}_*^T (\mathbf{K} + \sigma_n^2 \mathbf{I}_n)^{-1} \mathbf{k}_*
+\end{align*}
+$$
+
+This exactly matches our noisy predictive distribution. Thus, we have verified that the noisy prediction can be obtained by marginalizing out the latent function values.
 
 ### Posterior over Functions
 
