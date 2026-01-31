@@ -95,7 +95,7 @@ $$
 Importantly because this is a markov chain, each sample $x_t$ only depends on the previous sample $x_{t-1}$ and not on any earlier samples, so we have:
 
 $$
-q(x_t | x_{t_1}, x_{t-2}, ..., x_0) = q(x_t | x_{t-1})
+q(x_t | x_{t-1}, x_{t-2}, ..., x_0) = q(x_t | x_{t-1})
 $$
 
 which also means we can write describe the entire **forward diffusion process as a joint distribution** over the entire sequence of samples from time step 1 to T. We can use the product rule of probability and the markov property to write the joint distribution as:
@@ -263,7 +263,7 @@ $$
 q(x_{t-1} | x_t, x_0) = N(x_{t-1}; \tilde{\mu}(x_t, x_0), \tilde{\beta}_t I)
 $$
 
-But we still onyl have access to $x_0$ at training time but not at sampling time as we only start from pure noise $x_T \sim N(0, I)$ and we don't know the parameters $\tilde{\mu}(x_t, x_0)$ and $\tilde{\beta}_t(x_t, x_0)$ of the reverse conditional distribution. So the idea is that we can instead learn a neural network model $p_\theta(x_{t-1} | x_t)$ parametrized by $\theta$ to approximate this reverse conditional distribution:
+But we still only have access to $x_0$ at training time but not at sampling time as we only start from pure noise $x_T \sim N(0, I)$ and we don't know the parameters $\tilde{\mu}(x_t, x_0)$ and $\tilde{\beta}_t(x_t, x_0)$ of the reverse conditional distribution. So the idea is that we can instead learn a neural network model $p_\theta(x_{t-1} | x_t)$ parametrized by $\theta$ to approximate this reverse conditional distribution:
 
 $$
 p_\theta(x_{t-1} | x_t) \approx q(x_{t-1} | x_t, x_0)
@@ -281,13 +281,13 @@ $$
 p_\theta(x_{0:T}) = p(x_T) \prod_{t=1}^{T} p_\theta(x_{t-1} | x_t)
 $$
 
-To achieve this as is often the case in machine learning, we want to find some parameters $\theta$ that maximize the likelihood of the observed data samples under the model $p(x_0 | \theta) = p_\theta(x_0)$. However, directly maximizing the likelihood is intractable because we would need to marginalize over all possible trajectories from $x_T$ to $x_0$. So in other words, over all possible ways noise could have been added:
+To achieve this, as is often the case in machine learning, we want to find parameters $\theta$ that maximize the likelihood of the observed data samples under the model $p(x_0 | \theta) = p_\theta(x_0)$. However, directly maximizing the likelihood is intractable because we would need to marginalize over all possible trajectories from $x_T$ to $x_0$, in other words over all possible ways noise could have been added:
 
 $$
 p_\theta(x_0) = \int p_\theta(x_{0:T}) dx_{1:T}
 $$
 
-This integral is intractable due to the high dimensionality of the space and the complex dependencies between the variables. So instead of maximizing the likelihood or the log likelihood directly, we can instead **maximize a lower bound on the log likelihood $\log p_\theta(x_0)$ called the evidence lower bound (ELBO) using variational inference**. We use this lower bound as a surrogate objective that is easier to optimize and still leads to good enough solutions, but not necessarily the optimal solution due to being a lower bound. Because we also prefer minimization problems in machine learning, we usually **minimize the negative log likelihood or equivalently minimize the negative ELBO**.
+This integral is intractable due to the high dimensionality of the space and the complex dependencies between the variables. Instead of maximizing the likelihood or the log likelihood directly, we can maximize a lower bound on the log likelihood $\log p_\theta(x_0)$ called the **evidence lower bound (ELBO)** using [variational inference](/garden/ml/bayesian/variationalinference/). We use this lower bound as a surrogate objective that is easier to optimize and still leads to good solutions. Because we prefer minimization problems in machine learning, we will derive our objective in terms of minimizing the negative ELBO, which is equivalent to maximizing the ELBO itself.
 
 {{< figure 
     src="/images/ml/variationalInference.png"
@@ -303,73 +303,106 @@ This integral is intractable due to the high dimensionality of the space and the
     width="400"
 >}}
 
-In this case compared to usually bayesian inference, we are not trying to find the posterior distribution given a prior and a likelihood function, but instead we are trying to find the likelihood function (the reverse denoising process) and the prior the trajectory distribution (the forward diffusion process) that best explains the observed data samples:
+In diffusion models, compared to standard Bayesian inference where we infer the posterior given a prior and likelihood, we are instead trying to learn the reverse denoising process that best explains how to generate the observed data samples. The roles are somewhat different:
 
-- **Prior (Unknown)**: The forward diffusion process $p_\theta(x_{1:T})$ which represents a specific way of adding noise to the data samples.
-- **Likelihood (Unknown)**: The reverse denoising process $p_\theta(x_0 | x_{1:T})$ which represents a specific way of removing noise from the noisy samples.
-- **Posterior (Known)**: The forward trajectory distribution $p_\theta(x_{1:T} | x_0)$ which represents the true way noise was added to the data samples. This can be rewritten as follows using bayes theorem:
-
-$$
-p_\theta(x_{1:T} | x_0) = \frac{1}{Z_\theta} p_\theta(x_0 | x_{1:T}) p_\theta(x_{1:T})
-$$
-
-where $Z_\theta$ is the normalizing constant $Z_\theta = \int p_\theta(x_0 | x_{1:T}) p_\theta(x_{1:T}) dx_{1:T}$. Both this normalizing constant and the data distribution $p_\theta(x_0)$ are intractable to compute directly as these both involve an integral over the entire space, which is why we resort to maximizing the ELBO instead and in turn maximizing the log likelihood.
-
-There are two possible derivations of the ELBO, one can be derived from minimizing the cross entropy between the true data distribution and the model distribution, while the other can be derived from minimizing the KL divergence between the true trajectory distribution and the model trajectory distribution. 
-
-First we start with **deriving the ELBO form the cross entropy**. The cross entropy between the true data distribution $q(x_0)$ and the model distribution $p_\theta(x_0)$ is defined as:
+- **Prior**: The forward diffusion process $p_\theta(x_{1:T})$ which represents a specific trajectory of adding noise to the data samples.
+- **Likelihood**: The reverse denoising process $p_\theta(x_0 | x_{1:T})$ which represents how to remove noise from the noisy samples to recover the data.
+- **Posterior**: The forward trajectory distribution $q(x_{1:T} | x_0)$ which represents the true way noise was added to the data samples given we start from $x_0$. Using Bayes theorem, we can write:
 
 $$
-L_{\text{CE}} = H(q, p_\theta) = - \mathbb{E}_{x_0 \sim q(x_0)} [\log p_\theta(x_0)]
+p_\theta(x_{1:T} | x_0) = \frac{p_\theta(x_0 | x_{1:T}) p_\theta(x_{1:T})}{p_\theta(x_0)} = \frac{1}{Z_\theta} p_\theta(x_0 | x_{1:T}) p_\theta(x_{1:T})
 $$
 
-which measures how well the model distribution matches the true data distribution. Minimizing this cross entropy is equivalent to maximizing the log likelihood of the observed data samples under the model. However, as mentioned earlier, directly maximizing the log likelihood is intractable due to the need to marginalize over all possible trajectories, so instead we can use [Jensen's inequality](/garden/maths/probabilitystatistics/expectationvariancecovariance/#jensens-inequality) which states that for a concave function $f$ and a random variable $X$, we have:
+where $Z_\theta = p_\theta(x_0)$ is the normalizing constant, which is the marginal data distribution computed as $Z_\theta = \int p_\theta(x_0 | x_{1:T}) p_\theta(x_{1:T}) dx_{1:T}$. Both this normalizing constant and the marginal data distribution $p_\theta(x_0)$ are intractable to compute directly because they require integrating over all possible noise trajectories in high-dimensional space. This is why we use the ELBO as a tractable surrogate objective that lower bounds the log likelihood.
+
+There are two common derivations of the ELBO. The first derives it from the [cross entropy](/garden/ml/bayesian/variationalinference/#cross-entropy) between the data distribution and model distribution using Jensen's inequality, while the second derives it from the KL divergence decomposition. We will present both for completeness.
+
+### ELBO Derivation via Jensen's Inequality
+
+The [cross entropy](/garden/ml/bayesian/variationalinference/#cross-entropy) between the true data distribution $q(x_0)$ and the model distribution $p_\theta(x_0)$ is defined as:
+
+$$
+H(q, p_\theta) = - \mathbb{E}_{x_0 \sim q(x_0)} [\log p_\theta(x_0)]
+$$
+
+This measures how well the model distribution matches the true data distribution. Minimizing the cross entropy is equivalent to maximizing the expected log likelihood $\mathbb{E}_{x_0 \sim q(x_0)} [\log p_\theta(x_0)]$ of the observed data samples under the model. However, as mentioned earlier, directly computing the log likelihood $\log p_\theta(x_0)$ is intractable because it requires marginalizing over all possible trajectories.
+
+To derive a tractable objective, we use [Jensen's inequality](/garden/maths/probabilitystatistics/expectationvariancecovariance/#jensens-inequality), which states that for a concave function $f$ and a random variable $X$:
 
 $$
 f(\mathbb{E}[X]) \geq \mathbb{E}[f(X)]
 $$
 
-Luckily the log function is concave, so we can apply Jensen's inequality to the log likelihood and derive the lower bound:
+Since the logarithm is a concave function, we can apply Jensen's inequality to obtain a lower bound on the log likelihood. We introduce the forward trajectory distribution $q(x_{1:T} | x_0)$ as an importance sampling distribution:
 
 $$
 \begin{align*}
 \log p_\theta(x_0) &= \log \int p_\theta(x_{0:T}) dx_{1:T} \\
 &= \log \int q(x_{1:T} | x_0) \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} dx_{1:T} \\
-&= \log \mathbb{E} \left[q(x_{1:T} | x_0) \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] &\text{ (Hint to: Cross Entropy) } \\
-&= \log \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] &\text{ (by definition of expectation) } \\
-&\geq \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] &\text{ (by Jensen's inequality) } \\
-L_{\text{ELBO}} &= \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{1:T})} \right] \leq \mathbb{E}_{x_0 \sim q(x_0)} [\log p_\theta(x_0)]
+&= \log \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] \\
+&\geq \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] \quad \text{(by Jensen's inequality)}
 \end{align*}
 $$
 
-So to maximize the log likelihood we need to minimize the negative ELBO loss which is a lower bound on the negative log likelihood:
+This final expression is the ELBO:
 
 $$
-\min -L_{\text{ELBO}} = - \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] \geq - \mathbb{E}_{q(x_0)} [\log p_\theta(x_0)]
+\text{ELBO} = \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right]
 $$
 
-The other way is to **derive the ELBO from the definition of the KL divergence** between the true trajectory distribution $q(x_{1:T} | x_0)$ and the model trajectory distribution $p_\theta(x_{1:T} | x_0)$. The KL divergence is defined as:
+We have shown that $\log p_\theta(x_0) \geq \text{ELBO}$, confirming that the ELBO is a lower bound on the log likelihood. Therefore, maximizing the ELBO with respect to $\theta$ will push the log likelihood upward, which is our objective.
+
+### ELBO Derivation via KL Divergence
+
+An alternative derivation comes from the [KL divergence](/garden/ml/bayesian/variationalinference/#kullback-leibler-divergence) between the true forward trajectory distribution $q(x_{1:T} | x_0)$ and the model trajectory distribution $p_\theta(x_{1:T} | x_0)$. The KL divergence is defined as:
 
 $$
 D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) = \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{1:T} | x_0)} \right]
 $$
 
-Importantly the KL divergence is always non-negative, so we have:
+A fundamental property of KL divergence is that it is always non-negative, meaning $D_{KL}(q \| p) \geq 0$ for any distributions $q$ and $p$. We can use this property to derive the ELBO. Starting from the non-negativity:
 
 $$
 \begin{align*}
-0 &\leq D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) \\
--\log p_\theta(x_0) &\leq - \log p_\theta(x_0) + D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) \\
-&= -\log p_\theta(x_0) + \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{1:T} | x_0)} \right] & \text{ (by definition of KL divergence) } \\
-&= -\log p_\theta(x_0) + \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{\frac{p_\theta(x_0 | x_{1:T}) p_\theta(x_{1:T})}{p_\theta(x_0)}} \right] & \text{ (by bayes theorem) } \\
-&= -\log p_\theta(x_0) + \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{\frac{p_\theta(x_{0:T})}{p_\theta(x_0)}} \right] & \text{ (by joint distribution) } \\
-&= -\log p_\theta(x_0) + \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} + \log p_\theta(x_0) \right] & \text{ (by log and division) } \\
-&= -\log p_\theta(x_0) + \log p_\theta(x_0) + \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} \right] & \text{ (by linearity of expectation) } \\
-L_{\text{ELBO}} &= \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} \right]
+D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) &\geq 0 \\
+\mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{1:T} | x_0)} \right] &\geq 0
 \end{align*}
 $$
 
-Now we have successfully derived the ELBO from two different perspectives and gotten rid of the intractable $\log p_\theta(x_0)$ term. We can now rewrite the ELBO in a more convenient form for optimization where we will make use of having access to $x_0$ during training and conditioning on it as otherwise all the terms would have high variance and be difficult to estimate but giving it the original data sample as a hint makes the estimation easier and more stable:
+We can expand the denominator using Bayes theorem, recalling that $p_\theta(x_{1:T} | x_0) = \frac{p_\theta(x_0 | x_{1:T}) p_\theta(x_{1:T})}{p_\theta(x_0)} = \frac{p_\theta(x_{0:T})}{p_\theta(x_0)}$:
+
+$$
+\begin{align*}
+\mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{1:T} | x_0)} \right] &\geq 0 \\
+\mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{\frac{p_\theta(x_{0:T})}{p_\theta(x_0)}} \right] &\geq 0 \\
+\mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} + \log p_\theta(x_0) \right] &\geq 0 \\
+\mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} \right] + \log p_\theta(x_0) &\geq 0
+\end{align*}
+$$
+
+where in the last step we used the fact that $\log p_\theta(x_0)$ does not depend on $x_{1:T}$, so it comes out of the expectation. Rearranging this inequality gives us:
+
+$$
+\log p_\theta(x_0) \geq - \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} \right] = \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right]
+$$
+
+This confirms that the ELBO is a lower bound on the log likelihood:
+
+$$
+\text{ELBO} = \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] \leq \log p_\theta(x_0)
+$$
+
+### Expanding the ELBO for Optimization
+
+We have now derived the ELBO from two different perspectives, both showing that it provides a tractable lower bound on the intractable log likelihood $\log p_\theta(x_0)$. The key relationship is:
+
+$$
+\log p_\theta(x_0) = D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) + \text{ELBO}
+$$
+
+Since the log likelihood $\log p_\theta(x_0)$ is constant with respect to our model parameters $\theta$, maximizing the ELBO is equivalent to minimizing the KL divergence between the forward and reverse processes. This is exactly what we want: our learned reverse process should match the true forward process.
+
+To make the ELBO tractable for optimization, we need to expand it into terms that we can actually compute and differentiate. The key insight is that during training we have access to the original data sample $x_0$, which allows us to condition on it. This conditioning dramatically reduces the variance of our estimates and makes the optimization stable. We can now rewrite the ELBO in a more convenient form:
 
 $$
 \begin{align*}
@@ -389,31 +422,45 @@ L_{\text{ELBO}} &= \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x
 \end{align*}
 $$
 
-This is now our final expression for the ELBO which we can then minimize the negative of. If we analyze the different terms in this expression we can see that it consists of three main parts:
+This is our final expression for the ELBO, which we will use as our training objective. Analyzing the different terms in this expression reveals three main components:
 
-- The first term $L_t = D_{KL}(q(x_T | x_0) \| p_\theta(x_T))$ measures how well the model can match the distribution of the final noisy sample $x_T$ to the prior distribution. This term can be ignored in practice as if we choose a large enough T and an appropriate noise schedule $\beta_t$, then $q(x_T | x_0)$ will be very close to $N(0, I)$ anyway due to the ergodic property of the forward diffusion process and we pick $p_\theta(x_T) = N(0, I)$ which has no trainable parameters and **is therefore just a constant**, hence this term does not contribute to the optimization and can be ignored during training.
+**Term 1: Prior Matching** $L_T = D_{KL}(q(x_T | x_0) \| p(x_T))$
 
-- The last term $L_0 = - \log p_\theta(x_0 | x_1)$ is the last step where we want to reconstruct the original data sample from the slightly noisy sample $x_1$. Because we scaled our image data from being in $[0, 255]$ to $[-1, 1]$ the last step does some weird stuff but this can basically be ignored and **in practice this term is just omitted during training and then at sampling we handle the final step slightly differently**.
+This term measures how well the final noisy sample $x_T$ matches the prior distribution $p(x_T) = N(0, I)$. Importantly, this term can be ignored during training because it has no learnable parameters. If we choose a large enough number of diffusion steps $T$ and an appropriate noise schedule $\beta_t$, the ergodic property of the forward diffusion process ensures that $q(x_T | x_0) \approx N(0, I)$ regardless of the starting data sample $x_0$. Since we set $p(x_T) = N(0, I)$ to match this, the KL divergence is approximately zero and independent of $\theta$.
 
-So we only need to focus on the main terms $L_t$ for $t = 1, 2, ..., T-1$ which measure how well the model can match the reverse conditional distributions at each time step exactly as we initially set out to do. Performing these simplification results in a **variance reduction**. So our final training objective reduces to minimizing the sum of KL divergences between the true reverse conditional distributions and the learned reverse conditional distributions at each time step. This matches our initial intuition of what we wanted to achieve:
+**Term 2: Denoising Steps** $L_{t-1} = D_{KL}(q(x_{t-1} | x_t, x_0) \| p_\theta(x_{t-1} | x_t))$ for $t = 2, ..., T$
+
+These terms measure how well our learned reverse process $p_\theta(x_{t-1} | x_t)$ matches the true reverse conditional distribution $q(x_{t-1} | x_t, x_0)$ at each time step. This is the core of our training objective and directly corresponds to our goal of learning to denoise samples.
+
+**Term 3: Reconstruction** $L_0 = - \log p_\theta(x_0 | x_1)$
+
+This term represents the final reconstruction step from the slightly noisy sample $x_1$ to the clean data $x_0$. In practice, this term is often simplified or handled differently during sampling. For image data scaled to the range $[-1, 1]$, the discrete nature of pixel values requires special treatment, but this is typically handled as a post-processing step.
+
+Given these simplifications, our main training objective becomes minimizing the sum of KL divergences between the true and learned reverse conditional distributions:
 
 $$
 \min_\theta \sum_{t=2}^{T} D_{KL}(q(x_{t-1} | x_t, x_0) \| p_\theta(x_{t-1} | x_t))
 $$
 
-Remember that we previously said that if we additionally condition on $x_0$ the problem becomes tractable and we can rewrite the reverse conditional distribution as a gaussian:
+This directly matches our initial goal of learning the reverse denoising process by minimizing the discrepancy between the true and approximate reverse transitions at each step.
+
+### Parameterizing the Reverse Process
+
+Recall that we previously established that conditioning on $x_0$ makes the reverse conditional distribution tractable, allowing us to express it as a Gaussian distribution:
 
 $$
 q(x_{t-1} | x_t, x_0) = N(x_{t-1}; \tilde{\mu}(x_t, x_0), \tilde{\beta}_t(x_t, x_0) I)
 $$
 
-If we now apply bayes theorem again we can derive closed form expressions we get:
+Applying Bayes theorem, we can express this reverse conditional distribution in terms of quantities we already know:
 
 $$
 q(x_{t-1} | x_t, x_0) = \frac{q(x_t | x_{t-1}) q(x_{t-1} | x_0)}{q(x_t | x_0)}
 $$
 
-Each of these components are gaussians as we have already derived the forward conditional distribution $q(x_t | x_{t-1})$ and the marginal distribution $q(x_t | x_0)$ above. We can also derive the conditional distribution $q(x_{t-1} | x_0)$ in a similar way to how we derived $q(x_t | x_0)$ which is just different by one time step. So we can get its closed form by multiplying two gaussians together and reparameterizing to find the mean and variance of the resulting gaussian as a function of $x_t$ and $x_0$:
+Each of these components is a Gaussian distribution. We have already derived closed-form expressions for the forward conditional distribution $q(x_t | x_{t-1}) = N(x_t; \sqrt{\alpha_t} x_{t-1}, \beta_t I)$ and the marginal distribution $q(x_t | x_0) = N(x_t; \sqrt{\bar{\alpha}_t} x_0, (1 - \bar{\alpha}_t) I)$. The conditional distribution $q(x_{t-1} | x_0)$ can be derived in the same way, giving $q(x_{t-1} | x_0) = N(x_{t-1}; \sqrt{\bar{\alpha}_{t-1}} x_0, (1 - \bar{\alpha}_{t-1}) I)$.
+
+Since the product of two Gaussian distributions is proportional to another Gaussian, we can find the closed-form expression by computing the mean and variance of the resulting Gaussian as a function of $x_t$ and $x_0$:
 
 $$
 q(x_{t-1} | x_t, x_0) \propto q(x_t | x_{t-1}) q(x_{t-1} | x_0)
@@ -490,46 +537,82 @@ x_{t-1} &= N\left( x_{t-1}; \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t
 \end{align*}
 $$
 
-It is important that we add some noise back at each denoising step to maintain stochasticity in the process and ensure diversity in the generated samples. This **avoids collapsing to a single mode and helps explore the data distribution better as otherwise the model is only predicting the mean of the reverse conditional distribution**.
+It is important that we add noise back at each denoising step to maintain stochasticity in the process and ensure diversity in the generated samples. Without this added noise, the model would only predict the mean of the reverse conditional distribution, which could lead to mode collapse where the model generates similar samples repeatedly rather than exploring the full diversity of the data distribution.
 
-Above we derived that our training objective reduces to minimizing the KL divergence between the true reverse conditional distribution and the learned reverse conditional distribution at each time step. The general form of the KL divergence between two gaussians $N(\mu_1, \Sigma_1)$ and $N(\mu_2, \Sigma_2)$ in $\mathbb{R}^d$ is given by:
+### Deriving the Training Loss
 
-{{< callout type="todo" >}}
-Actually show the calculations
-{{< /callout >}}
+We have established that our training objective reduces to minimizing the KL divergence between the true reverse conditional distribution $q(x_{t-1} | x_t, x_0)$ and the learned reverse conditional distribution $p_\theta(x_{t-1} | x_t)$ at each time step. The general form of the KL divergence between two Gaussian distributions $N(\mu_1, \Sigma_1)$ and $N(\mu_2, \Sigma_2)$ in $\mathbb{R}^d$ is given by:
 
 $$
 D_{KL}(N(\mu_1, \Sigma_1) \| N(\mu_2, \Sigma_2)) = \frac{1}{2} \left( \log \frac{|\Sigma_2|}{|\Sigma_1|} - d + \text{tr}(\Sigma_2^{-1} \Sigma_1) + (\mu_2 - \mu_1)^T \Sigma_2^{-1} (\mu_2 - \mu_1) \right)
 $$
 
-If we substitute in our expressions of $\tilde{\mu}(x_t, t)$, $\mu_\theta(x_t, t)$, $\tilde{\beta}_t$ and $\sigma_t^2$ into this expression and simplify **we get something similar to a mean squared error loss between the true noise $\epsilon_t$ and the predicted noise $\epsilon_\theta(x_t, t)$** scaled by some factor:
+{{< callout type="info" title="KL Divergence Between Gaussians" >}}
+For two multivariate Gaussian distributions $p = N(\mu_1, \Sigma_1)$ and $q = N(\mu_2, \Sigma_2)$, the KL divergence can be derived from the definition:
 
 $$
 \begin{align*}
-L_t &= \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{1}{2 \| \Sigma_\theta (x_t, t) \|^2} \| \tilde{\mu}(x_t, t) - \mu_\theta (x_t, t) \|^2 \right] \\
-&= \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{1}{2 \sigma_t^2} \left\| \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_t \right) - \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta (x_t, t) \right) \right\|^2 \right] \\
-&= \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{1}{2 \sigma_t^2} \left\| \frac{\beta_t}{\sqrt{\alpha_t} \sqrt{1 - \bar{\alpha}_t}} \left( \epsilon_t - \epsilon_\theta (x_t, t) \right) \right\|^2 \right] \\
-&= \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{\beta_t^2}{2 \sigma_t^2 \alpha_t (1 - \bar{\alpha}_t)} \| \epsilon_t - \epsilon_\theta (x_t, t) \|^2 \right] 
+D_{KL}(p \| q) &= \mathbb{E}_{x \sim p}\left[\log \frac{p(x)}{q(x)}\right] \\
+&= \mathbb{E}_{x \sim p}\left[\log p(x) - \log q(x)\right] \\
+&= \mathbb{E}_{x \sim p}\left[\log p(x)\right] - \mathbb{E}_{x \sim p}\left[\log q(x)\right]
 \end{align*}
 $$
 
-In the [DDPM paper](https://arxiv.org/abs/2006.11239) the authors showed that empirically a simplified version of this loss function outperforms the full variational bound ignoring as when we set the noise schedule $\sigma_t^2 = \beta_t$ the scaling factor can be ignored during optimization. This results in our final simplified loss function for training the denoising model:
+The first term is the negative entropy of $p$, which for a Gaussian is $-H[p] = \frac{1}{2}\log|\Sigma_1| + \frac{d}{2}\log(2\pi e)$. The second term is the cross-entropy. For the log density of $q$ evaluated at $x \sim p$:
+
+$$
+\log q(x) = -\frac{1}{2}\log|\Sigma_2| - \frac{d}{2}\log(2\pi) - \frac{1}{2}(x - \mu_2)^T\Sigma_2^{-1}(x - \mu_2)
+$$
+
+Taking the expectation over $x \sim p$ and using $\mathbb{E}_p[(x - \mu_2)^T\Sigma_2^{-1}(x - \mu_2)] = \text{tr}(\Sigma_2^{-1}\Sigma_1) + (\mu_1 - \mu_2)^T\Sigma_2^{-1}(\mu_1 - \mu_2)$, we obtain after simplification:
+
+$$
+D_{KL}(p \| q) = \frac{1}{2}\left(\log\frac{|\Sigma_2|}{|\Sigma_1|} - d + \text{tr}(\Sigma_2^{-1}\Sigma_1) + (\mu_1 - \mu_2)^T\Sigma_2^{-1}(\mu_1 - \mu_2)\right)
+$$
+{{< /callout >}}
+
+For our specific case, both distributions are isotropic Gaussians with covariances $\Sigma_1 = \tilde{\beta}_t I$ and $\Sigma_2 = \sigma_t^2 I$. This simplifies the KL divergence considerably. The trace term becomes $\text{tr}(\sigma_t^{-2} I \cdot \tilde{\beta}_t I) = \frac{d \tilde{\beta}_t}{\sigma_t^2}$, and the determinant ratio gives $\log(\frac{\sigma_t^2}{\tilde{\beta}_t})^d = d \log(\frac{\sigma_t^2}{\tilde{\beta}_t})$. For isotropic covariances, the KL divergence simplifies to:
+
+$$
+D_{KL}(q(x_{t-1} | x_t, x_0) \| p_\theta(x_{t-1} | x_t)) = \frac{1}{2\sigma_t^2} \| \tilde{\mu}(x_t, x_0) - \mu_\theta(x_t, t) \|^2 + C
+$$
+
+where $C$ represents terms that do not depend on $\theta$ and can be ignored for optimization. Now we substitute our expressions for the means. Recall that:
+
+$$
+\tilde{\mu}(x_t, x_0) = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon \right) \quad \text{and} \quad \mu_\theta(x_t, t) = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(x_t, t) \right)
+$$
+
+Substituting these into the KL divergence and simplifying:
+
+$$
+\begin{align*}
+L_t &= \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \frac{1}{2\sigma_t^2} \left\| \tilde{\mu}(x_t, x_0) - \mu_\theta(x_t, t) \right\|^2 \right] \\
+&= \mathbb{E}_{x_0, \epsilon} \left[ \frac{1}{2\sigma_t^2} \left\| \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon \right) - \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \epsilon_\theta(x_t, t) \right) \right\|^2 \right] \\
+&= \mathbb{E}_{x_0, \epsilon} \left[ \frac{1}{2\sigma_t^2} \left\| \frac{1}{\sqrt{\alpha_t}} \cdot \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \left( \epsilon - \epsilon_\theta(x_t, t) \right) \right\|^2 \right] \\
+&= \mathbb{E}_{x_0, \epsilon} \left[ \frac{\beta_t^2}{2\sigma_t^2 \alpha_t (1 - \bar{\alpha}_t)} \left\| \epsilon - \epsilon_\theta(x_t, t) \right\|^2 \right]
+\end{align*}
+$$
+
+This shows that minimizing the KL divergence is equivalent to minimizing the mean squared error between the true noise $\epsilon$ and the predicted noise $\epsilon_\theta(x_t, t)$, weighted by the factor $\frac{\beta_t^2}{2\sigma_t^2 \alpha_t (1 - \bar{\alpha}_t)}$.
+
+In the [DDPM paper](https://arxiv.org/abs/2006.11239), the authors showed empirically that a simplified version of this loss function outperforms the full variational bound. When we set the variance schedule $\sigma_t^2 = \beta_t$, the time-dependent weighting factor $\frac{\beta_t^2}{2\sigma_t^2 \alpha_t (1 - \bar{\alpha}_t)}$ can be dropped during optimization. This simplification leads to the final training objective for the denoising model:
 
 $$
 L_t^{\text{simple}} = \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \| \epsilon - \epsilon_\theta (x_t, t) \|^2 \right] = \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \| \epsilon - \epsilon_\theta (\sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon, t) \|^2 \right]
 $$
 
-This can then of course be scaled by a half to match the usual MSE loss convention and make the gradients nicer:
+This simplified objective can be scaled by a factor of one half to match the standard MSE loss convention:
 
 $$
 L_t^{\text{simple}} = \frac{1}{2} \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \| \epsilon - \epsilon_\theta (x_t, t) \|^2 \right] = \frac{1}{2} \mathbb{E}_{x_0, \epsilon \sim N(0, I)} \left[ \| \epsilon - \epsilon_\theta (\sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon, t) \|^2 \right]
 $$
 
-This is now our final training objective for diffusion models which is just a simple mean squared error loss between the true noise added at each time step and the predicted noise from the neural network model. We can then optimize this loss using stochastic gradient descent and backpropagation to learn the parameters $\theta$ of the denoising model.
+This is the final training objective for diffusion models. It is remarkably simple: a mean squared error loss between the true noise added at each time step and the predicted noise from the neural network model. This objective can be optimized using standard stochastic gradient descent and backpropagation to learn the parameters $\theta$ of the denoising network.
 
 ### Training & Sampling
 
-The above definitions and derivations can be summarized in the following pseudo-code for training and sampling from a DDPM. In this case we are using mini-batch training with a batch size of $B$. This means that we sample $B$ data points from the dataset at each training step and compute the loss over the entire batch before updating the model parameters, this is more efficient and leads to better convergence properties.
+The above definitions and derivations can be summarized in the following algorithms for training and sampling from a DDPM. The training algorithm uses mini-batch gradient descent with batch size $B$, which means we sample $B$ data points from the dataset at each training step and compute the loss over the entire batch before updating the model parameters. This batching is more computationally efficient and leads to better convergence properties compared to processing single samples.
 
 {{< figure 
     src="/images/ml/diffusionDDPMTraining.png" 
@@ -545,45 +628,30 @@ The above definitions and derivations can be summarized in the following pseudo-
     width="600"
 >}}
 
-Importantly note that during training **we sample the time step $t$ uniformly at random from $\{1, 2, ..., T\}$ for each data point in the batch.** This ensures that the model learns to denoise from all time steps equally well. You might be wondering why we do not calculate the loss over all time steps for each data point instead of just one random time step. It is clear that calculating the loss over all time steps would be a lot more computationally expensive as we would need to perform T forward passes through the model for each data point in the batch instead of just one. But because we are using stochastic gradient descent anyway we can just sample one time step per data point and this gives us an unbiased estimate of the full loss over all time steps. This is a common technique in training deep generative models to reduce computational cost while still providing good convergence properties.
+An important detail in the training algorithm is that we sample the time step $t$ uniformly at random from $\{1, 2, ..., T\}$ for each data point in the batch. This ensures that the model learns to denoise from all time steps equally well. Rather than calculating the loss over all $T$ time steps for each data point, which would require $T$ forward passes through the model, we sample just one time step per data point. Because we are using stochastic gradient descent, this single sampled time step provides an unbiased estimate of the full loss over all time steps. This is a standard technique in training deep generative models that significantly reduces computational cost while maintaining good convergence properties.
 
-Another important detail is that during sampling we start from pure Gaussian noise $x_T \sim N(0, I)$ and then iteratively apply the denoising steps to obtain $x_{T-1}, x_{T-2}, ..., x_0$. The **special case is the final step** where we obtain the generated data sample $x_0$. In practice we might want to apply some post-processing to ensure that the generated sample is in the valid range for the data (e.g. clipping pixel values to [0, 1] for images), this is achieved here by "turning off" the noise addition in the final step by setting $z_1 = 0$.
+For the sampling algorithm, we start from pure Gaussian noise $x_T \sim N(0, I)$ and iteratively apply the denoising steps to obtain $x_{T-1}, x_{T-2}, ..., x_0$. The final step from $x_1$ to $x_0$ is treated specially. In practice, we may want to apply post-processing to ensure that the generated sample is in the valid range for the data, such as clipping pixel values to the range $[0, 1]$ for images. This is achieved by setting $z_1 = 0$ in the final step, effectively turning off the noise addition and using only the predicted mean.
 
 ## Noise-Conditional Score Networks
 
-It turns out that diffusion models can also be linked to the field of physics and thermodynamics. This connection was first made explicit in the paper [Score-Based Generative Modeling through Stochastic Differential Equations](https://arxiv.org/abs/2011.13456) by Yang Song et al. In this work the authors show that diffusion models can be interpreted as learning the so called score function of the data distribution at different noise levels.
+We have seen that diffusion models can be formulated as learning to reverse a noising process by predicting the noise $\epsilon$ added at each step. However, there is an alternative and mathematically elegant perspective that connects diffusion models to concepts from physics and statistical mechanics. This view, formalized in the paper [Score-Based Generative Modeling through Stochastic Differential Equations](https://arxiv.org/abs/2011.13456) by Yang Song et al., shows that diffusion models can be interpreted as learning the **score function** of the data distribution at different noise levels.
+
+The score-based perspective offers several important insights. First, it reveals that predicting noise $\epsilon$ and predicting the score are equivalent tasks, just different parameterizations of the same underlying quantity. Second, it connects diffusion models to **Langevin dynamics**, a well-studied sampling method from statistical physics that uses gradients of the log density to generate samples. Third, it unifies discrete-time diffusion models (like DDPM) with continuous-time **stochastic differential equations (SDEs)**, providing a more general mathematical framework.
+
+In this section, we will build up this alternative view step by step. We will start by introducing stochastic differential equations and Brownian motion, which provide the mathematical foundation for understanding diffusion as a continuous process. Then we will introduce the score function and Langevin dynamics, showing how gradients of the log density can be used for sampling. We will see how **score matching** allows us to learn the score from data without knowing the density, and how adding noise at multiple scales through **Noise Conditional Score Matching (NCSM)** makes this practical. Finally, we will show how the reverse SDE formulation enables generation, and how DDPM emerges as a special discretization of this continuous framework.
 
 Please note that I am not a physicist nor a mathematician so my understanding of the following concepts is limited and I might get some details wrong. However, I will try my best to explain the main ideas behind this connection in an intuitive way. If you notice any mistakes or have improvement suggestions please let me know or submit a PR!
 
-{{< figure 
-    src="/images/ml/diffusionScoreMatching.png" 
->}}
-
-{{< figure 
-    src="/images/ml/diffusionScorePitfall.png"
->}}
-
 {{< figure
-    src="/images/ml/diffusionScorePertrubed.png"
->}}
-
-{{< figure 
-    src="/images/ml/diffusionScoreVarianceScales.gif"
->}}
-
-{{< figure 
     src="/images/ml/diffusionSDEOverview.png"
->}}
-{{< figure 
-    src="/images/ml/diffusionReverseSDE.gif"
->}}
-{{< figure 
-    src="/images/ml/diffusionScoreForwardSDE.gif"
+    alt="Overview diagram of the SDE framework for diffusion models showing the forward noising process, the reverse denoising process, and the score function that enables time reversal."
+    caption="SDE framework overview: the forward SDE gradually adds noise to data over time, while Anderson's theorem shows the reverse SDE (guided by the score function) can denoise and generate samples."
+    width="800"
 >}}
 
 ### Ito SDE and Brownian Motion
 
-Let's first take a step back. Personally to understand this link to physics I found it helpful to think of the images in space as particles and then the diffusion process as a stochastic process that moves these particles around in space. First let's start with describing the movement of such a particle in space over time. This leads us to an **ordered differential equation (ODE)** where the change in position of the particle is determined by some $f(x, t)$ function called the **drift function** which takes in the current position of the particle x and the current time t and outputs the change in position of the particle at that time step:
+To understand the connection to physics, it is helpful to think of images as particles in high-dimensional space and the diffusion process as a stochastic process that moves these particles around. We start by describing the movement of a single particle in space over time. This leads us to an **ordinary differential equation (ODE)** where the change in position of the particle is determined by some function $f(x, t)$ called the **drift function**. This function takes the current position of the particle $x$ and the current time $t$ and outputs the change in position of the particle at that time step:
 
 $$
 dx = f(x, t)dt \equiv \frac{dx}{dt} = f(x,t)
@@ -671,7 +739,7 @@ $$
 W(T) = W(t_0) + \sum_{i=1}^{n} \big( W(t_i) - W(t_{i-1}) \big),
 $$
 
-If we now refine the parition more and more (smaller and smaller ($\Delta t_i$)), this random walk converges to a continuous-time stochastic process called **Brownian motion** or a **Wiener process**.
+If we now refine the partition more and more (smaller and smaller ($\Delta t_i$)), this random walk converges to a continuous-time stochastic process called **Brownian motion** or a **Wiener process**.
 
 Formally, a $d$-dimensional Brownian motion (Wiener process) $(W(t))_{t \in [t_0, T]}$ is a continuous-time stochastic process with the following properties:
 
@@ -725,10 +793,10 @@ More generally, we could also let $g(t)$ depend on both state and time $g(X, t)$
 Now that we have an Ito–SDE of the form
 
 $$
-dX_t = f(X_t, t),dt + g(t)dW_t
+dX_t = f(X_t, t)dt + g(t)dW_t
 $$
 
-we need a way to **actually simulate** the stochastic process ${X_t}_{t \in [0,T]}$ on a computer. So for a given ODE or SDE and starting point $x_0$ at time $t=0$, we want to simulate the trajectory of the process over the time interval $[0,T]$, so how the particles position changes over time according to the dynamics defined by the SDE.
+we need a way to **actually simulate** the stochastic process ${X_t}_{t \in [0,T]}$ on a computer. So for a given ODE or SDE and starting point $x_0$ at time $t=0$, we want to simulate the trajectory of the process over the time interval $[0,T]$, so how the particle's position changes over time according to the dynamics defined by the SDE.
 
 Just like for ODEs, we cannot usually solve SDEs analytically, so we resort to **numerical discretization**. Here, **discretization** means approximating the continuous-time process by a discrete-time process evaluated at a finite set of time points. The standard workhorse here is the **Euler–Maruyama method**, which is the stochastic extension of the Euler method for ODEs.
 
@@ -791,10 +859,10 @@ $$
 The first deterministic integral is again approximated by a Riemann sum like before in the Euler method for ODEs. The second part is different though: here the stochastic integral is approximated by a **Riemann–Ito sum** using the increments of Brownian motion. For this we recall the key property of Brownian motion that for $t_{i-1} < t_i$ we have independent Gaussian increments
 
 $$
-\Delta W_i := W_{t_i} - W_{t_{i-1}} \sim \mathcal{N}(0, \Delta t,I)
+\Delta W_i := W_{t_i} - W_{t_{i-1}} \sim \mathcal{N}(0, \Delta t I)
 $$
 
-Importantly any Gaussian with mean $0$ and covariance $\Delta t,I$ can also scaled down to a standard normal by dividing by its standard deviation in this case $\sqrt{\Delta t}$. So we can equivalently write the increment as
+Importantly any Gaussian with mean $0$ and covariance $\Delta t I$ can also scaled down to a standard normal by dividing by its standard deviation in this case $\sqrt{\Delta t}$. So we can equivalently write the increment as
 
 $$
 \Delta W_i = \sqrt{\Delta t} \epsilon_i \qquad \epsilon_i \sim \mathcal{N}(0, I)
@@ -838,7 +906,7 @@ where $P^*(X_t)$ is probability density function (PDF) of the target distributio
 
 The word **equilibrium** is also often used here to refer to this target distribution. The idea is that if we run this SDE for a long time, the distribution of the random variable $X_t$ will converge to the target distribution $P^*(X)$ regardless of the initial distribution of $X_0$. In other words, as $t \to \infty$, the distribution of $X_t$ approaches $P^*(X)$ and the process reaches an equilibrium/steady state.
 
-For our drift term we have $\frac{1}{2} \nabla_X \log P^*(X_t)$ which is half the gradient of the log density of the target distribution. Our diffusion term is just standard Brownian motion $dW_t$ which adds random Gaussian noise, preventing the particle from simply collapsing into the nearest local maximum (mode) and instead allowing it to explore the entire distribution. Remember that we can think of the SDE as defining a continous-time stochastic process where at each time step the position of the particle is updated by a deterministic drift part and a stochastic noise part and because it is brownian motion the noise part is just independent Gaussian noise added at each time step leading to us defining a markov chain when we discretize it using euler-maruyama.
+For our drift term we have $\frac{1}{2} \nabla_X \log P^*(X_t)$ which is half the gradient of the log density of the target distribution. Our diffusion term is just standard Brownian motion $dW_t$ which adds random Gaussian noise, preventing the particle from simply collapsing into the nearest local maximum (mode) and instead allowing it to explore the entire distribution. Remember that we can think of the SDE as defining a continuous-time stochastic process where at each time step the position of the particle is updated by a deterministic drift part and a stochastic noise part and because it is Brownian motion the noise part is just independent Gaussian noise added at each time step leading to us defining a Markov chain when we discretize it using Euler-Maruyama.
 
 This gradient of the log density is a key quantity known as the **score function** of the distribution $P^*(X)$ and is denoted as:
 
@@ -855,13 +923,13 @@ The idea of the score function is that it points in the direction of increasing 
     width="400"
 >}}
 
-The Langevin SDE can be derived using the **Fokker-Planck equation** which describes how the probability density function of a stochastic process evolves over time. Specifically if we have a probability denstity function $q(x, t)$ describing the likelihood of the random variable $X(t)$ taking on the value x at time t. The evolution of this density over time is governed by the Fokker-Planck equation:
+The Langevin SDE can be derived using the **Fokker-Planck equation** which describes how the probability density function of a stochastic process evolves over time. Specifically if we have a probability density function $q(x, t)$ describing the likelihood of the random variable $X(t)$ taking on the value x at time t. The evolution of this density over time is governed by the Fokker-Planck equation:
 
 $$
 \frac{\partial q(X, t)}{\partial t} = - \nabla_X \cdot \left( f(X, t)q(X, t) - \frac{1}{2}g(t)^2 \nabla_X q(X, t) \right) = -\nabla_X \cdot J(X, t)
 $$
 
-where $J(x, t)$ is the so called **probability current or probability flux**. This is called current because it describes the flow of probability mass in the vector field in the space of $\mathbb{R}^d$ over time. Theh intuition behind this equation is that the change in probability density at a point X over time is determined by the net flow of probability mass into or out of that point due to both the drift term $f(X, t)$ and the diffusion term $g(t)$. 
+where $J(x, t)$ is the so called **probability current or probability flux**. This is called current because it describes the flow of probability mass in the vector field in the space of $\mathbb{R}^d$ over time. The intuition behind this equation is that the change in probability density at a point X over time is determined by the net flow of probability mass into or out of that point due to both the drift term $f(X, t)$ and the diffusion term $g(t)$. 
 
 An important note is that the operator $\nabla_X \cdot$ is the **divergence operator** which is different from the gradient operator $\nabla_X$ used before:
 - $\nabla_x f(x)$ for a scalar $f: \mathbb{R}^d \to \mathbb{R}$ gives a vector pointing in the direction of steepest ascent.
@@ -873,9 +941,9 @@ $$
 \nabla_X \cdot J(X, t) = \sum_{i=1}^{d} \frac{\partial v_i(X)}{\partial x_i}
 $$
 
-In pyhsical terms it quantifies the outflow - inflow of probability mass at a given point X in R^d. local rate of change of probability mass. Similar to the mass conservation equation in fluid dynamics where water can not just disappear or appear out of nowhere.
+In physical terms it quantifies the outflow - inflow of probability mass at a given point X in R^d. local rate of change of probability mass. Similar to the mass conservation equation in fluid dynamics where water can not just disappear or appear out of nowhere.
 
-We now want to pick the drift term $f(X, t)$ such that the stochastic process converges to a random variable with a our desired target distribution $P^*(X)$ at equilibrium so when time goes to infinity. In other words we want to apply the Fokker-Planck equation such that the distribtion reaches a steady state. This means that the time derivative of the density function becomes zero:
+We now want to pick the drift term $f(X, t)$ such that the stochastic process converges to a random variable with a our desired target distribution $P^*(X)$ at equilibrium so when time goes to infinity. In other words we want to apply the Fokker-Planck equation such that the distribution reaches a steady state. This means that the time derivative of the density function becomes zero:
 
 $$
 \frac{\partial q(X, t)}{\partial t} = 0 \text{ for all } X, t
@@ -922,7 +990,7 @@ X_{i+1} &= X_i + \frac{1}{2} \nabla_X \log P^*(X_i)\Delta t + \sqrt{\Delta t}\ep
 \end{align*}
 $$
 
-Remember that the brownian motion part just adds independent Gaussian noise at each time step. So we can interpret this update rule as a markov chain where at each time step we take the current position $X_i$ and move it in the direction of increasing probability density according to the score function $\nabla_X \log P^*(X_i)$ scaled by the step size $\Delta t/2$ and then add some Gaussian noise $\sqrt{\Delta t}\epsilon_i$ to allow exploration of the distribution:
+Remember that the Brownian motion part just adds independent Gaussian noise at each time step. So we can interpret this update rule as a Markov chain where at each time step we take the current position $X_i$ and move it in the direction of increasing probability density according to the score function $\nabla_X \log P^*(X_i)$ scaled by the step size $\frac{\Delta t}{2}$ and then add some Gaussian noise $\sqrt{\Delta t}\epsilon_i$ to allow exploration of the distribution:
 
 $$
 X_{i+1} \mid X_i \sim \mathcal{N}\Big(X_i + \frac{\Delta t}{2} \nabla_X \log P^*(X_i), \Delta t I\Big)
@@ -934,68 +1002,111 @@ $$
 X_{i+1} = X_i + \alpha \nabla_X \log P^*(X_i) + \sqrt{2\alpha}\epsilon_i \qquad \epsilon_i \sim \mathcal{N}(0, I)
 $$
 
+{{< figure 
+    src="/images/ml/diffusionScoreMatching.png" 
+>}}
+
 ### Score Matching
 
-With this we could theoretically have a process that moves our particles towards the target distribution $P^*(X)$ by following the score function. However, there are two problems with this approach:
+Langevin dynamics shows that if we know the score function $\nabla_X \log P^*(X)$, we can sample from any target distribution $P^*(X)$ by following the score and adding noise. However, there are two fundamental problems with this approach:
 
-1. We don't know the target distribution $P^*(X)$ in practice as we only have access to samples from this distribution (the training data) but not the actual density function and therefore also not the score function $\nabla_X \log P^*(X)$.
-2. Even if we had access to the target distribution, computing the score function $\nabla_X \log P^*(X)$ exactly is often intractable for high-dimensional data such as images.
+1. **Unknown density**: In practice, we only have access to samples from the data distribution (the training data), not the actual density function $P^*(X)$ itself. Without the density, we cannot directly compute its gradient, the score function $\nabla_X \log P^*(X)$.
 
-So we need a way to estimate the score function from data samples drawn from the target distribution $P^*$. This is where **score matching** comes in. Instead of trying to model the entire density function $P^*(X)$ directly, score matching focuses on estimating the score function $\nabla_X \log P^*(X)$ directly from data samples. We do this by training a neural network to approximate the score function:
+2. **Intractable normalization**: Even if we tried to model the density explicitly, computing the normalizing constant would be intractable for high-dimensional data like images. The density has the form $P^*(X) = \frac{1}{Z}e^{-E(X)}$ where $Z = \int e^{-E(X)}dX$ is the partition function.
 
-$$
-s_\theta \approx \nabla_X \log P^*(X)
-$$
-
-To train this network we can use the **score matching objective** introduced by Hyvärinen (2005). The idea starts with using the mean squared error (MSE) loss between the true score function and the predicted score function:
+We need a way to estimate the score function from data samples drawn from the target distribution $P^*$. This is where **score matching** comes in. Instead of trying to model the entire density function $P^*(X)$ directly, score matching focuses on learning an estimate of the score function $\nabla_X \log P^*(X)$ directly from data samples. We do this by training a neural network $s_\theta(X)$ to approximate the score function:
 
 $$
-L(\theta) = \frac{1}{2} E_{X \sim P^*} [||s_\theta(X) - \nabla_X \log P^*(X)||^2]
+s_\theta(X) \approx \nabla_X \log P^*(X)
 $$
 
-the problem here is that we still need the true score function $\nabla_X \log P^*(X)$ which we do not have access to. However, Hyvärinen showed that we can expand and simplify this loss function to get rid of the dependence on the true score function by expanding and using integration by parts. 
+To train this network we can use the **score matching objective** introduced by Hyvärinen in 2005. The idea starts with using the mean squared error loss between the true score function and the predicted score function:
 
 $$
-\begin{align*}
-L(\theta) &= \frac{1}{2} E_{X \sim P^*} [||s_\theta(X) - \nabla_X \log P^*(X)||^2] \\
-&= \frac{1}{2} E_{X \sim P^*} [||s_\theta(X)||^2] - E_{X \sim P^*} [s_\theta(X) \cdot \nabla_X \log P^*(X)] + \frac{1}{2} E_{X \sim P^*} [||\nabla_X \log P^*(X)||^2] \\
-\end{align*}
+L(\theta) = \frac{1}{2} \mathbb{E}_{X \sim P^*} [\|s_\theta(X) - \nabla_X \log P^*(X)\|^2]
 $$
 
-We can ignore the last term as it does not depend on the parameters $\theta$ of our score model. Let's focus on the middle term:
+The problem here is that we still need the true score function $\nabla_X \log P^*(X)$ which we do not have access to. However, Hyvärinen showed that we can expand and simplify this loss function to get rid of the dependence on the true score function using good old integration by parts.
+
+We start by expanding the squared norm:
 
 $$
 \begin{align*}
-E_{X \sim P^*} [s_\theta(X) \cdot \nabla_X \log P^*(X)] = \int_{R^d} s_\theta(X) \cdot \nabla_X \log P^*(X) P^*(X) dX \text{Chain rule} \\
-&= \int_{R^d} s_\theta(X) \cdot \nabla_X P^*(X) dX \\
-&= -\int_{R^d} P^*(X) \nabla_X \cdot s_\theta(X) dX \text{Integration by parts} \\
-&= -E_{X \sim P^*} [\nabla_X \cdot s_\theta(X)]
+L(\theta) &= \frac{1}{2} \mathbb{E}_{X \sim P^*} [\|s_\theta(X) - \nabla_X \log P^*(X)\|^2] \\
+&= \frac{1}{2} \mathbb{E}_{X \sim P^*} [\|s_\theta(X)\|^2] - \mathbb{E}_{X \sim P^*} [s_\theta(X) \cdot \nabla_X \log P^*(X)] + \frac{1}{2} \mathbb{E}_{X \sim P^*} [\|\nabla_X \log P^*(X)\|^2]
 \end{align*}
 $$
 
-This results in the so called **score matching objective** or **Hyvärinen's objective**:
+We can ignore the last term as it does not depend on the parameters $\theta$ of our score model. The key is to simplify the middle term. We write out the expectation as an integral and apply the chain rule to rewrite $\nabla_X \log P^*(X) = \frac{\nabla_X P^*(X)}{P^*(X)}$:
 
 $$
-L(\theta) = E_{X \sim P^*} \left[ \frac{1}{2} ||s_\theta(X)||^2 + \nabla_X \cdot s_\theta(X) \right]
+\begin{align*}
+\mathbb{E}_{X \sim P^*} [s_\theta(X) \cdot \nabla_X \log P^*(X)] &= \int_{\mathbb{R}^d} s_\theta(X) \cdot \nabla_X \log P^*(X) P^*(X) dX \\
+&= \int_{\mathbb{R}^d} s_\theta(X) \cdot \frac{\nabla_X P^*(X)}{P^*(X)} P^*(X) dX \\
+&= \int_{\mathbb{R}^d} s_\theta(X) \cdot \nabla_X P^*(X) dX
+\end{align*}
 $$
 
-This objective can be interpreted as penalizing two complementary aspects:
-- The first term $||s_\theta(X)||^2$ encourages the score model to predict a small vector near data points. Since data points are high likelihood points of the target distribution, the score should be small there.
-- The second term $\nabla_X \cdot s_\theta(X)$ (divergence) ensures that the data points behave like local optima of the log density by penalizing divergence and encouraging the score model to point towards regions of higher probability density.
+Now we apply integration by parts. For a vector field $v(X)$ and a scalar field $f(X)$, the divergence theorem states:
 
-However, there are still two challanges with this approach:
+$$
+\int_{\mathbb{R}^d} v(X) \cdot \nabla_X f(X) dX = -\int_{\mathbb{R}^d} f(X) \nabla_X \cdot v(X) dX
+$$
 
-1. Firstly the divergence term $\nabla_X \cdot s_\theta(X)= \text{Tr}(\frac{\partial s_\theta(X)}{\partial X})$ requires computing the trace of the Jacobian matrix of the score model which can be computationally infeasable for high dimensional data as a naive implementation would require one backpropagation per input dimension.
+assuming the boundary terms vanish, which holds for probability densities that decay to zero at infinity. Setting $f(X) = P^*(X)$ and $v(X) = s_\theta(X)$:
 
-2. Secondly, the score is only informative near regions of high data density where we have training samples and generalizes poorly to low density regions far away from the data manifold. This is problematic for generative modeling where we need to be able to sample from the entire data distribution including low density regions. You can think of this as if the particle is very far away from the data manifold, the score function may not provide useful guidance on how to move towards higher density regions and instead just point in a generic direction.
+$$
+\begin{align*}
+\int_{\mathbb{R}^d} s_\theta(X) \cdot \nabla_X P^*(X) dX &= -\int_{\mathbb{R}^d} P^*(X) \nabla_X \cdot s_\theta(X) dX \\
+&= -\mathbb{E}_{X \sim P^*} [\nabla_X \cdot s_\theta(X)]
+\end{align*}
+$$
 
-To adress both of these issues, we use **Noise Conditional Score Matching (NCSM)**, where we add Gaussian noise to the data samples and train our score model to predict the score function of the perturbed data distribution:
+Substituting this back into our original objective, we obtain the **score matching objective** or **Hyvärinen's objective**:
+
+$$
+L(\theta) = \mathbb{E}_{X \sim P^*} \left[ \frac{1}{2} \|s_\theta(X)\|^2 + \nabla_X \cdot s_\theta(X) \right]
+$$
+
+This is a remarkable result. The objective no longer contains the unknown true score function $\nabla_X \log P^*(X)$. Instead, it only requires computing the predicted score $s_\theta(X)$ and its divergence $\nabla_X \cdot s_\theta(X) = \sum_{i=1}^{d} \frac{\partial s_\theta^{(i)}(X)}{\partial X_i}$, both of which can be computed directly from the network using automatic differentiation.
+
+The two terms in the objective have intuitive interpretations:
+
+The first term $\|s_\theta(X)\|^2$ penalizes large score magnitudes. Near data points, which correspond to regions of high probability density, the gradient of the log density should be small because these points are near local maxima of the density. The score function should thus have small magnitude at data points.
+
+The second term $\nabla_X \cdot s_\theta(X)$ is the divergence of the score field. The divergence measures the net outflow of the vector field from an infinitesimal neighborhood. This term ensures that the score field has the correct structure, encouraging the score vectors to point toward regions of higher probability density rather than away from them.
+
+However, there are still two significant challenges with this approach that limit its practical applicability:
+
+1. **Computational Cost of the Divergence**: The divergence term $\nabla_X \cdot s_\theta(X) = \text{Tr}\left(\frac{\partial s_\theta(X)}{\partial X}\right) = \sum_{i=1}^{d} \frac{\partial s_\theta^{(i)}(X)}{\partial X_i}$ requires computing the trace of the Jacobian matrix of the score model. For high-dimensional data such as images, where $d$ could be millions of dimensions, a naive implementation would require one backpropagation pass per input dimension to compute all the diagonal elements of the Jacobian. This makes training computationally infeasible for realistic applications.
+
+2. **Score Estimation in Low-Density Regions**: The score function learned through score matching is only well-defined and accurate near regions of high data density where we have training samples. Far from the data manifold in low-density regions, the score function may not provide useful guidance. This is problematic for generative modeling because we need to start sampling from random noise (a very low-density region relative to the data) and gradually move toward the data distribution. If the score function is poorly estimated in low-density regions, Langevin dynamics may fail to generate good samples. Intuitively, a particle starting very far from any data points has no training signal to guide it toward high-density regions, so the learned score may point in an arbitrary direction.
+
+{{< figure
+    src="/images/ml/diffusionScorePitfall.png"
+    alt="Illustration of the score matching pitfall in low-density regions where the score function is poorly defined away from the data manifold."
+    caption="The score matching pitfall: score functions learned from data are only reliable near training samples (high-density regions) and may point in arbitrary directions in low-density regions far from the data manifold."
+    width="700"
+>}}
+
+### Noise Conditional Score Matching (NCSM)
+
+To address both challenges simultaneously, we use **Noise Conditional Score Matching (NCSM)**. The key idea is to add Gaussian noise to the data samples at multiple noise levels and train our score model to predict the score function of these noise-perturbed distributions:
 
 $$
 \tilde{X} = X + \epsilon \text{ where } \epsilon \sim N(0, \sigma^2 I)
 $$
 
-The added noise smooths out the data distribution, making the score function well-defined everywhere in $\mathbb{R}^d$ and improving generalization to low density regions. This results in the modified objective:
+The added noise smooths out the data distribution, making the score function well-defined everywhere in $\mathbb{R}^d$ and improving generalization to low density regions.
+
+{{< figure
+    src="/images/ml/diffusionScorePertrubed.png"
+    alt="Illustration showing how adding Gaussian noise at multiple scales makes the score function well-defined throughout the space, covering both high and low density regions."
+    caption="Noise perturbation solves the low-density problem: by adding Gaussian noise at multiple scales, the perturbed distribution smoothly covers the entire space, making the score function well-defined everywhere."
+    width="700"
+>}}
+
+This results in the modified objective:
 
 $$
 L(\theta) = \frac{1}{2} E_{\tilde{X} \sim P_\sigma} [||s_\theta(\tilde{X}, \sigma) - \nabla_{\tilde{X}} \log P_\sigma(\tilde{X})||^2]
@@ -1024,7 +1135,7 @@ $$
 So we have rewritten the expectation over the marginal distribution $P_\sigma(\tilde{X})$ into an expectation over the joint distribution of the original data and the perturbed data $P_\sigma(X, \tilde{X}) = P_\sigma(X) P_\sigma(\tilde{X}|X)$. This is useful because the conditional distribution $P_\sigma(\tilde{X}|X)$ is often easier to work with since it is defined by our noise model which is just Gaussian noise addition due to $\tilde{X} = X + \epsilon$ with $\epsilon \sim N(0, \sigma^2 I)$. The PDF of this conditional distribution is known:
 
 $$
-P_\sigma(\tilde{X}|X) = \frac{1}{(2\pi \sigma^2)^{d/2}} \exp \left( -\frac{||\tilde{X} - X||^2}{2\sigma^2} \right)
+P_\sigma(\tilde{X}|X) = \frac{1}{(2\pi \sigma^2)^{\frac{d}{2}}} \exp \left( -\frac{||\tilde{X} - X||^2}{2\sigma^2} \right)
 $$
 
 We can then obtain the score function of this conditional distribution by taking the gradient of the log PDF:
@@ -1046,94 +1157,229 @@ So now we can train our score model $s_\theta$ to approximate the score function
 
 ### Annealed Langevin Dynamics
 
+NCSM shows us how to learn the score function at a single noise level $\sigma$. However, a crucial question remains: what value of $\sigma$ should we use? If $\sigma$ is too small, we face the same problem as before where the score is only well-defined near the data manifold. If $\sigma$ is too large, the noisy distribution becomes too diffuse and far from the original data distribution, making the learned score less useful for generating actual data samples.
 
-How do we find good sigma? borrow another idea from physics called annealing where we start with a large value of sigma and gradually decrease it over time during training. This allows the score model to first learn the coarse structure of the data distribution at high noise levels and then refine its estimates at lower noise levels to converge to the true score function of the original data distribution. This leads to annealed langevin sampling.
+The solution is to train with multiple noise levels simultaneously. We borrow an idea from physics called **annealing**, where we use a sequence of noise levels ranging from large to small. The intuition is that at high noise levels, the perturbed distribution covers the entire space smoothly, allowing the score to be well-defined everywhere. At low noise levels, the distribution is close to the true data distribution, giving us accurate scores near the data. By using multiple scales, we get the best of both worlds.
 
-So we need to train with multiple noise levels so we will have a sequence of noise levels $\sigma_1 > \sigma_2 > ... > \sigma_K > 0$ each pair $(\tilde{X}, \sigma_k)$ represents a perturbed data point at noise level $\sigma_k$. The overall training objective becomes:
-
-$$
-L_{multi}(\theta) = \sum_{k=1}^K \lambda(\sigma_k) E_{X, \epsilon} \left[ ||s_\theta(X + \sigma_k \epsilon, \sigma_k) + \frac{1}{\sigma_k^2} \epsilon||^2 \right] = \sum_{k=1}^K \lambda(\sigma_k) L_{NCSM}(\theta; \sigma_k)
-$$
-
-the lambda function is a weighting function that can be used to balance the contributions from different noise levels during training. the idea is to ensure that losses different scales contribute equally to the overall objective and to control the relative importance of each noise level. A common choice is to set $\lambda(\sigma_k) = \sigma_k^2$ which gives more weight to higher noise levels where the score estimates are less accurate.
-
-the step size $\alpha_k$ is usually set proportional to $\sigma_k^2$ which results in total in annealed langevin sampling.
-
-
-### Anderson's Reversal
-
-So we have now achieved the following:
-
-- Langevin Dynamics proved that if you have a gradient (score) and noise, you can converge to a distribution. This proves Generative Modeling is possible via gradients.
-- NCSM proved that you can learn those gradients from data without knowing the density, but only if you smooth the data with noise. This proves Training is possible.
-
-
-Now comes the key idea for diffusion models. 
-
-Reverse SDE unified these ideas into a continuous process, showing that "adding noise slowly" and "removing noise slowly" are mathematically symmetrical processes
-
-What actually is the forward SDE now so that we then calcualte the reverse SDE? How does this link with langevin dynamics and score matching?
-
-we don't just add noise but also scale down the features of the data which results in the forwards defussion process.
-
-Brian Anderson 1982 showed that the reverse of a diffusion process is also a diffusion process with modified drift term. Then the time-reversed SDE is given by:
+We define a geometric sequence of noise levels:
 
 $$
-\tilde{X}(t) = X(T - t)
+\sigma_1 > \sigma_2 > \cdots > \sigma_K > 0
 $$
 
-of the forward SDE:
+where typically $\sigma_1$ is large enough that the perturbed distribution $P_{\sigma_1}$ approximately fills the entire ambient space, and $\sigma_K$ is small enough that $P_{\sigma_K}$ is close to the original data distribution. A common choice is a geometric sequence where $\sigma_k = \sigma_1 \cdot r^{k-1}$ for some ratio $r < 1$.
+
+{{< figure
+    src="/images/ml/diffusionScoreVarianceScales.gif"
+    alt="Animation showing the impact of different variance scales on the score function, demonstrating how larger variances smooth out the score field."
+    caption="Impact of variance scales on score functions: different noise levels (variances) produce score functions with varying degrees of smoothness, with larger variances creating smoother score fields that cover the entire space."
+    width="600"
+>}}
+
+The overall training objective becomes a weighted sum of the NCSM objectives at each noise level:
 
 $$
-dX = [f(X, t) - g(t)^2 \nabla_X \log P_t(X)]dt + g(t)d\tilde{W}_t
+L_{\text{multi}}(\theta) = \sum_{k=1}^K \lambda(\sigma_k) \mathbb{E}_{X, \epsilon} \left[ \|s_\theta(X + \sigma_k \epsilon, \sigma_k) + \frac{1}{\sigma_k^2} \epsilon\|^2 \right] = \sum_{k=1}^K \lambda(\sigma_k) L_{\text{NCSM}}(\theta; \sigma_k)
 $$
 
-use X not X tilde despite being reverse. Drift term has an additional term involving the score function of the marginal distribution at time t. can be derived using the Fokker-Planck equation. Brownian motion is replaced by a new Brownian motion $\tilde{W}_t$ running backwards in time. the idea of the additional term is that it guides back the backward process back towards high probability regions of the data distribution at each time step.
+where $\epsilon \sim \mathcal{N}(0, I)$ is standard Gaussian noise. The weighting function $\lambda(\sigma_k)$ balances the contributions from different noise levels. A common choice is $\lambda(\sigma_k) = \sigma_k^2$, which gives more weight to higher noise levels. This weighting ensures that losses at different scales contribute more equally to the gradient updates, since the score magnitude naturally scales as $\frac{1}{\sigma}$ and squaring the error gives a factor of $\frac{1}{\sigma^2}$.
 
-If we can estimate the score function $\nabla_X \log P_t(X)$ at each time step t then we can use the reverse SDE to generate new samples from the data distribution by simulating the backward process starting from pure noise at time T and iteratively applying the reverse SDE until reaching time 0 resulting in a sample from the target distribution. The samples can be generated using the Euler-Maruyama method as before but now applied to the reverse SDE.
+**Sampling via Annealed Langevin Dynamics**
 
-The challange is learning the score function at every time step t_1, t_2 etc. We can do this again with NCSM, noise conditional score matching. We train a time-conditional score model $s_\theta(X, t)$ to estimate the score function of the marginal distribution at each time step:
+Once we have trained a score model $s_\theta(X, \sigma)$ that works across multiple noise levels, we can use **annealed Langevin dynamics** for sampling. The idea is to start with the highest noise level $\sigma_1$ (where the distribution is approximately uniform over the space) and gradually decrease the noise level while running Langevin dynamics at each level.
+
+The algorithm proceeds as follows:
+
+1. Initialize $X_0 \sim \mathcal{N}(0, \sigma_1^2 I)$ from the prior distribution at the highest noise level
+2. For each noise level $k = 1, 2, \ldots, K$:
+   - Run $M$ steps of Langevin dynamics using the score at noise level $\sigma_k$:
+   $$
+   X_{i+1} = X_i + \alpha_k s_\theta(X_i, \sigma_k) + \sqrt{2\alpha_k} z_i \quad \text{for } i = 0, 1, \ldots, M-1
+   $$
+   where $z_i \sim \mathcal{N}(0, I)$ and $\alpha_k$ is the step size
+3. Use the final $X_M$ as the initialization for the next noise level $\sigma_{k+1}$
+
+The step size $\alpha_k$ at each noise level is typically set proportional to $\sigma_k^2$, so $\alpha_k = \epsilon \cdot \frac{\sigma_k^2}{\sigma_K^2}$ for some small constant $\epsilon$. This scaling ensures that the steps remain appropriately sized relative to the current noise level.
+
+As we anneal from high to low noise, the samples progressively refine from coarse approximations to fine-grained details, eventually producing high-quality samples from the data distribution. This multi-scale approach is the key insight that makes score-based generative models practical.
+
+### Anderson's Reversal and the Reverse SDE
+
+We have now established the key building blocks for score-based diffusion models:
+
+- **Langevin Dynamics** showed that if we have the score function (gradient of log density) and add noise, we can sample from any target distribution. This proves that generative modeling is possible using score functions.
+- **Score Matching** showed that we can learn the score function from data without knowing the density itself, by using integration by parts to eliminate the intractable normalizing constant.
+- **NCSM** showed that we can learn score functions at multiple noise levels by adding Gaussian noise to the data, which makes the score well-defined everywhere and avoids computing expensive divergence terms.
+- **Annealed Langevin Dynamics** showed that by using multiple noise scales and gradually decreasing the noise level, we can generate high-quality samples starting from pure noise.
+
+Now comes the key mathematical result that unifies these ideas into the continuous framework of diffusion models. In 1982, Brian Anderson proved a remarkable theorem about the time-reversal of stochastic processes. **Anderson's theorem** states that if we have a forward diffusion process described by an SDE, then the time-reversed process is also described by an SDE with a specific form involving the score function.
+
+Consider a general **forward SDE** that describes how we gradually add noise to data over time:
 
 $$
-s_\theta(X, t) \approx \nabla_X \log P_t(X(t) | X(0))
+dX_t = f(X_t, t)dt + g(t)dW_t
 $$
 
-here t plays the role of the noise level sigma in NCSM. So the conditional score will depend on how the forward process is defined. Putting this all together with the Euler-Maruyama method for simulating the reverse SDE gives us the following update step for generating samples:
+where $f(X_t, t)$ is the **drift term** controlling the deterministic part of the evolution, $g(t)$ is the **diffusion coefficient** controlling the amount of noise, and $W_t$ is Brownian motion. This SDE defines a stochastic process that starts at time $t=0$ with samples from the data distribution and evolves forward in time to $t=T$, progressively adding noise.
+
+The forward process induces a sequence of **marginal distributions** $p_t(X)$ describing the probability density of $X_t$ at each time $t$. At $t=0$, we have $p_0(X) = q_{\text{data}}(X)$ which is our data distribution. As time progresses, the distribution becomes increasingly noisy and spread out. At the final time $t=T$, we typically choose the process parameters so that $p_T(X) \approx \mathcal{N}(0, \sigma_T^2 I)$ is approximately a simple prior distribution like an isotropic Gaussian.
+
+Anderson's theorem tells us that the time-reversed process, which evolves backwards from time $T$ to time $0$, is also governed by an SDE. If we define the reversed process as $\tilde{X}_t = X_{T-t}$, then it satisfies the **reverse-time SDE**:
 
 $$
-X(t_{i-1}) = X(t_i) + [f(X(t_i), t_i) - g(t_i)^2 s_\theta(X(t_i), t_i)]\Delta t + g(t_i)\sqrt{\Delta t}\epsilon_i
+dX_t = \left[f(X_t, t) - g(t)^2 \nabla_X \log p_t(X_t)\right]dt + g(t)d\tilde{W}_t
 $$
 
-where $\epsilon_i \sim N(0, I)$ are independent standard normal random variables. 
+where $\tilde{W}_t$ is a **Brownian motion running backwards in time**, also called the reverse Brownian motion. Notice that we use $X_t$ for the reverse process rather than $\tilde{X}_t$ to emphasize that this is the generative sampling process we will use.
 
-We can define the SDE corresponding to the DDPM forward process (also called the **VP-SDE**, VP stands for variance preserving) as:
+The remarkable feature of this reverse SDE is the appearance of the **score function** $\nabla_X \log p_t(X_t)$ in the drift term. The original drift $f(X_t, t)$ is modified by subtracting $g(t)^2 \nabla_X \log p_t(X_t)$. This additional term guides the reverse process towards regions of high probability density at each time step. Intuitively, the score tells the process which direction to move in order to denoise the data and recover samples from the data distribution.
 
-Like in the video from x_i we discretize and use taylor expansion to get the differential form:
+The reverse SDE can be derived rigorously using the Fokker-Planck equation, which describes how the probability density $p_t(X)$ evolves over time under the forward SDE. By considering the time-reversed Fokker-Planck equation and matching it to an SDE form, one arrives at Anderson's formula. The derivation shows that the score function naturally emerges as the correction term needed to reverse the diffusion process.
+
+The reverse SDE provides us with a recipe for **generating samples**. If we can estimate the score function $\nabla_X \log p_t(X)$ at each time $t$, then we can simulate the reverse SDE to generate samples. We start with a sample from the prior distribution at time $T$, $X_T \sim \mathcal{N}(0, \sigma_T^2 I)$, then simulate the reverse SDE backwards in time from $t=T$ to $t=0$ using the Euler-Maruyama discretization, and the final state $X_0$ will be a sample from the data distribution $p_0(X) = q_{\text{data}}(X)$.
+
+{{< figure
+    src="/images/ml/diffusionReverseSDE.gif"
+    alt="Animation showing the reverse SDE process starting from noise and progressively denoising to generate a sample from the data distribution."
+    caption="Reverse SDE in action: starting from random Gaussian noise, the reverse-time SDE guided by the learned score function progressively removes noise to generate data samples."
+    width="600"
+>}}
+
+Using Euler-Maruyama with time steps $T = t_0 > t_1 > \cdots > t_N = 0$ and step size $\Delta t = t_i - t_{i+1}$, the discretized reverse update is:
 
 $$
-dX = -\frac{1}{2} \beta(t) X dt + \sqrt{\beta(t)} \sqrt{dt} \epsilon_t \text{ where } \epsilon_t \sim N(0, I)
+X_{i+1} = X_i + \left[f(X_i, t_i) - g(t_i)^2 s_\theta(X_i, t_i)\right]\Delta t + g(t_i)\sqrt{\Delta t}\epsilon_i
 $$
 
-Remember that $\sqrt{dt} \epsilon_t$ is equivalent to $dW_t$ where $W_t$ is Brownian motion. So we can rewrite this as:
+where $\epsilon_i \sim \mathcal{N}(0, I)$ and $s_\theta(X, t)$ is our learned score model approximating $\nabla_X \log p_t(X)$.
+
+The challenge is **learning the score function** $\nabla_X \log p_t(X)$ at every time step $t \in [0, T]$. Here we can apply NCSM again, but now the time $t$ plays the role of the noise level. We train a **time-conditional score model** $s_\theta(X, t)$ to estimate the score function of the marginal distribution at each time step:
 
 $$
-dX = -\frac{1}{2} \beta(t) X dt + \sqrt{\beta(t)} dW_t
+s_\theta(X, t) \approx \nabla_X \log p_t(X)
 $$
 
-what is explanation? something with derivates maybe?
+The training objective for the time-conditional score model follows the same NCSM principle. At each time $t$, we have a conditional distribution $p_t(X_t | X_0)$ defined by the forward process, and we can compute its score exactly just as we did for noise-perturbed data in NCSM. The specific form of this score depends on how the forward SDE is defined.
+
+### Variance Preserving SDE (VP-SDE) and DDPM
+
+We now show how the discrete-time DDPM formulation emerges as a special case of the continuous SDE framework. The key is defining a forward SDE whose discretization matches the DDPM forward process.
+
+In DDPM, the forward noising process at discrete time steps is:
+
+$$
+x_t = \sqrt{1 - \beta_t} x_{t-1} + \sqrt{\beta_t} \epsilon_t \qquad \epsilon_t \sim \mathcal{N}(0, I)
+$$
+
+where $\beta_t$ is the noise schedule. This can also be written using the cumulative product $\bar{\alpha}_t = \prod_{s=1}^t (1 - \beta_s)$ as:
+
+$$
+x_t = \sqrt{\bar{\alpha}_t} x_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon \qquad \epsilon \sim \mathcal{N}(0, I)
+$$
+
+This formulation preserves variance over time. If $x_0$ has unit variance and is independent of $\epsilon$, then $x_t$ also has unit variance for all $t$. This motivates the name **Variance Preserving SDE**, abbreviated as **VP-SDE**.
+
+To derive the continuous-time SDE corresponding to DDPM, we take the discrete process and consider the limit as the time step size goes to zero. Starting from the discrete forward step and applying a Taylor expansion, we can show that the continuous-time limit is the VP-SDE:
+
+$$
+dX_t = -\frac{1}{2} \beta(t) X_t dt + \sqrt{\beta(t)} dW_t
+$$
+
+where $\beta(t)$ is a continuous noise schedule function. The drift term $-\frac{1}{2}\beta(t) X_t$ scales the data towards zero, while the diffusion term $\sqrt{\beta(t)} dW_t$ adds Gaussian noise. The specific coefficients ensure that the variance is preserved over time when starting from unit variance data.
+
+{{< figure
+    src="/images/ml/diffusionScoreForwardSDE.gif"
+    alt="Animation showing the forward SDE process gradually adding noise to a data sample, with the score function at each timestep pointing toward higher density regions."
+    caption="Forward SDE with score functions: as noise is gradually added to the data, the score function at each noise level points toward regions of higher probability density in the perturbed distribution."
+    width="600"
+>}}
+
+The marginal distribution at time $t$ under this VP-SDE is Gaussian:
+
+$$
+p_t(X_t | X_0) = \mathcal{N}\left(X_t; \sqrt{\bar{\alpha}_t} X_0, (1 - \bar{\alpha}_t) I\right)
+$$
+
+where $\bar{\alpha}_t = \exp\left(-\int_0^t \beta(s) ds\right)$. This matches exactly the form we derived for DDPM.
+
+A key insight is that predicting the noise $\epsilon$ in DDPM is equivalent to predicting the score function. Given the conditional distribution above, we can compute its score:
 
 $$
 \begin{align*}
-L_{\text{DDPM}} &= \mathbb{E}_{x_0, \epsilon \sim N(0, I), t} \left[ \frac{1}{2} \| \epsilon - \epsilon_\theta (x_t, t) \|^2 \right] \\
-L_{\text{NCSM}} &= \mathbb{E}_{x_0, \epsilon \sim N(0, I), t} \left[ \frac{1}{2} \| s_\theta (x_t, t) + \frac{\epsilon}{\beta_t} \|^2 \right]
+\nabla_{X_t} \log p_t(X_t | X_0) &= \nabla_{X_t} \log \mathcal{N}\left(X_t; \sqrt{\bar{\alpha}_t} X_0, (1 - \bar{\alpha}_t) I\right) \\
+&= -\frac{X_t - \sqrt{\bar{\alpha}_t} X_0}{1 - \bar{\alpha}_t} \\
+&= -\frac{\epsilon}{\sqrt{1 - \bar{\alpha}_t}}
 \end{align*}
 $$
 
+where we used $X_t = \sqrt{\bar{\alpha}_t} X_0 + \sqrt{1 - \bar{\alpha}_t} \epsilon$. This shows that the score function is directly related to the noise $\epsilon$ through:
+
+$$
+\epsilon = -\sqrt{1 - \bar{\alpha}_t} \nabla_{X_t} \log p_t(X_t | X_0)
+$$
+
+Therefore, a model $\epsilon_\theta(X_t, t)$ that predicts noise is related to a score model $s_\theta(X_t, t)$ by:
+
+$$
+s_\theta(X_t, t) = -\frac{\epsilon_\theta(X_t, t)}{\sqrt{1 - \bar{\alpha}_t}}
+$$
+
+This connection shows that the DDPM training objective (minimizing noise prediction error) and the score matching objective are equivalent up to a weighting factor:
+
+$$
+\begin{align*}
+L_{\text{DDPM}}(\theta) &= \mathbb{E}_{X_0, \epsilon, t} \left[ \| \epsilon - \epsilon_\theta (X_t, t) \|^2 \right] \\
+L_{\text{score}}(\theta) &= \mathbb{E}_{X_0, \epsilon, t} \left[ (1 - \bar{\alpha}_t) \| s_\theta (X_t, t) - \nabla_{X_t} \log p_t(X_t | X_0) \|^2 \right]
+\end{align*}
+$$
+
+These two objectives are equivalent, just parameterized differently. In practice, DDPM uses noise prediction $\epsilon_\theta$ while score-based models use score prediction $s_\theta$, but they are learning the same underlying quantity.
+
 ## Denoising Diffusion Implicit Models
 
-Determinisitc variant such as DDIM remove the stochastic term by setting $Z_i = 0$ in the update step. This results in a deterministic mapping from pure noise to data samples. This improves generation speed but with slightly reduced sample diversity? Intuitevly it converges faster to high likelihood regions but may miss some modes of the distribution due to lack of stochastic exploration. Wasn^t this shown to be bad by 3blue1brown?
+So far we have seen that sampling from diffusion models requires simulating the reverse process using many time steps. In DDPM, this typically requires 1000 steps to generate high-quality samples, making generation slow. [Denoising Diffusion Implicit Models (DDIM)](https://arxiv.org/abs/2010.02502), introduced by Song, Meng, and Ermon in 2020, addresses this limitation by defining a **non-Markovian** generative process that enables much faster sampling while using the same trained model from DDPM.
 
-Basically it can be shown that there is an ODE that matches the planck SDE and this ODE can be solved deterministically. So instead of simulating the SDE with noise we can solve the corresponding ODE without noise to get a deterministic mapping from noise to data samples. has smaller scaling of our step size do not go towards the mean?
+The key insight behind DDIM is that the DDPM training objective only depends on the **marginal distributions** $q(x_t | x_0)$ at each time step, not on the full joint distribution $q(x_{1:T} | x_0)$ of the entire trajectory. This means that many different forward processes can share the same marginals and thus use the same trained model. DDIM exploits this freedom to define a more efficient reverse process.
+
+Instead of the Markovian forward process used in DDPM where $q(x_t | x_{t-1}, x_0) = q(x_t | x_{t-1})$ depends only on the previous step, DDIM uses a **non-Markovian** forward process where the transition depends directly on both the current noisy state and the original clean data:
+
+$$
+q_\sigma(x_{t-1} | x_t, x_0) = \mathcal{N}\left(x_{t-1}; \sqrt{\bar{\alpha}_{t-1}} \frac{x_t - \sqrt{1-\bar{\alpha}_t} \epsilon_\theta(x_t, t)}{\sqrt{\bar{\alpha}_t}} + \sqrt{1 - \bar{\alpha}_{t-1} - \sigma_t^2} \epsilon_\theta(x_t, t), \sigma_t^2 I\right)
+$$
+
+where $\epsilon_\theta(x_t, t)$ is the trained noise prediction model and $\sigma_t$ is a parameter that controls the amount of stochasticity. This can be rewritten as the sampling update:
+
+$$
+x_{t-1} = \sqrt{\bar{\alpha}_{t-1}} \underbrace{\frac{x_t - \sqrt{1-\bar{\alpha}_t} \epsilon_\theta(x_t, t)}{\sqrt{\bar{\alpha}_t}}}_{\text{predicted } x_0} + \underbrace{\sqrt{1 - \bar{\alpha}_{t-1} - \sigma_t^2} \epsilon_\theta(x_t, t)}_{\text{direction pointing to } x_t} + \underbrace{\sigma_t \epsilon}_{\text{random noise}}
+$$
+
+where $\epsilon \sim \mathcal{N}(0, I)$. The formula shows three components: a prediction of the clean image $x_0$, a directional term pointing from $x_0$ towards $x_t$, and a random noise term.
+
+The crucial feature is the $\sigma_t$ parameter, which is commonly set as $\sigma_t^2 = \eta \cdot \tilde{\beta}_t$ where $\eta$ controls the stochasticity and $\tilde{\beta}_t$ is related to the noise schedule. When $\eta = 1$ and $\sigma_t = \sqrt{\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_t}} \sqrt{1-\frac{\bar{\alpha}_t}{\bar{\alpha}_{t-1}}}$, this recovers the original DDPM. When $\eta = 0$ and thus $\sigma_t = 0$, the random noise term vanishes and we get a **deterministic** generative process:
+
+$$
+x_{t-1} = \sqrt{\bar{\alpha}_{t-1}} \frac{x_t - \sqrt{1-\bar{\alpha}_t} \epsilon_\theta(x_t, t)}{\sqrt{\bar{\alpha}_t}} + \sqrt{1 - \bar{\alpha}_{t-1}} \epsilon_\theta(x_t, t)
+$$
+
+This deterministic mapping means that starting from the same initial noise $x_T$, we will always generate the same sample $x_0$. This property is valuable for applications requiring consistency and reproducibility.
+
+{{< figure
+    src="/images/ml/diffusionDDIM.png"
+    alt="Comparison of DDPM stochastic sampling vs DDIM deterministic sampling trajectories."
+    caption="Comparison of DDPM stochastic sampling vs DDIM deterministic sampling trajectories."
+>}}
+
+The main advantage of DDIM is that it allows **accelerated sampling** by skipping time steps. Because the process is non-Markovian, we can define a subsequence of time steps $\tau = (\tau_1, \tau_2, \ldots, \tau_S)$ where $\tau_1 = T$ and $\tau_S = 0$, and only perform updates at these steps. Instead of using all 1000 time steps as in DDPM, we might use only 50 or 100 steps. DDIM can produce high-quality samples **10 times to 50 times faster** in terms of wall-clock time compared to DDPM by using this strided sampling schedule.
+
+Interestingly, this deterministic process can be interpreted as discretizing a **probability flow ODE**, a concept from the score-based SDE framework. A probability flow ODE is an ordinary differential equation (without stochastic terms) that has the same marginal distributions as the reverse SDE. For the VP-SDE, this ODE takes the form:
+
+$$
+dX_t = \left[f(X_t, t) - \frac{1}{2}g(t)^2 \nabla_X \log p_t(X_t)\right]dt
+$$
+
+This ODE has no stochastic $dW_t$ term and generates samples by following deterministic trajectories along the probability distribution.
+
+In practice, deterministic DDIM sampling often produces slightly sharper images because the deterministic trajectory more directly follows the high-probability path through the distribution. However, this can also mean slightly lower sample diversity compared to stochastic DDPM sampling, since the stochastic noise allows exploration of different modes of the distribution. The parameter $\eta$ allows interpolating between these two extremes, trading off between sampling speed, determinism, and diversity.
 
 ## Diffusion Backbones
 
@@ -1144,7 +1390,7 @@ Notice that so far we have not specified the architecture of the model to be use
 The original choice for the denoising model is the U-Net architecture which was first proposed in the context of biomedical image segmentation in [U-Net: Convolutional Networks for Biomedical Image Segmentation](https://arxiv.org/abs/1505.04597). The U-Net is a type of convolutional neural network (CNN) that has an encoder-decoder structure with skip connections between corresponding layers in the encoder and decoder paths. The encoder path consists of a series of convolutional and MaxPooling layers that progressively downsample the input image such that the spatial information is reduced while feature information is increased. The decoder path then consists of a series of upsampling and convolutional layers that progressively reconstruct the image back to its original size. Importantly just like in the ResNet architecture, skip connections are used to directly connect feature maps from the encoder to the decoder at corresponding spatial resolutions. This allows the decoder to leverage both high-level semantic information from the encoder as well as low-level spatial details from earlier layers, resulting in more accurate reconstructions and avoiding gradient vanishing issues.
 
 {{< figure 
-    src="/garden/ml/diffusion/mlUNet.png" 
+    src="/images/ml/mlUNet.png" 
     alt="U-Net Architecture used in the original Biomedical Image Segmentation paper."
     caption="U-Net Architecture used in the original Biomedical Image Segmentation paper."
 >}}
@@ -1157,9 +1403,11 @@ Second paper by openai "Diffusion Models Beat GANs on Image Synthesis" with some
 
 ### Diffusion Transformers
 
+skip for now
+
 ## Latent Diffusion Models
 
-uses Vae to compress image into latent space and then runs diffusion in latent space. much faster and less memory. also allows higher res images.
+uses Vae to compress image into latent space and then runs diffusion in latent space. much faster and less memory. also allows higher res images
 
 ## Conditional Diffusion
 
@@ -1167,20 +1415,24 @@ one using just embedding concatentation another using cross attention?
 
 the embeddings can come from text encoders such as CLIP or from other modalities such as segmentation maps etc.
 
+where is Dalle?
+
 ### Classifier Guided
 
 ### Classifier-Free Guidance
 
-### Dall-E
-
-### Imagen
-
 ### LoRa
+
+skip for now
 
 ### ControlNet
 
+skip for now
+
 ### DreamBooth
 
+skip for now
 
 ## Super Resolution Diffusion Models
 
+skip for now
