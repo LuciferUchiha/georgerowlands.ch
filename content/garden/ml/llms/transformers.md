@@ -492,7 +492,7 @@ Consider a large Transformer with $L = 6$ decoder layers, $d = 768$ dimensions, 
 Per sequence:
 
 $$
-\text{KV Cache} = 4 \times 6 \times 512 \times 768 = 9{,}437{,}184 \text{ bytes} \approx 9 \text{ MB}
+\text{KV Cache} = 4 \times 6 \times 512 \times 768 = 9'437'184 \text{ bytes} \approx 9 \text{ MB}
 $$
 
 For batch size $B = 32$ (processing 32 translations concurrently):
@@ -501,7 +501,7 @@ $$
 \text{Total Memory} = 32 \times 9 \text{ MB} = 288 \text{ MB}
 $$
 
-This is manageable for most modern GPUs. However, for very large models or longer sequences, the KV cache can become a significant memory bottleneck. For a GPT-3 scale model with $L = 96$ layers, $d = 12{,}288$ dimensions, and context length $N = 2{,}048$ tokens, the cache per sequence is approximately 9 GB, making batch processing challenging.
+This is manageable for most modern GPUs. However, for very large models or longer sequences, the KV cache can become a significant memory bottleneck. For a GPT-3 scale model with $L = 96$ layers, $d = 12'288$ dimensions, and context length $N = 2'048$ tokens, the cache per sequence is approximately 9 GB, making batch processing challenging.
 {{< /callout >}}
 
 This memory requirement must reside in GPU VRAM for efficient computation. In production systems serving many users, each request maintains its own KV cache, making memory management across GPUs complex. Systems must carefully batch requests with similar sequence lengths to maximize GPU utilization while avoiding out-of-memory errors.

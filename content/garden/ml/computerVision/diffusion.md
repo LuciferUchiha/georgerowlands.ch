@@ -1285,16 +1285,7 @@ $$
 dX_t = -\frac{1}{2} \beta(t) X_t dt + \sqrt{\beta(t)} dW_t
 $$
 
-where $\beta(t)$ is a continuous noise schedule function. The drift term $-\frac{1}{2}\beta(t) X_t$ scales the data towards zero, while the diffusion term $\sqrt{\beta(t)} dW_t$ adds Gaussian noise. The specific coefficients ensure that the variance is preserved over time when starting from unit variance data.
-
-{{< figure
-    src="/images/ml/diffusionScoreForwardSDE.gif"
-    alt="Animation showing the forward SDE process gradually adding noise to a data sample, with the score function at each timestep pointing toward higher density regions."
-    caption="Forward SDE with score functions: as noise is gradually added to the data, the score function at each noise level points toward regions of higher probability density in the perturbed distribution."
-    width="600"
->}}
-
-The marginal distribution at time $t$ under this VP-SDE is Gaussian:
+where $\beta(t)$ is a continuous noise schedule function. The drift term $-\frac{1}{2}\beta(t) X_t$ scales the data towards zero, while the diffusion term $\sqrt{\beta(t)} dW_t$ adds Gaussian noise. The specific coefficients ensure that the variance is preserved over time when starting from unit variance data. The marginal distribution at time $t$ under this VP-SDE is Gaussian:
 
 $$
 p_t(X_t | X_0) = \mathcal{N}\left(X_t; \sqrt{\bar{\alpha}_t} X_0, (1 - \bar{\alpha}_t) I\right)
@@ -1407,19 +1398,238 @@ skip for now
 
 ## Latent Diffusion Models
 
-uses Vae to compress image into latent space and then runs diffusion in latent space. much faster and less memory. also allows higher res images
+The diffusion models we have discussed so far operate directly in pixel space, meaning they denoise images at the full resolution where each pixel is treated as a separate dimension. For a $512 \times 512$ RGB image, this corresponds to a dimensionality of $d = 512 \times 512 \times 3 = 786'432$. Operating in such high-dimensional spaces presents several computational challenges. First, each denoising step requires processing the entire high-dimensional representation through the neural network backbone, leading to substantial computational costs that scale with image resolution. Second, storing intermediate activations and gradients for such large tensors requires significant memory, limiting the batch sizes that can be used during training and the resolution of images that can be generated. 
+
+[Latent Diffusion Models (LDMs)](https://arxiv.org/abs/2112.10752), introduced by Rombach et al. in their 2022 CVPR paper "High-Resolution Image Synthesis with Latent Diffusion Models", address these computational limitations by applying diffusion in a compressed latent space rather than directly in pixel space. This is the architecture underlying Stable Diffusion and many modern text-to-image models. The key insight is that natural images contain significant redundancy and can be compressed into much lower-dimensional representations without losing perceptually important information. By performing diffusion in this compressed space, we can achieve dramatic computational savings while maintaining high-quality generation.
+
+{{< figure
+    src="/images/ml/diffusionLatent.png"
+    alt="Latent diffusion models apply the diffusion process in the compressed latent space of a pretrained autoencoder."
+    caption="Latent diffusion models compress images into a lower-dimensional latent space using a VAE encoder, perform diffusion in this latent space, then decode back to pixel space using the VAE decoder."
+>}}
+
+### Pretrained Autoencoder
+
+The foundation of latent diffusion is a pretrained [autoencoder](/garden/ml/computerVision/autoencoders/) that learns to compress images into a lower-dimensional latent representation. Specifically, LDMs use a [Variational Autoencoder (VAE)](/garden/ml/computerVision/autoencoders/#variational-autoencoders) trained with a perceptual loss that preserves visually important details while discarding imperceptible information.
+
+The VAE consists of an encoder $\mathcal{E}$ that maps an image $x \in \mathbb{R}^{H \times W \times 3}$ to a latent representation $z = \mathcal{E}(x) \in \mathbb{R}^{h \times w \times c}$, and a decoder $\mathcal{D}$ that reconstructs the image from the latent variable as $\tilde{x} = \mathcal{D}(z) \in \mathbb{R}^{H \times W \times 3}$. The spatial dimensions are downsampled by a factor $f = \frac{H}{h} = \frac{W}{w}$ called the downsampling factor. Common choices are $f = 4, 8, 16$, meaning a $512 \times 512$ image is compressed to $128 \times 128$, $64 \times 64$, or $32 \times 32$ latent representations respectively.
+
+The compression ratio is determined by the downsampling factor and the number of latent channels. For a downsampling factor $f = 8$ with $c = 4$ latent channels, a $512 \times 512 \times 3 = 786'432$ dimensional image is compressed to $64 \times 64 \times 4 = 16'384$ dimensions, achieving a compression ratio of $\frac{786'432}{16'384} = 48\times$. This means the latent space has 48 times fewer dimensions than the pixel space, leading to corresponding reductions in computation and memory.
+
+Recall from the [VAE notes](/garden/ml/computerVision/autoencoders/#the-elbo-objective) that a standard VAE maximizes the Evidence Lower Bound (ELBO):
+
+$$
+\mathcal{L}(\theta, \phi; x) = \mathbb{E}_{z \sim q_\phi(z \mid x)} [\log p_\theta(x \mid z)] - \text{KL}(q_\phi(z \mid x) \parallel p(z))
+$$
+
+where the first term is the reconstruction term and the second term is the KL regularization that encourages the encoder distribution $q_\phi(z \mid x)$ to match the prior $p(z) = \mathcal{N}(0, I)$. For a Gaussian likelihood, the reconstruction term becomes proportional to negative mean squared error.
+
+For latent diffusion models, the VAE is trained with a modified objective that uses perceptual losses rather than simple pixel-wise reconstruction. The training objective is:
+
+$$
+\mathcal{L}_{\text{VAE}} = \mathcal{L}_{\text{rec}}(x, \mathcal{D}(\mathcal{E}(x))) + \mathcal{L}_{\text{reg}}(\mathcal{E}(x))
+$$
+
+The reconstruction loss combines multiple components to capture perceptual quality:
+
+$$
+\mathcal{L}_{\text{rec}} = \|x - \mathcal{D}(\mathcal{E}(x))\|_1 + \mathcal{L}_{\text{perceptual}} + \mathcal{L}_{\text{adv}}
+$$
+
+The first term is an $L_1$ pixel-wise loss that ensures basic reconstruction accuracy. The perceptual loss $\mathcal{L}_{\text{perceptual}}$ measures reconstruction quality in feature space rather than pixel space. It is computed by extracting features from intermediate layers of a pretrained network (such as a VGG network or a discriminator) for both the original image and the reconstruction, then computing the distance between these features:
+
+$$
+\mathcal{L}_{\text{perceptual}} = \sum_{l} \|f_l(x) - f_l(\mathcal{D}(\mathcal{E}(x)))\|_2^2
+$$
+
+where $f_l$ denotes features from layer $l$. This ensures that reconstructions are visually similar to the originals in terms of high-level semantic content rather than just pixel values. The adversarial loss $\mathcal{L}_{\text{adv}}$ uses a discriminator to encourage reconstructions to lie on the manifold of realistic images, further improving perceptual quality.
+
+The regularization term $\mathcal{L}_{\text{reg}}$ is a KL divergence penalty, but LDMs use much weaker regularization than standard VAEs:
+
+$$
+\mathcal{L}_{\text{reg}} = \text{KL}(q_\phi(z \mid x) \parallel p(z))
+$$
+
+This is typically weighted by a small coefficient (or implemented as a KL-regularized variant) to prioritize reconstruction quality over strict adherence to the Gaussian prior. The goal is to learn a compressed representation that preserves perceptually important details while maintaining a reasonably regular latent space that the diffusion model can learn.
+
+Once the VAE is trained, the encoder and decoder are frozen and used to map between pixel space and latent space during diffusion model training and sampling.
+
+### Diffusion in Latent Space
+
+With a pretrained VAE, latent diffusion operates entirely in the compressed latent space. Given a dataset of images $\{x_1, x_2, \ldots, x_N\}$, we first encode them to latent representations $\{z_1, z_2, \ldots, z_N\}$ where $z_i = \mathcal{E}(x_i)$. We then train a diffusion model $\epsilon_\theta$ to denoise these latent representations rather than the original images.
+
+The forward diffusion process adds Gaussian noise to the latent representations following the same schedule as standard diffusion:
+
+$$
+q(z_t | z_0) = \mathcal{N}(z_t; \sqrt{\bar{\alpha}_t} z_0, (1 - \bar{\alpha}_t) I)
+$$
+
+where $z_0 = \mathcal{E}(x)$ is the clean latent variable and $z_t$ is the noisy latent at time step $t$. This is identical to the pixel-space formulation, except we are now working with latent variables $z \in \mathbb{R}^{h \times w \times c}$ instead of images $x \in \mathbb{R}^{H \times W \times 3}$.
+
+The reverse denoising process learns to predict the noise $\epsilon$ added at each step, just as in the original DDPM formulation. The denoising network $\epsilon_\theta(z_t, t)$ takes as input the noisy latent $z_t$ and the time step $t$, and outputs an estimate of the noise. The training objective is the simplified denoising objective:
+
+$$
+\mathcal{L}_{\text{LDM}} = \mathbb{E}_{z \sim \mathcal{E}(x), \epsilon \sim \mathcal{N}(0,I), t} \left[ \| \epsilon - \epsilon_\theta(z_t, t) \|_2^2 \right]
+$$
+
+where $z_t = \sqrt{\bar{\alpha}_t} z + \sqrt{1 - \bar{\alpha}_t} \epsilon$ is the noisy latent at time step $t$. This is exactly the same training objective as DDPM, but operating on the compressed latent representations.
+
+The denoising network architecture is typically a U-Net adapted to the latent space dimensions. Since the latent space has much smaller spatial dimensions but more channels than RGB images, the U-Net processes inputs of shape $h \times w \times c$ rather than $H \times W \times 3$. The time step $t$ is typically embedded using sinusoidal position encodings and injected into the network through adaptive group normalization layers, allowing the network to adapt its behavior based on the noise level.
+
+### Sampling Process
+
+Generating new images with a latent diffusion model involves three steps. First, we sample pure Gaussian noise in the latent space: $z_T \sim \mathcal{N}(0, I)$ where $z_T \in \mathbb{R}^{h \times w \times c}$. Second, we apply the learned reverse diffusion process to iteratively denoise the latent variable. Using the DDIM sampling scheme for efficiency, we update:
+
+$$
+z_{t-1} = \sqrt{\bar{\alpha}_{t-1}} \underbrace{\frac{z_t - \sqrt{1-\bar{\alpha}_t} \epsilon_\theta(z_t, t)}{\sqrt{\bar{\alpha}_t}}}_{\text{predicted } z_0} + \sqrt{1 - \bar{\alpha}_{t-1}} \epsilon_\theta(z_t, t)
+$$
+
+This deterministic update is applied for $t = T, T-1, \ldots, 1$ to obtain the clean latent variable $z_0$. Third, we decode the clean latent variable back to pixel space using the VAE decoder: $x = \mathcal{D}(z_0)$.
+
+The decoder is deterministic and runs only once at the end of generation, so the computational cost is negligible compared to the iterative denoising process. All the expensive iterative denoising happens in the compressed latent space, providing substantial speedups.
 
 ## Conditional Diffusion
 
-one using just embedding concatentation another using cross attention?
+So far we have discussed unconditional diffusion models that learn to generate samples from the data distribution without any external control. However, many applications require conditional generation where we want to control specific aspects of the generated samples. For example, we might want to generate images from text descriptions (text-to-image), generate images conditioned on semantic layouts (layout-to-image), or generate specific classes of images (class-conditional generation).
 
-the embeddings can come from text encoders such as CLIP or from other modalities such as segmentation maps etc.
+There are two fundamentally different approaches to conditional generation in diffusion models: **classifier guidance** and **classifier-free guidance**. These differ not just in their sampling procedures but in their entire training paradigms. Classifier guidance trains an unconditional diffusion model and uses a separate classifier to guide generation at sampling time, while classifier-free guidance trains a single conditional model that learns both conditional and unconditional denoising simultaneously. We present these approaches in order, starting with classifier guidance to understand the mathematical foundations of guided diffusion.
 
-where is Dalle?
+### Classifier Guidance
 
-### Classifier Guided
+Classifier guidance was introduced in "Diffusion Models Beat GANs on Image Synthesis" by Dhariwal and Nichol. The approach uses a pretrained classifier to guide an unconditional diffusion model toward desired conditions at sampling time.
+
+During training, we build two separate models. First, we train an unconditional diffusion model $\epsilon_\theta(x_t, t)$ using the standard DDPM objective. Second, we train a classifier $p_\phi(c | x_t, t)$ that can classify noisy images at any noise level $t$. This classifier is trained on noisy samples from the forward diffusion process, learning to recognize classes even in heavily corrupted images.
+
+At inference time, to generate a sample of class $c$, we start from pure noise $x_T \sim \mathcal{N}(0, I)$ and iteratively denoise using a modified score that incorporates the classifier gradient. The key mathematical insight comes from Bayes' rule applied to the score function:
+
+$$
+\nabla_{x_t} \log p(x_t | c) = \nabla_{x_t} \log p(x_t) + \nabla_{x_t} \log p(c | x_t)
+$$
+
+This shows that the conditional score (how to denoise to get class $c$) equals the unconditional score plus the gradient of the log probability that the current noisy image belongs to class $c$. The unconditional score is approximated by our trained diffusion model, and the classifier provides the second term.
+
+Since the noise prediction $\epsilon_\theta(x_t, t)$ relates to the score as $\epsilon_\theta(x_t, t) \approx -\sqrt{1 - \bar{\alpha}_t} \nabla_{x_t} \log p(x_t)$, we can modify it to incorporate the classifier gradient. At each denoising step, we compute:
+
+$$
+\tilde{\epsilon}_\theta(x_t, t, c) = \epsilon_\theta(x_t, t) - w \sqrt{1 - \bar{\alpha}_t} \nabla_{x_t} \log p_\phi(c | x_t, t)
+$$
+
+where $w \geq 1$ is a guidance scale controlling conditioning strength. The term $\nabla_{x_t} \log p_\phi(c | x_t, t)$ is computed by evaluating the classifier on the current noisy image $x_t$ and backpropagating through it with respect to the input. This gradient points in the direction that would make the classifier more confident that $x_t$ belongs to class $c$.
+
+To generate an image of class $c$:
+1. Start with noise $x_T \sim \mathcal{N}(0, I)$
+2. For each time step $t = T, T-1, \ldots, 1$:
+   - Compute unconditional noise prediction: $\epsilon_\theta(x_t, t)$
+   - Compute classifier gradient: $\nabla_{x_t} \log p_\phi(c | x_t, t)$
+   - Compute guided noise prediction: $\tilde{\epsilon}_\theta(x_t, t, c) = \epsilon_\theta(x_t, t) - w \sqrt{1 - \bar{\alpha}_t} \nabla_{x_t} \log p_\phi(c | x_t, t)$
+   - Update using this guided prediction: $x_{t-1} = \text{DDPM or DDIM update}(\tilde{\epsilon}_\theta)$
+3. Return $x_0$
+
+The guidance scale $w$ allows trading off between sample quality and conditioning strength. Higher values produce samples that more strongly match the desired class but may reduce diversity or realism.
+
+The main limitation of classifier guidance is the need to train a separate noise-robust classifier. This classifier must work across all noise levels, which is non-trivial. Additionally, running both the diffusion model and classifier at each sampling step increases computational cost. These limitations motivated the development of classifier-free guidance.
+
+### Conditional Training
+
+Unlike classifier guidance which uses an unconditional model, conditional diffusion approaches train a model that directly incorporates the conditioning information. When we have paired training data (images with associated labels, captions, or other conditioning information), we modify the denoising network to take conditioning as an additional input.
+
+The noise prediction network becomes $\epsilon_\theta(x_t, t, c)$ where $c$ is the conditioning signal. The training objective extends the unconditional DDPM objective:
+
+$$
+\mathcal{L}_{\text{conditional}} = \mathbb{E}_{x, c, \epsilon, t} \left[ \| \epsilon - \epsilon_\theta(x_t, t, c) \|_2^2 \right]
+$$
+
+where $x \sim q(x)$ is sampled from the data distribution, $c \sim p(c|x)$ is the conditioning information associated with $x$ (such as a caption describing the image), $\epsilon \sim \mathcal{N}(0, I)$ is random noise, and $t \sim \text{Uniform}(1, T)$ is a random time step. The key question is how to architecturally incorporate the conditioning signal $c$ into the network, which depends on the nature and structure of the conditioning information.
+
+### Conditioning Mechanisms
+
+There are several architectural approaches for incorporating conditioning information into the denoising network.
+
+**Concatenation-based conditioning** is the simplest approach. The conditioning information is encoded into a tensor with spatial dimensions matching the noisy input $x_t$, and the two are concatenated along the channel dimension before being fed into the U-Net. For example, if $x_t \in \mathbb{R}^{H \times W \times 3}$ and $c$ is encoded as $c_{\text{enc}} \in \mathbb{R}^{H \times W \times d}$, we concatenate to form $[x_t, c_{\text{enc}}] \in \mathbb{R}^{H \times W \times (3+d)}$ and process this through the U-Net. This approach works well when the conditioning is spatially aligned with the output, such as conditioning on segmentation maps or depth maps where each spatial location in the condition corresponds to a location in the output image. The U-Net's convolutional layers can then locally combine information from the noisy image and the condition.
+
+**Adaptive normalization** injects conditioning through the normalization layers of the network. Instead of using standard normalization, we use adaptive normalization layers where the normalization parameters (scale and shift) are predicted from the conditioning $c$. For a feature map $h$, instead of normalizing with fixed parameters, we compute:
+
+$$
+\text{AdaGN}(h, c) = \gamma(c) \frac{h - \mu(h)}{\sigma(h)} + \beta(c)
+$$
+
+where $\mu(h)$ and $\sigma(h)$ are the mean and standard deviation of the feature map, and $\gamma(c)$ and $\beta(c)$ are scale and shift parameters predicted from the conditioning via small neural networks. This approach allows the conditioning to modulate the entire network's behavior. It works particularly well for global conditioning information like class labels or text embeddings that do not have spatial structure.
+
+**Cross-attention conditioning** is the most flexible and powerful approach, particularly for text-to-image generation. This method was introduced in the latent diffusion paper and has become the standard for modern text-to-image models. The conditioning information is first encoded into a sequence of embeddings, and then the denoising network attends to these embeddings using [cross-attention layers](/garden/ml/llms/attention/#cross-attention) from the [Transformer architecture](/garden/ml/llms/transformers/).
+
+For text conditioning, we use a pretrained text encoder to convert the text prompt into embeddings. The [CLIP model](/garden/ml/computerVision/clip/) has become a popular choice because it was trained on large datasets of image-text pairs and learns a joint embedding space where semantically related images and text are close together. CLIP consists of separate image and text encoders trained with a contrastive objective, ensuring that the text representations capture visual concepts. For conditional diffusion, we use only the CLIP text encoder, which is a [Transformer](/garden/ml/llms/transformers/) that processes tokenized text through multiple self-attention layers.
+
+Given a text prompt like "a photo of a cat sitting on a couch", we first tokenize it into individual tokens such as ["a", "photo", "of", "a", "cat", "sitting", "on", "a", "couch"]. We then pass this sequence through the text encoder to obtain a sequence of contextualized embeddings $c = \{c_1, c_2, \ldots, c_n\} \in \mathbb{R}^{n \times d_c}$ where $n$ is the number of tokens and $d_c$ is the embedding dimension. Each embedding $c_i$ is different and captures the semantic meaning and contextual role of its corresponding token. The embedding for "cat" encodes information about the animal concept, while the embedding for "sitting" encodes the action.
+
+The Transformer text encoder processes the entire sequence using self-attention, allowing each token's embedding to be informed by the surrounding context. This contextualization means that the same word can have different embeddings depending on its context (for example, "bank" in "river bank" versus "money bank"). The text encoder is typically frozen during diffusion model training, using the representations learned during its pretraining. This allows the diffusion model to leverage the encoder's existing semantic understanding without the computational cost of fine-tuning a large language model. While CLIP is commonly used, other text encoders like T5 or BERT can also be employed.
+
+To integrate cross-attention into the U-Net architecture, we insert cross-attention layers at various resolutions that allow the image features to attend to the text embeddings. Given intermediate feature maps $h \in \mathbb{R}^{h \times w \times d_h}$ from the U-Net, we flatten them to a sequence $h \in \mathbb{R}^{(hw) \times d_h}$ and compute cross-attention with the text embeddings $c \in \mathbb{R}^{n \times d_c}$.
+
+Following the attention mechanism described in the [attention notes](/garden/ml/llms/attention/#cross-attention), we compute queries from the image features and keys and values from the text embeddings:
+
+$$
+Q = hW_Q \in \mathbb{R}^{(hw) \times d_k}, \quad K = cW_K \in \mathbb{R}^{n \times d_k}, \quad V = cW_V \in \mathbb{R}^{n \times d_v}
+$$
+
+where $W_Q \in \mathbb{R}^{d_h \times d_k}$, $W_K \in \mathbb{R}^{d_c \times d_k}$, and $W_V \in \mathbb{R}^{d_c \times d_v}$ are learnable projection matrices. The attention output is computed as:
+
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V \in \mathbb{R}^{(hw) \times d_v}
+$$
+
+The attention weight matrix has shape $(hw) \times n$, where entry $(i,j)$ represents how much spatial position $i$ in the image attends to text token $j$. This allows different regions of the generated image to focus on different parts of the text prompt. For example, when generating "a red ball next to a blue cube", the region generating the ball can attend strongly to the tokens "red" and "ball", while the region generating the cube attends to "blue" and "cube".
+
+These cross-attention layers are placed within the U-Net's residual blocks at each resolution level throughout both the encoder (downsampling) and decoder (upsampling) paths. At each resolution, a typical block processes features through:
+
+1. Residual convolutional layers with adaptive group normalization (incorporating the time embedding)
+2. Spatial self-attention (allowing spatial locations to exchange information)
+3. Cross-attention to text embeddings (incorporating the conditioning)
+
+This pattern is repeated at multiple scales as the U-Net downsamples and then upsamples the spatial resolution. The architecture is inspired by the [Transformer decoder](/garden/ml/llms/transformers/#decoder-architecture) which similarly interleaves self-attention and cross-attention. By applying cross-attention at multiple resolutions, the conditioning influences both coarse structure (global composition and layout at low resolutions) and fine details (textures and local features at high resolutions).
 
 ### Classifier-Free Guidance
+
+While conditional diffusion models can generate samples matching the conditioning, they often struggle with the trade-off between sample quality and conditioning strength. Samples that strictly follow the conditioning may lack diversity, while samples with high diversity may not faithfully follow the conditioning. [Classifier-free guidance](https://arxiv.org/abs/2207.12598), introduced by Ho and Salimans, provides a way to control this trade-off without requiring a separate classifier network.
+
+The key insight is to train a single conditional diffusion model that can operate both conditionally and unconditionally. During training, we randomly drop the conditioning information with some probability $p_{\text{uncond}}$ (typically 10-20%). When the conditioning is dropped, the model learns the unconditional distribution $p(x)$, while with conditioning it learns $p(x|c)$. This is implemented by replacing the conditioning $c$ with a special null token or empty embedding during these training steps.
+
+Formally, the training objective becomes:
+
+$$
+\mathcal{L}_{\text{CFG}} = \mathbb{E}_{x, c, \epsilon, t} \left[ \| \epsilon - \epsilon_\theta(x_t, t, c') \|_2^2 \right]
+$$
+
+where $c' = \emptyset$ with probability $p_{\text{uncond}}$ and $c' = c$ otherwise. The model thus learns to predict noise both with and without conditioning, sharing most parameters but adapting its behavior based on whether conditioning is provided.
+
+At inference time, classifier-free guidance achieves stronger conditioning by combining both the conditional and unconditional predictions from the same model. To understand this intuitively, consider denoising a noisy image $x_t$ while adhering to condition $c$ (such as "a red car"). The unconditional prediction $\epsilon_\theta(x_t, t, \emptyset)$ tells us what noise to remove if we have no specific requirements, denoising toward any plausible object. The conditional prediction $\epsilon_\theta(x_t, t, c)$ tells us what noise to remove to get a sample matching $c$, denoising specifically toward a red car.
+
+The difference between these predictions, $\epsilon_\theta(x_t, t, c) - \epsilon_\theta(x_t, t, \emptyset)$, represents the direction in noise space that moves from "any object" toward "red car specifically". By starting from the unconditional prediction and adding a scaled version of this difference, we control how strongly the result adheres to the conditioning.
+
+At each denoising step during sampling, we compute both predictions and combine them as:
+
+$$
+\tilde{\epsilon}_\theta(x_t, t, c) = \epsilon_\theta(x_t, t, \emptyset) + w \cdot \left(\epsilon_\theta(x_t, t, c) - \epsilon_\theta(x_t, t, \emptyset)\right)
+$$
+
+where $w \geq 1$ is the guidance scale. This can be rewritten as a weighted combination:
+
+$$
+\tilde{\epsilon}_\theta(x_t, t, c) = (1 - w) \epsilon_\theta(x_t, t, \emptyset) + w \cdot \epsilon_\theta(x_t, t, c)
+$$
+
+The guidance scale $w$ controls how strongly we push toward the conditioning. When $w = 1$, we get exactly the conditional prediction $\epsilon_\theta(x_t, t, c)$. When $w > 1$, we amplify the difference from the unconditional baseline, making the result adhere even more strongly to the condition. The conditional prediction already tries to match $c$, but by amplifying its difference from the unconditional prediction with $w > 1$, we push even harder in the direction of the conditioning.
+
+Higher guidance scales produce samples that more faithfully match the conditioning but may reduce diversity and sometimes lead to oversaturated or less realistic images. Lower guidance scales produce more diverse and often more realistic samples but with weaker adherence to the conditioning. In practice, guidance scales of $w = 7$ to $w = 15$ are commonly used for text-to-image generation, with the optimal value depending on the specific model and application.
+
+The theoretical justification for classifier-free guidance comes from the relationship between the conditional and unconditional score functions. The score function $\nabla_x \log p(x|c)$ can be decomposed as:
+
+$$
+\nabla_x \log p(x|c) = \nabla_x \log p(x) + \nabla_x \log p(c|x)
+$$
+
+The unconditional noise prediction $\epsilon_\theta(x_t, t, \emptyset)$ approximates the unconditional score, while the difference $\epsilon_\theta(x_t, t, c) - \epsilon_\theta(x_t, t, \emptyset)$ approximates the classifier gradient $\nabla_x \log p(c|x)$. The guidance scale $w$ acts as a temperature parameter that sharpens the conditional distribution.
+
+Classifier-free guidance has become the standard approach for conditional generation in modern diffusion models. It requires no additional classifier network, uses the same diffusion model for both guided and unguided generation, and provides a simple hyperparameter to control the conditioning strength. Stable Diffusion and most text-to-image models rely heavily on classifier-free guidance to achieve their impressive adherence to text prompts.
 
 ### LoRa
 
