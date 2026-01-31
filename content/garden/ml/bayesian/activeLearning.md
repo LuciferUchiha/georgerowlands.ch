@@ -469,3 +469,25 @@ $$
 The first term measures how informative $y_x$ is about $f_{x_*}$ in isolation, which captures the **relevance** of observing at $x$. The second term is the interaction information, measuring **redundancy** between $y_x$ and our existing observations $\mathbf{y}_\mathcal{D}$ with respect to learning about $f_{x_*}$.
 
 Transductive active learning balances relevance and diversity. We want to observe at locations relevant to the target (high correlation with $x_*$), but we also want to avoid redundancy with existing observations. This is a middle ground between pure relevance-based retrieval (which ignores diversity) and inductive active learning (which ignores the specific target).
+
+### Generalization to Target Sets
+
+The single-target formulation extends naturally to multiple targets. Suppose we have a target set $\mathcal{A} \subseteq \mathcal{X}$ where we want accurate predictions, and a sample space $\mathcal{S} \subseteq \mathcal{X}$ from which we can draw observations. Given previous observations $\mathcal{D}_{n-1} = \{(x_i, y_i)\}_{i < n}$, we select the next query point by maximizing information about $f$ restricted to the target set:
+
+$$
+x_n = \arg\max_{x \in \mathcal{S}} I(\{f_{x'}\}_{x' \in \mathcal{A}}; y_x \mid \mathcal{D}_{n-1})
+$$
+
+This is the **information-based transductive learning (ITL)** objective. Rather than learning $f$ everywhere or at a single point, we specifically target information relevant to predictions on $\mathcal{A}$.
+
+When $f \sim \mathcal{GP}(\mu, k)$ is a Gaussian Process, this mutual information has a convenient closed form. Using properties of Gaussian distributions and the definition of mutual information, one can show:
+
+$$
+I(\{f_{x'}\}_{x' \in \mathcal{A}}; y_x \mid \mathcal{D}_{n-1}) = \frac{1}{2} \log \left( \frac{\text{Var}(y_x \mid \mathcal{D}_{n-1})}{\text{Var}(y_x \mid \{f_{x'}\}_{x' \in \mathcal{A}}, \mathcal{D}_{n-1})} \right)
+$$
+
+The numerator $\text{Var}(y_x \mid \mathcal{D}_{n-1})$ is our current predictive variance at $x$ given only previous observations. The denominator $\text{Var}(y_x \mid \{f_{x'}\}_{x' \in \mathcal{A}}, \mathcal{D}_{n-1})$ is the variance that would remain if we also knew the true function values on the target set $\mathcal{A}$.
+
+The ratio inside the logarithm measures how much knowing the target values would reduce our uncertainty about $y_x$. If this ratio is large, then $y_x$ is highly correlated with the target set, meaning observing at $x$ will be informative about $\mathcal{A}$. If the ratio is close to 1, then knowing $\mathcal{A}$ does not help predict $y_x$, so observing at $x$ provides little target-relevant information.
+
+This variance-ratio formula makes ITL computationally tractable. Both variances can be computed from the GP posterior covariance matrix. When $\mathcal{A} = \mathcal{X}$ (the entire domain), ITL reduces to standard inductive active learning. When $\mathcal{A} = \{x_*\}$ is a single point, it reduces to the single-target transductive objective discussed above.

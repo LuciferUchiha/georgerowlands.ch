@@ -1,7 +1,7 @@
 ---
 title: Diffusion Models
 type: docs
-weight: 16
+weight: 4
 ---
 
 A common goal in machine learning is to learn generative models that can produce new data samples that closely resemble a given dataset or in other words that can produce new and realistic samples matching the world we know. So given data samples ${x_1, x_2, ..., x_N}$ drawn from an unknown data distribution $q$ on $R^d$, the goal is to learn a model $p_\theta$ parametrized by $\theta$ that can generate new samples $\hat{x} \sim p_\theta$ such that the distribution of generated samples closely approximates the true data distribution, so $p_\theta \approx q$. 
@@ -1159,9 +1159,13 @@ Second paper by openai "Diffusion Models Beat GANs on Image Synthesis" with some
 
 ## Latent Diffusion Models
 
-## Super Resolution Diffusion Models
+uses Vae to compress image into latent space and then runs diffusion in latent space. much faster and less memory. also allows higher res images.
 
 ## Conditional Diffusion
+
+one using just embedding concatentation another using cross attention?
+
+the embeddings can come from text encoders such as CLIP or from other modalities such as segmentation maps etc.
 
 ### Classifier Guided
 
@@ -1176,4 +1180,7 @@ Second paper by openai "Diffusion Models Beat GANs on Image Synthesis" with some
 ### ControlNet
 
 ### DreamBooth
+
+
+## Super Resolution Diffusion Models
 

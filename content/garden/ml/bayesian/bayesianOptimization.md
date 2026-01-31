@@ -369,8 +369,94 @@ The following table summarizes the acquisition functions we have discussed. Thro
 | EI | $(\mu_t(x) - \hat{f}_t)\Phi(z_t) + \sigma_t(x)\phi(z_t)$ | Balanced, adaptive |
 | Thompson Sampling | $\arg\max_x \tilde{f}(x)$ where $\tilde{f} \sim p(f \mid \mathcal{D})$ | Balanced, stochastic |
 
-{{< figure 
+{{< figure
     src="/images/ml/bayesAcqusitionFunctionSummary.webp"
     alt="Different acquisition functions applied to the same GP posterior."
     caption="Different acquisition functions applied to the same GP posterior."
 >}}
+
+## Safe Bayesian Optimization
+
+In many real-world applications, we cannot freely explore the entire input space. Certain regions may be dangerous, infeasible, or unacceptably costly to evaluate. A robot learning to walk cannot try motions that would damage its joints. A chemical process optimization cannot test conditions that would cause an explosion. A medical treatment study cannot administer dosages that would harm patients. These constraints motivate **safe Bayesian optimization**, which incorporates safety requirements into the optimization process.
+
+### Problem Formulation
+
+We want to find the maximum of an unknown objective function $f^* : \mathcal{X} \to \mathbb{R}$. As in standard Bayesian optimization, we can iteratively choose query points $x_1, x_2, \ldots, x_{n-1} \in \mathcal{X}$ and observe noisy evaluations $y_1 = f^*(x_1), y_2 = f^*(x_2), \ldots, y_{n-1} = f^*(x_{n-1})$.
+
+The key difference is that we must not query points outside a **safe region** defined by:
+
+$$
+S^* = \{x \in \mathcal{X} : g^*(x) \geq 0\}
+$$
+
+where $g^* : \mathcal{X} \to \mathbb{R}$ is another unknown function representing the safety constraint. Points where $g^*(x) < 0$ are unsafe and must be avoided. When we query a point $x_i$, we also observe the safety function value $z_i = g^*(x_i)$.
+
+The challenge is that we do not know the true safe region $S^*$ in advance since $g^*$ is unknown. We must learn about safety while simultaneously optimizing the objective. This creates a delicate balance: we want to explore to find good optima, but we must be cautious to avoid unsafe regions.
+
+{{< figure
+    src="/images/ml/bayesianOptimizationSafe.png"
+    alt="Safe Bayesian optimization with an objective function and safety constraint."
+    caption="Safe Bayesian optimization maintains GP models for both the objective function (top) and the safety constraint (bottom). The algorithm only queries points in the pessimistic safe region while optimizing the objective."
+>}}
+
+### Gaussian Process Models for Safety
+
+To handle the unknown functions, we model both the objective $f^*$ and the constraint $g^*$ using Gaussian Processes. We fit a GP $f$ on the objective observations $\{(x_i, y_i)\}_{i < n}$, giving us a posterior distribution over the objective function. This posterior induces confidence bounds at any point $x \in \mathcal{X}$. Using the posterior mean $\mu_n^f(x)$ and standard deviation $\sigma_n^f(x)$, we define a confidence interval:
+
+$$
+l_n^f(x) = \mu_n^f(x) - \beta \sigma_n^f(x), \quad u_n^f(x) = \mu_n^f(x) + \beta \sigma_n^f(x)
+$$
+
+where $\beta > 0$ is a scaling factor controlling the confidence level (typically $\beta \approx 2$ for approximately 95% confidence). The interval $[l_n^f(x), u_n^f(x)]$ contains the true expected value $\mathbb{E}[f(x)]$ with high probability.
+
+Similarly, we fit a GP $g$ on the safety observations $\{(x_i, z_i)\}_{i < n}$ to obtain confidence bounds $[l_n^g(x), u_n^g(x)]$ for the safety function.
+
+### Pessimistic and Optimistic Safe Sets
+
+Given the safety confidence bounds, we can define two estimates of the safe region that capture different attitudes toward uncertainty.
+
+The **pessimistic safe set** uses the lower confidence bound:
+
+$$
+\mathcal{S}_n = \{x \in \mathcal{X} : l_n^g(x) \geq 0\}
+$$
+
+This set contains only points that we are confident are safe. The condition $l_n^g(x) \geq 0$ means that even the pessimistic estimate of $g^*(x)$ is non-negative, so we can query these points without violating safety with high probability. This is a conservative estimate that errs on the side of caution.
+
+The **optimistic safe set** uses the upper confidence bound:
+
+$$
+\widehat{\mathcal{S}}_n = \{x \in \mathcal{X} : u_n^g(x) \geq 0\}
+$$
+
+This set contains points that could plausibly be safe. If $u_n^g(x) < 0$, then even our most optimistic estimate predicts that $x$ is unsafe, so we should definitely avoid it. This is a permissive estimate that includes uncertain regions.
+
+The relationship between these sets is $\mathcal{S}_n \subseteq S^* \subseteq \widehat{\mathcal{S}}_n$ with high probability. The pessimistic set is an inner approximation of the true safe region, while the optimistic set is an outer approximation.
+
+### The Candidate Set
+
+For optimization, we need to identify points that could potentially be optimal while respecting safety. We define the **candidate set** $\mathcal{A}_n$ as points that are optimistically safe and optimistically competitive:
+
+$$
+\mathcal{A}_n = \left\{ x \in \widehat{\mathcal{S}}_n : u_n^f(x) \geq \max_{x' \in \mathcal{S}_n} l_n^f(x') \right\}
+$$
+
+The condition $u_n^f(x) \geq \max_{x' \in \mathcal{S}_n} l_n^f(x')$ requires that the upper confidence bound on the objective at $x$ is at least as large as the lower confidence bound at the best pessimistically safe point. In other words, $x$ could plausibly be better than our current best safe option.
+
+Points outside $\mathcal{A}_n$ are either definitely unsafe (not in $\widehat{\mathcal{S}}_n$) or definitely suboptimal (their optimistic objective value is below our pessimistic best). We can safely ignore them in our search.
+
+### Safe Optimization with Information-Based Selection
+
+Combining these ideas, we can apply information-based transductive learning from [active learning](/garden/ml/bayesian/activelearning/) to safe optimization. At each round $n$, the algorithm proceeds as follows:
+
+1. Update both GPs with the new observations $(x_{n-1}, y_{n-1})$ and $(x_{n-1}, z_{n-1})$
+2. Compute the pessimistic safe set $\mathcal{S}_n$ and candidate set $\mathcal{A}_n$
+3. Select the next query point using ITL with sample space $\mathcal{S}_n$ and target space $\mathcal{A}_n$:
+
+$$
+x_n = \arg\max_{x \in \mathcal{S}_n} I(\{f_{x'}\}_{x' \in \mathcal{A}_n}; y_x \mid \mathcal{D}_{n-1})
+$$
+
+This approach is **pessimistic about safety**: we only query points in $\mathcal{S}_n$ where we are confident the safety constraint is satisfied. Simultaneously, it is **optimistic about the objective**: we focus our information gathering on the candidate set $\mathcal{A}_n$ that could contain the optimum.
+
+The key insight is that by using information-based selection rather than standard acquisition functions like UCB or EI, we can efficiently explore the safe region while specifically targeting information relevant to finding the optimum. As we gather more observations, the pessimistic safe set $\mathcal{S}_n$ expands as we become confident about more regions, and the candidate set $\mathcal{A}_n$ shrinks as we rule out suboptimal regions. Eventually, the algorithm converges to the safe optimum.
