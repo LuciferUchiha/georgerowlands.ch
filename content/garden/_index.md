@@ -3,10 +3,7 @@ title: My Digital Garden
 type: docs
 ---
 
-This is the home
-
-Diffusion stuff:
-https://sander.ai/2024/09/02/spectral-autoregression.html
+This is the home and a work in progress of rebuilding my digital garden in Hugo.
 
 Optimized Images in Hugo:
 https://devtidbits.com/2022/08/13/image-optimization-in-hugo/

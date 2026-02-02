@@ -25,25 +25,35 @@ This is also related to the **data manifold hypothesis** which states that real 
     caption="Illustration of the relative sparse nature of high dimensional spaces and its dense data manifold projected in 2D. Visualization is from the \"Swiss Roll\" problem."
 >}}
 
-Used Resources:
-- https://yang-song.net/blog/2021/score/
-- https://theaisummer.com/diffusion-models/
-- https://ayandas.me/blogs/2021-12-04-diffusion-prob-models.html
-- https://lilianweng.github.io/posts/2021-07-11-diffusion-models/
-- https://goyalpramod.github.io/blogs/demysitifying_diffusion_models/
-- https://www.chenyang.co/diffusion.html
-- https://huggingface.co/blog/annotated-diffusion
-- https://github.com/diff-usion/Awesome-Diffusion-Models
-- https://sander.ai/
-- And all the corresponding papers linked throughout the text.
-- https://www.youtube.com/watch?v=HoKDTa5jHvg&t=1487s
-- https://www.youtube.com/watch?v=lUljxdkolK8&t=380s
-
 ## Denoising Diffusion Probabilistic Models
 
 As is common in computer science and machine learning, it is often easier to solve a complex problem by breaking it down into smaller subproblems. In the case of generative modeling, instead of learning to directly generate samples from the complex data distribution $q$, we can instead learn to gradually improve our samples in an iterative/recursive manner to reach the desired result. Think of it as painting a picture step by step, starting from a blank canvas and adding more and more details and layering colors of paint until the final masterpiece is complete, rather than trying to paint the entire picture in one go. 
 
 The idea of diffusion models is to use a stochastic process to gradually transform simple known distributions such as Gaussian noise into our complex data distribution $q$. **The main idea behind diffusion models is to define a forward diffusion process that gradually adds noise to the data samples until they become pure noise, and then learn a neural network to reverse this process and denoise the noisy samples back to the original data distribution.** By iteratively applying this denoising process starting from a pure noise sample, we can generate new samples that closely resemble samples from the true data distribution.
+
+{{< callout type="info" title="Used Resources" >}}
+
+| Type | Author/Creator | Resource |
+|------|----------------|----------|
+| Paper | Ho et al. | [Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2006.11239) |
+| Paper | Dhariwal & Nichol | [Diffusion Models Beat GANs on Image Synthesis](https://arxiv.org/abs/2105.05233) |
+| Paper | Dhariwal & Nichol | [Improved Denoising Diffusion Probabilistic Models](https://arxiv.org/abs/2102.09672) |
+| Paper | Song et al. | [Denoising Diffusion Implicit Models](https://arxiv.org/abs/2010.02502) |
+| Paper | Rombach et al. | [High-Resolution Image Synthesis with Latent Diffusion Models](https://arxiv.org/abs/2112.10752) |
+| Repo | diff-usion | [Awesome Diffusion Models Resources](https://github.com/diff-usion/Awesome-Diffusion-Models) |
+| Article | Karagiannakos & Adaloglou | [How diffusion models work: the math from scratch](https://theaisummer.com/diffusion-models/) |
+| Article | Ayan Das | [An introduction to Diffusion Probabilistic Models](https://ayandas.me/blogs/2021-12-04-diffusion-prob-models.html) |
+| Article | Lilian Weng | [What are Diffusion Models?](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/) |
+| Article | Pramod Goyal | [Demystifying Diffusion Models](https://goyalpramod.github.io/blogs/demysitifying_diffusion_models/) |
+| Article | Yuan & Permenter | [Diffusion models from scratch, from a new theoretical perspective](https://www.chenyang.co/diffusion.html) |
+| Article | Rogge & Rasul | [Annotated Diffusion Models](https://huggingface.co/blog/annotated-diffusion) |
+| Article | Sander Dieleman | [Generative Modeling in latent space](https://sander.ai/2025/04/15/latents.html) |
+| Video | Outlier | [Diffusion Models - Paper Explanation - Math Explained](https://youtu.be/HoKDTa5jHvg?si=IplGAGuURk3X95CN) |
+| Video | deepia | [Diffusion Models: DDPM - Generative AI Animated](https://youtu.be/EhndHhIvWWw?si=5YBshM9vLifM7TfJ) |
+| Video | 3Blue1Brown | [But how do AI images and videos actually work?](https://youtu.be/iv-5mZ_9CPY?si=cRoStGlbHANAPTCb) |
+| Video | AI Coffee Break with Letitia | [How does Stable Diffusion work? - Latent Diffusion Models EXPLAINED](https://youtu.be/J87hffSMB60?si=eqMDzsmW1i457lmw) |
+
+{{< /callout >}}
 
 ### Forward Diffusion Process
 
@@ -648,6 +658,19 @@ Please note that I am not a physicist nor a mathematician so my understanding of
     caption="SDE framework overview: the forward SDE gradually adds noise to data over time, while Anderson's theorem shows the reverse SDE (guided by the score function) can denoise and generate samples."
     width="800"
 >}}
+
+{{< callout type="info" title="Used Resources" >}}
+
+| Type | Author/Creator | Resource |
+|------|----------------|----------|
+| Paper | Song et al. | [Score-Based Generative Modeling through Stochastic Differential Equations](https://arxiv.org/abs/2011.13456) |
+| Paper | Aapo Hyvärinen | [Estimation of Non-Normalized Statistical Models by Score Matching](https://jmlr.org/papers/v6/hyvarinen05a.html) |
+| Article | Yang Song | [Generative Modeling by Estimating Gradients of the Data Distribution](https://yang-song.net/blog/2021/score/) |
+| Video | Outlier | [Diffusion Models From Scratch - Score-Based Generative Models Explained - Math Explained](https://youtu.be/B4oHJpEJBAA?si=umIgu9FOpPd1lMfV) |
+| Video | Deepia | [Score-based Diffusion Models - Generative AI Animated](https://youtu.be/lUljxdkolK8?si=-JrhMthczTG1rXQy) |
+| Video | Julia Turc | [The physics behind diffusion models](https://youtu.be/R0uMcXsfo2o?si=K4FC4W2s_BRKADcF) |
+
+{{< /callout >}}
 
 ### Ito SDE and Brownian Motion
 
