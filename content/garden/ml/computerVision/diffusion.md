@@ -52,6 +52,7 @@ The idea of diffusion models is to use a stochastic process to gradually transfo
 | Video | deepia | [Diffusion Models: DDPM - Generative AI Animated](https://youtu.be/EhndHhIvWWw?si=5YBshM9vLifM7TfJ) |
 | Video | 3Blue1Brown | [But how do AI images and videos actually work?](https://youtu.be/iv-5mZ_9CPY?si=cRoStGlbHANAPTCb) |
 | Video | AI Coffee Break with Letitia | [How does Stable Diffusion work? - Latent Diffusion Models EXPLAINED](https://youtu.be/J87hffSMB60?si=eqMDzsmW1i457lmw) |
+| Video | Depth First | [More Than Image Generators: A Science of Problem-Solving using Probability | Diffusion Model](https://youtu.be/Fk2I6pa6UeA?si=W2cLiuQAx-f5PZKm) |
 
 {{< /callout >}}
 
