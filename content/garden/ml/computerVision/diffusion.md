@@ -390,27 +390,35 @@ $$
 \end{align*}
 $$
 
-where in the last step we used the fact that $\log p_\theta(x_0)$ does not depend on $x_{1:T}$, so it comes out of the expectation. Rearranging this inequality gives us:
+where in the last step we used the fact that $\log p_\theta(x_0)$ does not depend on $x_{1:T}$, so it comes out of the expectation. Rearranging recovers the same lower bound as the Jensen derivation:
 
 $$
-\log p_\theta(x_0) \geq - \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} \right] = \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right]
+\log p_\theta(x_0) \geq \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] = \text{ELBO}
 $$
 
-This confirms that the ELBO is a lower bound on the log likelihood:
+This derivation, however, only used the fact that $D_{KL} \geq 0$, replacing the KL with its lower bound of zero. That is why it produces an inequality rather than an equality. We can recover an exact relationship by instead starting directly from the definition of $D_{KL}$ and performing the same Bayes substitution:
 
 $$
-\text{ELBO} = \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{p_\theta(x_{0:T})}{q(x_{1:T} | x_0)} \right] \leq \log p_\theta(x_0)
+\begin{align*}
+D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) &= \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{1:T} | x_0)} \right] \\
+&= \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{\frac{p_\theta(x_{0:T})}{p_\theta(x_0)}} \right] \quad \text{(Bayes)} \\
+&= \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} + \log p_\theta(x_0) \right] \\
+&= \mathbb{E}_{q(x_{1:T} | x_0)} \left[ \log \frac{q(x_{1:T} | x_0)}{p_\theta(x_{0:T})} \right] + \log p_\theta(x_0) \\
+&= -\text{ELBO} + \log p_\theta(x_0)
+\end{align*}
 $$
 
-### Expanding the ELBO for Optimization
-
-We have now derived the ELBO from two different perspectives, both showing that it provides a tractable lower bound on the intractable log likelihood $\log p_\theta(x_0)$. The key relationship is:
+Every line here is an equality. Rearranging gives the exact decomposition:
 
 $$
 \log p_\theta(x_0) = D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) + \text{ELBO}
 $$
 
-Since the log likelihood $\log p_\theta(x_0)$ is constant with respect to our model parameters $\theta$, maximizing the ELBO is equivalent to minimizing the KL divergence between the forward and reverse processes. This is exactly what we want: our learned reverse process should match the true forward process.
+Since $D_{KL} \geq 0$, the ELBO can never exceed $\log p_\theta(x_0)$, recovering the lower bound. Crucially, the ELBO equals the log likelihood exactly when $D_{KL}(q(x_{1:T} | x_0) \| p_\theta(x_{1:T} | x_0)) = 0$, which occurs only when the learned reverse process $p_\theta(x_{1:T} | x_0)$ perfectly matches the true forward trajectory distribution $q(x_{1:T} | x_0)$.
+
+### Expanding the ELBO for Optimization
+
+Since $\log p_\theta(x_0)$ is fixed with respect to $\theta$, the decomposition above tells us that maximizing the ELBO is equivalent to minimising the KL divergence between the forward and reverse processes, which is exactly what we want: our learned reverse process should match the true forward process.
 
 To make the ELBO tractable for optimization, we need to expand it into terms that we can actually compute and differentiate. The key insight is that during training we have access to the original data sample $x_0$, which allows us to condition on it. This conditioning dramatically reduces the variance of our estimates and makes the optimization stable. We can now rewrite the ELBO in a more convenient form:
 
