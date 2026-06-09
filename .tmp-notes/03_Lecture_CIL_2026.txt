@@ -1,0 +1,1074 @@
+
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Lecture 3
+Valentina Boeva
+ETH Zurich – https:
+//moodle-app2.let.ethz.ch/course/view.php?id=27126
+6 March 2026
+1/56
+
+
+===== PAGE 2 =====
+2/56
+Plan for Today
+↭Recap
+↭PCA Theorem
+↭Eigenvectors of Symmetric Matrices
+↭Learning Algorithms
+↭Matrix methods
+↭Power Method
+↭Stochastic Gradient Descent
+↭Note on non-linear Autoencoders
+
+
+===== PAGE 3 =====
+3/56
+Recap: linear autoencoder
+We study the problem of dimensionality reduction
+Rn →Rm, m ↑n by considering a linear autoencoder with weight
+matrices W ↓Rm→n and V ↓Rn→m
+↭Rank constraint on P = VW and linearity imply that im(P)
+is a linear subspace U ↔Rn of dimension ↗m
+
+
+===== PAGE 4 =====
+4/56
+Recap: Optimal reconstruction = Orthogonal
+Projection
+If we know this optimal subspace U ↔Rn of dimension ↗m:
+↭The optimal mapping !U : Rn →U that minimizes the
+squared loss
+!U(x) = arg min
+x→↑U
+↘x ≃x↓↘2 (⇐x ↓Rn)
+is an orthogonal projection into U and can be represented by
+an orthogonal projection matrix P, rank(P) = dim(U).
+For given subspace U, the optimal reconstruction map is the
+orthogonal projection !U into U represented by a projection
+matrix P. The optimal linear AE represents a projection.
+
+
+===== PAGE 5 =====
+5/56
+Recap: Representation of an Orthogonal Projection
+Matrix
+A: For any linear subspace U ↔Rn pick an orthonormal basis
+{u1, . . . um} and deﬁne
+P = UU↔,
+U =
+!
+u1
+. . .
+um
+"
+,
+Px =
+m
+#
+i=1
+⇒ui, x⇑ui .
+Then P is a matrix representation of the orthogonal projection !U.
+The above proposition gives an explicit representation of the
+projection matrix for a subspace U via choice of an orthonor-
+mal basis (non-unique).
+
+
+===== PAGE 6 =====
+6/56
+Recap: Representation of an Orthogonal Projection
+Matrix
+If we know this optimal subspace U ↔Rn of dimension ↗m:
+↭The matrix P representing the orthogonal projection into U
+can be deﬁned as: P = UU↔with U composed of
+{u1, . . . , um}, an orthonormal basis of U, but also
+P = VV+, with V composed of {v1, . . . , vm}, any
+non-orthonormal basis of U, and V+ :=
+$
+V↔V
+%↗1 V↔, left
+Moore-Penrose inverse of V.
+new basis V VQ
+tin
+p v'v
+Vp QTY Art
+VIEW Evert
+P
+6
+pm
+um
+pµµ
+non orthonormalbesis
+
+
+===== PAGE 7 =====
+7/56
+Recap: Bringing out the Total Variance
+A: For centered data the squared loss of a projection matrix P,
+1
+2E↘x ≃Px↘2, is equivalent to
+1
+2(Var[x] ≃Var[Px])
+For centered data, the optimal autoencoder represents the
+projection P which maximizes the total variance of the pro-
+jected data.
+A: The optimal projection is fully determined by the covariance
+matrix of the data, E[xx↔], i.e., E[xx↔] is a su!cient statistic.
+Var(Px) = tr(PE[xx↔]) .
+
+
+===== PAGE 8 =====
+8/56
+Recap: Bringing out the Total Variance
+For centered data, the optimal autoencoder represents the
+projection P that maximizes the total variance of the pro-
+jected data.
+
+
+===== PAGE 9 =====
+9/56
+Section 4
+Dimension Reduction:
+Principal Component Analysis
+(continued)
+
+
+===== PAGE 10 =====
+10/56
+Principal Components
+Q: How does the optimal projection relate to the data covariance
+matrix?
+PCA Theorem
+The rank m projection optimizing the squared reconstruction
+loss on centered data is given by the projection matrix formed
+by m orthogonal, principal eigenvectors of E[xx↔].
+We will work towards this result.
+
+
+===== PAGE 11 =====
+10/56
+Principal Components
+Q: How does the optimal projection relate to the data covariance
+matrix?
+PCA Theorem
+The rank m projection optimizing the squared reconstruction
+loss on centered data is given by the projection matrix formed
+by m orthogonal, principal eigenvectors of E[xx↔].
+We will work towards this result.
+Reminder: R(P) = ≃1
+2 tr(PE[xx↔]) .
+We need to prove:
+arg min
+P:rank(P)↘m
+R(P) = UU↔,
+where U ↓Rn→m is formed by m principal orthogonal eigenvectors
+of E[xx↔].
+
+
+===== PAGE 12 =====
+11/56
+Special case: Diagonal Matrices
+Proposition: PCA theorem for the Diagonal Case
+Let
+E[xx↔] = ” = diag(ω1, . . . , ωn),
+ω1 ⇓· · · ⇓ωn ⇓0.
+Then
+1. Standard basis vectors {e1, . . . , em} are eigenvectors of
+” (in the order of principality); and
+2. The following projection matrix P ↓Rn→n is variance
+maximizing for ﬁxed m ↗n:
+P = ([e1 e2 ... em])([e1 e2 ... em])↔=
+m
+#
+i=1
+eie↔
+i =
+&Im
+0
+0
+0
+'
+.
+coverine matrix is diy
+this is thecase it allunique
+independent
+uncorrelated
+Gov
+
+
+===== PAGE 13 =====
+12/56
+Special case: Diagonal Matrices
+PCA theorem for the Diagonal Case: We should project to the
+m axes along which the data has the largest variance.
+sampled from
+gaussian
+
+
+===== PAGE 14 =====
+13/56
+Special case: Diagonal Matrices
+Consider the simpler diagonal case:
+E[xx↔] = ” = diag(ω1, . . . , ωn),
+ω1 ⇓· · · ⇓ωn ⇓0.
+A set of m orthogonal, principal eigenvectors is given by the
+standard basis vectors {e1, . . . , em}.
+Proof.
+1. The unit vectors are orthogonal.
+2. They are eigenvectors of any diagonal matrix, ”ej = ωjej.
+3. Ordering of diagonal elements induces the claimed precedence
+on unit vectors.
+4. Multiplicities: choice of unit vectors may not be unique.
+If ωi = ωi+1 = ... = ωi+k, then any orthonormal basis of
+span(ei, . . . , ei+k) will satisfy this property.
+
+
+===== PAGE 15 =====
+14/56
+Special case: Diagonal Matrices
+Multiplicities: choice of unit vectors may not be unique.
+If ωi = ωi+1 = ... = ωi+k, then any orthonormal basis of
+span(ei, . . . , ei+k) will satisfy this property.
+notunique
+torus
+E
+tie
+
+
+===== PAGE 16 =====
+15/56
+Special case: Diagonal Matrices
+Proposition: PCA theorem for the Diagonal Case
+Let
+E[xx↔] = ” = diag(ω1, . . . , ωn),
+ω1 ⇓· · · ⇓ωn ⇓0.
+then the following projection matrix P ↓Rn→n is variance
+maximizing for ﬁxed m ↗n:
+P =
+m
+#
+i=1
+eie↔
+i =
+&Im
+0
+0
+0
+'
+.
+This means: we should project to the m axes along which the data
+has the largest variance.
+u f
+
+
+===== PAGE 17 =====
+16/56
+Diagonal Matrices: Proof (1)
+We are seeking the maximizer of the variance Var[Px] = tr(P”)
+max
+U
+→tr(UU↔”) =
+n
+#
+i=1
+ωi
+m
+#
+j=1
+u2
+ij,
+s.t.
+U↔U = Im
+(
+)*
++
+orthonormal basis
+Denote εi = ,m
+j=1 u2
+ij.
+ufun.int
+P
+orthogonalprejetion
+FEW
+
+
+===== PAGE 18 =====
+16/56
+Diagonal Matrices: Proof (1)
+We are seeking the maximizer of the variance Var[Px] = tr(P”)
+max
+U
+→tr(UU↔”) =
+n
+#
+i=1
+ωi
+m
+#
+j=1
+u2
+ij,
+s.t.
+U↔U = Im
+(
+)*
++
+orthonormal basis
+Denote εi = ,m
+j=1 u2
+ij.
+1. We ﬁrst show that εi = ,m
+j=1 u2
+ij ↗1 (⇐i ↓{1, ..., n}).
+Assume that it would not hold for i, then
+↘Pei↘2 = e↔
+i UU↔ei =
+m
+#
+j=1
+u2
+ij
+?> 1,
+which contradicts the non-expansiveness of a projection:
+↘Px↘2 = ⇒Px, Px⇑= ⇒x, Px⇑= ↘x↘· ↘Px↘· cos ↫(x, Px)
+(
+)*
++
+↘1
+↘Px↘2 ↗↘x↘· ↘Px↘⇔↘Px↘↗↘x↘.
+070
+A Neill
+mi
+cei
+I
+1HPM
+Up P
+
+
+===== PAGE 19 =====
+17/56
+Diagonal Matrices: Proof (2)
+2. The squared Frobenius norm of U is given by
+,
+ij u2
+ij = ↘U↘2
+F = tr(U↔U) = tr(Im) = m.
+Hence, ,n
+i=1 εi = m.
+3. As the diagonal elements are ordered in decreasing magnitude,
+any U such that εi = ,m
+j=1 u2
+ij = 1 for i = 1, . . . , m would
+be optimal (if it exists).
+Indeed, ,n
+i=1 εi = m and 0 ↗εi ↗1 and we want to
+maximize ,n
+i=1 ωiεi, where
+ω1 ⇓· · · ⇓ωn ⇓0.
+4. The claimed form of P = UU↔, with
+U = (e1, ..., em) =
+&Im
+0
+'
+has exactly this extremal property:
+,m
+j=1 u2
+ij = 1 for i = 1, . . . , m.
+Emi
+his
+leaningwhy
+
+
+===== PAGE 20 =====
+18/56
+Diagonal Matrices: Take-away for the PCA theorem
+When E[xx↔] = ” = diag(ω1, . . . , ωn), ω1 ⇓· · · ⇓ωn ⇓0,
+matrix P = UU↔, with U composed of the m princi-
+pal eigenvectors of !, U =
+&Im
+0
+'
+, maximizes Var[Px] =
+tr(PE[xx↔]) and minimizes the squared reconstruction loss
+1
+2E↘x ≃Px↘2
+
+
+===== PAGE 21 =====
+18/56
+Diagonal Matrices: Take-away for the PCA theorem
+When E[xx↔] = ” = diag(ω1, . . . , ωn), ω1 ⇓· · · ⇓ωn ⇓0,
+matrix P = UU↔, with U composed of the m princi-
+pal eigenvectors of !, U =
+&Im
+0
+'
+, maximizes Var[Px] =
+tr(PE[xx↔]) and minimizes the squared reconstruction loss
+1
+2E↘x ≃Px↘2
+Question to the audience: what is the maximal value of Var[Px]
+equal to (in this diagonal case)?
+totalvariare
+Éli VoCx
+Eii
+it
+there
+Eig
+EEG
+
+
+===== PAGE 22 =====
+19/56
+Diagonal to Non-Diagonal?
+Q: The diagonal case is solved (easy and intuitive). Can it be
+extended to non-diagonal covariance matrices?
+We can make use of a fundamental theorem of linear algebra to
+perform basis transformation and diagonalize ”.
+Spectral Theorem
+Any symmetric and positive semideﬁnite matrix # can be
+non-negatively diagonalized with an orthogonal matrix
+# =Q”Q↔,
+” = diag(ω1, . . . , ωn),
+ω1 ⇓· · · ⇓ωn ⇓0,
+Q orthogonal.
+Q is composed of ordered eigenvectors of ”, and ! is composed
+of ordered eigenvalues of ”.
+itnetPSD stillworksjut notallpositive
+
+
+===== PAGE 23 =====
+20/56
+Notes for the Spectral Theorem (0)
+Spectral Theorem
+Any symmetric and PSD # can be diagonalized with
+# =Q”Q↔,
+” = diag(ω1, . . . , ωn),
+ω1 ⇓· · · ⇓ωn ⇓0,
+Q orthogonal.
+Q is composed of ordered eigenvectors of ”, and ! is composed
+of ordered eigenvalues of ”.
+PHVERLVIAYEE.G­E
+xxJ
+vEkxIv
+E if
+EQ
+Q1
+QA
+Éligigit
+
+
+===== PAGE 24 =====
+21/56
+Notes for the Spectral Theorem (1)
+Spectral Theorem
+Any symmetric and PSD # can be diagonalized with
+# =Q”Q↔,
+” = diag(ω1, . . . , ωn),
+ω1 ⇓· · · ⇓ωn ⇓0,
+Q orthogonal.
+Q is composed of ordered eigenvectors of ”, and ! is composed
+of ordered eigenvalues of ”.
+
+
+===== PAGE 25 =====
+22/56
+Notes for the Spectral Theorem (2)
+Spectral Theorem
+Any symmetric and PSD # can be diagonalized with
+# =Q”Q↔,
+” = diag(ω1, . . . , ωn),
+ω1 ⇓· · · ⇓ωn ⇓0,
+Q orthogonal.
+Q is composed of ordered eigenvectors of ”, and ! is composed
+of ordered eigenvalues of ”.
+
+
+===== PAGE 26 =====
+23/56
+Notes for the Spectral Theorem (3)
+Spectral Theorem
+Any symmetric and PSD # can be diagonalized with
+# =Q”Q↔,
+” = diag(ω1, . . . , ωn),
+ω1 ⇓· · · ⇓ωn ⇓0,
+Q orthogonal.
+Q is composed of ordered eigenvectors of ”, and ! is composed
+of ordered eigenvalues of ”.
+
+
+===== PAGE 27 =====
+24/56
+Principal Component Analysis
+PCA theorem
+The variance maximizing projection matrix P for a covariance
+matrix E[xx↔] = # = Q”Q↔as in the Spectral Theorem is
+given by
+P = UU↔,
+U = Q
+&Im
+0
+'
+.
+Proof.
+By the above theorem and diagonal solution:
+Var(Px) = tr( P
+()*+
+UU↑
+E[xx↔]
+( )* +
+!=Q!Q↑
+) = tr(UU↔Q”Q↔)
+= tr((Q↔U)(Q↔U)↔”),
+maximizer
+Q↔U =
+&Im
+0
+'
+.
+91h11m
+multiplywith Q
+cyclicproperty ottree
+y Q 8 tatttotQ
+
+
+===== PAGE 28 =====
+25/56
+Principal Component Analysis
+PCA Subspace
+The linear autoencoder network performs principal compo-
+nent projection.
+However, it is not guaranteed to iden-
+tify the PCA basis (i.e. the principal eigenvectors), but
+only the m-dimensional principal subspace of E[xx↔], i.e.,
+span(Q
+&Im
+0
+'
+).
+directions of eigenactors
+are principal components
+
+
+===== PAGE 29 =====
+26/56
+Eigenvectors
+Q: Why eigenvectors?
+The eigenvectors played a prominent role in the analysis of this
+section, but one may wonder what is special about them? After
+all, they are deﬁned in a way that seems unrelated to variance
+maximization. We focus here on the important subclass of
+symmetric matrices to conﬁne the material.
+
+
+===== PAGE 30 =====
+27/56
+Symmetric Matrices
+↭Symmetric matrices are representations of self-adjoint linear
+maps
+↭Their diagonalization as expressed in the spectral theorem
+essentially states that they are diagonal, when represented in
+the right choice of orthonormal basis.
+↭This is because orthogonal matrices are basis transformations
+between orthonormal bases.
+square
+matix is linear operator
+meaning
+Atys
+2x Ay
+rotationspea.dktinati1E
+x
+Eliegimai
+
+
+===== PAGE 31 =====
+28/56
+Eigenvectors of Symmetric Matrices
+Q: Why do eigenvectors of ” show up in the variance
+maximization maxU:U↑U=Im tr(UU↔”)?
+Reminder of the deﬁnition: u ↖= 0 is an eigenvector of a
+symmetric matrix A, if there exists a ω ↓R such that Au = ωu.
+Let A be symmetric with principal (unit) eigenvector u,
+i.e. Au = ωu, ω = max{ωmax(A), ≃ωmin(A)}, then
+↘Au↘=
+max
+v:≃v≃=1 ↘Av↘.
+Proof.
+This is easily checked in the diagonal case and remains true under
+a change of orthonormal basis.
+matindstretch
+It
+myHil
+spectral norm
+it A is diagonal easy
+
+
+===== PAGE 32 =====
+29/56
+Eigenvectors: Pairwise Orthogonality
+The second important fact about eigenvectors of symmetric
+matrices is that they are essentially pairwise orthogonal.
+Eigenvectors of symmetric matrices with distinct eigenvalues
+are orthogonal.
+Proof.
+Let Au = ωu, Au↓= ω↓u↓, ω ↖= ω↓. Then
+ω⇒u, u↓⇑= ⇒ωu, u↓⇑= ⇒Au, u↓⇑= ⇒u, Au↓⇑= ⇒u, ω↓u↓⇑= ω↓⇒u, u↓⇑
+ω⇐=ω→
+=⇔
+⇒u, u↓⇑= 0.
+arent they all
+examgestion lastyear
+Tetric
+property
+
+
+===== PAGE 33 =====
+30/56
+PCA & Eigenvectors
+Unit eigenvectors of a symmetric, positive semideﬁnite matrix
+form an orthonormal basis in which the order of principality
+agrees with the magnitude of the norm of their image and –
+in the case of covariance matrices – the order of the variance
+of their projection.
+
+
+===== PAGE 34 =====
+31/56
+Section 5
+Dimension Reduction:
+Learning Algorithms
+
+
+===== PAGE 35 =====
+32/56
+Matrix Computations
+↭We can compute what the autoencoder aims to learn without
+having to make reference to the diagrammatic representation.
+↭There is a rich body of algorithms in the area of matrix
+computation that can be used to diagonalize a symmetric
+positive semi-deﬁnite matrix.
+↭As this is specialized material from numerical linear algebra,
+we will not pursue this direction further. One can ﬁnd
+implementations of methods in LAPACK, which can be used
+through the numpy.linalg library (e.g. eigh).
+
+
+===== PAGE 36 =====
+33/56
+Matrix Computations: NumPy
+There is a special function in numpy for computing eigenvectors of
+symmetric (or Hermitian) matrices. We have to select the last m
+columns.
+covar
+= np.cov(X)
+evals, evecs
+= np.linalg.eigh(covar)
+V
+= evecs[:,-m:]
+W
+= np.transpose(V)
+>> Principal eigenvectors, MSE = 1.98425 (with m=20)
+compare with MSE = 4.39940 when V is not chosen optimally
+(Lecture 2).
+Dataset: Digits (8x8 images):
+
+
+===== PAGE 37 =====
+34/56
+Note on Computational Complexity
+Eigenvalue decomposition of the sample covariance matrix
+ES[xxT ] =
+1
+N↗1(X ≃¯X)(X ≃¯X)↔, X ↓Rn→N is not cheap.
+Computational complexity for symmetric matrices is O(n3).
+Complexity of covariance matrix estimation for N observations in
+Rn: O(Nn2) (typically N >> n)
+
+
+===== PAGE 38 =====
+34/56
+Note on Computational Complexity
+Eigenvalue decomposition of the sample covariance matrix
+ES[xxT ] =
+1
+N↗1(X ≃¯X)(X ≃¯X)↔, X ↓Rn→N is not cheap.
+Computational complexity for symmetric matrices is O(n3).
+Complexity of covariance matrix estimation for N observations in
+Rn: O(Nn2) (typically N >> n)
+Are there more e!cient algorithms, in particular, for
+m << n?
+why do we
+care
+shouldn't need to look atfull
+covariane matrix
+
+
+===== PAGE 39 =====
+35/56
+Power Method for the computation of the principal
+eigenvector(s)
+Power Iterations: Scalable and easy to analyse algorithm for
+computing a principal eigenvector.
+Initializing at random v(0) ↙N(0, I), one computes the iterate
+sequence
+v(t+1) =
+Av(t)
+↘Av(t)↘.
+largest stretch
+is alongprincipal
+component
+normalize to unit length
+
+
+===== PAGE 40 =====
+35/56
+Power Method for the computation of the principal
+eigenvector(s)
+Power Iterations: Scalable and easy to analyse algorithm for
+computing a principal eigenvector.
+Initializing at random v(0) ↙N(0, I), one computes the iterate
+sequence
+v(t+1) =
+Av(t)
+↘Av(t)↘.
+Computational Complexity (T iterations): O(Tn2)
+
+
+===== PAGE 41 =====
+36/56
+Power Method: Analysis
+Power Method: Convergence
+Let u1 be the unique principal vector of a diagonalizable ma-
+trix A with eigenvalues ω1 > ω2 ⇓· · · ⇓ωn ⇓0. Then the
+power iterates converge
+lim
+t⇒⇑v(t) = u1,
+if
+⇒v0, u1⇑↖= 0.
+Proof.
+Represent in the eigenbasis v(0) = ,
+i ϑiui, where ϑ1 ↖= 0. Then
+v(k) ∝ϑ1u1 +
+#
+i>1
+ϑi
+& ωi
+ω1
+'k
+ui,
+where
+ωi
+ω1
+< 1
+for i > 1 .
+The sum →0 and by virtue of the normalization v(k) →u1.
+Tin practice alwaysthe can
+Thornton
+aAv
+Eaidivi
+ukQA v
+Eaidi ni
+di's
+been not orthogonal
+u
+1
+last
+K
+9
+
+
+===== PAGE 42 =====
+37/56
+Principal Eigenvectors: Iterative View
+We can identify the second, third etc. subprincipal eigenvectors as
+principal eigenvectors of a sequence of matrices, which we obtain
+by projecting out the chosen direction.
+Note: When we know q1, we can get ω1 from Aq1 = ω1q1.
+Use A = Q!Q↔= ,
+i ωiqiq↔
+i . To get the next principal
+eigenvector, we need to apply the power method to matrix A2 :
+A2 = A ≃ω1q1q↔
+1
+Note, A2(ϑq1) = ϑω1q1 ≃ϑω1q1↘q1↘2 = 0. In the (sorted)
+diagonal view, this simply zeros out the maximal eigenvalue:
+Q↔AQ = diag(ω1, ω2, . . . , ωn) ′→diag(0, ω2, . . . , ωn) = Q↔A2Q.
+
+
+===== PAGE 43 =====
+37/56
+Principal Eigenvectors: Iterative View
+We can identify the second, third etc. subprincipal eigenvectors as
+principal eigenvectors of a sequence of matrices, which we obtain
+by projecting out the chosen direction.
+Note: When we know q1, we can get ω1 from Aq1 = ω1q1.
+Use A = Q!Q↔= ,
+i ωiqiq↔
+i . To get the next principal
+eigenvector, we need to apply the power method to matrix A2 :
+A2 = A ≃ω1q1q↔
+1
+Note, A2(ϑq1) = ϑω1q1 ≃ϑω1q1↘q1↘2 = 0. In the (sorted)
+diagonal view, this simply zeros out the maximal eigenvalue:
+Q↔AQ = diag(ω1, ω2, . . . , ωn) ′→diag(0, ω2, . . . , ωn) = Q↔A2Q.
+Computational complexity of computing m principal eigenvectors
+with Power method and iterative projection: O(Tmn2)
+
+
+===== PAGE 44 =====
+37/56
+Principal Eigenvectors: Iterative View
+We can identify the second, third etc. subprincipal eigenvectors as
+principal eigenvectors of a sequence of matrices, which we obtain
+by projecting out the chosen direction.
+Note: When we know q1, we can get ω1 from Aq1 = ω1q1.
+Use A = Q!Q↔= ,
+i ωiqiq↔
+i . To get the next principal
+eigenvector, we need to apply the power method to matrix A2 :
+A2 = A ≃ω1q1q↔
+1
+Note, A2(ϑq1) = ϑω1q1 ≃ϑω1q1↘q1↘2 = 0. In the (sorted)
+diagonal view, this simply zeros out the maximal eigenvalue:
+Q↔AQ = diag(ω1, ω2, . . . , ωn) ′→diag(0, ω2, . . . , ωn) = Q↔A2Q.
+Computational complexity of computing m principal eigenvectors
+with Power method and iterative projection: O(Tmn2)+ the
+complexity of computing the covariance matrix O(Nn2)
+
+
+===== PAGE 45 =====
+38/56
+Gradient Descent
+Generic and scalable approach: treat autoencoder as neural
+network and use the workhorse of Deep Learning = (stochastic)
+gradient descent.
+Q: How can we (elegantly) calculate the gradient with regard to
+the projection matrix?
+
+
+===== PAGE 46 =====
+39/56
+Matrix Gradient
+Using ⇒x, y⇑= tr(x↔y) and tr(ABC) = tr(BCA), compute
+parameter gradient of the squared loss for a single x:
+ϖ(x; P) = 1
+2⇒x ≃Px, x ≃Px⇑
+= 1
+2↘x↘2 ≃tr(Pxx↔) + 1
+2 tr(P↔Pxx↔)
+Simple1 rules of di”erentiation for trace
+∞A tr(AB) = B↔,
+∞A tr(A↔AB) = AB↔+ AB
+This implies:
+∞P ϖ(x; P) = (P ≃I)xx↔.
+1https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf
+A B
+A A
+B
+i
+N constraints
+
+
+===== PAGE 47 =====
+40/56
+Matrix Gradient
+∞P ϖ(x; P) = (P ≃I)xx↔, but we actually need to update V and
+W, P = VW. Thus, by the chain rule for matrix derivatives2
+∞Wϖ(x; VW) = V↔(P ≃I)xx↔,
+∞Vϖ(x; VW) = (P ≃I)xx↔W↔.
+Side note: perform dimension check! Derivative is of same shape
+as matrix.
+2Or, alternatively using: →A tr(A↑BAC) = BAC + B↑AC↑.
+
+
+===== PAGE 48 =====
+41/56
+Stochastic gradient descent
+SGD picks a data point at random (↙ϱ or uniformly from the
+sample) and evolves the iterates
+W ∈W ≃ς∞W ϖ(x; VW),
+V ∈V ≃ς∞V ϖ(x; VW)
+where ς > 0 is a step size (or learning rate).
+
+
+===== PAGE 49 =====
+42/56
+Code Example
+Batch gradient descent in Python
+Delta = (V@W-np.identity(n)) @ covar
+gradV = Delta @ np.transpose(W)
+gradW = np.transpose(V) @ Delta
+V
+= V - eta * gradV
+W
+= W - eta * gradW
+
+
+===== PAGE 50 =====
+43/56
+Computational Complexity
+1. Batch of size k, covariance ” calculation O(kn2)
+2. P = V W: O(mn2)
+3. P#: O(n3) (can be reduced to O(kn2))
+4. Update V and W: O(mn)
+In total for T iterations: O(T(m + k)n2)
+much better
+
+
+===== PAGE 51 =====
+44/56
+Bottom Line
+Gradients for weight matrices can easily be derived and used
+as the basis for (stochastic) gradient descent. This can lever-
+age tools from Deep Learning.
+
+
+===== PAGE 52 =====
+45/56
+Notes on Non-Linear Autoencoders
+↭Non-linear autoencoder use non-linear functions
+F : Rn ′→Rm and G : Rm ′→Rn
+↭We typically assume set of non-linear functions includes linear
+functions.
+
+
+===== PAGE 53 =====
+45/56
+Notes on Non-Linear Autoencoders
+↭Non-linear autoencoder use non-linear functions
+F : Rn ′→Rm and G : Rm ′→Rn
+↭We typically assume set of non-linear functions includes linear
+functions.
+↭Hence, reconstruction loss of non-linear autoencoder should
+be smaller than linear autoencoder
+↭However, non-linear autoencoders are often trained with
+gradient descent methods without global convergence
+guarantees. This may lead to worse non-linear autoencoders
+than linear ones.
+
+
+===== PAGE 54 =====
+46/56
+Notes on Non-Linear Autoencoders
+Example (Digits dataset, 8x8 images):
+>> Principal eigenvectors, MSE = 1.98425 (with m=20)
+>> Linear Autoencoder, MSE = 1.98530
+>> Non-linear AE, no fine-tuning, MSE = 1.35964
+>> Principal eigenvectors, MSE = 13.42101 (with m=2)
+>> Linear Autoencoder, MSE = 13.42120
+>> Non-linear AE, no finetuning, MSE = 5.98992
+loved
+
+
+===== PAGE 55 =====
+47/56
+Notes on Non-Linear Autoencoders
+Example: 2D manifold in 3D
+
+
+===== PAGE 56 =====
+48/56
+Take-home message 1
+We study the problem of dimensionality reduction
+Rn →Rm, m ↑n by considering a linear autoencoder with weight
+matrices W ↓Rm→n and V ↓Rn→m
+↭PCA theorem The optimal projection matrix (of rank ↗m)
+minimizing the reconstruction loss of centered data is formed
+by m orthogonal principal vectors of the covariance matrix
+E[xx↔], P = UU↔.
+
+
+===== PAGE 57 =====
+49/56
+Take-home message 2
+We study the problem of dimensionality reduction
+Rn →Rm, m ↑n by considering a linear autoencoder with weight
+matrices W ↓Rm→n and V ↓Rn→m
+↭A linear autoencoder will not search for an orthonormal basis
+of the m-dimensional subspace. P = VV+, with V formed
+by some m independent vectors from span(U), where U is
+composed from the m orthogonal principal vectors of the
+covariance matrix E[xx↔], P = UU↔.
+
+
+===== PAGE 58 =====
+50/56
+Take-home message 3
+↭Minimizing the reconstruction loss is equivalent to maximizing
+the total variance of data projected into a low-dimensional
+subspace; for optimal P, Var[Px] = ,m
+i=1 ωi where ωi is the
+i-th principal eigenvalue of the covariance matrix E[xx↔].
+
+
+===== PAGE 59 =====
+51/56
+Take-home message 4
+The ﬁrst principal eigenvectors (and respective eigenvalues) can be
+computed using:
+↭Power Method. Complexity for m principal eigenvectors:
+O(Tmn2) + the complexity of computing the covariance
+matrix O(Nn2)
+↭Gradient descent. Complexity for T iterations:
+O(T(m + k)n2); k is the batch size; m dimensionality of the
+bottleneck space
+
+
+===== PAGE 60 =====
+52/56
+Take-away
+↭You gained an understanding of what a linear autoencoder
+does when it optimizes its objective (reconstruction loss)
+↭You refreshed your understanding of what PCA is doing and
+learned how one can compute it.
+↭You refreshed your background in linear algebra (traces,
+projections), matrix calculus, and some statistics (covariance
+matrix and its estimate from the data)
+
+
+===== PAGE 61 =====
+53/56
+Next lecture
+Matrix Approximations
+↭Collaborative Filtering
+↭Rank 1 Models
+↭Ordinary Di”erential Equations (ODEs)
+Homework: Refresh Convexity, matrix algebra and di”erentiation,
+ODEs
+
+
+===== PAGE 62 =====
+54/56
+Homework
+Refresh your knowledge of linear algebra, calculus, probability
+theory via attending the refresh-my-background class on
+Thursday
+
+
+===== PAGE 63 =====
+55/56
+Self-check questions 1
+↭Let {u1, ..., un}, ui ↓Rn, be an ordered orthonormal basis.
+For vector v ↓Rn with known coordinates in the standard
+basis, calculate the coordinates of v relative to this new basis.
+↭Provide an example of a symmetric n ∋n matrix with
+eigenvalues {ω1, ..., ωn}
+↭Let the spectral decomposition of matrix ” be ” = Q!Q↔,
+! = diag (ω1, ..., ωn). What are the coordinates of vector ”x
+relative to the basis {q1, ..., qn}?
+↭Let matrix P represent a projection on a line minimizing the
+scared loss E↘x ≃Px↘2, what is the value of Var[Px]
+(assume we know the covariance matrix ”)?
+
+
+===== PAGE 64 =====
+56/56
+Self-check questions 2
+↭Assume we know a method to quickly compute the ﬁrst
+principal eigenvector for matrix A. How to compute the
+second eigenvector?
+↭Prove that eigenvalues of a projection matrix could be only
+{0, 1}.
+↭Prove that a covariance matrix E[xx↔] is a positive
+semideﬁnite matrix.
+↭Prove ∞A tr(AB) = B↔

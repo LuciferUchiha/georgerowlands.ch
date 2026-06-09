@@ -1,0 +1,734 @@
+
+===== PAGE 0 =====
+Computational
+Intelligence Lab
+Preparatory
+Session Week 8
+Anuj Srivastava
+23 April 2026
+
+===== PAGE 1 =====
+Outline
+1. Conjugate priors, Dirichlet distribution
+2. Probabilistic perspective of ML
+3. Word Embeddings
+23.04.2026
+1/18
+
+===== PAGE 2 =====
+Outline
+1. Conjugate priors, Dirichlet distribution
+2. Probabilistic perspective of ML
+3. Word Embeddings
+23.04.2026
+2/18
+
+===== PAGE 3 =====
+Conjugate priors
+• Say we have a model parameterized by ω, and observe data X.
+• Let p(X | ω) denote the likelihood, and p(ω) be the prior.
+• Using Bayes’ rule we can compute the posterior:
+p(ω | X) = p(ω) p(X | ω)
+p(X)
+.
+23.04.2026
+3/18
+
+===== PAGE 4 =====
+Conjugate priors
+• Say we have a model parameterized by ω, and observe data X.
+• Let p(X | ω) denote the likelihood, and p(ω) be the prior.
+• Using Bayes’ rule we can compute the posterior:
+p(ω | X) = p(ω) p(X | ω)
+p(X)
+.
+Deﬁnition (Conjugate prior)
+If p(ω | X) and p(ω) are of the same distribution family, then p(ω) is a
+conjugate prior for the given likelihood p(X | ω).
+23.04.2026
+3/18
+desirable property
+
+===== PAGE 5 =====
+Example – Bernoulli likelihood / Beta prior
+• The Bernoulli likelihood with parameter ω →[0, 1] is:
+p(x | ω) = Ber(x; ω) := ωx(1 ↑ω)1→x,
+x →{0, 1}.
+23.04.2026
+4/18
+
+===== PAGE 6 =====
+Example – Bernoulli likelihood / Beta prior
+• The Bernoulli likelihood with parameter ω →[0, 1] is:
+p(x | ω) = Ber(x; ω) := ωx(1 ↑ω)1→x,
+x →{0, 1}.
+• Its conjugate is the Beta prior with shape parameters ε, ϑ > 0:
+p(ω) = Beta(ω; ε, ϑ) :=
+1
+B(ε, ϑ) ωω→1(1 ↑ω)ε→1,
+ω →[0, 1],
+23.04.2026
+4/18
+what
+is the beta distribution
+Betafunction
+independent of Q
+is there to normalia
+when taking
+the
+integral
+
+===== PAGE 7 =====
+Example – Bernoulli likelihood / Beta prior
+• The Bernoulli likelihood with parameter ω →[0, 1] is:
+p(x | ω) = Ber(x; ω) := ωx(1 ↑ω)1→x,
+x →{0, 1}.
+• Its conjugate is the Beta prior with shape parameters ε, ϑ > 0:
+p(ω) = Beta(ω; ε, ϑ) :=
+1
+B(ε, ϑ) ωω→1(1 ↑ω)ε→1,
+ω →[0, 1],
+• because the posterior is also a Beta distribution:
+p(ω | X) ↓ωω→1(1 ↑ω)ε→1
+n
+!
+i=1
+ωxi(1 ↑ω)1→xi
+= ω
+"
+ω→1+#n
+i=1 xi
+$
+(1 ↑ω)
+"
+ε→1+#n
+i=1(1→xi)$
+↓Beta
+%
+ω; ε +
+n
+&
+i=1
+xi, ϑ + n ↑
+n
+&
+i=1
+xi
+'
+.
+23.04.2026
+4/18
+priorassured
+headsand
+tailswhat
+theyare after
+seeingdata
+
+===== PAGE 8 =====
+Dirichlet distribution
+Deﬁnition (k-dimensional simplex)
+The k-dimensional simplex is deﬁned as
+!k→1 :=
+(
+ε →[0, 1]k )))
+&k
+j=1ϖj = 1
+*
+The 3-d simplex
+23.04.2026
+5/18
+
+===== PAGE 9 =====
+Dirichlet distribution
+Deﬁnition (k-dimensional simplex)
+The k-dimensional simplex is deﬁned as
+!k→1 :=
+(
+ε →[0, 1]k )))
+&k
+j=1ϖj = 1
+*
+The 3-d simplex
+We can interpret !k→1 as the set of parameters ε of the family of
+k-dimensional categorical distributions:
+Cat(x; ε) =
+k
+!
+j=1
+ϖ
+xj
+j ,
+where x is any one-hot k-dimensional vector.
+23.04.2026
+5/18
+extension of
+bernoulli
+where bernoulli has 2
+categories
+meaningof this
+
+===== PAGE 10 =====
+Dirichlet distribution
+The Dirichlet distribution over !k→1 is the k-dimensional extension of Beta:
+Dir(ε; ϑ) :=
+1
+B(ϑ)
+k
+!
+j=1
+ϖ
+ωj→1
+j
+,
+ε →!k→1,
+where ϑ →Rk
++ is the concentration parameter.
+23.04.2026
+6/18
+vector
+instead of
+propto
+beta
+
+===== PAGE 11 =====
+Dirichlet distribution
+The Dirichlet distribution over !k→1 is the k-dimensional extension of Beta:
+Dir(ε; ϑ) :=
+1
+B(ϑ)
+k
+!
+j=1
+ϖ
+ωj→1
+j
+,
+ε →!k→1,
+where ϑ →Rk
++ is the concentration parameter.
+https://en.wikipedia.org/wiki/Dirichlet_distribution
+23.04.2026
+6/18
+to
+meanlarger
+vales
+more
+concentrates
+both
+unitorsstrongest
+just
+uniform
+bediction
+
+===== PAGE 12 =====
+Categorical likelihood / Dirichlet prior
+Naturally, Dir(ε; ϑ) is a conjugate prior for categorical likelihood:
+p(ε | X) ↓p(ε) p(X | ε)
+23.04.2026
+7/18
+
+===== PAGE 13 =====
+Categorical likelihood / Dirichlet prior
+Naturally, Dir(ε; ϑ) is a conjugate prior for categorical likelihood:
+p(ε | X) ↓p(ε) p(X | ε)
+↓
+% k
+!
+j=1
+ϖ
+ωj→1
+j
+' % n
+!
+i=1
+k
+!
+j=1
+ϖ
+xij
+j
+'
+23.04.2026
+7/18
+
+===== PAGE 14 =====
+Categorical likelihood / Dirichlet prior
+Naturally, Dir(ε; ϑ) is a conjugate prior for categorical likelihood:
+p(ε | X) ↓p(ε) p(X | ε)
+↓
+% k
+!
+j=1
+ϖ
+ωj→1
+j
+' % n
+!
+i=1
+k
+!
+j=1
+ϖ
+xij
+j
+'
+=
+k
+!
+j=1
+ϖ
+ωj→1+#n
+i=1 xij
+j
+23.04.2026
+7/18
+
+===== PAGE 15 =====
+Categorical likelihood / Dirichlet prior
+Naturally, Dir(ε; ϑ) is a conjugate prior for categorical likelihood:
+p(ε | X) ↓p(ε) p(X | ε)
+↓
+% k
+!
+j=1
+ϖ
+ωj→1
+j
+' % n
+!
+i=1
+k
+!
+j=1
+ϖ
+xij
+j
+'
+=
+k
+!
+j=1
+ϖ
+ωj→1+#n
+i=1 xij
+j
+↓Dir(ε; ϑ + m),
+where mj = #n
+i=1 xij.
+23.04.2026
+7/18
+observation
+vector
+
+===== PAGE 16 =====
+Outline
+1. Conjugate priors, Dirichlet distribution
+2. Probabilistic perspective of ML
+3. Word Embeddings
+23.04.2026
+8/18
+
+===== PAGE 17 =====
+Binary Classiﬁcation
+• In binary classiﬁcation, we have data (x, y), where x →Rd are features
+and y →{0, 1} is a binary label.
+• We want to train a model that takes x as input and outputs y.
+23.04.2026
+9/18
+
+===== PAGE 18 =====
+Binary Classiﬁcation
+• In binary classiﬁcation, we have data (x, y), where x →Rd are features
+and y →{0, 1} is a binary label.
+• We want to train a model that takes x as input and outputs y.
+• Say we have a function fϑ : Rd ↔R outputs a real value.
+23.04.2026
+9/18
+
+===== PAGE 19 =====
+Binary Classiﬁcation
+• In binary classiﬁcation, we have data (x, y), where x →Rd are features
+and y →{0, 1} is a binary label.
+• We want to train a model that takes x as input and outputs y.
+• Say we have a function fϑ : Rd ↔R outputs a real value.
+• In logistic regression, we model the probability:
+pϑ(Y = 1 | x) = ϱ(fϑ(x)),
+pϑ(Y = 0 | x) = 1 ↑ϱ(fϑ(x)),
+where ϱ(z) =
+1
+1+exp(→z) is the Sigmoid function.
+23.04.2026
+9/18
+
+===== PAGE 20 =====
+Binary Classiﬁcation
+• In binary classiﬁcation, we have data (x, y), where x →Rd are features
+and y →{0, 1} is a binary label.
+• We want to train a model that takes x as input and outputs y.
+• Say we have a function fϑ : Rd ↔R outputs a real value.
+• In logistic regression, we model the probability:
+pϑ(Y = 1 | x) = ϱ(fϑ(x)),
+pϑ(Y = 0 | x) = 1 ↑ϱ(fϑ(x)),
+where ϱ(z) =
+1
+1+exp(→z) is the Sigmoid function.
+• We can ﬁnd optimal parameters ω by minimizing cross entropy between
+the ground truth distribution (1 ↑y, y) and the predicted distribution:
+ς(ω) = ↑E(x,y)↑p [y log ϱ(fϑ(x)) + (1 ↑y) log(1 ↑ϱ(fϑ(x)))] .
+23.04.2026
+9/18
+how was this derived
+
+===== PAGE 21 =====
+Mutual Information
+Deﬁnition (Mutual Information)
+Let X and Y be random variables following the joint distribution PXY . The
+mutual information (MI) between them is deﬁned as:
+I(X; Y ) = DKL(PXY ↗PX · PY )
+= E(X,Y )↑PXY
++
+log
+PXY (X, Y )
+PX(X)PY (Y )
+,
+-.
+/
+pointwise MI
+
+,
+where PX and PY are the respective marginal distributions.
+23.04.2026
+10/18
+
+===== PAGE 22 =====
+Mutual Information
+Deﬁnition (Mutual Information)
+Let X and Y be random variables following the joint distribution PXY . The
+mutual information (MI) between them is deﬁned as:
+I(X; Y ) = DKL(PXY ↗PX · PY )
+= E(X,Y )↑PXY
++
+log
+PXY (X, Y )
+PX(X)PY (Y )
+,
+-.
+/
+pointwise MI
+
+,
+where PX and PY are the respective marginal distributions.
+MI is also known as information gain, because it is equal to the di!erence in
+entropy of X before and after observing Y (or vice versa):
+I(X; Y ) = H(X) ↑H(X | Y ) = H(Y ) ↑H(Y | X).
+23.04.2026
+10/18
+entrepy
+
+===== PAGE 23 =====
+Outline
+1. Conjugate priors, Dirichlet distribution
+2. Probabilistic perspective of ML
+3. Word Embeddings
+23.04.2026
+11/18
+
+===== PAGE 24 =====
+Embeddings
+• Embeddings are central to NLP/ML techniques
+• A real-valued vector that captures the meaning of something
+– Not limited to words! The idea can also be applied to images,
+videos, whole sentences, etc.
+– Multi-modal embeddings: embed di!erent modalities in the same
+space (e.g. images and text)
+23.04.2026
+12/18
+vector
+representations
+
+===== PAGE 25 =====
+Embeddings
+• Embeddings are central to NLP/ML techniques
+• A real-valued vector that captures the meaning of something
+– Not limited to words! The idea can also be applied to images,
+videos, whole sentences, etc.
+– Multi-modal embeddings: embed di!erent modalities in the same
+space (e.g. images and text)
+• An embedding on its own is useless; it becomes useful when it is related
+to other embeddings
+– Concepts that are semantically similar should be close to each
+other in the embedding space
+23.04.2026
+12/18
+
+===== PAGE 26 =====
+Embeddings
+• Embeddings are central to NLP/ML techniques
+• A real-valued vector that captures the meaning of something
+– Not limited to words! The idea can also be applied to images,
+videos, whole sentences, etc.
+– Multi-modal embeddings: embed di!erent modalities in the same
+space (e.g. images and text)
+• An embedding on its own is useless; it becomes useful when it is related
+to other embeddings
+– Concepts that are semantically similar should be close to each
+other in the embedding space
+• “Semantically similar” and “close” are arbitrary concepts that depend on
+the adopted training algorithm
+23.04.2026
+12/18
+
+===== PAGE 27 =====
+Word Embeddings
+Suppose we are given a dictionary of words V = {w1, w2 . . . }.
+The i-th word wi →V is represented by an embedding
+xwi →Rd,
+a d-dimensional latent vector.
+23.04.2026
+13/18
+
+===== PAGE 28 =====
+Word Embeddings
+Suppose we are given a dictionary of words V = {w1, w2 . . . }.
+The i-th word wi →V is represented by an embedding
+xwi →Rd,
+a d-dimensional latent vector.
+Embeddings capture the meaning of the words:
+• Related words should have similar embeddings xwi ↘xwj
+• Similarity typically expressed as dot product ≃xwi, xwj⇐
+• E.g. in word2vec / skip-gram, one can model the likelihood of
+co-occurence of words: p(wi|wj) ↓exp(≃xwi, xwj⇐).
+23.04.2026
+13/18
+2 C1
+or distane etc
+similar
+
+===== PAGE 29 =====
+Discrete Representation
+Represent a vector by its index in the vocabulary
+[0 0 0 1 0 0 0 ... 0 0 0]
+– “one-hot" vector representation.
+23.04.2026
+14/18
+bagof words for senters
+
+===== PAGE 30 =====
+Discrete Representation
+Represent a vector by its index in the vocabulary
+[0 0 0 1 0 0 0 ... 0 0 0]
+– “one-hot" vector representation.
+Problems:
+• Dimensionality
+English Language (1M vocab),
+Twitter-2B tweets (1.2M vocab)
+23.04.2026
+14/18
+
+===== PAGE 31 =====
+Discrete Representation
+Represent a vector by its index in the vocabulary
+[0 0 0 1 0 0 0 ... 0 0 0]
+– “one-hot" vector representation.
+Problems:
+• Dimensionality
+English Language (1M vocab),
+Twitter-2B tweets (1.2M vocab)
+• Does not capture similarity of words
+good = [0 1 0 0 0 0 0 0 0 0 0 0 0 0 0]
+great = [0 0 0 0 1 0 0 0 0 0 0 0 0 0 0]
+milk = [0 0 1 0 0 0 0 0 0 0 0 0 0 0 0]
+
+good, great
+= 
+good, milk
+= 0
+23.04.2026
+14/18
+
+===== PAGE 32 =====
+Distributional similarity-based representations
+• Words that appear in similar contexts have a similar meaning
+23.04.2026
+15/18
+
+===== PAGE 33 =====
+Distributional similarity-based representations
+• Words that appear in similar contexts have a similar meaning
+• word2vec, GloVe, FastText
+– Same goal, slightly di!erent formulation & training algorithm
+23.04.2026
+15/18
+
+===== PAGE 34 =====
+Distributional similarity-based representations
+• Words that appear in similar contexts have a similar meaning
+• word2vec, GloVe, FastText
+– Same goal, slightly di!erent formulation & training algorithm
+• Almost obsolete by today’s standards, but the concept has greatly
+inﬂuenced subsequent works
+23.04.2026
+15/18
+
+===== PAGE 35 =====
+Example: GloVe
+Summarize data in co-occurrence matrix
+N = (nij) →R|V|·|V|,
+nij = # occurrences of wi →V in context of wj →V
+23.04.2026
+16/18
+not
+covariane
+
+===== PAGE 36 =====
+Example: GloVe
+Summarize data in co-occurrence matrix
+N = (nij) →R|V|·|V|,
+nij = # occurrences of wi →V in context of wj →V
+Example corpus:
+• The king rode to his castle.
+• The king lives in the castle.
+23.04.2026
+16/18
+
+===== PAGE 37 =====
+Example: GloVe
+Summarize data in co-occurrence matrix
+N = (nij) →R|V|·|V|,
+nij = # occurrences of wi →V in context of wj →V
+Example corpus:
+• The king rode to his castle.
+• The king lives in the castle.
+counts
+the
+king
+rode
+lives
+to
+in
+his
+castle
+the
+0
+2
+0
+0
+0
+1
+0
+1
+king
+2
+0
+1
+1
+0
+0
+0
+0
+rode
+0
+1
+0
+0
+1
+0
+0
+0
+lives
+0
+1
+0
+0
+0
+1
+0
+0
+to
+0
+0
+1
+0
+0
+0
+1
+0
+in
+1
+0
+0
+1
+0
+0
+0
+0
+his
+0
+0
+0
+0
+1
+0
+0
+1
+castle
+1
+0
+0
+0
+0
+0
+1
+0
+23.04.2026
+16/18
+defined as entire
+Senter
+
+===== PAGE 38 =====
+GloVe Objective (matrix factorization)
+Weighted least squares ﬁt of log-counts
+H(ω; N) =
+&
+i,j
+f(nij)
+
+log nij
+, -. /
+target
+↑log ˜pϑ(wi|wj)
+,
+-.
+/
+model
+
+
+2
+,
+with unnormalized distribution
+˜pϑ(wi|wj) = exp (≃xi, yj⇐+ bi + dj)
+• No need to compute normalization constant (great speed up)
+and weighting function f(n) = min 
+1, "
+n
+Nmax
+$ω
+,
+xi: word embeddings
+yj: context embeddings
+23.04.2026
+17/18
+dont fully get
+thispairs
+that
+occur together
+moreoften might higher
+
+===== PAGE 39 =====
+Word Embeddings
+More on word embeddings in tomorrow’s lecture:
+• Binary Classiﬁcation Model
+• Negative sampling – pointwise MI maximization interpretation
+• More on GloVe
+23.04.2026
+18/18

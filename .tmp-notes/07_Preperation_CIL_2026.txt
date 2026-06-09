@@ -1,0 +1,900 @@
+
+===== PAGE 0 =====
+Computational
+Intelligence Lab
+Preparatory
+Session Week 7
+Anuj Srivastava
+16 April 2026
+
+===== PAGE 1 =====
+Outline
+1. Jensen’s inequality
+2. Maximum likelihood estimation
+3. Mixture models
+4. Gaussian distributions
+16.04.2026
+1/25
+
+===== PAGE 2 =====
+Outline
+1. Jensen’s inequality
+2. Maximum likelihood estimation
+3. Mixture models
+4. Gaussian distributions
+16.04.2026
+2/25
+
+===== PAGE 3 =====
+Convex sets
+Deﬁnition (Convex set)
+A set X is convex if
+ωx + (1 →ω)y ↑X,
+↓x, y ↑X, ω ↑[0, 1].
+Non-convex
+Convex
+16.04.2026
+3/25
+
+===== PAGE 4 =====
+Convexity deﬁnition 1
+Deﬁnition (Convexity)
+A function f : X ↔R is convex if X is a convex set and:
+f(ωx + (1 →ω)y) ↗ωf(x) + (1 →ω)f(x),
+↓x, y ↑X, ω ↑[0, 1].
+x
+y
+ωx + (1 →ω)y
+f(x)
+f(y)
+f(ωx + (1 →ω)y)
+ωf(x) + (1 →ω)f(y)
+16.04.2026
+4/25
+my
+we
+order
+definition
+
+===== PAGE 5 =====
+Convexity deﬁnition 2
+Deﬁnition (Convexity)
+A function f : Rd ↔R is convex over X if f is di!erentiable, X is convex,
+and the following holds:
+f(x) ↘f(y) + ≃⇐f(y), x →y⇒,
+↓x, y ↑X.
+16.04.2026
+5/25
+first
+order
+
+===== PAGE 6 =====
+Convexity deﬁnition 3
+Deﬁnition (Convexity)
+A function f : Rd ↔R is convex over X if f is twice di!erentiable, X is
+convex, and the Hessian ⇐2f(x) is positive semi-deﬁnite for all x ↑X.
+16.04.2026
+6/25
+second order
+
+===== PAGE 7 =====
+Concavity
+Deﬁnition (Concavity)
+A function f is concave if, and only if, →f is convex.
+16.04.2026
+7/25
+i e flip
+inequality.eslog
+
+===== PAGE 8 =====
+Jensen’s inequality
+Lemma (Jensen’s inequality)
+Let f : X ↔R be a convex function, x1, . . . , xm ↑X, ε1, . . . , εm ↘0,
+and !m
+i=1 εi = 1, then
+f
+" m
+#
+i=1
+εixi
+$
+↗
+m
+#
+i=1
+εif(xi).
+Inequality holds in opposite direction if f is concave.
+16.04.2026
+8/25
+affine combination
+
+===== PAGE 9 =====
+Jensen’s inequality - Proof
+Proof by induction: The base case (m = 2) is true by the deﬁnition of convexity.
+16.04.2026
+9/25
+lambda
+1x
+and12 y
+9 t
+lambda
+1
+o
+l21
+
+===== PAGE 10 =====
+Jensen’s inequality - Proof
+Proof by induction: The base case (m = 2) is true by the deﬁnition of convexity.
+Assume it holds true for m = k. Consider m = k + 1, then
+f
+"k+1
+#
+i=1
+εixi
+$
+= f
+"
+k
+#
+i=1
+εixi + εk+1xk+1
+$
+16.04.2026
+9/25
+last
+kfickle
+
+===== PAGE 11 =====
+Jensen’s inequality - Proof
+Proof by induction: The base case (m = 2) is true by the deﬁnition of convexity.
+Assume it holds true for m = k. Consider m = k + 1, then
+f
+"k+1
+#
+i=1
+εixi
+$
+= f
+"
+k
+#
+i=1
+εixi + εk+1xk+1
+$
+= f
+"
+(1 →εk+1)
+k
+#
+i=1
+εi
+1 →εk+1 xi + εk+1xk+1
+$
+16.04.2026
+9/25
+multiplyand hide
+by sun of coefficients
+
+===== PAGE 12 =====
+Jensen’s inequality - Proof
+Proof by induction: The base case (m = 2) is true by the deﬁnition of convexity.
+Assume it holds true for m = k. Consider m = k + 1, then
+f
+"k+1
+#
+i=1
+εixi
+$
+= f
+"
+k
+#
+i=1
+εixi + εk+1xk+1
+$
+= f
+"
+(1 →εk+1)
+k
+#
+i=1
+εi
+1 →εk+1 xi + εk+1xk+1
+$
+↗(1 →εk+1)f
+"
+k
+#
+i=1
+εi
+1 →εk+1 xi
+$
++ εk+1f(xk+1)
+16.04.2026
+9/25
+new
+lambdapull
+out
+by definition of convexity
+
+===== PAGE 13 =====
+Jensen’s inequality - Proof
+Proof by induction: The base case (m = 2) is true by the deﬁnition of convexity.
+Assume it holds true for m = k. Consider m = k + 1, then
+f
+"k+1
+#
+i=1
+εixi
+$
+= f
+"
+k
+#
+i=1
+εixi + εk+1xk+1
+$
+= f
+"
+(1 →εk+1)
+k
+#
+i=1
+εi
+1 →εk+1 xi + εk+1xk+1
+$
+↗(1 →εk+1)f
+"
+k
+#
+i=1
+εi
+1 →εk+1 xi
+$
++ εk+1f(xk+1)
+↗(1 →εk+1)
+k
+#
+i=1
+εi
+1 →εk+1 f(xi) + εk+1f(xk+1)
+16.04.2026
+9/25
+phaginusing
+assumption for k
+
+===== PAGE 14 =====
+Jensen’s inequality - Proof
+Proof by induction: The base case (m = 2) is true by the deﬁnition of convexity.
+Assume it holds true for m = k. Consider m = k + 1, then
+f
+"k+1
+#
+i=1
+εixi
+$
+= f
+"
+k
+#
+i=1
+εixi + εk+1xk+1
+$
+= f
+"
+(1 →εk+1)
+k
+#
+i=1
+εi
+1 →εk+1 xi + εk+1xk+1
+$
+↗(1 →εk+1)f
+"
+k
+#
+i=1
+εi
+1 →εk+1 xi
+$
++ εk+1f(xk+1)
+↗(1 →εk+1)
+k
+#
+i=1
+εi
+1 →εk+1 f(xi) + εk+1f(xk+1)
+=
+k+1
+#
+i=1
+εif(xi).
+↭
+16.04.2026
+9/25
+cancel out
+
+===== PAGE 15 =====
+Outline
+1. Jensen’s inequality
+2. Maximum likelihood estimation
+3. Mixture models
+4. Gaussian distributions
+16.04.2026
+10/25
+
+===== PAGE 16 =====
+Maximum likelihood estimation
+We have data X = {xi}n
+i=1 and we assume that this data has been generated
+from a distribution p with parameters ωω. However, we do not know ωω =⇑
+We have to estimate it from the data. We do this by maximizing the likelihood:
+ωMLE ↑argmax
+ω→!
+p(X; ω)
+= argmax
+ω→!
+n
+%
+i=1
+p(xi; ω)
+Data is generated i.i.d.
+= argmax
+ω→!
+log
+n
+%
+i=1
+p(xi; ω)
+log is increasing.
+= argmax
+ω→!
+n
+#
+i=1
+log p(xi; ω).
+16.04.2026
+11/25
+we
+assume
+we knew
+the distribution family
+
+===== PAGE 17 =====
+Bernoulli MLE
+Let p(x; ω) = Ber(x; ε) := εx(1 →ε)1↑x, where x ↑{0, 1} and ε ↑[0, 1].
+16.04.2026
+12/25
+random
+variableno
+hithit
+
+===== PAGE 18 =====
+Bernoulli MLE
+Let p(x; ω) = Ber(x; ε) := εx(1 →ε)1↑x, where x ↑{0, 1} and ε ↑[0, 1].
+Then, we have the following optimization problem:
+εMLE ↑argmax
+ε→[0,1]
+n
+#
+i=1
+log&
+εxi(1 →ε)1↑xi'
+= argmax
+ε→[0,1]
+n
+#
+i=1
+xi log ε + (1 →xi) log(1 →ε)
+= argmax
+ε→[0,1]
+log(ε)
+n
+#
+i=1
+xi + log(1 →ε)
+"
+n →
+n
+#
+i=1
+xi
+$
+.
+16.04.2026
+12/25
+find bias of
+coincombination
+of
+concave
+functions
+is also
+concave
+so max is
+at
+zoo
+
+===== PAGE 19 =====
+Bernoulli MLE
+Setting derivative w.r.t. ε to zero yields
+1
+ε
+n
+#
+i=1
+xi →
+1
+1 →ε
+"
+n →
+n
+#
+i=1
+xi
+$
+!= 0
+⇓⇑1
+ε
+n
+#
+i=1
+xi =
+1
+1 →ε
+"
+n →
+n
+#
+i=1
+xi
+$
+⇓⇑1 →ε
+ε
+=
+1
+!n
+i=1 xi
+"
+n →
+n
+#
+i=1
+xi
+$
+⇓⇑1
+ε →1 =
+n
+!n
+i=1 xi
+→1
+⇓⇑ε = 1
+n
+n
+#
+i=1
+xi.
+Thus, εMLE = 1
+n
+!n
+i=1 xi.
+↭
+16.04.2026
+13/25
+gradientempiricial
+mean
+matches intuition
+
+===== PAGE 20 =====
+Outline
+1. Jensen’s inequality
+2. Maximum likelihood estimation
+3. Mixture models
+4. Gaussian distributions
+16.04.2026
+14/25
+
+===== PAGE 21 =====
+Mixture models
+What if the data has multiple clusters, each distributed di!erently?
+How do we formalize the distribution of this data?
+16.04.2026
+15/25
+
+===== PAGE 22 =====
+Mixture models
+What if the data has multiple clusters, each distributed di!erently?
+How do we formalize the distribution of this data?
+Mixture models
+16.04.2026
+15/25
+
+===== PAGE 23 =====
+Generative story
+Let k be the number of clusters/modes of the data, and we assign a distribution
+pj to each cluster. Then, we assume that the provided data X = {xi}n
+i=1 has
+been generated in two steps:
+1. Sample zi ⇔Categorical(ε), where ε ↑!k↑1.
+2. Sample xi ⇔pzi with parameters ωω
+zi.
+16.04.2026
+16/25
+cluster mixing
+coefficientsimplex
+so adds
+to 1
+
+===== PAGE 24 =====
+Probability density function
+p(xi; ω) =
+k
+#
+z=1
+p(xi, Zi = z; ω)
+=
+k
+#
+z=1
+p(Zi = z; ε)p(xi | Zi = z; ω)
+=
+k
+#
+z=1
+ϑz · p(xi; ωz)
+16.04.2026
+17/25
+marginalize over
+clustersbayes
+ruleobserving
+clusterindex
+
+===== PAGE 25 =====
+Maximum likelihood estimation
+argmax
+ε,ω1,...,ωk
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+ϑz · p(xi; ωz)
+$
+.
+16.04.2026
+18/25
+
+===== PAGE 26 =====
+Maximum likelihood estimation
+argmax
+ε,ω1,...,ωk
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+ϑz · p(xi; ωz)
+$
+.
+Maximizing jointly over ε and ω1, . . . , ωk is (almost) always intractable!
+16.04.2026
+18/25
+los of sums is killer
+allthough
+it k is small
+global maxima
+is hard
+
+===== PAGE 27 =====
+Evidence lower bound
+Let qiz be deﬁned such that qi ↑!k↑1. By using the fact that log is concave,
+we can derive the evidence lower bound (ELBO):
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+ϑz · p(xi; ωz)
+$
+16.04.2026
+19/25
+approtination
+
+===== PAGE 28 =====
+Evidence lower bound
+Let qiz be deﬁned such that qi ↑!k↑1. By using the fact that log is concave,
+we can derive the evidence lower bound (ELBO):
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+ϑz · p(xi; ωz)
+$
+=
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+qiz ϑz
+qiz · p(xi; ωz)
+$
+16.04.2026
+19/25
+
+===== PAGE 29 =====
+Evidence lower bound
+Let qiz be deﬁned such that qi ↑!k↑1. By using the fact that log is concave,
+we can derive the evidence lower bound (ELBO):
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+ϑz · p(xi; ωz)
+$
+=
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+qiz ϑz
+qiz · p(xi; ωz)
+$
+↘
+n
+#
+i=1
+k
+#
+z=1
+qiz log
+(
+ϑz
+qiz · p(xi; ωz)
+)
+16.04.2026
+19/25
+jensers
+inequality
+
+===== PAGE 30 =====
+Evidence lower bound
+Let qiz be deﬁned such that qi ↑!k↑1. By using the fact that log is concave,
+we can derive the evidence lower bound (ELBO):
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+ϑz · p(xi; ωz)
+$
+=
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+qiz ϑz
+qiz · p(xi; ωz)
+$
+↘
+n
+#
+i=1
+k
+#
+z=1
+qiz log
+(
+ϑz
+qiz · p(xi; ωz)
+)
+=
+n
+#
+i=1
+k
+#
+z=1
+qiz(log p(xi; ωz) + log ϑz →log qiz).
+16.04.2026
+19/25
+
+===== PAGE 31 =====
+Evidence lower bound
+Let qiz be deﬁned such that qi ↑!k↑1. By using the fact that log is concave,
+we can derive the evidence lower bound (ELBO):
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+ϑz · p(xi; ωz)
+$
+=
+n
+#
+i=1
+log
+"
+k
+#
+z=1
+qiz ϑz
+qiz · p(xi; ωz)
+$
+↘
+n
+#
+i=1
+k
+#
+z=1
+qiz log
+(
+ϑz
+qiz · p(xi; ωz)
+)
+=
+n
+#
+i=1
+k
+#
+z=1
+qiz(log p(xi; ωz) + log ϑz →log qiz).
+Maximizing w.r.t. q increases the tightness of the bound, while maximizing
+w.r.t. ω improves the model ﬁt.
+16.04.2026
+19/25
+KI
+digne
+
+===== PAGE 32 =====
+Solving the ELBO
+This optimization problem still has no closed solution.
+In tomorrow’s lecture, you will learn how to maximize the ELBO.
+16.04.2026
+20/25
+
+===== PAGE 33 =====
+Outline
+1. Jensen’s inequality
+2. Maximum likelihood estimation
+3. Mixture models
+4. Gaussian distributions
+16.04.2026
+21/25
+
+===== PAGE 34 =====
+Multivariate Gaussian distribution
+A Gaussian random variable (x) has the following probability density function:
+N(x; µ, !) := (2ϑ)↑d/2| det(!)|↑1/2 exp
+*
+→1
+2(x →µ)↓!↑1(x →µ)
++
+.
+→2
+0
+2
+→2
+0
+2
+0
+0.1
+0.2
+16.04.2026
+22/25
+
+===== PAGE 35 =====
+Standard normal distribution
+If µ = 0 and ! = I, we call it the standard normal distribution:
+N(x; 0, I) = (2ϑ)↑d/2 exp
+(
+→↖x↖2
+2
+)
+.
+→2
+0
+2
+→2
+0
+2
+0
+0.1
+16.04.2026
+23/25
+
+===== PAGE 36 =====
+Marginals of Gaussians
+Let X ⇔N(µx, !xx) and Y ⇔N(µy, !yy). Furthermore, let
+[!xy]ij = Cov(Xi, Yj) := E[(Xi →E[Xi])(Yj →E[Yj])].
+And, !yx = !↓
+xy. Then,
+,
+X
+Y
+-
+⇔N
+(,
+µx
+µy
+-
+,
+,
+!xx
+!xy
+!yx
+!yy
+-)
+.
+16.04.2026
+24/25
+property from
+PAIp
+symmetric covarion
+
+===== PAGE 37 =====
+Conditionals of Gaussians
+Let
+,
+X
+Y
+-
+⇔N
+(,
+µx
+µy
+-
+,
+,
+!xx
+!xy
+!yx
+!yy
+-)
+.
+Then, X | Y = y ⇔N(µx|y, !x|y), where
+µx|y = µx + !xy!↑1
+yy (y →µy)
+!x|y = !xx →!xy!↑1
+yy !yx.
+16.04.2026
+25/25
+X and y
+definal like
+before

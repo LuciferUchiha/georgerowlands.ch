@@ -1,0 +1,553 @@
+
+===== PAGE 1 =====
+Computational Intelligence Lab
+Week 3 - Preparation Session
+Shuhao Li
+ETH Zurich – cil.inf.ethz.ch
+5 March 2025
+
+
+===== PAGE 2 =====
+Overview
+↭Symmetric matrices and Spectral theorem
+↭Back propagation and Matrix calculus
+
+
+===== PAGE 3 =====
+Symmetric matrices and Spectral theorem
+
+
+===== PAGE 4 =====
+Diagonalisable matrices
+Deﬁnition: A square matrix A is said to be diagonalizable if there
+exists an invertible matrix P and a diagonal matrix D such that
+A = PDP→1.
+P is the transformation matrix that maps between the usual axis
+and the new set of axis, and D contains the scaling factors in the
+new coordinate system.
+Jeonetric view
+three
+change of basis
+new axis
+1111 11
+linear combination
+
+
+===== PAGE 5 =====
+Refresher: eigenvalues and eigenvectors
+Av = ωv
+where:
+↭ω is called an eigenvalue of A.
+↭v is called an eigenvector of A.
+
+
+===== PAGE 6 =====
+Eigenvalues and eigenvectors for real symmetric matrix
+Deﬁnition (Symmetric real matrix)
+A real symmetric matrix is a square matrix A →Rn↑n whose
+entries satisfy A = AT, meaning aij = aji for all indices i, j.
+Theorem (Real eigenvalues)
+Every real symmetric matrix A has only real eigenvalues.
+Theorem (Orthogonality of eigenvectors)
+Eigenvectors of a real symmetric matrix corresponding to distinct
+eigenvalues are orthogonal.
+such as covariance matrix
+symmetric
+square
+no complexrales
+meaning
+everything is
+othogonal to 0 so not fullrank
+
+
+===== PAGE 7 =====
+Decompose into simpler pieces
+Theorem (Spectral decomposition)
+Let A be a real symmetric matrix. Then, A can be decomposed as:
+A =
+n
+!
+i=1
+ωivivT
+i
+where:
+↭ωi are the eigenvalues of A.
+↭vi are the orthonormal eigenvectors of A.
+derivation
+remind
+these term P
+and beage orthogonal PI p
+
+
+===== PAGE 8 =====
+Proof of spectral decomposition (1/4)
+Step 1: Orthonormal eigenbasis
+Let A be a real symmetric matrix. By the spectral theorem, there
+exist orthonormal eigenvectors
+v1, . . . , vn
+with corresponding real eigenvalues
+ω1, . . . , ωn.
+These vectors form an orthonormal basis of Rn:
+vT
+i vj = εij.
+delta function
+if
+dotproducts
+
+
+===== PAGE 9 =====
+Proof of spectral decomposition (2/4)
+Step 2: Expand any vector in the eigenbasis
+Since {vi} is an orthonormal basis, any vector x →Rn can be
+written as
+x =
+n
+!
+i=1
+(vT
+i x) vi.
+The coe!cient (vT
+i x) is the projection of x onto vi.
+p II
+p
+formed
+
+
+===== PAGE 10 =====
+Proof of spectral decomposition (3/4)
+Step 3: Apply A to x
+Using Avi = ωivi, we compute:
+Ax = A
+" n
+!
+i=1
+(vT
+i x) vi
+#
+=
+n
+!
+i=1
+(vT
+i x) Avi =
+n
+!
+i=1
+ωi(vT
+i x) vi.
+Factor the scalar vT
+i x as a matrix product:
+Ax =
+n
+!
+i=1
+ωivi(vT
+i x).
+scalar
+phivi
+beam scalar
+
+
+===== PAGE 11 =====
+Proof of spectral decomposition (4/4)
+Step 4: Identify the matrix acting on x
+Rewrite the expression:
+Ax =
+n
+!
+i=1
+ωi
+$
+vivT
+i
+%
+x.
+Since this holds for every vector x, the linear operator A equals
+A =
+n
+!
+i=1
+ωi vivT
+i .
+This is the spectral decomposition of A.
+why
+change bracket ordr
+kind of a shity
+preetno relies on A
+beingfullrank
+
+
+===== PAGE 12 =====
+Projection = shrinking
+Theorem (Projection eigenvalues)
+The eigenvalues of a projection matrix are all 0 or 1.
+Intuitively, projection only keeps some eigenvalues.
+either stays
+or
+low
+dimension
+
+
+===== PAGE 13 =====
+Norm of an Orthogonal Projection
+Theorem (Non-expansiveness of orthogonal projections)
+Let P be an orthogonal projection on Rn, i.e.
+P2 = P
+and
+P = PT.
+Then for every vector x,
+↑Px↑2 ↓↑x↑2.
+Remark. The symmetry condition P = PT is essential. A general
+projection matrix (satisfying only P2 = P) does not necessarily
+satisfy this inequality.
+symmetric
+mustbesymnetic
+what presever
+norm
+I thought was
+orthogondprojection
+so strictly
+
+
+===== PAGE 14 =====
+Norm of an Orthogonal Projection — Proof (1/2)
+Proof.
+Since P is symmetric, the spectral theorem applies: there exists an
+orthonormal basis {vi}n
+i=1 of eigenvectors with eigenvalues
+ωi →{0, 1}.
+Expand x in this basis:
+x =
+n
+!
+i=1
+civi.
+Applying P gives
+Px =
+!
+ωi=1
+civi.
+Tecate
+o ort
+either endler
+Eti
+
+
+===== PAGE 15 =====
+Norm of an Orthogonal Projection — Proof (2/2)
+Proof.
+Compute the squared norms:
+↑Px↑2
+2 =
+!
+ωi=1
+c2
+i ↓
+n
+!
+i=1
+c2
+i = ↑x↑2
+2,
+where orthonormality of {vi} is used.
+Thus ↑Px↑2 ↓↑x↑2.
+
+
+===== PAGE 16 =====
+A useful three-way identity
+Deﬁnition (Frobenius Norm)
+The Frobenius norm of a matrix A →Rm↑n, denoted by ||A||F, is
+deﬁned as the square root of the sum of the absolute squares of its
+elements, i.e.,
+||A||F =
+&
+'
+'
+(
+m
+!
+i=1
+n
+!
+j=1
+|aij|2.
+useful for ML
+like
+repression etc
+
+
+===== PAGE 17 =====
+A useful three-way identity
+Deﬁnition (Frobenius Norm)
+The Frobenius norm of a matrix A →Rm↑n, denoted by ||A||F, is
+deﬁned as the square root of the sum of the absolute squares of its
+elements, i.e.,
+||A||F =
+&
+'
+'
+(
+m
+!
+i=1
+n
+!
+j=1
+|aij|2.
+A useful identity:
+||A||2
+F = Tr(AAT) =
+min(n,m)
+!
+i=1
+ω2
+i
+became tree
+is sunofeigenudes
+
+
+===== PAGE 18 =====
+Back propagation and Matrix calculus
+Tes
+
+
+===== PAGE 19 =====
+The ”learning” in Machine Learning
+Machine learning models are trained by optimizing a loss function:
+a scalar value that measures how well the model ﬁts the data.
+Even when multiple criteria are involved, they are typically
+combined into a single scalar objective.
+The goal of learning is to adjust the model parameters so as to
+minimize (or maximize) this objective. The standard approach is to
+update the parameters in the direction indicated by the gradient of
+the loss with respect to those parameters.
+
+
+===== PAGE 20 =====
+Back propagation for gradient computation
+Model output: y = model(x, w)
+Loss of the model can be computed by l = loss(y, y↓)
+Gradients of model parameters can computed through chain rule:
+ϑl
+ϑw = ϑl
+ϑy
+ϑy
+ϑw
+
+
+===== PAGE 21 =====
+Back propagation in a nutshell
+y = (2x + 1)3x→1
+
+
+===== PAGE 22 =====
+Backpropagation example (1/2)
+Function:
+y = (2x + 1) 3x→1
+Computational graph:
+x
+u = 2x + 1
+v = 3x ↔1
+y = uv
+
+
+===== PAGE 23 =====
+Backpropagation example (2/2)
+Backpropagation steps:
+u = 2x + 1,
+v = 3x ↔1,
+y = u v
+ϑy
+ϑu = v u v→1,
+ϑy
+ϑv = u v ln u
+ϑy
+ϑu
+ϑu
+ϑx = 2v u v→1,
+ϑy
+ϑv
+ϑv
+ϑx = 3u v ln u
+ϑy
+ϑx = ϑy
+ϑu
+ϑu
+ϑx + ϑy
+ϑv
+ϑv
+ϑx
+ϑy
+ϑx = 2v u v→1 + 3 u v ln u
+4 41
+year
+isparam
+17 2
+3
+
+
+===== PAGE 24 =====
+Linear Regression
+Consider a linear regression model that gives model’s prediction by
+y = Ax
+Loss given by the squared Frobenius norm of prediction delta
+l = ||y ↔y↓||2
+F
+Gradient for optimization:
+ϑl
+ϑA
+What’s the meaning of the derivative of a matrix w.r.t to a scalar?
+How should it look like?
+frishthitia.in
+multiple
+weights
+prediction
+12pm
+bititts
+d
+scalar
+matrix
+rearing
+
+
+===== PAGE 25 =====
+Back propagation for Linear Regression (1/4)
+ϑl
+ϑA = ϑl
+ϑy
+ϑy
+ϑA
+How should εy
+εA look like?
+1 metis
+
+
+===== PAGE 26 =====
+Back propagation for Linear Regression (2/4)
+ϑl
+ϑA = ϑl
+ϑy
+ϑy
+ϑA
+How should εy
+εA look like?
+εy
+εA will be a 3-dimensional tensor. Which is relatively hard to
+understand and costly to store in memory. In practice, we compute
+εl
+εA without materializing εy
+εA.
+ymotn't
+not vector dontthatter
+Outputdim tentput inpu
+Ax y
+so ya
+depends on
+151 1
+19
+I
+E
+Tent
+participate
+so we can improve stereo
+
+
+===== PAGE 27 =====
+Backpropagation for Linear Regression (3/4)
+Step 1: Gradient w.r.t. output y
+l = (y ↔y↓)T(y ↔y↓)
+Di”erentiate w.r.t. y:
+ϑl
+ϑy = 2(y ↔y↓)
+Deﬁne the error vector:
+e = y ↔y↓
+So,
+ϑl
+ϑy = 2e
+saith
+smally
+
+
+===== PAGE 28 =====
+Backpropagation for Linear Regression (4/4)
+Step 2: Chain Rule
+ϑl
+ϑAkl
+=
+!
+i
+ϑl
+ϑyi
+ϑyi
+ϑAkl
+Substitute:
+=
+!
+i
+2ei εikxl = 2ekxl
+Final Matrix Form:
+ϑl
+ϑA = 2(y ↔y↓)xT = 2(Ax ↔y↓)xT
+elementwine tachion
+
+
+===== PAGE 29 =====
+Closed-form solution for Linear Regression
+ϑl
+ϑA = 2(Ax ↔y↓)xT = 0
+2(Ax ↔y↓)xT = 0
+AxxT = y↓xT
+A = y↓xT(xxT)→1
+Tithto inverse
+C
+
+
+===== PAGE 30 =====
+Tip for computing the gradient: Check the dimensions
+The result shape for a matrix’s derivative w.r.t a scalar should
+always be identical to the shape of the matrix itself. Verifying the
+result shape itself can usually lead you towards to correct result.
+O = AB
+ϑl
+ϑA = ϑl
+ϑO BT
+ϑl
+ϑB = AT ϑl
+ϑO
+scaler
+matrix
+
+
+===== PAGE 31 =====
+Tip for computing the gradient: einsum Notation
+O = AB
+O=einsum(A,B,"ik,kj->ij")
+ϑl
+ϑA = ϑl
+ϑO BT
+dA=einsum(dO,B,"ij,kj->ik")
+ϑl
+ϑB = AT ϑl
+ϑO
+dB=einsum(A,dO,"ik,ij->kj")
+kid
+flinstein
+genelical
+motixrult
+how
+doesthis
+workto
+
+
+===== PAGE 32 =====
+General Tips
+General Tip: if not sure, do elementwise, then spot matrix form.
+Also, learn commonly used identities!
+
+
+===== PAGE 33 =====
+General Tips
+General Tip: if not sure, do elementwise, then spot matrix form.
+Also, learn commonly used identities!
+Look at the matrix cookbook for thorough treatment, or at
+wikipedia for useful identities

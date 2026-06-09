@@ -1,0 +1,1226 @@
+===== PAGE 1 =====
+Computational Intelligence
+Laboratory
+Lecture 11
+Valentina Boeva
+ETH Zurich – https://moodle-app2.let.ethz.ch/
+course/view.php?id=27126
+22 May 2026
+1/51
+
+===== PAGE 2 =====
+2/51
+Plan for today
+↭Generative models and density
+estimation
+↭Autoregressive models
+(PixelCNN, autoregressive
+language models, transformers)
+↭Variational Autoencoders
+(VAEs)
+Image credit: Attention Is All You Need, Vaswani et al. (2017)
+againyay
+
+===== PAGE 3 =====
+3/51
+Section 2
+Generative Models
+Autoregressive Models
+
+===== PAGE 4 =====
+4/51
+Setting: Generative Models
+Setting
+↭true generative process of data: p(x) – ﬁxed
+↭ω-parameterized model: p(x; ω) – learnable
+↭goal: p(x; ω) indistinguishable from p(x)
+
+===== PAGE 5 =====
+5/51
+Challenges: Generative Models
+Challenges: avoid (!)
+↭mode collapse: p(x) →p(x;ω) ↫0
+↭incorrect data: p(x;ω) →p(x) ↫0
+only
+mode
+mathbbD
+G
+mode seeking
+
+===== PAGE 6 =====
+6/51
+Likelihood-Based Density Estimation
+Canonical/classical inference principle:
+MLE (maximum likelihood estimation),
+ω→
+max
+↑↓E[ ln p(x;ω) ],
+x ↔p(x)
+↭p(x): true distribution
+↭p(x;ω): parameterized model
+↭E[·]: in practice over ﬁnite training sample
+s
+oversamples S
+
+===== PAGE 7 =====
+7/51
+Autoregressive Models
+Autoregressive Models
+Deﬁne model directly on observables.
+Sequential ordering of variables.
+Chain rule: autoregressive model
+p(x;ω) = p(x1, . . . , xm;ω) =
+m
+!
+t=1
+p(xt|x1, . . . xt↑1;ω)
+
+===== PAGE 8 =====
+8/51
+AR(k) Models
+Markov assumption: observables form a k-th order Markov
+chain.
+p(xt|xt↑1, . . . x1;ω) = p(xt|xt↑1, . . . xt↑k;ω)
+Classical AR(k) models with Gaussian white noise
+Xt = ω0 +
+k
+"
+i=1
+ωiXt↑i + εt,
+εt
+iid↔N(0, ϑ2)
+Heavily used in time series modeling.
+Very simplistic.
+
+===== PAGE 9 =====
+9/51
+Generative DNN Models
+Q: How can we leverage the power of DNNs for genera-
+tion?
+A: Use a DNN to model the conditional distribution.
+Concretely: map context to latent variable (or embedding)
+(x1, . . . , xt↑1) ↗↓z ↘Rd
+and apply a softmax function to derive probabilities
+P(Xt = y|x1, . . . , xt↑1) =
+exp[≃z, wy⇐]
+#
+y→exp[≃z, wy→⇐]
+expensive
+
+===== PAGE 10 =====
+10/51
+Pixel CNN
+Joint distribution of pixels: ﬁx scanning order, apply chain rule
+p(x) =
+n2
+!
+i=1
+p(xi|x1, ..., xi↑1)
+Use CNNs to predict one pixel at a time!
+Reference: A. van den Oord, N. Kalchbrenner, K. Kavukcuoglu,
+Pixel Recurrent Neural Networks, ICML 2016.
+20lb
+
+===== PAGE 11 =====
+11/51
+Pixel CNN
+Visualization:
+generate
+pixel
+by
+conditioning
+on
+previously
+generated pixels
+Raster scan order:
+left-to-right,
+top-to-bottom.
+Same model at
+all spatial locations (⇒convolu-
+tion).
+0
+255
+actually like a
+classifier
+forpredict
+pisel Vale
+
+===== PAGE 12 =====
+12/51
+Pixel CNN
+CNN is only allowed to use information about pixels above and
+to the left of the current pixel
+Use a masked kernel window. (Example 5 ⇑5)
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+===== PAGE 13 =====
+13/51
+Learning and Genration with Pixel CNN
+Learning of PixelCNN is very fast (parallelizable).
+↭Input: n ⇑n ⇑3 RGB image.
+↭Output n ⇑n ⇑3 ⇑256 prediction probabilities.
+↭Use of log-likelihood loss (cross entropy)
+↭Can be augmented for conditional generation (e.g. class)
+Generation with PixelCNNs is very slow (sequential).
+↭Predicted pixel is fed back to predict next pixel.
+↭Drawback: images are of limited quality
+color probabilities
+training is
+fastthis
+is the case
+withall auto regresine
+modelsbeay
+herefull
+picture p
+n
+intended
+
+===== PAGE 14 =====
+14/51
+Image Generation with Pixel CNN
+African elephant
+african
+elephants
+notgreat quality
+
+===== PAGE 15 =====
+15/51
+Image Generation with Pixel CNN
+Coral Reef
+
+===== PAGE 16 =====
+16/51
+Autoregressive Language Models
+Q: What DNN architecture is suitable for autoregressive
+language models?
+Early pioneering work: Y. Bengio, R. Ducharme, P. Vincent,
+A Neural Probabilistic Language Model (2000, 2003 11k+ cit)
+↭Inspirational and inﬂuential
+↭Lacks su!ciently powerful architecture to extract relevant
+information from context
+
+===== PAGE 17 =====
+17/51
+Autoregressive Language Models
+Q: What DNN architecture is suitable for autoregressive
+language models?
+Use of recurrent neural networks: many papers, overview:
+R. Jozefowicz, O. Vinyals, M. Schuster, N. Shazeer, Y. Wu
+Exploring the Limits of Language Modeling (2016)
+↭Perplexity reduction by 2x-3x (relative to n-grams)
+↭Highly successful in practice, use of LSTMs
+still hghty
+used
+
+===== PAGE 18 =====
+18/51
+Autoregressive Language Models
+Q: What DNN architecture is suitable for autoregressive
+language models?
+Revolutionary paper: Transformer models
+Vaswani et al: Attention is All you Need (2017, cit 120k+)
+↭Basis for BERT: Pre-training of Deep Bidirectional
+Transformers for Language Understanding (2018, cit
+100k+)
+↭Basis for GPT: Language Models are Unsupervised
+Multitask Learners (2019, cit 10k+)
+
+===== PAGE 19 =====
+19/51
+GPT: Generative Pre-trained Transformer
+Decoder-only transformer architecture
+whatthis
+
+===== PAGE 20 =====
+20/51
+Attention Block
+Assume input x ↘Rn↓m and introduce three matrices
+WQ ↘Rk↓m
+query matrix
+WK ↘Rk↓m
+key matrix
+WV ↘Rr↓m
+value matrix
+Processing is token-based
+xi ↘Rm,
+1 ⇓i ⇓n
+
+===== PAGE 21 =====
+21/51
+Attention Block
+Produce per token projections
+qi = WQxi ↘Rk
+query
+ki = WKxi ↘Rk
+key
+vi = WV xi ↘Rr
+value
+Compute attention matrix
+A = (aij),
+aij = ≃qi, kj⇐= x↔
+iW ↔
+QWKxj
+and normalize via softmax (per row)
+ˆA = (ˆaij),
+ˆaij =
+exp[aij/
+⇔
+k]
+#n
+j→=1 exp[aij→/
+⇔
+k]
+
+===== PAGE 22 =====
+22/51
+Value Generation
+Generate contextualized (new) token representations
+x(L→)
+i
+=
+n
+"
+j=1
+ˆa(L↑1)
+ij
+W (L↑1)
+V
+x(L↑1)
+j
+↘Rr,
+! = ˆAWV X
+⇒convex combination of projected (old) token
+representations with attention weights
+⇒stacking progresses X ↗↓!1 ↗↓!2 ↗↓· · · ↗↓!L
+⇒typically: use residual branch (propagates representation
+of current token) – requires dimension match
+eachhead
+frac
+Vj
+
+===== PAGE 23 =====
+23/51
+Attention Block
+x(L↑1)
+1
+x(L↑1)
+2
+x(L↑1)
+3
+x(L↑1)
+4
+q1
+k1
+v1
+q2
+k2
+v2
+q3
+k3
+v3
+q4
+k4
+v4
+WQ WK WV
+a21
+a22
+a23
+a24
+ˆa21
+v1
+⇑
+ˆa22
+v2
+⇑
+ˆa23
+v3
+⇑
+ˆa24
+v4
+⇑
++
++
++
+
+===== PAGE 24 =====
+23/51
+Attention Block
+x(L↑1)
+1
+x(L↑1)
+2
+x(L↑1)
+3
+x(L↑1)
+4
+q1
+k1
+v1
+q2
+k2
+v2
+q3
+k3
+v3
+q4
+k4
+v4
+WQ WK WV
+a21
+a22
+a23
+a24
+ˆa21
+v1
+⇑
+ˆa22
+v2
+⇑
+ˆa23
+v3
+⇑
+ˆa24
+v4
+⇑
++
++
++
+
+===== PAGE 25 =====
+23/51
+Attention Block
+x(L↑1)
+1
+x(L↑1)
+2
+x(L↑1)
+3
+x(L↑1)
+4
+q1
+k1
+v1
+q2
+k2
+v2
+q3
+k3
+v3
+q4
+k4
+v4
+WQ WK WV
+a21
+a22
+a23
+a24
+ˆa21
+v1
+⇑
+ˆa22
+v2
+⇑
+ˆa23
+v3
+⇑
+ˆa24
+v4
+⇑
++
++
++
+
+===== PAGE 26 =====
+23/51
+Attention Block
+x(L↑1)
+1
+x(L↑1)
+2
+x(L↑1)
+3
+x(L↑1)
+4
+q1
+k1
+v1
+q2
+k2
+v2
+q3
+k3
+v3
+q4
+k4
+v4
+WQ WK WV
+a21
+a22
+a23
+a24
+ˆa21
+v1
+⇑
+ˆa22
+v2
+⇑
+ˆa23
+v3
+⇑
+ˆa24
+v4
+⇑
++
++
++
+
+===== PAGE 27 =====
+23/51
+Attention Block
+x(L↑1)
+1
+x(L↑1)
+2
+x(L↑1)
+3
+x(L↑1)
+4
+q1
+k1
+v1
+q2
+k2
+v2
+q3
+k3
+v3
+q4
+k4
+v4
+WQ WK WV
+a21
+a22
+a23
+a24
+ˆa21
+v1
+⇑
+ˆa22
+v2
+⇑
+ˆa23
+v3
+⇑
+ˆa24
+v4
+⇑
++
++
++
+
+===== PAGE 28 =====
+23/51
+Attention Block
+x(L↑1)
+1
+x(L↑1)
+2
+x(L↑1)
+3
+x(L↑1)
+4
+q1
+k1
+v1
+q2
+k2
+v2
+q3
+k3
+v3
+q4
+k4
+v4
+WQ WK WV
+a21
+a22
+a23
+a24
+ˆa21
+v1
+⇑
+ˆa22
+v2
+⇑
+ˆa23
+v3
+⇑
+ˆa24
+v4
+⇑
++
++
++
+
+===== PAGE 29 =====
+23/51
+Attention Block
+x(L↑1)
+1
+x(L↑1)
+2
+x(L↑1)
+3
+x(L↑1)
+4
+q1
+k1
+v1
+q2
+k2
+v2
+q3
+k3
+v3
+q4
+k4
+v4
+WQ WK WV
+a21
+a22
+a23
+a24
+ˆa21
+v1
+⇑
+ˆa22
+v2
+⇑
+ˆa23
+v3
+⇑
+ˆa24
+v4
+⇑
++
++
++
+
+===== PAGE 30 =====
+24/51
+Attention: Comments
+↭Interpretation of
+ˆaij: relative weight
+given to token j in
+generating
+contextualized
+representation for
+token i.
+↭A and ˆA are
+non-symmetric.
+↭Scaling by 1/
+⇔
+k to
+calibrate inner
+product
+Image credit: Attention Is All You Need, Vaswani et al. (2017)
+different
+leads
+attention
+
+===== PAGE 31 =====
+25/51
+Transformer: Emblematic
+Emblematic formula in matrix notation (slightly modiﬁed)
+Attention(Q, K, V ) = softmax
+$Q↔K
+⇔m
+%
+V
+⇒Queries Q = WQX
+⇒Keys K = WKX
+⇒Values V = WV X
+what does this
+mean
+
+===== PAGE 32 =====
+26/51
+Transformer: Multiheaded
+Queries-keys match up to select relevant information. Where?
+Values are used to convexly generate new representations.
+What?
+Increase of power: Use multiple attention mechanisms, each
+with parameters WK, WQ, WV - aka multi-headed attention
+Simply concatenate all per attention token representations
+⇒if WV projects down by a factor h, then h ‘heads’
+preserve dimensionality
+
+===== PAGE 33 =====
+27/51
+Feedforward Network
+Transformers also employ a FFN, which is applied point-wise
+(i.e. per token representation).
+Note: values are linearly/convexly combined, need
+non-linearity in the token transformation.
+Typically: FFN is combined with residual branch.
+
+===== PAGE 34 =====
+28/51
+Layer Norm
+Transformers make use of layer normalization.
+Let x be an m-vector, then
+x↔= ϖ
+$x ↑µ
+ϑ
+%
++ ϱ,
+µ ↖1
+m
+m
+"
+i=1
+xi,
+ϑ2 ↖1
+m
+m
+"
+i=1
+(xi ↑µ)2
+where ϖ, ϱ are (new) parameters.
+⇒applied to balance activation magnitudes across tokens
+and dimensions
+⇒normalization can be performed pre- or
+post-transformation
+noworiginal
+
+===== PAGE 35 =====
+29/51
+Masking
+Coming back to autoregressive models ...
+Attention can be applied masked, i.e. to be causal
+(left-to-right)
+⇒GPT-style training
+Subset of tokens can be masked and predicted
+⇒BERT-style training
+
+===== PAGE 36 =====
+30/51
+Autoregressive Models: Recap
+What we have seen:
+↭Factorize p(x; ω) exactly via the chain rule
+↭DNNs (CNNs, RNNs, Transformers) parameterize the
+conditionals p(xt | x<t; ω)
+↭Training is e!cient and parallelizable
+↭MLE directly optimizes the exact log-likelihood
+
+===== PAGE 37 =====
+30/51
+Autoregressive Models: Recap
+What we have seen:
+↭Factorize p(x; ω) exactly via the chain rule
+↭DNNs (CNNs, RNNs, Transformers) parameterize the
+conditionals p(xt | x<t; ω)
+↭Training is e!cient and parallelizable
+↭MLE directly optimizes the exact log-likelihood
+Limitations:
+↭Generation is sequential and slow
+↭No compact latent representation of the data
+↭No natural way to interpolate or control factors of
+variation
+
+===== PAGE 38 =====
+30/51
+Autoregressive Models: Recap
+What we have seen:
+↭Factorize p(x; ω) exactly via the chain rule
+↭DNNs (CNNs, RNNs, Transformers) parameterize the
+conditionals p(xt | x<t; ω)
+↭Training is e!cient and parallelizable
+↭MLE directly optimizes the exact log-likelihood
+Limitations:
+↭Generation is sequential and slow
+↭No compact latent representation of the data
+↭No natural way to interpolate or control factors of
+variation
+Can we learn a structured latent space while staying
+principled about the likelihood?
+
+===== PAGE 39 =====
+31/51
+Section 3
+Generative Models
+Variational Autoencoders
+
+===== PAGE 40 =====
+32/51
+(Deep) Latent Variable Models
+Marginal Likelihood:
+pω(x) =
+&
+pω(x, z) dz =
+&
+pω(z) · pω(x|z)dz
+where:
+↭pω(z): prior distribution over latent variables
+↭pω(x|z): conditional distribution of observations given
+latents
+Key Advantages:
+↭Simple factors (e.g., conditional Gaussian) can yield
+complex marginal pω(x)
+
+===== PAGE 41 =====
+33/51
+Intractabilities
+Main Challenge: Marginal likelihood pω(x) =
+'
+pω(x, z) dz
+and posterior distribution pω(z|x) are typically intractable
+Solutions: Introduce a parametric inference model to
+approximate the intractable posterior.
+qε(z|x) ↙pω(z|x)
+(1)
+↭qε(z|x) is typically called the encoder.
+↭qε can be parameterized again by a neural network.
+(µ, log ϑ) = EncoderNeuralNetε(x)
+(2)
+qε(z|x) = N(z; µ, diag(ϑ))
+(3)
+
+===== PAGE 42 =====
+34/51
+Variational Autoencoder (VAE) as AE
+(Autoencoder)
+x
+Encoder
+parameters φ
+q φ(z | x)
+σ
+μ
+Sample
+z
+Decoder
+parameters θ
+p θ(x | z)
+x̂
+
+===== PAGE 43 =====
+35/51
+Variational Autoencoders
+Image credit: An Introduction to Variational Autoencoders, Kingma et al. (2019)
+
+===== PAGE 44 =====
+36/51
+Evidence Lower BOund (ELBO)
+Q: How can we optimize pω(x)?
+
+===== PAGE 45 =====
+36/51
+Evidence Lower BOund (ELBO)
+Q: How can we optimize pω(x)?
+log pω(x) = Eqω(z|x)[log pω(x)]
+= Eqω(z|x)
+(
+log pω(x, z)
+pω(z|x)
+)
+= Eqω(z|x)
+(
+log pω(x, z)
+qε(z|x) · qε(z|x)
+pω(z|x)
+)
+= Eqω(z|x)
+(
+log pω(x, z)
+qε(z|x)
+)
++ Eqω(z|x)
+(
+log qε(z|x)
+pω(z|x)
+)
+∝Eqω(z|x)
+(
+log pω(x, z)
+qε(z|x)
+)
+= Eqω(z|x) [log pω(x, z) ↑log qε(z|x)] := Lω,ε(x)
+
+===== PAGE 46 =====
+37/51
+ELBO: Reconstruction + Regularization
+Q: What does the ELBO actually optimize?
+
+===== PAGE 47 =====
+37/51
+ELBO: Reconstruction + Regularization
+Q: What does the ELBO actually optimize?
+Use pω(x, z) = pω(x|z) p(z) to rewrite Lω,ε(x):
+Lω,ε(x) = Eqω(z|x) [log pω(x, z) ↑log qε(z|x)]
+= Eqω(z|x) [log pω(x|z) + log pω(z) ↑log qε(z|x)]
+= Eqω(z|x) [log pω(x|z)]
+*
++,
+-
+reconstruction
+↑Eqω(z|x)
+(
+log qε(z|x)
+pω(z)
+)
+*
++,
+-
+KL(qω(z|x) ↗p(z))
+
+===== PAGE 48 =====
+37/51
+ELBO: Reconstruction + Regularization
+Q: What does the ELBO actually optimize?
+Use pω(x, z) = pω(x|z) p(z) to rewrite Lω,ε(x):
+Lω,ε(x) = Eqω(z|x) [log pω(x, z) ↑log qε(z|x)]
+= Eqω(z|x) [log pω(x|z) + log pω(z) ↑log qε(z|x)]
+= Eqω(z|x) [log pω(x|z)]
+*
++,
+-
+reconstruction
+↑Eqω(z|x)
+(
+log qε(z|x)
+pω(z)
+)
+*
++,
+-
+KL(qω(z|x) ↗p(z))
+↭Reconstruction term: how well does the decoder
+recover x from z ↔qε(z|x)?
+↭KL term: how close is the encoder’s distribution to the
+prior pω(z)?
+⇒acts as a regularizer on the latent space
+
+===== PAGE 49 =====
+38/51
+Stochastic Gradient-Based Optimization of
+the ELBO
+Q: How do we compute gradients with respect to ω?
+
+===== PAGE 50 =====
+38/51
+Stochastic Gradient-Based Optimization of
+the ELBO
+Q: How do we compute gradients with respect to ω?
+′ωLω,ε(x) = ′ωEqω(z|x)[log pω(x, z) ↑log qε(z|x)]
+= Eqω(z|x)[′ω(log pω(x, z) ↑log qε(z|x))]
+∞′ω(log pω(x, z) ↑log qε(z|x)), with z ↔qε(z|x)
+= ′ω(log pω(x, z))
+cansnap asnotdependent on
+theta
+month
+cart
+Asand
+doesnt
+depend on
+theta
+losp
+theta
+left
+xz
+right
+log
+p
+theta
+left
+z
+right
+
+===== PAGE 51 =====
+39/51
+Reparameterization Trick: The Problem
+Q: How do we compute gradients with respect to ς?
+
+===== PAGE 52 =====
+39/51
+Reparameterization Trick: The Problem
+Q: How do we compute gradients with respect to ς?
+We need:
+′ε Eqω(z|x)[f(z)]
+Problem: the distribution qε(z|x) itself depends on ς.
+⇒cannot move ′ε inside the expectation
+⇒cannot backpropagate through a stochastic sampling step
+x
+Encoder ς
+µ, ϑ
+sample z
+Decoder ω
+ˆx
+→
+gradient blocked
+f
+log
+p
+theta
+left
+xz
+right
+log
+q
+phi
+left
+zy
+right
+
+===== PAGE 53 =====
+40/51
+Reparameterization Trick: The Idea
+Key idea: rewrite the sample as a deterministic function of
+ς and external noise ε.
+For a Gaussian encoder qε(z|x) = N(µε(x), ϑ2
+ε(x)):
+z = g(ε, ς, x) = µε(x) + ϑε(x) ∈ε,
+ε ↔N(0, I)
+⇒randomness is isolated in ε (no parameters)
+⇒z becomes a di”erentiable function of ς
+x
+Encoder ς
+µ, ϑ
+z = µ + ϑ ∈ε
+Decoder ω
+ˆx
+ε
+↘N(0, I)
+′ω ﬂows freely
+this is rly
+good
+visual
+
+===== PAGE 54 =====
+41/51
+Reparameterization Trick: Why It Works
+Rewriting the expectation with the change of variables
+z = g(ε, ς, x):
+Eqω(z|x)[f(z)] = Ep(ϑ)[f(g(ε, ς, x))]
+The distribution p(ε) does not depend on ς
+⇒′ε and E commute
+isolate the randomness
+
+===== PAGE 55 =====
+41/51
+Reparameterization Trick: Why It Works
+Rewriting the expectation with the change of variables
+z = g(ε, ς, x):
+Eqω(z|x)[f(z)] = Ep(ϑ)[f(g(ε, ς, x))]
+The distribution p(ε) does not depend on ς
+⇒′ε and E commute
+′ε Eqω(z|x)[f(z)] = ′ε Ep(ϑ)[f(g(ε, ς, x))]
+= Ep(ϑ)[′ε f(g(ε, ς, x))]
+∞′ε f(g(ε, ς, x)),
+with ε ↔p(ε)
+⇒simple Monte Carlo estimate, single sample of ε per step
+⇒same trick appears in normalizing ﬂows, di”usion
+models, stochastic policy gradients
+dont
+depend
+oneach
+other
+
+===== PAGE 56 =====
+42/51
+VAE Learning: Putting It Together
+Two sets of parameters, two gradient paths:
+Generative model (ω, decoder):
+gradient ﬂows directly
+through log pω(x|z); z is treated as a ﬁxed sample from qε.
+′ω L = Eqω[′ω log pω(x|z)] ∞′ω log pω(x|z),
+z ↔qε(z|x)
+Inference model (ς, encoder): reparameterize z = µε(x)+
+ϑε(x) ∈ε so the gradient passes through a deterministic
+path.
+′ε L ∞′ε log pω(x|z) ↑′εDKL(qε∋p),
+ε ↔N(0, I)
+Both updates run jointly via SGD / Adam on minibatches, with
+one noise sample ω per data point per step.
+
+===== PAGE 57 =====
+43/51
+From Pixels to Concepts: What Does z
+Represent?
+Q: We trained a VAE – but what has it actually learned?
+
+===== PAGE 58 =====
+43/51
+From Pixels to Concepts: What Does z
+Represent?
+Q: We trained a VAE – but what has it actually learned?
+The encoder compresses each high-dimensional image into a
+low-dimensional code:
+x ↘RH↓W↓3
+qω
+↑↑↓
+z ↘Rd,
+d △HWC
+Recall the ELBO trade-o”:
+⇒Reconstruction term forces z to retain information
+about x
+⇒KL term pulls z toward the smooth prior N(0, I)
+Consequence: z cannot store pixel-level detail – it must
+capture the underlying factors that explain the data.
+
+===== PAGE 59 =====
+44/51
+Factors of Variation
+Idea: real-world data is generated by a small number of
+underlying causes.
+For faces, a few independent factors explain most of the
+variation:
+rotation
+expression
+hair
+· · ·
+image x
+Goal: recover these latent factors from raw data, without
+supervision.
+What we hope to see in a trained VAE:
+⇒each dimension of z captures one independent factor
+⇒moving along one axis changes one attribute, leaves
+others ﬁxed
+
+===== PAGE 60 =====
+45/51
+Disentanglement
+Disentangled representation: di”erent dimensions of z
+encode di”erent, independent factors.
+Entangled
+z1
+z2
+rotation + smile
+hair + age
+Disentangled
+z1
+z2
+rotation
+smile
+How would we test this?
+⇒ﬁx a point z in latent space (a speciﬁc face)
+⇒vary one coordinate zi while holding the others ﬁxed
+⇒decode and observe: does a single attribute change?
+Vanilla VAEs do not guarantee disentanglement; variants like ε-VAE
+explicitly encourage it.
+nothing
+Jarenters
+thisSame
+as
+in
+AMLcloser
+to
+prier ale
+all
+uncorrelatedheight
+something in loss
+to decuoraleted
+
+===== PAGE 61 =====
+46/51
+Generation and Factors of Variation
+Image credit: ε-VAE: Learning Basic Visual Concepts with a Constrained Variational Framework, Higgins et al.
+(2017)
+chagdim
+
+===== PAGE 62 =====
+47/51
+Generation and Factors of Variation
+Image credit: ε-VAE: Learning Basic Visual Concepts with a Constrained Variational Framework, Higgins et al.
+(2017)
+
+===== PAGE 63 =====
+48/51
+Generation and Factors of Variation
+Image credit: ε-VAE: Learning Basic Visual Concepts with a Constrained Variational Framework, Higgins et al.
+(2017)
+
+===== PAGE 64 =====
+49/51
+VAE: Take Home Message
+What VAEs give us
+⇒Principled likelihood-based training via the ELBO
+⇒A structured latent space: smooth interpolation,
+arithmetic
+⇒Latent dimensions can capture interpretable factors
+(rotation, smile, hair)
+
+===== PAGE 65 =====
+49/51
+VAE: Take Home Message
+What VAEs give us
+⇒Principled likelihood-based training via the ELBO
+⇒A structured latent space: smooth interpolation,
+arithmetic
+⇒Latent dimensions can capture interpretable factors
+(rotation, smile, hair)
+What’s still open
+⇒Samples are often blurry; Gaussian decoder averages
+over modes
+⇒Disentanglement is not guaranteed; needs ϱ-VAE or
+stronger priors
+⇒ELBO is only a lower bound; gap between bound
+and true likelihood
+Extensions: ε-VAE (disentanglement), VQ-VAE (discrete latents),
+hierarchical VAEs, normalizing-ﬂow priors.
+
+===== PAGE 66 =====
+50/51
+Lecture Summary
+Autoregressive models – factor p(x;ω) exactly via the
+chain rule
+⇒DNN parameterizes each p(xt | x<t;ω)
+⇒PixelCNN, GPT – masked convolution / self-attention
+⇒Training: parallel, exact MLE. Generation: sequential.
+Variational autoencoders – latent z, optimize the ELBO
+⇒Encoder qε(z|x) approximates intractable pω(z|x)
+⇒Reparameterization: gradients through sampling
+⇒Structured latent: interpolation, factors of variation
+Trade-o”: AR – exact likelihood, no latent. VAE – structured latent,
+only a lower bound.
+
+===== PAGE 67 =====
+51/51
+Self-Check Questions
+Q: What is mode collapse, and how does it di”er from
+generating incorrect data?
+Q: What is the trade-o” when imposing a k-th order Markov
+assumption on an autoregressive model?
+Q: How does masking work in PixelCNN, and why is it crucial
+for valid autoregressive generation?
+Q: Why is training an autoregressive model parallelizable
+while generation is inherently sequential?
+Q: What are the roles of query, key, and value in an attention
+block?
+Q: How is the ELBO derived, and what do its two terms
+represent intuitively?
+Q: Why can’t we directly compute ′εEqω(z|x)[f(z)], and how
+does the reparameterization trick ﬁx this?

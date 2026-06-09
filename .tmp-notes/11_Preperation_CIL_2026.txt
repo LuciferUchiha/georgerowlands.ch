@@ -1,0 +1,2280 @@
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Week 11 - Preparation Session
+Gent Seriﬁ
+ETH Zurich – cil.inf.ethz.ch
+28 May 2026
+1/63
+
+===== PAGE 2 =====
+2/63
+Overview
+↭Generative Modeling
+↭Generative Adversarial Networks
+↭Di!usion Models
+↭Denoising (variational) view
+↭SDE / ODE (continuous-time) view
+↭Flow Matching
+
+===== PAGE 3 =====
+3/63
+Section 1
+Generative Modeling
+
+===== PAGE 4 =====
+4/63
+Generative Modeling
+↭Generative modeling refers to any model that takes a training
+set, which consists of samples drawn from a distribution pdata
+and learns to represent an estimation of that distribution
+somehow. The result is a probability distribution pmodel.
+
+===== PAGE 5 =====
+4/63
+Generative Modeling
+↭Generative modeling refers to any model that takes a training
+set, which consists of samples drawn from a distribution pdata
+and learns to represent an estimation of that distribution
+somehow. The result is a probability distribution pmodel.
+↭The di!erence in the generation of pmodel creates the
+taxonomy for generative models.
+
+===== PAGE 6 =====
+5/63
+Taxonomy of Generative Models
+Figure: Taxonomy of Generative Models
+diffussion
+
+===== PAGE 7 =====
+6/63
+Taxonomy of Generative Models
+↭On the left side of the taxonomy, models construct an explicit
+density pmodel(x; ω) and thus an explicit likelihood which can
+be maximized.
+
+===== PAGE 8 =====
+6/63
+Taxonomy of Generative Models
+↭On the left side of the taxonomy, models construct an explicit
+density pmodel(x; ω) and thus an explicit likelihood which can
+be maximized.
+↭Among these explicit densities some might be tractable and
+other require approximations.
+
+===== PAGE 9 =====
+6/63
+Taxonomy of Generative Models
+↭On the left side of the taxonomy, models construct an explicit
+density pmodel(x; ω) and thus an explicit likelihood which can
+be maximized.
+↭Among these explicit densities some might be tractable and
+other require approximations.
+↭On the right side of the taxonomy, the model does not
+explicitly represent a probability distribution over the space
+where the data lies. Instead, the model provides some way of
+interacting less directly with this probability distribution.
+
+===== PAGE 10 =====
+7/63
+Section 2
+Generative Adversarial Networks
+
+===== PAGE 11 =====
+8/63
+GANs
+↭GANs are implicit generative models, meaning that they
+enable us to create likelihood-free objectives.
+
+===== PAGE 12 =====
+8/63
+GANs
+↭GANs are implicit generative models, meaning that they
+enable us to create likelihood-free objectives.
+↭Although GANs can produce high quality samples, their
+training requires ﬁnding the Nash equilibrium of a game,
+which can be more di”cult than optimizing an objective
+function.
+
+===== PAGE 13 =====
+9/63
+GAN Framework
+↭The basic idea of GANs is to set up a game between two
+players. One of them is called the generator. The generator
+creates samples that are intended to come from the same
+distribution as the training data. The other player is the
+discriminator. The discriminator examines samples to
+determine whether they are real or fake.
+
+===== PAGE 14 =====
+9/63
+GAN Framework
+↭The basic idea of GANs is to set up a game between two
+players. One of them is called the generator. The generator
+creates samples that are intended to come from the same
+distribution as the training data. The other player is the
+discriminator. The discriminator examines samples to
+determine whether they are real or fake.
+↭The generator is trained to fool the discriminator.
+
+===== PAGE 15 =====
+9/63
+GAN Framework
+↭The basic idea of GANs is to set up a game between two
+players. One of them is called the generator. The generator
+creates samples that are intended to come from the same
+distribution as the training data. The other player is the
+discriminator. The discriminator examines samples to
+determine whether they are real or fake.
+↭The generator is trained to fool the discriminator.
+↭
+Figure: GAN Framework
+
+===== PAGE 16 =====
+10/63
+GAN Framework
+↭The generator is simply a di!erentiable function G. When z is
+sampled from some simple prior distribution, G(z) yields a
+sample of x drawn from pmodel. Typically, a deep neural
+network is used to represent G.
+
+===== PAGE 17 =====
+10/63
+GAN Framework
+↭The generator is simply a di!erentiable function G. When z is
+sampled from some simple prior distribution, G(z) yields a
+sample of x drawn from pmodel. Typically, a deep neural
+network is used to represent G.
+↭The discriminator D is trained to output a probability.
+
+===== PAGE 18 =====
+10/63
+GAN Framework
+↭The generator is simply a di!erentiable function G. When z is
+sampled from some simple prior distribution, G(z) yields a
+sample of x drawn from pmodel. Typically, a deep neural
+network is used to represent G.
+↭The discriminator D is trained to output a probability.
+↭0 = Fake, 1 = Real
+
+===== PAGE 19 =====
+10/63
+GAN Framework
+↭The generator is simply a di!erentiable function G. When z is
+sampled from some simple prior distribution, G(z) yields a
+sample of x drawn from pmodel. Typically, a deep neural
+network is used to represent G.
+↭The discriminator D is trained to output a probability.
+↭0 = Fake, 1 = Real
+↭The discriminator strives to make D(G(z)) approach 0 while
+the generator strives to make the same quantity approach 1.
+If both models have su”cient capacity, then the Nash
+equilibrium of this game corresponds to G(z) being drawn
+from the same distribution as the training data, and D(x) = 1
+2
+for all x.
+
+===== PAGE 20 =====
+11/63
+Deriving the GAN Objective
+↭Deﬁne the value function of the game:
+V (G, D) = Ex→pdata[log D(x)] + Ez→pz[log(1 →D(G(z)))].
+
+===== PAGE 21 =====
+11/63
+Deriving the GAN Objective
+↭Deﬁne the value function of the game:
+V (G, D) = Ex→pdata[log D(x)] + Ez→pz[log(1 →D(G(z)))].
+↭The discriminator maximizes V (separate real from fake); the
+generator minimizes it (fool D). GAN training is therefore the
+minimax game
+G ↑, D↑= arg min
+G
+arg max
+D
+V (G, D).
+discriator
+cross entropy
+
+===== PAGE 22 =====
+11/63
+Deriving the GAN Objective
+↭Deﬁne the value function of the game:
+V (G, D) = Ex→pdata[log D(x)] + Ez→pz[log(1 →D(G(z)))].
+↭The discriminator maximizes V (separate real from fake); the
+generator minimizes it (fool D). GAN training is therefore the
+minimax game
+G ↑, D↑= arg min
+G
+arg max
+D
+V (G, D).
+↭For a ﬁxed G, the inner problem arg maxD V (G, D) is exactly
+minimizing the binary cross-entropy of the real/fake classiﬁer.
+
+===== PAGE 23 =====
+12/63
+GAN Analysis
+↭Claim 1: For any generator G, the optimal discriminator is:
+D↑=
+pdata(x)
+pdata(x) + pmodel(x)
+
+===== PAGE 24 =====
+12/63
+GAN Analysis
+↭Claim 1: For any generator G, the optimal discriminator is:
+D↑=
+pdata(x)
+pdata(x) + pmodel(x)
+↭Claim 2: Given the optimal discriminator D↑, optimizing the
+generator is equivalent to optimizing the Jensen-Shannon
+divergence of pdata and pmodel.
+DJS(p↑q) := 1
+2DKL(p↑m) + 1
+2DKL(q↑m), where m := p+q
+2 .
+jensen
+shannondivine
+
+===== PAGE 25 =====
+13/63
+GAN Analysis – Proof of Claim 1
+Proof.
+Let G be ﬁxed, and let pd and pm denote the data and model
+distribution, respectively.
+We can write:
+V (G, D) =
+!
+pd(x) log D(x) + pm(x) log(1 →D(x)) dx
+why does this work
+despite expectation
+our 2
+differentthings
+
+===== PAGE 26 =====
+13/63
+GAN Analysis – Proof of Claim 1
+Proof.
+Let G be ﬁxed, and let pd and pm denote the data and model
+distribution, respectively.
+We can write:
+V (G, D) =
+!
+pd(x) log D(x) + pm(x) log(1 →D(x)) dx
+To maximize the value of the integral, we can maximize the
+integrand wrt. D(x). This leads to the following ﬁrst-order
+optimality condition:
+ε
+εD(x) [pd(x) log D(x) + pm(x) log(1 →D(x))] != 0
+
+===== PAGE 27 =====
+14/63
+GAN Analysis – Proof of Claim 1
+Proof. (contd.)
+This yields the following equation:
+pd(x)
+D(x) →
+pm(x)
+1 →D(x) = 0
+
+===== PAGE 28 =====
+14/63
+GAN Analysis – Proof of Claim 1
+Proof. (contd.)
+This yields the following equation:
+pd(x)
+D(x) →
+pm(x)
+1 →D(x) = 0
+pd(x)
+D(x) =
+pm(x)
+1 →D(x)
+
+===== PAGE 29 =====
+14/63
+GAN Analysis – Proof of Claim 1
+Proof. (contd.)
+This yields the following equation:
+pd(x)
+D(x) →
+pm(x)
+1 →D(x) = 0
+pd(x)
+D(x) =
+pm(x)
+1 →D(x)
+pd(x)(1 →D(x)) = pm(x)D(x)
+
+===== PAGE 30 =====
+14/63
+GAN Analysis – Proof of Claim 1
+Proof. (contd.)
+This yields the following equation:
+pd(x)
+D(x) →
+pm(x)
+1 →D(x) = 0
+pd(x)
+D(x) =
+pm(x)
+1 →D(x)
+pd(x)(1 →D(x)) = pm(x)D(x)
+pd(x) = (pd(x) + pm(x))D(x)
+
+===== PAGE 31 =====
+14/63
+GAN Analysis – Proof of Claim 1
+Proof. (contd.)
+This yields the following equation:
+pd(x)
+D(x) →
+pm(x)
+1 →D(x) = 0
+pd(x)
+D(x) =
+pm(x)
+1 →D(x)
+pd(x)(1 →D(x)) = pm(x)D(x)
+pd(x) = (pd(x) + pm(x))D(x)
+pd(x)
+pd(x) + pm(x) = D(x)
+
+===== PAGE 32 =====
+14/63
+GAN Analysis – Proof of Claim 1
+Proof. (contd.)
+This yields the following equation:
+pd(x)
+D(x) →
+pm(x)
+1 →D(x) = 0
+pd(x)
+D(x) =
+pm(x)
+1 →D(x)
+pd(x)(1 →D(x)) = pm(x)D(x)
+pd(x) = (pd(x) + pm(x))D(x)
+pd(x)
+pd(x) + pm(x) = D(x)
+This concludes the proof.
+
+===== PAGE 33 =====
+15/63
+GAN Analysis – Proof of Claim 2
+Proof.
+Let D↑be ﬁxed and let q := pd+pm
+2
+. We can write V (G, D↑) as:
+!
+pd(x) log
+pd(x)
+pd(x) + pm(x) dx +
+!
+pm(x) log
+pm(x)
+pd(x) + pm(x) dx
+
+===== PAGE 34 =====
+15/63
+GAN Analysis – Proof of Claim 2
+Proof.
+Let D↑be ﬁxed and let q := pd+pm
+2
+. We can write V (G, D↑) as:
+!
+pd(x) log
+pd(x)
+pd(x) + pm(x) dx +
+!
+pm(x) log
+pm(x)
+pd(x) + pm(x) dx
+=
+!
+pd(x) log
+"1
+2
+pd(x)
+q(x)
+#
+dx +
+!
+pm(x) log
+"1
+2
+pm(x)
+q(x)
+#
+dx
+
+===== PAGE 35 =====
+15/63
+GAN Analysis – Proof of Claim 2
+Proof.
+Let D↑be ﬁxed and let q := pd+pm
+2
+. We can write V (G, D↑) as:
+!
+pd(x) log
+pd(x)
+pd(x) + pm(x) dx +
+!
+pm(x) log
+pm(x)
+pd(x) + pm(x) dx
+=
+!
+pd(x) log
+"1
+2
+pd(x)
+q(x)
+#
+dx +
+!
+pm(x) log
+"1
+2
+pm(x)
+q(x)
+#
+dx
+=
+!
+pd(x) log pd(x)
+q(x) dx +
+!
+pm(x) log pm(x)
+q(x) dx →log 4
+
+===== PAGE 36 =====
+15/63
+GAN Analysis – Proof of Claim 2
+Proof.
+Let D↑be ﬁxed and let q := pd+pm
+2
+. We can write V (G, D↑) as:
+!
+pd(x) log
+pd(x)
+pd(x) + pm(x) dx +
+!
+pm(x) log
+pm(x)
+pd(x) + pm(x) dx
+=
+!
+pd(x) log
+"1
+2
+pd(x)
+q(x)
+#
+dx +
+!
+pm(x) log
+"1
+2
+pm(x)
+q(x)
+#
+dx
+=
+!
+pd(x) log pd(x)
+q(x) dx +
+!
+pm(x) log pm(x)
+q(x) dx →log 4
+=DKL(pd↑q) + DKL(pm↑q) →log 4
+
+===== PAGE 37 =====
+15/63
+GAN Analysis – Proof of Claim 2
+Proof.
+Let D↑be ﬁxed and let q := pd+pm
+2
+. We can write V (G, D↑) as:
+!
+pd(x) log
+pd(x)
+pd(x) + pm(x) dx +
+!
+pm(x) log
+pm(x)
+pd(x) + pm(x) dx
+=
+!
+pd(x) log
+"1
+2
+pd(x)
+q(x)
+#
+dx +
+!
+pm(x) log
+"1
+2
+pm(x)
+q(x)
+#
+dx
+=
+!
+pd(x) log pd(x)
+q(x) dx +
+!
+pm(x) log pm(x)
+q(x) dx →log 4
+=DKL(pd↑q) + DKL(pm↑q) →log 4
+
+===== PAGE 38 =====
+15/63
+GAN Analysis – Proof of Claim 2
+Proof.
+Let D↑be ﬁxed and let q := pd+pm
+2
+. We can write V (G, D↑) as:
+!
+pd(x) log
+pd(x)
+pd(x) + pm(x) dx +
+!
+pm(x) log
+pm(x)
+pd(x) + pm(x) dx
+=
+!
+pd(x) log
+"1
+2
+pd(x)
+q(x)
+#
+dx +
+!
+pm(x) log
+"1
+2
+pm(x)
+q(x)
+#
+dx
+=
+!
+pd(x) log pd(x)
+q(x) dx +
+!
+pm(x) log pm(x)
+q(x) dx →log 4
+=DKL(pd↑q) + DKL(pm↑q) →log 4
+Optimizing this is equivalent to optimizing
+DJS(pd↑pm) = 1
+2DKL(pd↑q) + 1
+2DKL(pm↑q)
+why
+especially
+where this from
+
+===== PAGE 39 =====
+16/63
+GAN Training
+GANs are notoriously hard to train:
+↭Vanishing/Exploding gradients
+
+===== PAGE 40 =====
+16/63
+GAN Training
+GANs are notoriously hard to train:
+↭Vanishing/Exploding gradients
+↭Mode collapse
+discriminator too
+badgenertor
+too
+goodfew
+ator
+always
+output same ing
+then
+always
+output fala and newcovenenough
+
+===== PAGE 41 =====
+16/63
+GAN Training
+GANs are notoriously hard to train:
+↭Vanishing/Exploding gradients
+↭Mode collapse
+↭Requires lots of hyperparameter and algorithm tuning
+
+===== PAGE 42 =====
+16/63
+GAN Training
+GANs are notoriously hard to train:
+↭Vanishing/Exploding gradients
+↭Mode collapse
+↭Requires lots of hyperparameter and algorithm tuning
+↭Convergence is nearly impossible
+
+===== PAGE 43 =====
+17/63
+Section 3
+Di!usion Models
+
+===== PAGE 44 =====
+18/63
+Di!usion Models – History
+↭Foundations.
+↭2015 – Sohl-Dickstein et al.: di!usion as a forward/reverse
+Markov chain (nonequilibrium thermodynamics).
+↭2020 – Ho et al. (DDPM): simpliﬁed noise-prediction
+objective; ﬁrst high-ﬁdelity images.
+↭Continuous-time uniﬁcation (2021).
+↭Song et al. (Score SDE): SDE framework unifying DDPM &
+NCSN; probability ﬂow ODE.
+↭Song et al. (DDIM): deterministic, few-step sampling.
+↭Guidance & scaling (2021–2022).
+↭Dhariwal & Nichol: “Di!usion beats GANs”, classiﬁer
+guidance; Ho & Salimans: classiﬁer-free guidance.
+↭Rombach et al. (Latent Di!usion / Stable Di!usion): di!usion
+in a VAE latent space; scalable text-to-image.
+↭Many more papers ...
+↭Takeaway: Di!usion models were mathematically well-motivated
+and understood before they became SOTA
+coe principles
+
+===== PAGE 45 =====
+19/63
+Di!usion Models
+Di!usion models can be understood from (at least) two
+complementary perspectives:
+↭Denoising / variational view (DDPM): a discrete-time
+latent-variable model trained by maximizing an ELBO.
+
+===== PAGE 46 =====
+19/63
+Di!usion Models
+Di!usion models can be understood from (at least) two
+complementary perspectives:
+↭Denoising / variational view (DDPM): a discrete-time
+latent-variable model trained by maximizing an ELBO.
+↭SDE / ODE view (score-based): the forward and reverse
+processes seen as stochastic / ordinary di!erential equations.
+
+===== PAGE 47 =====
+19/63
+Di!usion Models
+Di!usion models can be understood from (at least) two
+complementary perspectives:
+↭Denoising / variational view (DDPM): a discrete-time
+latent-variable model trained by maximizing an ELBO.
+↭SDE / ODE view (score-based): the forward and reverse
+processes seen as stochastic / ordinary di!erential equations.
+
+===== PAGE 48 =====
+19/63
+Di!usion Models
+Di!usion models can be understood from (at least) two
+complementary perspectives:
+↭Denoising / variational view (DDPM): a discrete-time
+latent-variable model trained by maximizing an ELBO.
+↭SDE / ODE view (score-based): the forward and reverse
+processes seen as stochastic / ordinary di!erential equations.
+These two views are equivalent: the DDPM training objective is a
+discretization of the (continuous-time) score-matching objective.
+We treat them in turn.
+
+===== PAGE 49 =====
+20/63
+Di!usion Models (Denoising View)
+↭Let x0 denote a sample from our data distribution
+
+===== PAGE 50 =====
+20/63
+Di!usion Models (Denoising View)
+↭Let x0 denote a sample from our data distribution
+↭We construct a sequence x0, x1, . . . , xT of increasingly
+perturbed samples by adding Gaussian noise. This is done
+such that xT ↓N(0, I). In other words, we smoothly
+interpolate between the data sample and random noise.
+
+===== PAGE 51 =====
+20/63
+Di!usion Models (Denoising View)
+↭Let x0 denote a sample from our data distribution
+↭We construct a sequence x0, x1, . . . , xT of increasingly
+perturbed samples by adding Gaussian noise. This is done
+such that xT ↓N(0, I). In other words, we smoothly
+interpolate between the data sample and random noise.
+↭More formally, we deﬁne an iteration:
+xt =
+$
+1 →ϑt · xt↓1 +
+$
+ϑt · ωt↓1
+where ωt↓1 ↓N(0, I)
+With ϑt ↔[0, 1] and ϑT = 1.
+
+===== PAGE 52 =====
+20/63
+Di!usion Models (Denoising View)
+↭Let x0 denote a sample from our data distribution
+↭We construct a sequence x0, x1, . . . , xT of increasingly
+perturbed samples by adding Gaussian noise. This is done
+such that xT ↓N(0, I). In other words, we smoothly
+interpolate between the data sample and random noise.
+↭More formally, we deﬁne an iteration:
+xt =
+$
+1 →ϑt · xt↓1 +
+$
+ϑt · ωt↓1
+where ωt↓1 ↓N(0, I)
+With ϑt ↔[0, 1] and ϑT = 1.
+↭This results in the following forward distribution:
+q(xt | xt↓1) = N(xt;
+$
+1 →ϑt · xt↓1, ϑt · I),
+
+===== PAGE 53 =====
+21/63
+Di!usion Models (Denoising View)
+Figure: Di!usion Process
+
+===== PAGE 54 =====
+22/63
+Di!usion Models (Denoising View)
+xt =
+$
+1 →ϑt · xt↓1 +
+$
+ϑt · ωt↓1
+where ωt↓1 ↓N(0, I)
+
+===== PAGE 55 =====
+22/63
+Di!usion Models (Denoising View)
+xt =
+$
+1 →ϑt · xt↓1 +
+$
+ϑt · ωt↓1
+where ωt↓1 ↓N(0, I)
+It turns out that we can compute any xt directly from x0.
+
+===== PAGE 56 =====
+22/63
+Di!usion Models (Denoising View)
+xt =
+$
+1 →ϑt · xt↓1 +
+$
+ϑt · ωt↓1
+where ωt↓1 ↓N(0, I)
+It turns out that we can compute any xt directly from x0.
+Let ϖt := 1 →ϑt and ¯ϖt = %t
+i=1 ϖi, then:
+xt = ↗¯ϖt · x0 +
+↗
+1 →¯ϖt · ω
+
+===== PAGE 57 =====
+22/63
+Di!usion Models (Denoising View)
+xt =
+$
+1 →ϑt · xt↓1 +
+$
+ϑt · ωt↓1
+where ωt↓1 ↓N(0, I)
+It turns out that we can compute any xt directly from x0.
+Let ϖt := 1 →ϑt and ¯ϖt = %t
+i=1 ϖi, then:
+xt = ↗¯ϖt · x0 +
+↗
+1 →¯ϖt · ω
+Prove this!
+
+===== PAGE 58 =====
+23/63
+Di!usion Models (Denoising View)
+Denoising can be seen as sampling from q(xt↓1 | xt). In particular,
+we can generate data samples using:
+q(x0) =
+!
+q(x0:T) dx1:T
+where
+q(x0:T) = q(xT)
+T
+&
+t=1
+q(xt↓1 | xt)
+
+===== PAGE 59 =====
+23/63
+Di!usion Models (Denoising View)
+Denoising can be seen as sampling from q(xt↓1 | xt). In particular,
+we can generate data samples using:
+q(x0) =
+!
+q(x0:T) dx1:T
+where
+q(x0:T) = q(xT)
+T
+&
+t=1
+q(xt↓1 | xt)
+Intuitively, x1:T corresponds to the latent z in VAEs!
+
+===== PAGE 60 =====
+23/63
+Di!usion Models (Denoising View)
+Denoising can be seen as sampling from q(xt↓1 | xt). In particular,
+we can generate data samples using:
+q(x0) =
+!
+q(x0:T) dx1:T
+where
+q(x0:T) = q(xT)
+T
+&
+t=1
+q(xt↓1 | xt)
+Intuitively, x1:T corresponds to the latent z in VAEs!
+Unfortunately, q(xt↓1 | xt) is hard to compute (requires knowledge
+of q(x0), which is what we’re trying to ﬁnd in the ﬁrst place).
+
+===== PAGE 61 =====
+24/63
+Di!usion Models (Denoising View)
+Solution: approximate with pω(xt↓1 | xt) ↘q(xt↓1 | xt)
+
+===== PAGE 62 =====
+24/63
+Di!usion Models (Denoising View)
+Solution: approximate with pω(xt↓1 | xt) ↘q(xt↓1 | xt)
+More speciﬁcally: pω(xt↓1 | xt) := N(µω(xt, t), ϑtI)
+it can be shown
+that decores gaussian
+
+===== PAGE 63 =====
+24/63
+Di!usion Models (Denoising View)
+Solution: approximate with pω(xt↓1 | xt) ↘q(xt↓1 | xt)
+More speciﬁcally: pω(xt↓1 | xt) := N(µω(xt, t), ϑtI)
+To train this, we maximize the likelihood of the data under pω.
+The model deﬁnes a joint
+pω(x0:T) = p(xT)
+T
+&
+t=1
+pω(xt↓1 | xt),
+and the data likelihood is the marginal pω(x0) =
+'
+pω(x0:T) dx1:T.
+
+===== PAGE 64 =====
+25/63
+Di!usion Models (Denoising View)
+Recall, the variational lower bound (ELBO) for VAEs is:
+log p(x) ≃Ez→q(·|x)
+(
+log p(x, z)
+q(z | x)
+)
+
+===== PAGE 65 =====
+25/63
+Di!usion Models (Denoising View)
+Recall, the variational lower bound (ELBO) for VAEs is:
+log p(x) ≃Ez→q(·|x)
+(
+log p(x, z)
+q(z | x)
+)
+By replacing z with x1:T, we get the ELBO for Di!usion Models:
+log pω(x0) ≃Ex1:T →q(·|x0)
+(
+log
+pω(x0:T)
+q(x1:T | x0)
+)
+
+===== PAGE 66 =====
+25/63
+Di!usion Models (Denoising View)
+Recall, the variational lower bound (ELBO) for VAEs is:
+log p(x) ≃Ez→q(·|x)
+(
+log p(x, z)
+q(z | x)
+)
+By replacing z with x1:T, we get the ELBO for Di!usion Models:
+log pω(x0) ≃Ex1:T →q(·|x0)
+(
+log
+pω(x0:T)
+q(x1:T | x0)
+)
+Note that q(x1:T | x0) is simply our forward process that is easy to
+compute.
+and with
+Xoconditioningon
+this
+melastractable
+
+===== PAGE 67 =====
+26/63
+Di!usion Models (Denoising View)
+By rewriting and simplifying the objective, we obtain:
+Lsimple = Et→Unif([1,T]),ω→N(0,I),x0[↑ω →ωω(xt(x0, ω), t)↑2]
+
+===== PAGE 68 =====
+26/63
+Di!usion Models (Denoising View)
+By rewriting and simplifying the objective, we obtain:
+Lsimple = Et→Unif([1,T]),ω→N(0,I),x0[↑ω →ωω(xt(x0, ω), t)↑2]
+Where we reparameterized the model’s prediction as:
+µω(xt, t) =
+1
+↗ϖt
+"
+xt →1 →ϖt
+↗1 →¯ϖt
+ωω(xt, t)
+#
+predict
+noise rather
+then
+rear
+
+===== PAGE 69 =====
+26/63
+Di!usion Models (Denoising View)
+By rewriting and simplifying the objective, we obtain:
+Lsimple = Et→Unif([1,T]),ω→N(0,I),x0[↑ω →ωω(xt(x0, ω), t)↑2]
+Where we reparameterized the model’s prediction as:
+µω(xt, t) =
+1
+↗ϖt
+"
+xt →1 →ϖt
+↗1 →¯ϖt
+ωω(xt, t)
+#
+Refer to DDPM [Ho et al. 2020] for the full derivation.
+
+===== PAGE 70 =====
+27/63
+Di!usion Models (Denoising View)
+Figure: Di!usion Algorithm
+
+===== PAGE 71 =====
+28/63
+Di!usion Models (Denoising View)
+Figure: Denoising Process
+
+===== PAGE 72 =====
+29/63
+Di!usion Models (Denoising View) – Comments
+↭The forward process is a Markov chain; the reverse process is
+its time-reversal.
+
+===== PAGE 73 =====
+29/63
+Di!usion Models (Denoising View) – Comments
+↭The forward process is a Markov chain; the reverse process is
+its time-reversal.
+↭The reverse conditional q(xt↓1 | xt) is intractable, but
+conditioning on x0 makes it tractable: by the Markov property
+q(xt | xt↓1) = q(xt | xt↓1, x0), and Bayes’ rule then gives a
+Gaussian
+
+===== PAGE 74 =====
+29/63
+Di!usion Models (Denoising View) – Comments
+↭The forward process is a Markov chain; the reverse process is
+its time-reversal.
+↭The reverse conditional q(xt↓1 | xt) is intractable, but
+conditioning on x0 makes it tractable: by the Markov property
+q(xt | xt↓1) = q(xt | xt↓1, x0), and Bayes’ rule then gives a
+Gaussian
+
+===== PAGE 75 =====
+29/63
+Di!usion Models (Denoising View) – Comments
+↭The forward process is a Markov chain; the reverse process is
+its time-reversal.
+↭The reverse conditional q(xt↓1 | xt) is intractable, but
+conditioning on x0 makes it tractable: by the Markov property
+q(xt | xt↓1) = q(xt | xt↓1, x0), and Bayes’ rule then gives a
+Gaussian
+q(xt↓1 | xt, x0) = N
+*
+xt↓1; ˜µt(xt, x0), ˜ϑtI
++
+,
+˜µt =
+↗¯ϖt↓1 ϑt
+1 →¯ϖt
+x0 +
+↗ϖt (1 →¯ϖt↓1)
+1 →¯ϖt
+xt,
+˜ϑt = 1 →¯ϖt↓1
+1 →¯ϖt
+ϑt.
+tractable
+without xp
+helps to calculate target
+during training
+mealnt work without markov
+
+===== PAGE 76 =====
+29/63
+Di!usion Models (Denoising View) – Comments
+↭The forward process is a Markov chain; the reverse process is
+its time-reversal.
+↭The reverse conditional q(xt↓1 | xt) is intractable, but
+conditioning on x0 makes it tractable: by the Markov property
+q(xt | xt↓1) = q(xt | xt↓1, x0), and Bayes’ rule then gives a
+Gaussian
+q(xt↓1 | xt, x0) = N
+*
+xt↓1; ˜µt(xt, x0), ˜ϑtI
++
+,
+˜µt =
+↗¯ϖt↓1 ϑt
+1 →¯ϖt
+x0 +
+↗ϖt (1 →¯ϖt↓1)
+1 →¯ϖt
+xt,
+˜ϑt = 1 →¯ϖt↓1
+1 →¯ϖt
+ϑt.
+↭This x0-conditioned posterior is exactly the regression target
+underlying the ELBO-based training objective.
+
+===== PAGE 77 =====
+30/63
+Di!usion Models (SDE/ODE View)
+From a Markov chain to an SDE.
+↭Taking the number of steps T ⇐⇒, the DDPM forward
+chain becomes the continuous-time limit of a stochastic
+di!erential equation (SDE):
+
+===== PAGE 78 =====
+30/63
+Di!usion Models (SDE/ODE View)
+From a Markov chain to an SDE.
+↭Taking the number of steps T ⇐⇒, the DDPM forward
+chain becomes the continuous-time limit of a stochastic
+di!erential equation (SDE):
+dx(t) = f(x(t), t)
+,
+-.
+/
+Drift
+dt + g(t)
+,-./
+Di!usion
+dW(t)
+
+===== PAGE 79 =====
+30/63
+Di!usion Models (SDE/ODE View)
+From a Markov chain to an SDE.
+↭Taking the number of steps T ⇐⇒, the DDPM forward
+chain becomes the continuous-time limit of a stochastic
+di!erential equation (SDE):
+dx(t) = f(x(t), t)
+,
+-.
+/
+Drift
+dt + g(t)
+,-./
+Di!usion
+dW(t)
+↭W is a standard Wiener process (next slide)
+
+===== PAGE 80 =====
+30/63
+Di!usion Models (SDE/ODE View)
+From a Markov chain to an SDE.
+↭Taking the number of steps T ⇐⇒, the DDPM forward
+chain becomes the continuous-time limit of a stochastic
+di!erential equation (SDE):
+dx(t) = f(x(t), t)
+,
+-.
+/
+Drift
+dt + g(t)
+,-./
+Di!usion
+dW(t)
+↭W is a standard Wiener process (next slide)
+↭x(0) ↓pdata
+
+===== PAGE 81 =====
+30/63
+Di!usion Models (SDE/ODE View)
+From a Markov chain to an SDE.
+↭Taking the number of steps T ⇐⇒, the DDPM forward
+chain becomes the continuous-time limit of a stochastic
+di!erential equation (SDE):
+dx(t) = f(x(t), t)
+,
+-.
+/
+Drift
+dt + g(t)
+,-./
+Di!usion
+dW(t)
+↭W is a standard Wiener process (next slide)
+↭x(0) ↓pdata
+↭x(T) ↓pnoise
+
+===== PAGE 82 =====
+30/63
+Di!usion Models (SDE/ODE View)
+From a Markov chain to an SDE.
+↭Taking the number of steps T ⇐⇒, the DDPM forward
+chain becomes the continuous-time limit of a stochastic
+di!erential equation (SDE):
+dx(t) = f(x(t), t)
+,
+-.
+/
+Drift
+dt + g(t)
+,-./
+Di!usion
+dW(t)
+↭W is a standard Wiener process (next slide)
+↭x(0) ↓pdata
+↭x(T) ↓pnoise
+↭Choices of f and g depend on what properties we want.
+Variance Preserving (recovers DDPM):
+dx(t) = →1
+2ϑ(t) x(t) dt +
+$
+ϑ(t) dW(t)
+
+===== PAGE 83 =====
+31/63
+Wiener Process / Brownian Motion
+A Wiener Process W(t) is a stochastic process characterized by
+the following properties:
+↭W(0) = 0 a.s.
+almost surely
+
+===== PAGE 84 =====
+31/63
+Wiener Process / Brownian Motion
+A Wiener Process W(t) is a stochastic process characterized by
+the following properties:
+↭W(0) = 0 a.s.
+↭⇑t > 0, s < t, u ≃0 . W(t + u) →W(t) ⇓⇓W(s)
+markov styleproperty
+
+===== PAGE 85 =====
+31/63
+Wiener Process / Brownian Motion
+A Wiener Process W(t) is a stochastic process characterized by
+the following properties:
+↭W(0) = 0 a.s.
+↭⇑t > 0, s < t, u ≃0 . W(t + u) →W(t) ⇓⇓W(s)
+↭⇑u, t ≃0 . W(t + u) →W(t) ↓N(0, u)
+residual is independent et
+previousresidual
+is normal distributed
+similar
+to
+gaussian
+processes
+
+===== PAGE 86 =====
+31/63
+Wiener Process / Brownian Motion
+A Wiener Process W(t) is a stochastic process characterized by
+the following properties:
+↭W(0) = 0 a.s.
+↭⇑t > 0, s < t, u ≃0 . W(t + u) →W(t) ⇓⇓W(s)
+↭⇑u, t ≃0 . W(t + u) →W(t) ↓N(0, u)
+↭W(t) is a.s. continuous in t
+
+===== PAGE 87 =====
+32/63
+Wiener Process / Brownian Motion
+Figure: Brownian Motion
+
+===== PAGE 88 =====
+33/63
+Di!usion Models (SDE/ODE View)
+Generation = running the SDE backwards.
+↭Anderson (1982): every forward SDE has an associated
+reverse-time SDE,
+dx(t) =
+
+f(x(t), t) →g(t)2 ⇔x log pt(x(t))
+
+dt + g(t) d ¯W(t),
+integrated from t = T down to t = 0, where ¯W is a reverse-time
+Wiener process.
+
+===== PAGE 89 =====
+33/63
+Di!usion Models (SDE/ODE View)
+Generation = running the SDE backwards.
+↭Anderson (1982): every forward SDE has an associated
+reverse-time SDE,
+dx(t) =
+
+f(x(t), t) →g(t)2 ⇔x log pt(x(t))
+
+dt + g(t) d ¯W(t),
+integrated from t = T down to t = 0, where ¯W is a reverse-time
+Wiener process.
+↭The only unknown is the (Stein) score of the marginal pt,
+namely ⇔x log pt(x).
+rest is chosen fixed
+
+===== PAGE 90 =====
+33/63
+Di!usion Models (SDE/ODE View)
+Generation = running the SDE backwards.
+↭Anderson (1982): every forward SDE has an associated
+reverse-time SDE,
+dx(t) =
+
+f(x(t), t) →g(t)2 ⇔x log pt(x(t))
+
+dt + g(t) d ¯W(t),
+integrated from t = T down to t = 0, where ¯W is a reverse-time
+Wiener process.
+↭The only unknown is the (Stein) score of the marginal pt,
+namely ⇔x log pt(x).
+↭If we can estimate the score at every t, we can sample by
+integrating the reverse SDE from prior noise back to data.
+
+===== PAGE 91 =====
+34/63
+Di!usion Models (SDE/ODE View)
+ 
+  
+Forward SDE
+Data
+Prior
+Data
+Reverse SDE
+ 
+ 
+Figure: Di!usion SDE and Probability Flow
+
+===== PAGE 92 =====
+35/63
+Di!usion Models (SDE/ODE View)
+Learning the score. Train a network sω(x, t) ↘⇔x log pt(x) via
+denoising score matching:
+LDSM = Et, x0, xt
+
+ϱ(t) ↑sω(xt, t) →⇔xt log q(xt | x0)↑2
+.
+The conditional score is available in closed form because q(xt | x0)
+is Gaussian.
+
+===== PAGE 93 =====
+35/63
+Di!usion Models (SDE/ODE View)
+Learning the score. Train a network sω(x, t) ↘⇔x log pt(x) via
+denoising score matching:
+LDSM = Et, x0, xt
+
+ϱ(t) ↑sω(xt, t) →⇔xt log q(xt | x0)↑2
+.
+The conditional score is available in closed form because q(xt | x0)
+is Gaussian.
+Connection to the denoising view. With
+xt = ↗¯ϖt x0 + ↗1 →¯ϖt ω,
+⇔xt log q(xt | x0) = →
+ω
+↗1 →¯ϖt
+=↖
+sω(xt, t) = →ωω(xt, t)
+↗1 →¯ϖt
+.
+Scalar
+to go from
+one to the other
+
+===== PAGE 94 =====
+35/63
+Di!usion Models (SDE/ODE View)
+Learning the score. Train a network sω(x, t) ↘⇔x log pt(x) via
+denoising score matching:
+LDSM = Et, x0, xt
+
+ϱ(t) ↑sω(xt, t) →⇔xt log q(xt | x0)↑2
+.
+The conditional score is available in closed form because q(xt | x0)
+is Gaussian.
+Connection to the denoising view. With
+xt = ↗¯ϖt x0 + ↗1 →¯ϖt ω,
+⇔xt log q(xt | x0) = →
+ω
+↗1 →¯ϖt
+=↖
+sω(xt, t) = →ωω(xt, t)
+↗1 →¯ϖt
+.
+So noise prediction and score estimation are the same model, up to
+a known scaling.
+
+===== PAGE 95 =====
+36/63
+Di!usion Models (SDE/ODE View)
+The Probability Flow ODE. Every di!usion SDE admits a
+deterministic ODE with the same marginals pt for all t:
+dx(t)
+dt
+= f(x(t), t) →1
+2g(t)2 ⇔x log pt(x(t)).
+ODEuse
+less
+sample steps
+how doesthis lead
+to
+DDIMSDE
+
+===== PAGE 96 =====
+36/63
+Di!usion Models (SDE/ODE View)
+The Probability Flow ODE. Every di!usion SDE admits a
+deterministic ODE with the same marginals pt for all t:
+dx(t)
+dt
+= f(x(t), t) →1
+2g(t)2 ⇔x log pt(x(t)).
+↭Identical {pt} to the SDE, but trajectories are deterministic
+given x(T).
+
+===== PAGE 97 =====
+36/63
+Di!usion Models (SDE/ODE View)
+The Probability Flow ODE. Every di!usion SDE admits a
+deterministic ODE with the same marginals pt for all t:
+dx(t)
+dt
+= f(x(t), t) →1
+2g(t)2 ⇔x log pt(x(t)).
+↭Identical {pt} to the SDE, but trajectories are deterministic
+given x(T).
+↭Consequences:
+
+===== PAGE 98 =====
+36/63
+Di!usion Models (SDE/ODE View)
+The Probability Flow ODE. Every di!usion SDE admits a
+deterministic ODE with the same marginals pt for all t:
+dx(t)
+dt
+= f(x(t), t) →1
+2g(t)2 ⇔x log pt(x(t)).
+↭Identical {pt} to the SDE, but trajectories are deterministic
+given x(T).
+↭Consequences:
+↭exact likelihood via the instantaneous change-of-variables
+(neural-ODE) formula;
+
+===== PAGE 99 =====
+36/63
+Di!usion Models (SDE/ODE View)
+The Probability Flow ODE. Every di!usion SDE admits a
+deterministic ODE with the same marginals pt for all t:
+dx(t)
+dt
+= f(x(t), t) →1
+2g(t)2 ⇔x log pt(x(t)).
+↭Identical {pt} to the SDE, but trajectories are deterministic
+given x(T).
+↭Consequences:
+↭exact likelihood via the instantaneous change-of-variables
+(neural-ODE) formula;
+↭a deterministic, invertible encoding x0 ↙xT (a usable latent
+representation);
+
+===== PAGE 100 =====
+36/63
+Di!usion Models (SDE/ODE View)
+The Probability Flow ODE. Every di!usion SDE admits a
+deterministic ODE with the same marginals pt for all t:
+dx(t)
+dt
+= f(x(t), t) →1
+2g(t)2 ⇔x log pt(x(t)).
+↭Identical {pt} to the SDE, but trajectories are deterministic
+given x(T).
+↭Consequences:
+↭exact likelihood via the instantaneous change-of-variables
+(neural-ODE) formula;
+↭a deterministic, invertible encoding x0 ↙xT (a usable latent
+representation);
+↭fast sampling with high-order, o!-the-shelf ODE solvers.
+
+===== PAGE 101 =====
+37/63
+Di!usion Models – Conditional Generation
+↭So far, no way of controlling the generation process
+
+===== PAGE 102 =====
+37/63
+Di!usion Models – Conditional Generation
+↭So far, no way of controlling the generation process
+↭Given a dataset of cats and dogs, we’d have to train two
+separate models in order to controllably get samples from
+either class.
+
+===== PAGE 103 =====
+37/63
+Di!usion Models – Conditional Generation
+↭So far, no way of controlling the generation process
+↭Given a dataset of cats and dogs, we’d have to train two
+separate models in order to controllably get samples from
+either class.
+↭However, images of cats and dogs are very similar, so we
+could beneﬁt from training only a single model that learns a
+shared component + per-class component
+
+===== PAGE 104 =====
+38/63
+Di!usion Models – Conditional Generation
+Our goal is to generate samples from p(x | y), where y is some
+label.
+
+===== PAGE 105 =====
+38/63
+Di!usion Models – Conditional Generation
+Our goal is to generate samples from p(x | y), where y is some
+label.
+Idea. Apply Bayes’ rule to get p(x | y) ∝p(x)p(y | x), then we
+can separately learn:
+↭A generator for p(x)
+
+===== PAGE 106 =====
+38/63
+Di!usion Models – Conditional Generation
+Our goal is to generate samples from p(x | y), where y is some
+label.
+Idea. Apply Bayes’ rule to get p(x | y) ∝p(x)p(y | x), then we
+can separately learn:
+↭A generator for p(x)
+↭A classiﬁer for p(y | x)
+
+===== PAGE 107 =====
+38/63
+Di!usion Models – Conditional Generation
+Our goal is to generate samples from p(x | y), where y is some
+label.
+Idea. Apply Bayes’ rule to get p(x | y) ∝p(x)p(y | x), then we
+can separately learn:
+↭A generator for p(x)
+↭A classiﬁer for p(y | x)
+
+===== PAGE 108 =====
+38/63
+Di!usion Models – Conditional Generation
+Our goal is to generate samples from p(x | y), where y is some
+label.
+Idea. Apply Bayes’ rule to get p(x | y) ∝p(x)p(y | x), then we
+can separately learn:
+↭A generator for p(x)
+↭A classiﬁer for p(y | x)
+In order to generate samples, we need to compute the score
+function:
+⇔log p(x | y) = ⇔(log p(x) + log p(y | x) + const.)
+
+===== PAGE 109 =====
+38/63
+Di!usion Models – Conditional Generation
+Our goal is to generate samples from p(x | y), where y is some
+label.
+Idea. Apply Bayes’ rule to get p(x | y) ∝p(x)p(y | x), then we
+can separately learn:
+↭A generator for p(x)
+↭A classiﬁer for p(y | x)
+In order to generate samples, we need to compute the score
+function:
+⇔log p(x | y) = ⇔(log p(x) + log p(y | x) + const.)
+= ⇔log p(x) + ⇔log p(y | x)
+
+===== PAGE 110 =====
+38/63
+Di!usion Models – Conditional Generation
+Our goal is to generate samples from p(x | y), where y is some
+label.
+Idea. Apply Bayes’ rule to get p(x | y) ∝p(x)p(y | x), then we
+can separately learn:
+↭A generator for p(x)
+↭A classiﬁer for p(y | x)
+In order to generate samples, we need to compute the score
+function:
+⇔log p(x | y) = ⇔(log p(x) + log p(y | x) + const.)
+= ⇔log p(x) + ⇔log p(y | x)
+
+===== PAGE 111 =====
+38/63
+Di!usion Models – Conditional Generation
+Our goal is to generate samples from p(x | y), where y is some
+label.
+Idea. Apply Bayes’ rule to get p(x | y) ∝p(x)p(y | x), then we
+can separately learn:
+↭A generator for p(x)
+↭A classiﬁer for p(y | x)
+In order to generate samples, we need to compute the score
+function:
+⇔log p(x | y) = ⇔(log p(x) + log p(y | x) + const.)
+= ⇔log p(x) + ⇔log p(y | x)
+We already know ⇔log p(x) from our di!usion model, and
+⇔log p(y | x) can easily be obtained by taking an image
+classiﬁcation model.
+
+===== PAGE 112 =====
+39/63
+Di!usion Models – Classiﬁer Guidance
+This approach is referred to as Classiﬁer Guidance (CG).
+
+===== PAGE 113 =====
+39/63
+Di!usion Models – Classiﬁer Guidance
+This approach is referred to as Classiﬁer Guidance (CG).
+Main problem: Cat or Dog?
+evaluate at every
+timestep
+
+===== PAGE 114 =====
+40/63
+Di!usion Models – Classiﬁer-Free Guidance
+Clearly, we’d like to avoid re-training a classiﬁer on partially noised
+images.
+
+===== PAGE 115 =====
+40/63
+Di!usion Models – Classiﬁer-Free Guidance
+Clearly, we’d like to avoid re-training a classiﬁer on partially noised
+images.
+Idea. We can also play this game the other way around. Apply
+Bayes’ rule to get:
+p(y | x) ∝p(x | y)
+p(x)
+data funlakel
+laydatlabel
+given
+data
+
+===== PAGE 116 =====
+40/63
+Di!usion Models – Classiﬁer-Free Guidance
+Clearly, we’d like to avoid re-training a classiﬁer on partially noised
+images.
+Idea. We can also play this game the other way around. Apply
+Bayes’ rule to get:
+p(y | x) ∝p(x | y)
+p(x)
+This deﬁnes an implicit classiﬁer, and we can simply plug in the
+score into our previous formula:
+⇔log p(x | y) = ⇔log p(x) + [⇔log p(x | y) →⇔log p(x)]
+
+===== PAGE 117 =====
+40/63
+Di!usion Models – Classiﬁer-Free Guidance
+Clearly, we’d like to avoid re-training a classiﬁer on partially noised
+images.
+Idea. We can also play this game the other way around. Apply
+Bayes’ rule to get:
+p(y | x) ∝p(x | y)
+p(x)
+This deﬁnes an implicit classiﬁer, and we can simply plug in the
+score into our previous formula:
+⇔log p(x | y) = ⇔log p(x) + [⇔log p(x | y) →⇔log p(x)]
+But: this formula is trivial, so what did we gain?
+canel out
+why
+
+===== PAGE 118 =====
+41/63
+Di!usion Models – Classiﬁer-Free Guidance
+The main beneﬁt of keeping the formula in this form is that it
+allows us to control the conditioning strength:
+⇔log p(x | y) = ⇔log p(x) + wCFG [⇔log p(x | y) →⇔log p(x)]
+gating
+Leighting
+
+===== PAGE 119 =====
+41/63
+Di!usion Models – Classiﬁer-Free Guidance
+The main beneﬁt of keeping the formula in this form is that it
+allows us to control the conditioning strength:
+⇔log p(x | y) = ⇔log p(x) + wCFG [⇔log p(x | y) →⇔log p(x)]
+wCFG enables us to trade diversity for adherence.
+
+===== PAGE 120 =====
+41/63
+Di!usion Models – Classiﬁer-Free Guidance
+The main beneﬁt of keeping the formula in this form is that it
+allows us to control the conditioning strength:
+⇔log p(x | y) = ⇔log p(x) + wCFG [⇔log p(x | y) →⇔log p(x)]
+wCFG enables us to trade diversity for adherence.
+Practical note: We use a single shared conditional neural network
+for all classes and the unconditional distribution to parameterize
+ςω(x, t | y). Where y = ⊋is used to indicate unconditional. During
+training, we replace the true label y with ⊋with some probability.
+uncoditionalconditionaluncodinitonal
+why
+
+===== PAGE 121 =====
+42/63
+Di!usion Models – Summary
+↭The denoising view and the SDE/ODE view describe the
+same model:
+
+===== PAGE 122 =====
+42/63
+Di!usion Models – Summary
+↭The denoising view and the SDE/ODE view describe the
+same model:
+↭DDPM training ′ (weighted) denoising score matching
+
+===== PAGE 123 =====
+42/63
+Di!usion Models – Summary
+↭The denoising view and the SDE/ODE view describe the
+same model:
+↭DDPM training ′ (weighted) denoising score matching
+↭DDPM sampler ′ a discretization of the reverse SDE
+
+===== PAGE 124 =====
+42/63
+Di!usion Models – Summary
+↭The denoising view and the SDE/ODE view describe the
+same model:
+↭DDPM training ′ (weighted) denoising score matching
+↭DDPM sampler ′ a discretization of the reverse SDE
+↭Choice of viewpoint a!ects mostly just sampling.
+
+===== PAGE 125 =====
+42/63
+Di!usion Models – Summary
+↭The denoising view and the SDE/ODE view describe the
+same model:
+↭DDPM training ′ (weighted) denoising score matching
+↭DDPM sampler ′ a discretization of the reverse SDE
+↭Choice of viewpoint a!ects mostly just sampling.
+↭The probability ﬂow ODE turns a di!usion model into a
+deterministic generator deﬁned by a learned velocity-like ﬁeld.
+
+===== PAGE 126 =====
+42/63
+Di!usion Models – Summary
+↭The denoising view and the SDE/ODE view describe the
+same model:
+↭DDPM training ′ (weighted) denoising score matching
+↭DDPM sampler ′ a discretization of the reverse SDE
+↭Choice of viewpoint a!ects mostly just sampling.
+↭The probability ﬂow ODE turns a di!usion model into a
+deterministic generator deﬁned by a learned velocity-like ﬁeld.
+↭This is exactly the object that Flow Matching learns directly
+(next section).
+why
+no cover of DDIM
+
+===== PAGE 127 =====
+43/63
+Section 4
+Flow Matching
+
+===== PAGE 128 =====
+44/63
+Flow Matching
+Idea. Learn a deterministic ODE that transports noise to data, like
+the probability ﬂow ODE, but trained directly by regression rather
+than via the score / time-reversal.
+show this again
+more
+clearlycontinent
+of normalized
+flow
+models
+
+===== PAGE 129 =====
+44/63
+Flow Matching
+Idea. Learn a deterministic ODE that transports noise to data, like
+the probability ﬂow ODE, but trained directly by regression rather
+than via the score / time-reversal.
+↭A Flow Model is a continuous-time Markov process (Xt)0↔t↔1
+deﬁned by applying a ﬂow φt to the random variable X0
+Convention (this section): t = 0 is noise and t = 1 is data. The reverse of the
+di!usion time convention used above.
+noise
+
+===== PAGE 130 =====
+44/63
+Flow Matching
+Idea. Learn a deterministic ODE that transports noise to data, like
+the probability ﬂow ODE, but trained directly by regression rather
+than via the score / time-reversal.
+↭A Flow Model is a continuous-time Markov process (Xt)0↔t↔1
+deﬁned by applying a ﬂow φt to the random variable X0
+↭φt is a di!eomorphism (time-continuous analogue of
+Normalizing Flows seen last week)
+Convention (this section): t = 0 is noise and t = 1 is data. The reverse of the
+di!usion time convention used above.
+
+===== PAGE 131 =====
+44/63
+Flow Matching
+Idea. Learn a deterministic ODE that transports noise to data, like
+the probability ﬂow ODE, but trained directly by regression rather
+than via the score / time-reversal.
+↭A Flow Model is a continuous-time Markov process (Xt)0↔t↔1
+deﬁned by applying a ﬂow φt to the random variable X0
+↭φt is a di!eomorphism (time-continuous analogue of
+Normalizing Flows seen last week)
+↭Xt = φt(X0), t ↔[0, 1], where X0 ↓p
+Convention (this section): t = 0 is noise and t = 1 is data. The reverse of the
+di!usion time convention used above.
+data
+flow
+
+===== PAGE 132 =====
+44/63
+Flow Matching
+Idea. Learn a deterministic ODE that transports noise to data, like
+the probability ﬂow ODE, but trained directly by regression rather
+than via the score / time-reversal.
+↭A Flow Model is a continuous-time Markov process (Xt)0↔t↔1
+deﬁned by applying a ﬂow φt to the random variable X0
+↭φt is a di!eomorphism (time-continuous analogue of
+Normalizing Flows seen last week)
+↭Xt = φt(X0), t ↔[0, 1], where X0 ↓p
+↭⇑0 ∞t ∞1, u ≃0, s < t . Xt+u ⇓⇓Xs | Xt (Markov)
+Convention (this section): t = 0 is noise and t = 1 is data. The reverse of the
+di!usion time convention used above.
+
+===== PAGE 133 =====
+44/63
+Flow Matching
+Idea. Learn a deterministic ODE that transports noise to data, like
+the probability ﬂow ODE, but trained directly by regression rather
+than via the score / time-reversal.
+↭A Flow Model is a continuous-time Markov process (Xt)0↔t↔1
+deﬁned by applying a ﬂow φt to the random variable X0
+↭φt is a di!eomorphism (time-continuous analogue of
+Normalizing Flows seen last week)
+↭Xt = φt(X0), t ↔[0, 1], where X0 ↓p
+↭⇑0 ∞t ∞1, u ≃0, s < t . Xt+u ⇓⇓Xs | Xt (Markov)
+↭In particular:
+Xt+u = φt+u(X0) = φt+u(φ↓1
+t (φt(X0))) = φt+u(φ↓1
+t (Xt))
+Convention (this section): t = 0 is noise and t = 1 is data. The reverse of the
+di!usion time convention used above.
+flewat t1 n
+flow is in
+versablecompose
+2 functions
+to get at anytiresstep
+
+===== PAGE 134 =====
+45/63
+Flow Matching
+The goal of generative ﬂow matching, is to ﬁnd a ﬂow function φt
+such that
+X1 = φ1(X0) ↓q
+where X0 ↓p
+Where p is the prior/noise distribution (easy to sample), and q is
+the data distribution.
+
+===== PAGE 135 =====
+46/63
+Flow Matching
+Figure: Di!usion vs. Continuous Normalizing Flows
+whee
+is the
+randomness
+only in initial sample
+
+===== PAGE 136 =====
+47/63
+Flow Matching
+Taking inspiration from what we saw in the previous section, we
+may deﬁne the ﬂow φt as the solution to the following ODE (or
+more precisely, initial value problem):
+d
+dt φt(x) = ut(φt(x))
+(Flow ODE)
+φ0(x) = x
+(Initial Conditions)
+velocityfield
+at flow
+modelwar
+deractie
+offer
+
+===== PAGE 137 =====
+47/63
+Flow Matching
+Taking inspiration from what we saw in the previous section, we
+may deﬁne the ﬂow φt as the solution to the following ODE (or
+more precisely, initial value problem):
+d
+dt φt(x) = ut(φt(x))
+(Flow ODE)
+φ0(x) = x
+(Initial Conditions)
+Where ut is the velocity ﬁeld.
+
+===== PAGE 138 =====
+47/63
+Flow Matching
+Taking inspiration from what we saw in the previous section, we
+may deﬁne the ﬂow φt as the solution to the following ODE (or
+more precisely, initial value problem):
+d
+dt φt(x) = ut(φt(x))
+(Flow ODE)
+φ0(x) = x
+(Initial Conditions)
+Where ut is the velocity ﬁeld.
+From the Cauchy-Lipschitz/Picard-Lindel¨of theorem, we know that
+if ut satisﬁes some regularity conditions, this IVP admits a unique
+solution within a certain time interval.
+
+===== PAGE 139 =====
+48/63
+Flow Matching
+It is easy to see that choosing ut = φ↗
+t ∈φ↓1
+t
+uniquely determines
+the ﬂow φt according to the above ODE.
+shows equality
+
+===== PAGE 140 =====
+48/63
+Flow Matching
+It is easy to see that choosing ut = φ↗
+t ∈φ↓1
+t
+uniquely determines
+the ﬂow φt according to the above ODE.
+Thus, we may equivalently decide to either parameterize φt or ut
+to obtain the same underlying model.
+↭φt, Pros: easy sampling, Cons: invertability constraint
+
+===== PAGE 141 =====
+48/63
+Flow Matching
+It is easy to see that choosing ut = φ↗
+t ∈φ↓1
+t
+uniquely determines
+the ﬂow φt according to the above ODE.
+Thus, we may equivalently decide to either parameterize φt or ut
+to obtain the same underlying model.
+↭φt, Pros: easy sampling, Cons: invertability constraint
+↭ut, Pros: no invertability, Cons: maximum likelihood training
+is expensive because of ODE simulation
+
+===== PAGE 142 =====
+48/63
+Flow Matching
+It is easy to see that choosing ut = φ↗
+t ∈φ↓1
+t
+uniquely determines
+the ﬂow φt according to the above ODE.
+Thus, we may equivalently decide to either parameterize φt or ut
+to obtain the same underlying model.
+↭φt, Pros: easy sampling, Cons: invertability constraint
+↭ut, Pros: no invertability, Cons: maximum likelihood training
+is expensive because of ODE simulation
+
+===== PAGE 143 =====
+48/63
+Flow Matching
+It is easy to see that choosing ut = φ↗
+t ∈φ↓1
+t
+uniquely determines
+the ﬂow φt according to the above ODE.
+Thus, we may equivalently decide to either parameterize φt or ut
+to obtain the same underlying model.
+↭φt, Pros: easy sampling, Cons: invertability constraint
+↭ut, Pros: no invertability, Cons: maximum likelihood training
+is expensive because of ODE simulation
+If only we could train ut simulation-free ...
+need s jacobian
+determinants etc
+
+===== PAGE 144 =====
+49/63
+Flow Matching – Probability Paths
+↭Consider the marginal probabilities pt given by the
+time-dependent push-forward of p under φt, i.e., pt := φt↼p
+
+===== PAGE 145 =====
+49/63
+Flow Matching – Probability Paths
+↭Consider the marginal probabilities pt given by the
+time-dependent push-forward of p under φt, i.e., pt := φt↼p
+↭This gives rise to a probability path indexed by t, (pt)t↘[0,1]
+interpolating a simple source p0 (e.g. N(0, I)) and the data
+p1 ↘pdata.
+
+===== PAGE 146 =====
+50/63
+Flow Matching – Probability Paths
+↭We say that a velocity ﬁeld ut generates pt if
+xt := φt(x0) ↓pt for x0 ↓p0; equivalently, (pt, ut) solve the
+continuity equation
+εtpt + ⇔· (pt ut) = 0.
+without flowfunction
+
+===== PAGE 147 =====
+50/63
+Flow Matching – Probability Paths
+↭We say that a velocity ﬁeld ut generates pt if
+xt := φt(x0) ↓pt for x0 ↓p0; equivalently, (pt, ut) solve the
+continuity equation
+εtpt + ⇔· (pt ut) = 0.
+↭Consequence of the Divergence Theorem. Informally: the
+change of mass in a volume element at a given time has to be
+matched with an equal in- or outward ﬂux over the boundary.
+Figure: Visualization of the Continuity Equation (Mass Conservation)
+
+===== PAGE 148 =====
+51/63
+Flow Matching – Probability Paths
+↭If we knew a generating ut, we could regress onto it:
+LFM(ω) = Et→Unif[0,1], xt→pt ↑uω(xt, t) →ut(xt)↑2.
+
+===== PAGE 149 =====
+51/63
+Flow Matching – Probability Paths
+↭If we knew a generating ut, we could regress onto it:
+LFM(ω) = Et→Unif[0,1], xt→pt ↑uω(xt, t) →ut(xt)↑2.
+↭Problem: the marginal velocity ut is intractable.
+needs probabilitypath
+which interpolate data
+and noise
+so unknown
+
+===== PAGE 150 =====
+52/63
+Flow Matching – Conditional Flow Matching
+Key trick. Build pt as a mixture of simple conditional paths:
+pt(x) =
+!
+pt(x | x1) pdata(x1) dx1,
+where each pt(· | x1) has a known conditional velocity ut(x | x1).
+sample of dac
+
+===== PAGE 151 =====
+52/63
+Flow Matching – Conditional Flow Matching
+Key trick. Build pt as a mixture of simple conditional paths:
+pt(x) =
+!
+pt(x | x1) pdata(x1) dx1,
+where each pt(· | x1) has a known conditional velocity ut(x | x1).
+Figure: Conditional Flow
+
+===== PAGE 152 =====
+53/63
+Flow Matching – Conditional Flow Matching
+The Conditional Flow Matching loss regresses onto these instead:
+LCFM(ω) = Et, x1→pdata, xt→pt(·|x1) ↑uω(xt, t) →ut(xt | x1)↑2.
+
+===== PAGE 153 =====
+53/63
+Flow Matching – Conditional Flow Matching
+The Conditional Flow Matching loss regresses onto these instead:
+LCFM(ω) = Et, x1→pdata, xt→pt(·|x1) ↑uω(xt, t) →ut(xt | x1)↑2.
+Theorem [Lipman et al. 2023]. The two losses share the same
+gradient:
+⇔ωLFM(ω) = ⇔ωLCFM(ω).
+
+===== PAGE 154 =====
+53/63
+Flow Matching – Conditional Flow Matching
+The Conditional Flow Matching loss regresses onto these instead:
+LCFM(ω) = Et, x1→pdata, xt→pt(·|x1) ↑uω(xt, t) →ut(xt | x1)↑2.
+Theorem [Lipman et al. 2023]. The two losses share the same
+gradient:
+⇔ωLFM(ω) = ⇔ωLCFM(ω).
+Hence we can train on the tractable per-example objective.
+Crew
+londitionalvelocities
+similar to
+oldpm
+condition
+
+===== PAGE 155 =====
+54/63
+Flow Matching – Path Design
+The marginal path and velocity arise from aggregating per-example
+conditional ones.
+Figure: From conditional to marginal probability
+
+===== PAGE 156 =====
+55/63
+Flow Matching – Path Design
+The marginal path and velocity arise from aggregating per-example
+conditional ones.
+Figure: From conditional to marginal velocity
+iterate our all
+samplesfor
+specific
+sample
+
+===== PAGE 157 =====
+56/63
+Flow Matching – The Optimal-Transport Path
+The question that remains: what are good paths and how can we
+construct them?
+
+===== PAGE 158 =====
+56/63
+Flow Matching – The Optimal-Transport Path
+The question that remains: what are good paths and how can we
+construct them?
+Intuitively, shorter and therefore straighter paths are preferable, as
+this makes solving the ODE easier.
+
+===== PAGE 159 =====
+56/63
+Flow Matching – The Optimal-Transport Path
+The question that remains: what are good paths and how can we
+construct them?
+Intuitively, shorter and therefore straighter paths are preferable, as
+this makes solving the ODE easier. Di!erent ways of deﬁning such
+a cost, for example:
+(p↑
+t , u↑
+t ) = arg min
+pt,ut
+! 1
+0
+Ex→pt[↑ut(x)↑2] dt
+s.t. p0 = p, p1 = q
+With additional constraint εtpt + ⇔· (ptut) = 0 (continuity
+equation). This is also referred to as Dynamic Optimal Transport
+with Quadratic cost.
+mass conservation
+
+===== PAGE 160 =====
+57/63
+Flow Matching – The Optimal-Transport Path
+It turns out that by using the following conditional ﬂow:
+xt = φt(x0 | x1) := (1 →t)x0 + tx1,
+
+===== PAGE 161 =====
+57/63
+Flow Matching – The Optimal-Transport Path
+It turns out that by using the following conditional ﬂow:
+xt = φt(x0 | x1) := (1 →t)x0 + tx1,
+we obtain a conditional velocity ﬁeld and probability path:
+ut(xt | x1) = x1 →x0
+pt(x | x1) = N
+*
+x; t x1, (1 →t)2 I
++
+,
+
+===== PAGE 162 =====
+57/63
+Flow Matching – The Optimal-Transport Path
+It turns out that by using the following conditional ﬂow:
+xt = φt(x0 | x1) := (1 →t)x0 + tx1,
+we obtain a conditional velocity ﬁeld and probability path:
+ut(xt | x1) = x1 →x0
+pt(x | x1) = N
+*
+x; t x1, (1 →t)2 I
++
+,
+that satisfy the continuity equation and minimize the Optimal
+Transport cost from before.
+linear interpolation in
+conditional
+last
+
+===== PAGE 163 =====
+58/63
+Flow Matching – The Optimal-Transport Path
+Substituting into LCFM gives the full FM objective. A plain
+regression:
+L(ω) = Et, x0, x1 ↑uω(xt, t) →(x1 →x0)↑2.
+
+===== PAGE 164 =====
+58/63
+Flow Matching – The Optimal-Transport Path
+Substituting into LCFM gives the full FM objective. A plain
+regression:
+L(ω) = Et, x0, x1 ↑uω(xt, t) →(x1 →x0)↑2.
+This is the rectiﬁed ﬂow construction [Liu et al. 2023].
+straighter paths
+
+===== PAGE 165 =====
+59/63
+Flow Matching – Relation to Di!usion
+↭Flow Matching is compatible with a general family of
+Gaussian conditional paths; the di!usion (VP) path is one
+special case of this family.
+
+===== PAGE 166 =====
+59/63
+Flow Matching – Relation to Di!usion
+↭Flow Matching is compatible with a general family of
+Gaussian conditional paths; the di!usion (VP) path is one
+special case of this family.
+↭Even on di!usion paths, FM regression is reported to give
+more robust and stable training than score matching.
+specialcase offlowwatching
+can cow
+merepaths
+thatddpn
+can't
+
+===== PAGE 167 =====
+59/63
+Flow Matching – Relation to Di!usion
+↭Flow Matching is compatible with a general family of
+Gaussian conditional paths; the di!usion (VP) path is one
+special case of this family.
+↭Even on di!usion paths, FM regression is reported to give
+more robust and stable training than score matching.
+↭Other paths, in particular the OT / linear path, are not
+reachable by standard di!usion.
+
+===== PAGE 168 =====
+59/63
+Flow Matching – Relation to Di!usion
+↭Flow Matching is compatible with a general family of
+Gaussian conditional paths; the di!usion (VP) path is one
+special case of this family.
+↭Even on di!usion paths, FM regression is reported to give
+more robust and stable training than score matching.
+↭Other paths, in particular the OT / linear path, are not
+reachable by standard di!usion.
+↭OT paths yield straighter trajectories ↖smaller ODE
+discretization error ↖fewer sampling steps.
+
+===== PAGE 169 =====
+59/63
+Flow Matching – Relation to Di!usion
+↭Flow Matching is compatible with a general family of
+Gaussian conditional paths; the di!usion (VP) path is one
+special case of this family.
+↭Even on di!usion paths, FM regression is reported to give
+more robust and stable training than score matching.
+↭Other paths, in particular the OT / linear path, are not
+reachable by standard di!usion.
+↭OT paths yield straighter trajectories ↖smaller ODE
+discretization error ↖fewer sampling steps.
+↭Di!usion’s probability ﬂow ODE and FM’s velocity ﬁeld are
+the same kind of object: FM learns it by direct regression
+instead of via the score and time-reversal.
+
+===== PAGE 170 =====
+60/63
+Flow Matching – Sampling
+Once uω is trained, generation is a deterministic ODE integration:
+1. Draw x0 ↓p0 = N(0, I).
+2. Solve dx
+dt = uω(x, t) from t = 0 to t = 1 with any
+o!-the-shelf ODE solver.
+3. Output x1, a sample from pdata.
+Figure: Sampling from an FM model
+
+===== PAGE 171 =====
+61/63
+Flow Matching – Comments
+↭Preferred over Di!usion nowadays
+
+===== PAGE 172 =====
+61/63
+Flow Matching – Comments
+↭Preferred over Di!usion nowadays
+↭Training is more stable, and sampling can be done more
+e”ciently
+
+===== PAGE 173 =====
+61/63
+Flow Matching – Comments
+↭Preferred over Di!usion nowadays
+↭Training is more stable, and sampling can be done more
+e”ciently
+↭Easier to extend to other domains:
+
+===== PAGE 174 =====
+61/63
+Flow Matching – Comments
+↭Preferred over Di!usion nowadays
+↭Training is more stable, and sampling can be done more
+e”ciently
+↭Easier to extend to other domains:
+↭FM on Non-Euclidean Geometries (Riemannian manifolds)
+
+===== PAGE 175 =====
+61/63
+Flow Matching – Comments
+↭Preferred over Di!usion nowadays
+↭Training is more stable, and sampling can be done more
+e”ciently
+↭Easier to extend to other domains:
+↭FM on Non-Euclidean Geometries (Riemannian manifolds)
+↭Discrete FM
+like graphs
+
+===== PAGE 176 =====
+62/63
+Generative Models
+For the curious:
+↭Holderrieth et al., Generator Matching, ICLR 2025.
+Uniﬁcation of various frameworks
+↭Geng et al., Mean Flows, NeurIPS 2026. One-step generative
+modeling
+↭Deng et al., Drifting Models, 2026. Evolution of the
+push-forward distribution itself
+advancesrecent
+
+===== PAGE 177 =====
+63/63
+References & Further Reading
+Generative Adversarial Networks
+↭Goodfellow et al., Generative Adversarial Nets, NeurIPS 2014.
+↭Goodfellow, NeurIPS 2016 Tutorial: GANs, arXiv:1701.00160.
+Di!usion Models
+↭Ho, Jain, Abbeel, Denoising Di!usion Probabilistic Models, NeurIPS
+2020. arXiv:2006.11239
+↭Song et al., Score-Based Generative Modeling through SDEs, ICLR 2021.
+arXiv:2011.13456
+↭Song, Meng, Ermon, Denoising Di!usion Implicit Models, ICLR 2021.
+arXiv:2010.02502
+Flow Matching
+↭Lipman et al., Flow Matching for Generative Modeling, ICLR 2023.
+arXiv:2210.02747
+↭Liu, Gong, Liu, Flow Straight and Fast (Rectiﬁed Flow), ICLR 2023.
+arXiv:2209.03003
+↭Albergo, Vanden-Eijnden, Building Normalizing Flows with Stochastic
+Interpolants, ICLR 2023. arXiv:2209.15571
+↭Lipman et al., Flow Matching Guide and Code, 2024. arXiv:2412.06264

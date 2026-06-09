@@ -1,0 +1,949 @@
+
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Lecture 5
+Valentina Boeva
+ETH Zurich – https:
+//moodle-app2.let.ethz.ch/course/view.php?id=27126
+20 March 2025
+1/43
+
+
+===== PAGE 2 =====
+2/43
+Outline for today
+↭Recap
+↭SVD Theorem
+↭SVD & Eigendecomposition
+↭SVD & Link of SVD with the Spectral Norm and Frobenius
+norm
+↭Eckart-Young Theorem for Low-Rank Approximations
+↭SVD & Matrix Completion
+↭Alternating Least Squares (ALS)
+first alsofor matrix
+completion
+
+
+===== PAGE 3 =====
+3/43
+Recap: General Question
+↭We approach the matrix completion problem as
+A →UV→,
+U ↑Rn↑k,
+V ↑Rm↑k .
+Observation matrix: ! ↑{0, 1}n↑m
+onlyrelies on
+conditional independon
+strongassumption
+dontlook at
+marginals
+i e othersimilar
+usersrating
+
+
+===== PAGE 4 =====
+3/43
+Recap: General Question
+↭We approach the matrix completion problem as
+A →UV→,
+U ↑Rn↑k,
+V ↑Rm↑k .
+Observation matrix: ! ↑{0, 1}n↑m
+↭Objective:
+U, V ↓min 1
+2↔!!(A ↗UV→)↔2
+F ,
+!!(R) = R ↘”
+map
+enter
+pities
+
+
+===== PAGE 5 =====
+4/43
+Recap: Last Lecture
+We studied a simpliﬁed problem:
+↭Rank 1 model: Matrix A is fully observed, and
+U ↑Rn↑1,
+V ↑Rm↑1 .
+u, v ↓min 1
+2↔A ↗uv→↔2
+F
+
+
+===== PAGE 6 =====
+4/43
+Recap: Last Lecture
+We studied a simpliﬁed problem:
+↭Rank 1 model: Matrix A is fully observed, and
+U ↑Rn↑1,
+V ↑Rm↑1 .
+u, v ↓min 1
+2↔A ↗uv→↔2
+F
+↭Solution (from the ﬁrst-order optimality condition):
+A →≃ω1u1v→
+1 , where u1 and v1 are principal unit
+eigenvectors of AA→and A→A, and ω1 is the principal
+eigenvalue of AA→(or A→A)
+↭One can get the solution using:
+↭Power method on AA→and A→A (high complexity)
+↭Gradient descent (the problem is not convex; we studied the
+gradient dynamics in 1-dim. case)
+phowheld in
+Ivy 1
+meaning
+my It
+
+
+===== PAGE 7 =====
+4/43
+Recap: Last Lecture
+We studied a simpliﬁed problem:
+↭Rank 1 model: Matrix A is fully observed, and
+U ↑Rn↑1,
+V ↑Rm↑1 .
+u, v ↓min 1
+2↔A ↗uv→↔2
+F
+↭Solution (from the ﬁrst-order optimality condition):
+A →≃ω1u1v→
+1 , where u1 and v1 are principal unit
+eigenvectors of AA→and A→A, and ω1 is the principal
+eigenvalue of AA→(or A→A)
+↭One can get the solution using:
+↭Power method on AA→and A→A (high complexity)
+↭Gradient descent (the problem is not convex; we studied the
+gradient dynamics in 1-dim. case)
+Today: Generalization to U ↑Rn↑k and V ↑Rm↑k:
+Singular Value Decomposition
+
+
+===== PAGE 8 =====
+5/43
+Section 2
+Matrix Approximation:
+Singular Value Decomposition
+
+
+===== PAGE 9 =====
+6/43
+Singular Value Decomposition
+SVD Theorem
+For each matrix A ↑Rn↑m, there exist a diagonal matrix
+” ↑Rn↑m and orthogonal matrices U ↑Rn↑n and V ↑
+Rm↑m such that A can be expressed as
+A = U#V→, # = diag(ε1, . . . , εmin{n,m}), εi ⇐εi+1 ⇐0 (⇒i)
+↭#: Rectangular diagonal matrix: entries on the main diagonal,
+padded with zeros
+↭Set of singular values is unique
+↭Left/right singular vectors (columns of U and V) can have
+arbitrary sign
+↭Multiplicities of singular values: unique subspaces
+leftright singularceles
+singularvalues
+same shape
+then
+not
+unique up to sign
+I
+implies
+
+
+===== PAGE 10 =====
+7/43
+SVD
+Singular Value Decomposition
+w.nl
+l
+ElEoEI
+same It
+tl
+El
+tall
+A aET
+V
+largest
+stretch
+of a vetor
+AV U E
+is
+it largest eigenvale
+Ao Gilli
+Kivi
+aibin
+
+
+===== PAGE 11 =====
+8/43
+Reduced SVD
+One can often prune columns of U or V corresponding to zero
+elements in # (or zero-padded columns/rows)
+pit
+
+
+===== PAGE 12 =====
+9/43
+SVD and eigendecomposition
+Symmetric and positive semi-deﬁnite matrices
+SVD is intimately related to eigendecomposition for symmetric
+matrices:
+1. A is square, symmetric: U and V have equal columns up to
+possible sign di!erences.
+2. If A is also positive semi-deﬁnite, then the SVD is equal to
+the eigendecomposition.
+concern
+seatedby
+A
+A
+n
+A
+V
+Eo S
+abs Ii
+4
+Isinsulrn_
+
+
+===== PAGE 13 =====
+10/43
+SVD and eigendecomposition
+Any matrix! :)
+More interesting: SVD of A is intimately related to the
+eigendecomposition of the product of A with its transpose:
+1. Squares of A: AA→↑Rn↑n as well as A→A ↑Rm↑m
+AA→= U##→U→= U diag(ε2
+1, . . . , ε2
+n)U→,
+A→A = V→#→#V = V diag(ε2
+1, . . . , ε2
+m)V→,
+convention: εr = 0 for min{n, m} < r ⇑max{n, m}.
+airings
+notation
+eigenies
+should
+be
+squeed
+canced now
+a
+no
+justput
+in cisenlet
+togetthis
+it
+can
+perform
+egendeomp
+can find SUD
+and vice
+versa
+
+
+===== PAGE 14 =====
+11/43
+SVD and PCA
+SVD can be applied to the data matrix to identify the prin-
+cipal eigenvectors of the covariance matrix (PCA).
+
+
+===== PAGE 15 =====
+12/43
+SVD and Frobenius norm
+Let the SVD of A ↑Rn↑m be given by A = U#V→, then
+↔A↔2
+F =
+min{n,m}
+!
+i=1
+ε2
+i
+Proof.
+Making use of the properties of the trace
+COMPLETE PROOF
+can now
+Item
+HAIFF
+ATA
+V
+Ee
+11
+11
+o
+
+
+===== PAGE 16 =====
+13/43
+SVD and Spectral Norm
+Let the SVD of A ↑Rn↑m be given by A = U#V→, then
+↔A↔2 := sup{↔Ax↔: ↔x↔= 1} = ε1
+Proof.
+Orthogonal matrices preserve the Euclidean norm
+sup{↔Ax↔2 : ↔x↔= 1} = sup{↔U#V→x↔: ↔x↔= 1}
+= sup{↔#V→x↔: ↔x↔= 1}
+= sup{↔#z↔: ↔z↔= 1} = ↔#↔2
+Noting that the 2-norm of a diagonal matrix is given by the largest
+absolute value of its elements.
+maximal stretch
+ponlyneet.sn permutatior
+know property
+NXII
+CUX Vx
+XTVTVX
+orthy
+IAN
+rethn
+On
+sup Eo
+2
+Sit Ez
+15
+it
+bothnonregate
+
+
+===== PAGE 17 =====
+14/43
+Eckart-Young Theorem
+The Eckart-Young theorem is fundamental to many low-rank
+approximation problems.
+It states that by pruning the singular values below εk in the
+SVD representation, we get an optimal rank k approximation of a
+matrix.
+This means that approximations for any k can directly be read-o!
+the SVD.
+setting to 0
+compression
+relation
+to spectral norm
+
+
+===== PAGE 18 =====
+15/43
+Eckart-Young Theorem
+Given A ↑Rn↑m with SVD A = U#V→.
+Then for all
+1 ⇑k ⇑min{n, m}
+Ak := U diag(ε1, . . . , εk)V→
+↑arg min{↔A ↗B↔F : rank(B) ⇑k} .
+Proof.
+Omitted. But basic idea as shown for the rank 1 case.
+hererabk
+k
+Égrinivit
+meaning
+closest
+AnnAn
+U
+Vit
+Un eigenvector of AAT
+F
+becansingulartale
+V1
+ATA
+on
+and I
+eigenvale
+and are
+the same
+
+
+===== PAGE 19 =====
+16/43
+Eckart-Young Theorem: Corollary
+The squared error of low rank approximations can be ex-
+pressed as
+↔A ↗Ak↔2
+F =
+rank(A)
+!
+i=k+1
+ε2
+i
+Proof.
+Follows easily from the Frobenius norm via SVD formula as:
+A ↗Ak = U diag(0, . . . , 0, εk+1, . . . , εmin{n,m})V→.
+we knowtheer
+missingvales
+themore we usethebetter
+HAVI
+VEY
+ATA
+HAVE
+MA Alall
+114 dies O
+okay
+11
+Er
+Ildiag
+Egi
+
+
+===== PAGE 20 =====
+17/43
+Optimal Spectral Norm Approximation
+The matrix Ak as deﬁned in the theorem above fulﬁlls
+Ak ↑arg min{↔A ↗B↔2 : rank(B) ⇑k} .
+Spectral norm
+so
+either normdoesn't matter
+
+
+===== PAGE 21 =====
+18/43
+SVD and Matrix Completion
+Generalization of the simple rank 1 model: rank k approximation:
+A →UV→,
+U ↑Rn↑k,
+V ↑Rm↑k .
+This can be seen as an additive superposition of k rank 1 matrices:
+A →
+k
+!
+i=1
+uiv→
+i
+↭When matrix entries completely observed =⇓solution
+constructively given by SVD:
+k principal left singular vectors, paired with the respective
+right singular vector form outer products:
+A →
+k
+!
+i=1
+εiuiv→
+i
+
+
+===== PAGE 22 =====
+19/43
+SVD and Non-Convexity
+We approximate A with a rank-k matrix Ak:
+A →Ak = UV→,
+U ↑Rn↑k,
+V ↑Rm↑k .
+Low-rank matrix approximation: non-convex, even for completely
+observed case
+The SVD solution computable with O(min{nm2, mn2})
+operations =⇓example of a solvable non-convex problem
+
+
+===== PAGE 23 =====
+20/43
+Matrix Completion
+Q: Is the situation di!erent for the case of matrix completion,
+i.e., incompletely observed matrices?
+A: YES!
+sadly C
+
+
+===== PAGE 24 =====
+21/43
+SVD w/ Imputation
+Na¨ıve Strategy:
+1. Estimate values for missing matrix elements (e.g. row or
+column mean)
+2. Impute them to create a complete matrix
+3. Run SVD to compute low rank approximation
+Q: Is this a good idea?
+he
+are
+competing 99
+oftheroles
+1
+
+
+===== PAGE 25 =====
+21/43
+SVD w/ Imputation
+Na¨ıve Strategy:
+1. Estimate values for missing matrix elements (e.g. row or
+column mean)
+2. Impute them to create a complete matrix
+3. Run SVD to compute low rank approximation
+Q: Is this a good idea?
+A: NO!
+
+
+===== PAGE 26 =====
+22/43
+SVD w/ Imputations
+In the case of incomplete observations, SVD is in general not
+applicable directly to compute low-rank approximations.
+
+
+===== PAGE 27 =====
+23/43
+NP Hardness
+Objective: Find matrix B, s.t. rank(B) ⇑k:
+B = arg min 1
+2↔!!(A ↗B)↔2
+F
+Q: Is there an easy ﬁx?
+A: NO!
+Weighted Frobenius norm problem:
+ˆAk = arg min
+" !
+i,j
+wij(aij ↗bij)2, rank(B) = k
+#
+↭special case: wij = ϑij ↑{0, 1}
+NP-hard, even for rank k = 1 approximation!
+ord
+d
+why
+knapsack
+
+
+===== PAGE 28 =====
+24/43
+NP Hardness
+Low rank matrix reconstruction is NP hard and one has – in
+general – to resort to approximation algorithms. The com-
+pletely observed case is special.
+CS
+and
+DS
+view
+it matrixrank k
+then nice solution ebe approximation
+
+
+===== PAGE 29 =====
+25/43
+Section 3
+Matrix Approximation:
+Alternating Least Squares
+
+
+===== PAGE 30 =====
+26/43
+Parameter Interactions and Separability
+Factored parameterization via U ↑Rn↑k and V ↑Rk↑m such
+that A →UV.
+Non-convex objective
+ϖ(U, V) = 1
+2↔!!(A ↗UV)↔2
+F + ω
+2 (↔U↔2
+F + ↔V↔2
+F ),
+ω > 0
+↭regularization to increase numerical (and statistical) stability
+Q: How do parameters interact?
+The transpose
+changed
+ngularizer
+Take
+derivation
+
+
+===== PAGE 31 =====
+27/43
+Parameter Interactions
+Parameter interactions: closely linked to the structure of the
+problem.
+ϖ(U, V) = 1
+2↔!!(A ↗UV)↔2
+F + ω
+2 (↔U↔2
+F + ↔V↔2
+F ),
+ω > 0
+Objective ϖ(U, V) is a polynomial of degree 4 in the parameters
+with the following monomials
+ϑijuirvrjuisvsj
+1 ⇑r, s ⇑k
+ϑijuirvrj
+1 ⇑r ⇑k
+u2
+ir, v2
+rj
+from the regularizer
+Read-o! important property: higher order terms only involve
+exactly one row index i of U and one column index j of V.
+why
+Eli
+reusable structure
+
+
+===== PAGE 32 =====
+28/43
+Parameter Independence
+A: The parameter dependencies in the non-convex objective
+for matrix factorization form a bipartite graph between the
+rows of U and the columns of V.
+Q: Can we decompose the problem into subproblems?
+Ñ
+
+
+===== PAGE 33 =====
+29/43
+Separable Least Squares Problems
+ϖ(U, V) = 1
+2↔!!(A ↗UV)↔2
+F + ω
+2 (↔U↔2
+F + ↔V↔2
+F ),
+ω > 0
+Separate out part of the objective depending on a column vj of V
+(and completely analogous a row ui of U):
+ϖU(vj) = 1
+2v→
+j
+$
+k
+!
+i=1
+ϑijuiu→
+i + ωIk
+%
+vj ↗
+$
+k
+!
+i=1
+ϑijaiju→
+i
+%
+vj .
+tied
+T
+fiedU
+En interact
+NIFF
+Enivi
+vjt.tt
+vj­111E
+A uv l1F 1
+wij aig uptoj
+yyzpy.iqyyyyygyy ppp p
+an
+
+
+===== PAGE 34 =====
+29/43
+Separable Least Squares Problems
+ϖ(U, V) = 1
+2↔!!(A ↗UV)↔2
+F + ω
+2 (↔U↔2
+F + ↔V↔2
+F ),
+ω > 0
+Separate out part of the objective depending on a column vj of V
+(and completely analogous a row ui of U):
+ϖU(vj) = 1
+2v→
+j
+$
+k
+!
+i=1
+ϑijuiu→
+i + ωIk
+%
+vj ↗
+$
+k
+!
+i=1
+ϑijaiju→
+i
+%
+vj .
+Treat U as ﬁxed: can easily solve for each vj = least squares
+problem:
+
+
+===== PAGE 35 =====
+29/43
+Separable Least Squares Problems
+ϖ(U, V) = 1
+2↔!!(A ↗UV)↔2
+F + ω
+2 (↔U↔2
+F + ↔V↔2
+F ),
+ω > 0
+Separate out part of the objective depending on a column vj of V
+(and completely analogous a row ui of U):
+ϖU(vj) = 1
+2v→
+j
+$
+k
+!
+i=1
+ϑijuiu→
+i + ωIk
+%
+vj ↗
+$
+k
+!
+i=1
+ϑijaiju→
+i
+%
+vj .
+Treat U as ﬁxed: can easily solve for each vj = least squares
+problem:
+v↓
+j =
+$
+k
+!
+i=1
+ϑijuiu→
+i + ωIk
+%↔1 $
+k
+!
+i=1
+ϑijaijui
+%
+↭involves inverse of k ⇔k matrix (k small compared to n, m)
+↭regularization ensures invertibility
+invertablestallankaryt
+ffk
+symetric sxt x
+firstorder optimality
+DugL Duj
+vjXvinyl
+Xrj y 8
+Ekletsthis
+a
+iite
+whyalternating
+
+
+===== PAGE 36 =====
+30/43
+Separable Sub-Problems
+A: The separable subproblems of rank k matrix completion
+are least squares problems of dimension k.
+Q: Can we computationally exploit this structure?
+
+
+===== PAGE 37 =====
+31/43
+Alternating Least Squares
+Algorithmic idea:
+↭Given U, minimize each of the m subproblems for {vj}
+↭Can exploit a high degree of parallelism
+↭Optimizing over the subspace of parameters V keeping U
+ﬁxed
+↭Transpose roles: optimize U for ﬁxed V
+A: Alternating Least Squares
+Vt+1 ↖arg min
+V
+ϖ(Ut, V),
+Ut+1 ↖arg min
+U
+ϖ(U, Vt+1)
+least squares
+here
+alternating
+
+
+===== PAGE 38 =====
+32/43
+ALS vs. Gradient Descent
+Gradient descent: small update to all parameters
+ALS: optimize (fully) over one-half of the parameter space. The
+objective will monotonically decrease.
+ALS is an iterative algorithm that monotonically improves the
+objective and that converges to a ﬁxed point.
+proof of these
+uo.no L un ro
+I
+can
+use gradient
+c
+at ALS
+
+
+===== PAGE 39 =====
+33/43
+Optimality of ALS
+ALS converges to a ﬁxed point.
+The ﬁxed point is ﬁrst-order optimal as
+↙ϖ(U↓, V↓) = 0
+The ﬁxed point may not be a global minimum.
+(Cf. analysis in the previous lecture: saddle points)
+
+
+===== PAGE 40 =====
+34/43
+Practical Considerations
+Practical advantage of ALS: easy to augment model by additional
+dimension.
+E.g.: new users enter the system, new items become available.
+Simply solve one additional least squares problem, given the model
+parameters. May be preferable over an expensive (full) model
+update.
+ILLUSTRATE THIS HERE
+new
+user movie
+Anu
+An III Eetitia
+a
+step at least
+squares
+1
+is 1 step
+reallyenough
+
+
+===== PAGE 41 =====
+35/43
+Summary: ALS
+The separable model structure allows for e”cient approxi-
+mation via incremental updates per row or column that only
+require local data.
+
+
+===== PAGE 42 =====
+36/43
+Next lecture
+↭Projection Algorithms for Matrix Completion
+↭Singular Value Projection (Gradient Descent + SVD)
+↭Convex Relaxations and Nuclear Norms
+↭Nuclear Norm Shrinkage
+↭Outlook: Randomized Methods for SVD
+
+
+===== PAGE 43 =====
+37/43
+Take-home message 1
+↭We approached the matrix completion problem as
+A →UV→,
+U ↑Rn↑k,
+V ↑Rm↑k .
+Observation matrix: ! ↑{0, 1}n↑m
+
+
+===== PAGE 44 =====
+37/43
+Take-home message 1
+↭We approached the matrix completion problem as
+A →UV→,
+U ↑Rn↑k,
+V ↑Rm↑k .
+Observation matrix: ! ↑{0, 1}n↑m
+↭Objective:
+U, V ↓min 1
+2↔!!(A ↗UV→)↔2
+F ,
+!!(R) = R ↘”
+
+
+===== PAGE 45 =====
+38/43
+Take-home message 2
+Today:
+↭Matrix A is fully observed:
+↭Singular Value Decomposition (SVD) provides a solution for
+the rank k model:
+A →
+k
+!
+i=1
+εiuiv→
+i ,
+where ui are k principal left singular vectors forming outer
+products with the respective right singular vectors vi, weighted
+with respective singular value εi.
+↭The SVD solution is computable with O(min{nm2, mn2})
+operations and is an example of a solvable non-convex
+problem.
+
+
+===== PAGE 46 =====
+39/43
+Take-home message 3
+↭Matrix A is incompletely observed:
+↭SVD cannot be used
+↭We observed how the parameters of UV interact in a certain
+way in the loss function:
+ϖ(U, V) = 1
+2↔!!(A ↗UV)↔2
+F + ω
+2 (↔U↔2
+F + ↔V↔2
+F ),
+ω > 0
+i-th row of U, ui, does not interact with uj , i ∝= j;
+i-th column vi of V does not interact with with vj , i ∝= j;
+=⇓Highly parallelizable Alternating Least Squares (ALS)
+algorithm, which, at each step, solves n or m sub-problems
+(Least Squares for dim. k)
+↭ALS is more e”cient than gradient descent
+↭Both ALS and GD are not guaranteed to ﬁnd the global
+minimum
+
+
+===== PAGE 47 =====
+40/43
+Homework
+Refresh on some properties of singular values and matrix norms as
+well as on constrained optimization and Lagrange multipliers via
+attending the refresh-my-background class on Thursday
+
+
+===== PAGE 48 =====
+41/43
+Self-check questions 1
+↭Write an eigendecomposition and SVD for A =
+&1
+0
+0
+↗1
+'
+.
+Are these decompositions unique?
+↭How is the SVD of matrix A related to the Frobenius norm of
+A?
+↭How is the SVD of matrix A related to the spectral norm of
+A?
+↭Prove that if U is orthogonal n ⇔n matrix, then
+↔UA↔F = ↔A↔F
+↭How are SVD and eigendecomposition linked for symmetric or
+positive semi-deﬁnite matrices?
+↭How are SVD and eigendecomposition linked for any matrix
+(even rectangular)?
+
+
+===== PAGE 49 =====
+42/43
+Self-check questions 2
+↭Can SVD be used to perform PCA? Explain your answer.
+↭Can SVD be used for the matrix completion when only 1% of
+values are observed?
+↭For the optimal Frobenius-norm approximation of a
+fully-observed matrix A with a rank-k matrix B (given we
+know the SVD of A): what are the k rank-1 matrices that
+when summed up will give B?
+↭What is the error of the optimal Frobenius-norm
+approximation of a fully-observed matrix A with a rank-k
+matrix B (given we know the SVD of A)? i.e.,
+minrank(B)↗k ↔A ↗B↔2
+F =?
+
+
+===== PAGE 50 =====
+43/43
+Self-check questions 3
+↭What is the optimal spectral-norm approximation of a
+fully-observed matrix A with a rank-k matrix B? What is the
+error of this approximation (given we know the SVD of A)?
+i.e., minrank(B)↗k ↔A ↗B↔2 =? (Note: this was not discussed
+in the lecture but you should be able to derive it)
+↭When solving the problem of low-rank approximation of
+incompletely observed matrix, what key observation about the
+loss function inspires the ALS algorithm?
+↭Why does ALS converge to a ﬁxed point?
+↭What is another great advantage of ALS, on top of being
+highly parallelizable?

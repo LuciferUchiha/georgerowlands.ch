@@ -1,0 +1,1119 @@
+
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Week 6 - Preparation Session
+Diego Rivera Garrido
+ETH Zurich – https:
+//moodle-app2.let.ethz.ch/course/view.php?id=24285
+26 March 2026
+1/41
+
+
+===== PAGE 2 =====
+2/41
+Overview
+↭Special Probability Distributions
+↭Constrained Optimization
+↭Lagrange Multipliers
+↭Linear Regression with Regularization
+
+
+===== PAGE 3 =====
+3/41
+Section 1
+Special Probability Distributions
+
+
+===== PAGE 4 =====
+4/41
+Bernoulli Distribution
+↭Deﬁnition: It is a discrete probability distribution where its
+value is 1 with a probability of p, and where it is value is 0
+with a probability of 1 →p.
+
+
+===== PAGE 5 =====
+4/41
+Bernoulli Distribution
+↭Deﬁnition: It is a discrete probability distribution where its
+value is 1 with a probability of p, and where it is value is 0
+with a probability of 1 →p.
+↭Formal Deﬁnition: Let X be a random variable such that
+Pr(X = 1) = p and Pr(X = 0) = 1 →p.
+K = {k | Pr(X = k) > 0} = {0, 1} ↑Support of the
+distribution.
+over actually lovedthisbut can be important
+
+
+===== PAGE 6 =====
+4/41
+Bernoulli Distribution
+↭Deﬁnition: It is a discrete probability distribution where its
+value is 1 with a probability of p, and where it is value is 0
+with a probability of 1 →p.
+↭Formal Deﬁnition: Let X be a random variable such that
+Pr(X = 1) = p and Pr(X = 0) = 1 →p.
+K = {k | Pr(X = k) > 0} = {0, 1} ↑Support of the
+distribution.
+↭Example: Not surprisingly, a coin toss. But you can also call
+it a Bernoulli Trial to look cooler.
+
+
+===== PAGE 7 =====
+5/41
+Bernoulli Distribution Properties
+↭Probability Mass Function (PMF)
+f (k) =
+!
+p
+k = 1
+1 →p
+k = 0
+
+
+===== PAGE 8 =====
+5/41
+Bernoulli Distribution Properties
+↭Probability Mass Function (PMF)
+f (k) =
+!
+p
+k = 1
+1 →p
+k = 0
+Expected Value: E[X] =
+"
+k→K
+f (k)k = p(1) + (1 →p)(0) = p
+
+
+===== PAGE 9 =====
+5/41
+Bernoulli Distribution Properties
+↭Probability Mass Function (PMF)
+f (k) =
+!
+p
+k = 1
+1 →p
+k = 0
+Expected Value: E[X] =
+"
+k→K
+f (k)k = p(1) + (1 →p)(0) = p
+Variance: Var[X] = E[X 2] →E[X]2
+E[X 2] =
+"
+k→K
+f (k)k2 = p(12) + (1 →p)(02) = p
+=↓
+Var[X] = p →p2 = p(1 →p)
+
+
+===== PAGE 10 =====
+6/41
+Geometric Distribution
+↭Deﬁnition: Let X be a random variable modeling the number
+of Bernoulli Trials until it is a success.
+
+
+===== PAGE 11 =====
+6/41
+Geometric Distribution
+↭Deﬁnition: Let X be a random variable modeling the number
+of Bernoulli Trials until it is a success.
+↭Pr(X = 1) ↑having the success in the ﬁrst trial.
+↭Pr(X = 2) ↑having the success in the second trial.
+↭Pr(X = k) ↑having the success in the kth trial, etc.
+
+
+===== PAGE 12 =====
+6/41
+Geometric Distribution
+↭Deﬁnition: Let X be a random variable modeling the number
+of Bernoulli Trials until it is a success.
+↭Pr(X = 1) ↑having the success in the ﬁrst trial.
+↭Pr(X = 2) ↑having the success in the second trial.
+↭Pr(X = k) ↑having the success in the kth trial, etc.
+↭Support: K = {k | Pr(X = k) > 0} = {1, . . . }
+
+
+===== PAGE 13 =====
+6/41
+Geometric Distribution
+↭Deﬁnition: Let X be a random variable modeling the number
+of Bernoulli Trials until it is a success.
+↭Pr(X = 1) ↑having the success in the ﬁrst trial.
+↭Pr(X = 2) ↑having the success in the second trial.
+↭Pr(X = k) ↑having the success in the kth trial, etc.
+↭Support: K = {k | Pr(X = k) > 0} = {1, . . . }
+↭PMF: f (k) = p(1 →p)k↑1
+1 =
+"
+k→K
+f (k) = p + p(1 →p) + p(1 →p)2 + . . .
+(1)
+preet
+
+
+===== PAGE 14 =====
+7/41
+Geometric Distribution - Mean
+How can we prove the mean of the geometric distribution?
+E[X] =
+"
+k=1,2,3...
+f (k)k
+= p(1) + p(1 →p)(2) + p(1 →p)2(3) + . . .
+= p + (1 →p)
+#
+p(2) + p(1 →p)(3) + p(1 →p)2(4) + . . .
+$
+a bit had at goes to infinity
+
+
+===== PAGE 15 =====
+7/41
+Geometric Distribution - Mean
+How can we prove the mean of the geometric distribution?
+E[X] =
+"
+k=1,2,3...
+f (k)k
+= p(1) + p(1 →p)(2) + p(1 →p)2(3) + . . .
+= p + (1 →p)
+#
+p(2) + p(1 →p)(3) + p(1 →p)2(4) + . . .
+$
+E[X] = p + (1 →p)(E[X] + 1)
+=↓pE[X] = p + (1 →p)
+=↓E[X] = 1
+p
+IF
+allent
+
+
+===== PAGE 16 =====
+8/41
+Geometric Distribution - Exercise
+Similar to the previous proof, can you show the expected number
+of failures in the geometric distribution?
+
+
+===== PAGE 17 =====
+9/41
+Section 2
+Constrained Optimization
+
+
+===== PAGE 18 =====
+10/41
+Deﬁnition of Optimization
+↭Unconstrained Optimization: Let f : RD ↑R,
+min
+x→RD f (x)
+
+
+===== PAGE 19 =====
+10/41
+Deﬁnition of Optimization
+↭Unconstrained Optimization: Let f : RD ↑R,
+min
+x→RD f (x)
+↭Constrained Optimization with Inequality Constraints:
+Let f : RD ↑R,
+min
+x→RD f (x)
+subject to gi(x) ↔0, for all i = 1, . . . m
+
+
+===== PAGE 20 =====
+11/41
+Constrained Optimization
+↭Problem: Let f : RD ↑R,
+min
+x→RD f (x)
+subject to gi(x) ↔0, for all i = 1, . . . m
+↭Solution: Deﬁne a new function J(x) to convert the problem
+into an unconstrained optimization problem minx→RD J(x).
+when not satisfying constraint setto as
+
+
+===== PAGE 21 =====
+11/41
+Constrained Optimization
+↭Problem: Let f : RD ↑R,
+min
+x→RD f (x)
+subject to gi(x) ↔0, for all i = 1, . . . m
+↭Solution: Deﬁne a new function J(x) to convert the problem
+into an unconstrained optimization problem minx→RD J(x).
+J(x) = f (x) +
+m
+"
+i=1
+u(gi(x))
+where u(z) =
+!
+↗
+z > 0
+0
+else
+
+
+===== PAGE 22 =====
+12/41
+Constrained Optimization
+↭Problem: Let f : RD ↑R,
+J(x) = f (x) +
+m
+"
+i=1
+u(gi(x))
+where u(z) =
+!
+↗
+z > 0
+0
+else
+still kind of
+constraint not continous
+
+
+===== PAGE 23 =====
+12/41
+Constrained Optimization
+↭Problem: Let f : RD ↑R,
+J(x) = f (x) +
+m
+"
+i=1
+u(gi(x))
+where u(z) =
+!
+↗
+z > 0
+0
+else
+↘This looks very hard!
+
+
+===== PAGE 24 =====
+12/41
+Constrained Optimization
+↭Problem: Let f : RD ↑R,
+J(x) = f (x) +
+m
+"
+i=1
+u(gi(x))
+where u(z) =
+!
+↗
+z > 0
+0
+else
+↘This looks very hard!
+↭Solution: Find a lower bound,
+J(x) ≃L(x, ω1, . . . ωm)
+
+
+===== PAGE 25 =====
+13/41
+Constrained Optimization
+↭Problem: Find a lower bound,
+J(x) = f (x) +
+m
+"
+i=1
+u(gi(x)) ≃L(x, ω1, . . . ωm),
+u(z) =
+!
+↗
+z > 0
+0
+else
+
+
+===== PAGE 26 =====
+13/41
+Constrained Optimization
+↭Problem: Find a lower bound,
+J(x) = f (x) +
+m
+"
+i=1
+u(gi(x)) ≃L(x, ω1, . . . ωm),
+u(z) =
+!
+↗
+z > 0
+0
+else
+↭Observe:
+J(x) = f (x) +
+m
+"
+i=1
+u(gi(x)) ≃f (x) +
+m
+"
+i=1
+ωigi(x)
+, ωi ≃0
+J(x) ≃L(x, ω1, . . . ωm) = f (x) +
+m
+"
+i=1
+ωigi(x)
+, ωi ≃0
+bear as
+or 0
+
+
+===== PAGE 27 =====
+14/41
+Lagrange Multipliers
+↭Problem: Is this bound tight enough?, How to calculate ωi?,
+J(x) ≃L(x, ω1, . . . ωm)
+, ωi ≃0
+
+
+===== PAGE 28 =====
+14/41
+Lagrange Multipliers
+↭Problem: Is this bound tight enough?, How to calculate ωi?,
+J(x) ≃L(x, ω1, . . . ωm)
+, ωi ≃0
+↭Observe: We can make it better!
+J(x) ≃max
+ωi→R L(x, ω1, . . . ωm)
+, ωi ≃0
+
+
+===== PAGE 29 =====
+14/41
+Lagrange Multipliers
+↭Problem: Is this bound tight enough?, How to calculate ωi?,
+J(x) ≃L(x, ω1, . . . ωm)
+, ωi ≃0
+↭Observe: We can make it better!
+J(x) ≃max
+ωi→R L(x, ω1, . . . ωm)
+, ωi ≃0
+↭Observe: Or even better!
+min
+x J(x) = min
+x max
+ωi→R L(x, ω1, . . . ωm), ωi ≃0
+our final goal
+
+
+===== PAGE 30 =====
+15/41
+Lagrange Multipliers
+min
+x J(x) = min
+x
+max
+ωi→R>0 L(x, ω1, . . . ωm)
+= min
+x
+max
+ωi→R>0 f (x) +
+m
+"
+i=1
+ωigi(x)
+= min
+x max
+ω>0 f (x) + ωTg(x)
+= min
+x max
+ω>0 L(x, ω)
+↭How to make it simpler?
+Tranjian
+
+
+===== PAGE 31 =====
+15/41
+Lagrange Multipliers
+min
+x J(x) = min
+x
+max
+ωi→R>0 L(x, ω1, . . . ωm)
+= min
+x
+max
+ωi→R>0 f (x) +
+m
+"
+i=1
+ωigi(x)
+= min
+x max
+ω>0 f (x) + ωTg(x)
+= min
+x max
+ω>0 L(x, ω)
+↭How to make it simpler? Use min max inequality!!
+min
+x max
+ω>0 L(x, ω) ≃max
+ω>0 min
+x L(x, ω)
+why is this better simpler and why
+does it work
+
+
+===== PAGE 32 =====
+16/41
+Lagrange Multipliers
+↭Dual Problem:
+min
+x J(x) ≃max
+ω>0 min
+x L(x, ω) = max
+ω>0 min
+x f (x) + ωTg(x)
+
+
+===== PAGE 33 =====
+16/41
+Lagrange Multipliers
+↭Dual Problem:
+min
+x J(x) ≃max
+ω>0 min
+x L(x, ω) = max
+ω>0 min
+x f (x) + ωTg(x)
+↭If strong duality holds, the solution to the dual problem is
+the same as primal problem!
+↭Weak Duality: Most general case.
+↭Strong Duality: Requires the equality case of min max
+inequality!
+always a leverbened
+o
+
+
+===== PAGE 34 =====
+16/41
+Lagrange Multipliers
+↭Dual Problem:
+min
+x J(x) ≃max
+ω>0 min
+x L(x, ω) = max
+ω>0 min
+x f (x) + ωTg(x)
+↭If strong duality holds, the solution to the dual problem is
+the same as primal problem!
+↭Weak Duality: Most general case.
+↭Strong Duality: Requires the equality case of min max
+inequality!
+↭Weak Duality yields only a necessary condition for optimality
+in constrained problems, thus Lagrangian generally provides
+candidate solutions.
+↭Su!cient conditions for optimality also exist (implying strong
+duality), but we can just try all the candidate solutions!
+
+
+===== PAGE 35 =====
+17/41
+Lagrange Multipliers - Summary
+↭Goal: Minimization problem
+min
+x f (x) such that gi(x) ↔0
+↭Lagrangian: Solve using Lagrange Multipliers - optimize the
+Lagrangian
+L(x, ω) = f (x) + ωTg(x),
+ω > 0
+
+
+===== PAGE 36 =====
+17/41
+Lagrange Multipliers - Summary
+↭Goal: Minimization problem
+min
+x f (x) such that gi(x) ↔0
+↭Lagrangian: Solve using Lagrange Multipliers - optimize the
+Lagrangian
+L(x, ω) = f (x) + ωTg(x),
+ω > 0
+↭Lagrangian: Add equality constraints hj(x) = 0
+
+
+===== PAGE 37 =====
+17/41
+Lagrange Multipliers - Summary
+↭Goal: Minimization problem
+min
+x f (x) such that gi(x) ↔0
+↭Lagrangian: Solve using Lagrange Multipliers - optimize the
+Lagrangian
+L(x, ω) = f (x) + ωTg(x),
+ω > 0
+↭Lagrangian: Add equality constraints hj(x) = 0
+L(x, ω) = f (x) + ωTg(x) + εTh(x),
+ω > 0
+
+
+===== PAGE 38 =====
+18/41
+Lagrange Multipliers - Example 1
+↭Goal: Minimization problem
+min
+x x3 →3x + 17 such that 2 →x ↔0
+
+
+===== PAGE 39 =====
+18/41
+Lagrange Multipliers - Example 1
+↭Goal: Minimization problem
+min
+x x3 →3x + 17 such that 2 →x ↔0
+↭Lagrangian: Solve using Lagrange Multipliers - optimize the
+Lagrangian
+L(x, ω) = x3 →3x + 17 + ω(2 →x),
+ω ≃0
+
+
+===== PAGE 40 =====
+18/41
+Lagrange Multipliers - Example 1
+↭Goal: Minimization problem
+min
+x x3 →3x + 17 such that 2 →x ↔0
+↭Lagrangian: Solve using Lagrange Multipliers - optimize the
+Lagrangian
+L(x, ω) = x3 →3x + 17 + ω(2 →x),
+ω ≃0
+↭Solution: Take the derivatives
+ϑL(x, ω)
+ϑx
+?= 0,
+ϑL(x, ω)
+ϑω
+?= 0
+
+
+===== PAGE 41 =====
+19/41
+Lagrange Multipliers - Example 1
+↭Solution: Continued
+ϑL(x, ω)
+ϑx
+= 3x2 →3 →ω ?= 0
+ϑL(x, ω)
+ϑω
+= 2 →x
+?= 0
+
+
+===== PAGE 42 =====
+19/41
+Lagrange Multipliers - Example 1
+↭Solution: Continued
+ϑL(x, ω)
+ϑx
+= 3x2 →3 →ω ?= 0
+ϑL(x, ω)
+ϑω
+= 2 →x
+?= 0
+x = 2
+ω = 3(22) →3 = 9
+notfully
+correct only
+takinghoundary
+notallthe
+solutions
+
+
+===== PAGE 43 =====
+20/41
+Lagrange Multipliers - Example 1
+
+
+===== PAGE 44 =====
+20/41
+Lagrange Multipliers - Example 1
+↭Note: this gives candidates on the boundary 2 →x = 0. We
+have to also check the interior region 2 →x < 0.
+
+
+===== PAGE 45 =====
+20/41
+Lagrange Multipliers - Example 1
+↭Note: this gives candidates on the boundary 2 →x = 0. We
+have to also check the interior region 2 →x < 0.
+↭f ↓(x) = 3x2 →3 ?= 0 ↓x = 1 ⇐x = →1
+
+
+===== PAGE 46 =====
+20/41
+Lagrange Multipliers - Example 1
+↭Note: this gives candidates on the boundary 2 →x = 0. We
+have to also check the interior region 2 →x < 0.
+↭f ↓(x) = 3x2 →3 ?= 0 ↓x = 1 ⇐x = →1
+↭Neither satisﬁes 2 →x ↔0.
+
+
+===== PAGE 47 =====
+21/41
+Lagrange Multipliers
+Figure: Lagrange Multipliers - Visualization. 1
+1From https://www.youtube.com/watch?v=5A39Ht9Wcu0
+
+
+===== PAGE 48 =====
+22/41
+Lagrange Multipliers - Example 2
+↭Goal: Minimization problem
+min
+x x3 →y2 →3x + 17 such that 2 →x ↔0, y + x →2 = 0
+
+
+===== PAGE 49 =====
+22/41
+Lagrange Multipliers - Example 2
+↭Goal: Minimization problem
+min
+x x3 →y2 →3x + 17 such that 2 →x ↔0, y + x →2 = 0
+↭Lagrangian: Solve using Lagrange Multipliers - optimize the
+Lagrangian
+L(x, y, ω, ε) = x3→y2→3x+17+ω(2→x)+ε(y+x→2),
+ω ≃0
+
+
+===== PAGE 50 =====
+23/41
+Lagrange Multipliers - Example 2
+↭Solution: Take the derivatives
+ϑL(x, y, ω, ε)
+ϑx
+= 3x2 →3 →ω + ε ?= 0
+ϑL(x, y, ω, ε)
+ϑy
+= →2y + ε
+?= 0
+ϑL(x, y, ω, ε)
+ϑω
+= 2 →x
+?= 0
+ϑL(x, y, ω, ε)
+ϑε
+= y + x →2
+?= 0
+
+
+===== PAGE 51 =====
+24/41
+Lagrange Multipliers - Example 2
+↭Solution: Take the derivatives
+2 →x
+?= 0 =↓x = 2
+y + x →2
+?= 0 =↓y = 0
+→2y + ε
+?= 0 =↓ε = 0
+3x2 →3 →ω + ε ?= 0 =↓ω = 9
+
+
+===== PAGE 52 =====
+25/41
+Lagrange Multipliers - Example 3
+↭Goal: Minimization problem
+min
+x x3 →y2 such that 4 ↔x2, y →1 ↔0
+
+
+===== PAGE 53 =====
+25/41
+Lagrange Multipliers - Example 3
+↭Goal: Minimization problem
+min
+x x3 →y2 such that 4 ↔x2, y →1 ↔0
+↭Lagrangian: Solve using Lagrange Multipliers - optimize the
+Lagrangian
+L(x, y, ω1, ω2) = x3 →y2 +ω1(4→x2)+ω2(y →1),
+ω1, ω2 ≃0
+
+
+===== PAGE 54 =====
+26/41
+Lagrange Multipliers - Example 3
+↭Solution: Take the derivatives
+ϑL(x, y, ω, ε)
+ϑx
+= 3x2 →2ω1x ?= 0
+ϑL(x, y, ω, ε)
+ϑy
+= →2y + ω2
+?= 0
+ϑL(x, y, ω, ε)
+ϑω1
+= 4 →x2
+?= 0
+ϑL(x, y, ω, ε)
+ϑω2
+= y →1
+?= 0
+
+
+===== PAGE 55 =====
+27/41
+Lagrange Multipliers - Example 3
+↭Solution: Take the derivatives
+y →1
+?= 0 =↓y = 1
+→2y + ω2
+?= 0 =↓ω2 = 2
+3x2 →3 + 2ω1x
+?= 0 =↓ω1 = 3 →3x2
+2x
+4 →x2 ?= 0 =↓x = 2 or x = →2
+↭How to solve for ω1 and x exactly ?
+x = 2
+=↓ω1 = 3
+x = →2 =↓ω1 = →3 ⇒≃0
+
+
+===== PAGE 56 =====
+28/41
+Section 3
+Linear Regression with Regularization
+
+
+===== PAGE 57 =====
+29/41
+Regression
+↭Find a function such that y = f (x). What are the issues?
+Figure: One Dimensional Regression Data. 2
+2From Mathematics For Machine Learning, pg.289
+
+
+===== PAGE 58 =====
+30/41
+Linear Regression
+Figure: One Dimensional Linear Regression. 3
+3From https:
+//medium.com/@angel.manzur/got-outliers-ransac-them-f12b6b5f606e
+
+
+===== PAGE 59 =====
+31/41
+Linear Regression
+↭Goal: Let x ⇑RD, ﬁnd ϖ such that f (x) = ϖTx.
+y = f (x) + ϱ
+= ϖTx + ϱ
+What do we need to calculate ϖ ?
+
+
+===== PAGE 60 =====
+31/41
+Linear Regression
+↭Goal: Let x ⇑RD, ﬁnd ϖ such that f (x) = ϖTx.
+y = f (x) + ϱ
+= ϖTx + ϱ
+What do we need to calculate ϖ ?
+↭Data samples: X = {(x1, y1), (x2, y2), . . . , (xN, yN)}
+
+
+===== PAGE 61 =====
+31/41
+Linear Regression
+↭Goal: Let x ⇑RD, ﬁnd ϖ such that f (x) = ϖTx.
+y = f (x) + ϱ
+= ϖTx + ϱ
+What do we need to calculate ϖ ?
+↭Data samples: X = {(x1, y1), (x2, y2), . . . , (xN, yN)}
+↭Objective to Optimize: J(ϖ) = ⇓ϖTxi →yi⇓2, for all (xi, yi),
+i = 1, . . . N
+
+
+===== PAGE 62 =====
+32/41
+Linear Regression
+↭Goal: Let x ⇑RD, ﬁnd ϖ such that f (x) = ϖTx.
+y = ϖTx + ϱ
+↭Objective to Optimize: J(ϖ) = ⇓ϖTxi →yi⇓2 ↑Can we make
+this more compact?
+
+
+===== PAGE 63 =====
+32/41
+Linear Regression
+↭Goal: Let x ⇑RD, ﬁnd ϖ such that f (x) = ϖTx.
+y = ϖTx + ϱ
+↭Objective to Optimize: J(ϖ) = ⇓ϖTxi →yi⇓2 ↑Can we make
+this more compact?
+X =
+
+
+→
+x1
+→
+→
+x2
+→
+·
+·
+·
+→
+xN
+→
+
+
+N↔D
+and
+y =
+
+
+y1
+y2
+·
+·
+·
+yN
+
+
+N
+=↓J(ϖ) = ⇓Xϖ →y⇓2
+2
+
+
+===== PAGE 64 =====
+33/41
+Linear Regression
+↭Goal: Let X ⇑RN↔D, y ⇑RD, be our dataset
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2
+
+
+===== PAGE 65 =====
+33/41
+Linear Regression
+↭Goal: Let X ⇑RN↔D, y ⇑RD, be our dataset
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2
+Does this look familiar?
+
+
+===== PAGE 66 =====
+33/41
+Linear Regression
+↭Goal: Let X ⇑RN↔D, y ⇑RD, be our dataset
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2
+Does this look familiar?
+↭J(ϖ) = (Xϖ →y)T(Xϖ →y)T
+
+
+===== PAGE 67 =====
+33/41
+Linear Regression
+↭Goal: Let X ⇑RN↔D, y ⇑RD, be our dataset
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2
+Does this look familiar?
+↭J(ϖ) = (Xϖ →y)T(Xϖ →y)T
+↭Compute ϑJ
+ϑε = 0
+
+
+===== PAGE 68 =====
+33/41
+Linear Regression
+↭Goal: Let X ⇑RN↔D, y ⇑RD, be our dataset
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2
+Does this look familiar?
+↭J(ϖ) = (Xϖ →y)T(Xϖ →y)T
+↭Compute ϑJ
+ϑε = 0 ↓ϖ = (X TX)↑1X Ty = X +y.
+Tnr
+
+
+===== PAGE 69 =====
+33/41
+Linear Regression
+↭Goal: Let X ⇑RN↔D, y ⇑RD, be our dataset
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2
+Does this look familiar?
+↭J(ϖ) = (Xϖ →y)T(Xϖ →y)T
+↭Compute ϑJ
+ϑε = 0 ↓ϖ = (X TX)↑1X Ty = X +y.
+↭Moore-Penrose Inverse: X + = (X TX)↑1X T.
+
+
+===== PAGE 70 =====
+33/41
+Linear Regression
+↭Goal: Let X ⇑RN↔D, y ⇑RD, be our dataset
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2
+Does this look familiar?
+↭J(ϖ) = (Xϖ →y)T(Xϖ →y)T
+↭Compute ϑJ
+ϑε = 0 ↓ϖ = (X TX)↑1X Ty = X +y.
+↭Moore-Penrose Inverse: X + = (X TX)↑1X T.
+↭To polish up your matrix calculus skills: https:
+//atmos.washington.edu/~dennis/MatrixCalculus.pdf.
+
+
+===== PAGE 71 =====
+34/41
+Linear Regression
+↭Goal: Let X ⇑RN↔D, y ⇑RD, be our dataset
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2
+What if we overﬁt?
+What if we have many outliers?
+non singular
+
+
+===== PAGE 72 =====
+35/41
+Ridge Linear Regression
+↭We should add regularization!!
+↭Choosing ς2 norm gives the Ridge Regression setting.
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2 + ω⇓ϖ⇓2
+
+
+===== PAGE 73 =====
+35/41
+Ridge Linear Regression
+↭We should add regularization!!
+↭Choosing ς2 norm gives the Ridge Regression setting.
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2 + ω⇓ϖ⇓2
+Does this formulation remind you of something?
+
+
+===== PAGE 74 =====
+35/41
+Ridge Linear Regression
+↭We should add regularization!!
+↭Choosing ς2 norm gives the Ridge Regression setting.
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2 + ω⇓ϖ⇓2
+Does this formulation remind you of something?
+What happens if ω is very large?
+lagrange
+withconstraint
+1101 G
+
+
+===== PAGE 75 =====
+35/41
+Ridge Linear Regression
+↭We should add regularization!!
+↭Choosing ς2 norm gives the Ridge Regression setting.
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2 + ω⇓ϖ⇓2
+Does this formulation remind you of something?
+What happens if ω is very large?
+We get ⇓ϖ⇓2 = 0!! I.e ϖ = 0
+
+
+===== PAGE 76 =====
+36/41
+Lasso Linear Regression
+↭We can also choose other norms!
+↭Choosing ς1 norm gives the Lasso Regression setting.
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2 + ω⇓ϖ⇓1
+↭Again we force towards ⇓ϖ⇓1 = 0 so ϖ = 0.
+
+
+===== PAGE 77 =====
+36/41
+Lasso Linear Regression
+↭We can also choose other norms!
+↭Choosing ς1 norm gives the Lasso Regression setting.
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2 + ω⇓ϖ⇓1
+↭Again we force towards ⇓ϖ⇓1 = 0 so ϖ = 0.
+What is the di!erence?
+
+
+===== PAGE 78 =====
+37/41
+Norms in R2
+Figure: Norms ςp(x) = 1. 4
+4From https://math.stackexchange.com/questions/2966181/
+is-vert-x-vert-hm-omega-1-sobolev-norms-always-a-unit-ball-if-you-p
+
+
+===== PAGE 79 =====
+38/41
+Bonus: Elastic Net Regularization
+Elastic net regularization is a regularization technique that
+combines L1 and L2 regularization.
+min
+ε J(ϖ) = min
+ε ⇓Xϖ →y⇓2
+2 + ω(φ⇓ϖ⇓1 + (1 →φ)⇓ϖ⇓2)
+Here φ is the mixing parameter, which controls the relative weight
+of L1 and L2 regularization.
+
+
+===== PAGE 80 =====
+39/41
+Di!erent Regularizations R2
+Figure: Potential Intersections with Objective Level Sets(⇓Xϖ →y⇓2
+2 = z)
+in 2D. 6
+6From https://mohitmishra786687.medium.com/
+regularization-the-key-to-building-better-machine-learning-models-7b24
+
+
+===== PAGE 81 =====
+40/41
+Di!erent Regularizations Summary
+↭Regularization act as a soft constraint, and norm
+regularization moves the weights towards 0.
+↭ς1 has a higher chance of providing a sparse solution. But it
+is not guaranteed!
+↭ς2 provides smooth and continuous gradients, so it is easier to
+optimize.
+
+
+===== PAGE 82 =====
+41/41
+References
+1. M. P. Deisenroth, A. A. Faisal, C. S. Ong., Mathematics For
+Machine Learning, Cambridge University Press, 2020

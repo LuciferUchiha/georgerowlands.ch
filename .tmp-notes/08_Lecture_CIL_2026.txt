@@ -1,0 +1,1312 @@
+
+===== PAGE 0 =====
+Computational Intelligence Laboratory
+Lecture 8
+Valentina Boeva
+ETH Zurich – https:
+//moodle-app2.let.ethz.ch/course/view.php?id=27126
+24 April 2026
+1/68
+
+===== PAGE 1 =====
+2/68
+Plan for Today
+Latent Variable Models
+↭Recap
+↭Topic Models (continued)
+↭LDA
+↭Probabilistic Matrix Decomposition
+↭NMF
+↭Embeddings
+↭Word Embeddings
+↭Word2vec/GloVe
+
+===== PAGE 2 =====
+3/68
+Recap 1
+Latent Variable Models
+observables
+X = (X1, X2, . . . )
+... are augmented by ...
+latent variables
+Z = (Z1, Z2, . . . )
+what exactly is this
+
+===== PAGE 3 =====
+4/68
+Recap 2
+Explicit modeling of latent variables
+0
+1000
+2000
+3000
+4000
+5000
+0
+50
+100
+Number of Purchases
+Annual Spending ($)
+GMM Cluster
+1
+2
+3
+GMM Clustering with Fitted Ellipsoids
+↭We approached the data modeling via explicit modeling of
+latent variables:
+complete data model
+p(x, z)
+e.g., p({x1, ..., xt}, {z1, ..., zt}) =
+!
+t
+p(xt, zt)
+↭p(x|z) is parametrized with ωz: p(x, z) = p(x|ωz)εz
+↭marginal (mixture) model
+p(x;ω) = "
+z p(x|ωz)εz
+assignentto
+that
+cless
+
+===== PAGE 4 =====
+5/68
+Recap 3
+Maximizing Evidence Lower Bound (ELBO)
+↭We wanted to maximize the log-likelihood of the joint
+distribution:
+ϑ(ω; {x1, . . . , xs}) =
+s
+#
+t=1
+ln
+k
+#
+z=1
+εz p(xt;ωz)
+↭But there was no close form solution... and this ln "...
+↭Solution: use Jensen’s Inequality with a trick of introducing
+(additional..) variational parameters qtz
+s
+#
+t=1
+ln
+k
+#
+z=1
+εz p(xt;ωz) →
+s
+#
+t=1
+k
+#
+z=1
+qtz [ln εz + ln p(xt;ωz) ↑ln qtz]
+↭Now we just need to maximize this Evidence Lower Bound
+(ELBO)
+
+===== PAGE 5 =====
+6/68
+Recap 4
+Expectation-Maximization (EM) algorithm
+↭We use Expectation-Maximization (EM) algorithm to
+maximize ELBO (function of ω and ε and q)
+↭EM-algorithm (1977) suggests iteratively update q and (ω,ε)
+until convergence:
+E-step:
+qtz =
+εz p(xt;ωz)
+"
+ω εω p(xt;ωω) = P(Zt = z|xt;ω)
+M-step:
+εz = 1
+s
+s
+#
+t=1
+qtz
+ωz
+max
+↑↓
+s
+#
+t=1
+qtz ln p(xt;ωz)
+
+===== PAGE 6 =====
+7/68
+Recap 5
+Gaussian Mixture Models
+0
+1000
+2000
+3000
+4000
+5000
+0
+50
+100
+Number of Purchases
+Annual Spending ($)
+GMM Cluster
+1
+2
+3
+GMM Clustering with Fitted Ellipsoids
+↭Posterior probabilities (ﬁnal qtz) can be used for probabilistic
+clustering.
+
+===== PAGE 7 =====
+8/68
+Recap 6
+Topic Models: Term-Document Matrix
+↭We opened the chapter of topic modeling
+↭Term-Document Matrix N = (Nij) ↔Zn→m
+↑0
+(occurrence
+matrix for m words in n documents):
+Minimal su!cient statistic for the model parameter estimation
+dont know theseassignments
+i e which veils corespond to the
+2 stys
+
+===== PAGE 8 =====
+9/68
+Recap 7
+Documents as Topic Mixtures
+Document topics: induced by topics of words they contain.
+Topics not mutually exclusive, can be combined.
+Example: A document on soccer world cup 2022 in Dubai may
+contain
+↭Soccer vocabulary (e.g., “teams”, “play”, “soccer”, “match”)
+↭Political vocabulary (e.g., “labor”, “corruption”, “president”)
+↭Medical terms (e.g., “pandemic”, “Covid”)
+documents
+cancover
+many
+topics
+
+===== PAGE 9 =====
+10/68
+Recap 7
+Topic Modelling on NYT articles
+69k documents from New York Times; 15 topics
+From https://medium.com/data-science/topic-modelling-on-nyt-
+articles-using-gensim-lda-37caa2796cd9
+medical topic
+
+===== PAGE 10 =====
+11/68
+Recap 7
+Ingredients of Topic Model
+Document are characterized by distributions over topics p(z|d).
+Topics are represented as distributions over words p(w|z).
+Two-stage sampling:
+
+===== PAGE 11 =====
+12/68
+Section 2
+Latent Variable Models
+Topic Models (continued)
+
+===== PAGE 12 =====
+13/68
+Probabilistic Latent Semantics Model
+Log-likelihood
+ϑ(ω; N) = ln p(N;ω) =
+#
+i,j
+Nij ln p(wj|di),
+where
+p(wj|di) =
+k
+#
+z=1
+p(wj|z)p(z|di)
+Here ω parameterizes p(w|z) and p(z|d) (saturated model).
+words
+doc because
+p
+left
+x1
+ldots
+xi
+theta
+right
+prod_
+tp
+left
+xit
+theta
+right
+prod_
+tpijp
+left
+wjdj
+right
+tthro
+1xtj
+wj
+topic
+medellingnondindaall
+nails
+invocab
+pijp
+left
+omega
+j
+lambda
+i
+right
+Nij
+pd
+OL
+i
+ldots
+docn
+prod_
+i
+prod_
+jp
+left
+wjdi
+right
+nij
+playthis we dont
+like ELBO
+word in
+document i
+topics 2
+wehavela
+topicsmaximie
+these
+
+===== PAGE 13 =====
+14/68
+ELBO
+Q: How can a topic model be learned?
+A: Via EM algorithm, starting from ELBO
+Introducing variational parameters qitz for every occurrence.
+Results in the ELBO
+ϑ(ω) →
+n
+#
+i=1
+si
+#
+t=1
+k
+#
+z=1
+qitz [ln p(xit|z) + ln p(z|di) ↑ln qitz] =: ˆϑ(ω; q)
+(Note the similarity to mixture models.)
+
+===== PAGE 14 =====
+15/68
+EM Algorithm
+E-step
+qitz =
+p(xit|z) p(z|di)
+"
+ω p(xit|ϖ) p(ϖ|di)
+M-step
+p(wj|z) =
+"
+i,t I[xit = wj] qitz
+"
+i,t qitz
+p(z|di) = 1
+si
+si
+#
+t=1
+qitz
+posteriorreweightingonly
+for
+document traind
+on
+cant do anything
+if new docurrent
+comes in
+
+===== PAGE 15 =====
+16/68
+Exemplary Results
+Top words in di!erent topics (Web Search example)
+model can discerniate
+theremore
+physicalmaths
+
+===== PAGE 16 =====
+17/68
+Latent Dirichlet Allocation
+The topic model above assumes a ﬁxed set of documents and
+selects the parameters so as to maximize the predictability of
+words within these.
+One may wonder:
+Q: How can the topic model be extended in a way that ac-
+counts for modeling new, unseen documents?
+
+===== PAGE 17 =====
+18/68
+Latent Dirichlet Allocation
+Latent Dirichlet Allocation (LDA) model
+Introduce parameter notation:
+ujz := p(wj|z),
+vzi := p(z|di)
+Main idea: deﬁne a distribution over mixture vectors:
+v ↔[0; 1]k,
+#
+z
+vz = 1 .
+adds
+another
+distribution over
+the previous distribution
+SOTAnerdjjien
+topictopic in
+douentidistib
+topics given docures
+
+===== PAGE 18 =====
+18/68
+Latent Dirichlet Allocation
+Latent Dirichlet Allocation (LDA) model
+Introduce parameter notation:
+ujz := p(wj|z),
+vzi := p(z|di)
+Main idea: deﬁne a distribution over mixture vectors:
+v ↔[0; 1]k,
+#
+z
+vz = 1 .
+topic1topic
+probability
+for a
+documentdifferentcorpuses
+of
+douvents.topic3
+docuenttopicz
+
+===== PAGE 19 =====
+19/68
+Conjugacy
+Q: What distributional choice is appropriate for a vector of
+mixing proportions?
+A: Use principle of conjugacy
+Bayesian inference: conjugate prior = compatible with likelihood
+Posterior belongs to same family as prior = reproducing property
+i.e., a conjugate distribution is a prior distribution that, when used
+on a Bayesian updating process, results in a probability distribution
+that belongs to the same family.
+
+===== PAGE 20 =====
+20/68
+Dirichlet Distribution
+Dirichlet is conjugate to the multinomial!
+Dirichlet density
+p(v|ϱ) ↗
+k
+!
+z=1
+vεz↓1
+z
+,
+ϱz > 0
+Typically: ﬁx ϱz = ϱ (e.g., ϱ = 1/k) and/or optimize ϱ on
+held-out data
+
+===== PAGE 21 =====
+20/68
+Dirichlet Distribution
+Dirichlet is conjugate to the multinomial!
+Dirichlet density
+p(v|ϱ) ↗
+k
+!
+z=1
+vεz↓1
+z
+,
+ϱz > 0
+Typically: ﬁx ϱz = ϱ (e.g., ϱ = 1/k) and/or optimize ϱ on
+held-out data
+
+===== PAGE 22 =====
+21/68
+LDA = Bayesian Model
+Augment topic model with a Dirichlet prior ϱ to get the marginal
+probability of document X given U and ϱ:
+Integrate out the document-speciﬁc parameters
+P(X = (x1, ..., xs); U) =
+$
+s
+!
+t=1
+p(xt|U, v)
+%
+&'
+(
+categorical
+p(v|ϱ)
+% &' (
+Dirichlet
+dv,
+p(xt = wj|U, v) =
+k
+#
+z=1
+ujzvz
+with U = [ujz]z=1,...,k
+j=1,...,m
+previewredel
+doesntchase U
+new
+docuentwords
+
+===== PAGE 23 =====
+22/68
+LDA: Discussion
+Latent Dirichlet Allocation (LDA) is a more principled and
+widely adopted topic model.
+↭Incorporates Bayesian priors to prevent overﬁtting and enable
+generalization to unseen documents
+↭Produces interpretable topic distributions over documents and
+words
+↭More complex learning algorithms, but many scalable
+implementations exist:
+↭Markov Chain Monte Carlo (e.g., collapsed Gibbs sampling)
+↭Variational EM / Online Variational Inference
+started in AMC
+
+===== PAGE 24 =====
+23/68
+LDA: Example
+A 100-topic LDA model ﬁt on 17,000 articles from the journal Science
+David M. Blei ”Probabilistic Topic Models”, 2012
+100
+topics
+authors who introduced topicmodelling
+
+===== PAGE 25 =====
+24/68
+LDA: Example
+A 100-topic LDA model ﬁt on 17,000 articles from the journal Science
+Estimated topic proportions for one document and its most
+frequent topics:
+David M. Blei ”Probabilistic Topic Models”, 2012
+a docuent
+common
+words
+
+===== PAGE 26 =====
+25/68
+Short summary
+Probabilistic Latent Semantics Model
+Log-likelihood:
+ϑ(U, V; N) = ln p(N;ω) =
+#
+i,j
+Nij ln p(wj|di),
+p(wj|di) =
+k
+#
+z=1
+p(wj|z)p(z|di) =
+k
+#
+z=1
+ujzvzi
+Latent Dirichlet Allocation Model:
+Marginal probability of document X:
+P(X = (x1, ..., xs); U) =
+$
+s
+!
+t=1
+p(xt|U, v)
+%
+&'
+(
+categorical
+p(v|ϱ)
+% &' (
+Dirichlet
+dv,
+p(xt = wj|U, v) =
+k
+#
+z=1
+ujzvz
+
+===== PAGE 27 =====
+26/68
+Probabilistic Matrix Decomposition
+Q: How does the probabilistic latent semantics model relate
+to matrix decomposition?
+A: The probabilistic latent semantics model constructs a low
+rank approximation to the observed count matrix.
+
+===== PAGE 28 =====
+27/68
+Probabilistic Matrix Decomposition
+Recall the parameterization of the model:
+ujz := p(wj | z),
+vzi := p(z | di)
+We can represent predicted word frequencies p(wj | di) =: ˆNij as:
+ˆN = UV,
+with rank( ˆN) ↘k
+This is **not** a direct factorization of the count matrix N, but
+rather an approximation to **relative frequencies**:
+Nij ≃si ˆNij
+where si is the total number of words in document i.
+p
+left
+nj
+lambda
+i
+right
+sum_
+z1kp
+left
+njz
+right
+p
+left
+2di
+right
+sum_
+2ujzv2i
+row andmultiply
+column
+normalisationactual
+counts
+
+===== PAGE 29 =====
+28/68
+Probabilistic Matrix Decomposition
+Probabilistic semantics imposes natural constraints on the
+parameters:
+Non-negativity constraints:
+ujz →0
+(⇐j, z),
+vzi →0
+(⇐i, z)
+These constraints lead to a form of non-negative matrix
+factorization (NMF).
+Maximum Likelihood Objective:
+ϑ(U, V; N) =
+#
+i,j
+Nij ln ˆNij,
+ˆN = UV
+This corresponds to a probabilistic model where ˆNij approximates
+expected word frequencies.
+Can also renite
+as
+KL digene
+wheredoes this
+come frm
+
+===== PAGE 30 =====
+29/68
+Probabilistic Matrix Decomposition
+In addition: normalization constraints on the row/column level,
+namely
+#
+j
+p(wj|z) =
+#
+j
+ujz = 1,
+(⇐z)
+#
+z
+p(z|di) =
+#
+z
+vzi = 1,
+(⇐i) .
+Direct consequence of the underlying statistical model and its
+probabilistic interpretation.
+A: Topic model = special case of non-negative matrix de-
+composition with a log-likelihood objective.
+
+===== PAGE 31 =====
+30/68
+Non-Negative Matrix Factorization (NMF)
+NMF is a standalone model used to approximate non-negative data
+matrices.
+Why non-negativity?
+↭Many real-world data types are naturally non-negative (e.g.,
+counts, intensities, frequencies).
+↭Negative values in factorization often have no physical
+meaning in such cases.
+Key motivation: Ensure non-negative approximations by design.
+This is achieved by constraining matrix factors to be
+non-negative – a built-in inductive bias in the model.
+
+===== PAGE 32 =====
+31/68
+Non-Negative Matrix Factorization
+We approximate a data matrix A using non-negative factors via
+the squared loss:
+ϑ(U, V) = 1
+2⇒A ↑UV⇒2
+F ,
+U, V →0
+(Fully observed case)
+Why non-negativity matters:
+↭Constraints may seem subtle – but they fundamentally change
+the decomposition.
+
+===== PAGE 33 =====
+32/68
+NMF: Example
+↭Negative contributions and cancellations are impossible.
+↭Think visually: the ”ink” of one factor can’t be erased by
+another.
+↭Result: Non-negative decompositions tend to be part-based
+(a combination of parts), interpretable, and additive.
+sparse
+interpretallefeet
+reconstruction
+as
+natixSahelheights
+
+===== PAGE 34 =====
+33/68
+NMF: Example
+almost
+same20
+constraint
+can besubtitle
+andnot
+sparse
+
+===== PAGE 35 =====
+34/68
+Alternating Least Squares (ALS) for NMF
+To optimize the NMF objective:
+ϑ(U, V) = 1
+2⇒A ↑UV⇒2
+F
+subject to U, V →0
+We use Alternating Least Squares (ALS):
+↭Fix V, solve for U
+↭Fix U, solve for V
+↭Repeat until convergence
+To maintain non-negativity, we apply simple projection steps:
+ujz ⇑max{0, ujz},
+vzi ⇑max{0, vzi}
+These ensure that all updates stay within the non-negative domain.
+Possible initialization: NNDSVD
+justclip
+
+===== PAGE 36 =====
+35/68
+Short Summary
+Probabilistic Matrix Decomposition & NMF
+Probabilistic Matrix Decomposition:
+↭Models word counts as: Nij ≃ˆNij = (UV)ij
+↭ujz = p(wj|z), vzi = p(z|di): word-topic and topic-document
+probabilities
+↭Maximum likelihood objective:
+ϑ(U, V) =
+#
+i,j
+Nij ln( ˆNij)
+subject to U, V →0
+Non-negative Matrix Factorization (NMF):
+↭Enforces non-negativity: promotes part-based decompositions
+↭Common loss functions:
+↭Frobenius norm:
+1
+2⇒A ↑UV⇒2
+F
+↭KL divergence: aligned with probabilistic modeling
+↭Optimization via Alternating Least Squares or Multiplicative
+Updates
+preaming
+
+===== PAGE 37 =====
+36/68
+Short Summary
+NMF vs. LDA:
+↭NMF is fast, simple, and interpretable – used in many
+practical topic modeling tasks
+↭LDA is a fully Bayesian model with priors and better
+generalization
+rider model
+
+===== PAGE 38 =====
+37/68
+Topic Modeling Methods: Comparison Table
+thank you
+chatgpt
+
+===== PAGE 39 =====
+38/68
+Section 3
+Latent Variable Models
+Embeddings
+
+===== PAGE 40 =====
+39/68
+Lexical Semantics
+Natural language: atomic units of meaning are symbols – words or
+phrases
+Symbols rarely carry their meaning “on them”
+Meaning of a word: its use in language
+(Wittgenstein, 1953)
+apple etc
+has some fancy book
+
+===== PAGE 41 =====
+40/68
+Semantic Representation
+Given: examples of word usage in a corpus (word occurrences)
+Goal: learn word representations that reﬂect meaning
+
+===== PAGE 42 =====
+40/68
+Semantic Representation
+Given: examples of word usage in a corpus (word occurrences)
+Goal: learn word representations that reﬂect meaning
+Key idea: Embed symbols in a vector space such that:
+↭Similar meanings correspond to nearby vectors
+↭Distances and angles reﬂect semantic relationships
+⇓Enables reasoning, analogy, similarity, and clustering in a
+geometric space
+
+===== PAGE 43 =====
+40/68
+Semantic Representation
+Given: examples of word usage in a corpus (word occurrences)
+Goal: learn word representations that reﬂect meaning
+Key idea: Embed symbols in a vector space such that:
+↭Similar meanings correspond to nearby vectors
+↭Distances and angles reﬂect semantic relationships
+⇓Enables reasoning, analogy, similarity, and clustering in a
+geometric space
+Generalization: Applies to any discrete symbols – e.g., products,
+items, users, genes...
+
+===== PAGE 44 =====
+41/68
+Word Embeddings
+Learn mapping from words to vectors
+! ⇔w
+% &' (
+word
+↖↓zw ↔Rm
+%
+&'
+(
+vector
+m: dimensionality, typically ≃100 ↑500.
+Q: How can we learn a mapping from words to vectors such
+that vectors represent word semantics?
+now
+more
+
+===== PAGE 45 =====
+41/68
+Word Embeddings
+Learn mapping from words to vectors
+! ⇔w
+% &' (
+word
+↖↓zw ↔Rm
+%
+&'
+(
+vector
+m: dimensionality, typically ≃100 ↑500.
+Q: How can we learn a mapping from words to vectors such
+that vectors represent word semantics?
+
+===== PAGE 46 =====
+42/68
+Word Embeddings
+What is meant by “semantics”? No generally accepted ground
+truth, which a machine would simply have to re-discover.
+Latent variable approach: learn latent representations that are
+predictive of observations. Here: vector-valued latent variables.
+Rupert Firth: You shall know a word by the company it keeps.
+“company” = context of a word (e.g. ﬁxed-size window)
+A: Treat the embedding of each word as a latent variable that
+predict co-occurring context words.
+
+===== PAGE 47 =====
+43/68
+Skip-Gram Model: Illustration
+Predicting the words in a ﬁxed-size window around the center word:
+hard 2
+vec
+what was the
+other
+one again
+BOWthe
+opposite
+continous bagof merits
+
+===== PAGE 48 =====
+44/68
+Skip-Gram: Log-Likelihood
+Input: sequence of words x = x1, x2, . . . , xT
+Goal: Learn parameters ω such that each word predicts its
+context words.
+Log-Likelihood (assuming i.i.d. context predictions):
+ϑ(ω; x) =
+T
+#
+t=1
+#
+!↔I
+log p(xt+! | xt; ω)
+Context window: I = {↑R, . . . , ↑1, 1, . . . , R}
+(e.g., words within a radius R around the center word)
+Words outside the sequence are handled via padding with a special
+symbol (e.g., ↙PAD∝).
+in all
+textshinder
+sin
+center
+
+===== PAGE 49 =====
+45/68
+Bi-linear model
+Q: How should we relate the prediction of skip-grams to latent
+word embeddings?
+A: (Log-)Bi-linear model
+ln p(v | w) = ↙zw, zv∝+ const.
+=⇓
+p(v | w) =
+exp[↙zw, zv∝]
+"
+u exp[↙zw, zu∝]
+design
+choiecontext
+nerd
+centernerddet product beteen
+enheddingsnormaliations
+etcnot
+good
+Softraxall
+possiblenerds
+
+===== PAGE 50 =====
+46/68
+Reﬁned Model
+Reﬁnements:
+↭Biases bv ↔R: explicit control of marginal probability
+↭Di”erent embedding vectors for conditioned vs. predicted word
+Leading to
+p(v | w; ω) =
+exp[ϖ↗
+w zv + bv]
+"
+u exp[ϖ↗
+w zu + bu],
+with parameters
+w ↖↓ωw = (zw, ϖw, bw) ↔R2m+1
+for frequre of nerds
+similar idea to transformer withquies
+andkeys
+not
+goodcontextcentrel
+
+===== PAGE 51 =====
+47/68
+Likelihood Function
+Su!cient statistics
+Nvw = |{t : xt = w, xt+↘= v, ′ ↔I}|
+Log-likelihood
+ϑ(ω; x) =
+#
+v,w
+Nvw
+)
+↙ϖw, zv∝+ bv
+↑ln
+#
+u↔”
+exp[ϖ↗
+w zu + bu]
+%
+&'
+(
+normalization constant
+*
+what do this
+meanco
+occurnerdont
+likethis
+
+===== PAGE 52 =====
+48/68
+Binary Classiﬁcation Model
+Q: Are there alternate choice for the objective function that
+avoid the expensive computation of normalizing constants?
+A: Reformulate the prediction problem as a classiﬁcation
+problem.
+
+===== PAGE 53 =====
+49/68
+Binary Classiﬁcation Objective
+Key idea: The prediction task is not ﬁxed – it can be designed to
+induce useful word representations.
+We choose a simple task: binary classiﬁcation of word pairs as
+likely co-occurrences.
+are they
+co occurring
+or
+not
+
+===== PAGE 54 =====
+49/68
+Binary Classiﬁcation Objective
+Key idea: The prediction task is not ﬁxed – it can be designed to
+induce useful word representations.
+We choose a simple task: binary classiﬁcation of word pairs as
+likely co-occurrences.
+For an observed word pair (w, v), deﬁne the prediction model:
+p(v | w) = ς (↙ϖw, zv∝+ bv) ,
+ς(z) =
+1
+1 + e↓z
+(logistic function)
+Positive sample set: observed skip-gram pairs in corpus:
+S+ = [(xt, xt+!) : t = 1, . . . , T, ” ↔I]
+This forms the basis for learning word vectors via logistic
+regression on co-occurrence.
+also need
+negatiesick
+
+===== PAGE 55 =====
+50/68
+Classiﬁcation Likelihood
+Logistic log-likelihood
+ϑ(ω; x) =
+#
+(w,v)↔S+
+ln ς(v, w; ω) +
+#
+(w,u)↔S→
+ln(1 ↑ς(u, w; ω))
+A: The classiﬁcation problem for skip-grams can be formal-
+ized by taking the logistic log-likelihood as objective.
+cross entrepy
+negate pairs
+
+===== PAGE 56 =====
+51/68
+Negative Sampling
+Q: How can we generate negative word pairs for training?
+A: Random sampling of word pairs.
+Negative sample set:
+S↓=
+)
+(xt, vtj) : t = 1, . . . , T, vtj
+iid∞q, j = 1, . . . , r
+*
+↭q: noise distribution over vocabulary !
+↭r: number of negative samples per positive pair
+do
+we filter out coret pairs
+Newnerytimes
+me then pesive
+pairsuch
+as empirical distribution or
+down sample
+common words likestopwordsetc
+but went sore
+
+===== PAGE 57 =====
+51/68
+Negative Sampling
+Q: How can we generate negative word pairs for training?
+A: Random sampling of word pairs.
+Negative sample set:
+S↓=
+)
+(xt, vtj) : t = 1, . . . , T, vtj
+iid∞q, j = 1, . . . , r
+*
+↭q: noise distribution over vocabulary !
+↭r: number of negative samples per positive pair
+Idea: Train a binary classiﬁer to distinguish true (positive) word
+pairs from randomly sampled (negative) ones.
+
+===== PAGE 58 =====
+52/68
+Classiﬁcation Likelihood
+Logistic log-likelihood
+ϑ(ω; x) =
+#
+(w,v)↔S+
+ln ς(v, w; ω) +
+#
+(w,u)↔S→
+ln(1 ↑ς(u, w; ω))
+A: The classiﬁcation problem for skip-grams can be formal-
+ized by taking the logistic log-likelihood as objective.
+
+===== PAGE 59 =====
+53/68
+Choosing the Negative Sampling Distribution
+Q: What is a good distribution q(w) for sampling negative
+words?
+General form:
+q(w) ↗p(w)ε,
+ϱ →0
+↭p(w): empirical frequency of word w in the corpus
+↭tuning exponent ϱ controls the ﬂattening of the distribution
+Common choice (for balance): ϱ = 3
+4
+downsample
+cannon
+wordsa
+bit like temperature
+
+===== PAGE 60 =====
+54/68
+Bayesian Classiﬁcation
+Q: How can we further justify and understand the negative
+sampling approach?
+p(v, w): empirical co-occurrence of word pairs
+q(v, w) = p(w)q(v): random co-occurrence distribution
+Optimal Bayes classiﬁer
+P((v, w) = true) =
+εp(v, w)
+εp(v, w) + (1 ↑ε)q(v, w)
+↭ε, 1 ↑ε: prior probabilities of true and false (random) pairs
+independent
+
+===== PAGE 61 =====
+55/68
+Pointwise Mutual Information
+Pre-image under logistic function
+h≃
+vw = ς↓1
++
+εp(v, w)
+εp(v, w) + (1 ↑ε)q(v, w)
+,
+= ln p(v, w)
+q(v, w) + ln
+ε
+1 ↑ε
+Balanced classes ε = 1
+2 and ϱ = 1:
+h≃
+vw = ln p(v, w)
+p(w)p(v)
+A: The log-odds of the optimal Bayes classiﬁer are point-
+wise mutual information terms.
+dontget this
+
+===== PAGE 62 =====
+56/68
+word2vec and PMI maximization
+A: The word2vec approach with balanced negative sampling
+(and ϱ = 1) can be interpreted as a method to maximize the
+mutual information of word co-occurrences.
+
+===== PAGE 63 =====
+57/68
+Global Word Vectors = GloVe
+Q: Can we think of word embedding models for co-
+occurrences in terms of matrix factorization?
+Consider di”erent objective (GloVe):
+ϑ(ω, N) =
+#
+v,w:Nvw>0
+f(Nvw)
+)
+ln Nvw ↑ln ˆNvw
+*2
+,
+ˆNvw = ˆp(v, w; ω)
+our
+predictiondownright
+certain
+we'll
+
+===== PAGE 64 =====
+58/68
+Weighting Function
+Practical choice of weighting function
+f(N) = min
+-
+1,
++ N
+Nmax
+,ε.
+,
+e.g. ϱ = 3/4 .
+down sample
+commonterns
+
+===== PAGE 65 =====
+59/68
+Unnormalized Models
+GloVe objective does not require distribution to be normalized
+(two-sided loss). One can chose:
+ln ˆp(v, w) = ↙ϖw, zv∝
+A: With the GloVe objective, one can work with unnormalized
+probability models.
+GloVe does not require expensive computation of normalizing
+factors.
+
+===== PAGE 66 =====
+60/68
+Matrix Factorization
+GloVe can be interpreted as a low rank matrix factorization
+U↗:= [ϖw1 · · · ϖwn],
+V := [zw1 · · · zwm],
+then
+ln ˆN = UV .
+↭n = |!|, size of vocabulary
+↭special case:
+f(N) = min{1, N} .
+U, V min
+↓
+#
+v,w:Nvw>0
+(ln Nvw ↑(UV)vw)2
+
+===== PAGE 67 =====
+61/68
+Stochastic Gradient Descent
+Sample pair (v, w) at random.
+Perform updates with step size φ > 0:
+ϖw ⇑ϖw + 2φf(Nvw) (ln Nvw ↑↙ϖw, zv∝) zv
+zv ⇑zv + 2φf(Nvw) (ln Nvw ↑↙ϖw, zv∝) ϖw
+
+===== PAGE 68 =====
+62/68
+Example: Frogs!
+
+===== PAGE 69 =====
+63/68
+A”ne Structure
+ϖqueen = arg max
+v ↙ϖking ↑ϖman + ϖwoman, ϖv∝
+
+===== PAGE 70 =====
+64/68
+Summary: Topic Models & Matrix Factorization
+Topic Models
+↭Documents modeled as mixtures over latent topics.
+↭PLSA: Learn p(w | z), p(z | d) via EM; ﬁxed documents.
+↭LDA: Bayesian extension with Dirichlet prior over p(z | d);
+generalizes to new documents.
+
+===== PAGE 71 =====
+64/68
+Summary: Topic Models & Matrix Factorization
+Topic Models
+↭Documents modeled as mixtures over latent topics.
+↭PLSA: Learn p(w | z), p(z | d) via EM; ﬁxed documents.
+↭LDA: Bayesian extension with Dirichlet prior over p(z | d);
+generalizes to new documents.
+Probabilistic Matrix Decomposition
+↭Predict Nij ≃ˆNij = (UV)ij
+U, V →0
+↭Equivalent to low-rank approximation under log-likelihood
+
+===== PAGE 72 =====
+64/68
+Summary: Topic Models & Matrix Factorization
+Topic Models
+↭Documents modeled as mixtures over latent topics.
+↭PLSA: Learn p(w | z), p(z | d) via EM; ﬁxed documents.
+↭LDA: Bayesian extension with Dirichlet prior over p(z | d);
+generalizes to new documents.
+Probabilistic Matrix Decomposition
+↭Predict Nij ≃ˆNij = (UV)ij
+U, V →0
+↭Equivalent to low-rank approximation under log-likelihood
+NMF
+↭General framework for learning from non-negative data
+↭Constrained to non-negative factors ↓interpretable,
+part-based structure
+↭Loss: Frobenius norm or KL divergence
+↭Optimization: ALS or multiplicative updates
+
+===== PAGE 73 =====
+65/68
+Summary: Word Embeddings
+Goal: Learn vector representations of words that reﬂect semantic
+similarity.
+Word2Vec: Skip-Gram
+↭Predict context words given a center word
+↭Log-bilinear model: p(v | w) ↗exp(↙ϖw, zv∝+ bv)
+↭Trained via binary classiﬁcation on co-occurrence pairs
+↭Negative Sampling: e!cient alternative to softmax,
+motivated by mutual information
+
+===== PAGE 74 =====
+65/68
+Summary: Word Embeddings
+Goal: Learn vector representations of words that reﬂect semantic
+similarity.
+Word2Vec: Skip-Gram
+↭Predict context words given a center word
+↭Log-bilinear model: p(v | w) ↗exp(↙ϖw, zv∝+ bv)
+↭Trained via binary classiﬁcation on co-occurrence pairs
+↭Negative Sampling: e!cient alternative to softmax,
+motivated by mutual information
+GloVe
+↭Directly factorizes log co-occurrence matrix
+↭Objective: Weighted least-squares between log Nvw and
+↙ϖw, zv∝
+↭Combines global count statistics with vector space learning
+
+===== PAGE 75 =====
+65/68
+Summary: Word Embeddings
+Goal: Learn vector representations of words that reﬂect semantic
+similarity.
+Word2Vec: Skip-Gram
+↭Predict context words given a center word
+↭Log-bilinear model: p(v | w) ↗exp(↙ϖw, zv∝+ bv)
+↭Trained via binary classiﬁcation on co-occurrence pairs
+↭Negative Sampling: e!cient alternative to softmax,
+motivated by mutual information
+GloVe
+↭Directly factorizes log co-occurrence matrix
+↭Objective: Weighted least-squares between log Nvw and
+↙ϖw, zv∝
+↭Combines global count statistics with vector space learning
+Takeaway: Embeddings translate co-occurrence structure into
+geometry – enabling analogy and downstream learning.
+
+===== PAGE 76 =====
+66/68
+Next lecture (May 8)
+↭Deep Neural Networks
+↭Compositional Models
+↭Backpropagation
+↭Gradient Methods
+
+===== PAGE 77 =====
+67/68
+Self-Check Questions 1
+Q: What does the variable qitz represent, expressed in plain
+English?
+Q: Show that the Dirichlet distribution is conjugate to the
+categorical distribution.
+Q: What are the main conceptual di”erences between topics
+models and non-negative matrix factorization?
+
+===== PAGE 78 =====
+68/68
+Self-Check Questions 2
+Q: In which way are the bias parameters linked to the marginal
+word distribution? Make this more precise.
+Q: Why are we replacing the original likelihood by the classiﬁcation
+likelihood? (slide 48)
+Q: Can you derive the stochastic gradient descent equations for
+GloVe? (slide 59)

@@ -1,0 +1,904 @@
+
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Week 2 - Preparation Session
+Shuhao Li
+ETH Zurich – cil.inf.ethz.ch
+26 February 2026
+1/49
+
+
+===== PAGE 2 =====
+2/49
+Overview
+↭Vector Spaces
+↭Inner Product & Norms
+↭Matrix Multiplication Properties
+↭Special Matrices
+↭Random Variables and Vectors
+
+
+===== PAGE 3 =====
+3/49
+Section 1
+Introduction to Linear Algebra
+Weeks 1&2
+
+
+===== PAGE 4 =====
+4/49
+Vector Spaces and Subspaces
+↭A vector space over a ﬁeld F (in this course, consider F to be
+only R) is a set V equipped with operations
++ : V →V ↑V ,
+· : F →V ↑V ,
+satisfying the vector space axioms (associativity,
+commutativity of addition, distributivity, etc.).
+↭For all u, v ↓V and ω ↓F:
+u + v ↓V ,
+ωv ↓V .
+↭A subset W ↔V is a subspace if it is nonempty and closed
+under addition and scalar multiplication:
+u, v ↓W , ω ↓F
+↗
+u + v ↓W , ωu ↓W .
+↭The dimension of V is the cardinality of any basis of V ; it
+represents the number of linearly independent directions in the
+space.
+
+
+===== PAGE 5 =====
+5/49
+Vector Spaces and Subspaces
+↭The vector space Rm consists of all column vectors with m
+elements.
+↭For a set of vectors C = {c1, c2, . . . , cn | ci ↓Rm }, we can
+deﬁne a subspace spanned by this set, denoted by span(C). It
+is the set of all the possible linear combinations of elements of
+C. v = a1c1 + a2c2 + · · · ancn.
+↭If the set of vectors that span a subspace are independent
+they are called a basis. b1, b2, . . . , bk ↓Rm. The number of
+basis vectors deﬁne the dimensionality of the subspace.
+Q: What can be said about n, k, m?
+
+
+===== PAGE 6 =====
+6/49
+Vector Spaces and Subspaces
+↭The vector space Rm consists of all column vectors with m
+elements.
+↭For a set of vectors C = {c1, c2, . . . , cn | ci ↓Rm }, we can
+deﬁne a subspace spanned by this set, denoted by span(C). It
+is the set of all the possible linear combinations of elements of
+C. v = a1c1 + a2c2 + · · · ancn.
+↭If the set of vectors that span a subspace are independent
+they are called a basis. b1, b2, . . . , bk ↓Rm. The number of
+basis vectors deﬁne the dimensionality of the subspace.
+Q: What can be said about n, k, m?
+A: The number of independent vectors cannot exceed the number
+provided or the ambient dimension:
+k ↘n
+and
+k ↘m,
+so k ↘min(n, m).
+
+
+===== PAGE 7 =====
+7/49
+Vector Spaces and Subspaces
+↭Let U be a subspace of Rm. Deﬁned by the basis
+b1, b2, . . . , bk. Then v ↓U ≃↗v = a1b1 + a2b2 + · · · akbk.
+↭In R3, the types of subspaces: a line through origin (1
+dimensional), a plane passing from the origin (2 dimensional),
+the zero vector.
+examples
+origin always
+contained
+
+
+===== PAGE 8 =====
+8/49
+Inner Product
+An inner product ! is an operation deﬁned on a vector space V ,
+such that ! : V →V ↑R and satisﬁes certain properties. It is
+represented by ⇐·, ·⇒.
+The vector space V , along with an inner product, deﬁnes an inner
+product space.
+In machine learning applications, we usually use inner product to
+measure the similarity between two vectors.
+V may consist of real or complex vectors but during the course you
+may assume that we always work with real vectors in Rn.
+geometrically5p.is Y5i.l
+were
+compare to
+cosine
+similarity
+
+
+===== PAGE 9 =====
+9/49
+Inner Product Properties
+Let x, y ↓Rn, a, b ↓R
+↭⇐x, y⇒= ⇐y, x⇒
+↭Linearity: ⇐x, ay + bz⇒= a⇐x, y⇒+ b⇐x, z⇒
+↭Positive Deﬁniteness:
+x ⇑= 0 ↗⇐x, x⇒> 0
+x = 0 ≃↗⇐x, x⇒= 0
+If x ⇑= 0, ⇐x, x⇒> 0
+↭Bilinearity: Being linear in each argument separately,
+⇐x + y, z⇒= ⇐x, z⇒+ ⇐y, z⇒
+⇐x, y + z⇒= ⇐x, y⇒+ ⇐x, z⇒
+↭Useful Corollary: ⇐x + y, x + y⇒= ⇐x, x⇒+ 2⇐x, y⇒+ ⇐y, y⇒
+not given
+inner product is general
+multiplying ant
+
+
+===== PAGE 10 =====
+10/49
+Scalar Product/Dot Product
+Let x, y ↓Rn
+Notation: x · y; ⇐x, y⇒; xTy ↓R
+Scalar product is deﬁned between two vectors which has the same
+number of elements (both are in Rn) and produces a scalar. One
+can deﬁne several types of inner products for Rn.
+yTx =
+n
+!
+i=1
+yixi
+The dot product is the most popular inner product in Rn because
+of its relation to the Euclidean Norm. In the course, the professors
+usually use the inner product notation to refer to the dot product.
+dot scalar product
+is specifin
+inner product
+that hasenclider norm
+
+
+===== PAGE 11 =====
+11/49
+Euclidean Norm
+A norm can be thought as a way of measuring distance from the
+origin. It is a function Rn ↑R and is denoted by ⇓· ⇓. There are
+di”erent ways to deﬁne a norm.
+Each inner product deﬁnes a canonical norm
+"
+⇐x, x⇒. We can
+deﬁne the Euclidean norm using the dot product.
+"
+⇐x, x⇒=
+⇔
+xTx = ⇓x⇓2 =
+#
+$
+$
+%
+n
+!
+i=1
+x2
+i
+p-Norm: It is a generalization of the Euclidean Norm.
+⇓x⇓p =
+p
+#
+$
+$
+%
+n
+!
+i=1
+|xi|p
+and
+as norm
+
+
+===== PAGE 12 =====
+12/49
+Euclidean Norm
+Exercise Let’s compute 1,2 and 3 norm for the vector x =
+
+
+3
+↖2
+6
+
+
+let's not
+
+
+===== PAGE 13 =====
+13/49
+Norm Properties
+↭Positive Deﬁniteness: If x ⇑= 0, ⇓x⇓> 0
+↭Triangle Inequality : ⇓x + y⇓↘⇓x⇓+ ⇓y⇓
+↭Cauchy-Schwarz Inequality: | x · y |↘⇓x⇓.⇓y⇓
+↭Euclidean (L2) Norm: ⇐x, y⇒= yTx = ⇓x⇓2⇓y⇓2 cos ε
+Figure: Angle Between Vectors From Wikipedia/Dot Product
+for all norms
+or just euclidean
+distanes work
+as expected
+
+
+===== PAGE 14 =====
+14/49
+Image of a Matrix
+↭Matrix Multiplication is a linear combination of the columns
+of a matrix. c1, c2, . . . , cn ↓Rm.
+
+
+|
+|
+|
+c1
+c1
+· · ·
+cn
+|
+|
+|
+
+
+m→n
+
+
+x1
+x2
+·
+·
+xn
+
+
+= x1c1 + x2c2 + · · · xncn
+↭Hence there is a subspace spanned by the columns of a matrix.
+We call this subspace the Image or the Column Space of the
+matrix. Denoted by Im(A) mostly during the course.
+↭I recommend checking this Medium post
+https://ghenshaw-work.medium.com/3-ways-to-understand-
+matrix-multiplication-fe8a007d7b26
+worth
+it
+
+
+===== PAGE 15 =====
+15/49
+Rank of a Matrix
+Rank of a matrix (r) is the dimensionality of its Column Space.
+Assume we have A ↓Rm→n.
+↭What are the bounds on its rank?
+↭How to ﬁnd a basis for the column space?
+r
+min n m
+gaussian elimination
+
+
+===== PAGE 16 =====
+16/49
+Rank of a Matrix
+Rank of a matrix (r) is the dimensionality of its Column Space.
+Assume we have A ↓Rm→n.
+↭What are the bounds on its rank? r ↘n and r ↘m
+↗r ↘min(m, n)
+If r = min(m, n), it is called full-rank.
+↭How to ﬁnd a basis for the column space? Pick r independent
+columns!
+
+
+===== PAGE 17 =====
+17/49
+Subspaces of a Matrix
+A general matrix A ↓Rm→n deﬁnes 4 fundemental subspaces.
+↭Column Space ↔Rm ( r dimensional): {b | Ax = b}
+↭Null Space ↔Rn ( n ↖r dimensional): {x | Ax = 0}
+↭Row Space ↔Rn ( r dimensional): {b | ATx = b}
+↭Left Null Space ↔Rm ( m ↖r dimensional): {x | ATx = 0}
+Why do the column space and the row space have the same
+dimension?
+proving this
+is annoying
+gasssion
+champ
+row spans
+transpose
+
+
+===== PAGE 18 =====
+18/49
+Row Rank vs. Column Rank (Part I)
+Goal. Show that the row space and column space of A have the
+same dimension.
+Let A be an m →n matrix and let R be its row–reduced echelon
+form. Then R = EA for some invertible matrix E.
+↭Row operations do not change the row space.
+↭Therefore the nonzero rows of R form a basis for the row
+space.
+↗
+dim(Row(A)) = number of pivot rows of R = r.
+
+
+===== PAGE 19 =====
+19/49
+Row Rank vs. Column Rank (Part II)
+Key fact. If R = EA with E invertible, then column independence
+is preserved:
+c1(Ea1) + · · · + cn(Ean) = 0 ≃↗c1a1 + · · · + cnan = 0.
+↭Pivot columns of R are linearly independent.
+↭By the fact above, the corresponding columns of A are also
+independent.
+↭Every other column of A is a linear combination of these pivot
+columns.
+↗
+dim(Col(A)) = number of pivot columns of R = r.
+↫
+dim(Row(A)) = dim(Col(A)) = r.
+
+
+===== PAGE 20 =====
+20/49
+Orthogonal Subspaces
+Subspaces V and W are orthogonal when vTw = 0 for all v ↓V
+and w ↓W .
+The row space Row(A) is the orthogonal complement of the null
+space Null(A).
+↭Row(A) + Null(A) = Rn.
+↭Similarly, Column(A) + Null(AT) = Rm.
+
+
+===== PAGE 21 =====
+21/49
+Orthogonality of Subspaces
+Simply, if ATx = b, Ay = 0 for some x, y, b. Then b needs to be
+orthogonal to y.
+Proof:
+bT = xTA
+bTy = xTAy
+= xT(Ay) = 0
+Is this enough to show the two spaces are complements of each
+other?
+by
+0
+meaning of this
+Only orthogonal spaces
+not yet complement
+as dimensions
+might be missing
+
+
+===== PAGE 22 =====
+22/49
+Orthogonality of Subspaces
+Simply, if ATx = b, Ay = 0 for some x, y, b. Then b needs to be
+orthogonal to y.
+Proof:
+bT = xTA
+bTy = xTAy
+= xT(Ay) = 0
+Is this enough to show the two spaces are complements of each
+other?
+No! But every vector orthogonal to the row space must be in the
+null space. This gives the complement property.
+
+
+===== PAGE 23 =====
+23/49
+Section 2
+Matrix Properties and Special Matrices
+Week 2
+
+
+===== PAGE 24 =====
+24/49
+Invertible Matrices
+Intuition: Remember the classical problem Ax = b. For a matrix
+A ↓Rm→n to be invertible Ax = b needs to have exactly one
+solution for each b.
+Which is only possible if the columns of A are all independent,
+and they can span the entire space Rm. What does this imply?
+
+
+===== PAGE 25 =====
+25/49
+Invertible Matrices
+Intuition: Remember the classical problem Ax = b. For a matrix
+A ↓Rm→n to be invertible Ax = b needs to have exactly one
+solution for each b.
+Which is only possible if the columns of A are all independent,
+and they can span the entire space Rm. What does this imply?
+↭A needs to be a square matrix. A ↓Rn→n
+↭A has to be full rank r = n.
+↭The inverse is shown by A↑1, then x = A↑1b.
+What to do if A is rectangular?
+moon
+penrose
+
+
+===== PAGE 26 =====
+26/49
+Invertible Matrix Properties
+Let A ↓Rn→n be an invertible matrix,
+↭The columns and rows of A span Rn.
+↭The columns of rows of A are independent.
+↭Determinant of A is non-zero.
+↭A↑1A = AA↑1 = I ↑There is no di”erent left-right inverses.
+↭(kA)↑1 = 1
+k A↑1
+↭det(A↑1) =
+1
+det A
+↭(AB)↑1 = B↑1A↑1
+A full list
+https://mathworld.wolfram.com/InvertibleMatrixTheorem.html.
+why
+
+
+===== PAGE 27 =====
+27/49
+Orthogonal Matrices
+Orthogonal matrices are a special case of invertible matrices whose
+columns q1, q2, . . . , qn are all orthogonal to each other and of unit
+length.
+qT
+i qj = 0,
+↙i, j
+qT
+i qi = 1,
+↙1 ↘i ↘n
+The columns q1, q2, . . . , qn form an orthonormal basis for Rn.
+Q =
+
+
+|
+|
+|
+q1
+q2
+· · ·
+qn
+|
+|
+|
+
+
+What can you say about the rows of an orthogonal matrix?
+Orthonormal
+will also be orthogonal
+why
+
+
+===== PAGE 28 =====
+28/49
+Orthogonal Matrices
+Let Q ↓Rn→n be an orthogonal matrix.
+↭QT = Q↑1
+↭QQT = QTQ = I
+↭Any vector y ↓Rn can be written as Qx = y for some y.
+↭They preserve the dot-product ⇐x, y⇒= ⇐Qx, Qy⇒.
+↭Examples:
+R =
+cos ε
+↖sin ε
+sin ε
+cos ε
+
+,
+P =
+
+
+1
+0
+0
+0
+0
+1
+0
+1
+0,
+
+,
+Rx =
+1
+0
+0
+↖1
+
+and
+I
+intuition
+intuition genetic
+
+
+===== PAGE 29 =====
+29/49
+Non-Invertible Matrices - Moore–Penrose inverse
+Moore–Penrose inverse is a popular generalization of the matrix
+inverse. It is the solution to the general least squares problem
+⇓Ax ↖b⇓2
+For full-rank matrices r = min(m, n), the pseudo-inverse can be
+calculated easily (otherwise you need SVD).
+↭Left pseudo inverse r = n (A+A = In→n): A+ = (ATA)↑1AT
+↭Right pseudo inverse r = m (AA+ = Im→m):
+A+ = AT(AAT)↑1
+
+
+===== PAGE 30 =====
+30/49
+Trace Of A Matrix
+Deﬁnition: Trace of a square matrix A ↓Rn→n is the sum of its
+diagonal elements.
+tr(A) =
+N
+!
+i=1
+aii
+Trace has many useful properties.
+↭It is equal to the sum of the eigenvalues of a matrix. (If the
+matrix is diagonalizable ofc.)
+↭It is related to the derivative of the determinant as well as
+some matrix norms.
+a really goodYet
+sounter
+
+
+===== PAGE 31 =====
+31/49
+Trace Properties
+Let A ↓Rn→n, c ↓R
+↭Linearity: tr(c · A) = c · tr(A), tr(A + B) = tr(A) + tr(B)
+↭tr(A) = tr(AT)
+↭tr(AB) = tr(BA)
+Useful Corollaries:
+↭Cyclic Property: tr(ABC) = tr(CAB) = tr(BCA)
+↭tr(ATB) = tr(BTA) = tr(ABT) = tr(BAT)
+↭x · y = xTy = tr(xTy) = tr(xyT)
+not all reorderings
+ftp.ient.is
+stalar
+T
+Tenter
+couldbe useful
+
+
+===== PAGE 32 =====
+32/49
+Linear&A!ne Transformations
+A linear transformation f : V ↑W has the following properties.
+↭f (x) + f (y) = f (x + y)
+↭cf (x) = f (cx)
+We can represent a linear transformation via a matrix
+multiplication. f (x) = Ax.
+The transformation f (x) = Ax + b is called an A!ne
+Transformation.
+Bonus: What is the relation between W and A?
+Note: W here is the codomain of the transformation.
+origin shift
+tiniest
+W
+col A
+nicerway
+
+
+===== PAGE 33 =====
+33/49
+Orthogonal Projection
+Figure: Projection of a on b (a1), and rejection of a from b (a2). From
+Wikipedia/Vector Projection
+a1 = b · bTa
+bTb,
+a, b ↓Rn
+Orthogonal Composition: a = a1 + a2
+easily drie
+in
+Id 21
+Terrifies
+etc
+116112
+
+
+===== PAGE 34 =====
+34/49
+Orthogonal Projection
+a1 = b · bTa
+bTb. We can write this transformation as a matrix
+multiplication. P.a = b where
+P =
+1
+bTb · bbT,
+P ↓Rn→n
+How to generalize this to arbitrary subspaces?
+
+
+===== PAGE 35 =====
+35/49
+Orthogonal Projection
+We can also project a vector a to the column space/image of a
+matrix B ↓Rm→n.
+Goal: Separate a into two components such that one is in the
+column space of B, i.e aB = Bx for some x, and the other is
+orthognonal to the column space. a = aB + a↓,
+The remainder Bx ↖a has to be orthogonal to the column space.
+intuition
+
+
+===== PAGE 36 =====
+36/49
+Orthogonal Projection
+BT(Bx ↖a) = 0
+↗BTBx = BTa
+↗x = (BTB)↑1BTa
+(1)
+↗Bx = B(BTB)↑1BTa
+P = B(BTB)↑1BT
+Does Equation (1) seem familiar to you? Check out the
+Moore-Penrose Inverse!!
+Least
+squires
+
+
+===== PAGE 37 =====
+37/49
+Projection Matrices
+↭Deﬁnition: A square matrix P ↓Rn→n is called a projection
+matrix if it is equal to its square, i.e. if P2 = P. ↑
+Idempotence
+↭For orthogonal projection matrices P = PT. ↑Symmetric
+Matrices
+↭For oblique projection matrices P ⇑= PT.
+P1 =
+
+
+1
+0
+0
+0
+1
+0
+0
+0
+0
+
+,
+P2 =
+0
+0
+ω
+1
+
+What can eigenvalues of a projection matrix be?
+meaning
+1
+or 0
+tear at idempotent
+
+
+===== PAGE 38 =====
+38/49
+Eigenvalues and Eigenvectors
+A linear transformation rotates, stretches, or shears the vectors
+upon which it acts. Its eigenvectors are the vectors that are only
+stretched, without rotation or shear.
+Consider an nxn matrix A and a non-zero vector v of length n. If
+multiplying v by A simply scales v, then v is the eigenvector of A
+with the corresponding eigenvalue ϑ.
+Ax = ϑx
+
+
+===== PAGE 39 =====
+39/49
+Section 3
+Random Vectors
+Week 2
+
+
+===== PAGE 40 =====
+40/49
+Random Variables
+A random variable is a variable whose value depends on random
+events. For example, z may represent the outcome of a coin toss.
+The likelihood of each value is given by the probability density
+function p : R ↑R. We say the variable z is distributed by p.
+↔
+↑↔
+p(z)dz = 1
+Each random variable is characterized a mean E[z] and a variance
+Var(z).
+Ez↗p[z] =
+↔
+↑↔zp(z)dz
+Varz↗p(z) =
+E
+
+(z ↖E[z])2
+= E[z2] ↖E[z]2
+
+
+===== PAGE 41 =====
+41/49
+Uniform Distribution
+For a uniform distribution between [a, b], each value has equal
+likelihood in the interval and 0 likelihood if outside the interval.
+p(z) =
+
+1
+b↑a
+a ↘d ↘b
+0
+else
+Ez↗p[z] = 1
+2(a + b)
+Varz↗p(z) = 1
+12(b ↖a)2
+Figure: Uniform Distribution U[a, b]
+
+
+===== PAGE 42 =====
+42/49
+Expectation and Variance of U[a, b]
+For a uniform distribution on [a, b], the density is
+p(z) =
+1
+b ↖a,
+a ↘z ↘b.
+Expectation:
+E[z] =
+b
+a
+z p(z) dz =
+1
+b ↖a
+b
+a
+z dz =
+1
+b ↖a
+z2
+2
+b
+a
+= a + b
+2
+.
+Variance:
+Var(z) = E[z2] ↖(E[z])2.
+Compute E[z2]:
+E[z2] =
+1
+b ↖a
+b
+a
+z2 dz =
+1
+b ↖a
+z3
+3
+b
+a
+= b3 ↖a3
+3(b ↖a).
+Then
+Var(z) = b3 ↖a3
+3(b ↖a) ↖
+a + b
+2
+2
+= (b ↖a)2
+12
+.
+
+
+===== PAGE 43 =====
+43/49
+Random Vectors
+A random vector x ↓Rn is a vector whose each element is a
+random variable.
+Each of the elements can be distributed di”erently but the
+distributions usually belong to the same family, e.g a Gaussian.
+This allows deﬁning vector distributions such as a multivariate
+Gaussian.
+Usually, multivariate distributions are deﬁned by their means and
+covariance matrices.
+
+
+===== PAGE 44 =====
+44/49
+Random Vectors
+If x ↓RN is a random vector. Let x1, x2, . . . xN show its random
+elements.
+Mean E[x] ↓RN:
+E[x] = µx =
+
+
+E[x1]
+E[x2]
+·
+E[xN]
+
+
+
+
+===== PAGE 45 =====
+45/49
+Random Vectors
+If the random variable is centered, i.e µx = 0
+We have Var(xi) = E[x2
+i ] for ↙i = 1, . . . N
+Then we can represent the total variance N
+i=1 Var(xi) = E[xTx]
+E[xTx] = E[tr(xTx)]
+= E[tr(xxT)]
+= tr(E[xxT]) why
+allowed
+
+
+===== PAGE 46 =====
+46/49
+Random Vectors
+Let be x ↓RN a random vector, we can then deﬁne the covariance
+matrix such that each entry (i,j) of the covariance matrix
+corresponds to the covariance between the ith and jth element of
+the random vector x, Cov(xi, xj).
+↭Variance-Covariance: ↓RN→N
+Var(x) = Cov(x, x) = #x = E
+
+(x ↖E[x])(x ↖E[x])T
+= #x = E[xxT] ↖E[x]E[x]T
+↭If the vector is centered, simply #x = E[xxT].
+O
+O
+
+
+===== PAGE 47 =====
+47/49
+Estimation of The Mean and Covariance Matrices
+Let the set X = {X1, X2, . . . , XM} be known samples of a random
+vector x ↓RN.
+↭Sample Expectation: µX = Esmp[x] = 1
+M
+M
+i=1 Xi
+↭Sample Variance-Covariance Matrix:
+Cov(x, x)X = 1
+M
+M
+i=1(Xi ↖µX ) · (Xi ↖µX )T ↓RN→N
+monte Carlo estimate
+
+
+===== PAGE 48 =====
+48/49
+Estimation of The Mean and Covariance Matrices
+For ease of calculations we can construct a centered samples
+matrix out of the samples such that, ¯Xi = Xi ↖µX , X ↓RN→M
+X =
+
+
+|
+|
+· · ·
+|
+¯X1
+¯X2
+· · ·
+¯XM
+|
+|
+· · ·
+|
+
+
+Then the covariance matrix is just
+Var(x) = 1
+M XX T
+derivation
+
+
+===== PAGE 49 =====
+49/49
+References
+↭G. Strang, Introduction to linear algebra. Wellesley-Cambridge
+Press, 2016.
+↭M. T. Heath, Scientiﬁc computing: An Introductory Survey,
+Revised Second Edition. SIAM, 2018.
+↭Mathematics for Machine Learning by Deisenroth, A. Aldo
+Faisal, and Cheng Soon Ong.

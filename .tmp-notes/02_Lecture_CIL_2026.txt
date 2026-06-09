@@ -1,0 +1,941 @@
+
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Lecture 2
+Valentina Boeva
+ETH Zurich – https:
+//moodle-app2.let.ethz.ch/course/view.php?id=27126
+27 February 2026
+1/41
+
+
+===== PAGE 2 =====
+2/41
+Reminder from last week:
+↭We study the problem of dimensionality reduction
+Rn →Rm, m ↑n by considering a linear autoencoder:
+↭We minimize R = 1
+2E↓x ↔Px↓2
+↭rank(P) ↗m
+↭The decomposition P = VW is not unique;
+↭When data are centered (Ex = 0), a!ne maps cannot obtain
+better reconstruction than linear ones in autoencoders.
+loss
+1element
+risk
+expectationofloss
+Tfall data
+empiricalrisk
+approx using
+datasample
+same as maximizingvariance
+
+
+===== PAGE 3 =====
+3/41
+Plan for Today
+↭Projections to linear subspace U are optimal in terms of the
+squared loss
+↭Representations of projections as projection matrix P
+↭Optimal decompositions of P
+↭What is the optimal subspace U?
+
+
+===== PAGE 4 =====
+4/41
+Section 3
+Dimension Reduction:
+Projection
+
+
+===== PAGE 5 =====
+5/41
+Optimal Reconstruction Map
+Goal: min
+→1
+2E↓x ↔Px↓2, s.t. rank(P) ↗m.
+Note that the rank limitation on P is independent of the loss
+function and so is the lack of identiﬁability of its factorization
+(P = VW).
+Rank constraint + linearity
+=↘
+im(P) is a linear subspace U ≃Rn of dimension ↗m.
+
+
+===== PAGE 6 =====
+6/41
+Optimal Reconstruction Map
+Goal: min
+→1
+2E↓x ↔Px↓2, s.t. rank(P) ↗m.
+We will break the solution into two parts:
+↭Find optimal subspace U ≃Rn of dimension ↗m
+↭Find optimal mapping
+P→= arg min
+P
+↓x ↔Px↓2 (⇐x ⇒Rn), s.t. im(P) = U
+for nowassure
+J usingthis
+we knewU
+
+
+===== PAGE 7 =====
+7/41
+Optimal Reconstruction Map
+(We will postpone the question of the optimal choice of U.)
+We will now ask:
+Q:
+Given U ≃Rn, dim(U) = m, can we determine the optimal linear
+map P→such that
+P→= arg min
+P
+↓x ↔Px↓2 (⇐x),
+subject to
+im(P) = U
+Trome
+
+
+===== PAGE 8 =====
+8/41
+Optimal Reconstruction Map
+A: !U deﬁned as
+!U : Rn →U,
+!U(x) = arg min
+x→↑U
+↓x ↔x↓↓.
+is an orthogonal projection Rn →U
+↭for each x ⇒Rn and each linear subspace U, !U(x) exists
+and is unique.
+Let’s prove it now, starting from the deﬁnition of projection!
+closest in subspace
+iiilipap
+a
+In
+thereforealso line
+in
+andsaw
+p
+
+
+===== PAGE 9 =====
+9/41
+Deﬁnition of Projection
+Let V be a vector space and U a subspace of V .
+A linear transformation P : V →V is called a projection onto U
+if, for every x ⇒V :
+1. Projection Property: P(x) ⇒U, meaning P(x) is an
+element of the subspace U.
+2. Idempotent Property: P(P(x)) = P(x) for all x ⇒V .
+like RestAPI
+
+
+===== PAGE 10 =====
+9/41
+Deﬁnition of Projection
+Let V be a vector space and U a subspace of V .
+A linear transformation P : V →V is called a projection onto U
+if, for every x ⇒V :
+1. Projection Property: P(x) ⇒U, meaning P(x) is an
+element of the subspace U.
+2. Idempotent Property: P(P(x)) = P(x) for all x ⇒V .
+A projection P : V →V is called orthogonal if:
+ker(P) ⇑im(P) ⇓↘⇔P(x), y↖= ⇔x, P(y)↖self-adjointness of P
+a
+a
+kettle
+p 5th
+
+
+===== PAGE 11 =====
+9/41
+Deﬁnition of Projection
+Let V be a vector space and U a subspace of V .
+A linear transformation P : V →V is called a projection onto U
+if, for every x ⇒V :
+1. Projection Property: P(x) ⇒U, meaning P(x) is an
+element of the subspace U.
+2. Idempotent Property: P(P(x)) = P(x) for all x ⇒V .
+A projection P : V →V is called orthogonal if:
+ker(P) ⇑im(P) ⇓↘⇔P(x), y↖= ⇔x, P(y)↖self-adjointness of P
+Otherwise, P is an oblique projection.
+inmad.tt
+l
+
+
+===== PAGE 12 =====
+10/41
+Idempotency of the Optimal Reconstruction Map
+A: Idempotency.
+!U : Rn →U,
+s.t.
+!U(x) = arg min
+x→↑U
+↓x ↔x↓↓
+is idempotent.
+Proof.
+For ⇐u ⇒U, !U(u) = arg minx→↑U ↓u ↔x↓↓= u
+In other words,
+For ⇐x ⇒Rn, !U(!U(x)) = !U(x)
+⇓↘
+!U ↙!U = !U
+at
+dont mon
+
+
+===== PAGE 13 =====
+11/41
+Orthogonality of the Optimal Reconstruction Map
+A: Orthogonality.
+!U : Rn →U,
+!U(x) = arg min
+x→↑U
+↓x ↔x↓↓.
+deﬁnes the only vector in U such that !U(x) ↔x ⇒U ↔.
+Proof.
+Let !U(x) ↔x = u + u↔with u ⇒U, u↔⇒U↔.
+Let u ∝= 0. Then
+↓!U(x) ↔x↓2 = ↓u↓2 + ↓u↔↓2 + 2 ⇔u, u↔↖
+! "# $
+=0
+> ↓u↔↓2 = ↓!U(x) ↔u
+!
+"#
+$
+=:x↑↑U
+↔x↓2
+which contradicts with:
+↓!U(x) ↔x↓= min
+x→↑U ↓x↓↔x↓↗↓x→↔x↓, ⇐x→⇒U
+Hence, !U(x) ↔x ⇒U ↔and !U(x) is unique.
+Kernel orthogondinge
+tkerTu
+Ta x
+8
+EE
+xen E.IE
+L
+assumecontradiction
+orthogonalto
+t.at
+tiniIgtinisenycatediiiint
+t
+uta
+an
+Canchange
+t
+un
+3
+pitagain
+met sam
+intitigsgoetric.lt
+me
+p
+the
+
+
+===== PAGE 14 =====
+12/41
+Linearity of the Optimal Reconstruction Map:
+Homogeneity
+A: !U is homogeneous
+!U(ωx) = arg min
+x→→↑U
+↓ωx ↔x↓↓↓= arg min
+ωx→↑U
+↓ωx ↔ωx↓↓
+(→)
+= ω arg min
+x→
+↓x ↔x↓↓= ω !U(x)
+where (→) uses the homogeneity of the norm (i.e. ↓ωx↓= |ω|↓x↓)
+and arg minωx→f(x↓) = ω arg minx→f(x↓).
+doesn't
+orthogonality
+linearity
+is alinear transformation
+p
+QX
+y
+ax
+arsmin
+
+
+===== PAGE 15 =====
+13/41
+Linearity of the Optimal Reconstruction Map:
+Additivity
+A: !U is additive
+!U(x + y) = arg min
+ε↑U
+↓ε ↔(x + y)↓
+ε=!U(x)+y→
+=
+arg min
+!U(x)+y→↑U
+↓(!U(x) + y↓) ↔(x + y)↓
+(→)
+= !U(x) + arg min
+y→↑U
+↓(!U(x) + y↓) ↔(x + y)↓
+= !U(x) + arg min
+y→↑U
+↓(y↓↔y) + (!U(x) ↔x)↓2
+= !U(x) + arg min
+y→↑U
+%
+↓(y↓↔y)↓2 + 2⇔!U(x) ↔x, y↓↖
+&
+= !U(x) + arg min
+y→↑U
+↓(y↓↔y)↓2 = !U(x) + !U(y)
+where (→) uses arg miny→+ω f(y↓) = ω + arg miny→f(y↓).
+interestingwayof proving this
+reparenetrice
+multiply out
+men
+tents
+tryst start
+Tt
+equalto 0
+
+
+===== PAGE 16 =====
+14/41
+Optimal Reconstruction = Projection
+We showed that !U : Rn →U deﬁned as
+!U(x) = arg minx→↑U ↓x ↔x↓↓
+is an orthogonal projection (linear, idempotent, orthogonal
+mapping).
+
+
+===== PAGE 17 =====
+14/41
+Optimal Reconstruction = Projection
+We showed that !U : Rn →U deﬁned as
+!U(x) = arg minx→↑U ↓x ↔x↓↓
+is an orthogonal projection (linear, idempotent, orthogonal
+mapping).
+!U(x) can be represented by a projection matrix P: !U(x) = Px
+For given subspace U, the optimal reconstruction map is the
+orthogonal projection !U into U represented by a projection
+matrix P.
+The optimal linear autoencoder represents a projection.
+
+
+===== PAGE 18 =====
+14/41
+Optimal Reconstruction = Projection
+We showed that !U : Rn →U deﬁned as
+!U(x) = arg minx→↑U ↓x ↔x↓↓
+is an orthogonal projection (linear, idempotent, orthogonal
+mapping).
+!U(x) can be represented by a projection matrix P: !U(x) = Px
+For given subspace U, the optimal reconstruction map is the
+orthogonal projection !U into U represented by a projection
+matrix P.
+The optimal linear autoencoder represents a projection.
+Properties of P ⇒Rn↗n: idempotency P2 = P, symmetry
+(self-adjointness) P = P↘and ⇔Px, y↖= ⇔x, Py↖.
+Timplie
+symmetric
+PxJyxtpty
+key properties torememberforexan
+P PT
+
+
+===== PAGE 19 =====
+15/41
+Matrix Representation of Projections
+Q: How can we explicitly represent projections as matrices and
+what representation can we extract from a solution of the
+autoencoder?
+
+
+===== PAGE 20 =====
+16/41
+Example: Projection to a Line
+Orthogonal projection to the line corresponding to the unit vector
+u can be represented as the matrix
+Pu = uu↘,
+↓u↓2 = ⇔u, u↖= 1.
+Note that by associativity
+Pux = (uu↘)x = u(u↘x) = ⇔u, x↖u.
+The inner product represents the signed length of the projected
+vector
+↓Pux↓= |⇔u, x↖| = | cos ↫(u, x)| ↓x↓↗↓x↓.
+11 subspeau
+unit vector
+p is symmetric
+in
+eutrriitp.IT i ijnd projection
+scalar
+linear inu.hr pidait
+1111.1111 ios cuts
+boundedby
+Teg
+originalvector
+
+
+===== PAGE 21 =====
+17/41
+Orthogonal Projection Matrix
+A: For any linear subspace U ≃Rn, pick an orthonormal basis
+{u1, . . . um} and deﬁne
+P = UU↘,
+U =
+'
+u1
+. . .
+um
+(
+,
+Px =
+m
+)
+i=1
+⇔ui, x↖ui .
+Then P is a matrix representation of the orthogonal projection !U.
+Self Adjointness (Symmetry)
+P↘= (UU↘)↘= (U↘)↘U↘= UU↘= P
+Idempotency
+PP = U U↘U
+! "# $
+=Im
+U↘= UU↘= P
+unit
+basisactors ascols
+projection
+sumofmrank 1 matices
+Tar
+projetin
+why
+dotproduct
+iththerekhasandan
+orthonormal
+1
+or 0
+I
+
+
+===== PAGE 22 =====
+18/41
+Orthogonal Projection Matrix
+The above proposition gives an explicit representation of the
+projection matrix for a subspace U via choice of an orthonor-
+mal basis (non-unique).
+mm
+mm
+
+
+===== PAGE 23 =====
+19/41
+Autoencoder Projection Matrix
+Q: Is the autoencoder projection matrix an orthogonal projection
+matrix represented in orthonormal form?
+A: No. Optimal P = VW is a projection matrix, yet it may not
+be represented in orthonormal form.
+A: Yes. With parameter sharing, i.e. V = W↘, so that P = VV↘
+The optimal weight matrix of the autoencoder with tied pa-
+rameter matrices V = W↘is semi-orthgonal.
+added constraint
+www.es aietEiE ii4Iaait
+
+
+===== PAGE 24 =====
+20/41
+Autoencoder Projection Matrix
+Q: What will the optimal weight matrices of the autoencoder
+represent without parameter tying?
+In a non-orthonormal basis {v1, . . . , vm} for U one can recover the
+projection matrix:
+A: Deﬁne V = [v1 . . . vm] with linearly independent vectors, then
+P = VV+,
+V+ :=
+*
+V↘V
++≃1
+V↘,
+is the projection matrix for the subspace U = span{v1, . . . , vm}.
+Note, V+ is the left Moore-Penrose pseudo-inverse of V.
+inertible
+
+
+===== PAGE 25 =====
+21/41
+Autoencoder Projection Matrix
+A: Deﬁne V = [v1 . . . vm] with linearly independent vectors, then
+P = VV+,
+V+ :=
+*
+V↘V
++≃1
+V↘,
+is the projection matrix for the subspace U = span{v1, . . . , vm}.
+Proof.
+1. Idempotency.
+P2 = V(V↘V)≃1(V↘V)(V↘V)≃1V↘= P.
+2. P is the projection matrix of U.
+PV = VV+V = V[(V↘V)≃1V↘]V = V
+The rank constraint implies rank(P) = dim(U), which yields
+the claim.
+I­TT
+E
+1 the
+
+
+===== PAGE 26 =====
+22/41
+Autoencoder Projection Matrix
+A: Deﬁne V = [v1 . . . vm] with linearly independent vectors, then
+P = VV+,
+V+ :=
+*
+V↘V
++≃1
+V↘,
+is the orthogonal projection matrix into U = span{v1, . . . , vm}.
+Proof.
+↭Symmetry of P.
+P↘= (V(V↘V)≃1V↘)↘= V(V↘V)≃1V↘= P
+
+
+===== PAGE 27 =====
+22/41
+Autoencoder Projection Matrix
+A: Deﬁne V = [v1 . . . vm] with linearly independent vectors, then
+P = VV+,
+V+ :=
+*
+V↘V
++≃1
+V↘,
+is the orthogonal projection matrix into U = span{v1, . . . , vm}.
+Proof.
+↭Symmetry of P.
+P↘= (V(V↘V)≃1V↘)↘= V(V↘V)≃1V↘= P
+The projection with P = VV+ of any vector x ⇒Rn onto the
+subspace spanned by the columns of V minimizes the Euclidean
+distance between the vector and its projection.
+
+
+===== PAGE 28 =====
+23/41
+Autoencoder Projection Matrix
+A simple corollary to that is: for any V
+V+ = arg min
+W
+R(W, V),
+R(W, V) = 1
+2E↓x ↔VWx↓2 .
+This means that for any basis (columns of V) of some subspace U,
+we can determine the correct projection.
+Given V, the optimal choice of W will be the left pseudo-
+inverse of V.
+
+
+===== PAGE 29 =====
+24/41
+Na¨ıve Random Projections; sklearn.datasets digits
+X = np.transpose(load_digits ().data -load_digits ().data
+.mean(axis = 0)) # load and center the data
+(n,N)=X.shape
+m=20 #Set the
+dimensions of the
+bottleneck to 20:
+# choice #1: random
+entries
+V1 = np.random.rand(n,m)
+# choice #2: random
+patterns (here: first m columns of
+data
+matrix)
+V2 = X[:,:m]
+# optimal
+choice for W
+W1 = np.linalg.pinv(V1); W2 = np.linalg.pinv(V2)
+>> Pseudo
+inverse , random
+projection , MSE = 13.48
+>> Pseudo
+inverse , random
+data columns , MSE = 4.3994
+Thomas
+hettmann
+Try
+data
+
+
+===== PAGE 30 =====
+24/41
+Na¨ıve Random Projections; sklearn.datasets digits
+X = np.transpose(load_digits ().data -load_digits ().data
+.mean(axis = 0)) # load and center the data
+(n,N)=X.shape
+m=20 #Set the
+dimensions of the
+bottleneck to 20:
+# choice #1: random
+entries
+V1 = np.random.rand(n,m)
+# choice #2: random
+patterns (here: first m columns of
+data
+matrix)
+V2 = X[:,:m]
+# optimal
+choice for W
+W1 = np.linalg.pinv(V1); W2 = np.linalg.pinv(V2)
+>> Pseudo
+inverse , random
+projection , MSE = 13.48
+>> Pseudo
+inverse , random
+data columns , MSE = 4.3994
+>> V3 = eigs(np.matmul(X,np.transpose(X)), k=m)[1]
+gives MSE = 1.9843
+smallest
+we
+can
+get
+optimal subspae
+
+
+===== PAGE 31 =====
+25/41
+Optimal Reconstruction Map - Recap
+Goal: min
+→1
+2E↓x ↔Px↓2, s.t. rank(P) ↗m.
+We break the solution into two parts:
+↭Find optimal subspace U ≃Rn of dimension ↗m
+↭Find optimal mapping into U:
+P→= arg minP:im(P)=U ↓x ↔Px↓2 (⇐x ⇒Rn)
+
+
+===== PAGE 32 =====
+25/41
+Optimal Reconstruction Map - Recap
+Goal: min
+→1
+2E↓x ↔Px↓2, s.t. rank(P) ↗m.
+We break the solution into two parts:
+↭Find optimal subspace U ≃Rn of dimension ↗m
+↭Find optimal mapping into U:
+P→= arg minP:im(P)=U ↓x ↔Px↓2 (⇐x ⇒Rn)
+Solutions:
+↭
+P = UU→,
+U =
+'u1
+. . .
+um
+(
+,
+where {u1, . . . , um} is an orthonormal basis of U
+↭
+P = VV+,
+V =
+'v1
+. . .
+vm
+(
+,
+where {v1, . . . , vm} is a non-orthonormal basis of U
+show P doesnt change it
+different
+
+
+===== PAGE 33 =====
+26/41
+Section 4
+Dimension Reduction:
+Principal Component Analysis
+
+
+===== PAGE 34 =====
+27/41
+Key Question
+The optimal autoencoder solution will implement a projection to a
+subspace of dimension m (or less), possibly parameterized in form
+VV+.
+Yet, we are left with the key question:
+Q: Which subspaces U are optimal to project onto?
+
+
+===== PAGE 35 =====
+28/41
+Problem Formulation
+With the exception of centering, we have not made reference to
+the data law ϑ.
+We took this route on purpose as it allows us to understand what
+the structure of the model and the choice of objective already
+implies a priori about its solutions.
+Remaining question: analyze and solve
+min
+→1
+2E↓x ↔Px↓2,
+P = UU↘projection matrix.
+
+
+===== PAGE 36 =====
+29/41
+Bringing out the Total Variance
+Rewrite the objective, using self-adjointness and idempotency of P:
+R(P) = 1
+2E↓x ↔Px↓2 = 1
+2 E↓x↓2
+! "# $
+const
++ 1
+2E↓Px↓2 ↔E⇔x, Px
+!"#$
+=P2x
+↖
+= 1
+2E↓x↓2 + 1
+2E↓Px↓2 ↔E⇔Px, Px↖
+= 1
+2E↓x↓2 ↔1
+2E↓Px↓2
+A: For centered data (i.e., Ex = 0), the squared loss of a
+projection matrix P is
+R(P) = 1
+2(Var[x]
+! "# $
+const
+↔Var[Px])
+This follows from
+Var[x] = E↓x↓2 ↔↓Ex
+!"#$
+=0
+↓2
+Var[Px] = E↓Px↓2 ↔↓EPx
+! "# $
+=PEx=0
+↓2
+writtenat
+ECGPY
+symetic
+E CPX Pxs why
+Tax
+varianeofPx
+E IPXII
+ECHX E 311
+E
+x EG
+x E
+E CHXAECECX
+entered
+211113112
+linearity
+
+
+===== PAGE 37 =====
+30/41
+Variance Maximization
+For centered data, the optimal linear autoencoder represents
+the projection P that maximizes the total variance of the
+projected data.
+
+
+===== PAGE 38 =====
+30/41
+Variance Maximization
+For centered data, the optimal linear autoencoder represents
+the projection P that maximizes the total variance of the
+projected data.
+intuition
+variae
+spread ofdate
+reddots
+
+
+===== PAGE 39 =====
+31/41
+Su!cient Statistics
+Q: What is a su!cient statistics for R(P) = ↔1
+2Var[Px] for the
+centered data?
+A: The data variance-covariance matrix E[xx↘] is a su!cient
+statistics for R(P) and
+R(P) = ↔1
+2 tr(PE[xx↘]) .
+summaries allthe
+information we avail
+to know
+
+
+===== PAGE 40 =====
+32/41
+Su!cient Statistics
+A: The data variance-covariance matrix E[xx↘] is a su!cient
+statistics for R(P) = ↔1
+2Var[Px] and
+R(P) = ↔1
+2 tr(PE[xx↘]) .
+Proof.
+Make use of trace operator:
+(0) ⇔x, y↖= x↘y = tr(x↘y)
+(1) linear (commutes with E), tr(ωA + ϖB) = ω tr(A) + ϖ tr(B)
+(2) invariant under cyclic permutations, tr(ABC) = tr(CAB)
+Var[Px] = E⇔x, Px↖= E tr(x↘Px)
+= E tr(Pxx↘) = tr(E[Pxx↘]) = tr(P E[xx↘]
+! "# $
+su!. stat.
+).
+trees prop
+need toknow forexam
+why
+why
+notanyperratton
+Cypertinitation
+despitedimensions chapel
+definitionfrom
+before
+liner
+Toliner
+isthisofficalterm
+
+
+===== PAGE 41 =====
+33/41
+Su!cient Statistics
+We showed that for centered data,
+1
+2E↓x ↔Px↓2 = 1
+2 Var[x]
+! "# $
+const
+↔1
+2Var[Px] = 1
+2Var[x] ↔1
+2 tr(PE[xx↘])
+The optimal projection is fully determined by the covariance
+matrix of the data, i.e. E[xx↘] are su!cient statistics (to-
+gether with E[x] used in centering).
+estimate coverian retrit fromdate
+EH 0
+E
+xx
+I Exixit
+Xxt
+e
+x Ext I
+x̅ Esx
+hearfrom approtimiting
+neem 1degreeofuel
+
+
+===== PAGE 42 =====
+33/41
+Su!cient Statistics
+We showed that for centered data,
+1
+2E↓x ↔Px↓2 = 1
+2 Var[x]
+! "# $
+const
+↔1
+2Var[Px] = 1
+2Var[x] ↔1
+2 tr(PE[xx↘])
+The optimal projection is fully determined by the covariance
+matrix of the data, i.e. E[xx↘] are su!cient statistics (to-
+gether with E[x] used in centering).
+The sample covariance matrix can be written as:
+ˆ! =
+1
+N ↔1(X ↔¯X)↘(X ↔¯X) ,
+where ¯X is the vector of sample means before centering.
+basel conection
+
+
+===== PAGE 43 =====
+34/41
+Principal Components
+Q: How does the optimal projection relate to the data covariance
+matrix?
+PCA Theorem
+The rank m projection optimizing the squared reconstruction
+loss on centered data is given by the projection matrix formed
+by m orthogonal, principal eigenvectors of E[xx↘].
+We will work towards this result in Lecture 3.
+
+
+===== PAGE 44 =====
+35/41
+Take-home message 1
+We study the problem of dimensionality reduction
+Rn →Rm, m ↑n by considering a linear autoencoder with weight
+matrices W ⇒Rm↗n and V ⇒Rn↗m
+↭Rank constraint on P = VW and linearity imply that im(P)
+is a linear subspace U ≃Rn of dimension ↗m
+
+
+===== PAGE 45 =====
+36/41
+Take-home message 2
+If we know this optimal subspace U ≃Rn of dimension ↗m:
+↭The optimal mapping !U : Rn →U that minimizes the
+squared loss
+!U(x) = arg min
+x→↑U
+↓x ↔x↓↓2 (⇐x ⇒Rn)
+is an orthogonal projection into U and can be represented by
+an orthogonal projection matrix P, rank(P) = dim(U).
+
+
+===== PAGE 46 =====
+37/41
+Take-home message 3
+If we know this optimal subspace U ≃Rn of dimension ↗m:
+↭The matrix P representing the orthogonal projection into U
+can be deﬁned as: P = UU↘or P = VV+ with U
+composed of {u1, . . . , um}, an orthonormal basis of U, or V
+composed of {v1, . . . , vm}, a non-orthonormal basis of U.
+
+
+===== PAGE 47 =====
+38/41
+Take-home message 4
+↭Minimizing the squared loss for centered data 1
+2E↓x ↔Px↓2
+is equivalent to maximizing Var[Px] (i.e., the total variance of
+Px) or, equvivalently, tr(PE[xx↘]).
+↭The optimal projection is fully determined by the covariance
+matrix of the data, E[xx↘], i.e., E[xx↘] is a su!cient
+statistic.
+
+
+===== PAGE 48 =====
+39/41
+Next lecture
+↭PCA Theorem
+↭Eigenvectors of Symmetric Matrices
+↭Learning Algorithms
+↭Matrix methods
+↭Power Method
+↭Stochastic Gradient Descent
+↭Note on non-linear Autoencoders
+
+
+===== PAGE 49 =====
+40/41
+Homework
+Refresh your knowledge of linear algebra and matrix calculus via
+attending the refresh-my-background class on Thursday
+
+
+===== PAGE 50 =====
+41/41
+Self-check questions
+↭What are the properties of a matrix representing a projection?
+↭What are the properties of a matrix representing an
+orthogonal projection?
+↭For a projection map P, prove the equivalence
+ker(P) ⇑im(P) ⇓↘⇔P(x), y↖= ⇔x, P(y)↖
+↭How to estimate the covariance matrix from data
+X = {x1, ..., xN}?
+↭Why is the covariance matrix a su!cient statistic to minimize
+1
+2E↓x ↔Px↓2

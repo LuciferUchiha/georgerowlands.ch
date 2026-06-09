@@ -1,0 +1,610 @@
+
+===== PAGE 1 =====
+1/18
+Computational Intelligence Lab
+Week 5 - Preparation Session
+Diego Rivera Garrido
+ETH Zurich – cil.inf.ethz.ch
+19 March 2026
+
+
+===== PAGE 2 =====
+2/18
+Overview
+Lagrange multipliers
+Singular value decomposition
+Matrix norms
+
+
+===== PAGE 3 =====
+3/18
+Lagrange multipliers
+
+
+===== PAGE 4 =====
+4/18
+How would you solve this?
+minimise
+f (x, y) = x2 + y2
+subject to
+x + y = 10
+draw it aril levelsets
+
+
+===== PAGE 5 =====
+5/18
+How about this?
+maximise
+f (x, y) = x + y
+subject to
+x2 + y2 = 18
+this is harder
+netliver
+constraint
+
+
+===== PAGE 6 =====
+5/18
+How about this?
+maximise
+f (x, y) = x + y
+subject to
+x2 + y2 = 18
+Why is it harder?
+
+
+===== PAGE 7 =====
+5/18
+How about this?
+maximise
+f (x, y) = x + y
+subject to
+x2 + y2 = 18
+Why is it harder?
+↭Linear vs non-linear constraints
+
+
+===== PAGE 8 =====
+5/18
+How about this?
+maximise
+f (x, y) = x + y
+subject to
+x2 + y2 = 18
+Why is it harder?
+↭Linear vs non-linear constraints
+↭Feasible points now lie on a curved surface rather than a
+straight line.
+
+
+===== PAGE 9 =====
+6/18
+Quick detour: what is really a gradient?
+How would you explain the meaning of the gradient intuitively?
+
+
+===== PAGE 10 =====
+6/18
+Quick detour: what is really a gradient?
+How would you explain the meaning of the gradient intuitively?
+↭For value function: →f (x, y) is the direction of the steepest
+increase.
+
+
+===== PAGE 11 =====
+6/18
+Quick detour: what is really a gradient?
+How would you explain the meaning of the gradient intuitively?
+↭For value function: →f (x, y) is the direction of the steepest
+increase.
+↭For constraint g(x, y) = c: →g(x, y) is perpendicular to the
+constraint, the normal of g(x, y) = c.
+whatdoesthismean
+
+
+===== PAGE 12 =====
+7/18
+Constrained optimisation: intuition
+gradients
+of
+levelset
+mt
+c oleig.treffacuserity
+
+
+===== PAGE 13 =====
+8/18
+Constrained optimisation: Lagrange multipliers formally
+minimise
+f (x, y)
+subject to
+g(x, y) = c
+
+
+===== PAGE 14 =====
+8/18
+Constrained optimisation: Lagrange multipliers formally
+minimise
+f (x, y)
+subject to
+g(x, y) = c
+Let
+L(x, y, ω) := f (x, y) ↑ω(g(x, y) ↑c)
+lagrangian
+notless
+equality
+to
+0
+
+
+===== PAGE 15 =====
+8/18
+Constrained optimisation: Lagrange multipliers formally
+minimise
+f (x, y)
+subject to
+g(x, y) = c
+Let
+L(x, y, ω) := f (x, y) ↑ω(g(x, y) ↑c)
+Simply solve
+εL
+εx = εL
+εy = εL
+εω = 0
+why
+
+
+===== PAGE 16 =====
+9/18
+Constrained optimisation: why does this work?
+minimise
+f (x, y)
+subject to
+g(x, y) = c
+
+
+===== PAGE 17 =====
+9/18
+Constrained optimisation: why does this work?
+minimise
+f (x, y)
+subject to
+g(x, y) = c
+Let
+L(x, y, ω) := f (x, y) ↑ω(g(x, y) ↑c)
+
+
+===== PAGE 18 =====
+9/18
+Constrained optimisation: why does this work?
+minimise
+f (x, y)
+subject to
+g(x, y) = c
+Let
+L(x, y, ω) := f (x, y) ↑ω(g(x, y) ↑c)
+
+
+
+
+
+
+
+
+
+===== PAGE 19 =====
+9/18
+Constrained optimisation: why does this work?
+minimise
+f (x, y)
+subject to
+g(x, y) = c
+Let
+L(x, y, ω) := f (x, y) ↑ω(g(x, y) ↑c)
+
+
+
+
+
+
+
+ω
+ωx f (x, y) = ω ω
+ωx g(x, y)
+
+
+===== PAGE 20 =====
+9/18
+Constrained optimisation: why does this work?
+minimise
+f (x, y)
+subject to
+g(x, y) = c
+Let
+L(x, y, ω) := f (x, y) ↑ω(g(x, y) ↑c)
+
+
+
+
+
+
+
+ω
+ωx f (x, y) = ω ω
+ωx g(x, y)
+ω
+ωy f (x, y) = ω ω
+ωy g(x, y)
+
+
+===== PAGE 21 =====
+9/18
+Constrained optimisation: why does this work?
+minimise
+f (x, y)
+subject to
+g(x, y) = c
+Let
+L(x, y, ω) := f (x, y) ↑ω(g(x, y) ↑c)
+
+
+
+
+
+
+
+ω
+ωx f (x, y) = ω ω
+ωx g(x, y)
+ω
+ωy f (x, y) = ω ω
+ωy g(x, y)
+%
+→f = ω→g
+
+
+===== PAGE 22 =====
+9/18
+Constrained optimisation: why does this work?
+minimise
+f (x, y)
+subject to
+g(x, y) = c
+Let
+L(x, y, ω) := f (x, y) ↑ω(g(x, y) ↑c)
+
+
+
+
+
+
+
+ω
+ωx f (x, y) = ω ω
+ωx g(x, y)
+ω
+ωy f (x, y) = ω ω
+ωy g(x, y)
+%
+→f = ω→g
+g(x, y) = c
+parallel multipleparallel why do we dothis
+
+
+===== PAGE 23 =====
+10/18
+Singular value decomposition
+
+
+===== PAGE 24 =====
+11/18
+Refresher: spectral decomposition
+Any symmetric matrix A can be expressed as:
+A = VDV T
+where:
+↭V = [v1, v2, . . . , vn] is the matrix whose columns are the
+orthonormal eigenvectors of A.
+↭D = diag(ω1, ω2, . . . , ωn) is the diagonal matrix whose
+diagonal elements are the eigenvalues of A.
+↭V T is the transpose of V .
+
+
+===== PAGE 25 =====
+11/18
+Refresher: spectral decomposition
+Any symmetric matrix A can be expressed as:
+A = VDV T
+where:
+↭V = [v1, v2, . . . , vn] is the matrix whose columns are the
+orthonormal eigenvectors of A.
+↭D = diag(ω1, ω2, . . . , ωn) is the diagonal matrix whose
+diagonal elements are the eigenvalues of A.
+↭V T is the transpose of V .
+How about non-symmetric matrices?
+
+
+===== PAGE 26 =====
+12/18
+Singular Value Decomposition (SVD)
+Theorem (Singular Value Decomposition)
+Any matrix A of size n ↓k can be expressed as:
+A = U!V T,
+where:
+↭U is an orthonormal matrix of size n ↓n
+↭! is a “diagonal” matrix of size n ↓k
+↭V is an orthonormal matrix of size k ↓k
+for nonsquce symmetric
+
+
+===== PAGE 27 =====
+12/18
+Singular Value Decomposition (SVD)
+Theorem (Singular Value Decomposition)
+Any matrix A of size n ↓k can be expressed as:
+A = U!V T,
+where:
+↭U is an orthonormal matrix of size n ↓n
+↭! is a “diagonal” matrix of size n ↓k
+↭V is an orthonormal matrix of size k ↓k
+The entries of ! = diag(ϑ1, ..., ϑr), ϑ1 ↔... ↔ϑr ↔0, are the
+singular values of A (square roots of eigenvalues of AAT):
+AAT = U!V TV !TUT = Udiag(ϑ2
+1, ..., ϑ2
+r )UT
+
+
+===== PAGE 28 =====
+12/18
+Singular Value Decomposition (SVD)
+Theorem (Singular Value Decomposition)
+Any matrix A of size n ↓k can be expressed as:
+A = U!V T,
+where:
+↭U is an orthonormal matrix of size n ↓n
+↭! is a “diagonal” matrix of size n ↓k
+↭V is an orthonormal matrix of size k ↓k
+The entries of ! = diag(ϑ1, ..., ϑr), ϑ1 ↔... ↔ϑr ↔0, are the
+singular values of A (square roots of eigenvalues of AAT):
+AAT = U!V TV !TUT = Udiag(ϑ2
+1, ..., ϑ2
+r )UT
+r = min(n, k)
+ignorethe0 singular value
+
+
+===== PAGE 29 =====
+13/18
+Looking at it di!erently: compact SVD
+Any matrix A of size n ↓k can be expressed as:
+A = U!V T,
+where:
+↭U is an orthonormal matrix of size n ↓k
+↭! is a diagonal matrix of size k ↓k
+↭V is an orthonormal matrix of size k ↓k
+
+
+===== PAGE 30 =====
+13/18
+Looking at it di!erently: compact SVD
+Any matrix A of size n ↓k can be expressed as:
+A = U!V T,
+where:
+↭U is an orthonormal matrix of size n ↓k
+↭! is a diagonal matrix of size k ↓k
+↭V is an orthonormal matrix of size k ↓k
+Here we assume k ↗n!
+
+
+===== PAGE 31 =====
+14/18
+Low-rank approximation using SVD
+Any matrix A of size n ↓k can be approximated by:
+A ↘U!V T,
+where:
+↭U is an orthonormal matrix of size n ↓r
+↭! is a diagonal matrix of size r ↓r
+↭V is an orthonormal matrix of size r ↓k
+where r ↗k is the rank of the desired approximation.
+
+
+===== PAGE 32 =====
+14/18
+Low-rank approximation using SVD
+Any matrix A of size n ↓k can be approximated by:
+A ↘U!V T,
+where:
+↭U is an orthonormal matrix of size n ↓r
+↭! is a diagonal matrix of size r ↓r
+↭V is an orthonormal matrix of size r ↓k
+where r ↗k is the rank of the desired approximation.
+This method gives the best rank r approximation! (Eckart-Young
+Theorem).
+
+
+===== PAGE 33 =====
+14/18
+Low-rank approximation using SVD
+Any matrix A of size n ↓k can be approximated by:
+A ↘U!V T,
+where:
+↭U is an orthonormal matrix of size n ↓r
+↭! is a diagonal matrix of size r ↓r
+↭V is an orthonormal matrix of size r ↓k
+where r ↗k is the rank of the desired approximation.
+This method gives the best rank r approximation! (Eckart-Young
+Theorem).
+What happens if A itself has rank r?
+
+
+===== PAGE 34 =====
+15/18
+Matrix norms
+
+
+===== PAGE 35 =====
+16/18
+Useful matrix norms
+
+
+===== PAGE 36 =====
+16/18
+Useful matrix norms
+↭Frobenius Norm:
+≃A≃F =
+&
+'
+'
+(
+p
+)
+i=1
+ϑ2
+i
+
+=
+&
+'
+'
+(
+m
+)
+i=1
+n
+)
+j=1
+a2
+ij
+
+
+
+
+===== PAGE 37 =====
+16/18
+Useful matrix norms
+↭Frobenius Norm:
+≃A≃F =
+&
+'
+'
+(
+p
+)
+i=1
+ϑ2
+i
+
+=
+&
+'
+'
+(
+m
+)
+i=1
+n
+)
+j=1
+a2
+ij
+
+
+↭Spectral Norm:
+≃A≃2 = max(ϑi) = ϑ1
+
+
+===== PAGE 38 =====
+16/18
+Useful matrix norms
+↭Frobenius Norm:
+≃A≃F =
+&
+'
+'
+(
+p
+)
+i=1
+ϑ2
+i
+
+=
+&
+'
+'
+(
+m
+)
+i=1
+n
+)
+j=1
+a2
+ij
+
+
+↭Spectral Norm:
+≃A≃2 = max(ϑi) = ϑ1
+↭Nuclear Norm:
+≃A≃→=
+p
+)
+i=1
+ϑi
+retation
+largest scaling
+relation to vector f
+asmatrix then it bearstheearlidine
+Sum of singular
+
+
+===== PAGE 39 =====
+17/18
+Relating the norms
+≃A≃2 ↗≃A≃F ↗⇐r≃A≃2,
+≃A≃F ↗≃A≃→↗⇐r≃A≃F,
+where r = rank(A)
+others are 0
+
+
+===== PAGE 40 =====
+17/18
+Relating the norms
+≃A≃2 ↗≃A≃F ↗⇐r≃A≃2,
+≃A≃F ↗≃A≃→↗⇐r≃A≃F,
+where r = rank(A)
+Cauchy-Schwarz inequality: u · v ↗||u||2||v||2.
+ja
+and
+
+
+===== PAGE 41 =====
+18/18
+Norm properties of orthonormal matrices
+What are the singular values of an orthonormal matrix U?
+
+
+===== PAGE 42 =====
+18/18
+Norm properties of orthonormal matrices
+What are the singular values of an orthonormal matrix U?
+All 1s!
+why
+
+
+===== PAGE 43 =====
+18/18
+Norm properties of orthonormal matrices
+What are the singular values of an orthonormal matrix U?
+All 1s!
+How do the singular values of a matrix A compare to those of AU?
+
+
+===== PAGE 44 =====
+18/18
+Norm properties of orthonormal matrices
+What are the singular values of an orthonormal matrix U?
+All 1s!
+How do the singular values of a matrix A compare to those of AU?
+They don’t change!
+why
+show using SVD

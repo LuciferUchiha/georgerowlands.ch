@@ -1,0 +1,1568 @@
+
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Week 4 - Preparation Session
+Gent Seriﬁ
+ETH Zurich – cil.inf.ethz.ch
+12 March 2025
+1/54
+
+
+===== PAGE 2 =====
+2/54
+Overview
+↭Conditional Independence
+↭Information Theory
+↭Eigenvalues & Eigenvectors
+↭Positive Deﬁniteness
+↭Hessian Matrices
+
+
+===== PAGE 3 =====
+3/54
+Section 1
+Conditional Independence
+
+
+===== PAGE 4 =====
+4/54
+Modeling Multiple Random Events
+↭Event A: It will rain today.
+
+
+===== PAGE 5 =====
+4/54
+Modeling Multiple Random Events
+↭Event A: It will rain today.
+↭Event B: The sky is cloudy.
+
+
+===== PAGE 6 =====
+4/54
+Modeling Multiple Random Events
+↭Event A: It will rain today.
+↭Event B: The sky is cloudy.
+↭Goal: Figure out the probability of rain P(A) given that we
+observe cloudy weather, i.e. event B.
+
+
+===== PAGE 7 =====
+5/54
+Conditional Probability
+↭The conditional probability between random events denotes
+how the probability of one event changes given that another
+event has occurred.
+↭For two events A, B, the probability of event A occurring
+given that event B occurred is shown with P(A | B). It is read
+as the probability of A given B.
+
+
+===== PAGE 8 =====
+5/54
+Conditional Probability
+↭The conditional probability between random events denotes
+how the probability of one event changes given that another
+event has occurred.
+↭For two events A, B, the probability of event A occurring
+given that event B occurred is shown with P(A | B). It is read
+as the probability of A given B.
+↭The conditional probability is closely connected to the joint
+distribution and Bayes’ Rule.
+P(A | B) = P(A, B)
+P(B)
+= P(B | A)P(A)
+P(B)
+
+
+===== PAGE 9 =====
+6/54
+Independence
+↭Two events A and B are called independent (written as
+A →→B) if knowing that one occurred doesn’t a!ect the
+probability of the other occurring:
+P(A | B) = P(A)
+(1)
+
+
+===== PAGE 10 =====
+6/54
+Independence
+↭Two events A and B are called independent (written as
+A →→B) if knowing that one occurred doesn’t a!ect the
+probability of the other occurring:
+P(A | B) = P(A)
+(1)
+↭An example would be - Event A: It will rain today. Event B: It
+is Tuesday.
+
+
+===== PAGE 11 =====
+6/54
+Independence
+↭Two events A and B are called independent (written as
+A →→B) if knowing that one occurred doesn’t a!ect the
+probability of the other occurring:
+P(A | B) = P(A)
+(1)
+↭An example would be - Event A: It will rain today. Event B: It
+is Tuesday.
+↭The formal deﬁnition of independence is that the joint
+distribution of the events is equal to the product of their
+marginal distributions:
+P(A, B) = P(A)P(B)
+(2)
+
+
+===== PAGE 12 =====
+7/54
+Conditional Independence
+↭Given a hypothesis A, observations B and C, conditional
+independence is the case where one of the observations is
+irrelevant or redundant when evaluating the probability of A.
+↭For example, let A,B,C be random events (P(C) > 0). We
+say A and B are conditionally independent given C i!
+P(A | B, C) = P(A | C)
+
+
+===== PAGE 13 =====
+7/54
+Conditional Independence
+↭Given a hypothesis A, observations B and C, conditional
+independence is the case where one of the observations is
+irrelevant or redundant when evaluating the probability of A.
+↭For example, let A,B,C be random events (P(C) > 0). We
+say A and B are conditionally independent given C i!
+P(A | B, C) = P(A | C)
+↭Conditional independence is written as (A →→B | C). It is also
+equivalent to events A and B being independent given that we
+observed event C:
+P(A, B | C) = P(A | C)P(B | C)
+
+
+===== PAGE 14 =====
+8/54
+Conditional Independence - Deﬁnitions
+Proof.
+Assuming P(C) ↑= 0, we have:
+P(A, B | C) = P(A | C)P(B | C)
+↓↔P(A, B, C)
+P(C)
+=
+!P(A, C)
+P(C)
+" !P(B, C)
+P(C)
+"
+↓↔P(A, B, C) = P(A, C)P(B, C)
+P(C)
+↓↔P(A, B, C)
+P(B, C)
+= P(A, C)
+P(C)
+↓↔P(A | B, C) = P(A | C)
+where we use the deﬁnition of conditional probabilities.
+
+
+===== PAGE 15 =====
+9/54
+Conditional Independence Example
+↭A fair die determines how much money Alice and Bob receive.
+(Event C)
+↭Alice’s amount (Event A) is either the amount the die shows
+(50% probability) or half of what it shows.
+↭Bob’s amount (Event B) is either the amount the die shows
+(75% probability) or double what it shows.
+
+
+===== PAGE 16 =====
+9/54
+Conditional Independence Example
+↭A fair die determines how much money Alice and Bob receive.
+(Event C)
+↭Alice’s amount (Event A) is either the amount the die shows
+(50% probability) or half of what it shows.
+↭Bob’s amount (Event B) is either the amount the die shows
+(75% probability) or double what it shows.
+↭Are events A and B independent given event C?
+tellsus the outcome
+A and B
+are dependent
+givenC then they are
+independent
+
+
+===== PAGE 17 =====
+10/54
+Section 2
+Information Theory
+
+
+===== PAGE 18 =====
+11/54
+Introduction to Information Theory
+↭How much information does an event A contain?
+↭What is the uncertainty of di!erent random events?
+↭More surprise ↗More information
+
+
+===== PAGE 19 =====
+11/54
+Introduction to Information Theory
+↭How much information does an event A contain?
+↭What is the uncertainty of di!erent random events?
+↭More surprise ↗More information
+↭Entropy measures the expected level of surprise/information
+of a random variable.
+
+
+===== PAGE 20 =====
+12/54
+Information
+↭How can we rigorously derive information from ﬁrst principles?
+what
+are first principles
+
+
+===== PAGE 21 =====
+12/54
+Information
+↭How can we rigorously derive information from ﬁrst principles?
+↭What would be desirable properties of I(p)?
+
+
+===== PAGE 22 =====
+12/54
+Information
+↭How can we rigorously derive information from ﬁrst principles?
+↭What would be desirable properties of I(p)?
+1. Continuity?
+
+
+===== PAGE 23 =====
+12/54
+Information
+↭How can we rigorously derive information from ﬁrst principles?
+↭What would be desirable properties of I(p)?
+1. Continuity? Yes!
+
+
+===== PAGE 24 =====
+12/54
+Information
+↭How can we rigorously derive information from ﬁrst principles?
+↭What would be desirable properties of I(p)?
+1. Continuity? Yes!
+2. Monotonicity p < q =↔I(p) > I(q)?
+
+
+===== PAGE 25 =====
+12/54
+Information
+↭How can we rigorously derive information from ﬁrst principles?
+↭What would be desirable properties of I(p)?
+1. Continuity? Yes!
+2. Monotonicity p < q =↔I(p) > I(q)? Yes!
+
+
+===== PAGE 26 =====
+12/54
+Information
+↭How can we rigorously derive information from ﬁrst principles?
+↭What would be desirable properties of I(p)?
+1. Continuity? Yes!
+2. Monotonicity p < q =↔I(p) > I(q)? Yes!
+3. For independent events, what do we expect from I(p · q)?
+
+
+===== PAGE 27 =====
+12/54
+Information
+↭How can we rigorously derive information from ﬁrst principles?
+↭What would be desirable properties of I(p)?
+1. Continuity? Yes!
+2. Monotonicity p < q =↔I(p) > I(q)? Yes!
+3. For independent events, what do we expect from I(p · q)?
+Additivity I(p · q) = I(p) + I(q)
+
+
+===== PAGE 28 =====
+12/54
+Information
+↭How can we rigorously derive information from ﬁrst principles?
+↭What would be desirable properties of I(p)?
+1. Continuity? Yes!
+2. Monotonicity p < q =↔I(p) > I(q)? Yes!
+3. For independent events, what do we expect from I(p · q)?
+Additivity I(p · q) = I(p) + I(q)
+↭Cauchy’s functional equation:
+↘s, t . f (s + t) = f (s) + f (t) =↔f : x ≃⇐cx, for c ⇒R
+why do we havethe les 1911to represent
+kaolnogorov
+similar to linearityproperty
+Tuscatedversion
+abit weirdproprety
+
+
+===== PAGE 29 =====
+13/54
+Information (contd.)
+↭Claim: I(p) = ⇑log p
+Proof.
+Let g(t) := I(exp t)
+g(s + t) = I(exp(s + t))
+= I(exp s · exp t)
+(3)
+= I(exp s) + I(exp t)
+= g(s) + g(t)
+satisfy cauchy function
+
+
+===== PAGE 30 =====
+13/54
+Information (contd.)
+↭Claim: I(p) = ⇑log p
+Proof.
+Let g(t) := I(exp t)
+g(s + t) = I(exp(s + t))
+= I(exp s · exp t)
+(3)
+= I(exp s) + I(exp t)
+= g(s) + g(t)
+=↔g(t) = ct =↔I(p) = g(log p) = c log p
+
+
+===== PAGE 31 =====
+13/54
+Information (contd.)
+↭Claim: I(p) = ⇑log p
+Proof.
+Let g(t) := I(exp t)
+g(s + t) = I(exp(s + t))
+= I(exp s · exp t)
+(3)
+= I(exp s) + I(exp t)
+= g(s) + g(t)
+=↔g(t) = ct =↔I(p) = g(log p) = c log p Property (2) gives
+c < 0, thus for c = ⇑1: I(p) = ⇑log p
+Ishistorical
+monotonicity
+fatalities
+
+
+===== PAGE 32 =====
+14/54
+Entropy
+↭The expected level of surprise/information of a random
+variable is measured via its entropy.
+H(X) = E [I(p(x))] = E [⇑log p(x)] = ⇑
+#
+x→X
+p(x) log p(x)
+↭Intuitively, it could be thought of as how uncertain or
+non-deterministic a distribution is.
+↭The more spread out the distribution, the higher the entropy.
+
+
+===== PAGE 33 =====
+15/54
+Entropy of a Binary Random Variable
+↭Entropy measures the uncertainty of a random variable.
+↭Consider a binary coin toss with P(X = T) = p and
+P(X = H) = 1 ⇑p .
+
+
+===== PAGE 34 =====
+15/54
+Entropy of a Binary Random Variable
+↭Entropy measures the uncertainty of a random variable.
+↭Consider a binary coin toss with P(X = T) = p and
+P(X = H) = 1 ⇑p .
+Figure: Entropy of a Binary Random Variable
+↭The entropy is maximized for p = 0.5 and minimized for p =
+0 and p = 1.
+maximum uncertantity
+
+
+===== PAGE 35 =====
+16/54
+Conditional Entropy
+↭Conditional Entropy measures the expected level of
+surprise/information of a random variable given the value of
+another.
+H(X | Y ) = ⇑
+#
+x→X,y→Y
+p(x, y) log p(x, y)
+p(y)
+= ⇑
+#
+x→X,y→Y
+p(x, y) log p(x | y)
+= E [⇑log p(x | y)]
+bayes
+
+
+===== PAGE 36 =====
+17/54
+Conditional Entropy Properties
+↭H(X | Y ) = 0 if and only if the value of X is completely
+determined by the value of Y .
+
+
+===== PAGE 37 =====
+17/54
+Conditional Entropy Properties
+↭H(X | Y ) = 0 if and only if the value of X is completely
+determined by the value of Y .
+↭H(X, Y ) = H(X | Y ) + H(Y ) (Chain Rule)
+↭H(X | Y ) = H(Y | X) ⇑H(Y ) + H(X) from Bayes’ Rule
+↭H(X|Y ) ⇓H(X)
+Product
+Landas sense
+
+
+===== PAGE 38 =====
+17/54
+Conditional Entropy Properties
+↭H(X | Y ) = 0 if and only if the value of X is completely
+determined by the value of Y .
+↭H(X, Y ) = H(X | Y ) + H(Y ) (Chain Rule)
+↭H(X | Y ) = H(Y | X) ⇑H(Y ) + H(X) from Bayes’ Rule
+↭H(X|Y ) ⇓H(X)
+↭H(X | Y ) = H(X) ↓↔X →→Y
+
+
+===== PAGE 39 =====
+18/54
+Mutual Information Introduction
+Figure: Entropy Diagram
+
+
+===== PAGE 40 =====
+19/54
+Mutual Information
+↭Mutual Information is a measure of the amount of
+information one random variable X contains about another
+random variable Y. It is denoted by I(X; Y ) = I(Y ; X).
+symmetric
+
+
+===== PAGE 41 =====
+19/54
+Mutual Information
+↭Mutual Information is a measure of the amount of
+information one random variable X contains about another
+random variable Y. It is denoted by I(X; Y ) = I(Y ; X).
+↭Intuitively, it is the reduction in uncertainty of X due to the
+knowledge of Y.
+
+
+===== PAGE 42 =====
+19/54
+Mutual Information
+↭Mutual Information is a measure of the amount of
+information one random variable X contains about another
+random variable Y. It is denoted by I(X; Y ) = I(Y ; X).
+↭Intuitively, it is the reduction in uncertainty of X due to the
+knowledge of Y.
+↭Alternatively:
+I(X; Y ) = E(x,y)
+$
+log p(x, y)
+p(x)p(y)
+%
+=
+#
+x→X,y→Y
+p(x, y) log p(x, y)
+p(x)p(y)
+
+
+===== PAGE 43 =====
+20/54
+Mutual Information Properties
+↭Venn diagram shows that
+I(X; Y ) =H(X) ⇑H(X | Y )
+I(X; Y ) =H(Y ) ⇑H(Y | X)
+I(X; Y ) =H(X) + H(Y ) ⇑H(X, Y )
+
+
+===== PAGE 44 =====
+21/54
+Mutual Information Properties - Proof
+Proof.
+I(X; Y ) =
+#
+x,y
+p(x, y) log p(x, y)
+p(x)p(y)
+=
+#
+x,y
+p(x, y) log p(x|y)
+p(x)
+= ⇑
+#
+x,y
+p(x, y) log p(x) +
+#
+x,y
+p(x, y) log p(x|y)
+= ⇑
+#
+xy
+p(x) log p(x) ⇑(⇑
+#
+x,y
+p(x, y) log p(x|y))
+=H(X) ⇑H(X | Y ) = H(Y ) ⇑H(Y | X)
+=H(X) + H(Y ) ⇑H(X, Y )
+where we use the symmetry of the mutual information and the
+properties of conditional entropy.
+
+
+===== PAGE 45 =====
+22/54
+Mutual Information - A Better understanding
+↭Mutual Information measures the relative entropy (or
+KL-divergence) between the joint distribution (X,Y) and the
+product of the marginal distributions X & Y. In other words, it
+measures the di!erence of the product w.r.t. the joint
+distribution.
+I(X; Y ) = E(x,y)
+$ p(x, y)
+p(x)p(y)
+%
+= DKL(p(x, y)||p(x)p(y)) (3)
+↭I(X; Y ) >= 0
+
+
+===== PAGE 46 =====
+22/54
+Mutual Information - A Better understanding
+↭Mutual Information measures the relative entropy (or
+KL-divergence) between the joint distribution (X,Y) and the
+product of the marginal distributions X & Y. In other words, it
+measures the di!erence of the product w.r.t. the joint
+distribution.
+I(X; Y ) = E(x,y)
+$ p(x, y)
+p(x)p(y)
+%
+= DKL(p(x, y)||p(x)p(y)) (3)
+↭I(X; Y ) >= 0
+↭I(X; Y ) = 0 ↓↔X →→Y
+
+
+===== PAGE 47 =====
+22/54
+Mutual Information - A Better understanding
+↭Mutual Information measures the relative entropy (or
+KL-divergence) between the joint distribution (X,Y) and the
+product of the marginal distributions X & Y. In other words, it
+measures the di!erence of the product w.r.t. the joint
+distribution.
+I(X; Y ) = E(x,y)
+$ p(x, y)
+p(x)p(y)
+%
+= DKL(p(x, y)||p(x)p(y)) (3)
+↭I(X; Y ) >= 0
+↭I(X; Y ) = 0 ↓↔X →→Y
+↭Entropy is the self-information of a random variable
+I(X; X) = H(X) ⇑H(X | X) = H(X) ⇑0 = H(X)
+(4)
+where is information never hurts
+
+
+===== PAGE 48 =====
+23/54
+Mutual Information - Data Processing Inequality
+↭It is impossible to create information by processing
+
+
+===== PAGE 49 =====
+23/54
+Mutual Information - Data Processing Inequality
+↭It is impossible to create information by processing
+↭I(ω(X); Y ) ⇓I(X; Y )
+
+
+===== PAGE 50 =====
+23/54
+Mutual Information - Data Processing Inequality
+↭It is impossible to create information by processing
+↭I(ω(X); Y ) ⇓I(X; Y )
+↭Implications?
+functionstillmatters for close bound
+extractionstill important buthard
+model nights
+
+
+===== PAGE 51 =====
+24/54
+Section 3
+Eigenvalues & Eigenvectors
+
+
+===== PAGE 52 =====
+25/54
+Eigenvalues & Eigenvectors Reminder
+Eigenvalue Equation:
+Av = εv
+↭How can we ﬁnd the eigenvalues?
+
+
+===== PAGE 53 =====
+25/54
+Eigenvalues & Eigenvectors Reminder
+Eigenvalue Equation:
+Av = εv
+↭How can we ﬁnd the eigenvalues?
+Av ⇑εv =0
+(A ⇑εIn↑n)v = 0
+↭Characteristic polynomial: pA(ε) = det(A ⇑εIn↑n) = 0.
+↭Having eigenvectors is equivalent to pA(ε) = 0.
+↭Hence, eigenvalues are roots of the characteristics polynomial.
+
+
+===== PAGE 54 =====
+26/54
+Eigenvalues of a 2 ⇔2 Matrix
+Given the matrix:
+A =
+$2
+1
+1
+2
+%
+pA(ε) = det
+$2 ⇑ε
+1
+1
+2 ⇑ε
+%
+= (2 ⇑ε)2 ⇑1 = ε2 ⇑4ε + 3
+Factoring, the characteristic polynomial we get:
+(ε ⇑3)(ε ⇑1) = 0 ↔ε1 = 3,
+ε2 = 1
+
+
+===== PAGE 55 =====
+27/54
+Eigenvalues & Eigenvectors Reminder
+↭Each eigenvalue is associated with an eigenspace that is at
+least 1D.
+↭Algebraic Multiplicity µA(εi): Multiplicity of εi as a root of
+the characteristic polynomial.
+↭Geometric Multiplicity ϑA(εi): Dimensionality of the null
+space of A ⇑εiIn↑n.
+spannedbyage
+rectors
+weirdness
+what was eigenspace and geometric multiplinity
+again
+one
+is
+bigger then other Intuition
+
+
+===== PAGE 56 =====
+27/54
+Eigenvalues & Eigenvectors Reminder
+↭Each eigenvalue is associated with an eigenspace that is at
+least 1D.
+↭Algebraic Multiplicity µA(εi): Multiplicity of εi as a root of
+the characteristic polynomial.
+↭Geometric Multiplicity ϑA(εi): Dimensionality of the null
+space of A ⇑εiIn↑n.
+↭When is 0 an eigenvalue?
+not invertable deadrank
+
+
+===== PAGE 57 =====
+27/54
+Eigenvalues & Eigenvectors Reminder
+↭Each eigenvalue is associated with an eigenspace that is at
+least 1D.
+↭Algebraic Multiplicity µA(εi): Multiplicity of εi as a root of
+the characteristic polynomial.
+↭Geometric Multiplicity ϑA(εi): Dimensionality of the null
+space of A ⇑εiIn↑n.
+↭When is 0 an eigenvalue?
+↭Algebraic multiplicity ↖geometric multiplicity
+why
+
+
+===== PAGE 58 =====
+28/54
+Diagonalizability
+↭An n ⇔n matrix is diagonalizable if and only if the geometric
+multiplicity of each eigenvalue matches its algebraic
+multiplicity, i.e. the matrix has n linearly independent
+eigenvectors.
+
+
+===== PAGE 59 =====
+28/54
+Diagonalizability
+↭An n ⇔n matrix is diagonalizable if and only if the geometric
+multiplicity of each eigenvalue matches its algebraic
+multiplicity, i.e. the matrix has n linearly independent
+eigenvectors.
+↭Given the eigenvalues ε1,...,εk for a diagonalizable matrix A,
+we deﬁne a basis composed of eigenvectors:
+{v1, . . . , vµA(ω1), . . . , v↓
+1, . . . , v↓
+µA(ωk)}.
+↭In this basis, A is represented by the diagonal matrix D:
+D =
+
+
+ε1IµA(ω1)
+0
+· · ·
+0
+0
+ε2IµA(ω2)
+· · ·
+0
+...
+...
+...
+...
+0
+0
+· · ·
+εkIµA(ωk)
+
+
+where each eigenvalue εi appears µA(εi) times on the
+diagonal.
+
+
+===== PAGE 60 =====
+29/54
+Example of a Diagonalizanle matrix
+↭Real symmetric matrices are always diagonalizable!!
+↭Example: Below is a non-symmetric matrix has eigenvalues
+2, 2, ⇑1 that is diagonalizable.
+
+
+⇑4
+0
+6
+⇑6
+2
+6
+⇑3
+0
+5
+
+
+,
+-.
+/
+A
+=
+
+
+1
+0
+2
+0
+⇑1
+2
+1
+0
+1
+
+
+,
+-.
+/
+P
+
+
+2
+0
+0
+0
+2
+0
+0
+0
+⇑1
+
+
+,
+-.
+/
+!A
+
+
+⇑1
+0
+2
+2
+⇑1
+⇑2
+1
+0
+⇑1
+
+
+,
+-.
+/
+P→1
+converge but notall
+conteretemple
+
+
+===== PAGE 61 =====
+30/54
+Jordan Form
+↭Even if a matrix is not diagonalizable, it has a Jordan Form
+JA, that allows A = PJAP↔1.
+JA =
+
+
+
+J1
+...
+Jp
+
+
+
+↭Each eigenvalue εi has corresponding Jordan blocks Ji1, Jil:
+Jij :=
+
+
+εi
+1
+0
+· · ·
+0
+...
+...
+...
+...
+...
+0
+0
+· · ·
+εi
+1
+0
+0
+· · ·
+0
+εi
+
+
+↭The number of Jordan blocks associated with εi is ϑA(εi) and
+the sum of all their dimensions is µA(εi).
+
+
+===== PAGE 62 =====
+31/54
+Example of a Jordan Form
+↭Example: Below matrix has a Jordan form because among
+eigenvalues 2, 2, ⇑1, 2 only has a 1 dimensional eigenspace.
+
+
+⇑2
+⇑1
+4
+⇑6
+2
+6
+⇑1
+⇑1
+3
+
+
+,
+-.
+/
+A
+=
+
+
+1
+0
+2
+0
+⇑1
+2
+1
+0
+1
+
+
+,
+-.
+/
+P
+
+
+2
+1
+0
+0
+2
+0
+0
+0
+⇑1
+
+
+,
+-.
+/
+JA
+
+
+⇑1
+0
+2
+2
+⇑1
+⇑2
+1
+0
+⇑1
+
+
+,
+-.
+/
+P→1
+
+
+===== PAGE 63 =====
+32/54
+Section 4
+Positive Deﬁniteness
+
+
+===== PAGE 64 =====
+33/54
+Positive Deﬁniteness Deﬁnition
+Let M ⇒Rn↑n be a symmetric matrix,
+Positive Deﬁnite :xTMx > 0 for all x ⇒Rn \ {0}
+Positive Semi-Deﬁnite :xTMx ↖0 for all x ⇒Rn
+Negative Deﬁnite :xTMx < 0 for all x ⇒Rn \ {0}
+Negative Semi-Deﬁnite :xTMx ⇓0 for all x ⇒Rn
+Indeﬁnite :↙x, y ⇒Rn s.t. xTMx > 0, yTMy < 0
+Tadoes
+it has tobe
+
+
+===== PAGE 65 =====
+34/54
+Positive Deﬁniteness Examples
+Positive Deﬁnite :
+$a
+b
+%T $2
+1
+1
+4
+% $a
+b
+%
+= 2 ∝((a + b)2 + b2) > 0
+Positive Semi Deﬁnite :
+$a
+b
+%T $1
+1
+1
+1
+% $a
+b
+%
+= (a + b)2 ↖0
+
+
+===== PAGE 66 =====
+35/54
+Eigenvalues of Positive Deﬁnite Matrices
+↭Positive Deﬁnite: All eigenvalues εi > 0.
+↭Positive Semi-Deﬁnite: All eigenvalues εi ↖0.
+↭Indeﬁnite: Some eigenvalues εi > 0, some εi < 0.
+quick criteries ratherthen
+checking
+
+
+===== PAGE 67 =====
+36/54
+Proof that Eigenvalues are Strictly Positive for a PD matrix
+↭Let A be an n ⇔n symmetric matrix with Av = εv, where
+v ↑= 0.
+↭Taking the quadratic form:
+vTAv = vT(εv) = ε(vTv)
+↭Since A is positive deﬁnite, vTAv > 0 for all v ↑= 0.
+↭Since vTv = ||v||2
+2 > 0 (as v ↑= 0), it follows that ε > 0.
+↭For a Positive Deﬁnite Matrix A, it holds that ↘i : εi > 0.
+
+
+===== PAGE 68 =====
+37/54
+How to determine the positive deﬁniteness?
+↭Show using the deﬁnition, i.e. the quadratic form xTMx > 0.
+↭Show that all eigenvalues of M are positive (> 0).
+
+
+===== PAGE 69 =====
+37/54
+How to determine the positive deﬁniteness?
+↭Show using the deﬁnition, i.e. the quadratic form xTMx > 0.
+↭Show that all eigenvalues of M are positive (> 0).
+↭Show that all the principal minors (all top-left k ⇔k matrices)
+have positive determinant (also known as Sylvester’s
+criterion).
+↭Show that M = LU only has positive pivots (i.e. diagonal
+elements of U).
+↭Showing that the Cholesky Decomposition exists M = LLT.
+And that L has no diagonal entries equal to 0.
+
+
+===== PAGE 70 =====
+38/54
+Example of Positive Semi-Deﬁnite Matrices
+↭Covariance matrices are positive semi-deﬁnite.
+↭The covariance matrix of a multi-variate Gaussian Distribution
+is positive deﬁnite.
+notallvales hasto bepositie
+not
+canuse
+more specialised
+algorithms
+
+
+===== PAGE 71 =====
+39/54
+Cool Fact about PSD matrices
+↭The set of PSD matrices is a closed convex cone.
+↭The set of Positive Deﬁnite matrices is an open convex cone.
+Teasing
+for
+optimising
+our
+
+
+===== PAGE 72 =====
+39/54
+Cool Fact about PSD matrices
+↭The set of PSD matrices is a closed convex cone.
+↭The set of Positive Deﬁnite matrices is an open convex cone.
+↭Convexity: A set S is convex if for any two points A, B ⇒S
+and any ε ⇒[0, 1], the convex combination εA + (1 ⇑ε)B
+also belongs to S.
+↭Cone: A set C is a cone if for any A ⇒C and any scalar
+ϖ > 0, the scaled matrix ϖA is also in C.
+↭Set of PSD Matrices: The set of n ⇔n PSD matrices is
+deﬁned as:
+Sn
++ = {A ⇒Rn↑n | A = AT, xTAx ↖0, ↘x ↑= 0}.
+(5)
+
+
+===== PAGE 73 =====
+40/54
+Visualization of a Convex Cone
+Figure: Convex Cone
+so red is PSD
+
+
+===== PAGE 74 =====
+41/54
+Proof: Convexity and Cone Property of PSD Matrices
+1. Convexity:
+↭Let A, B be two PSD matrices, consider the convex
+combination C = εA + (1 ⇑ε)B for some ε ⇒[0, 1].
+↭For any vector x:
+xTCx = xT(εA + (1 ⇑ε)B)x = εxTAx + (1 ⇑ε)xTBx ↖0.
+↭Thus, C is PSD, proving convexity.
+2. Cone Property:
+↭Let A be a PSD matrix and let ϖ > 0 be a scalar.
+↭Then for any vector x:
+xT(ϖA)x = ϖ(xTAx) ↖0.
+↭Thus, ϖA is PSD, proving the cone property.
+
+
+===== PAGE 75 =====
+42/54
+Section 5
+Hessian Matrices
+
+
+===== PAGE 76 =====
+43/54
+Scalar Fields
+↭A scalar ﬁeld is a function f : Rn ⇐R.
+↭Example: f (x) = 1
+2
+n
+i=1 x2
+i = 1
+2xTx.
+f (
+
+
+1
+2
+3
+
+) = 13
+2
+↭Example: A spring energy f (x) = 1
+2k(||x||2 ⇑L)2
+
+
+===== PAGE 77 =====
+44/54
+Gradient of Scalar Fields
+↭We compute the partial derivatives wrt each of the elements.
+It can be represented as a column vector (gradient) or a row
+vector (Jacobian).
+df
+dx = ′xf ↗=
+
+εf
+εx1
+εf
+εx2
+·
+·
+·
+εf
+εxn
+
+
+
+===== PAGE 78 =====
+44/54
+Gradient of Scalar Fields
+↭We compute the partial derivatives wrt each of the elements.
+It can be represented as a column vector (gradient) or a row
+vector (Jacobian).
+df
+dx = ′xf ↗=
+
+εf
+εx1
+εf
+εx2
+·
+·
+·
+εf
+εxn
+
+↭Example: Let f (x) = 1
+2xTx = 1
+2
+n
+i=1 x2
+i .
+′xf (x) = J(x)↗=
+
+x1
+x2
+·
+·
+·
+xn
+↗
+= x
+sayin
+nuneratorlayout
+otherlayouts
+importanttobe
+consistent
+
+
+===== PAGE 79 =====
+45/54
+Hessian of Scalar Fields
+↭It is the second derivative of a scalar function.
+d2f
+dx2 = ′2
+xf =
+
+
+ε2f
+εx1εx1
+ε2f
+εx1εx2
+·
+ε2f
+εx1εxn
+ε2f
+εx2εx1
+ε2f
+εx2εx2
+·
+ε2f
+εx2εxn
+·
+·
+·
+·
+ε2f
+εxnεx1
+ε2f
+εxnεx2
+·
+ε2f
+εxnεxn
+
+
+
+
+===== PAGE 80 =====
+45/54
+Hessian of Scalar Fields
+↭It is the second derivative of a scalar function.
+d2f
+dx2 = ′2
+xf =
+
+
+ε2f
+εx1εx1
+ε2f
+εx1εx2
+·
+ε2f
+εx1εxn
+ε2f
+εx2εx1
+ε2f
+εx2εx2
+·
+ε2f
+εx2εxn
+·
+·
+·
+·
+ε2f
+εxnεx1
+ε2f
+εxnεx2
+·
+ε2f
+εxnεxn
+
+
+↭Example: Let f (x) = 1
+2xTx = 1
+2
+n
+i=1 x2
+i .
+′2
+xf (x) = H(x) =
+
+
+1
+0
+·
+0
+0
+1
+·
+0
+·
+·
+·
+·
+0
+0
+·
+1
+
+
+= In↑n
+
+
+===== PAGE 81 =====
+46/54
+Properties of Gradient and Hessian
+↭Gradient of a scalar ﬁeld ′xf (x) = J(x)↗gives maximum the
+rate of change in the given location x.
+↭Hessian ′2
+xf (x) = H(x) measures the curvature of the
+function around x.
+↭Notice that the Hessian of a scalar ﬁeld is always a symmetric
+matrix. Real symmetric matrix =↔diagonalizable.
+
+
+===== PAGE 82 =====
+47/54
+Applications of Gradient and Hessian
+↭We can utilize them to write a Taylor series approximation to
+a given function.
+f (x) = f (xa)+Jf (xa)(x ⇑xa)
++1
+2(x ⇑xa)↗Hf (xa)(x ⇑xa) + O(·)
+newtons
+method
+conventions of
+layouts
+nuneratoretc
+
+
+===== PAGE 83 =====
+47/54
+Applications of Gradient and Hessian
+↭We can utilize them to write a Taylor series approximation to
+a given function.
+f (x) = f (xa)+Jf (xa)(x ⇑xa)
++1
+2(x ⇑xa)↗Hf (xa)(x ⇑xa) + O(·)
+↭We can use it to optimize functions. Namely, we can ﬁnd
+local minima and maxima using the Jacobian and Hessian.
+
+
+===== PAGE 84 =====
+48/54
+Finding Extremum Points
+↭Recall that a minima-maxima for a scalar function g : R ⇐R,
+we need to have
+
+
+===== PAGE 85 =====
+48/54
+Finding Extremum Points
+↭Recall that a minima-maxima for a scalar function g : R ⇐R,
+we need to have
+↭First derivative should be 0 :
+dg
+dx = 0
+↭It shouldn’t be a saddle point :
+d2g
+dx2 ↑= 0
+Figure: Saddle Point 1D
+
+
+===== PAGE 86 =====
+49/54
+Finding Extremum Points
+↭In higher dimensions, extremum points satisfy
+′xf (x) = J(x)↗= 0.
+↭What about the Hessian?
+
+
+===== PAGE 87 =====
+49/54
+Finding Extremum Points
+↭In higher dimensions, extremum points satisfy
+′xf (x) = J(x)↗= 0.
+↭What about the Hessian?
+Figure: Saddle Point 2D
+
+
+===== PAGE 88 =====
+50/54
+Finding Extremum Points- Hessian Analysis
+↭For higher dimensions
+↭Hessian H(x) is indeﬁnite. ⇐Saddle Point
+↭Hessian H(x) is positive deﬁnite. ⇐Local Minimum
+↭Hessian H(x) is negative deﬁnite. ⇐Local Maximum
+paneled
+to
+make
+unott
+are.ieatigesnIrr
+
+
+===== PAGE 89 =====
+50/54
+Finding Extremum Points- Hessian Analysis
+↭For higher dimensions
+↭Hessian H(x) is indeﬁnite. ⇐Saddle Point
+↭Hessian H(x) is positive deﬁnite. ⇐Local Minimum
+↭Hessian H(x) is negative deﬁnite. ⇐Local Maximum
+↭Hessian H(x) is a null matrix (all zeros), positive semi-deﬁnite
+or negative semi-deﬁnite ⇐Inconclusive
+
+
+===== PAGE 90 =====
+50/54
+Finding Extremum Points- Hessian Analysis
+↭For higher dimensions
+↭Hessian H(x) is indeﬁnite. ⇐Saddle Point
+↭Hessian H(x) is positive deﬁnite. ⇐Local Minimum
+↭Hessian H(x) is negative deﬁnite. ⇐Local Maximum
+↭Hessian H(x) is a null matrix (all zeros), positive semi-deﬁnite
+or negative semi-deﬁnite ⇐Inconclusive
+↭How to determine deﬁniteness of Hessian?
+
+
+===== PAGE 91 =====
+50/54
+Finding Extremum Points- Hessian Analysis
+↭For higher dimensions
+↭Hessian H(x) is indeﬁnite. ⇐Saddle Point
+↭Hessian H(x) is positive deﬁnite. ⇐Local Minimum
+↭Hessian H(x) is negative deﬁnite. ⇐Local Maximum
+↭Hessian H(x) is a null matrix (all zeros), positive semi-deﬁnite
+or negative semi-deﬁnite ⇐Inconclusive
+↭How to determine deﬁniteness of Hessian?
+↭Check the eigenvalues! Or the other equivalent conditions
+(Sylvester’s criterion, etc.)
+
+
+===== PAGE 92 =====
+51/54
+Finding Extremum Points- Hessian Analysis
+Remember the example f (x) = 1
+2xTx.
+′xf (x) = J(x)↗=x
+′2
+xf (x) = H(x) =In↑n
+=
+
+
+1
+0
+·
+0
+0
+1
+·
+0
+·
+·
+·
+·
+0
+0
+·
+1
+
+
+
+
+===== PAGE 93 =====
+51/54
+Finding Extremum Points- Hessian Analysis
+Remember the example f (x) = 1
+2xTx.
+′xf (x) = J(x)↗=x
+′2
+xf (x) = H(x) =In↑n
+=
+
+
+1
+0
+·
+0
+0
+1
+·
+0
+·
+·
+·
+·
+0
+0
+·
+1
+
+
+There is a local minimum at x = 0 since ε1, ε2, . . . εn = 1
+
+
+===== PAGE 94 =====
+52/54
+Finding Extremum Points- Hessian Analysis
+What if we have f (x) = x1x2, x ⇒R2
+′xf (x) = J(x)↗=
+
+x2
+x1
+T
+′2
+xf (x) = H(x) =
+$0
+1
+1
+0
+%
+
+
+===== PAGE 95 =====
+52/54
+Finding Extremum Points- Hessian Analysis
+What if we have f (x) = x1x2, x ⇒R2
+′xf (x) = J(x)↗=
+
+x2
+x1
+T
+′2
+xf (x) = H(x) =
+$0
+1
+1
+0
+%
+What are the eigenvalues?
+
+
+===== PAGE 96 =====
+52/54
+Finding Extremum Points- Hessian Analysis
+What if we have f (x) = x1x2, x ⇒R2
+′xf (x) = J(x)↗=
+
+x2
+x1
+T
+′2
+xf (x) = H(x) =
+$0
+1
+1
+0
+%
+What are the eigenvalues?
+ε2 ⇑1 = 0 =↔ε1 = 1, ε2 = ⇑1.
+
+
+===== PAGE 97 =====
+53/54
+Hessian of an Extremum Point - Eigenvalues
+↭Hessian H(x) has both positive and negative eigenvalues
+εi > 0, εj < 0 ⇐Saddle Point
+↭Hessian H(x) only has positive eigenvalues ↘i εi > 0 : ⇐
+Local Minimum
+↭Hessian H(x) only has negative eigenvalues ↘i : εi < 0 ⇐
+Local Maximum
+↭Hessian H(x) has a zero eigenvalue εi = 0⇐Inconclusive
+
+
+===== PAGE 98 =====
+54/54
+References
+1. Richard E. Neapolitan, Xia Jiang, Chapter 3 - Bayesian
+Networks, Editor(s): Richard E. Neapolitan, Xia Jiang,
+Probabilistic Methods for Financial and Marketing
+Informatics, Morgan Kaufmann, 2007, Pages 53-110, ISBN
+9780123704771
+2. M. P. Deisenroth, A. A. Faisal, C. S. Ong., Mathematics For
+Machine Learning, Cambridge University Press, 2020
+3. Thomas M. Cover, Joy A. Thomas, Elements of Information
+Theory, 2nd Edition, Wiley, 2006, ISBN 9780471241959.
+4. Stephen P. Boyd, Lieven Vandenberghe, Convex Optimization,
+Cambridge University Press, 2004, ISBN 9780521833783.

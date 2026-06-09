@@ -1,0 +1,789 @@
+
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Lecture 6
+Valentina Boeva
+ETH Zurich – https:
+//moodle-app2.let.ethz.ch/course/view.php?id=27126
+27 March 2026
+1/37
+
+
+===== PAGE 2 =====
+2/37
+Plan for Today
+Matrix Completion
+↭Recap
+↭Iterative Algorithms for Matrix Completion
+↭Singular Value Projection (SVP)
+(projection onto rank k matrices)
+↭Singular Value Thresholding (SVT) Algorithm
+(shrinkage of singular values; principle of convex relaxation)
+↭Scalable SVD via Random Projections (for large matrices)
+↭Exact Matrix Reconstruction: when is it possible?
+↭Degrees of Freedom (independent free parameters)
+↭Incoherence as a Su!cient Condition
+
+
+===== PAGE 3 =====
+3/37
+Recap 1
+or
+Netﬂix dataset, Dahl et al., Nature Genetics, 2023
+
+
+===== PAGE 4 =====
+3/37
+Recap 1
+or
+Netﬂix dataset, Dahl et al., Nature Genetics, 2023
+↭We approached the matrix completion problem as
+A →UV→,
+U ↑Rn↑k,
+V ↑Rm↑k .
+Observation matrix: ! ↑{0, 1}n↑m
+↭Objective:
+U, V ↓min 1
+2↔!!(A ↗UV→)↔2
+F ,
+!!(R) = R ↘”
+
+
+===== PAGE 5 =====
+4/37
+Recap 2
+Last lecture:
+↭Matrix A is fully observed:
+↭Singular Value Decomposition (SVD) provides a solution for
+the rank k model:
+A →
+k
+!
+i=1
+ωiuiv→
+i ,
+where ui are k principal left singular vectors forming outer
+products with the respective right singular vectors vi, weighted
+with respective singular value ωi.
+↭The SVD solution is computable with O(min{nm2, mn2})
+operations and is an example of a solvable non-convex
+problem.
+iffirst k
+improvement
+up
+
+
+===== PAGE 6 =====
+5/37
+Recap 3
+↭Matrix A is incompletely observed:
+↭SVD cannot be used
+↭We observed how the parameters of UV interact in a certain
+way in the loss function:
+ε(U, V) = 1
+2↔!!(A ↗UV)↔2
+F + ϑ
+2 (↔U↔2
+F + ↔V↔2
+F ),
+ϑ > 0
+i-th row of U, ui, does not interact with uj , i ≃= j;
+i-th column vi of V does not interact with with vj , i ≃= j;
+=⇐Highly parallelizable Alternating Least Squares (ALS)
+algorithm, which, at each step, solves n or m sub-problems
+(Least Squares for dim. k)
+↭ALS is more e!cient than gradient descent
+↭Both ALS and GD are not guaranteed to ﬁnd the global
+minimum
+
+
+===== PAGE 7 =====
+6/37
+Section 4
+Matrix Approximation:
+Projection Algorithms
+
+
+===== PAGE 8 =====
+7/37
+Parameterization vs. Constrains
+ALS: build-in rank constraint w/ parameterization of model
+Projection Methods: work with unconstrained representation,
+but project to low rank/norm matrices.
+These methods often make use of SVD as a subroutine.
+convexobjective
+not.aenuxset
+parenters
+gradientsup
+rankl
+rankl
+rankl
+get
+bad
+
+
+===== PAGE 9 =====
+8/37
+Singular Value Projection
+Projected gradient descent
+A0 = 0,
+At+1 =
+"
+At + ϖ !!(A ↗At)
+#
+$%
+&
+sparse matrix
+'
+k
+#
+$%
+&
+= best rank k approximation
+,
+ϖ > 0
+reeffecthack
+hessian
+metal identity
+forexam
+dinjord
+matrix
+hairless
+nitrijish
+am
+
+
+===== PAGE 10 =====
+8/37
+Singular Value Projection
+Projected gradient descent
+A0 = 0,
+At+1 =
+"
+At + ϖ !!(A ↗At)
+#
+$%
+&
+sparse matrix
+'
+k
+#
+$%
+&
+= best rank k approximation
+,
+ϖ > 0
+↭the projection to rank k matrices is done via SVD
+In Singular Value Projection, SVD is used in combination
+with gradient descent to perform a non-convex projection to
+the space of rank k matrices.
+(Jain et al., 2010)
+take.fi
+a
+IT
+
+
+===== PAGE 11 =====
+9/37
+Nuclear Norm Relaxation
+Idea: use a convex relaxation of the rank constraint.
+Q: Can we ﬁnd a convex set of matrices which contains all
+rank k matrices but not too many more? What is the tightest
+relaxation?
+A: The answer to this question is to use a constraint on the
+nuclear norm (sometimes also called trace norm)
+2normis convexor
+1
+envelope
+lassolinearresession
+onlytyperate
+attenuex
+honor t.fitey
+regular
+anteroom
+she
+positive
+
+
+===== PAGE 12 =====
+10/37
+Nuclear Norm
+Nuclear norm = sum of singular values
+↔A↔↓=
+rank(A)
+!
+i=1
+ωi .
+Compare nuclear norm w/ Frobenius norm:
+Denote vector of singular values of A by ω(A), then:
+↔A↔F = ↔ω(A)↔2,
+↔A↔↓= ↔ω(A)↔1
+Generalizes the idea to use the 1-norm to ﬁnd sparse solutions
+(cf. Lasso). Sparseness with regard to singular values is equivocal
+with low rank.
+I
+rank A
+lloA 11
+
+
+===== PAGE 13 =====
+11/37
+Convex Envelope of a Function
+Convex envelope of a function f : R ↓R is the largest convex
+function g for which g ⇒f on R.
+nuclear arm
+
+
+===== PAGE 14 =====
+11/37
+Convex Envelope of a Function
+Convex envelope of a function f : R ↓R is the largest convex
+function g for which g ⇒f on R.
+Theorem (Fazel et al., 2001): The convex envelope of rank(A)
+on R = {A : ↔A↔2 ⇒1} is ↔A↔↓.
+Provides motivation for using the nuclear norm as a convex
+surrogate function of the rank.
+eth
+
+
+===== PAGE 15 =====
+12/37
+From the Convex Envelope of a Function to the
+Domain Convexity
+A problem over a non-convex domain:
+min
+↗↓1
+2↔!!(A ↗B)↔2
+F , s.t. rank(B) ⇒k
+can be rewritten using Lagrange multipliers as a problem with
+non-convex loss:
+min
+↗↓1
+2↔!!(A ↗B)↔2
+F + µ rank(B)
+non convexity
+
+
+===== PAGE 16 =====
+12/37
+From the Convex Envelope of a Function to the
+Domain Convexity
+A problem over a non-convex domain:
+min
+↗↓1
+2↔!!(A ↗B)↔2
+F , s.t. rank(B) ⇒k
+can be rewritten using Lagrange multipliers as a problem with
+non-convex loss:
+min
+↗↓1
+2↔!!(A ↗B)↔2
+F + µ rank(B)
+Surrogate objective using the convex envelop of the rank function:
+min
+↗↓↔B↔↓, s.t.
+!!(A ↗B) = 0
+
+
+===== PAGE 17 =====
+12/37
+From the Convex Envelope of a Function to the
+Domain Convexity
+A problem over a non-convex domain:
+min
+↗↓1
+2↔!!(A ↗B)↔2
+F , s.t. rank(B) ⇒k
+can be rewritten using Lagrange multipliers as a problem with
+non-convex loss:
+min
+↗↓1
+2↔!!(A ↗B)↔2
+F + µ rank(B)
+Surrogate objective using the convex envelop of the rank function:
+min
+↗↓↔B↔↓, s.t.
+!!(A ↗B) = 0
+Relaxed objective:
+min
+↗↓ϱ↔B↔↓+ 1
+2↔B↔2
+F , s.t.
+!!(A ↗B) = 0
+As ϱ ↓⇑, the second problem becomes the ﬁrst problem.
+everfaster
+intinition
+
+
+===== PAGE 18 =====
+13/37
+Singular Value Thresholding (SVT)
+Q: While conceptually compelling, what are computational
+implications of using the nuclear norm?
+A: Theorem by Cai et al. 2010
+Let A with SVD A = U diag(ωi)V→be given. Then
+shrinkω(A) := U diag(ωi ↗ϱ)+V→
+= arg min
+B
+(1
+2↔A ↗B↔2
+F + ϱ↔B↔↓
+)
+cliptoDifnegative
+shrinks
+win
+
+
+===== PAGE 19 =====
+14/37
+Shrinkage
+Procedurally, we have abstracted the nuclear norm minimization
+into an operator.
+Shrink each singular value by ϱ, while clipping the result at zero.
+Nuclear norm induces sparseness: singular values below ϱ will be
+zeroed out =⇐rank of shrinkω(A) decreases monotonically with ϱ.
+Q: What can we do with this basic operator as a computa-
+tional subroutine?
+
+
+===== PAGE 20 =====
+15/37
+Singular Value Thresholding Algorithm
+Compute the sparse iterate sequence
+A0 = 0,
+At+1 = At + ϖt !!(A ↗shrinkω(At))
+#
+$%
+&
+!-sparse
+With a suitable step size schedule ϖt > 0 it will converge to
+shrinkω(At) t↔↗
+↗↓A↓= arg min
+B
+*
+ϱ↔B↔↓+ 1
+2↔B↔2
+F
++
+,
+s.t. !!(A ↗B) = 0
+(Cai et al. 2010)
+Hence, it will agree on the observed entries and otherwise have a
+minimal mixed Frobenius/nuclear norm.
+HEEaspark
+allnotinorage or zeros
+SVD on sparkisveryfelt
+
+
+===== PAGE 21 =====
+16/37
+Convex Relaxation: Summary
+Initial objective (non-convex domain):
+arg min
+B
+1
+2↔!!(A ↗B)↔2
+F , s.t. rank(B) ⇒k
+Surrogate objective (convex function over convex domain):
+min
+↗↓ϱ↔B↔↓+ 1
+2↔B↔2
+F , s.t.
+!!(A ↗B) = 0
+The shrinkage operator provides a solution:
+shrinkω(A) := U diag(ωi ↗ϱ)+V→
+Singular Value Thresholding Algorithm:
+A0 = 0,
+At+1 = At + ϖt !!(A ↗shrinkω(At))
+#
+$%
+&
+!-sparse
+shrinkω(At) t↔↗
+↗↓arg min
+B
+*
+ϱ↔B↔↓+ 1
+2↔B↔2
+F
++
+, s.t. !!(A ↗B) = 0
+
+
+===== PAGE 22 =====
+17/37
+Conclusion: Projection Methods
+The convex relaxation approach to matrix completion main-
+tains a sparse iterate sequence, whereas singular value projec-
+tion maintains a rank k matrix. Both are beneﬁcial relative
+to a na¨ıve (i.e. dense) representation.
+
+
+===== PAGE 23 =====
+18/37
+Randomized Methods for SVD
+Are there simple and scalable algorithms for SVD?
+Diagrammatically: use of random projections to compute matrix
+factorizations and decompositions (taken from Halko et al. 2011)
+captures
+ask
+why
+SEE
+
+
+===== PAGE 24 =====
+19/37
+Randomized Methods for SVD
+1. For A ↑Rn↑m, ﬁnd a semi-orthogonal Q ↑Rn↑2k with
+few(er) columns s.t. A →QQ→A.
+2. Perform SVD of the smaller matrix B := Q→A = ˜U˜# ˜V→
+3. Extend it to an approximate SVD for A →(Q ˜U)˜# ˜V→.
+4. In computing the SVD of B, we can apply the same technique
+to its rows, thereby reducing both columns and rows of A.
+(Halko et al., 2011)
+
+
+===== PAGE 25 =====
+20/37
+Finding a Projection
+Prototypical scheme to ﬁnd Q:
+1. Generate a random matrix with iid Gaussian entries
+R ↑Rm↑2k.
+2. Calculate Y = (AA→)qAR (e.g. for q = 2) by repeated
+matrix multiplications.
+3. Construct an orthonormal basis Q for the image of Y
+(e.g. via Gram-Schmidt).
+This algorithm can be reﬁned in many ways and was thoroughly
+analyzed in the (excellent!) seminal paper by Halko et al. 2011.
+captie effectofA
+iseneighnotmuchnone
+makingthem orthonormal
+usegradient
+descent so can affordsnall errors
+
+
+===== PAGE 26 =====
+21/37
+Section 5
+Matrix Approximation:
+Exact Matrix Reconstruction
+
+
+===== PAGE 27 =====
+22/37
+Exact Recovery
+We are interested in the question of exact recovery, speciﬁcally:
+Q: If the underlying matrix A is of rank k, are there condi-
+tions under which it can it be recovered exactly (with high
+probability)?
+
+
+===== PAGE 28 =====
+23/37
+Degrees of Freedom (independent free parameters)
+Information-theoretic bound: minimal number S of matrix entries
+need to be observed in order to uniquely determine a rank k matrix.
+Count degrees of freedom from SVD representation. k singular
+values and for left/right singular vectors (assume A ↑Rn↑n)
+(n ↗1) + (n ↗2) + · · · + (n ↗k) = nk ↗
+k
+!
+i=1
+i = nk ↗k(k + 1)
+2
+where the reduction relative to nk comes from the constraints on
+unit length and pairwise orthogonality.
+randomlyramp
+fromAhowmanyi
+need
+pten
+
+
+===== PAGE 29 =====
+24/37
+Degrees of Freedom (independent free parameters)
+In total: necessary condition for A ↑Rn↑n
+S ⇓k + 2
+(
+nk ↗k(k + 1)
+2
+)
+= 2nk ↗k2
+A: A rank k square matrix of dimension n ⇔n is not re-
+constructable, if the number of observed matrix entries is
+S < 2nk ↗k2.
+1
+is not enough
+
+
+===== PAGE 30 =====
+25/37
+Coupon Collector
+Q:If items contain one of n coupon each (at random), what is
+the probability that more than t items need to be acquired to
+collect all n coupons? How many items need to be acquired
+on average?
+
+
+===== PAGE 31 =====
+26/37
+Coupon Collector
+ti: # items to be acquired in order to get a new coupon, given
+that (i ↗1) have been acquired.
+Geometric distribution (w/ expectation)
+E[ti] =
+n
+n ↗i + 1
+Time to acquire all coupons in expectation
+E[T] =
+n
+!
+i=1
+E[ti] = n
+(
+1 + 1
+2 + 1
+3 + · · · + 1
+n
+)
+= nHn
+Harmonic number
+Hn = log n + O(1)
+EEG
+intuition
+harmonicnumber
+enterconstory constant
+
+
+===== PAGE 32 =====
+27/37
+Impossibility (When Recovery Fails): Motivation for
+Incoherence
+Q: Are there cases, where reconstruction is impossible?
+Assume that in the SVD of A, u1 = ei, v1 = ej, then in order to
+recover the singular value ω1, one needs to sample aij.
+A: Low-rank matrix reconstruction from sparse samples is not
+possible without further regularity conditions.
+Intuitively, one needs information to be su!ciently distributed.
+Thas a nonzero sampleftp.ttaj
+
+
+===== PAGE 33 =====
+28/37
+Incoherence
+Following Candes & Tao, 2010: deﬁne projection matrices to the
+column and row space of a rank k matrix with SVD A = U#V→
+P :=
+k
+!
+i=1
+uiu→
+i ,
+Q :=
+k
+!
+i=1
+viv→
+i ,
+as well as
+E :=
+k
+!
+i=1
+uiv→
+i
+Incoherence conditions:
+|pij|, |qij|
+i↘=j
+⇒µ
+↖
+k
+n
+,
+,,,,pii ↗k
+n
+,,,, ,
+,,,,qii ↗k
+n
+,,,, ⇒µ
+↖
+k
+n
+,
+|eij| ⇒µ
+↖
+k
+n
+.
+(beyond scope to explain, technical conditions, cf. compressed
+sensing literature)
+
+
+===== PAGE 34 =====
+29/37
+Reconstruction Theorem
+Let A ↑Rn↑n be a rank k matrix that is incoherent with
+µ ⇓1 and for which S samples have been observed at ran-
+dom.
+Then there is a universal constant C such that if
+S ⇓Cµ2nk(log n)6, then with probability at least 1 ↗n≃3,
+A fulﬁlls
+A = arg min
+B
+↔B↔↓,
+subject to
+!!(B) = !!(A)
+(Candes & Tao, 2010)
+intoheranecondition
+
+
+===== PAGE 35 =====
+30/37
+Take-home message 1
+↭We approached the matrix completion problem as
+A →Ak = UV→,
+U ↑Rn↑k,
+V ↑Rm↑k .
+Observation matrix: ! ↑{0, 1}n↑m
+↭Objective:
+Ak ↓min 1
+2↔!!(A ↗Ak)↔2
+F ,
+!!(R) = R ↘”
+
+
+===== PAGE 36 =====
+31/37
+Take-home message 2
+Today:
+Matrix A is incompletely observed:
+↭Projection algorithms for matrix completion
+↭Singular Value Projection method uses projected gradient
+descent:
+Each step includes a projecting to the space of rank k matrices
+using SVD
+A0 = 0,
+At+1 =
+"
+At + ϖ !!(A ↗At)
+#
+$%
+&
+sparse matrix
+'
+k
+#
+$%
+&
+= best rank k approximation
+,
+ϖ > 0
+
+
+===== PAGE 37 =====
+32/37
+Take-home message 3
+Matrix A is incompletely observed:
+↭Projection algorithms for matrix completion
+↭Convex Relaxation method exploits the fact that the nuclear
+norm ↔A↔↑is the convex envelope of the function rank(A) on
+R = {A : ↔A↔2 ⇒1}
+It optimizes a surrogate objective (convex function over convex
+domain):
+min
+↗↓ϱ↔B↔↑+ 1
+2↔B↔2
+F , s.t.
+!!(A ↗B) = 0
+The shrinkage operator, which constructs a similar (in terms of
+↔.↔2
+F ) matrix with the reduced nuclear norm (i.e., a sparser
+matrix in terms of singular values), provides a solution:
+At+1 = At + ϖt !!(A ↗shrinkω(At))
+#
+$%
+&
+!-sparse
+shrinkω(At) t↔↗
+↗↓arg min
+B
+*
+ϱ↔B↔↓+1
+2↔B↔2
+F
++
+, s.t. !!(A↗B) = 0
+
+
+===== PAGE 38 =====
+33/37
+Take-home message 4
+↭Randomized methods for SVD
+↭One exploits the fact that one can get an approximate solution
+of the SVD on A when doing SVD on a projected matrix Q→A
+(Halko et al. 2011)
+
+
+===== PAGE 39 =====
+34/37
+Take-home message 5
+Matrix A is incompletely observed:
+↭Exact matrix reconstruction
+Under what conditions an incompletely observed matrix A
+can be recovered exactly (with high probability) given that it
+was of rank k?
+!!(Ak) = !!(A) ,
+rank(A) = k
+
+
+===== PAGE 40 =====
+34/37
+Take-home message 5
+Matrix A is incompletely observed:
+↭Exact matrix reconstruction
+Under what conditions an incompletely observed matrix A
+can be recovered exactly (with high probability) given that it
+was of rank k?
+!!(Ak) = !!(A) ,
+rank(A) = k
+↭Under certain conditions on the singular vectors of A
+(Candes & Tao, 2010) and availability of at least a certain
+number of randomly observed entries of A (depending on
+kn log(n) and the above conditions), A can be reconstructed
+exactly with p ⇓(1 ↗n≃3).
+↭In such a case, A can be recovered via nuclear norm
+minimization!
+
+
+===== PAGE 41 =====
+35/37
+Next lecture
+↭Latent Variable Models
+↭Probabilistic Clustering Models
+↭Topic Models
+
+
+===== PAGE 42 =====
+36/37
+Homework
+Refresh probability theory via attending the
+refresh-my-background class on Thursday
+
+
+===== PAGE 43 =====
+37/37
+Self-check questions
+↭Prove 1
+2↙A(↔A↔2
+F ) = A.
+↭How is nuclear norm of matrix A linked to the SVD of A?
+↭Is the term ”trace norm” the same as the nuclear norm?
+What trace does one mean? Is it the trace of A? (Hint: No.)
+↭Does any convex combination of two matrices of rank ⇒k
+have rank ⇒k? Prove or provide a counter-example.
+↭Does any convex combination of two matrices with nuclear
+norm ⇒r have nuclear norm ⇒r? Why? ;-)
+↭What is the deﬁnition of a convex envelope of a function?
+Why does the nuclear norm serve as a great surrogate for the
+matrix rank?
+↭What does the shrinkage operator make to a matrix?

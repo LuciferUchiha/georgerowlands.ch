@@ -1,0 +1,614 @@
+
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Lecture 1
+Valentina Boeva
+ETH Zurich – https:
+//moodle-app2.let.ethz.ch/course/view.php?id=24285
+21 February 2025
+1/42
+
+
+===== PAGE 2 =====
+2/42
+Section 0
+Course Philosophy
+
+
+===== PAGE 3 =====
+3/42
+Computational Intelligence
+Data Science & Machine Learning: Foundation for Sciences,
+Engineering & Technology
+↭Interpreting experimental data
+↭Making predictions about likely outcomes
+↭Supporting data-informed decisions
+↭Enabling machines to perform intelligent tasks
+→Computational Intelligence
+
+
+===== PAGE 4 =====
+4/42
+AI Infrastructure
+An ever-growing number of methods and models available
+↭Conveniently packaged in software libraries (e.g. PyTorch)
+↭Unprecedented computing machinery (e.g. GPU servers)
+↭Active community (e.g. blogs, tutorials, best practices)
+↭Rapid innovation, time-to-product
+→Low Barriers, High Productivity, High Success Rates
+
+
+===== PAGE 5 =====
+5/42
+Competence and Understanding
+Importance of Understanding
+↭Use of computational intelligence needs to be accompanied by
+appropriate competence
+↭Mathematical analysis of models & algorithms
+↭Deepen the foundations rather than following the fashion
+↭Models are often very complex →di!cult to analyze
+↭Simpliﬁcations: perform analysis & calculations with simple
+models, develop theory, extrapolate with experiments
+Everything should be made as simple as possible, but no simpler.
+– Albert Einstein
+
+
+===== PAGE 6 =====
+6/42
+Calculation vs. Computation
+↭Easy to “run code over data”! But then what?
+↭Deep Learning: mainstream as black art – tweaking, ﬁshing,
+hacking, folklore knowledge, pseudo-scientiﬁc language
+↭Clean calculation = insights, understanding, clarity!
+↭Computational intelligence: prefer calculations over
+computations for understanding
+In any special doctrine of nature there can be only as much proper
+science as there is mathematics therein.
+– Immanuel Kant
+Metaphysical Foundations of Natural Science (1786, 4:470)
+
+
+===== PAGE 7 =====
+7/42
+CIL = 2↑Laboratory
+“Hands-on” Mathematics
+↭“Hands-on” use of mathematical methods: linear algebra,
+multivariate analysis, probability theory, statistics
+↭Mathematical modeling (role model: theoretical physics) =
+applied mathematics.
+↭Emphasis not on proving abstract theorems, but: performing
+sensible calculations →Practice mathematical skills
+“Hands-on” Programming
+↭Practical projects →Develop genuine solutions
+↭But: take guidance from analysis & theory
+
+
+===== PAGE 8 =====
+8/42
+The teaching team
+Valentina Boeva
+Head TA:
+Florian Barkmann
+
+
+===== PAGE 9 =====
+9/42
+Your background and expectations
+Your background:
+
+
+===== PAGE 10 =====
+10/42
+Your background and expectations
+Your answers:
+
+
+===== PAGE 11 =====
+11/42
+Your background and expectations
+Your expectations:
+
+
+===== PAGE 12 =====
+12/42
+Our expectations
+
+
+===== PAGE 13 =====
+13/42
+Course Content
+Dimensionality reduction
+↭Linear autoencoders, projections, principal component
+analysis, learning algorithms, non-linear autoencoders
+Matrix Approximation
+↭Collaborative ﬁltering, Rank 1 model, singular value
+decomposition, alternating least squares, projection
+algorithms, exact matrix reconstruction
+Latent Variable Models
+↭Probabilistic Clustering Models, topic models, embeddings
+Deep Neural Networks
+↭Compositional models, Backpropagation, gradient descent,
+convolutional neural networks
+Generative Models
+↭Autoregressive models, variational autoencoders, generative
+adversarial networks
+
+
+===== PAGE 14 =====
+14/42
+Course Material
+Course Moodle
+↭https://moodle-app2.let.ethz.ch/course/view.php?
+id=24285
+↭PDFs of several useful books are provided on Moodle
+
+
+===== PAGE 15 =====
+15/42
+Course Material
+Course Moodle
+↭Slides will usually be available a day in advance
+↭But:
+
+
+===== PAGE 16 =====
+16/42
+Course Material
+Course Moodle
+↭Please use Moodle to ask questions about the course content
+or organization.
+↭Explore the use of “CIL Overﬂow”, a StackOverﬂow-like Q&A
+plugin.
+
+
+===== PAGE 17 =====
+16/42
+Course Material
+Course Moodle
+↭Please use Moodle to ask questions about the course content
+or organization.
+↭Explore the use of “CIL Overﬂow”, a StackOverﬂow-like Q&A
+plugin.
+Lecture Notes
+↭Are mostly unchanged from last year. Provided via Moodle.
+
+
+===== PAGE 18 =====
+17/42
+Course Format
+Lectures Friday 10am-12pm
+↭By default, all lectures in presence in ML D 28. No streaming.
+↭We will provide recordings of each lecture. Check
+https://video.ethz.ch
+↭No lectures on April 18 & April 25.
+
+
+===== PAGE 19 =====
+17/42
+Course Format
+Lectures Friday 10am-12pm
+↭By default, all lectures in presence in ML D 28. No streaming.
+↭We will provide recordings of each lecture. Check
+https://video.ethz.ch
+↭No lectures on April 18 & April 25.
+Exercises sessions: Friday 4-6pm
+↭Organized in person.
+↭Recordings of the exercises will be provided.
+Refresh-my-background sessions: Thursday 2-4pm
+↭Organized in person.
+
+
+===== PAGE 20 =====
+18/42
+Projects & Exam
+Project work
+↭Three projects to choose from.
+End-of-semester exam (!!!)
+
+
+===== PAGE 21 =====
+19/42
+To give us feedback
+↭Click here! (the link available in Moodle)
+
+
+===== PAGE 22 =====
+20/42
+Plan for the rest of today
+↭Intro of exercises and projects by Head TA
+↭Break
+↭Start of ﬁrst content block (Dimensionality Reduction)
+
+
+===== PAGE 23 =====
+21/42
+Section 1
+Dimension Reduction
+Introduction
+
+
+===== PAGE 24 =====
+22/42
+Motivation
+Finding low-dimensional data representations
+↭Original raw representation is often high-dimensional and
+redundant. Examples: images, audio, time series.
+↭Goal (i): Compress data (while preserving relevant
+information)
+↭Goal (ii): Interpretable representation, di”erent modes of
+variation factored out
+↭Historically: Pearson 1901, Principal Component Analysis
+
+
+===== PAGE 25 =====
+23/42
+Auto-Encoder
+Taking a Deep Neural Network (DNN) viewpoint: Auto-Encoder
+
+
+===== PAGE 26 =====
+24/42
+Diagram ↓Mathematics
+Where does data come from?
+↭Data generating law x ↔ω (probability measure, implicit)
+↭Sample set
+S = {xi
+iid↔ω, i = 1, . . . , s}
+↭Notation: expectation, true and empirical
+Eω[f(x)]
+and
+ES[f(x)]
+ectog
+disgustingnotation
+monk Carlo
+T
+aurgeusing samples
+plastid
+app
+Est xi
+
+
+===== PAGE 27 =====
+25/42
+Diagram ↓Mathematics
+Relevant functions and maps?
+↭Encoder & decoder (e.g. m ↗n)
+F : Rn ↓Rm,
+G : Rm ↓Rn
+↭Reconstruction map
+G ↘F : Rn ↓Rn
+(composition of maps)
+↭Ideally (but unachievable)
+G ↘F = id
+I
+unless the distribution is din
+m
+
+
+===== PAGE 28 =====
+26/42
+Diagram ↓Mathematics
+Quality criterion; Distortion Measure?
+↭Abstractly: loss function
+ε : Rn ↑Rn ↓R,
+(x, ˆx) ≃↓ε(x, ˆx)
+↭...in the absence of domains-speciﬁc knowledge ...
+↭Quadratic loss
+ε(x, ˆx) = 1
+2⇐x ⇒ˆx⇐2
+↭... do not forget: this is a convenient choice ...
+jeconstruction
+or logless
+etc
+
+
+===== PAGE 29 =====
+27/42
+Diagram ↓Mathematics
+Risk function?
+↭Risk function = average loss – what distribution?
+↭Empirical Risk:
+ES[ε] =
+1
+2s
+s
+!
+t=1
+" #$ %
+sample average
+⇐
+xt
+"#$%
+sample
+⇒(G ↘F)(xt)
+"
+#$
+%
+reconstruction
+⇐2
+↭New Data Risk: (Lebesgue integral)
+Eω[ε] =
+&
+ε(x, (G ↘F))(x) dω(x)
+the
+guadloss
+MSE
+don't havethis
+EErt.AM
+
+
+===== PAGE 30 =====
+28/42
+Diagram ↓Mathematics
+Layers of units (vectors back and forth)
+↭Simplicity (1): start with single layer (for encoder and
+decoder)
+↭Simplicity (2): start with simple functions F and G
+→Linear Auto-Encoder
+↭Bring back (compositional) depth in the end
+pro
+activations
+
+
+===== PAGE 31 =====
+29/42
+Section 2
+Dimension Reduction:
+Linear Auto-Encoder
+
+
+===== PAGE 32 =====
+30/42
+Linear Auto-Encoder
+Identifying F, G with linear maps:
+Linear Encoder
+F : x ≃↓z = Wx,
+W ⇑Rm→n
+Linear Decoder
+G : z ≃↓ˆx = Vz,
+V ⇑Rn→m
+Linear Auto-Encoder objective:
+R(W, V) = R(P := VW) = E
+' 1
+2⇐x ⇒Px⇐2(
+Linearity = natural simpliﬁcation for initial analysis
+reconstration
+epiji
+b
+matrix
+
+
+===== PAGE 33 =====
+31/42
+Linear Compositionality
+Composing of linear maps ⇓matrix multiplication
+F(x) = Wx,
+G(z) = Vz
+(G ↘F)(x) = G(F(x)) = V(Wx) = (VW)x
+(simply follows from associativity of matrix product)
+Does it make sense to compose linear functions for F or G?
+No, if the goal is to increase expressivity (or modeling power)!
+
+
+===== PAGE 34 =====
+32/42
+A!ne Maps
+Q: Are a!ne autoencoders more powerful than linear ones?
+A: For centered data and the squared loss: optimal a!ne
+reconstruction maps are linear.
+Centering of data
+x ⇔x ⇒E[x]
+(e.g. subtract sample mean, simple pre-processing)
+T.FI
+iindinensien­u
+IIito
+be centered
+instead of
+adding a dim
+subtract
+mean
+ECX
+8
+
+
+===== PAGE 35 =====
+33/42
+A!ne Maps
+A: For centered data (i.e., E[x] = 0) and the squared loss, optimal
+a!ne reconstruction maps are linear.
+Proof.
+We minimize the loss R = 1
+2E⇐x ⇒(G ↘F)(x)⇐2 for a!ne maps:
+F(x) = Wx + a,
+G(z) = Vz + b
+(G ↘F)(x) = V(Wx + a) + b = VW
+"#$%
+=:P
+x + c,
+where c = b + Va
+Let c ↖= 0, then
+E⇐x ⇒(Px + c)⇐2 = E⇐x ⇒Px⇐2 + ⇐c⇐2 ⇒2↙c, Ex ⇒PEx
+"
+#$
+%
+=0
+∝
+> E⇐x ⇒Px⇐2
+inner product
+guard
+dotproduct
+is specific impl toget earlide
+write out
+20
+I
+as centod
+Trinivthis
+to
+using linear at least
+equally good or
+better
+
+
+===== PAGE 36 =====
+34/42
+A!ne Maps
+When centering data as a preprocessing step, a!ne maps
+cannot obtain better reconstruction than linear ones in au-
+toencoders.
+
+
+===== PAGE 37 =====
+35/42
+Identiﬁability & Non-Identiﬁability
+Our goal: minimize R = 1
+2E⇐x ⇒VWx⇐2,
+W ⇑Rm→n and
+V ⇑Rn→m.
+Q: Is the representation of P as P = VW unique?
+Two questions
+↭First: is the optimal linear reconstruction map P unique?
+↭Second: is the parameterization via weight matrices W, V
+unique?
+Second question: no
+VW = VIW = V(AA↑1)W = (VA)
+" #$ %
+=:V→
+(A↑1W)
+"
+#$
+%
+=:W→
+where A can be any invertible matrix A ⇑Rm→m.
+nsyes
+intuiterly
+makes sense
+dat
+watt
+training
+
+
+===== PAGE 38 =====
+36/42
+Parameter Non-Identiﬁability
+The weight matrices are non-identiﬁable and one needs to be
+careful not to over-interpret the found representation.
+Consequence of the non-identiﬁability: investigate constrained
+classes of square matrices P and postpone (to Lecture 2) the
+question of how to split it (non-uniquely) into a product of weight
+matrices
+
+
+===== PAGE 39 =====
+37/42
+Rank Constraint
+Q: What is the structural constraint on the reconstruction map in
+the autoencoder, i.e. how can we characterize P = VW?
+
+
+===== PAGE 40 =====
+37/42
+Rank Constraint
+Q: What is the structural constraint on the reconstruction map in
+the autoencoder, i.e. how can we characterize P = VW?
+Note that we want the inner dimension m ↗n. It is clear that
+rank(P) = min{rank(V), rank(W)} ′ min{n, m} ↓= m
+Here, the rank of a matrix (or its linear map) is deﬁned as
+rank(A) = dim(im(A))
+where the image (or range) is the linear span of the columns of A.
+Hence, minP:rank(P)↔m R(P) = minW↗Rm↑n,V↗Rn↑m R(W, V)
+by
+assumption
+_r
+
+
+===== PAGE 41 =====
+38/42
+Rank Constraint
+The reconstruction map of a linear autoencoder is of rank
+less or equal to m. The bottleneck layer constitutes a rank
+constraint.
+Note that the rank constraint need not to refer back to the
+factored expression P = VW. The latter is only a speciﬁc
+representation, which encodes the rank constraint into the
+parameterization.
+
+
+===== PAGE 42 =====
+39/42
+Take-home message
+↭We study the problem of dimensionality reduction
+Rn ↓Rm, m ↗n by considering a linear autoencoder:
+
+
+===== PAGE 43 =====
+39/42
+Take-home message
+↭We study the problem of dimensionality reduction
+Rn ↓Rm, m ↗n by considering a linear autoencoder:
+↭The decomposition P = VW is not unique;
+
+
+===== PAGE 44 =====
+39/42
+Take-home message
+↭We study the problem of dimensionality reduction
+Rn ↓Rm, m ↗n by considering a linear autoencoder:
+↭The decomposition P = VW is not unique;
+↭rank(P) ′ m
+
+
+===== PAGE 45 =====
+39/42
+Take-home message
+↭We study the problem of dimensionality reduction
+Rn ↓Rm, m ↗n by considering a linear autoencoder:
+↭The decomposition P = VW is not unique;
+↭rank(P) ′ m
+↭We minimize R = 1
+2E⇐x ⇒Px⇐2
+
+
+===== PAGE 46 =====
+39/42
+Take-home message
+↭We study the problem of dimensionality reduction
+Rn ↓Rm, m ↗n by considering a linear autoencoder:
+↭The decomposition P = VW is not unique;
+↭rank(P) ′ m
+↭We minimize R = 1
+2E⇐x ⇒Px⇐2
+↭When data are centered (Ex = 0), a!ne maps cannot obtain
+better reconstruction than linear ones in autoencoders.
+
+
+===== PAGE 47 =====
+40/42
+Next lecture
+↭rank(P), linear subspace U
+↭Orthogonal projection to linear subspace
+↭Matrix Representation of Projection
+↭Principal Component Analysis
+
+
+===== PAGE 48 =====
+41/42
+Homework
+Refresh linear algebra knowledge via attending the
+refresh-my-background class on Thursday
+
+
+===== PAGE 49 =====
+42/42
+Self-check questions
+↭Is it true that for any A ⇑Rm→n, rank(AT ) = rank(A)?
+↭What is the maximal rank of matrices V, W and P in our
+linear autoencoder setting?
+↭Prove that for centered data (i.e., E[x] = 0) and the squared
+loss, optimal a!ne reconstruction maps are linear.
+↭Show that the parameterization of P = VW via weight
+matrices W ⇑Rm→n, V ⇑Rn→m is not unique.
+yes
+m
+Shoun
+Thought it was
+permutations

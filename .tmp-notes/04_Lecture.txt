@@ -1,0 +1,1035 @@
+
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Lecture 4
+Valentina Boeva
+ETH Zurich – https:
+//moodle-app2.let.ethz.ch/course/view.php?id=27126
+13 March 2026
+1/47
+
+
+===== PAGE 2 =====
+2/47
+Plan for Today
+Matrix Approximation:
+↭Collaborative Filtering
+↭Motivation
+↭Formalization
+↭Rank 1 Model as minimal model
+↭Outer Product Model
+↭Minimal minimal model (1 dim.)
+↭Convexity
+↭Gradient Dynamics
+↭Solution for the Fully Observed Rank 1 Model
+↭Relation to eigenvectors
+
+
+===== PAGE 3 =====
+3/47
+Section 1
+Matrix Approximation:
+Collaborative Filtering
+
+
+===== PAGE 4 =====
+4/47
+Matrix Completion
+Assumption: given a sparse matrix A, i.e. fraction of entries
+observed.
+Q: Can we ﬁll in the missing entries and reconstruct the
+matrix?
+A =
+
+
+3
+?
+?
+2
+0
+1
+2
+?
+?
+?
+?
+→2
+→4
+5
+
+
+completion
+=↑
+?
+
+
+===== PAGE 5 =====
+5/47
+Example: Netﬂix Data
+(https://www.kaggle.com/netflix-inc/netflix-prize-data)
+Input: User-item preferences stored in a matrix
+↭rows = users, columns = items
+↭1-5 star rating of movies. x denotes a missing value.
+↭predict missing values = matrix completion
+↭sparseness level: 1% and less
+garde
+whichnocies
+would he hike
+dislike
+
+
+===== PAGE 6 =====
+6/47
+Recommender Systems
+Recommender systems
+↭Analyze patterns of interest in items (products, movies, ...)
+↭Provide personalized recommendations for users
+Collaborative Filtering
+↭Exploit collective data from many users
+↭Generalize across users and – possibly – across items
+Applications:
+↭Amazon, Netﬂix, Pandora, online advertising, etc.
+↭Special case of algorithmic selection
+us
+Content based
+
+
+===== PAGE 7 =====
+7/47
+Matrix Completion: No-Goals
+Imagine that entries are independent
+A = (aij),
+aij
+iid
+↓p,
+P(A) =
+%
+ij
+p(aij)
+=↑no information carried by one entry about the other
+I(aij, akl) = 0
+(ij ↔= kl)
+(e.g. I - mutual information)
+A: Without further assumptions, problem is ill-posed.
+we need some mutual interaction
+dependencies relationship
+
+
+===== PAGE 8 =====
+8/47
+Matrix Completion: Minimal Dependencies
+What makes a matrix a matrix (and not just a vector)?
+A: The identity of columns and rows!
+A minimal assumption in matrix reconstruction is that entries
+within the same row or the same column are not independent.
+
+
+===== PAGE 9 =====
+9/47
+Conditional Independence
+Minimal dependence assumption via conditional independence:
+aij ↗↗{akl : k ↔= i ↘l ↔= j}
+&
+'(
+)
+not same row or column
+| {ail : l ↔= j}
+&
+'(
+)
+same row
+≃{akj : k ↔= i}
+&
+'(
+)
+same column
+DRAW HERE
+I
+aid is indemnitt at an
+given
+us
+and colan i
+plai.gltlaig
+Plaig
+does
+not imply
+stochastic independen
+
+
+===== PAGE 10 =====
+10/47
+Conditional vs. Marginal Independence
+Entries partially observed =↑
+Conditional independence does not imply marginal independence
+E!ectively (indirect) couplings between all entries
+Tatisthis
+
+
+===== PAGE 11 =====
+11/47
+Netﬂix Data
+(https://www.kaggle.com/netflix-inc/netflix-prize-data)
+Input: User-item preferences stored in a matrix
+↭rows = users, columns = items
+↭1-5 star rating of movies. x denotes a missing value.
+↭predict missing values = matrix completion
+↭sparseness level: 1% and less
+
+
+===== PAGE 12 =====
+12/47
+Formalization
+Rating matrix A ⇐Rn→m
+↭n number of users (rows)
+↭m: number of items (columns)
+Observation matrix ! ⇐{0, 1}n→m
+ωij = 1 ⇒↑aij observed
+*
+i,j
+ωij
+=
+number of observed ratings
+Boolean matrix
+
+
+===== PAGE 13 =====
+13/47
+Measurement Scales
+Q: What assumptions can/should we make about measure-
+ment scale of data (possible invariances)?
+Is data invariant under shifts or rescaling?
+Is the scale the same for all items/users?
+Do we want to apply some pre-processing/standardization?
+
+
+===== PAGE 14 =====
+14/47
+Centering
+Mean rating per user/item
+µrow
+i
+=
++m
+j ωijaij
+max{1, +m
+j ωij},
+µcol
+j =
++n
+i ωijaij
+max{1, +n
+i ωij},
+Centering
+aij
+row
+⇑→aij →µrow
+i
+or
+aij
+col
+⇑→aij →µcol
+j
+Motivation: make rows/columns more comparable, subtract out
+rating bias
+averseratingof user
+average
+rations of none
+1 user
+very
+positie
+other very negatie
+
+
+===== PAGE 15 =====
+15/47
+Variance Normalization
+It may make sense to normalize the variance to 1: per row (user)
+or per column (item).
+Let X be a score (e.g. rating) with E[X] = µ and Var[X] = ε2,
+then its standardized score (or z-score) is given by
+Z = X →µ
+ε
+We can think of either rows or columns as deﬁning the reference
+population (to calculate mean/variance).
+1
+5
+2 3
+
+
+===== PAGE 16 =====
+16/47
+Side Note: Item-based Collaborative Filtering
+In the early collaborative ﬁltering systems in the 1990s it was
+believed to be most natural to z-score normalize ratings per user or
+person. This way, one would account for certain users being
+generally more positive or negative or make di!erent use of the
+dynamic range of the rating scale.
+However it was then a ’research discovery’ (see Sarwar et al. 2001,
+highly cited) to ﬁnd that normalizing items (i.e. the transposed
+view) was more e!ective.
+for project try
+different
+normalizations
+
+
+===== PAGE 17 =====
+17/47
+Our plan for today’s journey
+A ⇓UV↑,
+U ⇐Rn→k,
+V ⇐Rm→k . Eita matrix
+approximate
+why
+
+
+===== PAGE 18 =====
+17/47
+Our plan for today’s journey
+A ⇓UV↑,
+U ⇐Rn→k,
+V ⇐Rm→k .
+Today: matrix A is fully observed
+U, V ⇔min 1
+2↖A →UV↑↖2
+F .
+↭Rank 1 matrix, A ⇓uv↑,
+u ⇐Rn,
+v ⇐Rm .
+↭1-dimensional case to observe the properties of the gradients
+a ⇓uv,
+u, v ⇐R .
+completion brious
+approximation
+SVD
+highest.IE
+
+
+===== PAGE 19 =====
+17/47
+Our plan for today’s journey
+A ⇓UV↑,
+U ⇐Rn→k,
+V ⇐Rm→k .
+Today: matrix A is fully observed
+U, V ⇔min 1
+2↖A →UV↑↖2
+F .
+↭Rank 1 matrix, A ⇓uv↑,
+u ⇐Rn,
+v ⇐Rm .
+↭1-dimensional case to observe the properties of the gradients
+a ⇓uv,
+u, v ⇐R .
+Next lectures: incompletely observed matrix A
+(e.g., we only know 1% of its values)
+U, V ⇔min 1
+2↖”!(A →UV↑)↖2
+F .
+no missing vales
+outerproduct
+Collaboratefiltering
+460k at obsened
+no
+this
+
+
+===== PAGE 20 =====
+18/47
+Section 2
+Matrix Approximation:
+Rank 1 Model
+
+
+===== PAGE 21 =====
+19/47
+Minimal Model
+Q: What is the simplest – yet interesting – matrix model that
+couples entries in each row and each column?
+
+
+===== PAGE 22 =====
+20/47
+Outer Product Model
+A: Outer product model.
+Bi-linear model: associating a single parameter with each row and
+column
+A ⇓uv↑,
+u ⇐Rn,
+v ⇐Rm .
+aij ⇓uivj
+Non-identiﬁability: scalar ϑ ↔= 0: u ⇑ϑu, v ⇑(1/ϑ)v.
+End rep of uteri and of movie j
+meaning
+intuition
+
+
+===== PAGE 23 =====
+21/47
+Squared Error
+Model: A ⇓uv↑,
+u ⇐Rn,
+v ⇐Rm .
+Objective: squared error
+u, v ⇔min ϖ(u, v) := 1
+2↖”!(A →uv↑)↖2
+F .
+Frobenius norm
+↖R↖2
+F = ↖vec(R)↖2
+2 =
+*
+ij
+r2
+ij
+Projection operator
+”!(R) = R ↙!,
+↙: Hadamard product
+Q: In case of incompletely observed A, ”! will conﬁne the
+loss to the observed values only.
+scent sand
+1
+
+
+===== PAGE 24 =====
+22/47
+Rank 1 Model
+Model: A ⇓uv↑,
+u ⇐Rn,
+v ⇐Rm .
+u, v are determined solely based on the observed values, however
+extrapolate to a full matrix.
+uv↑is a rank 1 matrix
+↭every rank 1 matrix can be represented as an outer product of
+two vectors
+↭every pair of vectors deﬁnes a rank 1 matrix via their outer
+product
+
+
+===== PAGE 25 =====
+23/47
+Minimal minimal Model
+Study the scalar problem (don’t feel ashamed :))
+ϖ(u, v) = 1
+2(a →uv)2,
+u, v ⇐R
+The product of two numbers should equal a (given) third number.
+DERIVE DERIVATIVES
+can plotthis
+likevisuals D
+cysts
+do
+it
+it
+It
+a
+nu
+a
+Su
+
+
+===== PAGE 26 =====
+24/47
+Gradient Field
+Gradient ﬁeld induced by the squared error: chain rule
+ϱϖ
+ϱu = ςv,
+ϱϖ
+ϱv = ςu,
+ς := uv →a
+Gradient ﬁeld for a = 1
+7
+Iii
+origin also 0
+trivial solution
+is a saddlepointC
+
+
+===== PAGE 27 =====
+25/47
+Gradient Field
+Minima: hyperbola with two branches (red lines)
+Gradient descent: convergence to (some point on) hyperbola.
+What happens at the origin? Isolated critical point: saddle point
+∝2ϖ(u, v) =
+,
+v2
+2uv →a
+2uv →a
+u2
+-
+,
+∝2ϖ(0, 0) =
+, 0
+→a
+→a
+0
+-
+Characteristic polynomial
+det(φI →∝2ϖ(0, 0)) = φ2 →a2 = (φ →a)(φ + a)
+Hessian matrix is indeﬁnite at (0, 0) as it has eigenvalues ±a
+(unstable under gradient dynamics).
+so notconcex
+why
+why Tenant
+the eigenvales of this
+have positive an d regette
+solution here
+caddlepoint
+
+
+===== PAGE 28 =====
+26/47
+Convexity
+A set in a vector space or a”ne space is convex if the line
+segment connecting any two points in the set is also in the set.
+A function f is convex over a domain R, if for all x, y ⇐R
+f(tx + (1 →t)y) ′ tf(x) + (1 →t)f(y),
+∞t ⇐[0; 1]
+first order definition
+1
+
+
+===== PAGE 29 =====
+27/47
+Convexity
+If f is di!erentiable, convexity is equivalent to the condition
+f(x) ∈f(y) + ∝f(y) · (x →y),
+∞x, y ⇐R
+If f is twice di!erentiable, convexity on a convex domain R is
+equivalent to the condition
+∝2f(x) ∋0,
+∞x ⇐Int(R)
+(i.e. Hessian is positive semi-deﬁnite = psd)
+Lecond order
+sagno
+definitions
+third endr
+99
+hence
+we
+looked
+at eigenveles tatore
+
+
+===== PAGE 30 =====
+28/47
+Convexity
+Loss of our minimal-minimal model: ϖ(u, v) = 1
+2(a →uv)2, u, v ⇐R
+∝2ϖ(u, v) =
+,
+v2
+2uv →a
+2uv →a
+u2
+-
+,
+∝2ϖ(0, 0) =
+, 0
+→a
+→a
+0
+-
+The scalar objective is non-convex (exception: a = 0), as a saddle
+point exists at the origin.
+↭Convexity is a very fundamental property: demarcation line in
+optimization between tractable and (possibly) intractable
+problems
+↭Matrix completion (as we will see) is a problem that while
+being non-convex can be analyzed in-depth, approximated well
+in practice and solved exactly for some special cases.
+Mukt
+is this
+
+
+===== PAGE 31 =====
+29/47
+From 1-dimension back to Rank 1 Matrix case
+↭Loss for one-dimensional case:
+ϖ(u, v) = 1
+2(a →uv)2,
+ϱϖ
+ϱu = (uv →a)v,
+ϱϖ
+ϱv = (uv →a)u .
+↭Loss for the rank 1 model (fully observed A):
+ϖ(u, v) = 1
+2↖A →uv↑↖2
+F
+
+
+===== PAGE 32 =====
+29/47
+From 1-dimension back to Rank 1 Matrix case
+↭Loss for one-dimensional case:
+ϖ(u, v) = 1
+2(a →uv)2,
+ϱϖ
+ϱu = (uv →a)v,
+ϱϖ
+ϱv = (uv →a)u .
+↭Loss for the rank 1 model (fully observed A):
+ϖ(u, v) = 1
+2↖A →uv↑↖2
+F
+Partial derivatives:
+ϱϖ
+ϱui
+=
+*
+j
+(uivj →aij)vj,
+ϱϖ
+ϱvj
+=
+*
+i
+(uivj →aij)ui .
+Gradients (vector/matrix notation)
+∝uϖ = Rv,
+∝vϖ = R↑u,
+R := (uv↑→A)
+↭can be derived via the Frobenius norm rule ∝R 1
+2↖R↖2
+F = R
+and chain rule applied to:
+ϖ(u, v) = 1
+2↖R(u, v)↖2
+F .
+elementwise Tresidal
+matrix R
+chainrule
+fifty
+use exam
+
+
+===== PAGE 33 =====
+30/47
+Hessian Map
+Hessian map
+∝2ϖ(u, v) =
+,
+↖v↖21n→n
+2uv↑→A
+(2uv↑→A)↑
+↖u↖21m→m
+-
+,
+Hessian matrix at the origin
+∝2ϖ(0, 0) =
+,0n→n
+→A
+→A↑
+0m→m
+-
+COMPARE TO SCALAR CASE
+I
+second and derivates
+yep
+n
+VER
+dei
+D
+pay in
+phtmstated
+square symmetric
+trace
+0
+scale cantillair ft
+22
+matchesup
+74190
+
+
+===== PAGE 34 =====
+31/47
+Hessian Map
+Hessian matrix at the origin
+∝2ϖ(0, 0) =
+,0n→n
+→A
+→A↑
+0m→m
+-
+Scalar to the multidimensional case: more abstract vector calculus,
+but a conceptually small step.
+The Hessian at zero is not positive semi-deﬁnite, unless A is a zero
+matrix.
+The problem is non-convex for all dimensions m, n ∈1.
+tyetic
+s
+E QAQT
+L
+Efi.us
+becan sun of eigenwells can to 0
+
+
+===== PAGE 35 =====
+32/47
+Gradient Dynamics & Flow
+Gradient dynamics: of general interest, speciﬁcally: gradient
+descent
+Q: Can we gain analytic insights into the gradient dynamics?
+A: Use ODEs (ordinary di!erential equations) to study the
+gradient ﬂow = gradient dynamics in the limit of small step
+sizes
+he
+can
+apprech
+solution
+exponentially fast
+
+
+===== PAGE 36 =====
+33/47
+ODEs & Gradient Flow
+Minimal minimal model: scalar
+ϖ(u, v) = 1
+2(a →uv)2,
+ϱϖ
+ϱu = (uv →a)v,
+ϱϖ
+ϱv = (uv →a)u .
+Consider balanced initialization u0 = v0
+(u and v will evolve identically).
+Study evolution of x = uv = u2
+du
+dt = →v(uv →a),
+dx
+dt = du2
+dt = →2uv(uv →a) = →2x(x →a)
+p
+went
+these mines
+Lean of iniiticlication
+HE At
+UE
+SE
+i
+reinitis.ie
+rewite
+est
+ga
+x̅
+I
+inlimit 1
+
+
+===== PAGE 37 =====
+34/47
+ODEs & Gradient Flow
+Minimal minimal model with balanced initialization u0 = v0:
+ϖ(u, v) = 1
+2(a →uv)2 ,
+x = uv = u2 ,
+dx
+dt = →2x(x →a)
+Can solve this ODE manually
+(or w/ symbolic solver like Mathematica)
+Dsolve[x’(t) = 2ax(t)-2x(t)^2,x(0)==c]
+A: yields analytic solution
+x(t) =
+ae2at
+e2at →1 + a/c = a +
+ac →a2
+ce2at + a →c
+initialization
+ast
+as
+I
+
+
+===== PAGE 38 =====
+35/47
+ODE Solution
+Minimal minimal model with balanced initialization u0 = v0:
+ϖ(u, v) = 1
+2(a →uv)2 ,
+x = uv = u2 ,
+x(t) = a +
+ac →a2
+ce2at + a →c
+Solution for a = 1, c = x(0) = 0.01
+2x E
+Oappi
+expential
+growth
+conveyor
+
+
+===== PAGE 39 =====
+36/47
+ODE Solution
+Minimal minimal model with balanced initialization u0 = v0:
+ϖ(u, v) = 1
+2(a →uv)2 ,
+x = uv = u2 ,
+x(t) = a +
+ac →a2
+ce2at + a →c
+Solution for a = 1, c = x(0) = 0.01 or x(0) = 0.25 or x(0) = 0.81
+8 0
+doesn't
+YEAH
+u u
+
+
+===== PAGE 40 =====
+37/47
+Back to the Fully Observed Rank 1 Model
+Objective:
+ϖ(u, v) = 1
+2↖A →uv↑↖2
+F , A ⇐Rn→m, u ⇐Rn, v ⇐Rm
+Rewriting the objective with this useful identity:
+↖R↖2
+F = tr(R↑R)
+expand as trace
+1mi
+flII
+AmTF A
+a
+t
+MINIUTA
+At_vut
+CATA ÉfÉiÉ nature
+livity
+t.lt f
+tFEfiyi
+m
+
+
+===== PAGE 41 =====
+38/47
+Rewriting the objective for the Fully Observed Rank
+1 Model
+Objective:
+ϖ(u, v) = 1
+2↖A →uv↑↖2
+F
+Rewritten objective:
+ϖ(u, v) = 1
+2↖u↖2↖v↖2 →u↑Av
+↭Directionality of u, v purely determined by the last term
+write here
+U Cni
+11511 1
+c
+cn.cz
+V czw̅
+11511 1
+
+
+===== PAGE 42 =====
+39/47
+Optimality Conditions
+(u, v) →⇔max{u↑Av},
+s.t.
+↖u↖= ↖v↖= 1
+Q: Can we solve this problem?
+Icu Aus
+HAUK
+cos a An
+cheer
+u v coliner so
+1h
+II
+same for v
+phg in
+
+
+===== PAGE 43 =====
+39/47
+Optimality Conditions
+(u, v) →⇔max{u↑Av},
+s.t.
+↖u↖= ↖v↖= 1
+Q: Can we solve this problem?
+A: Lagrange multipliers
+L = u↑Av →µ1 (u · u →1) →µ2 (v · v →1)
+First order optimality condition
+∝uL = Av →2µ1u != 0 =↑u =
+Av
+↖Av↖
+another
+solution
+
+
+===== PAGE 44 =====
+40/47
+Eigenvector Equations
+From the ﬁrst order optimality conditions:
+u =
+Av
+↖Av↖,
+v =
+A↑u
+↖A↑u↖
+Putting both conditions together:
+A: eigenvector equations
+u △(AA↑)u,
+v △(A↑A)v
+↭u should be an eigenvector of AA↑
+↭v should be an eigenvector of A↑A
+ejinnectors
+I
+
+
+===== PAGE 45 =====
+41/47
+Principal Eigenvectors
+u △(AA↑)u,
+v △(A↑A)v
+↭u should be the principal eigenvector of AA↑
+↭v should be the principal eigenvector of A↑A
+AA 4 14
+atav.cat
+a
+iEayyn
+t Eg
+iii
+eigeneh
+ATAx
+Ix
+AAT
+1A
+eigenidesof
+AandAA vecame
+
+
+===== PAGE 46 =====
+41/47
+Principal Eigenvectors
+u △(AA↑)u,
+v △(A↑A)v
+↭u should be the principal eigenvector of AA↑
+↭v should be the principal eigenvector of A↑A
+↭Can use power iterations for computation
+↭A ⇓▽φ1uv↑, where u and v are principal unit eigenvectors
+of AA↑and A↑A, and φ1 is the principal eigenvalue of
+AA↑(or A↑A).
+wheredo we
+need this
+
+
+===== PAGE 47 =====
+41/47
+Principal Eigenvectors
+u △(AA↑)u,
+v △(A↑A)v
+↭u should be the principal eigenvector of AA↑
+↭v should be the principal eigenvector of A↑A
+↭Can use power iterations for computation
+↭A ⇓▽φ1uv↑, where u and v are principal unit eigenvectors
+of AA↑and A↑A, and φ1 is the principal eigenvalue of
+AA↑(or A↑A).
+Generalization to U ⇐Rn→k and V ⇐Rm→k:
+Singular Value Decomposition
+find
+solution
+taste
+
+
+===== PAGE 48 =====
+42/47
+Next lecture
+↭SVD Theorem
+↭SVD & Spectral Norm
+↭SVD & PCA
+↭SVD & Matrix Completion
+↭Alternating Least Squares
+
+
+===== PAGE 49 =====
+43/47
+Take-home message 1
+↭We approached the matrix completion problem as
+A ⇓UV↑,
+U ⇐Rn→k,
+V ⇐Rm→k .
+Observation matrix: ! ⇐{0, 1}n→m
+
+
+===== PAGE 50 =====
+43/47
+Take-home message 1
+↭We approached the matrix completion problem as
+A ⇓UV↑,
+U ⇐Rn→k,
+V ⇐Rm→k .
+Observation matrix: ! ⇐{0, 1}n→m
+↭Objective:
+U, V ⇔min 1
+2↖”!(A →UV↑)↖2
+F ,
+”!(R) = R ↙!
+
+
+===== PAGE 51 =====
+44/47
+Take-home message 2
+Today:
+↭Rank 1 model: Matrix A is fully observed, and
+U ⇐Rn→1,
+V ⇐Rm→1 .
+u, v ⇔min 1
+2↖A →uv↑↖2
+F
+
+
+===== PAGE 52 =====
+44/47
+Take-home message 2
+Today:
+↭Rank 1 model: Matrix A is fully observed, and
+U ⇐Rn→1,
+V ⇐Rm→1 .
+u, v ⇔min 1
+2↖A →uv↑↖2
+F
+↭Solution (from the ﬁrst-order optimality condition):
+A ⇓▽φ1uv↑, where u and v are principal unit eigenvectors
+of AA↑and A↑A, and φ1 is the principal eigenvalue of
+AA↑(or A↑A)
+↭One can get the solution using:
+↭Power method on AA→and A→A (high complexity)
+↭Gradient descent (the problem is not convex; we studied the
+gradient dynamics in 1-dim. case)
+
+
+===== PAGE 53 =====
+45/47
+Homework
+Refresh Spectral Norm, Eigenvectors/values, (Non-)Convexity via
+attending the refresh-my-background class on Thursday
+wit
+
+
+===== PAGE 54 =====
+46/47
+Self-check questions 1
+↭Prove that eigenvalues of A↑A and AA↑are the same.
+↭Why, for a fully observed matrix A, the approximation UV↑,
+U ⇐Rn→k, V ⇐Rm→k, satisﬁes minimal dependence
+assumption via conditional independence (see Slide 7)?
+↭Should one apply any type of data pre-processing /
+normalization before solving the matrix completion problem?
+Why? Should we normalize the data by rows (users) or by
+columns(items)?
+↭For two independent vectors u1 and u2 ⇐Rn, and two
+independent vectors v1 and v2 ⇐Rm, what is the rank of the
+matrix UV↑? (Here, U = (u1, u2) and V = (v1, v2)). And
+if we have k independent vectors in U and V,
+k ′ min (m, n)?
+
+
+===== PAGE 55 =====
+47/47
+Self-check questions 2
+↭Let’s assume that our loss is a function of two vectors of size
+n and m. What are the dimensions of the Hessian matrix at a
+particular point?
+↭What can one say from knowing the eigenvalues of the
+Hessian matrix at a particular point?
+↭What problem does the Power method help to solve? Do you
+still remember how the method works?

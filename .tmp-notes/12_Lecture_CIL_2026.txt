@@ -1,0 +1,922 @@
+===== PAGE 1 =====
+Computational Intelligence Laboratory
+Lecture 12
+Valentina Boeva, replaced by Tobias Scheithauer
+ETH Zurich – https:
+//moodle-app2.let.ethz.ch/course/view.php?id=27126
+29 May 2025
+1/51
+
+===== PAGE 2 =====
+2/51
+Outline for today
+↭Generative Adversarial Networks (GANs)
+↭Generation as Classiﬁcation
+↭Optimal Transport and Wasserstein GANs
+
+===== PAGE 3 =====
+3/51
+Recap: Generative Modeling
+Goal: model the true data distribution pdata(x) using a
+parameterized model p(x; ω).
+Main Challenges:
+↭Mode Collapse:
+p(x) →p(x; ω) ↑0
+↭Incorrect data:
+p(x; ω) →p(x) ↑0
+
+===== PAGE 4 =====
+4/51
+Recap: Autoregressive Models
+Model joint distribution using the chain rule over sequentially
+ordered variables.
+↭Autoregressive factorization:
+P(x1, . . . , xn) =
+n
+!
+t=1
+P(xt|x1, . . . , xt→1)
+↭AR(k): k-th order Markov assumption:
+P(xt|x1, . . . , xt→1) = P(xt|xt→k, . . . , xt→1)
+↭Deep learning versions use DNNs to model conditional
+probabilities.
+↭Example: PixelCNN uses masked CNNs to ensure
+autoregressive structure.
+
+===== PAGE 5 =====
+5/51
+Recap: Variational Autoencoders (VAEs)
+Approximate intractable posterior using a learned variational
+distribution and optimize the ELBO.
+↭Evidence Lower Bound (ELBO):
+log p(x) ↓Eq(z|x)[log p(x|z)] ↔DKL(q(z|x)↗p(z))
+↭Inference model: q(z|x; ε) typically Gaussian with learned
+µ(x), !(x).
+↭Generative model: p(x|z; ω) often assumed Gaussian,
+trained with reconstruction loss.
+
+===== PAGE 6 =====
+6/51
+Section 3
+Generative Models
+Generative Adversarial Networks
+
+===== PAGE 7 =====
+7/51
+Is Likelihood (and MLE) the Answer?
+MLE can be used for inference in generative models, BUT
+May severely limit structure and complexity of transformation
+maps (autoregressive models)
+May require approximate ELBO-based inference (VAEs)
+More fundamentally: Is likelihood the most suitable proxy, if the
+ultimate goal is indistinguishability of distributions?
+Q: Is the likelihood function (really) the canonical criterion
+to use in generative modeling?
+not perfect
+ethernise nodecollapse
+
+===== PAGE 8 =====
+8/51
+A new paradigm: Generation as Classiﬁcation
+Seminal idea: Reframe generative models as a classiﬁcation
+problem
+p(x, Y ;ω) = Y
+2
+p(x)
+"#$%
+true data
++1 ↔Y
+2
+p(x;ω)
+" #$ %
+synthetic data
+,
+Y ↘{0, 1}
+↭Y is a binary indicator variable – mixture model!
+Training a classiﬁer to separate these ≃pushes the generator to
+erase the boundary
+realtalemixture
+modelbinary
+indictor
+
+===== PAGE 9 =====
+9/51
+Fixed Discriminator
+Assume classiﬁer (or discriminator) – is given
+ϑ : Rn ≃[0; 1]
+ϑ(x) = ˆP{Y = 1|x} ↑P{Y = 1|x} .
+Logistic log-likelihood (or classiﬁcation log-likelihood)
+ϖ(ω; ϑ) = E(x,Y )↑p(x,Y ;ω) [Y ln ϑ(x) + (1 ↔Y ) ln(1 ↔ϑ(x))]
+which can be written out more explicitly
+ω min
+↔≃ϖ(ω; ϑ) = 1
+2
+&
+ln ϑ(x)p(x)dx
+"
+#$
+%
+constant wrt ω
++ 1
+2
+&
+ln(1 ↔ϑ(x))p(x;ω)dx
+"
+#$
+%
+ω-dependent
+Jien
+classifier T
+frac
+12Ex
+sim
+p
+left
+Lnpi
+left
+x
+right
+right
+frac
+12Ex
+sim
+p
+theta
+left
+ln
+left
+1pi
+left
+x
+right
+right
+right
+real
+datadata
+from
+generatoronly
+need thisforgenerator
+
+===== PAGE 10 =====
+10/51
+Generation as Classiﬁcation
+A:
+Generative
+modeling
+can
+be
+directly
+associated
+with
+a
+(probabilistic)
+classiﬁcation
+problem
+and
+its
+logistic likelihood.
+
+===== PAGE 11 =====
+11/51
+Bayes-Optimal Classiﬁer
+Q: What discriminator should be used to judge indistinguisha-
+bility?
+A: Humans? No. Bayes-optimal Classiﬁer!
+fakereal
+
+===== PAGE 12 =====
+12/51
+Bayes-Optimal Classiﬁer
+Idealized case: classiﬁer is ‘perfect’ = Bayes-optimal
+ϑ↓(x) = P{Y = 1|x} =
+p(x)
+p(x) + p(x;ω)
+(class posterior from Bayes’ rule)
+tone probabilty
+overthe
+fake prob
+1
+
+===== PAGE 13 =====
+13/51
+Jensen-Shannon Divergence
+Logistic likelihood of optimal Bayes classiﬁer can be written as
+ϖ(ω) =
+& p(x)
+2
+ln
+p(x)
+p(x) + p(x;ω)dx
++
+& p(x;ω)
+2
+ln
+p(x;ω)
+p(x) + p(x;ω)dx
+=1
+2
+&
+p(x) ln
+p(x)
+1
+2(p(x) + p(x;ω))dx ↔1
+2 ln 2
++ 1
+2
+&
+p(x;ω) ln
+p(x;ω)
+1
+2(p(x) + p(x;ω))dx ↔1
+2 ln 2
+=1
+2KL
+'
+p↗1
+2(p + p(ω))
+(
++ 1
+2KL
+'
+p(ω)↗1
+2(p + p(ω))
+(
+↔ln 2
+=JS(p, p(ω)) ↔ln 2
+the Jensen-Shannon divergence
+minimin
+classifier
+less
+isthis
+just
+tale out frac12
+classifier
+out ofintegral
+ignorefor optimization
+
+===== PAGE 14 =====
+14/51
+KL and JS Divergence
+Kullback-Leibler divergence
+KL
+)
+p ↗q
+*
+=
+&
+p(x) ln p(x)
+q(x) dx = Ep
++
+ln p(X) ↔ln q(X)
+,
+Jensen-Shannon divergence (symmetric, bounded)
+JS
+)
+p ↗q
+*
+= 1
+2KL
+)
+p ↗1
+2
+)
+p(x) + q(x)
+**
++ 1
+2KL
+)
+q ↗1
+2
+)
+p(x) + q(x)
+**
+,
+(= average KL divergence to the mixture)
+not symmetric and bounded
+0
+leq
+leq
+lg
+left
+2
+right
+0
+leq
+
+===== PAGE 15 =====
+15/51
+Conclusion: Bayes-Optimal Classiﬁer
+A: A generator that minimizes the logistic log-likelihood
+against the Bayes-optimal classiﬁer (discriminator) is equiv-
+alent to minimizing the Jensen-Shannon divergence be-
+tween the model and the true data distribution.
+Q: How can we practically deﬁne a discriminator to train
+generative models?
+Problem dont knowthis
+
+===== PAGE 16 =====
+16/51
+Learning the Discriminator
+Let ϱ parameterize a family of discriminators ϑ(x;ϱ).
+ϖ(ω; ϑ↓) ↓sup
+ε
+ϖ(ω; ϑ(x;ϱ))
+= sup
+ε
+- 1
+2 Ex↑pdata[ln ϑ(x;ϱ)] + 1
+2 Ex↑p(ω)[ln(1 ↔ϑ(x;ϱ))]
+.
+=⇐ﬁnd discriminator with highest logistic log-likelihood
+Learn
+discriminatorinstead
+of minimizing
+
+===== PAGE 17 =====
+17/51
+Saddle Point Problem
+Generative Adversarial Networks (GANs)
+Saddle point problem
+ω↓= arg min
+ω
+/
+max
+ε
+ϖ(ω;ϱ)
+
+"
+#$
+%
+worst case loss
+,
+ϱ↓= arg max
+ε
+ϖ(ω↓;ϱ)
+=⇐generator and discriminator are adversaries
+=⇐optimize a common objective in opposite directions
+
+===== PAGE 18 =====
+18/51
+Problems with GANs: Vanishing Gradients
+Problem: Original generator objective ⇐ﬂat gradients
+(especially at the start of training)
+ω min
+↔≃
+&
+ln(1 ↔ϑ(x;ϱ)) p(x;ω) dx
+Heuristic ﬁx: Use non-saturating objectixve:
+ω max
+↔≃
+&
+ln ϑ(x;ϱ) p(x;ω)dx
+=⇐provides stronger gradients when ϑ(x;ϱ) is small.
+(Used in practice in GAN training. No longer minimizes JS divergence exactly, but leads to more stable updates.)
+very
+unstable
+systeminitial
+veryweak generator
+very easy so
+0
+gradientno
+gradientsnitchjust
+optiniting
+somethingnewnotTS
+
+===== PAGE 19 =====
+19/51
+Problems in GANs: Alternating Gradients
+Q: Can we train GANs using simple alternating gradient de-
+scent steps?
+Alternating updates:
+ωt+1 = ωt ↔ς⇒ω ϖ(ωt,ϱt)
+ϱt+1 =
+
+ϱt + ς⇒ε ϖ(ωt+1,ϱt)
+(asynchronous)
+ϱt + ς⇒ε ϖ(ωt,ϱt)
+(synchronous)
+where ϖ(ω,ϱ) is the discriminator’s log-likelihood.
+A: Not reliably! Naive alternating updates often fail to con-
+verge or even diverge.
+asynchrons
+rodesynchronous
+optimise at samethis
+
+===== PAGE 20 =====
+20/51
+Extragradient Method
+Q: How can we stabilize training in minimax problems like
+GANs?
+A: Use extragradients (Korpelevich, 1977)!
+Step 1: Lookahead (intermediate step)
+ωt+1 = ωt ↔ς ⇒ωϖ(ωt,ϱt)
+ϱt+1 = ϱt + ς ⇒εϖ(ωt,ϱt)
+Step 2: Final update using midpoint gradients
+ωt+2 = ωt ↔ς ⇒ωϖ(ωt+1,ϱt+1)
+ϱt+2 = ϱt + ς ⇒εϖ(ωt+1,ϱt+1)
+Intermediate step estimates a better update direction and reduces
+cycling.
+
+===== PAGE 21 =====
+21/51
+Evaluation of Generative Models
+Challenges:
+↭No tractable likelihood
+↭We want to evaluate both quality and diversity
+↭Evaluation is often domain-speciﬁc and subjective
+Common strategies:
+↭Human judgment: reliable but expensive and inconsistent at scale
+↭Approximate likelihood: kernel density or bits/dim (crude, unstable)
+↭Inception Score (IS): favors sharpness; ignores diversity
+↭Frechet Inception Distance (FID): better than IS, but still heuristic
+↭Cross-testing (G vs D): only relative; sensitive to setup
+↭Duality gap: useful in theory, hard to compute reliably
+A: Evaluation remains an open challenge. No single metric is fully sat-
+isfactory.
+train ondifferent
+sets ofsamples
+
+===== PAGE 22 =====
+22/51
+Demo
+
+===== PAGE 23 =====
+23/51
+Deep Convolutional GAN (DCGAN), 2015
+deconvolution
+blocksinsteadof linerlayers
+
+===== PAGE 24 =====
+24/51
+DCGAN Bedrooms!?
+
+===== PAGE 25 =====
+25/51
+StyleGAN, 2019
+nvidia
+can
+the individual features
+
+===== PAGE 26 =====
+26/51
+GANs: Summary
+Goal: Learn a generator G(z;ω) such that its output distribution p(ω)(x)
+matches the data distribution pdata(x).
+Key idea: Reformulate generation as binary classiﬁcation:
+p(x, Y ;ω) = Y
+2 pdata(x) + 1→Y
+2 p(ω)(x),
+Y →{0, 1}
+Minimax game:
+min
+ω
+max
+ε
+ε(ω,ϑ) = Epdata ln ϖ(x;ϑ) + Ep(ω) ln(1 ↑ϖ(x;ϑ))
+Theory:
+↭Bayes-optimal ϖ↑(x) yields ε(ω) ↓JS(pdata↔p(ω)).
+↭Generator minimizes log-likelihood to match p(ω) to p.
+Challenges:
+↭Vanishing gradients: use non-saturating objective.
+↭Non-convergence: ﬁx with extragradients.
+↭Evaluation: FID, IS, human judgment - all heuristic.
+Conclusion: Elegant theory, but training remains fragile and heuristic-driven.
+
+===== PAGE 27 =====
+27/51
+Section 4
+Generative Models:
+Wasserstein GAN
+
+===== PAGE 28 =====
+28/51
+Roadmap: Wasserstein GAN
+Standard GANs work, but training is unstable, mode collapse is
+common, and the loss tells us almost nothing about progress.
+Q: What if the problem is the divergence we are minimizing,
+rather than the architecture?
+IS divergence
+
+===== PAGE 29 =====
+29/51
+A simple example
+Parallel-lines setup:
+Z ⇑U[0, 1], p = dist of (0, Z), p(ω) = dist of (ω, Z).
+For ω ↗= 0 the supports are disjoint, so the mixture m = 1
+2(p + p(ω)) equals 1
+2p
+on supp(p) and 1
+2p(ω) on supp(p(ω)). Therefore
+KL(p ↔m) =
+!
+p(x) ln p(x)
+1
+2p(x) dx = ln 2,
+KL(p(ω) ↔m) = ln 2,
+=↘
+JS(p, p(ω)) = 1
+2KL(p ↔m) + 1
+2KL(p(ω) ↔m) = ln 2
+(independent of ω).
+Gtline
+betweenConstant
+nogracie
+into
+
+===== PAGE 30 =====
+30/51
+Transport Plans
+
+===== PAGE 31 =====
+31/51
+The Wasserstein metric
+Transport plan φ: how much mass moves from each x in p to
+each y in p(ω).
+W(p, p(ω)) =
+inf
+ϑ↔!(p,p(ω)) E(x,y)↑ϑ ↗x ↔y↗
+!(p, p(ω)): joint distributions with marginals p and p(ω).
+transport 1 probability to another
+want
+some
+sort of
+rappinsparallelor
+somethingelsemin aurge
+disteneoptimize
+this to
+findoptimal
+transport
+planhow
+far away
+are the
+pointssample
+to joint distribution
+
+===== PAGE 32 =====
+32/51
+JS-divergence vs. Wasserstein distance
+JS(p, p(ω)) =
+"
+log 2
+ω ↗= 0
+0
+ω = 0
+W(p, p(ω)) = |ω|
+=↘JS has zero gradient almost everywhere – no signal for GD.
+=↘Wasserstein gives a usable gradient pointing toward the optimum.
+wassersteindister
+shift 2 hills
+all
+others
+ulue
+thy
+owlop
+
+===== PAGE 33 =====
+33/51
+The Intractable Primal ≃The Dual
+Primal: inﬁmum over all joint distributions – intractable.
+W(p, p(ω)) =
+inf
+ϑ↔!(p,p(ω)) E(x,y)↑ϑ ↗x ↔y↗
+Kantorovich–Rubinstein duality rewrites the same quantity as:
+W(p, p(ω)) =
+sup
+↗f↗L↘1
+
+Ex↑p[f(x)] ↔Ex↑p(ω)[f(x)]
+
+Instead of searching for a transport plan, search for a potential function f:
+large on real data, small on generated data, but not changing too fast.
+generated
+ferationreal
+datalarge
+1 lipshitzsmall
+
+===== PAGE 34 =====
+34/51
+Proof Sketch for KR-Duality (1/3)
+Primal – search over couplings:
+W(p, p(ω)) =
+inf
+ϑ↔!(p,p(ω)) E(x,y)↑ϑ ↗x ↔y↗
+Note that this is a linear program:
+inf
+ϑ≃0
+&
+φ(x, y)↗x ↔y↗dxdy
+s.t.
+
+φ(x, y)dy = p(x)
+
+φ(x, y)dx = p(y; ω)
+Use Lagrange multipliers f(x) and g(y):
+inf
+ϑ≃0 sup
+f,g
+&
+φ(x, y)↗x ↔y↗dxdy
++
+&
+f(x)
+'
+p(x) ↔
+&
+φ(x, y)dy
+(
+dx
++
+&
+g(y)
+'
+p(y; ω) ↔
+&
+φ(x, y)dx
+(
+dy
+not necessary onyour
+ownconstraints
+to matchthe
+functionsfind
+dual of LPproblem
+different
+to
+usedConstrants
+
+===== PAGE 35 =====
+35/51
+Proof Sketch for KR-Duality (2/3)
+Group the φ terms:
+inf
+ϑ≃0 sup
+f,g
+Ex↑p[f(x)] + Ey↑p(ω)[g(y)]
++
+&
+[↗x ↔y↗↔f(x) ↔g(y)]φ(x, y)dxdy
+Swap inf and sup (strong duality):
+sup
+f,g
+Ex↑p[f(x)] + Ey↑p(ω)[g(y)]
++ inf
+ϑ≃0
+&
+[↗x ↔y↗↔f(x) ↔g(y)]φ(x, y)dxdy
+Turn the inf into a constraint to avoid ↔⇓:
+sup
+f,g
+Ex↑p[f(x)] + Ey↑p(ω)[g(y)] s.t. ⇔x, y : f(x) + g(y) ↖↗x ↔y↗
+dontgetthis
+to
+optimizations
+fighting
+
+===== PAGE 36 =====
+36/51
+Proof Sketch for KR-Duality (3/3)
+Reformulate the constraint to get rid of g:
+⇔x, y : f(x) + g(y) ↖↗x ↔y↗⇐⇔x : g(x) ↖↔f(x) ⇐g(x) = ↔f(x)
+Realize f is 1-Lipschitz:
+⇔x, y : f(x) ↔f(y) ↖↗x ↔y↗
+Insert that into the objective function to retrieve the dual:
+W(p, p(ω)) =
+sup
+↗f↗L↘1
+Ep[f(x)] ↔Ep(ω)[f(x)].
+doesnt seem
+a
+lot
+better
+
+===== PAGE 37 =====
+37/51
+Why Wasserstein is a usable Loss
+Theorem 1 (Arjovsky et al., 2017). If generator gω is
+continuous in ω, so is W(p, p(ω)). If gω is locally Lipschitz (any
+ordinary feedforward net is), then W is continuous everywhere and
+di!erentiable almost everywhere.
+Theorem 2.
+JS convergence =⇐W convergence
+W is weaker than JS – which makes it easier for p(ω) to converge
+under.
+A: W gives a loss landscape we can actually do gradient
+descent on.
+can compute gradients to optimize
+
+===== PAGE 38 =====
+38/51
+Optimal Transport beyond GANs: Domain
+Adaptation
+Align source and target feature distributions before classiﬁcation.
+(Courty et al., 2015)
+can
+use
+classifier
+to
+work on other
+data
+
+===== PAGE 39 =====
+39/51
+Optimal Transport beyond GANs: Single-Cell
+Perturbations
+Learn an OT map from unperturbed to drug-perturbed cell-state
+distributions.
+(Bunne et al., 2023)
+used in his
+labcells
+treat
+chay
+what doesdrugreally do
+W
+destet
+w at
+really goodpaper
+under
+Andreas Krange
+
+===== PAGE 40 =====
+40/51
+Discriminator vs Critic
+We call the function f from the dual a critic.
+Discriminator (GAN)
+Critic (WGAN)
+Outputs probability
+Outputs real-valued score
+Sigmoid activation
+No sigmoid
+Trained as a classiﬁer
+Estimates the dual objective
+“Is this real?” (yes/no)
+“How much more real?” (a score)
+
+===== PAGE 41 =====
+41/51
+Enforcing the Lipschitz Constraint: Weight Clipping
+Weight clipping (original WGAN, 2017):
+w ↙clip(w, ↔c, c)
+after every critic update
+(c = 0.01)
+If all weights live in a bounded box, the network is K-Lipschitz for
+some K.
+Honest verdict (Arjovsky et al.):
+“a clearly terrible way to enforce a Lipschitz constraint.”
+c too large ⇐slow training
+c too small ⇐vanishing gradients.
+p to
+get
+1
+lipshitz
+
+===== PAGE 42 =====
+42/51
+Enforcing the Lipschitz Constraint: Gradient Penalty
+Gradient penalty – WGAN-GP (Gulrajani et al., 2017):
+L = Ep[f(x)] ↔Ep(ω)[f(x)] + ↼Eˆx↑Pˆx
+)
+↗⇒ˆxf(ˆx)↗2 ↔1
+*2
+A 1-Lipschitz f has ↗⇒f↗↖1 – penalize at points ˆx interpolated
+between real and fake.
+
+===== PAGE 43 =====
+43/51
+The WGAN Algorithm
+Hyperparams: learning rate ϱ, clip c, batch size m, ncritic = 5.
+Repeat until convergence:
+(1) Critic loop – for t = 1, . . . , ncritic:
+Sample {x(i)}m
+i=1 ⇑p and {z(i)}m
+i=1 ⇑p(z).
+gω ↙⇒ω
++ 1
+m
+
+i f(x(i);ϱ) ↔1
+m
+
+i f(gε(z(i));ϱ)
+,
+ϱ ↙ϱ + ↽· RMSProp(ϱ, gω)
+ϱ ↙clip(ϱ, ↔c, c)
+(2) Generator step:
+Sample {z(i)}m
+i=1 ⇑p(z).
+gε ↙↔⇒ε 1
+m
+
+i f(gε(z(i));ϱ)
+ω ↙ω ↔↽· RMSProp(ω, gε)
+no pointtakinga bit like
+RLadam
+breaks
+momentum
+
+===== PAGE 44 =====
+44/51
+Train the Critic to Optimality
+Standard GAN paradox.
+A too-good discriminator saturates ⇐generator gradient vanishes
+⇐training is a delicate balancing act.
+WGAN inverts this.
+Because W is di!erentiable almost everywhere (Thm 1, cashing in
+now), the better the critic, the more reliable the gradient it
+hands the generator.
+We want the critic well-trained.
+⇑5 critic steps per generator step, close to optimal.
+The balancing act is gone.
+
+===== PAGE 45 =====
+45/51
+Mode Collapse: JS Rewards It, W Punishes It
+Setup. Real: two Gaussians at ±µ. Generator: also bimodal – one component
+pinned at the left mode, one free. Sweep the free component ↑µ ≃+µ.
+JS measures overlap; W measures coverage. Under JS the missing
+mode is unreachable through the valley; under W it is one descent away.
+pasted to
+mede collapse
+
+===== PAGE 46 =====
+46/51
+Why This Fixes GAN Training
+Three beneﬁts, each tied to a result.
+1. No vanishing gradients.
+A discriminator saturates ⇐ﬂat, useless gradient.
+A Lipschitz-constrained critic cannot saturate – gradient stays
+clean everywhere.
+2. Informative loss.
+A near-optimal critic’s loss is an estimate of the Wasserstein
+distance.
+⇐the loss curve correlates with sample quality.
+3. Less mode collapse.
+JS measures overlap ⇐collapse is a minimum, missing modes are
+free.
+W measures transport cost ⇐an optimal critic exposes the gap as
+a gradient that pushes G outward.
+
+===== PAGE 47 =====
+47/51
+Demo
+
+===== PAGE 48 =====
+48/51
+Outlook: GANs and Di!usion
+The landscape today. Di!usion models dominate sample quality
+and training stability; they have largely taken over high-end image
+generation.
+But GANs have not vanished.
+↭Still valuable where fast, single-step sampling matters.
+↭The two families have converged: adversarial objectives now
+appear inside di!usion-distillation and consistency-style
+models, used to make di!usion fast.
+Lesson: not “GANs lost” – the ﬁeld absorbed the ideas.
+
+===== PAGE 49 =====
+49/51
+Wasserstein GAN: Summary
+Diagnosis: the problem is the divergence, not the model.
+↭JS is ﬂat on disjoint supports ↘zero gradient for the generator.
+↭Wasserstein metric is continuous and di!erentiable a.e.
+From transport to critic:
+W(p, p(ω)) = inf
+ϑ Eϑ↔x ↑y↔
+K-R duality
+=
+sup
+↓f↓L↔1
+Ep[f] ↑Ep(ω)[f]
+↘a single 1-Lipschitz critic (no sigmoid, real-valued score).
+Enforcing Lipschitz: weight clipping ≃gradient penalty.
+Algorithm: train the critic to (near-)optimality (ncritic ⇐5); update generator.
+Payo!:
+↭Informative loss (tracks sample quality).
+↭No vanishing gradients.
+↭Less mode collapse.
+
+===== PAGE 50 =====
+50/51
+Self-Check questions
+Vanilla GANs:
+↭How does generative modeling relate to classiﬁcation?
+↭What is the Bayes-optimal discriminator?
+↭Why does minimizing the generator loss (under an optimal
+discriminator) correspond to minimizing the Jensen–Shannon
+divergence between the model and data distributions?
+↭What may cause vanishing gradients in GANs? How this can
+be ﬁxed?
+↭What is the extragradient method, and why is it helpful?
+Wasserstein GANs:
+↭When and why does the JS divergence fail to give useful
+gradients?
+↭What does the Wasserstein metric measure?
+↭How does a WGAN critic di!er from a GAN discriminator?
+↭Why must the critic be Lipschitz, and what are weight clipping
+and gradient penalty?
+↭Why does WGAN want the critic trained close to optimality,
+whereas a standard GAN wants the discriminator kept weak?
+↭Which three classic GAN training problems does WGAN
+address, and how does each follow from the theory?
+
+===== PAGE 51 =====
+51/51
+Goodbye!
